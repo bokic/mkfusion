@@ -1,0 +1,10 @@
+Segments that needs more work:
+
+* cfexpression to c++ source code -> qcfgenerator.cpp/h
+* exceptions                      -> qmkfusionexception.cpp/h
+* cffunctions                     -> cffunctions.cpp/h
+* cftags                          -> need to rethink how is the best practice for files location
+* udf/cfc                         -> new feature
+* Application, Session scope      -> new feature
+
+Feel free to contact me for more info/ideas/questions/patches at bbarbulovski@gmail.com

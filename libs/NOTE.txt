@@ -1,0 +1,2 @@
+Please note that libssh API interface is constantly changing and
+it will breake the cfeditor code if upgraded.

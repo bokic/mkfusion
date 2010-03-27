@@ -1,0 +1,1 @@
+LoadModule mkfusion_module /opt/mkfusion/bin/mod_mkfusion.so

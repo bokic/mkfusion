@@ -1,0 +1,28 @@
+Parser will have major rewrite. This is because the need of cfeditor. The thing is that cfeditor
+needs ultra fast cf parser.
+
+The solution is to divide parser work into two passes.
+
+The first pass will mark the tokens(key text segments) only, and it will have ability to continue 
+scanning passing some errors(non parser ones).
+This pass will be used for color syntaxing and it will run in the same thread.
+Another speedup is the "incremental parsing"(for the first pass). This is done by parsing the changed tokens only.
+There will be two methods:
+1. Getting changed text info from edit widget. Ultra fast, but it can't be used when moving text block.
+2. Doing an string compare(starting from beginning and from end of text). Slower, but it can be used allways.
+
+The second pass will do all other stuff and that is:
+* validating expressions
+* validating opened/closed cftags
+* validating cftags parameters
+* generating error/warning/notes list
+and so on.
+
+This pass will run in it's own thread with lower priority, and it will start running 500mS
+(changeable by API) after the first pass has finished(this is done only to save waisted
+computing while user type code).
+
+Currently the parser is not working correctly especially inside <cfscript>
+
+
+Feel free to contact me for more info/ideas/questions/patches at bbarbulovski@gmail.com

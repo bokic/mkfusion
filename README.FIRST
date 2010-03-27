@@ -1,0 +1,22 @@
+--------------------------------------------------------------------------------
+WINDOWS:
+files needed before compile:
+
+
+* qt-win-opensource-4.6.2-mingw.exe(or maybe newer)
+* QtService
+* Apache 2.2(with devel files)
+* libssh-mingw4-xxxxxxxx-bin.tar.bz2
+* libssh-mingw4-xxxxxxxx-lib.tar.bz2
+* openssl-0.9.8k-2-bin.tar.bz2(or maybe newer)
+* zlib-1.2.3-2-bin.zip(or maybe newer)
+
+
+Extract libssh(both), openssl, zlib into libs. All of them should be available
+at http://winkde.org/pub/kde/ports/win32/releases/nightly/latest/
+Extract QtService into libs(http://qt.nokia.com/products/appdev/add-on-products/catalog/4/Utilities/qtservice)
+
+
+
+--------------------------------------------------------------------------------
+Ubuntu Linux

@@ -1,0 +1,22 @@
+Stage1 - Fully functional menu/toolbar
+* Project/File create/load/save/delete/rename/move/properties.
+* Change to webkit browser.
+* Proper encoding. First search for BOM(Byte order mark), then set it to utf-8(changeable in cfeditor settings) and continue
+to search for cfprocessingdirective. If both found and differ, raise an exception.
+* Undo, Redo, Cut, Copy, Paste, Select All, Goto line implementation.
+* Find - finds text inside project. Set search scope, file filter, search type(regex/text)
+and list items in main window dockable area. It will run in it's own thread with lower priority.
+* Check project - Checks all cfm/cfc files for issues, and list them in main window dockable area.
+It will run in it's own thread with lower priority.
+* Full screen - use qt Fullscreen functionality(couple line code).
+* Help cfml search and about(with credits for contributers).
+* Save/Load program settings(widgets dimensions, recent files, etc).
+
+Stage2 - once parser is rewriten this stage can be started.
+* Fully color syntax.
+* Code competition/Errors/Warnings/Notes/ shown with wave underline(I don't think we have component for this now).
+* File Structure together with tag properties(just like Delphi) window.
+* ColdFusion debugger(backend is allready implemented).
+
+
+Feel free to contact me for more info/ideas/questions/patches at bbarbulovski@gmail.com

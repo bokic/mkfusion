@@ -1,0 +1,40 @@
+<RCC>
+    <qresource prefix="/CFEditor">
+        <file alias="cfm_editor.gif">Resources/cfm_editor.gif</file>
+        <file alias="cfc_editor.gif">Resources/cfc_editor.gif</file>
+        <file alias="dir.gif">Resources/dir.gif</file>
+        <file alias="dir_open.gif">Resources/dir_open.gif</file>
+        <file alias="file_obj.gif">Resources/file_obj.gif</file>
+    </qresource>
+    <qresource prefix="/CFEditor/Outline">
+        <file alias="add.gif">Resources/Outline/add.gif</file>
+        <file alias="attribute.gif">Resources/Outline/attribute.gif</file>
+        <file alias="back.gif">Resources/Outline/back.gif</file>
+        <file alias="bean.gif">Resources/Outline/bean.gif</file>
+        <file alias="class.gif">Resources/Outline/class.gif</file>
+        <file alias="document.gif">Resources/Outline/document.gif</file>
+        <file alias="element.gif">Resources/Outline/element.gif</file>
+        <file alias="function.gif">Resources/Outline/function.gif</file>
+        <file alias="refresh.gif">Resources/Outline/refresh.gif</file>
+        <file alias="stop.gif">Resources/Outline/stop.gif</file>
+        <file alias="table.gif">Resources/Outline/table.gif</file>
+        <file alias="tools.gif">Resources/Outline/tools.gif</file>
+        <file alias="warning.gif">Resources/Outline/warning.gif</file>
+    </qresource>
+    <qresource prefix="/CFEditor/Commands">
+        <file alias="about.png">resources/app/about.png</file>
+        <file alias="cut.png">resources/app/cut.png</file>
+        <file alias="find.png">resources/app/find.png</file>
+        <file alias="fullscreen.png">resources/app/fullscreen.png</file>
+        <file alias="help.png">resources/app/help.png</file>
+        <file alias="new.png">resources/app/new.png</file>
+        <file alias="paste.png">resources/app/paste.png</file>
+        <file alias="print.png">resources/app/print.png</file>
+        <file alias="print_preview.png">resources/app/print_preview.png</file>
+        <file alias="save.png">resources/app/save.png</file>
+        <file alias="save_all.png">resources/app/save_all.png</file>
+        <file alias="save_as.png">resources/app/save_as.png</file>
+        <file alias="settings.png">resources/app/settings.png</file>
+        <file alias="validate.png">resources/app/validate.png</file>
+    </qresource>
+</RCC>
