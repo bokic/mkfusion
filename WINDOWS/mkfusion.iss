@@ -11,6 +11,7 @@ Compression=lzma
 ;Compression=none
 SolidCompression=yes
 OutputBaseFilename=MKFusion
+OutputDir=.
 VersionInfoVersion=0.4.1
 VersionInfoDescription=MKFusion is Free, open-source multiplatform ColdFusion application server and IDE build with Qt 4.6.2, and MinGW 4.4.0
 
@@ -23,40 +24,42 @@ Name: "{app}\logs";
 Name: "{app}\templates";
 
 [Files]
-Source: "runtime\mingwm10.dll"; DestDir: "{app}\bin";
-Source: "runtime\libgcc_s_dw2-1.dll"; DestDir: "{app}\bin";
-Source: "runtime\QtCore4.dll"; DestDir: "{app}\bin";
-Source: "runtime\QtNetwork4.dll"; DestDir: "{app}\bin";
-Source: "runtime\QtSql4.dll"; DestDir: "{app}\bin";
-Source: "runtime\QtXml4.dll"; DestDir: "{app}\bin";
-Source: "..\release\mkfusion.exe"; DestDir: "{app}\bin"; Flags: ignoreversion;
-Source: "..\mod_mkfusion\release\mod_mkfusion.dll"; DestDir: "{app}\bin"; Flags: ignoreversion;
-Source: "runtime\mkfusion.db"; DestDir: "{app}\bin"; Flags: onlyifdoesntexist;
-Source: "runtime\uninstall.dll"; DestDir: "{app}"; Flags: ignoreversion;
+; MinGW runtime
+Source: "c:\Qt\4.6.2\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.6.2\bin\mingwm10.dll"; DestDir: "{app}\bin";
 
-Source: "runtime\sqldrivers\qsqlite4.dll"; DestDir: "{app}\bin\sqldrivers";
-Source: "runtime\sqldrivers\qsqlodbc4.dll"; DestDir: "{app}\bin\sqldrivers";
-Source: "runtime\sqldrivers\qsqlmysql4.dll"; DestDir: "{app}\bin\sqldrivers";
-Source: "runtime\sqldrivers\qsqlpsql4.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "c:\Qt\4.6.2\bin\QtCore4.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.6.2\bin\QtNetwork4.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.6.2\bin\QtSql4.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.6.2\bin\QtXml4.dll"; DestDir: "{app}\bin";
+Source: "..\bin\mkfusion.exe"; DestDir: "{app}\bin"; Flags: ignoreversion;
+Source: "..\bin\mod_mkfusion.dll"; DestDir: "{app}\bin"; Flags: ignoreversion;
+Source: "..\install\mkfusion.db"; DestDir: "{app}\bin"; Flags: onlyifdoesntexist;
+Source: "uninstall.dll"; DestDir: "{app}"; Flags: ignoreversion;
 
-Source: "runtime\comerr32.dll"; DestDir: "{app}\bin";
-Source: "runtime\gssapi32.dll"; DestDir: "{app}\bin";
-Source: "runtime\k5sprt32.dll"; DestDir: "{app}\bin";
-Source: "runtime\krb5_32.dll"; DestDir: "{app}\bin";
-Source: "runtime\libeay32.dll"; DestDir: "{app}\bin";
-Source: "runtime\libiconv-2.dll"; DestDir: "{app}\bin";
-Source: "runtime\libintl-8.dll"; DestDir: "{app}\bin";
-Source: "runtime\ssleay32.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.6.2\plugins\sqldrivers\qsqlite4.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "c:\Qt\4.6.2\plugins\sqldrivers\qsqlodbc4.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "c:\Qt\4.6.2\plugins\sqldrivers\qsqlmysql4.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "c:\Qt\4.6.2\plugins\sqldrivers\qsqlpsql4.dll"; DestDir: "{app}\bin\sqldrivers";
 
-Source: "runtime\uninstall.dll"; Flags: dontcopy;
+;Source: "..\runtime\comerr32.dll"; DestDir: "{app}\bin";
+;Source: "runtime\gssapi32.dll"; DestDir: "{app}\bin";
+;Source: "runtime\k5sprt32.dll"; DestDir: "{app}\bin";
+;Source: "runtime\krb5_32.dll"; DestDir: "{app}\bin";
+;Source: "..\libs\libssh\bin\libeay32.dll"; DestDir: "{app}\bin";
+;Source: "runtime\libiconv-2.dll"; DestDir: "{app}\bin";
+;Source: "runtime\libintl-8.dll"; DestDir: "{app}\bin";
+;Source: "runtime\ssleay32.dll"; DestDir: "{app}\bin";
 
-Source: "..\mkfusion.a"; DestDir: "{app}\lib"; Flags: ignoreversion;
+Source: "uninstall.dll"; Flags: dontcopy;
 
-Source: "..\common.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\qcfrunningtemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\qcftemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\qmkfusionexception.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\qwddx.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\bin\lib\mkfusion.a"; DestDir: "{app}\lib"; Flags: ignoreversion;
+
+Source: "..\bin\include\common.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\bin\include\qcfrunningtemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\bin\include\qcftemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\bin\include\qmkfusionexception.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\bin\include\qwddx.h"; DestDir: "{app}\include"; Flags: ignoreversion;
 
 [Code]
 
