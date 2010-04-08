@@ -1,0 +1,13 @@
+QtServiceBase
+QtServiceController
+qtservice.cpp
+qtservice.h
+qtservice.pri
+qtservice_p.h
+qtservice_unix.cpp
+qtservice_win.cpp
+qtunixserversocket.cpp
+qtunixserversocket.h
+qtunixsocket.cpp
+qtunixsocket.h
+

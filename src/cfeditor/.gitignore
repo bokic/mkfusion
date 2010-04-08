@@ -1,0 +1,6 @@
+Makefile
+Makefile.Debug
+Makefile.Release
+object_script.cfeditor.Debug
+object_script.cfeditor.Release
+
