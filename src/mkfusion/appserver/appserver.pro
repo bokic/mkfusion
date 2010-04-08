@@ -6,10 +6,14 @@ QT += network \
     xml
 
 DESTDIR = ../../../bin
+OBJECTS_DIR = ../../../obj/appserver_debug
+MOC_DIR = ../../../obj/appserver_debug
+RCC_DIR =  ../../../obj/appserver_debug
+UI_DIR =  ../../../obj/appserver_debug
 DEPENDPATH +=  . ../../../libs/qtservice ../../cfparser
 INCLUDEPATH += . ../../../libs/qtservice ../../cfparser
 
-win32:QMAKE_LFLAGS += -Wl,--out-implib,lib/mkfusion.a
+win32:QMAKE_LFLAGS += -Wl,--out-implib,../../../bin/lib/mkfusion.a
 unix:QMAKE_LFLAGS += -Wl,-E
 
 SOURCES += \

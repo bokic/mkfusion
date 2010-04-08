@@ -1,6 +1,7 @@
 Makefile
 Makefile.Debug
 Makefile.Release
+appserver.pro.user
 object_script.mkfusion.Debug
 object_script.mkfusion.Release
 

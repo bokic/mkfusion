@@ -3,7 +3,15 @@
 # #####################################################################
 TEMPLATE = lib
 TARGET = mod_mkfusion
+
+DESTDIR = ../../../bin
+OBJECTS_DIR = ../../../obj/parsertest_debug
+MOC_DIR = ../../../obj/parsertest_debug
+RCC_DIR =  ../../../obj/parsertest_debug
+UI_DIR =  ../../../obj/parsertest_debug
 DEPENDPATH += .
+INCLUDEPATH += .
+
 QT -= gui
 QT += network
 win32:INCLUDEPATH += apache2/include \
