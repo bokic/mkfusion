@@ -9,8 +9,8 @@ OBJECTS_DIR = ../../../obj/parsertest_debug
 MOC_DIR = ../../../obj/parsertest_debug
 RCC_DIR =  ../../../obj/parsertest_debug
 UI_DIR =  ../../../obj/parsertest_debug
-DEPENDPATH += .
-INCLUDEPATH += .
+DEPENDPATH += . ../../../libs/apache2/include
+INCLUDEPATH += . ../../../libs/apache2/include
 
 QT -= gui
 QT += network
@@ -20,7 +20,7 @@ win32:INCLUDEPATH += apache2/include \
 unix:INCLUDEPATH += /usr/include/apache2 \
     /usr/include/apr-1.0
 # win32:LIBS += "-LC:/Program Files/Apache Software Foundation/Apache2.2/lib"
-win32:LIBS += "-Lapache2/lib"
+win32:LIBS += "-L../../../libs/apache2/lib"
 unix:LIBS += -L/usr/lib/
 win32:LIBS += -llibhttpd \
     -llibapr-1
