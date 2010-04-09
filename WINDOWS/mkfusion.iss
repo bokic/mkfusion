@@ -13,7 +13,7 @@ SolidCompression=yes
 OutputBaseFilename=MKFusion
 OutputDir=.
 VersionInfoVersion=0.4.1
-VersionInfoDescription=MKFusion is Free, open-source multiplatform ColdFusion application server and IDE build with Qt 4.6.2, and MinGW 4.4.0
+VersionInfoDescription=MKFusion is free, opensource, multiplatform ColdFusion application server(Qt 4.6.2)
 
 [Dirs]
 Name: "{app}\bin";

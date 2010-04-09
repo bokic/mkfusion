@@ -5,37 +5,16 @@
 #include <QFile>
 #include <QDir>
 
-#include "httpd.h"
-#include "http_config.h"
-#include "http_protocol.h"
-#include "ap_config.h"
+#include <httpd.h>
+#include <http_config.h>
+#include <http_log.h>
+#include <http_protocol.h>
+#include <ap_config.h>
 
 #define CONNECT_TIMEOUT 1000
 #define READ_TIMEOUT 100
 
-void log(const QString& p_Line)
-{
-#ifdef Q_WS_WIN
-	QFile l_Log("c:\\mod_mkfusion.log");
-#elif defined Q_WS_X11
-	QFile l_Log("/opt/mkfusion/logs/mod_server.log");
-#else
-#error Windows and Linux OSs are currently supported.
-#endif
-	l_Log.open(QIODevice::WriteOnly	| QIODevice::Append);
-	if (l_Log.size() == 0)
-	{
-		l_Log.write("\xEF\xBB\xBF"); // Add utf-8 BOM.
-	}
-#ifdef Q_WS_WIN
-	l_Log.write(p_Line.toUtf8() + "\r\n");
-#else
-	l_Log.write(p_Line.toUtf8() + "\n");
-#endif
-	l_Log.close();
-}
-
-static void writeError(request_rec *r, char *error)
+static void writeError(request_rec *r, const char *error)
 {
 	r->status = 500;
 	r->content_type = "text/html; charset=utf-8";
@@ -49,19 +28,14 @@ static int mkfusion_handler(request_rec *r)
 		return DECLINED;
 	}
 
-	log("Before app().");
+	ap_log_rerror("mod_mkfusion.cpp", 31, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
+	ap_log_rerror("mod_mkfusion.cpp", 32, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
 	QCoreApplication app();
-	log("After app().");
-
-	log("Before connect.");
-	log(QDir::toNativeSeparators(r->filename));
-	log("Before QIODevice().");
-	//QIODevice de(NULL);
-	log("After QIODevice().");
+	ap_log_rerror("mod_mkfusion.cpp", 34, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
 	QLocalSocket l_localSocket(NULL);
-	log("Before connect sent.");
+	ap_log_rerror("mod_mkfusion.cpp", 36, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
 	l_localSocket.connectToServer("mkfusion");
-	log("After connect sent.");
+	ap_log_rerror("mod_mkfusion.cpp", 38, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
 
 	if (l_localSocket.waitForConnected(CONNECT_TIMEOUT))
 	{
@@ -88,13 +62,13 @@ static int mkfusion_handler(request_rec *r)
 
 		if (l_localSocket.write(l_Send) == -1)
 		{
-			writeError(r, (char*)"Can\'t write to mkfusion.<br />\nMake sure mkfusion server is running.");
+			writeError(r, "Can\'t write to mkfusion.<br />\nMake sure mkfusion server is running.");
 			return OK;
 		}
 
 		if (!l_localSocket.waitForBytesWritten(30000))
 		{
-			writeError(r, (char*)"Can\'t write to mkfusion.<br />\nMake sure mkfusion server is running.");
+			writeError(r, "Can\'t write to mkfusion.<br />\nMake sure mkfusion server is running.");
 			return OK;
 		}
 
@@ -119,7 +93,7 @@ static int mkfusion_handler(request_rec *r)
 							l_HeadersDataStream >> l_HeaderSize;
 							if ((l_HeaderSize <= 0)||(l_HeaderSize > 0x01000000))
 							{
-								writeError(r, (char*)"Invalid header length.");
+								writeError(r, "Invalid header length.");
 								return OK;
 							}
 						}
@@ -171,7 +145,7 @@ static int mkfusion_handler(request_rec *r)
 	}
 	else
 	{
-		writeError(r, (char*)"Can\'t connect to mkfusion.<br />\nMake sure mkfusion server is running.");
+		writeError(r, "Can\'t connect to mkfusion.<br />\nMake sure mkfusion server is running.");
 	}
 
 	return OK;
@@ -179,7 +153,8 @@ static int mkfusion_handler(request_rec *r)
 
 static void mkfusion_register_hooks(apr_pool_t *p)
 {
-	log("mod_mkfusion init.");
+	ap_log_perror("mod_mkfusion.cpp", 156, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
+
 	ap_hook_handler(mkfusion_handler, NULL, NULL, APR_HOOK_MIDDLE);
 #ifdef Q_WS_WIN
 	ap_add_version_component(p, "MKFusion/0.4.1 (Win32)");
