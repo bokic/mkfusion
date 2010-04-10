@@ -21,7 +21,6 @@ CFTest1::~CFTest1()
 
 void CFTest1::parseDir(QString p_dir)
 {
-	QCFParser* parser = new QCFParser();
 
 	QDir dir(p_dir);
 
@@ -50,13 +49,21 @@ void CFTest1::parseDir(QString p_dir)
 			file.close();
 
 			QList<QCFParserTag> l_tags;
+			QCFParser* parser = new QCFParser();
+
+			this->setWindowTitle("CFTest1 - " + item.fileName());qApp->processEvents();
+
 			if (parser->Parse(fileContent) != NoError)
 			{
+				this->setWindowTitle("CFTest1");qApp->processEvents();
+
 				lastItem->setText(lastItem->text() + " error: " + parser->getError() + ", at position: " + QString::number(parser->getErrorPosition()));
 				lastItem->setBackgroundColor(QColor(255, 0, 0));
 			}
 			else
 			{
+				this->setWindowTitle("CFTest1");qApp->processEvents();
+
 				if (parser->BuildTagTree() != NoError)
 				{
 				lastItem->setText(lastItem->text() + " error: " + parser->getError() + ", at position: " + QString::number(parser->getErrorPosition()));
@@ -76,9 +83,9 @@ void CFTest1::parseDir(QString p_dir)
 			}
 
 			ui.listWidget->addItem(lastItem);
+			delete parser;
 		}
 	}
-	delete parser;
 }
 
 void CFTest1::on_pushButton_clicked()
