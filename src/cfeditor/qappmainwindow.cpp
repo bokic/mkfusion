@@ -89,7 +89,6 @@ QAppMainWindow::QAppMainWindow(QWidget *parent, Qt::WFlags flags)
 	connect(m_TabPanel, SIGNAL(currentChanged(int)), SLOT(on_m_TabPanel_currentChanged(int)));
 	connect(m_TabPanel, SIGNAL(tabCloseRequested(int)), SLOT(on_m_TabPanel_tabCloseRequested(int)));
 
-
 	m_ProjectDock = new QDockWidget(tr("Project Files"), this);
 	m_ProjectDock->setObjectName("m_ProjectDock");
 	m_ProjectDock->setFeatures(QDockWidget::DockWidgetClosable);
@@ -118,10 +117,7 @@ QAppMainWindow::QAppMainWindow(QWidget *parent, Qt::WFlags flags)
 	m_BrowserDock = new QDockWidget(tr("Browser"), this);
 	m_BrowserDock->setFixedHeight(150);
 	m_Browser = new QWebView(m_BrowserDock);
-	//m_Browser->setSizePolicy(Policy::Preferred);
 	m_Browser->setGeometry(0, 0, 0, 150);
-	//m_Browser->setFixedHeight(200);
-	//m_Browser->pr
 	m_BrowserDock->setWidget(m_Browser);
 	m_Browser->load(QUrl());
 
@@ -369,8 +365,6 @@ void QAppMainWindow::on_m_ProjectTree_keyPress(QAdvancedTreeWidget* tree, QKeyEv
 
 void QAppMainWindow::on_m_TabPanel_Item_keyPress(QAdvancedTextEdit* edit, QKeyEvent* e)
 {
-	//int a = e->key();
-
 	if (e->key() == 0x01000034) // F5
 	{
 		int index = m_TabPanel->indexOf(edit);
@@ -422,12 +416,10 @@ void QAppMainWindow::recolor()
 	statusBar()->showMessage(parser.getError());
 	QList<QCFParserTag> tags = parser.getTags();
 
-	QTextCursor orig_cursor = edit->textCursor();
-
 	m_EditorUpdating = true;
 
 	QTextCursor origcursor = edit->textCursor();
-	QTextCursor cursor = edit->textCursor();
+	QTextCursor cursor = origcursor;
 
 	cursor.setPosition(0, QTextCursor::MoveAnchor);
 	edit->setTextCursor(cursor);
@@ -463,9 +455,6 @@ void QAppMainWindow::recolor()
 
 	edit->setTextCursor(origcursor);
 	m_EditorUpdating = false;
-
-	//edit->setTextBackgroundColor(QColor(255, 255, 255));
-	//orig_cursor.setPosition(0, QTextCursor::MoveAnchor);
 }
 
 void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
@@ -536,36 +525,6 @@ void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
 	{
 		colorElement(l_ChildElement);
 	}
-}
-
-void QAppMainWindow::on_m_TabPanel_Item_contentModified(bool /* y */)
-{
-/*	int index = m_TabPanel->currentIndex();
-		QString panelText = m_TabPanel->tabText(index);
-
-		if (!panelText.endsWith("*"))
-		{
-				m_TabPanel->setTabText(index, panelText + "*");
-		}
-
-		QCFParser parser;
-		QEditor *edit = ((QEditor*) m_TabPanel->currentWidget());
-
-		//QHighlighter highlighter = edit->highlighter();
-		panelText = edit->text();
-
-		parser.Parse(panelText);
-		QList<QCFParserTag> tags = parser.getTags();
-
-		foreach(QCFParserTag tag, tags)
-		{
-			QDocumentCursor* cur = edit->document()->editCursor();
-			cur->setPosition(tag.m_Start, QDocumentCursor::KeepAnchor);
-			cur->setPosition(tag.m_Start + tag.m_Length, QDocumentCursor::MoveAnchor);
-			edit->setCursor(*cur);
-			//edit->
-			break;
-		}*/
 }
 
 void QAppMainWindow::on_m_TabPanel_currentChanged(int index)

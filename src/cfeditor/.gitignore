@@ -1,6 +1,7 @@
 Makefile
 Makefile.Debug
 Makefile.Release
+cfeditor.pro.user
 object_script.cfeditor.Debug
 object_script.cfeditor.Release
 

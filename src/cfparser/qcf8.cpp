@@ -10,6 +10,8 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	args.append(QCFTagArgument("showError"));
 	ret["cfabort"].m_ArgumentVariants.append(args);
 
+	ret.insert("cfadmin", QCFTag("cfadmin", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments)); // Railo cftag
+
 	ret.insert("cfajaximport", QCFTag("cfajaximport", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
 	args.append(QCFTagArgument("cssSrc"));
@@ -476,7 +478,7 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	args.append(QCFTagArgument("item", true));
 	ret["cfloop"].m_ArgumentVariants.append(args);
 
-	ret.insert("cfmail", QCFTag("cfmail", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert("cfmail", QCFTag("cfmail", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithExpressionInside));
 	//ret.insert("cfmailparam", QCFTag("cfmailparam"));
 	ret.insert("cfmailpart", QCFTag("cfmailpart", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	//ret.insert("cfmenu", QCFTag("cfmenu"));
@@ -527,7 +529,7 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	//ret.insert("cfprocresult", QCFTag("cfprocresult"));
 	ret.insert("cfproperty", QCFTag("cfproperty", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfquery", QCFTag("cfquery", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert("cfquery", QCFTag("cfquery", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithExpressionInside));
 	args.clear();
 	args.append(QCFTagArgument("name"));
 	args.append(QCFTagArgument("blockFactor"));

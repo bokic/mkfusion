@@ -6,14 +6,15 @@ int main(int /*argc*/, char ** /*argv*/)
 {
 	QString l_CFCode;
 
-	l_CFCode = "<cfset a = 12 />";
+	l_CFCode = "<cfset \"# #\" />";
+	//l_CFCode = "<cfset a =";
+	//l_CFCode = "<cfset a = 12 />";
 	//l_CFCode = "<cfset a = \"ako #1 + 2 + 3 + 4 + 5#\" />";
 	//l_CFCode = "<cfdump var=\"# 1 + 2 + (3 + 4) + 5#\"/>";
 	//l_CFCode = "<cfset a = \"#b * 4#\" />";
 	//l_CFCode = "<cfoutput>b=#b(12)#</cfoutput>";
 	//l_CFCode = "<cfset a = 12 /><cfoutput>a =</cfoutput>#a#";
 	//l_CFCode = "<cfif a eq 12>";
-	//l_CFCode = "<cfabort showError=\"Greska be zaeban.\" />";
 	//l_CFCode = "<cfloop from=\"1\" to=\"10\" index=\"i\">";
 	//l_CFCode = "<cfif (mode EQ \"new\")>a</cfif>";
 
@@ -35,7 +36,7 @@ int main(int /*argc*/, char ** /*argv*/)
 	foreach(QCFParserTag l_tag, l_tags)
 	{
 		QString tt =  l_CFGenerator.GenerateCCodeFromCFTag(l_tag);
-		ret += tt + "\n";
+		ret.append(tt + "\n");
 	}
 
 	qDebug() << ret;

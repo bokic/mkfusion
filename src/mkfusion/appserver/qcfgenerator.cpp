@@ -349,7 +349,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 	QList<QCFParserTag> const l_Tags = p_Parser.getTags();
 	QString l_Text = p_Parser.getText();
 	QString l_tmpStr;
-	QString line;
+	QString line = "\t\t";
 
 	qint32 l_CFCodeInsideTags = 0;
 
@@ -389,7 +389,6 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 		{
 			l_cppFile.write((line + l_CFromCFTag + "\n").toAscii());
 		}
-
 
 		if ((l_cf8tags.contains(l_Tags[c].m_Name))&&(l_cf8tags[l_Tags[c].m_Name].m_ExpressionInside == QCFTag::WithExpressionInside))
 		{
@@ -462,6 +461,8 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 #endif // #ifdef Q_WS_WIN
 
 	bool finished = process.waitForFinished(-1); // TODO: This line blocks on ubuntu.
+
+	//QFile::remove(p_MKFusionPath+"templates/"+l_NewTarget+".cpp");
 
 	if ((finished == false)||(process.exitCode() != 0))
 	{

@@ -25,8 +25,6 @@ struct QCFParserElement
 struct QCFParserTag
 {
 	int m_Start;
-	//int m_StartLine;
-	//int m_StartColumn;
 	int m_Length;
 	QString m_Name;
 	QCFParserTagType m_TagType;
@@ -35,7 +33,8 @@ struct QCFParserTag
 	qint32 m_EndTag;
 };
 
-quint32 GetLineNumberFromPosition(QString, qint32);
+quint32 GetLineNumberFromPosition(const QString &, const qint32);
+quint32 GetColumnNumberFromPosition(const QString &, const qint32);
 
 qint32 FindEndString(QString, qint32);
 
@@ -48,16 +47,11 @@ private:
 	quint32 m_ErrorPosition;
 	QString m_Error;
 	QString m_Text;
-	//qint32 FindEndString(qint32, QString);
-	//static qint32 FindClosestCFTagEnd(const QString&, qint32);
 	static bool TrimCFCode(const QString&, int&);
-	QCFParserElement ParseCFCode(const QString&, qint32, const QCFParserElementType);
+	QCFParserElement ParseCFCode(const QString&, const qint32, const QCFParserElementType);
 	static quint32 FindCFCommentSize(QString, quint32);
-	void clearTags();
-	static void freeParserElements(QCFParserElement&);
 public:
 	QCFParser();
-	~QCFParser();
 	QString getError();
 	const QString& getText();
 	quint32 getErrorPosition();

@@ -1,4 +1,4 @@
-#include "qadvancedtextedit.h"
+#include <qadvancedtextedit.h>
 
 void QAdvancedTextEdit::keyPressEvent(QKeyEvent* e)
 {
