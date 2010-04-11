@@ -3,6 +3,9 @@
 
 #include <QtCore/QString>
 #include <QtCore/QChar>
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
 /*
   (0) comment inside cftags.
   (0) cfscript
@@ -81,14 +84,11 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 {
 	QCFParserElement ret;
 	QCFParserElement child;
-	QCFParserElement item;
 	QString str;
 	int c;
-	QChar ch, ch2, stringType;
-	bool comma;
-	int index, lastElementFound;
+	QChar ch, ch2;
 	ret.m_Type = p_ElementType;
-	int originalOffset = p_Offset;
+	int p_Offset2 = p_Offset;
 	int l_NotOperatorFirst;
 
 	if (TrimCFCode(p_Text, p_Offset))
@@ -117,8 +117,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 
 			if (ch == '>')
 			{
-				ret.m_Position = originalOffset;
-				ret.m_Size = c - originalOffset;
+				ret.m_Position = p_Offset2;
+				ret.m_Size = c - p_Offset2;
 				return ret;
 			}
 
@@ -134,8 +134,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 				ch2 = p_Text.at(c + 1);
 				if (ch2 == '>')
 				{
-					ret.m_Position = originalOffset;
-					ret.m_Size = c - originalOffset;
+					ret.m_Position = p_Offset2;
+					ret.m_Size = c - p_Offset2;
 					return ret;
 				} else {
 					ret.m_Type = Error;
@@ -144,14 +144,14 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 				}
 			}
 
-			item = ParseCFCode(p_Text, c, Expression);
-			if (item.m_Type == Error)
+			child = ParseCFCode(p_Text, c, Expression);
+			if (child.m_Type == Error)
 			{
-				return item;
+				return child;
 			}
-			ret.m_ChildElements.append(item);
-			ret.m_Size = item.m_Size;
-			c = item.m_Position + item.m_Size;
+			ret.m_ChildElements.append(child);
+			ret.m_Size = child.m_Size;
+			c = child.m_Position + child.m_Size;
 			break;
 		case CFTagArguments:
 			for (c = p_Offset; c < p_Text.length(); )
@@ -167,8 +167,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 
 				if (ch == '>')
 				{
-					ret.m_Position = originalOffset;
-					ret.m_Size = c - originalOffset;
+					ret.m_Position = p_Offset2;
+					ret.m_Size = c - p_Offset2;
 					return ret;
 				}
 
@@ -184,8 +184,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 					ch2 = p_Text.at(c + 1);
 					if (ch2 == '>')
 					{
-						ret.m_Position = originalOffset;
-						ret.m_Size = c - originalOffset;
+						ret.m_Position = p_Offset2;
+						ret.m_Size = c - p_Offset2;
 						return ret;
 					} else {
 						ret.m_Type = Error;
@@ -194,13 +194,13 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 					}
 				}
 
-				item = ParseCFCode(p_Text, c, CFTagArgument);
-				if (item.m_Type == Error)
+				child = ParseCFCode(p_Text, c, CFTagArgument);
+				if (child.m_Type == Error)
 				{
-					return item;
+					return child;
 				}
-				ret.m_ChildElements.append(item);
-				c = item.m_Position + item.m_Size;
+				ret.m_ChildElements.append(child);
+				c = child.m_Position + child.m_Size;
 			}
 
 			ret.m_Type = Error;
@@ -208,6 +208,9 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 			ret.m_Text = "cftag not closed.";
 			break;
 		case CFTagArgument:
+			int index;
+			int lastElementFound;
+
 			index = 0;
 			l_NotOperatorFirst = 0;
 			lastElementFound = p_Offset;
@@ -383,6 +386,9 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 			ret.m_Text = "Variable name not set.";
 			break;
 		case Number:
+			bool comma;
+			int signOffset;
+
 			ch = p_Text.at(p_Offset);
 			if (((ch < '0')||(ch > '9'))&&(ch !='-')&&(ch !='+'))
 			{
@@ -393,7 +399,6 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 			}
 
 			comma = false;
-			int signOffset;
 			signOffset = p_Offset;
 
 			for (int c = p_Offset; c < p_Text.length(); c++)
@@ -425,14 +430,15 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 			ret.m_Type = Error;
 			break;
 		case String:
-			str = "";
+			char stringType;
+			str.clear();
 			for (int c = p_Offset; c < p_Text.length(); c++)
 			{
 				ch = p_Text.at(c);
 
 				if (c == p_Offset)
 				{
-					stringType = ch;
+					stringType = ch.toLatin1();
 
 					if ((ch != '\'')&&(ch != '\"'))
 					{
@@ -456,7 +462,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 
 						if (p_Text.at(c + 1) == '#')
 						{
-							str += ch;
+							str.append(ch);
 							c++;
 							continue;
 						}
@@ -468,7 +474,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 								child.m_Type = String;
 								child.m_Text = str;
 								ret.m_ChildElements.append(child);
-								str = "";
+								str.clear();
 							}
 							child = ParseCFCode(p_Text, c, SharpExpression);
 							ret.m_ChildElements.append(child);
@@ -509,7 +515,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 
 							return ret;
 						}
-						str += ch;
+						str.append(ch);
 					}
 				}
 			}
@@ -603,14 +609,14 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 				break;
 			}
 
-			item = ParseCFCode(p_Text, p_Offset + 1, Expression);
-			if (item.m_Type == Error)
+			child = ParseCFCode(p_Text, p_Offset + 1, Expression);
+			if (child.m_Type == Error)
 			{
-				ret = item;
+				ret = child;
 				break;
 			}
 
-			if (p_Text.at(p_Offset + item.m_Size + 1) != '#')
+			if (p_Text.at(p_Offset + child.m_Size + 1) != '#')
 			{
 				ret.m_Type = Error;
 				ret.m_Position = p_Offset;
@@ -618,8 +624,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 				break;
 			}
 
-			ret.m_Size = item.m_Size + 2;
-			ret.m_ChildElements.append(item);
+			ret.m_Size = child.m_Size + 2;
+			ret.m_ChildElements.append(child);
 			break;
 		case Expression:
 			int c;
@@ -649,19 +655,19 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 
 				if ((ch == ']'))
 				{
-					ret.m_Size = c - p_Offset + 1;
+					ret.m_Size = c - p_Offset2 + 1;
 					break;
 				} else if (ch == ',') {
-					ret.m_Size = c - p_Offset;
+					ret.m_Size = c - p_Offset2;
 					break;
 				} else if (ch == ')') {
-					ret.m_Size = c - p_Offset;
+					ret.m_Size = c - p_Offset2;
 					break;
 				} else if (ch == '#') {
-					ret.m_Size = c - p_Offset;
+					ret.m_Size = c - p_Offset2;
 					break;
 				} else if (((ch == '/')&&(nextch == '>'))||(ch == '>')) {
-					ret.m_Size = c - p_Offset;
+					ret.m_Size = c - p_Offset2;
 					break;
 				} else if (ch == '(') {
 					child = ParseCFCode(p_Text, c, SubExpression);
@@ -694,14 +700,14 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 			break;
 		}
 
-		item = ParseCFCode(p_Text, p_Offset + 1, Expression);
-		if (item.m_Type == Error)
+		child = ParseCFCode(p_Text, p_Offset + 1, Expression);
+		if (child.m_Type == Error)
 		{
-			ret = item;
+			ret = child;
 			break;
 		}
 
-		if (p_Text.at(p_Offset + item.m_Size + 1) != ')')
+		if (p_Text.at(p_Offset + child.m_Size + 1) != ')')
 		{
 			ret.m_Type = Error;
 			ret.m_Position = p_Offset;
@@ -709,8 +715,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 			break;
 		}
 
-		ret.m_Size = item.m_Size + 2;
-		ret.m_ChildElements.append(item);
+		ret.m_Size = child.m_Size + 2;
+		ret.m_ChildElements.append(child);
 		break;
 	case Function:
 		c = p_Text.indexOf('(', p_Offset);
@@ -773,7 +779,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 				break;
 			}
 
-			c += child.m_Size;
+			c = child.m_Position + child.m_Size;
 
 			if (p_Text.length() <= c)
 			{
@@ -837,6 +843,13 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, qint32 p_Offset, 
 		ret.m_Text = "Not implemented";
 		break;
 	}
+
+#ifdef QT_DEBUG
+	if (ret.m_Position > p_Text.length())
+	{
+		qDebug() << "Bad posidion " << ret.m_Position;
+	}
+#endif
 
 	return ret;
 }
@@ -999,6 +1012,10 @@ QCFParserErrorType QCFParser::Parse(const QString& p_Text, bool* p_Terminate)
 				endName = endNameTemp;
 
 			endNameTemp = p_Text.indexOf('\t', cf_pos + 3, Qt::CaseInsensitive);
+			if (endNameTemp < endName)
+				endName = endNameTemp;
+
+			endNameTemp = p_Text.indexOf('/', cf_pos + 3, Qt::CaseInsensitive);
 			if (endNameTemp < endName)
 				endName = endNameTemp;
 

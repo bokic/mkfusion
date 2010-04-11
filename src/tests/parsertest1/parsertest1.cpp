@@ -21,7 +21,6 @@ CFTest1::~CFTest1()
 
 void CFTest1::parseDir(QString p_dir)
 {
-
 	QDir dir(p_dir);
 
 	dir.setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);

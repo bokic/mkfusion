@@ -594,7 +594,7 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	//ret.insert("cftable", QCFTag("cftable"));
 	//ret.insert("cftextarea", QCFTag("cftextarea"));
 	//ret.insert("cftextinput", QCFTag("cftextinput"));
-	//ret.insert("cfthread", QCFTag("cfthread"));
+	ret.insert("cfthread", QCFTag("cfthread", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 	ret.insert("cfthrow", QCFTag("cfthrow", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 	//ret.insert("cftimer", QCFTag("cftimer"));
 	//ret.insert("cftooltip", QCFTag("cftooltip"));

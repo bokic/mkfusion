@@ -16,7 +16,6 @@ HEADERS = \
 	../cfparser/qcf8.h \
 	parsertest1.h
 
-#Source files
 SOURCES = \
 	../cfparser/qcfparser.cpp \
 	../cfparser/qcffunction.cpp \
@@ -25,8 +24,6 @@ SOURCES = \
 	parsertest1.cpp \
 	main.cpp
 
-#Forms
 FORMS = parsertest1.ui
 
-#Resource file(s)
 # RESOURCES = parsertest1.qrc
