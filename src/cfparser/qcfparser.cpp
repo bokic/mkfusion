@@ -280,7 +280,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 					else if (((ch >= '0')&&(ch <= '9'))||(ch == '-')||(ch == '+'))
 						child = ParseCFCode(p_Text, c, Number);
 					else if (ch == '#')
-						child = ParseCFCode(p_Text, c, Expression);
+						child = ParseCFCode(p_Text, c, SharpExpression);
 					else
 						child = ParseCFCode(p_Text, c, Variable);
 				}
