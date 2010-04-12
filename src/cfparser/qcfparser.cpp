@@ -70,6 +70,7 @@ bool QCFParser::TrimCFCode(const QString& p_Text, int& p_Offset)
 {
 	int l_Len = p_Text.length();
 	QChar l_ch;
+
 	for(; ; )
 	{
 		if (p_Offset >= l_Len)
@@ -847,6 +848,37 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 			ret.m_Text = tr("ColdFusion comment not closed.");
 		}
 		break;
+	case CFScript:
+
+		m_InsideCFScript = true;
+
+		for(;;)
+		{
+			if (TrimCFCode(p_Text, l_Offset))
+			{
+				ret.m_Type = Error;
+				ret.m_Position = l_Offset - 1;
+				ret.m_Text = tr("End of file found.");
+
+				m_InsideCFScript = false;
+				return ret;
+			}
+
+			if (!p_Text.mid(l_Offset, 11).compare("</cfscript>"))
+			{
+				ret.m_Size = ret.m_Position - p_Offset;
+
+				m_InsideCFScript = false;
+				break;
+			}
+
+			//ret =
+
+		}
+
+		m_InsideCFScript = false;
+
+		break;
 	default:
 		ret.m_Type = Error;
 		ret.m_Position = l_Offset;
@@ -916,6 +948,7 @@ QCFParserErrorType QCFParser::Parse(const QString& p_Text, bool* p_Terminate)
 	m_Tags.clear();
 	m_Error.clear();
 	m_ErrorPosition = 0;	
+	m_InsideCFScript = false;
 
 	qint32 l_CodeInside = 0;
 	quint32 pos = 0, cf_pos = 0, cf_epos = 0, cf_comment = 0, cf_expression = 0;
@@ -1076,6 +1109,19 @@ QCFParserErrorType QCFParser::Parse(const QString& p_Text, bool* p_Terminate)
 						temp.m_Type = Expression;
 						openTag.m_Arguments = temp;
 					}
+				}
+			}
+
+			if (!openTag.m_Name.compare("cfscript", Qt::CaseInsensitive))
+			{
+				if (openTag.m_Arguments.m_ChildElements.count() > 0)
+				{
+					openTag.m_Arguments.m_ChildElements.clear();
+
+				}
+				else
+				{
+					openTag.m_Arguments = ParseCFCode(p_Text, openTag.m_Start + openTag.m_Length, CFScript);
 				}
 			}
 

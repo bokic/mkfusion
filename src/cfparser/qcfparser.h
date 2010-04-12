@@ -61,6 +61,7 @@ public:
 	QString m_FileName;
 	qint64 m_CFMFileSize;
 	uint m_CFMModifyDateTime;
+	bool m_InsideCFScript;
 };
 
 #endif // QCFPARSER_H
