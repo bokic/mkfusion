@@ -180,7 +180,12 @@ void QCodeEditWidget::clearFormatting()
 	update();
 }
 
-void QCodeEditWidget::addFormat(int p_from, int p_to, const QCodeEditWidgetColorItem &p_item)
+void QCodeEditWidget::addFormat(int p_index, int p_length, const QCodeEditWidgetColorItem &p_item)
 {
+	if ((p_index <= 0)||(p_length <= 0))
+	{
+		return;
+	}
 
+	m_ColorItems.append(p_item);
 }
