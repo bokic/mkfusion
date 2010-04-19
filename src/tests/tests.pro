@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
 
-SUBDIRS += cf7debugger parsertest1 parsertest2 rdstest sftptest testcasetester
+SUBDIRS += cf7debugger editwidget parsertest1 parsertest2 rdstest sftptest testcasetester

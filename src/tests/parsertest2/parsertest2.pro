@@ -2,6 +2,7 @@ TEMPLATE = app
 TARGET = parsertest2
 QT -= gui
 QT += network
+CONFIG  += qtestlib
 
 DESTDIR = ../../../bin
 OBJECTS_DIR = ../../../obj/parsertest2_debug
@@ -16,12 +17,10 @@ SOURCES += main.cpp \
 	../../cfparser/qcfparser.cpp \
 	../../cfparser/qcf8.cpp \
 	../../cfparser/qcftag.cpp \
-	../../cfparser/qcffunction.cpp \
-	../../mkfusion/appserver/qcfgenerator.cpp
+	../../cfparser/qcffunction.cpp
 
 HEADERS += \
 	../../cfparser/qcfparser.h \
 	../../cfparser/qcf8.h \
 	../../cfparser/qcftag.h \
-	../../cfparser/qcffunction.h \
-	../../mkfusion/appserver/qcfgenerator.h
+	../../cfparser/qcffunction.h
