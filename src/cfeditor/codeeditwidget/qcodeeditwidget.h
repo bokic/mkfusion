@@ -15,6 +15,15 @@ public:
 
 	enum LineStatusType {LineStatusTypeLineNotModified, LineStatusTypeLineSaved, LineStatusTypeLineModified};
 	enum EndLineType {EndLineTypeNoEndLine, EndLineTypeCREndLine, EndLineTypeLFEndLine, EndLineTypeCRLFEndLine, EndLineTypeLFCREndLine};
+	enum UnderlineType {UnderlineTypeNoUnderline, UnderlineTypeLine, UnderlineTypeWave};
+
+	struct QCodeEditWidgetColorItem {
+		QColor foregroundColor;
+		QColor backgroundColor;
+		QColor underlineColor;
+		UnderlineType underline;
+
+	};
 
 	struct QCodeEditWidgetLine {
 		LineStatusType LineStatus;
@@ -24,6 +33,8 @@ public:
 
 	explicit QCodeEditWidget(QWidget* = 0);
 	QString getText();
+	void clearFormatting();
+	void addFormat(int, int, const QCodeEditWidgetColorItem&);
 
 protected:
 	void paintEvent(QPaintEvent*);
@@ -37,6 +48,7 @@ private:
 	QBrush m_CurrentLineBackground;
 	QFont m_TextFont;
 	QList<QCodeEditWidgetLine> m_Lines;
+	QList<QCodeEditWidgetColorItem> m_ColorItems;
 
 	int m_ScrollXPixelPos;
 	int m_ScrollYLinePos;

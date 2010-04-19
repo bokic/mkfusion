@@ -173,3 +173,14 @@ void QCodeEditWidget::setText(const QString &text)
 
 	update();
 }
+
+void QCodeEditWidget::clearFormatting()
+{
+	m_ColorItems.clear();
+	update();
+}
+
+void QCodeEditWidget::addFormat(int p_from, int p_to, const QCodeEditWidgetColorItem &p_item)
+{
+
+}

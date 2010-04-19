@@ -1,5 +1,6 @@
-#include "qappmainwindow.h"
-#include "qprojectfile.h"
+#include <qappmainwindow.h>
+#include <qcodeeditwidget.h>
+#include <qprojectfile.h>
 #include <QTreeWidgetItem>
 #include <QApplication>
 #include <QInputDialog>
@@ -138,8 +139,6 @@ QAppMainWindow::QAppMainWindow(QWidget *parent, Qt::WFlags flags)
 			UpdateProjectFileList("", NULL);
 		}
 	}
-
-	m_EditorUpdating = false;
 }
 
 QAppMainWindow::~QAppMainWindow()
@@ -280,17 +279,16 @@ void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem* item, i
 
 	m_TabPanel->setTabsClosable(true);
 
-	QAdvancedTextEdit* l_textEdit = new QAdvancedTextEdit();
-
-	l_textEdit->setParent(m_TabPanel);
-	l_textEdit->setTabStopWidth(32);
-	l_textEdit->setWordWrapMode(QTextOption::NoWrap);
-	l_textEdit->setFont(QFont("Courier", 10, 0, false));
-	l_textEdit->setPlainText(m_Project->ReadFile(file));
-	connect(l_textEdit, SIGNAL(keyPress(QAdvancedTextEdit*, QKeyEvent*)), this, SLOT(on_m_TabPanel_Item_keyPress(QAdvancedTextEdit*, QKeyEvent*)));
-	connect(l_textEdit, SIGNAL(textChanged()), this, SLOT(on_m_TabPanel_Item_textChanged()));
+	QCodeEditWidget* l_textEdit = new QCodeEditWidget();    //QAdvancedTextEdit* l_textEdit = new QAdvancedTextEdit();
+	l_textEdit->setParent(m_TabPanel);                      //l_textEdit->setParent(m_TabPanel);
+															//l_textEdit->setTabStopWidth(32);
+															//l_textEdit->setWordWrapMode(QTextOption::NoWrap);
+															//l_textEdit->setFont(QFont("Courier", 10, 0, false));
+	l_textEdit->setText(m_Project->ReadFile(file));         //l_textEdit->setPlainText(m_Project->ReadFile(file));
+															//connect(l_textEdit, SIGNAL(keyPress(QAdvancedTextEdit*, QKeyEvent*)), this, SLOT(on_m_TabPanel_Item_keyPress(QAdvancedTextEdit*, QKeyEvent*)));
+															//connect(l_textEdit, SIGNAL(textChanged()), this, SLOT(on_m_TabPanel_Item_textChanged()));
 	m_TabPanel->setCurrentIndex(m_TabPanel->addTab(l_textEdit, file));
-	l_textEdit->setFocus();
+	l_textEdit->setFocus();                                 //l_textEdit->setFocus();
 	recolor();
 }
 
@@ -363,7 +361,7 @@ void QAppMainWindow::on_m_ProjectTree_keyPress(QAdvancedTreeWidget* tree, QKeyEv
 	}
 }
 
-void QAppMainWindow::on_m_TabPanel_Item_keyPress(QAdvancedTextEdit* edit, QKeyEvent* e)
+/*void QAppMainWindow::on_m_TabPanel_Item_keyPress(QAdvancedTextEdit* edit, QKeyEvent* e)
 {
 	if (e->key() == 0x01000034) // F5
 	{
@@ -386,13 +384,10 @@ void QAppMainWindow::on_m_TabPanel_Item_keyPress(QAdvancedTextEdit* edit, QKeyEv
 		QString fileUrl = m_Project->getUrl() + panelText;
 		m_Browser->setUrl(QUrl(fileUrl));
 	}
-}
+}*/
 
 void QAppMainWindow::on_m_TabPanel_Item_textChanged()
 {
-	if (m_EditorUpdating == true)
-		return;
-
 	int index = m_TabPanel->currentIndex();
 	QString panelText = m_TabPanel->tabText(index);
 
@@ -407,119 +402,117 @@ void QAppMainWindow::on_m_TabPanel_Item_textChanged()
 void QAppMainWindow::recolor()
 {
 	QCFParser parser;
-	QAdvancedTextEdit *edit = ((QAdvancedTextEdit*) m_TabPanel->currentWidget());
-	QString panelText = m_TabPanel->tabText(m_TabPanel->currentIndex());
-
-	panelText = edit->toPlainText();
+	QCodeEditWidget *edit = ((QCodeEditWidget*) m_TabPanel->currentWidget());
+	QString panelText = edit->getText();
 	parser.Parse(panelText);
 
 	statusBar()->showMessage(parser.getError());
 	QList<QCFParserTag> tags = parser.getTags();
 
-	m_EditorUpdating = true;
+	edit->clearFormatting();
 
-	QTextCursor origcursor = edit->textCursor();
-	QTextCursor cursor = origcursor;
+	QCodeEditWidget::QCodeEditWidgetColorItem tagColor;
 
-	cursor.setPosition(0, QTextCursor::MoveAnchor);
-	edit->setTextCursor(cursor);
-	cursor.setPosition(panelText.length(), QTextCursor::KeepAnchor);
-	edit->setTextCursor(cursor);
-	edit->setTextBackgroundColor(QColor(255, 255, 255));
+	tagColor.underline = QCodeEditWidget::UnderlineTypeNoUnderline;
+	tagColor.underlineColor = QColor(255, 255, 255);
 
 	foreach(QCFParserTag tag, tags)
 	{
-		cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
-		edit->setTextCursor(cursor);
-		cursor.setPosition(tag.m_Start + tag.m_Length, QTextCursor::KeepAnchor);
-		edit->setTextCursor(cursor);
 #ifdef QT_DEBUG
 		if (tag.m_TagType == CommentTagType)
 		{
-			edit->setTextBackgroundColor(QColor(128, 128, 128));
+			tagColor.backgroundColor = QColor(128, 128, 128);
+			tagColor.foregroundColor = QColor(0, 0, 0);
 		} else {
-			edit->setTextBackgroundColor(QColor(255, 0, 0));
+			tagColor.backgroundColor = QColor(255, 0, 0);
+			tagColor.foregroundColor = QColor(0, 0, 0);
 		}
 #else
 		if (tag.m_TagType == CommentTagType)
 		{
-			edit->setTextColor(QColor(128, 128, 128));
+			tagColor.backgroundColor = QColor(255, 255, 255);
+			tagColor.foregroundColor = QColor(128, 128, 128);
 		} else {
-			edit->setTextColor(QColor(128, 0, 0));
+			tagColor.backgroundColor = QColor(255, 255, 255);
+			tagColor.foregroundColor = QColor(128, 0, 0);
 		}
 
 #endif
+		edit->addFormat(tag.m_Start, tag.m_Length, tagColor);
 
 		colorElement(tag.m_Arguments);
 	}
 
-	edit->setTextCursor(origcursor);
-	m_EditorUpdating = false;
+	edit->update();
 }
 
 void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
 {
-	QAdvancedTextEdit *edit = ((QAdvancedTextEdit*) m_TabPanel->currentWidget());
-	QTextCursor cursor = edit->textCursor();
+	QCodeEditWidget *edit = ((QCodeEditWidget*) m_TabPanel->currentWidget());
 
-	cursor.setPosition(p_Element.m_Position, QTextCursor::MoveAnchor);
-	edit->setTextCursor(cursor);
-	cursor.setPosition(p_Element.m_Position + p_Element.m_Size, QTextCursor::KeepAnchor);
-	edit->setTextCursor(cursor);
+	QCodeEditWidget::QCodeEditWidgetColorItem tagColor;
+
+	tagColor.underline = QCodeEditWidget::UnderlineTypeNoUnderline;
+	tagColor.underlineColor = QColor(255, 255, 255);
+	tagColor.backgroundColor = QColor(255, 255, 255);
+	tagColor.foregroundColor = QColor(0, 0, 0);
+
 	switch (p_Element.m_Type)
 	{
 #ifdef QT_DEBUG
 		case CFTagArguments:
-			edit->setTextBackgroundColor(QColor(255, 128, 0));
+			tagColor.backgroundColor = QColor(255, 128, 0);
 			break;
 		case CFTagArgument:
-			edit->setTextBackgroundColor(QColor(255, 255, 0));
+			tagColor.backgroundColor = QColor(255, 255, 0);
 			break;
 		case Variable:
-			edit->setTextBackgroundColor(QColor(0, 0, 255));
+			tagColor.backgroundColor = QColor(0, 0, 255);
 			break;
 		case Operator:
-			edit->setTextBackgroundColor(QColor(0, 255, 255));
+			tagColor.backgroundColor = QColor(0, 255, 255);
 			break;
 		case Number:
-			edit->setTextBackgroundColor(QColor(128, 255, 128));
+			tagColor.backgroundColor = QColor(128, 255, 128);
 			break;
 		case String:
-			edit->setTextBackgroundColor(QColor(128, 0, 128));
+			tagColor.backgroundColor = QColor(128, 0, 128);
 			break;
 		case Function:
-			edit->setTextBackgroundColor(QColor(0, 128, 128));
+			tagColor.backgroundColor = QColor(0, 128, 128);
 			break;
 		case Expression:
-			edit->setTextBackgroundColor(QColor(192, 192, 192));
+			tagColor.backgroundColor = QColor(192, 192, 192);
 		default:
 			break;
 #else
 		case CFTagArguments:
-			//edit->setTextColor(QColor(255, 128, 0));
+			//tagColor.foregroundColor = QColor(255, 128, 0);
 			break;
 		case CFTagArgument:
-			edit->setTextColor(QColor(255, 255, 0));
+			tagColor.foregroundColor = QColor(255, 255, 0);
 			break;
 		case Variable:
-			edit->setTextColor(QColor(128, 128, 0));
+			tagColor.foregroundColor = QColor(128, 128, 0);
 			break;
 		case Operator:
-			edit->setTextColor(QColor(0, 0, 0));
+			tagColor.foregroundColor = QColor(0, 0, 0);
 			break;
 		case Number:
-			edit->setTextColor(QColor(0, 255, 0));
+			tagColor.foregroundColor = QColor(0, 255, 0);
 			break;
 		case String:
-			edit->setTextColor(QColor(0, 0, 255));
+			tagColor.foregroundColor = QColor(0, 0, 255);
 			break;
 		case Expression:
-			edit->setTextColor(QColor(92, 92, 0));
+			tagColor.foregroundColor = QColor(92, 92, 0);
 			break;
 		default:
 			break;
 #endif
 	}
+
+	edit->addFormat(p_Element.m_Position, p_Element.m_Size, tagColor);
 
 	foreach(QCFParserElement l_ChildElement, p_Element.m_ChildElements)
 	{

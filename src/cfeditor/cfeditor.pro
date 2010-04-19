@@ -48,10 +48,10 @@ SOURCES += qproject.cpp \
     qsftpproject.cpp
 HEADERS += qprojectfile.h
 SOURCES += qprojectfile.cpp
-HEADERS += qadvancedtextedit.h
-SOURCES += qadvancedtextedit.cpp
 HEADERS += qadvancedtreewidget.h
 SOURCES += qadvancedtreewidget.cpp
+HEADERS += codeeditwidget/qcodeeditwidget.h
+SOURCES += codeeditwidget/qcodeeditwidget.cpp
 
 HEADERS += ../../libs/libssh/include/libssh/libssh.h \
     ../../libs/libssh/include/libssh/sftp.h

@@ -2,7 +2,6 @@
 #define QAPPMAINWINDOW_H
 
 #include <qadvancedtreewidget.h>
-#include <qadvancedtextedit.h>
 #include <qcfparser.h>
 #include <qproject.h>
 
@@ -31,7 +30,6 @@ private:
 	QTreeWidget *m_StructureTree;
 	QWebView *m_Browser;// TODO: later move to WebKit
 	QTabWidget *m_TabPanel;
-	bool m_EditorUpdating;
 	QProject *m_Project;
 private:
 	void UpdateProjectFileList(QString, QTreeWidgetItem*);
@@ -42,7 +40,7 @@ private slots:
 	void on_m_ProjectTree_itemCollapsed(QTreeWidgetItem*);
 	void on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem*, int);
 	void on_m_ProjectTree_keyPress(QAdvancedTreeWidget*, QKeyEvent*);
-	void on_m_TabPanel_Item_keyPress(QAdvancedTextEdit*, QKeyEvent*);
+	//void on_m_TabPanel_Item_keyPress(QAdvancedTextEdit*, QKeyEvent*);
 	void on_m_TabPanel_Item_textChanged();
 	void on_m_TabPanel_currentChanged(int);
 	void on_m_TabPanel_tabCloseRequested(int);
