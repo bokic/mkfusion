@@ -438,7 +438,9 @@ void QAppMainWindow::recolor()
 		}
 
 #endif
-		edit->addFormat(tag.m_Start, tag.m_Length, tagColor);
+		tagColor.index = tag.m_Start;
+		tagColor.length = tag.m_Length;
+		edit->addFormat(tagColor);
 
 		colorElement(tag.m_Arguments);
 	}
@@ -512,7 +514,9 @@ void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
 #endif
 	}
 
-	edit->addFormat(p_Element.m_Position, p_Element.m_Size, tagColor);
+	tagColor.index = p_Element.m_Position;
+	tagColor.length = p_Element.m_Size;
+	edit->addFormat(tagColor);
 
 	foreach(QCFParserElement l_ChildElement, p_Element.m_ChildElements)
 	{

@@ -231,7 +231,7 @@ void QCFRunningTemplate::run()
 			QString err = par->compileTemplate(m_Request.m_Filename);
 			if (err.isEmpty())
 			{
-				l_TemplateLib.setFileName(par->m_CompiledTemplates[m_Request.m_Filename].m_CompiledFileName);
+				l_TemplateLib.setFileName(((QCFServer*)parent())->m_MKFusionPath + "templates/" + par->m_CompiledTemplates[m_Request.m_Filename].m_CompiledFileName);
 				if (l_TemplateLib.load() != false)
 				{
 					createCFMTemplate = (createCFMTemplateDef) l_TemplateLib.resolve("createCFMTemplate");

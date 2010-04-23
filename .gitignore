@@ -1,5 +1,9 @@
 *.zip
 bin
 deps
+include
+lib
+logs
 obj
+templates
 

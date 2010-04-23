@@ -1,3 +1,4 @@
 TEMPLATE = subdirs
 
-SUBDIRS += appserver mkfusion_isapi mod_mkfusion servicecontrol uninstall
+SUBDIRS += appserver mod_mkfusion
+win32:SUBDIRS += mkfusion_isapi servicecontrol uninstall

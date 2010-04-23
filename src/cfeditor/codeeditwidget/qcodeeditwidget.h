@@ -18,6 +18,8 @@ public:
 	enum UnderlineType {UnderlineTypeNoUnderline, UnderlineTypeLine, UnderlineTypeWave};
 
 	struct QCodeEditWidgetColorItem {
+		int index;
+		int length;
 		QColor foregroundColor;
 		QColor backgroundColor;
 		QColor underlineColor;
@@ -34,7 +36,7 @@ public:
 	explicit QCodeEditWidget(QWidget* = 0);
 	QString getText();
 	void clearFormatting();
-	void addFormat(int, int, const QCodeEditWidgetColorItem&);
+	void addFormat(const QCodeEditWidgetColorItem&);
 
 protected:
 	void paintEvent(QPaintEvent*);

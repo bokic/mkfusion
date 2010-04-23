@@ -251,7 +251,7 @@ QString QCFServer::compileTemplate(const QString &p_Filename)
 	if (ret.isEmpty())
 	{
 		QCFCompiledTemplateItem item;
-		item.m_CompiledFileName = m_MKFusionPath + "templates/" + l_NewTemplateFile;
+		item.m_CompiledFileName = l_NewTemplateFile;
 		item.m_ModifiedInfo.m_Filename = p_Filename;
 		item.m_ModifiedInfo.m_Size = fileinfo.size();
 		item.m_ModifiedInfo.m_Modified = fileinfo.lastModified().toTime_t();

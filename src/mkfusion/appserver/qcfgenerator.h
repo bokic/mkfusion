@@ -10,7 +10,7 @@ public:
 	QString compile(QCFParser&, const QString&, const QString&);
 	QString GenerateVariable(const QString&, const QString&);
 	QString GenerateCFExpressionToCExpression(const QCFParserElement&, QString);
-	QCFParserElement OprimizeQCFParserElement(const QCFParserElement&);
+	QCFParserElement OprimizeQCFParserElement(QCFParserElement);
 	QString CFTagGetArgument(const QCFParserTag&, const QString&, const QString&);
 	QString GenerateCCodeFromCFTag(const QCFParserTag&);
 private:

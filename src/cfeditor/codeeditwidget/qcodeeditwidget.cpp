@@ -180,12 +180,31 @@ void QCodeEditWidget::clearFormatting()
 	update();
 }
 
-void QCodeEditWidget::addFormat(int p_index, int p_length, const QCodeEditWidgetColorItem &p_item)
+void QCodeEditWidget::addFormat(const QCodeEditWidgetColorItem &p_item)
 {
-	if ((p_index <= 0)||(p_length <= 0))
+	if ((p_item.index < 0)||(p_item.length <= 0))
 	{
 		return;
 	}
+
+	int l_beginPoint = 0; // TODO: Optimize me to start from right position.
+	int l_endPoint = p_item.index + p_item.length;
+
+	for(int c = l_beginPoint; c < m_ColorItems.count(); c++)
+	{
+		const QCodeEditWidgetColorItem & item = m_ColorItems.at(c);
+		if(item.index > l_endPoint)
+		{
+			return;
+		}
+
+		if (item.index > p_item.index)
+		{
+			m_ColorItems.insert(c, p_item);
+			return;
+		}
+	}
+
 
 	m_ColorItems.append(p_item);
 }

@@ -16,11 +16,10 @@
 #define MAX_KEY_LENGTH 255
 #define MAX_VALUE_NAME 16383
 
-QString getQtDir()
+QString getQtDir()// TODO: reimplement when qt 4.7 is released.
 {
 	HKEY reg, reg2;
 	QString key = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", subkey;
-	QString tempQSt;
 	WCHAR temp[MAX_KEY_LENGTH];
 	DWORD valstrsize = MAX_KEY_LENGTH;
 	DWORD valType;
@@ -101,7 +100,7 @@ QString getQtDir()
 	return "";
 }
 
-QString getMingwDir()
+QString getMingwDir()// TODO: reimplement when qt 4.7 is released.
 {
 	HKEY reg, reg2;
 	QString key = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", subkey;
@@ -430,7 +429,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 		}
 	}
 
-	l_cppFile.write("	};\n");
+	l_cppFile.write("	}\n");
 	l_cppFile.write("};\n");
 	l_cppFile.write("\n");
 	l_cppFile.write("extern \"C\" MY_EXPORT QCFTemplate* createCFMTemplate()\n");
@@ -444,7 +443,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 	// Compile
 #ifdef Q_WS_WIN
 	QString l_QtPath = getQtDir(); // "C:\\Qt\\2009.04\\qt\\";
-	QString l_MingwPath = getMingwDir(); // "C:\\Qt\\2009.04\\mingw\\";
+	QString l_MingwPath = "C:\\Qt\\qtcreator-1.3.1\\mingw\\"; //getMingwDir(); // "C:\\Qt\\2009.04\\mingw\\";// TODO: please check if Nokia has fixed their uninstaller registry entry.
 #ifdef QT_NO_DEBUG
 	process.start(l_MingwPath+"bin\\g++.exe -c -O2 -frtti -fexceptions -mthreads -Wall -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I\""+l_MingwPath+"include\" -I\""+l_QtPath+"include\\QtCore\" -I\""+l_QtPath+"include\\QtNetwork\" -I\""+l_QtPath+"include\" -I\""+p_MKFusionPath+"include\" -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".cpp\"");
 #else
@@ -568,7 +567,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 		case Variable:
 			return GenerateVariable(l_ElementName, p_CanCreateChildren);
 			break;
-		case Function:;
+		case Function:
 				ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
 
 				for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
@@ -632,6 +631,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 			}
 
 			break;
+		case SharpExpression:
 		case Expression:
 			for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
 			{
@@ -653,47 +653,20 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 	return ret;
 }
 
-/*QCFParserElement QCFGenerator::OprimizeQCFParserElement(const QCFParserElement& p_CFExpression)
+QCFParserElement QCFGenerator::OprimizeQCFParserElement(QCFParserElement p_CFExpression)
 {
-	QCFParserElement ret = p_CFExpression;
-
-	if (ret.m_ChildElements.size() == 0)
+	for(int c = 0; c  < p_CFExpression.m_ChildElements.count(); c++)
 	{
-		return ret;
+		p_CFExpression.m_ChildElements[c] = OprimizeQCFParserElement(p_CFExpression.m_ChildElements[c]);
 	}
 
-	if ((ret.m_Type == Parameter)&&(ret.m_ChildElements.size() == 1))
+	if ((p_CFExpression.m_ChildElements.length() == 1)&&((p_CFExpression.m_Type == Expression)||(p_CFExpression.m_Type == SharpExpression)||(p_CFExpression.m_Type == Parameters)||(p_CFExpression.m_Type == Parameter)))// TODO: Maybe add another types
 	{
-		if (ret.m_ChildElements[0].m_ChildElements.size() == 1)
-		{
-			//QList<QCFParserElement> tt = OprimizeQCFParserElement(ret.m_ChildElements[0].m_ChildElements[0]);
-			//ret.m_ChildElements = tt;
-
-			ret.m_ChildElements[0] = OprimizeQCFParserElement(ret.m_ChildElements[0].m_ChildElements[0]);
-
-			return ret;
-			//return OprimizeQCFParserElement(ret);
-		}
-
-		//ret.m_ChildElements[0] = OprimizeQCFParserElement(ret.m_ChildElements[0]);
-		//return ret;
+		return p_CFExpression.m_ChildElements[0];
 	}
 
-	for(int c = 0; c < ret.m_ChildElements.size(); c++)
-	{
-		if (ret.m_ChildElements[c] == Parameter)
-		{
-			ret.m_ChildElements[c] = OprimizeQCFParserElement(ret.m_ChildElements[c].m_ChildElements);
-		}
-		else
-		{
-			ret.m_ChildElements[c] = OprimizeQCFParserElement(ret.m_ChildElements[c]);
-		}
-	}
-
-	return ret;
+	return p_CFExpression;
 }
-*/
 
 bool CFTagHasArgument(const QCFParserTag& p_CFTag, const QString& p_Argument)
 {
@@ -797,8 +770,8 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag& p_CFTag)
 			return ""; //TODO: Generate Error.
 		}
 
-		//return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(OprimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]), "false")+"));";
-		return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2], "false")+"));";
+		return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(OprimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]), "false")+"));";
+		//return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2], "false")+"));";
 	}
 	else if(!p_CFTag.m_Name.compare("cfloop", Qt::CaseInsensitive))
 	{
@@ -844,8 +817,8 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag& p_CFTag)
 	}
 	else if(!p_CFTag.m_Name.compare("cfset", Qt::CaseInsensitive))
 	{
-		//QCFParserElement l_OptimizedElements = OprimizeQCFParserElement(p_CFTag.m_Arguments);
-		QCFParserElement l_OptimizedElements = p_CFTag.m_Arguments;
+		QCFParserElement l_OptimizedElements = OprimizeQCFParserElement(p_CFTag.m_Arguments);
+		//QCFParserElement l_OptimizedElements = p_CFTag.m_Arguments;
 		QString ret;
 
 //		log("m_ChildElements.size() = " + QString::number(l_OptimizedElements.m_ChildElements.size()));

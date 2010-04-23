@@ -1,5 +1,5 @@
+#include <qsimplifiedlocalsocket.h>
 #include <QCoreApplication>
-#include <QLocalSocket>
 #include <QByteArray>
 #include <QDataStream>
 #include <QFile>
@@ -11,8 +11,7 @@
 #include <http_protocol.h>
 #include <ap_config.h>
 
-#define CONNECT_TIMEOUT 1000
-#define READ_TIMEOUT 100
+#define TIMEOUT 100
 
 static void writeError(request_rec *r, const char *error)
 {
@@ -28,16 +27,15 @@ static int mkfusion_handler(request_rec *r)
 		return DECLINED;
 	}
 
-	ap_log_rerror("mod_mkfusion.cpp", 31, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
-	ap_log_rerror("mod_mkfusion.cpp", 32, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
-	QCoreApplication app();
-	ap_log_rerror("mod_mkfusion.cpp", 34, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
-	QLocalSocket l_localSocket(NULL);
-	ap_log_rerror("mod_mkfusion.cpp", 36, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
-	l_localSocket.connectToServer("mkfusion");
-	ap_log_rerror("mod_mkfusion.cpp", 38, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
+	ap_log_rerror("mod_mkfusion.cpp", 30, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
+	ap_log_rerror("mod_mkfusion.cpp", 31, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
+	ap_log_rerror("mod_mkfusion.cpp", 32, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
+	QSimplifiedLocalSocket l_localSocket; // TODO: crashes here
+	ap_log_rerror("mod_mkfusion.cpp", 34, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
+	l_localSocket.connectToServer("mkfusion", TIMEOUT);
+	ap_log_rerror("mod_mkfusion.cpp", 36, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
 
-	if (l_localSocket.waitForConnected(CONNECT_TIMEOUT))
+	if (l_localSocket.waitForConnected())
 	{
 		QByteArray l_Send;
 		QDataStream l_IOStream(&l_Send, QIODevice::WriteOnly);
@@ -66,19 +64,13 @@ static int mkfusion_handler(request_rec *r)
 			return OK;
 		}
 
-		if (!l_localSocket.waitForBytesWritten(30000))
-		{
-			writeError(r, "Can\'t write to mkfusion.<br />\nMake sure mkfusion server is running.");
-			return OK;
-		}
-
 		bool l_HeadersWritten = false;
 		qint32 l_HeaderSize = 0;
 		QByteArray l_ReadBuf;
 
 		while(l_localSocket.isValid())
 		{
-			if (l_localSocket.waitForReadyRead(READ_TIMEOUT))
+			if (l_localSocket.waitForReadyRead())
 			{
 				l_ReadBuf = l_localSocket.readAll();
 
@@ -153,7 +145,7 @@ static int mkfusion_handler(request_rec *r)
 
 static void mkfusion_register_hooks(apr_pool_t *p)
 {
-	ap_log_perror("mod_mkfusion.cpp", 156, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
+	ap_log_perror("mod_mkfusion.cpp", 148, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
 
 	ap_hook_handler(mkfusion_handler, NULL, NULL, APR_HOOK_MIDDLE);
 #ifdef Q_WS_WIN
