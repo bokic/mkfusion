@@ -24,7 +24,7 @@ win32:LIBS += -llibhttpd \
 win32:LIBS += libpsapi
 
 # Input
-SOURCES += mod_mkfusion.cpp
-win32:SOURCES +=  ../simplifiedlocalsocket/qsimplifiedlocalsocket_win.cpp
-unix:SOURCES  +=  ../simplifiedlocalsocket/qsimplifiedlocalsocket_unix.cpp
-HEADERS       +=  ../simplifiedlocalsocket/qsimplifiedlocalsocket.h
+SOURCES       += mod_mkfusion.cpp
+win32:SOURCES += ../simplifiedlocalsocket/qsimplifiedlocalsocket_win.cpp
+unix:SOURCES  += ../simplifiedlocalsocket/qsimplifiedlocalsocket_unix.cpp
+HEADERS       += ../simplifiedlocalsocket/qsimplifiedlocalsocket.h
