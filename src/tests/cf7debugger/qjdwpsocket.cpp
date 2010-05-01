@@ -1,4 +1,4 @@
-#include "QJDWPSocket.h"
+#include "qjdwpsocket.h"
 
 QJDWPSocket::QJDWPSocket()
 {

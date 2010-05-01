@@ -2,8 +2,8 @@
 #define QJDWPDEBUGGER_H
 
 #include <QObject>
-#include "QJDWPSocket.h"
-#include "QJDWPCommand.h"
+#include "qjdwpsocket.h"
+#include "qjdwpcommand.h"
 
 class QJDWPDebugger : public QObject
 {

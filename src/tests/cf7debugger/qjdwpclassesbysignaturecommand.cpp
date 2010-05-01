@@ -1,6 +1,6 @@
-#include "QJDWPClassesBySignatureCommand.h"
-#include "QJDWPSocket.h"
-#include "QJDWPDebugger.h"
+#include "qjdwpclassesbysignaturecommand.h"
+#include "qjdwpsocket.h"
+#include "qjdwpdebugger.h"
 
 QJDWPClassesBySignatureCommand::QJDWPClassesBySignatureCommand(QObject* parent)
 	: QJDWPCommand(parent)
