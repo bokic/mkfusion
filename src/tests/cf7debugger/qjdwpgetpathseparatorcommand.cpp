@@ -1,5 +1,5 @@
-#include "QJDWPGetPathSeparatorCommand.h"
-#include "QJDWPClassesBySignatureCommand.h"
+#include "qjdwpgetpathseparatorcommand.h"
+#include "qjdwpclassesbysignaturecommand.h"
 
 QJDWPGetPathSeparatorCommand::QJDWPGetPathSeparatorCommand(QJDWPDebugger* parent)
 	: QJDWPCommand(parent)

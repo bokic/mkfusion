@@ -1,8 +1,8 @@
 #ifndef QJDWPIDSIZESCOMMAND_H
 #define QJDWPIDSIZESCOMMAND_H
 
-#include "QJDWPCommand.h"
-#include "QJDWPDebugger.h"
+#include "qjdwpcommand.h"
+#include "qjdwpdebugger.h"
 
 class QJDWPIDSizesCommand : public QJDWPCommand
 {

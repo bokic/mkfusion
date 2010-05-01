@@ -1,5 +1,5 @@
-#include "QJDWPDebugger.h"
-#include "QJDWPGetPathSeparatorCommand.h"
+#include "qjdwpdebugger.h"
+#include "qjdwpgetpathseparatorcommand.h"
 
 QJDWPDebugger::QJDWPDebugger(QObject *parent)
 	: QObject(parent)

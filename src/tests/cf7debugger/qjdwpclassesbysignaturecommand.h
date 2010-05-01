@@ -1,7 +1,7 @@
 #ifndef QJDWPCLASSESBYSIGNATURECOMMAND_H
 #define QJDWPCLASSESBYSIGNATURECOMMAND_H
 
-#include "QJDWPCommand.h"
+#include "qjdwpcommand.h"
 
 class QJDWPClassesBySignature : public QObject
 {

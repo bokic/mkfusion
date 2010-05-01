@@ -14,4 +14,5 @@ INCLUDEPATH += . ../../../libs/libssh/include
 SOURCES += main.cpp
 
 INCLUDEPATH += ../../../libs/libssh/include
-LIBS += ../../../libs/libssh/lib/libssh.dll.a
+win32:LIBS += ../../../libs/libssh/lib/libssh.dll.a
+unix:LIBS += /usr/lib/libssh.so

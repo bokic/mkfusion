@@ -1,8 +1,8 @@
 #ifndef QJDWPGETPATHSEPARATORCOMMAND_H
 #define QJDWPGETPATHSEPARATORCOMMAND_H
 
-#include "QJDWPCommand.h"
-#include "QJDWPDebugger.h"
+#include "qjdwpcommand.h"
+#include "qjdwpdebugger.h"
 
 class QJDWPGetPathSeparatorCommand : public QJDWPCommand
 {

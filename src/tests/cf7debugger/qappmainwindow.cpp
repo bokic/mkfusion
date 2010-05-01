@@ -1,5 +1,5 @@
 #include <QMainWindow>
-#include "QAppMainWindow.h"
+#include "qappmainwindow.h"
 
 QAppMainWindow::QAppMainWindow(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)

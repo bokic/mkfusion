@@ -1,7 +1,10 @@
 #ifndef QSIMPLIFIEDLOCALSOCKET_H
 #define QSIMPLIFIEDLOCALSOCKET_H
 
+#include <qglobal.h>
+#ifdef Q_WS_WIN
 #include <windows.h>
+#endif
 #include <QByteArray>
 #include <QString>
 

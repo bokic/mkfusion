@@ -11,7 +11,8 @@ UI_DIR =  ../../obj/cfeditor_debug
 DEPENDPATH += . codeeditwidget/ rds/ ../cfparser/ ../../libs/libssh/include/
 INCLUDEPATH += . codeeditwidget/ rds/ ../cfparser/ ../../libs/libssh/include/
 
-LIBS += ../../libs/libssh/lib/libssh.dll.a
+win32:LIBS += ../../libs/libssh/lib/libssh.dll.a
+unix:LIBS += /usr/lib/libssh.so
 
 # Input
 HEADERS = qappmainwindow.h \

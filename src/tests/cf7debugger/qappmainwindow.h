@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QListView>
-#include "QJDWPDebugger.h"
+#include "qjdwpdebugger.h"
 
 class QAppMainWindow : public QMainWindow
 {

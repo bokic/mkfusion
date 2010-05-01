@@ -1,4 +1,4 @@
-#include "QJDWPCommand.h"
+#include "qjdwpcommand.h"
 
 QJDWPCommand::QJDWPCommand(QObject* parent)
 	: QObject(parent)
