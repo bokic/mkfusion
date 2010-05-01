@@ -1,3 +1,4 @@
 TEMPLATE = subdirs
-
-SUBDIRS += cf7debugger editwidget parsertest1 parsertest2 rdstest sftptest testcasetester
+CONFIG  += debug_and_release
+SUBDIRS  = cf7debugger editwidget parsertest1 parsertest2 rdstest sftptest testcasetester
+#MAKEFILE = ../../obj/tests/Makefile

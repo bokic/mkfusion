@@ -1,17 +1,27 @@
-QT += network
-QT -= gui
-TARGET = mkfusion_isapi
 TEMPLATE = lib
+QT       = core network
+CONFIG  += debug_and_release
+TARGET   = mkfusion_isapi
 DEFINES += MKFUSION_ISAPI_LIBRARY
-
+#MAKEFILE = ../../../obj/mkfusion/mkfusion_isapi/Makefile
 DESTDIR = ../../../bin
-OBJECTS_DIR = ../../../obj/mkfusion_isapi_debug
-MOC_DIR = ../../../obj/mkfusion_isapi_debug
-RCC_DIR =  ../../../obj/mkfusion_isapi_debug
-UI_DIR =  ../../../obj/mkfusion_isapi_debug
-DEPENDPATH += . ../../../libs
+
+debug {
+	OBJECTS_DIR = ../../../obj/mkfusion/mkfusion_isapi/debug
+	MOC_DIR     = ../../../obj/mkfusion/mkfusion_isapi/debug
+	RCC_DIR     = ../../../obj/mkfusion/mkfusion_isapi/debug
+	UI_DIR      = ../../../obj/mkfusion/mkfusion_isapi/debug
+}
+release {
+	OBJECTS_DIR = ../../../obj/mkfusion/mkfusion_isapi/release
+	MOC_DIR     = ../../../obj/mkfusion/mkfusion_isapi/release
+	RCC_DIR     = ../../../obj/mkfusion/mkfusion_isapi/release
+	UI_DIR      = ../../../obj/mkfusion/mkfusion_isapi/release
+}
+
+DEPENDPATH  += . ../../../libs
 INCLUDEPATH += . ../../../libs
 
 DEF_FILE = mkfusion_isapi.def
+
 SOURCES = mkfusion_isapi.cpp
-HEADERS = 

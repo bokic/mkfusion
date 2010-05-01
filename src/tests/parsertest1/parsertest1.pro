@@ -1,29 +1,24 @@
-TEMPLATE = app
-TARGET = parsertest1
+QT       = core gui
+CONFIG  += debug_and_release
+#MAKEFILE = ../../../obj/tests/parsertest1/Makefile
+DESTDIR  = ../../../bin
 
-DESTDIR = ../../../bin
-OBJECTS_DIR = ../../../obj/parsertest_debug
-MOC_DIR = ../../../obj/parsertest_debug
-RCC_DIR =  ../../../obj/parsertest_debug
-UI_DIR =  ../../../obj/parsertest_debug
-DEPENDPATH = . ../../cfparser/
+debug {
+	OBJECTS_DIR = ../../../obj/tests/parsertest1/debug
+	MOC_DIR     = ../../../obj/tests/parsertest1/debug
+	RCC_DIR     = ../../../obj/tests/parsertest1/debug
+	UI_DIR      = ../../../obj/tests/parsertest1/debug
+}
+release {
+	OBJECTS_DIR = ../../../obj/tests/parsertest1/release
+	MOC_DIR     = ../../../obj/tests/parsertest1/release
+	RCC_DIR     = ../../../obj/tests/parsertest1/release
+	UI_DIR      = ../../../obj/tests/parsertest1/release
+}
+
+DEPENDPATH  = . ../../cfparser/
 INCLUDEPATH = . ../../cfparser/
 
-HEADERS = \
-	../cfparser/qcfparser.h \
-	../cfparser/qcffunction.h \
-	../cfparser/qcftag.h \
-	../cfparser/qcf8.h \
-	parsertest1.h
-
-SOURCES = \
-	../cfparser/qcfparser.cpp \
-	../cfparser/qcffunction.cpp \
-	../cfparser/qcftag.cpp \
-	../cfparser/qcf8.cpp \
-	parsertest1.cpp \
-	main.cpp
-
-FORMS = parsertest1.ui
-
-# RESOURCES = parsertest1.qrc
+SOURCES     = main.cpp parsertest1.cpp ../cfparser/qcfparser.cpp ../cfparser/qcffunction.cpp ../cfparser/qcftag.cpp ../cfparser/qcf8.cpp
+HEADERS     =          parsertest1.h   ../cfparser/qcfparser.h   ../cfparser/qcffunction.h   ../cfparser/qcftag.h   ../cfparser/qcf8.h
+FORMS       =          parsertest1.ui

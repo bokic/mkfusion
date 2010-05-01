@@ -1,17 +1,23 @@
-TEMPLATE = app
-TARGET = rdstest
+QT       = core network xml
+CONFIG  += debug_and_release qtestlib
+#MAKEFILE = ../../../obj/tests/rdstest/Makefile
+DESTDIR  = ../../../bin
 
-QT -= gui
-QT+= network xml
+debug {
+	OBJECTS_DIR = ../../../obj/tests/rdstest/debug
+	MOC_DIR     = ../../../obj/tests/rdstest/debug
+	RCC_DIR     = ../../../obj/tests/rdstest/debug
+	UI_DIR      = ../../../obj/tests/rdstest/debug
+}
+release {
+	OBJECTS_DIR = ../../../obj/tests/rdstest/release
+	MOC_DIR     = ../../../obj/tests/rdstest/release
+	RCC_DIR     = ../../../obj/tests/rdstest/release
+	UI_DIR      = ../../../obj/tests/rdstest/release
+}
 
-DESTDIR = ../../../bin
-OBJECTS_DIR = ../../../obj/rdstest_debug
-MOC_DIR = ../../../obj/rdstest_debug
-RCC_DIR = ../../../obj/rdstest_debug
-UI_DIR =  ../../../obj/rdstest_debug
-DEPENDPATH += . ../../cfeditor/rds/
+DEPENDPATH  += . ../../cfeditor/rds/
 INCLUDEPATH += . ../../cfeditor/rds/
 
-# Input
-SOURCES += main.cpp ../../cfeditor/rds/qabstractrdsservice.cpp ../../cfeditor/rds/qdatabaseservice.cpp ../../cfeditor/rds/qdebuggerservice.cpp ../../cfeditor/rds/qfileioservice.cpp ../../cfeditor/rds/qrdsserver.cpp ../../cfeditor/rds/qwddxutils.cpp ../../cfeditor/rds/qcfdebugger.cpp ../../cfeditor/rds/qdefaultservice.cpp ../../cfeditor/rds/qwddx.cpp
-HEADERS +=          ../../cfeditor/rds/qabstractrdsservice.h   ../../cfeditor/rds/qdatabaseservice.h   ../../cfeditor/rds/qdebuggerservice.h   ../../cfeditor/rds/qfileioservice.h   ../../cfeditor/rds/qrdsserver.h   ../../cfeditor/rds/qwddxutils.h   ../../cfeditor/rds/qcfdebugger.h   ../../cfeditor/rds/qdefaultservice.h   ../../cfeditor/rds/qwddx.h
+SOURCES = main.cpp ../../cfeditor/rds/qabstractrdsservice.cpp ../../cfeditor/rds/qdatabaseservice.cpp ../../cfeditor/rds/qdebuggerservice.cpp ../../cfeditor/rds/qfileioservice.cpp ../../cfeditor/rds/qrdsserver.cpp ../../cfeditor/rds/qwddxutils.cpp ../../cfeditor/rds/qcfdebugger.cpp ../../cfeditor/rds/qdefaultservice.cpp ../../cfeditor/rds/qwddx.cpp
+HEADERS =          ../../cfeditor/rds/qabstractrdsservice.h   ../../cfeditor/rds/qdatabaseservice.h   ../../cfeditor/rds/qdebuggerservice.h   ../../cfeditor/rds/qfileioservice.h   ../../cfeditor/rds/qrdsserver.h   ../../cfeditor/rds/qwddxutils.h   ../../cfeditor/rds/qcfdebugger.h   ../../cfeditor/rds/qdefaultservice.h   ../../cfeditor/rds/qwddx.h

@@ -1,18 +1,25 @@
-TEMPLATE = app
-TARGET = sftptest
-QT -= gui
+QT       = core
+CONFIG  += debug_and_release
+#MAKEFILE = ../../../obj/tests/sftptest/Makefile
+DESTDIR  = ../../../bin
 
-DESTDIR = ../../../bin
-OBJECTS_DIR = ../../../obj/sftptest_debug
-MOC_DIR = ../../../obj/sftptest_debug
-RCC_DIR =  ../../../obj/sftptest_debug
-UI_DIR =  ../../../obj/sftptest_debug
-DEPENDPATH += . ../../../libs/libssh/include
+debug {
+	OBJECTS_DIR = ../../../obj/tests/sftptest/debug
+	MOC_DIR     = ../../../obj/tests/sftptest/debug
+	RCC_DIR     = ../../../obj/tests/sftptest/debug
+	UI_DIR      = ../../../obj/tests/sftptest/debug
+}
+release {
+	OBJECTS_DIR = ../../../obj/tests/sftptest/release
+	MOC_DIR     = ../../../obj/tests/sftptest/release
+	RCC_DIR     = ../../../obj/tests/sftptest/release
+	UI_DIR      = ../../../obj/tests/sftptest/release
+}
+
+DEPENDPATH  += . ../../../libs/libssh/include
 INCLUDEPATH += . ../../../libs/libssh/include
 
-# Input
 SOURCES += main.cpp
 
-INCLUDEPATH += ../../../libs/libssh/include
 win32:LIBS += ../../../libs/libssh/lib/libssh.dll.a
-unix:LIBS += /usr/lib/libssh.so
+unix:LIBS  += /usr/lib/libssh.so

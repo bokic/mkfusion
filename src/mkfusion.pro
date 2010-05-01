@@ -1,3 +1,4 @@
 TEMPLATE = subdirs
-
-SUBDIRS += cfeditor mkfusion tests
+CONFIG   = debug_and_release
+#MAKEFILE = ../obj/Makefile
+SUBDIRS  = cfeditor mkfusion tests

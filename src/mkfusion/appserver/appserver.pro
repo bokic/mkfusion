@@ -1,59 +1,33 @@
-TEMPLATE = app
-TARGET = mkfusion
-QT -= gui
-QT += network \
-    sql \
-    xml
+QT       = core network sql xml
+CONFIG  += debug_and_release
+TARGET   = mkfusion
+#MAKEFILE = ../../../obj/mkfusion/appserver/Makefile
+DESTDIR  = ../../../bin
 
-DESTDIR = ../../../bin
-OBJECTS_DIR = ../../../obj/appserver_debug
-MOC_DIR = ../../../obj/appserver_debug
-RCC_DIR =  ../../../obj/appserver_debug
-UI_DIR =  ../../../obj/appserver_debug
-DEPENDPATH +=  . ../../../libs/qtservice ../../cfparser
+debug {
+	OBJECTS_DIR = ../../../obj/mkfusion/appserver/debug
+	MOC_DIR     = ../../../obj/mkfusion/appserver/debug
+	RCC_DIR     = ../../../obj/mkfusion/appserver/debug
+	UI_DIR      = ../../../obj/mkfusion/appserver/debug
+}
+release {
+	OBJECTS_DIR = ../../../obj/mkfusion/appserver/release
+	MOC_DIR     = ../../../obj/mkfusion/appserver/release
+	RCC_DIR     = ../../../obj/mkfusion/appserver/release
+	UI_DIR      = ../../../obj/mkfusion/appserver/release
+}
+
+DEPENDPATH  += . ../../../libs/qtservice ../../cfparser
 INCLUDEPATH += . ../../../libs/qtservice ../../cfparser
+
+# main app
+SOURCES = main.cpp ../../cfparser/qcffunction.cpp ../../cfparser/qcfparser.cpp ../../cfparser/qcftag.cpp ../../cfparser/qcf8.cpp qmkfusionexception.cpp qcfrunningtemplate.cpp qcfgenerator.cpp cffunctions.cpp qcftemplate.cpp qcfserver.cpp common.cpp qwddx.cpp
+HEADERS =          ../../cfparser/qcffunction.h   ../../cfparser/qcfparser.h   ../../cfparser/qcftag.h   ../../cfparser/qcf8.h   qmkfusionexception.h   qcfrunningtemplate.h   qcfgenerator.h   cffunctions.h   qcftemplate.h   qcfserver.h   common.h   qwddx.h   cftags.h
+
+# QtService
+SOURCES       += ../../../libs/qtservice/qtservice.cpp
+win32:SOURCES += ../../../libs/qtservice/qtservice_win.cpp
+unix:SOURCES  += ../../../libs/qtservice/qtservice_unix.cpp ../../../libs/qtservice/qtunixsocket.cpp ../../../libs/qtservice/qtunixserversocket.cpp
 
 win32:QMAKE_LFLAGS += -Wl,--out-implib,../../../lib/mkfusion.a
 unix:QMAKE_LFLAGS += -Wl,-E
-
-SOURCES += \
-	main.cpp \
-	../../../libs/qtservice/qtservice.cpp \
-	../../cfparser/qcffunction.cpp \
-	../../cfparser/qcfparser.cpp \
-	../../cfparser/qcftag.cpp \
-	../../cfparser/qcf8.cpp \
-	qmkfusionexception.cpp \
-	qcfrunningtemplate.cpp \
-	qcfgenerator.cpp \
-    cffunctions.cpp \
-    qcftemplate.cpp \
-    qcfserver.cpp \
-    common.cpp \
-	qwddx.cpp
-win32:SOURCES += \
-	../../../libs/qtservice/qtservice_win.cpp
-unix:SOURCES += \
-	../../../libs/qtservice/qtservice_unix.cpp \
-	../../../libs/qtservice/qtunixsocket.cpp \
-	../../../libs/qtservice/qtunixserversocket.cpp
-
-HEADERS += \
-	../../../libs/qtservice/qtservice_p.h \
-	../../../libs/qtservice/qtservice.h \
-	../../cfparser/qcfparser.h \
-	../../cfparser/qcftag.h \
-	../../cfparser/qcffunction.h \
-	../../cfparser/qcf8.h \
-	qcfgenerator.h \
-    cffunctions.h \
-    qcftemplate.h \
-    qcfserver.h \
-    common.h \
-    qwddx.h \
-    qmkfusionexception.h \
-    qcfrunningtemplate.h \
-    cftags.h
-unix:HEADERS += \
-	../../../libs/qtservice/qtunixsocket.h \
-	../../../libs/qtservice/qtunixserversocket.h

@@ -1,23 +1,24 @@
-# -------------------------------------------------
-# Project created by QtCreator 2009-10-21T17:34:27
-# -------------------------------------------------
-QT += network \
-    webkit
-TARGET = testcaseTester
-TEMPLATE = app
+QT       = core gui network webkit
+CONFIG  += debug_and_release
+#MAKEFILE = ../../../obj/tests/testcasetester/Makefile
+DESTDIR  = ../../../bin
 
-DESTDIR = ../../../bin
-OBJECTS_DIR = ../../../obj/testcasetester_debug
-MOC_DIR = ../../../obj/testcasetester_debug
-RCC_DIR =  ../../../obj/testcasetester_debug
-UI_DIR =  ../../../obj/testcasetester_debug
-DEPENDPATH += .
+debug {
+	OBJECTS_DIR = ../../../obj/tests/testcasetester/debug
+	MOC_DIR     = ../../../obj/tests/testcasetester/debug
+	RCC_DIR     = ../../../obj/tests/testcasetester/debug
+	UI_DIR      = ../../../obj/tests/testcasetester/debug
+}
+release {
+	OBJECTS_DIR = ../../../obj/tests/testcasetester/release
+	MOC_DIR     = ../../../obj/tests/testcasetester/release
+	RCC_DIR     = ../../../obj/tests/testcasetester/release
+	UI_DIR      = ../../../obj/tests/testcasetester/release
+}
+
+DEPENDPATH  += .
 INCLUDEPATH += .
 
-SOURCES += main.cpp \
-    maindialog.cpp \
-    comparedialog.cpp
-HEADERS += maindialog.h \
-    comparedialog.h
-FORMS += maindialog.ui \
-    comparedialog.ui
+FORMS   =          maindialog.ui  comparedialog.ui
+SOURCES = main.cpp maindialog.cpp comparedialog.cpp
+HEADERS =          maindialog.h   comparedialog.h
