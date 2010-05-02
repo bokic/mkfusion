@@ -110,7 +110,7 @@ QString getMingwDir()// TODO: reimplement when qt 4.7 is released.
 	DWORD valType;
 	DWORD dwordVal;
 
-	QString retQtSDK, retQtOpenSource, retMingw;
+	QString retQtSDK, retQtOpenSource, retMingw, retQtCreator;
 
 	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.toStdWString().c_str(), 0, KEY_ENUMERATE_SUB_KEYS, &reg) == ERROR_SUCCESS)
 	{
@@ -166,6 +166,38 @@ QString getMingwDir()// TODO: reimplement when qt 4.7 is released.
 				}
 			}
 
+			if (subkey.startsWith("Qt Creator "))
+			{
+				if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.append("\\"+subkey).toStdWString().c_str(), 0, KEY_QUERY_VALUE, &reg2) == ERROR_SUCCESS)
+				{
+					valstrsize = MAX_KEY_LENGTH;
+					if (RegQueryValueEx(reg2, L"UninstallString", NULL, &valType, (BYTE*)temp, &valstrsize) == ERROR_SUCCESS)
+					{
+						retQtCreator = QString::fromStdWString(temp);
+						if (retQtCreator.endsWith("\\uninst.exe"))
+						{
+							QDir l_dir;
+
+							retQtCreator = retQtCreator.left(retQtCreator.length() - 10);
+
+							if (l_dir.exists(retQtCreator + "mingw\\bin"))
+							{
+								retQtCreator = retQtCreator + "mingw\\";
+							} else
+							{
+								retQtCreator = "";
+							}
+						}
+						else
+						{
+							retQtCreator = "";
+						}
+					}
+
+					RegCloseKey(reg2);
+				}
+			}
+
 			if (subkey.startsWith("MinGW "))
 			{
 				if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.append("\\"+subkey).toStdWString().c_str(), 0, KEY_QUERY_VALUE, &reg2) == ERROR_SUCCESS)
@@ -202,6 +234,11 @@ QString getMingwDir()// TODO: reimplement when qt 4.7 is released.
 		return retQtOpenSource;
 	}
 
+	if (!retQtCreator.isEmpty())
+	{
+		return retQtCreator;
+	}
+
 	if (!retMingw.isEmpty())
 	{
 		return retMingw;
@@ -210,34 +247,6 @@ QString getMingwDir()// TODO: reimplement when qt 4.7 is released.
 	return "";
 }
 #endif
-
-bool RemoveDirectory(QDir aDir)
-{
-	bool has_err = false;
-	if (aDir.exists())
-	{
-		QFileInfoList entries = aDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
-		int count = entries.size();
-		for (int idx = 0; ((idx < count) && (has_err == false)); idx++)
-		{
-			QFileInfo entryInfo = entries[idx];
-			QString path = entryInfo.absoluteFilePath();
-			if (entryInfo.isDir())
-			{
-				has_err = RemoveDirectory(QDir(path));
-			}
-			else
-			{
-				QFile file(path);
-				if (!file.remove())
-				has_err = true;
-			}
-		}
-		if (!aDir.rmdir(aDir.absolutePath()))
-		has_err = true;
-	}
-	return(has_err);
-}
 
 QString toCPPEncodeStr(const QString& str)
 {
@@ -442,8 +451,8 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 
 	// Compile
 #ifdef Q_WS_WIN
-	QString l_QtPath = getQtDir(); // "C:\\Qt\\2009.04\\qt\\";
-	QString l_MingwPath = "C:\\Qt\\qtcreator-1.3.1\\mingw\\"; //getMingwDir(); // "C:\\Qt\\2009.04\\mingw\\";// TODO: please check if Nokia has fixed their uninstaller registry entry.
+	QString l_QtPath = getQtDir(); // "C:\\Qt\\4.6.2\\" or "C:\\Qt\\2009.04\\qt\\";
+	QString l_MingwPath = getMingwDir(); // "C:\\Qt\\qtcreator-1.3.1\\mingw\\" or "C:\\Qt\\2009.04\\mingw\\", TODO: please check if Nokia has fixed their uninstaller registry entry.
 #ifdef QT_NO_DEBUG
 	process.start(l_MingwPath+"bin\\g++.exe -c -O2 -frtti -fexceptions -mthreads -Wall -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I\""+l_MingwPath+"include\" -I\""+l_QtPath+"include\\QtCore\" -I\""+l_QtPath+"include\\QtNetwork\" -I\""+l_QtPath+"include\" -I\""+p_MKFusionPath+"include\" -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".cpp\"");
 #else
