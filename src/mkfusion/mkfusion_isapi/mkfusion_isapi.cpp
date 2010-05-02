@@ -14,7 +14,7 @@ DWORD WINAPI HttpExtensionProc(LPEXTENSION_CONTROL_BLOCK lpECB)
 	lpECB->dwHttpStatusCode = 200;
 	//lpECB->lpszContentType = "text/html";
 
-	char *header = "Content-Type: text/plain\r\n\r\n";
+	const char *header = "Content-Type: text/plain\r\n\r\n";
 	DWORD headerlen  = strlen( header );
 	lpECB->ServerSupportFunction(lpECB->ConnID, HSE_REQ_SEND_RESPONSE_HEADER, 0, &headerlen, (DWORD *)header);
 

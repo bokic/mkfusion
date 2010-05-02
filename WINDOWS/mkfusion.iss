@@ -53,13 +53,13 @@ Source: "c:\Qt\4.6.2\plugins\sqldrivers\qsqlpsql4.dll"; DestDir: "{app}\bin\sqld
 
 Source: "uninstall.dll"; Flags: dontcopy;
 
-Source: "..\bin\lib\mkfusion.a"; DestDir: "{app}\lib"; Flags: ignoreversion;
+Source: "..\lib\mkfusion.a"; DestDir: "{app}\lib"; Flags: ignoreversion;
 
-Source: "..\bin\include\common.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\bin\include\qcfrunningtemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\bin\include\qcftemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\bin\include\qmkfusionexception.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\bin\include\qwddx.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\src\mkfusion\appserver\common.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\src\mkfusion\appserver\qcfrunningtemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\src\mkfusion\appserver\qcftemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\src\mkfusion\appserver\qmkfusionexception.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\src\mkfusion\appserver\qwddx.h"; DestDir: "{app}\include"; Flags: ignoreversion;
 
 [Code]
 

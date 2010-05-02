@@ -1,6 +1,6 @@
 [Setup]
 AppName=CFEditor
-AppVerName=CFEditor version 0.1
+AppVerName=CFEditor version 0.4.1
 AppPublisher=BokiCSoft
 AppPublisherURL=http://mkfusion.bokicsoft.com/
 AppVersion=0.1
@@ -31,16 +31,12 @@ Source: "c:\Qt\4.6.2\bin\QtNetwork4.dll"; DestDir: "{app}";
 Source: "c:\Qt\4.6.2\bin\QtXml4.dll"; DestDir: "{app}";
 Source: "c:\Qt\4.6.2\bin\QtWebKit4.dll"; DestDir: "{app}";
 
-; QCodeEdit editor library
-; Source: "..\QCodeEdit\qcodeedit.dll"; DestDir: "{app}";
-
 ; libssh library
 Source: "..\libs\libssh\bin\libeay32.dll"; DestDir: "{app}";
 Source: "..\libs\libssh\bin\libssh.dll"; DestDir: "{app}";
 Source: "..\libs\libssh\bin\ssleay32.dll"; DestDir: "{app}";
 
 ; main program
-;Source: "..\CFEditor\release\cfeditor.exe"; DestDir: "{app}"; BeforeInstall: InstallRTL;
 Source: "..\bin\cfeditor.exe"; DestDir: "{app}";
 
 [Icons]
