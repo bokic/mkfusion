@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+# Start MKFusion
+/etc/init.d/mkfusion start
+
+# If Apache is running
+if [`/etc/init.d/apache2 status` != 'Apache is NOT running.']; then
+    # Restart Apache2.2
+    /etc/init.d/apache2 restart
+fi
+
+return 0
