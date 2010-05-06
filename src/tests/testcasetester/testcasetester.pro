@@ -1,4 +1,4 @@
-QT       = core gui network webkit
+QT       = core gui network
 CONFIG  += debug_and_release
 #MAKEFILE = ../../../obj/tests/testcasetester/Makefile
 DESTDIR  = ../../../bin

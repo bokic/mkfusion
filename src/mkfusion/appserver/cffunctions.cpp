@@ -622,7 +622,7 @@ int cf_BitMaskSet(int p_num, int p_mask, int p_start, int p_end)
 	}
 
 	p_mask &= (1 << p_end) - 1;
-	return p_num & ~((1 << p_end) - 1 << p_start) | p_mask << p_start;
+	return p_num & ~((((1 << p_end) - 1) << p_start) | p_mask) << p_start;
 }
 
 int cf_BitNot(int p_number)

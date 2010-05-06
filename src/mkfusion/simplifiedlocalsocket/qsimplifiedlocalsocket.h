@@ -23,6 +23,10 @@ private:
 #ifdef Q_WS_WIN
 	HANDLE m_Handle;
 #endif
+#ifdef Q_WS_X11
+	int m_Handle;
+	int m_Timeout;
+#endif
 };
 
 #endif // QSIMPLIFIEDLOCALSOCKET_H

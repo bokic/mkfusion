@@ -30,13 +30,14 @@ static int mkfusion_handler(request_rec *r)
 	ap_log_rerror("mod_mkfusion.cpp", 30, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
 	ap_log_rerror("mod_mkfusion.cpp", 31, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
 	ap_log_rerror("mod_mkfusion.cpp", 32, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
-	QSimplifiedLocalSocket l_localSocket; // TODO: crashes here
+	QSimplifiedLocalSocket l_localSocket;
 	ap_log_rerror("mod_mkfusion.cpp", 34, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
 	l_localSocket.connectToServer("mkfusion", TIMEOUT);
 	ap_log_rerror("mod_mkfusion.cpp", 36, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
 
 	if (l_localSocket.waitForConnected())
 	{
+		ap_log_rerror("mod_mkfusion.cpp", 40, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnedted() == true.");
 		QByteArray l_Send;
 		QDataStream l_IOStream(&l_Send, QIODevice::WriteOnly);
 		l_IOStream.setVersion(QDataStream::Qt_4_4);
@@ -137,6 +138,7 @@ static int mkfusion_handler(request_rec *r)
 	}
 	else
 	{
+		ap_log_rerror("mod_mkfusion.cpp", 141, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnedted() == false.");
 		writeError(r, "Can\'t connect to mkfusion.<br />\nMake sure mkfusion server is running.");
 	}
 
@@ -145,7 +147,7 @@ static int mkfusion_handler(request_rec *r)
 
 static void mkfusion_register_hooks(apr_pool_t *p)
 {
-	ap_log_perror("mod_mkfusion.cpp", 148, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
+	ap_log_perror("mod_mkfusion.cpp", 150, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
 
 	ap_hook_handler(mkfusion_handler, NULL, NULL, APR_HOOK_MIDDLE);
 #ifdef Q_WS_WIN
