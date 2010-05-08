@@ -142,13 +142,6 @@ void QCFRunningTemplate::run()
 			delete tempstr;
 		}
 
-#ifndef QT_NO_DEBUG
-		if ((m_Request.m_Filename.endsWith(".mfm"))||(m_Request.m_Filename.endsWith(".mfc")))
-		{
-			m_Request.m_Filename[m_Request.m_Filename.size() - 3] = 'c';
-		}
-#endif
-
 		l_ds >> tempstr;
 		if (tempstr)
 		{
@@ -274,7 +267,7 @@ void QCFRunningTemplate::run()
 #endif
 					m_SERVER.wr(true)["COLDFUSION"]["PRODUCTLEVEL"] = "Free";
 					m_SERVER.wr(true)["COLDFUSION"]["PRODUCTNAME"] = "MKFusion Server";
-					m_SERVER.wr(true)["COLDFUSION"]["PRODUCTVERSION"] = "0.3";
+					m_SERVER.wr(true)["COLDFUSION"]["PRODUCTVERSION"] = "0.4.1";
 					m_SERVER.wr(true)["COLDFUSION"]["ROOTDIR"] = par->m_MKFusionPath.left(-1);
 					m_SERVER.wr(true)["COLDFUSION"]["SUPPORTEDLOCALES"] = "English (US),en,en_US";
 					m_SERVER.wr(true)["OS"] = QWDDX(QWDDX::Struct);

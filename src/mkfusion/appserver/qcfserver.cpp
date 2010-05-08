@@ -116,14 +116,18 @@ void QCFServer::start()
 	{
 		m_LocalServer.close();
 	}
-	m_LocalServer.listen("mkfusion");
 
 	if (m_mainTimer != 0)
 	{
 		killTimer(m_mainTimer);
 	}
-	m_mainTimer = startTimer(1000);
 
+	if (m_LocalServer.listen("mkfusion") == false)
+	{
+		return;
+	}
+
+	m_mainTimer = startTimer(1000);
 
 	QFileInfo fi(getCurrentModuleFileName((void*)&getCurrentModuleFileName));
 	QDir fi_dir = fi.absoluteDir();
@@ -162,7 +166,10 @@ void QCFServer::start()
 					}
 				}
 
-				delete l_page;
+				if (l_page != NULL)
+				{
+					delete l_page;
+				}
 			}
 
 			l_TemplateLib.unload();

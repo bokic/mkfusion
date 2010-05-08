@@ -37,7 +37,7 @@ static int mkfusion_handler(request_rec *r)
 
 	if (l_localSocket.waitForConnected())
 	{
-		ap_log_rerror("mod_mkfusion.cpp", 40, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnedted() == true.");
+		ap_log_rerror("mod_mkfusion.cpp", 40, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnected() == true.");
 		QByteArray l_Send;
 		QDataStream l_IOStream(&l_Send, QIODevice::WriteOnly);
 		l_IOStream.setVersion(QDataStream::Qt_4_4);
@@ -86,6 +86,7 @@ static int mkfusion_handler(request_rec *r)
 							l_HeadersDataStream >> l_HeaderSize;
 							if ((l_HeaderSize <= 0)||(l_HeaderSize > 0x01000000))
 							{
+								ap_log_rerror("mod_mkfusion.cpp", 89, APLOG_ERR, 0, r, "mod_mkfusion: Invalid header length.");
 								writeError(r, "Invalid header length.");
 								return OK;
 							}
@@ -138,7 +139,7 @@ static int mkfusion_handler(request_rec *r)
 	}
 	else
 	{
-		ap_log_rerror("mod_mkfusion.cpp", 141, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnedted() == false.");
+		ap_log_rerror("mod_mkfusion.cpp", 142, APLOG_ERR, 0, r, "mod_mkfusion: Can\'t connect to mkfusion. Make sure mkfusion server is running.");
 		writeError(r, "Can\'t connect to mkfusion.<br />\nMake sure mkfusion server is running.");
 	}
 
