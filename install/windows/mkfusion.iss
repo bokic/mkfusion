@@ -32,9 +32,9 @@ Source: "c:\Qt\4.6.2\bin\QtCore4.dll"; DestDir: "{app}\bin";
 Source: "c:\Qt\4.6.2\bin\QtNetwork4.dll"; DestDir: "{app}\bin";
 Source: "c:\Qt\4.6.2\bin\QtSql4.dll"; DestDir: "{app}\bin";
 Source: "c:\Qt\4.6.2\bin\QtXml4.dll"; DestDir: "{app}\bin";
-Source: "..\bin\mkfusion.exe"; DestDir: "{app}\bin"; Flags: ignoreversion;
-Source: "..\bin\mod_mkfusion.dll"; DestDir: "{app}\bin"; Flags: ignoreversion;
-Source: "..\install\mkfusion.db"; DestDir: "{app}\bin"; Flags: onlyifdoesntexist;
+Source: "..\..\bin\mkfusion.exe"; DestDir: "{app}\bin"; Flags: ignoreversion;
+Source: "..\..\bin\mod_mkfusion.dll"; DestDir: "{app}\bin"; Flags: ignoreversion;
+Source: "..\..\install\mkfusion.db"; DestDir: "{app}\bin"; Flags: onlyifdoesntexist;
 Source: "uninstall.dll"; DestDir: "{app}"; Flags: ignoreversion;
 
 Source: "c:\Qt\4.6.2\plugins\sqldrivers\qsqlite4.dll"; DestDir: "{app}\bin\sqldrivers";
@@ -53,13 +53,14 @@ Source: "c:\Qt\4.6.2\plugins\sqldrivers\qsqlpsql4.dll"; DestDir: "{app}\bin\sqld
 
 Source: "uninstall.dll"; Flags: dontcopy;
 
-Source: "..\lib\mkfusion.a"; DestDir: "{app}\lib"; Flags: ignoreversion;
+Source: "..\..\lib\mkfusion.a"; DestDir: "{app}\lib"; Flags: ignoreversion;
 
-Source: "..\src\mkfusion\appserver\common.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\src\mkfusion\appserver\qcfrunningtemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\src\mkfusion\appserver\qcftemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\src\mkfusion\appserver\qmkfusionexception.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\src\mkfusion\appserver\qwddx.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\..\src\mkfusion\appserver\cffunctions.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\..\src\mkfusion\appserver\common.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\..\src\mkfusion\appserver\qcfrunningtemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\..\src\mkfusion\appserver\qcftemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\..\src\mkfusion\appserver\qmkfusionexception.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\..\src\mkfusion\appserver\qwddx.h"; DestDir: "{app}\include"; Flags: ignoreversion;
 
 [Code]
 

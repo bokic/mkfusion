@@ -3,7 +3,7 @@ AppName=CFEditor
 AppVerName=CFEditor version 0.4.1
 AppPublisher=BokiCSoft
 AppPublisherURL=http://mkfusion.bokicsoft.com/
-AppVersion=0.1
+AppVersion=0.4.1
 DefaultDirName={pf}\BokiCSoft\CFEditor
 DefaultGroupName=CFEditor
 UninstallDisplayIcon={app}\cfeditor.exe
@@ -12,7 +12,7 @@ Compression=lzma
 SolidCompression=yes
 OutputBaseFilename=CFEditor
 OutputDir=.
-VersionInfoVersion=0.1
+VersionInfoVersion=0.4.1
 VersionInfoDescription=CFEditor is free, opensource, multiplatform ColdFusion Editor(Qt 4.6.2)
 
 [Files]
@@ -32,12 +32,12 @@ Source: "c:\Qt\4.6.2\bin\QtXml4.dll"; DestDir: "{app}";
 Source: "c:\Qt\4.6.2\bin\QtWebKit4.dll"; DestDir: "{app}";
 
 ; libssh library
-Source: "..\libs\libssh\bin\libeay32.dll"; DestDir: "{app}";
-Source: "..\libs\libssh\bin\libssh.dll"; DestDir: "{app}";
-Source: "..\libs\libssh\bin\ssleay32.dll"; DestDir: "{app}";
+Source: "..\..\libs\libssh\bin\libeay32.dll"; DestDir: "{app}";
+Source: "..\..\libs\libssh\bin\libssh.dll"; DestDir: "{app}";
+Source: "..\..\libs\libssh\bin\ssleay32.dll"; DestDir: "{app}";
 
 ; main program
-Source: "..\bin\cfeditor.exe"; DestDir: "{app}";
+Source: "..\..\bin\cfeditor.exe"; DestDir: "{app}";
 
 [Icons]
 Name: "{group}\CFEditor"; Filename: "{app}\cfeditor.exe"
