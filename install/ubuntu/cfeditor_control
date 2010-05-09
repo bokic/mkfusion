@@ -3,12 +3,12 @@ Source: cfeditor
 Version: 0.4.1
 Architecture: i386
 Maintainer: Boris Barbulovski <bbarbulovski@gmail.com>
-Installed-Size: 670
+Installed-Size: 560
 Depends: libssh-4(>= 0.4.2-1ubuntu1), libqtgui4(>= 4:4.6.2-0ubuntu5), libqt4-xml(>= 4:4.6.2-0ubuntu5), libqt4-network(>= 4:4.6.2-0ubuntu5), libqt4-webkit(>= 4:4.6.2-0ubuntu5)
 Section: devel
 Priority: optional
 Homepage: http://mkfusion.bokicsoft.com/
-Description: Free open source ColdFusion IDE
+Description: ColdFusion IDE
  CFEditor is free opensource ColdFusion IDE.
  Features:
  * Project sources: local, ftp, ftps, RDS

@@ -4,7 +4,6 @@ files needed before compile:
 
 
 * qt-win-opensource-4.6.2-mingw.exe(or maybe newer)
-* QtService
 * Apache 2.2(with devel files)
 * libssh-mingw4-xxxxxxxx-bin.tar.bz2
 * libssh-mingw4-xxxxxxxx-lib.tar.bz2
@@ -22,7 +21,7 @@ http://qt.gitorious.org/qt/qt/commit/9e5e97f3b5eaa9cda471be44a5c59b51561393b6
 http://qt.gitorious.org/qt/qt/commit/c09ef77cd271c47cb3c2607553dab669d6cbcddc
 
 --------------------------------------------------------------------------------
-Ubuntu/Debian Linux
+Ubuntu 10.04 LTS (Lucid Lynx):
 
 * sudo apt-get install g++ apache2-dev libssh-dev qt4-dev-tools
-* Extract QtService into libs(http://qt.nokia.com/products/appdev/add-on-products/catalog/4/Utilities/qtservice)
+* sh ./buildall.sh

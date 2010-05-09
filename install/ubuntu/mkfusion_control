@@ -8,7 +8,7 @@ Depends: libqt4-sql(>= 4:4.6.2-0ubuntu5), libqt4-xml(>= 4:4.6.2-0ubuntu5), libqt
 Section: httpd
 Priority: optional
 Homepage: http://mkfusion.bokicsoft.com/
-Description: Free open source native CFML(ColdFusion compatible) app. server
+Description: CFML(ColdFusion compatible) application server
  MKFusion is free opensource native CFML application server.
  Features:
  * 
