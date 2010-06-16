@@ -1,24 +1,27 @@
-#! /bin/sh -e
+#! /bin/sh
 
 # Delete compiled templates.
-unlink /opt/mkfusion/templates/*
+rm -rf /opt/mkfusion/templates/*
 
 # If Apache is running
-if [`/etc/init.d/apache2 status` != 'Apache is NOT running.']; then
+IS_APACHE2_RUNNING=`service apache2 status`
+
+if [ "$IS_APACHE2_RUNNING" != 'Apache is NOT running.' ]; then
     # remove mods_available symlink
-    unlink /etc/apache2/mods-enabled/mkfusion.load
-    unlink /etc/apache2/mods-enabled/mkfusion.conf
+    rm -f /etc/apache2/mods-enabled/mkfusion.load
+    rm -f /etc/apache2/mods-enabled/mkfusion.conf
 
     # Restart Apache
-    /etc/init.d/apache2 restart
+    service apache2 restart
 fi
 
 # Stop MKFusion
-/etc/init.d/mkfusion stop
+service mkfusion stop
 
 if [ $1 != "upgrade" ]; then
     # Delete config database
-    unlink /opt/mkfusion/bin/mkfusion.db
+    rm -f /opt/mkfusion/bin/mkfusion.db
 fi
 
 exit 0
+

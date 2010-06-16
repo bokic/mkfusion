@@ -3,7 +3,7 @@ WINDOWS:
 files needed before compile:
 
 
-* qt-win-opensource-4.6.2-mingw.exe(or maybe newer)
+* qt-win-opensource-4.6.3-mingw.exe(or maybe newer)
 * Apache 2.2(with devel files)
 * libssh-mingw4-xxxxxxxx-bin.tar.bz2
 * libssh-mingw4-xxxxxxxx-lib.tar.bz2
@@ -19,6 +19,12 @@ Extract QtService into libs(http://qt.nokia.com/products/appdev/add-on-products/
 Note: If Qt4.6.2(or older) is used, please patch qt with:
 http://qt.gitorious.org/qt/qt/commit/9e5e97f3b5eaa9cda471be44a5c59b51561393b6
 http://qt.gitorious.org/qt/qt/commit/c09ef77cd271c47cb3c2607553dab669d6cbcddc
+http://qt.gitorious.org/qt/qt/commit/1d307402d03dea32b6e95a1eec6a79448fbe892a
+http://qt.gitorious.org/qt/qt/commit/fd96a8180a5ccfeaea5b081c42137d18d640c25e
+
+Note: If Qt4.6.3(or older) is used, please patch qt with:
+http://qt.gitorious.org/qt/qt/commit/1d307402d03dea32b6e95a1eec6a79448fbe892a
+http://qt.gitorious.org/qt/qt/commit/fd96a8180a5ccfeaea5b081c42137d18d640c25e
 
 --------------------------------------------------------------------------------
 Ubuntu 10.04 LTS (Lucid Lynx):

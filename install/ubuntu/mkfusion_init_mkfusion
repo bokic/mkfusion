@@ -19,7 +19,7 @@ MKFUSION="/opt/mkfusion/bin/mkfusion"
 case $1 in
 	start)
 		log_daemon_msg "Starting application server" "mkfusion"
-		if $MKFUSION start; then
+		if $MKFUSION -s; then
                         log_end_msg 0
                 else
                         log_end_msg 1
@@ -27,7 +27,7 @@ case $1 in
 	;;
 	stop)
 		log_daemon_msg "Stopping application server" "mkfusion"
-		if $MKFUSION stop; then
+		if $MKFUSION -t; then
                         log_end_msg 0
                 else
                         log_end_msg 1
@@ -38,22 +38,21 @@ case $1 in
 		$0 start
 	;;
 	status)
-		if ; then
-			PID= 
-		else
-			PID= ""
-		fi
+		ALLPROCESSES=`ps -Af`
 
-		if [ -n "$PID" ]; then
-			echo "MKFusion is running (pid $PID)."
-			exit 0
-		else
-			echo "MKFusion is NOT running."
+		MKFUSIONPROCESS=`expr "$ALLPROCESSES" : '.*\(^.*/opt/mkfusion/bin/mkfusion\)'`
+
+		if [ -z "$MKFUSIONPROCESS" ]; then
+			echo 'mkfusion is NOT running.'
 			exit 1
+		else
+			MKFUSION_PID=`expr "$MKFUSIONPROCESS" : '[^0-9]*\([0-9]\+\)'`
+			echo "mkfusion is running (pid $MKFUSION_PID)."
+			exit 0
 		fi
 	;;
 	*)
-		log_success_msg "Usage: /etc/init.d/mkfusion {start|stop|restart|status}"
+		log_success_msg "Usage: service mkfusion {start|stop|restart|status}"
 		exit 1
 	;;
 esac

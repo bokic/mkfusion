@@ -13,7 +13,7 @@ SolidCompression=yes
 OutputBaseFilename=MKFusion
 OutputDir=.
 VersionInfoVersion=0.4.1
-VersionInfoDescription=MKFusion is free, opensource, multiplatform ColdFusion application server(Qt 4.6.2)
+VersionInfoDescription=MKFusion is free, opensource, multiplatform ColdFusion application server(Qt 4.6.3)
 
 [Dirs]
 Name: "{app}\bin";
@@ -25,22 +25,22 @@ Name: "{app}\templates";
 
 [Files]
 ; MinGW runtime
-Source: "c:\Qt\4.6.2\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.6.2\bin\mingwm10.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.6.3\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.6.3\bin\mingwm10.dll"; DestDir: "{app}\bin";
 
-Source: "c:\Qt\4.6.2\bin\QtCore4.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.6.2\bin\QtNetwork4.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.6.2\bin\QtSql4.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.6.2\bin\QtXml4.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.6.3\bin\QtCore4.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.6.3\bin\QtNetwork4.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.6.3\bin\QtSql4.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.6.3\bin\QtXml4.dll"; DestDir: "{app}\bin";
 Source: "..\..\bin\mkfusion.exe"; DestDir: "{app}\bin"; Flags: ignoreversion;
 Source: "..\..\bin\mod_mkfusion.dll"; DestDir: "{app}\bin"; Flags: ignoreversion;
 Source: "..\..\install\mkfusion.db"; DestDir: "{app}\bin"; Flags: onlyifdoesntexist;
 Source: "uninstall.dll"; DestDir: "{app}"; Flags: ignoreversion;
 
-Source: "c:\Qt\4.6.2\plugins\sqldrivers\qsqlite4.dll"; DestDir: "{app}\bin\sqldrivers";
-Source: "c:\Qt\4.6.2\plugins\sqldrivers\qsqlodbc4.dll"; DestDir: "{app}\bin\sqldrivers";
-Source: "c:\Qt\4.6.2\plugins\sqldrivers\qsqlmysql4.dll"; DestDir: "{app}\bin\sqldrivers";
-Source: "c:\Qt\4.6.2\plugins\sqldrivers\qsqlpsql4.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "c:\Qt\4.6.3\plugins\sqldrivers\qsqlite4.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "c:\Qt\4.6.3\plugins\sqldrivers\qsqlodbc4.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "c:\Qt\4.6.3\plugins\sqldrivers\qsqlmysql4.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "c:\Qt\4.6.3\plugins\sqldrivers\qsqlpsql4.dll"; DestDir: "{app}\bin\sqldrivers";
 
 ;Source: "..\runtime\comerr32.dll"; DestDir: "{app}\bin";
 ;Source: "runtime\gssapi32.dll"; DestDir: "{app}\bin";

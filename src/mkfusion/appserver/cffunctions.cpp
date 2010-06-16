@@ -15,6 +15,22 @@ int cf_Abs(int val)
 	return abs(val);
 }
 
+QWDDX cf_Abs(const QWDDX& val)
+{
+	QWDDX ret;
+
+	ret = val;
+
+	if (ret.m_Type != QWDDX::Number)
+	{
+		ret = ret.toNumber();
+	}
+
+	ret.m_Number = abs(ret.m_Number);
+
+	return ret;
+}
+
 double cf_ACos(double val)
 {
 	if ((val < -1)||(val > 1))

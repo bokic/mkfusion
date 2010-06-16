@@ -1,12 +1,18 @@
-#!/bin/sh -e
+#!/bin/sh
 
 # Start MKFusion
-/etc/init.d/mkfusion start
+service mkfusion start
+
+# Add index.cfm to dir.conf
+
 
 # If Apache is running
-if [`/etc/init.d/apache2 status` != 'Apache is NOT running.']; then
+IS_APACHE2_RUNNING=`service apache2 status`
+
+if [ "$IS_APACHE2_RUNNING" != 'Apache is NOT running.' ]; then
     # Restart Apache2.2
-    /etc/init.d/apache2 restart
+    service apache2 restart
 fi
 
 return 0
+

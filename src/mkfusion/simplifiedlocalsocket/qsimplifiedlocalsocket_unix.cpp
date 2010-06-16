@@ -3,6 +3,8 @@
 #include <QDir>
 
 #include <netinet/in.h>
+#include <sys/socket.h>
+#include <sys/errno.h>
 #include <sys/un.h>
 #include <fcntl.h>
 #include <poll.h>
@@ -63,7 +65,9 @@ void QSimplifiedLocalSocket::connectToServer(QString p_Name, int msecs)
 
 	::strncpy(l_SocketName.sun_path, l_AsciiName.constData(), l_AsciiName.count() + 1);
 
-	::connect(m_Handle, (struct sockaddr *) &l_SocketName, SUN_LEN(&l_SocketName));
+	int c = ::connect(m_Handle, (struct sockaddr *) &l_SocketName, SUN_LEN(&l_SocketName));
+	int t = errno;
+	c = 0;
 }
 
 bool QSimplifiedLocalSocket::waitForConnected()
@@ -88,7 +92,17 @@ bool QSimplifiedLocalSocket::isValid()
 		return false;
 	}
 
-	return (::write(m_Handle, NULL, 0) == 0);
+	fd_set check_set;
+	struct timeval to;
+
+	FD_ZERO(&check_set);
+	FD_SET(m_Handle, &check_set);
+
+	to.tv_sec = 0;
+	to.tv_usec = 0;
+
+	::pe
+	return (::select(m_Handle + 1, &check_set, 0, 0, &to) == 0);
 }
 
 bool QSimplifiedLocalSocket::waitForReadyRead()
@@ -108,23 +122,24 @@ bool QSimplifiedLocalSocket::waitForReadyRead()
 QByteArray QSimplifiedLocalSocket::readAll()
 {
 	QByteArray ret;
+	QByteArray temp;
 
 	if (isValid())
 	{
-		int l_size = ::recv(m_Handle, NULL, 0, MSG_PEEK);
-
-		ret.resize(l_size);
-
-		int l_recieved = ::recv(m_Handle, ret.data(), l_size, 0);
-
-		if (l_recieved < 0)
+		forever
 		{
-			return QByteArray();
-		}
+			temp.resize(1024);
 
-		if (l_size != l_recieved)
-		{
-			ret.resize(l_recieved);
+			int l_size = ::recv(m_Handle, temp.data(), 1024, 0);
+
+			if (l_size == 0)
+			{
+				break;
+			}
+
+			temp.resize(l_size);
+
+			ret.append(temp);
 		}
 	}
 
