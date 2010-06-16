@@ -9,9 +9,6 @@
 #include <QDir>
 #include <QUrl>
 
-#ifdef Q_WS_WIN
-#include <windows.h>
-#endif
 
 QCFRunningTemplate::QCFRunningTemplate()
 {
@@ -434,11 +431,7 @@ void QCFRunningTemplate::run()
 			{
 				break;
 			}
-			m_Socket->waitForBytesWritten(-1); // TODO: QtBug. This line doesn't  do it's function.
-//#ifdef Q_WS_WIN
-//			HANDLE handle = &m_Socket; // TODO: very ugly hack.
-//			FlushFileBuffers(handle);
-//#endif
+			m_Socket->waitForBytesWritten(-1);
 
 			l_SendBufPos += 1024;
 		}
