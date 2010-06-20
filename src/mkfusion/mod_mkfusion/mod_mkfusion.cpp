@@ -45,7 +45,7 @@ static int mkfusion_handler(request_rec *r)
 		l_IOStream << (quint32)0;
 		l_IOStream << r->ap_auth_type;
 		l_IOStream << r->user;
-		l_IOStream << QDir::toNativeSeparators(r->filename).toLatin1();
+		l_IOStream << QDir::toNativeSeparators(r->filename).toLatin1(); // TODO: Currently only latin filenames.
 		l_IOStream << apr_table_get(r->headers_in, "Accept");
 		l_IOStream << apr_table_get(r->headers_in, "Accept-Encoding");
 		l_IOStream << apr_table_get(r->headers_in, "Accept-Language");
@@ -71,7 +71,9 @@ static int mkfusion_handler(request_rec *r)
 
 		while(l_localSocket.isValid())
 		{
+#ifndef Q_WS_WIN
 			if (l_localSocket.waitForReadyRead())
+#endif
 			{
 				l_ReadBuf = l_localSocket.readAll();
 
