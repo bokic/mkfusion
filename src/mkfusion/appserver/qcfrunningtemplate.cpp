@@ -9,77 +9,22 @@
 #include <QDir>
 #include <QUrl>
 
-
 QCFRunningTemplate::QCFRunningTemplate()
 {
 	m_Socket = NULL;
-}
-
-QCFRunningTemplate::QCFRunningTemplate(QObject *parent = NULL): QThread(parent)
-{
-	m_Socket = NULL;
+	m_CFServer = NULL;
 	m_ContentType = "text/html; charset=utf-8";
 	m_Status = 200;
 	m_HeadersSent = false;
 }
 
-QCFRunningTemplate::QCFRunningTemplate(const QCFRunningTemplate &other): QThread()
-{
-	this->setParent(other.parent());
-	this->m_APPLICATION = other.m_APPLICATION;
-	this->m_CFOutput = other.m_CFOutput;
-	this->m_CGI = other.m_CGI;
-	this->m_FORM = other.m_FORM;
-	this->m_Output = other.m_Output;
-	this->m_SERVER = other.m_SERVER;
-	this->m_SESSION = other.m_SESSION;
-	this->m_URL = other.m_URL;
-	this->m_VARIABLE = other.m_VARIABLE;
-	this->m_Socket = other.m_Socket;
-	this->m_ContentType = other.m_ContentType;
-	this->m_Status = other.m_Status;
-	this->m_HeadersSent = other.m_HeadersSent;
-}
-
-QCFRunningTemplate &QCFRunningTemplate::operator=(const QCFRunningTemplate &other)
-{
-	this->setParent(other.parent());
-	this->m_APPLICATION = other.m_APPLICATION;
-	this->m_CFOutput = other.m_CFOutput;
-	this->m_CGI = other.m_CGI;
-	this->m_FORM = other.m_FORM;
-	this->m_Output = other.m_Output;
-	this->m_SERVER = other.m_SERVER;
-	this->m_SESSION = other.m_SESSION;
-	this->m_URL = other.m_URL;
-	this->m_VARIABLE = other.m_VARIABLE;
-	this->m_Socket = other.m_Socket;
-	this->m_ContentType = other.m_ContentType;
-	this->m_Status = other.m_Status;
-	this->m_HeadersSent = other.m_HeadersSent;
-
-	return *this;
-}
-
-void QCFRunningTemplate::startSocket(QLocalSocket *p_Socket)
-{
-	m_Socket = p_Socket;
-
-	if (p_Socket != NULL)
-	{
-		p_Socket->moveToThread(this);
-	}
-
-	start();
-}
-
-void QCFRunningTemplate::run()
+void QCFRunningTemplate::worker()
 {
 	QByteArray l_RecievedBuffer;
 	bool l_FoundRecieveBufSize = false;
 	qint32 l_RecieveBufSize = 0;
 
-	if (m_Socket == NULL)
+	if ((!m_Socket)||(!m_CFServer))
 	{
 		return;
 	}
@@ -212,36 +157,37 @@ void QCFRunningTemplate::run()
 			delete tempstr;
 		}
 
-		QCFServer* par = ((QCFServer*)parent());
 		QLibrary l_TemplateLib;
 		QCFTemplate* l_page = NULL;
 		createCFMTemplateDef createCFMTemplate = NULL;
 
-		try
-		{
-			par->m_runningTemplatesLock.lockForRead();
 
-			QString err = par->compileTemplate(m_Request.m_Filename);
-			if (err.isEmpty())
+		((QCFServer*)m_CFServer)->m_runningTemplatesLock.lockForRead();
+
+		QString err = ((QCFServer*)m_CFServer)->compileTemplate(m_Request.m_Filename);
+		if (err.isEmpty())
+		{
+			l_TemplateLib.setFileName(((QCFServer*)m_CFServer)->m_MKFusionPath + "templates/" + ((QCFServer*)m_CFServer)->m_CompiledTemplates[m_Request.m_Filename].m_CompiledFileName);
+			if (l_TemplateLib.load() != false)
 			{
-				l_TemplateLib.setFileName(((QCFServer*)parent())->m_MKFusionPath + "templates/" + par->m_CompiledTemplates[m_Request.m_Filename].m_CompiledFileName);
-				if (l_TemplateLib.load() != false)
-				{
-					createCFMTemplate = (createCFMTemplateDef) l_TemplateLib.resolve("createCFMTemplate");
-				}
-				else
-				{
-					m_Status = 500;
-					m_Output = "Can\'t load template library.";
-				}
+				createCFMTemplate = (createCFMTemplateDef) l_TemplateLib.resolve("createCFMTemplate");
 			}
 			else
 			{
 				m_Status = 500;
-				m_Output = "Compiling error: " + err;
+				m_Output = "Can\'t load template library.";
 			}
-			par->m_runningTemplatesLock.unlock();
+		}
+		else
+		{
+			m_Status = 500;
+			m_Output = "Compiling error: " + err;
+		}
 
+		((QCFServer*)m_CFServer)->m_runningTemplatesLock.unlock();
+
+		try
+		{
 			if (createCFMTemplate != NULL)
 			{
 				l_page = createCFMTemplate();
@@ -268,7 +214,7 @@ void QCFRunningTemplate::run()
 					m_SERVER.wr(true)["COLDFUSION"]["PRODUCTLEVEL"] = "Free";
 					m_SERVER.wr(true)["COLDFUSION"]["PRODUCTNAME"] = "MKFusion Server";
 					m_SERVER.wr(true)["COLDFUSION"]["PRODUCTVERSION"] = "0.4.1";
-					m_SERVER.wr(true)["COLDFUSION"]["ROOTDIR"] = par->m_MKFusionPath.left(-1);
+					m_SERVER.wr(true)["COLDFUSION"]["ROOTDIR"] = ((QCFServer*)m_CFServer)->m_MKFusionPath.left(-1);
 					m_SERVER.wr(true)["COLDFUSION"]["SUPPORTEDLOCALES"] = "English (US),en,en_US";
 					m_SERVER.wr(true)["OS"] = QWDDX(QWDDX::Struct);
 #ifdef Q_WS_WIN
@@ -384,7 +330,6 @@ void QCFRunningTemplate::run()
 		}
 		catch (QMKFusionException& ex)
 		{
-			par->m_runningTemplatesLock.unlock();
 			m_Status = 500;
 			m_Output += WriteException(ex, this->m_Request);
 		}
@@ -419,6 +364,8 @@ void QCFRunningTemplate::run()
 			{
 				break;
 			}
+
+			m_Socket->waitForBytesWritten(-1);
 		}
 
 		QByteArray l_SendBuf = m_Output.toUtf8(); // TODO: utf-8 output hardcoded
@@ -439,5 +386,7 @@ void QCFRunningTemplate::run()
 		break;
 	}
 
+	m_Socket->close();
 	m_Socket->deleteLater();
+	deleteLater();
 }

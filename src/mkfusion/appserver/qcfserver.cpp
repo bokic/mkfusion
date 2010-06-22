@@ -102,10 +102,34 @@ void QCFServer::on_newConnection()
 			return;
 		}
 
-		m_runningTemplates.append(QCFRunningTemplate(this));
-		m_runningTemplates.last().startSocket(l_LocalSocket);
+		QThread* l_thread = new QThread(this);
+
+		m_runningTemplates.append(l_thread);
+
+		QCFRunningTemplate* l_runningTemplate = new QCFRunningTemplate();
+
+		l_runningTemplate->m_CFServer = this;
+		l_runningTemplate->moveToThread(l_thread);
+		l_runningTemplate->m_Socket = l_LocalSocket;
+		l_LocalSocket->setParent(NULL);
+		l_LocalSocket->moveToThread(l_thread);
+
+		l_runningTemplate->connect(l_thread, SIGNAL(started()), SLOT(worker()));
+		connect(l_thread, SIGNAL(terminated()), SLOT(on_workerTerminated()));
+
+		l_thread->start();
+
 		m_runningTemplatesLock.unlock();
 	}
+}
+
+void QCFServer::on_workerTerminated()
+{
+	QThread* l_sender = (QThread*)sender();
+
+	m_runningTemplates.removeOne(l_sender);
+
+	l_sender->deleteLater();
 }
 
 void QCFServer::start()

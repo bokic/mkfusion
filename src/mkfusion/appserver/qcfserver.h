@@ -6,6 +6,7 @@
 
 #include <QReadWriteLock>
 #include <QLocalServer>
+#include <QThread>
 #include <QObject>
 #include <QList>
 #include <QHash>
@@ -28,13 +29,14 @@ public:
 	QHash<QString, QCFCompiledTemplateItem> m_CompiledTemplates;
 	QLocalServer m_LocalServer;
 	QReadWriteLock m_runningTemplatesLock;
-	QList<QCFRunningTemplate> m_runningTemplates;
+	QList<QThread*> m_runningTemplates;
 	QString compileTemplate(const QString&);
 	QString m_MKFusionPath;
 	int m_mainTimer;
 	int m_MaxSimulRunningTemplates;
 private slots:
 	void on_newConnection();
+	void on_workerTerminated();
 };
 
 #endif // QCFSERVER_H
