@@ -1,4 +1,5 @@
 #include <QtCore/QCoreApplication>
+#include <QtCore/QStringList>
 #include "qtservice.h"
 
 #include <qcfserver.h>

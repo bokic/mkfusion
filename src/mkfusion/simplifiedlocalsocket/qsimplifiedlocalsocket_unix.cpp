@@ -101,7 +101,6 @@ bool QSimplifiedLocalSocket::isValid()
 	to.tv_sec = 0;
 	to.tv_usec = 0;
 
-	::pe
 	return (::select(m_Handle + 1, &check_set, 0, 0, &to) == 0);
 }
 

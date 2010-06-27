@@ -115,7 +115,8 @@ void QCFServer::on_newConnection()
 		l_LocalSocket->moveToThread(l_thread);
 
 		l_runningTemplate->connect(l_thread, SIGNAL(started()), SLOT(worker()));
-		connect(l_thread, SIGNAL(terminated()), SLOT(on_workerTerminated()));
+		l_thread->connect(l_runningTemplate, SIGNAL(finished()), SLOT(quit()));
+		connect(l_thread, SIGNAL(finished()), SLOT(on_workerTerminated()));
 
 		l_thread->start();
 

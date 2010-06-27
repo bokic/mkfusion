@@ -161,7 +161,6 @@ void QCFRunningTemplate::worker()
 		QCFTemplate* l_page = NULL;
 		createCFMTemplateDef createCFMTemplate = NULL;
 
-
 		((QCFServer*)m_CFServer)->m_runningTemplatesLock.lockForRead();
 
 		QString err = ((QCFServer*)m_CFServer)->compileTemplate(m_Request.m_Filename);
@@ -389,4 +388,6 @@ void QCFRunningTemplate::worker()
 	m_Socket->close();
 	m_Socket->deleteLater();
 	deleteLater();
+
+	emit finished();
 }

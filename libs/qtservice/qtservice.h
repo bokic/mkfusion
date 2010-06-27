@@ -74,7 +74,7 @@ class QT_QTSERVICE_EXPORT QtServiceController
 public:
     enum StartupType
     {
-	    AutoStartup = 0, ManualStartup
+        AutoStartup = 0, ManualStartup
     };
 
     QtServiceController(const QString &name);
@@ -112,7 +112,7 @@ public:
 
     enum MessageType
     {
-	Success = 0, Error, Warning, Information
+        Success = 0, Error, Warning, Information
     };
 
     enum ServiceFlag
@@ -134,6 +134,11 @@ public:
 
     QtServiceController::StartupType startupType() const;
     void setStartupType(QtServiceController::StartupType startupType);
+
+    QStringList DependsOnServices();
+    void setDependsOnServices(const QStringList dependsOnServices);
+    QString serviceGroup();
+    void setServiceGroup(const QString& ServiceGroup);
 
     ServiceFlags serviceFlags() const;
     void setServiceFlags(ServiceFlags flags);

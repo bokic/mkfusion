@@ -28,6 +28,10 @@ public:
 	QLocalSocket* m_Socket;
 	QObject* m_CFServer;
 	QCFRunningTemplate_Request m_Request;
+
+signals:
+	void finished();
+
 public slots:
 	void worker();
 };
