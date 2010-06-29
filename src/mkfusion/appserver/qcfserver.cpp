@@ -15,6 +15,7 @@
 #include <Tlhelp32.h>
 #include <Psapi.h>
 #elif defined Q_WS_X11
+#include<sys/stat.h>
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
@@ -147,10 +148,22 @@ void QCFServer::start()
 		killTimer(m_mainTimer);
 	}
 
+#ifdef Q_WS_X11
+	if (QFile::exists("/tmp/mkfusion"))
+	{
+		QFile::remove("/tmp/mkfusion");
+	}
+#endif
+
 	if (m_LocalServer.listen("mkfusion") == false)
 	{
 		return;
 	}
+
+#ifdef Q_WS_X11
+	::chmod("/tmp/mkfusion", S_IRUSR|S_IRGRP|S_IROTH|S_IWUSR|S_IWGRP|S_IWOTH);
+#endif
+
 
 	m_mainTimer = startTimer(1000);
 

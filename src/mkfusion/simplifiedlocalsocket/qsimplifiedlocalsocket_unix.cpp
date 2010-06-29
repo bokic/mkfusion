@@ -16,10 +16,7 @@ QSimplifiedLocalSocket::QSimplifiedLocalSocket()
 
 QSimplifiedLocalSocket::~QSimplifiedLocalSocket()
 {
-	if (m_Handle)
-	{
-		::close(m_Handle);
-	}
+	close();
 }
 
 void QSimplifiedLocalSocket::connectToServer(QString p_Name, int msecs)
@@ -77,7 +74,7 @@ bool QSimplifiedLocalSocket::waitForConnected()
 
 int QSimplifiedLocalSocket::write(QByteArray p_Data)
 {
-	if (!isValid())
+	if (m_Handle == 0)
 	{
 		return -1;
 	}
@@ -92,21 +89,28 @@ bool QSimplifiedLocalSocket::isValid()
 		return false;
 	}
 
-	fd_set check_set;
-	struct timeval to;
+	pollfd poolh;
+	poolh.fd = m_Handle;
 
-	FD_ZERO(&check_set);
-	FD_SET(m_Handle, &check_set);
+	// Don't say unvalid until all bytes are readed.
+	//poolh.events = POLLIN;
+	//int ret = poll(&poolh, 1, 0);
 
-	to.tv_sec = 0;
-	to.tv_usec = 0;
+	//if (ret > 0)
+	//{
+	//	return true;
+	//}
 
-	return (::select(m_Handle + 1, &check_set, 0, 0, &to) == 0);
+	poolh.events = POLLHUP;
+
+	int ret = poll(&poolh, 1, 0);
+
+	return (ret == 0);
 }
 
 bool QSimplifiedLocalSocket::waitForReadyRead()
 {
-	if (!isValid())
+	if (m_Handle == 0)
 	{
 		return false;
 	}
@@ -123,7 +127,7 @@ QByteArray QSimplifiedLocalSocket::readAll()
 	QByteArray ret;
 	QByteArray temp;
 
-	if (isValid())
+	if (m_Handle != 0)
 	{
 		forever
 		{
@@ -143,4 +147,13 @@ QByteArray QSimplifiedLocalSocket::readAll()
 	}
 
 	return ret;
+}
+
+void QSimplifiedLocalSocket::close()
+{
+	if (m_Handle)
+	{
+		::close(m_Handle);
+		m_Handle = 0;
+	}
 }

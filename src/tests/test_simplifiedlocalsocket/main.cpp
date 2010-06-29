@@ -13,24 +13,26 @@ int main()
         QDataStream l_IOStream(&l_Send, QIODevice::WriteOnly);
         l_IOStream.setVersion(QDataStream::Qt_4_4);
 
-		l_IOStream << (quint32)0;
-		l_IOStream << "";
-		l_IOStream << "";
-		l_IOStream << QDir::toNativeSeparators("/var/www/test.cfm").toLatin1();
-		l_IOStream << "";
-		l_IOStream << "";
-		l_IOStream << "";
-		l_IOStream << "";
-		l_IOStream << "";
-		l_IOStream << "";
-		l_IOStream << "";
-		l_IOStream << "";
-		l_IOStream << "GET";
-		l_IOStream << "";
+		l_IOStream << (quint32)0; // Size
+		l_IOStream << ""; // Auth_type
+		l_IOStream << ""; // User
+		l_IOStream << QDir::toNativeSeparators("/var/www/test.cfm").toLatin1(); // File
+		l_IOStream << ""; // Accept
+		l_IOStream << ""; // Accept-Encoding
+		l_IOStream << ""; // Accept-Language
+		l_IOStream << ""; // Connection
+		l_IOStream << ""; // Host
+		l_IOStream << ""; // Referer
+		l_IOStream << ""; // User-Agent
+		l_IOStream << ""; // args
+		l_IOStream << "GET"; // method
+		l_IOStream << ""; // Protocol
 		l_IOStream.device()->seek(0);
 		l_IOStream << (quint32)l_Send.size();
 
-		if (l_localSocket.write(l_Send) == -1)
+		int l_size = l_localSocket.write(l_Send);
+
+		if (l_size == l_Send.size() + 4) // INFO: 4 = int size
 		{
 			return -1;
 		}
@@ -77,9 +79,12 @@ int main()
 					l_HeadersDataStream >> l_tempStr;
 					QByteArray l_tempByte = l_tempStr.toUtf8();
 
+					int l_Status;
+					l_HeadersDataStream >> l_Status;
+
 					qint32 l_HeaderLen;
 					l_HeadersDataStream >> l_HeaderLen;
-					for (qint32 c = 0; c < l_HeaderLen; c++)
+					while(l_HeadersDataStream.atEnd() == false)
 					{
 						QString key, val;
 
@@ -91,7 +96,7 @@ int main()
 
 				if (l_ReadBuf.size() > 0)
 				{
-					//ap_rwrite(l_ReadBuf.constData(), l_ReadBuf.size(), r);
+					qDebug(l_ReadBuf);
 				}
 
 				l_ReadBuf.clear();

@@ -19,6 +19,7 @@ public:
 	bool isValid();
 	bool waitForReadyRead();
 	QByteArray readAll();
+	void close();
 private:
 #ifdef Q_WS_WIN
 	HANDLE m_Handle;

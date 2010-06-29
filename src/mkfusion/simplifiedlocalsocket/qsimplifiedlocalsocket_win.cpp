@@ -8,10 +8,7 @@ QSimplifiedLocalSocket::QSimplifiedLocalSocket()
 
 QSimplifiedLocalSocket::~QSimplifiedLocalSocket()
 {
-	if (m_Handle != INVALID_HANDLE_VALUE)
-	{
-		CloseHandle(m_Handle);
-	}
+	close();
 }
 
 void QSimplifiedLocalSocket::connectToServer(QString p_Name, int msecs)
@@ -111,4 +108,13 @@ QByteArray QSimplifiedLocalSocket::readAll()
 	}
 
 	return ret;
+}
+
+void QSimplifiedLocalSocket::close()
+{
+	if (m_Handle != INVALID_HANDLE_VALUE)
+	{
+		CloseHandle(m_Handle);
+		m_Handle = INVALID_HANDLE_VALUE;
+	}
 }
