@@ -44,10 +44,7 @@ cp src/mkfusion/appserver/qcftemplate.h install/ubuntu/mkfusion/opt/mkfusion/inc
 cp src/mkfusion/appserver/qmkfusionexception.h install/ubuntu/mkfusion/opt/mkfusion/include/qmkfusionexception.h
 cp src/mkfusion/appserver/qwddx.h install/ubuntu/mkfusion/opt/mkfusion/include/qwddx.h
 cp install/ubuntu/mkfusion_mkfusion.conf install/ubuntu/mkfusion/etc/apache2/mods-available/mkfusion.conf
-ln -s ../mods-available/mkfusion.conf install/ubuntu/mkfusion/etc/apache2/mods-enabled/mkfusion.conf
-chmod 0644 install/ubuntu/mkfusion/etc/apache2/mods-enabled/mkfusion.conf
 cp install/ubuntu/mkfusion_mkfusion.load install/ubuntu/mkfusion/etc/apache2/mods-available/mkfusion.load
-ln -s ../mods-available/mkfusion.load install/ubuntu/mkfusion/etc/apache2/mods-enabled/mkfusion.load
 dpkg -b install/ubuntu/mkfusion mkfusion_0.4.1-0ubuntu0_i386.deb
 rm -rf install/ubuntu/mkfusion
 

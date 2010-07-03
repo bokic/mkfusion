@@ -1,10 +1,16 @@
 #!/bin/sh
 
-# Start MKFusion
+# Install mkfusion daemon
+insserv mkfusion
+
+# Start mkfusion daemon
 service mkfusion start
 
-# Add index.cfm to dir.conf
+# Enable mkfusion module
+a2enmod mkfusion
 
+# Add index.cfm to dir.conf
+# ???
 
 # If Apache is running
 IS_APACHE2_RUNNING=`service apache2 status`

@@ -336,7 +336,10 @@ void QCFRunningTemplate::worker()
 		delete l_page;
 		createCFMTemplate = NULL;
 
-		//l_TemplateLib.unload();
+		if (l_TemplateLib.isLoaded())
+		{
+			l_TemplateLib.unload();
+		}
 
 		if (m_HeadersSent == false)
 		{

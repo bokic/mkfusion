@@ -452,6 +452,12 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 	// Compile
 #ifdef Q_WS_WIN
 	QString l_QtPath = getQtDir(); // "C:\\Qt\\4.6.2\\" or "C:\\Qt\\2009.04\\qt\\";
+
+	if (l_QtPath.isEmpty())
+	{
+		l_QtPath = "C:\\Qt\\4.6.3\\"; // TODO: Fallback
+	}
+
 	QString l_MingwPath = getMingwDir(); // "C:\\Qt\\qtcreator-1.3.1\\mingw\\" or "C:\\Qt\\2009.04\\mingw\\", TODO: please check if Nokia has fixed their uninstaller registry entry.
 #ifdef QT_NO_DEBUG
 	process.start(l_MingwPath+"bin\\g++.exe -c -O2 -frtti -fexceptions -mthreads -Wall -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I\""+l_MingwPath+"include\" -I\""+l_QtPath+"include\\QtCore\" -I\""+l_QtPath+"include\\QtNetwork\" -I\""+l_QtPath+"include\" -I\""+p_MKFusionPath+"include\" -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".cpp\"");
