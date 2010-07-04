@@ -728,7 +728,7 @@ QString cf_CharsetEncode(const QString&, const QString&)
 
 QString cf_Chr(int p_number)
 {
-	return QChar(p_number);
+	return QString(QChar(p_number));
 }
 
 QString cf_CJustify(const QString& p_Value, int p_lenght)

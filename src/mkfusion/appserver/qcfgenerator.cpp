@@ -316,6 +316,8 @@ QCFGenerator::QCFGenerator()
 {
 	m_CFTagsDef = QCF8::generateCFTags();
 	m_CFFunctionsDef = QCF8::generateCFFunctions();
+	m_EnableCFOutputOnly = false;
+	m_Tabs = 2;
 }
 
 
@@ -374,7 +376,10 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 					l_tmpStr.replace("##", "#");
 				}
 
-				l_cppFile.write((line+"f_WriteOutput(QString::fromWCharArray(L\""+toCPPEncodeStr(l_tmpStr)+ "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+				if (!m_EnableCFOutputOnly)
+				{
+					l_cppFile.write((line+"f_WriteOutput(QString::fromWCharArray(L\""+toCPPEncodeStr(l_tmpStr)+ "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+				}
 			}
 		}
 		else
@@ -388,7 +393,10 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 					l_tmpStr.replace("##", "#");
 				}
 
-				l_cppFile.write((line+"f_WriteOutput(QString::fromWCharArray(L\""+toCPPEncodeStr(l_tmpStr)+ "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+				if (!m_EnableCFOutputOnly)
+				{
+					l_cppFile.write((line+"f_WriteOutput(QString::fromWCharArray(L\""+toCPPEncodeStr(l_tmpStr)+ "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+				}
 			}
 		}
 
@@ -421,7 +429,10 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 			l_tmpStr.replace("##", "#");
 		}
 
-		l_cppFile.write((line+"f_WriteOutput(QString::fromWCharArray(L\""+toCPPEncodeStr(l_tmpStr)+ "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+		if (!m_EnableCFOutputOnly)
+		{
+			l_cppFile.write((line+"f_WriteOutput(QString::fromWCharArray(L\""+toCPPEncodeStr(l_tmpStr)+ "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+		}
 	}
 	else
 	{
@@ -434,7 +445,10 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 				l_tmpStr.replace("##", "#");
 			}
 
-			l_cppFile.write((line+"f_WriteOutput(QString::fromWCharArray(L\""+toCPPEncodeStr(l_tmpStr)+ "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+			if (!m_EnableCFOutputOnly)
+			{
+				l_cppFile.write((line+"f_WriteOutput(QString::fromWCharArray(L\""+toCPPEncodeStr(l_tmpStr)+ "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+			}
 		}
 	}
 
@@ -525,11 +539,11 @@ QString QCFGenerator::GenerateVariable(const QString& p_Variable, const QString&
 		&& (l_Variable.compare("URL", Qt::CaseInsensitive) != 0) \
 		&& (l_Variable.startsWith("POST.", Qt::CaseInsensitive) == 0) \
 		&& (l_Variable.compare("POST", Qt::CaseInsensitive) != 0) \
-		&& (l_Variable.startsWith("VARIABLE.", Qt::CaseInsensitive) == 0) \
-		&& (l_Variable.compare("VARIABLE", Qt::CaseInsensitive) != 0) \
+		&& (l_Variable.startsWith("VARIABLES.", Qt::CaseInsensitive) == 0) \
+		&& (l_Variable.compare("VARIABLES", Qt::CaseInsensitive) != 0) \
 	   )
 	{
-		l_Variable = "VARIABLE." + l_Variable;
+		l_Variable = "VARIABLES." + l_Variable;
 	}
 
 	QStringList l_StrList = l_Variable.split(".");
@@ -556,6 +570,9 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 
 	switch(p_CFExpression.m_Type)
 	{
+		case Boolean:
+			ret = "QWDDX(\"" + l_ElementName.toLower() + "\")";
+			break;
 		case Number:
 			ret = "QWDDX(\"" + l_ElementName + "\")";
 			break;
@@ -580,7 +597,17 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 			}
 			break;
 		case Variable:
-			return GenerateVariable(l_ElementName, p_CanCreateChildren);
+			ret = GenerateVariable(l_ElementName, p_CanCreateChildren);
+			for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+			{
+				ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], "false");
+			}
+			break;
+		case VariableIndex:
+				if (p_CFExpression.m_ChildElements.count() > 0)
+				{
+					ret = "[" + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[0], "false") + "]";
+				}
 			break;
 		case Function:
 				ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
@@ -734,11 +761,10 @@ QString QCFGenerator::CFTagGetArgument(const QCFParserTag& p_CFTag, const QStrin
 		if (l_Argument.m_ChildElements[0].m_Text.compare(p_Argument, Qt::CaseInsensitive) == 0)
 		{
 			QCFParserElement l_temp = l_Argument;
-			if (l_temp.m_ChildElements.size() > 1){l_temp.m_ChildElements.removeFirst();}
-			if (l_temp.m_ChildElements.size() > 1){l_temp.m_ChildElements.removeFirst();}
-
-			//return GenerateCFExpressionToCExpression(OprimizeQCFParserElement(l_temp), p_CreateVars);
-			return GenerateCFExpressionToCExpression(l_temp, p_CreateVars);
+			if (l_Argument.m_ChildElements.size() == 3)
+			{
+				return GenerateCFExpressionToCExpression(l_Argument.m_ChildElements.at(2), p_CreateVars);
+			}
 		}
 	}
 
@@ -889,6 +915,21 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag& p_CFTag)
 		{
 			//return "} else if(" + GenerateCFExpressionToCExpression(OprimizeQCFParserElement(p_CFTag.m_Arguments), "false") + ") {";
 			return "} else if(" + GenerateCFExpressionToCExpression(p_CFTag.m_Arguments, "false") + ") {";
+		}
+	}
+	else if(!p_CFTag.m_Name.compare("cfsetting", Qt::CaseInsensitive))
+	{
+		QString l_enablecfoutputonly = CFTagGetArgument(p_CFTag, "enablecfoutputonly");
+		l_enablecfoutputonly = l_enablecfoutputonly.remove('\'');
+		l_enablecfoutputonly = l_enablecfoutputonly.remove('\"');
+
+		if ((l_enablecfoutputonly.compare("true", Qt::CaseInsensitive) == 0)||(l_enablecfoutputonly.compare("yes", Qt::CaseInsensitive)) == 0)
+		{
+			m_EnableCFOutputOnly = true;
+		}
+		if ((l_enablecfoutputonly.compare("false", Qt::CaseInsensitive) == 0)||(l_enablecfoutputonly.compare("no", Qt::CaseInsensitive)) == 0)
+		{
+			m_EnableCFOutputOnly = false;
 		}
 	}
 

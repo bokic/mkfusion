@@ -336,14 +336,14 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 					return ParseCFCode(p_Text, l_Offset, Operator);
 				}
 
-				if (ch =='(')
-				{
-					return ParseCFCode(p_Text, l_Offset, Function);
-				}
-
 				if ((l_Offset == c)&&((ch =='\'')||(ch =='\"')))
 				{
 					return ParseCFCode(p_Text, l_Offset, String);
+				}
+
+				if (ch =='(')
+				{
+					return ParseCFCode(p_Text, l_Offset, Function);
 				}
 
 				if (ch == '[')
@@ -386,6 +386,15 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 					{
 						ret.m_Type = Operator;
 					}
+
+					if (
+							(ret.m_Text.compare("true", Qt::CaseInsensitive) == 0)||
+							(ret.m_Text.compare("false", Qt::CaseInsensitive) == 0)
+						)
+					{
+						ret.m_Type = Boolean;
+					}
+
 					return ret;
 				}
 			}

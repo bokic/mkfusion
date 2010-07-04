@@ -5,7 +5,7 @@
 #include <QVariant>
 #include <QVector>
 #include <QString>
-#include <QHash>
+#include <QMap>
 
 class Q_DECL_EXPORT QWDDX
 {
@@ -39,6 +39,8 @@ public:
 	operator QDateTime();
 	QWDDX& operator+(int);
 	QWDDX& operator+(double);
+	QWDDX& operator+(const char*);
+	QWDDX& operator+(const wchar_t*);
 	QWDDX& operator+(const QString&);
 	QWDDX& operator+(const QWDDX&);
 	friend QWDDX& operator+(int, const QWDDX&);
@@ -65,6 +67,15 @@ public:
 	friend QWDDX& operator/(int, const QWDDX&);
 	friend QWDDX& operator/(double, const QWDDX&);
 	friend QWDDX& operator/(const QString&, const QWDDX&);
+	QWDDX& operator&(int);
+	QWDDX& operator&(double);
+	QWDDX& operator&(const char*);
+	QWDDX& operator&(const wchar_t*);
+	QWDDX& operator&(const QString&);
+	QWDDX& operator&(const QWDDX&);
+	friend QWDDX& operator&(int, const QWDDX&);
+	friend QWDDX& operator&(double, const QWDDX&);
+	friend QWDDX& operator&(const QString&, const QWDDX&);
 	QWDDX& join(const QWDDX&);
 	QWDDXType getType();
 	int size();
@@ -108,12 +119,13 @@ public:
 	QString toString();
 	QByteArray toBinary();
 	double toNumber();
+	bool canToNumber();
 	QDateTime toDateTime();
 	bool toBool();
 
 	QVector<QWDDX> m_Array;
 	quint32 m_ArrayDimension;
-	QHash<QString, QWDDX> m_Struct;
+	QMap<QString, QWDDX> m_Struct;
 	QString m_String;
 	QByteArray m_ByteArray;
 	double m_Number;

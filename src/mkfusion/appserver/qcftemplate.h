@@ -5,8 +5,6 @@
 
 #include <QObject>
 #include <QString>
-#include <QDateTime>
-
 
 struct QIsTemplateModified {
 	QString m_Filename;

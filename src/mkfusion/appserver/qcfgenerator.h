@@ -16,6 +16,8 @@ public:
 private:
 	QHash<QString, QCFTag> m_CFTagsDef;
 	QHash<QString, QCFFunction> m_CFFunctionsDef;
+	bool m_EnableCFOutputOnly;
+	quint32 m_Tabs;
 };
 
 #endif // QCFGENERATOR_H

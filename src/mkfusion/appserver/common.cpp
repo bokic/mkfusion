@@ -45,6 +45,16 @@ QString cfdump_var(const QWDDX& p_Variable)
 
 			ret += "</table>\n";
 			break;
+		case QWDDX::Array:
+			ret = "<table class=\"cfdump_array\"><tr><th class=\"array\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" style=\"cursor:pointer;\" title=\"click to collapse\">array</th></tr>\n";
+
+			for(int i = 0; i < p_Variable.m_Array.size(); i++)
+			{
+				ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i + 1) + "</td><td>" + cfdump_var(l_temp.m_Array[i]) + "</td></tr>\n";
+			}
+
+			ret += "</table>\n";
+			break;
 		default:
 			return "";
 	}

@@ -684,7 +684,8 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	//ret.insert("ArrayLen", QCFFunction("ArrayLen"));
 	//ret.insert("ArrayMax", QCFFunction("ArrayMax"));
 	//ret.insert("ArrayMin", QCFFunction("ArrayMin"));
-	//ret.insert("ArrayNew", QCFFunction("ArrayNew"));
+	ret.insert("arraynew", QCFFunction("ArrayNew", QCFFunction::ReturnQWDDX));
+	ret["arraynew"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 	//ret.insert("ArrayPrepend", QCFFunction("ArrayPrepend"));
 	//ret.insert("ArrayResize", QCFFunction("ArrayResize"));
 	//ret.insert("ArraySet", QCFFunction("ArraySet"));
@@ -713,7 +714,8 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 
 	//ret.insert("CharsetDecode", QCFFunction("CharsetDecode"));
 	//ret.insert("CharsetEncode", QCFFunction("CharsetEncode"));
-	//ret.insert("Chr", QCFFunction("Chr"));
+	ret.insert("chr", QCFFunction("Chr", QCFFunction::ReturnString));
+	ret["chr"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
 	//ret.insert("CJustify", QCFFunction("CJustify"));
 	//ret.insert("Compare", QCFFunction("Compare"));

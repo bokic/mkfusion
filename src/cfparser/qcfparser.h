@@ -9,7 +9,7 @@
 #include <QList>
 #include <QHash>
 
-enum QCFParserElementType {Number, String, Variable, Function, Operator, SharpExpression, Expression, SubExpression, Parameters, Parameter, CFScript, CFComment, CFTagExpression, CFTagArguments, CFTagArgument, ObjectFunction, VariableIndex, Error};
+enum QCFParserElementType {Boolean, Number, String, Variable, Function, Operator, SharpExpression, Expression, SubExpression, Parameters, Parameter, CFScript, CFComment, CFTagExpression, CFTagArguments, CFTagArgument, ObjectFunction, VariableIndex, Error};
 enum QCFParserErrorType {NoError, ForcedTerminationError, ParsingError, InvalidCloseTagError, InvalidArgumentError, InvalidArgumentTypeError, InvalidNestedTagPositionError};
 enum QCFParserTagType {UnknownTagType, CFTagType, EndCFTagType, CommentTagType, ExpressionTagType};
 

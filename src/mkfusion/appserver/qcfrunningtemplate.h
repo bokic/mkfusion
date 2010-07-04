@@ -18,7 +18,7 @@ public:
 	QWDDX m_SESSION;
 	QWDDX m_URL;
 	QWDDX m_FORM;
-	QWDDX m_VARIABLE;
+	QWDDX m_VARIABLES;
 	QString m_Output;
 	qint32 m_CFOutput;
 	QString m_ContentType;

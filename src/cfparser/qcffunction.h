@@ -7,7 +7,7 @@
 class QCFFunctionArgument : public QObject
 {
 public:
-	enum ArgumentType {TypeConstant, TypeExpression, TypeVariable};
+	enum ArgumentType {TypeConstant, TypeExpression, TypeVariable, TypeAny};
 	enum ArgumentDataType {ArgumentDataTypeBool, ArgumentDataTypeInt, ArgumentDataTypeDouble, ArgumentDataTypeString, ArgumentDataTypeDateTime, ArgumentDataTypeQWDDX, ArgumentDataTypeAny};
 
 	QCFFunctionArgument();
