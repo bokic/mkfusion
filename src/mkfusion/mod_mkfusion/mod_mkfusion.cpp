@@ -20,6 +20,19 @@ static void writeError(request_rec *r, const char *error)
 	ap_rputs(error, r);
 }
 
+#ifdef QT_DEBUG
+
+int iterate_func(void *req, const char *key, const char *value)
+{
+	ap_log_rerror("mod_mkfusion.cpp", 27, APLOG_NOTICE, 0, (request_rec *)req, "New Key/Value pair:");
+	ap_log_rerror("mod_mkfusion.cpp", 28, APLOG_NOTICE, 0, (request_rec *)req, key);
+	ap_log_rerror("mod_mkfusion.cpp", 29, APLOG_NOTICE, 0, (request_rec *)req, value);
+
+	return 1;
+}
+
+#endif
+
 static int mkfusion_handler(request_rec *r)
 {
 	if (strcmp(r->handler, "application/x-httpd-mkfusion"))
@@ -27,17 +40,27 @@ static int mkfusion_handler(request_rec *r)
 		return DECLINED;
 	}
 
-	ap_log_rerror("mod_mkfusion.cpp", 30, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
-	ap_log_rerror("mod_mkfusion.cpp", 31, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
-	ap_log_rerror("mod_mkfusion.cpp", 32, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
+#ifdef QT_DEBUG
+	apr_table_do(iterate_func, r, r->headers_in, NULL);
+
+	ap_log_rerror("mod_mkfusion.cpp", 46, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
+	ap_log_rerror("mod_mkfusion.cpp", 47, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
+	ap_log_rerror("mod_mkfusion.cpp", 48, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
+#endif
 	QSimplifiedLocalSocket l_localSocket;
-	ap_log_rerror("mod_mkfusion.cpp", 34, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
+#ifdef QT_DEBUG
+	ap_log_rerror("mod_mkfusion.cpp", 52, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
+#endif
 	l_localSocket.connectToServer("mkfusion", TIMEOUT);
-	ap_log_rerror("mod_mkfusion.cpp", 36, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
+#ifdef QT_DEBUG
+	ap_log_rerror("mod_mkfusion.cpp", 56, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
+#endif
 
 	if (l_localSocket.waitForConnected())
 	{
-		ap_log_rerror("mod_mkfusion.cpp", 40, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnected() == true.");
+#ifdef QT_DEBUG
+		ap_log_rerror("mod_mkfusion.cpp", 62, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnected() == true.");
+#endif
 		QByteArray l_Send;
 		QDataStream l_IOStream(&l_Send, QIODevice::WriteOnly);
 		l_IOStream.setVersion(QDataStream::Qt_4_4);
@@ -49,13 +72,17 @@ static int mkfusion_handler(request_rec *r)
 		l_IOStream << apr_table_get(r->headers_in, "Accept");
 		l_IOStream << apr_table_get(r->headers_in, "Accept-Encoding");
 		l_IOStream << apr_table_get(r->headers_in, "Accept-Language");
+		//l_IOStream << apr_table_get(r->headers_in, "Accept-Charset"); // New ISO-8859-1,utf-8;q=0.7,*;q=0.3
 		l_IOStream << apr_table_get(r->headers_in, "Connection");
 		l_IOStream << apr_table_get(r->headers_in, "Host");
 		l_IOStream << apr_table_get(r->headers_in, "Referer");
 		l_IOStream << apr_table_get(r->headers_in, "User-Agent");
+		//l_IOStream << apr_table_get(r->headers_in, "Host"); // New localhost
 		l_IOStream << r->args;
 		l_IOStream << r->method;
 		l_IOStream << r->protocol;
+		l_IOStream << r->hostname;
+		l_IOStream << r->uri;
 		l_IOStream.device()->seek(0);
 		l_IOStream << (quint32)l_Send.size();
 
@@ -88,7 +115,7 @@ static int mkfusion_handler(request_rec *r)
 							l_HeadersDataStream >> l_HeaderSize;
 							if ((l_HeaderSize <= 0)||(l_HeaderSize > 0x01000000))
 							{
-								ap_log_rerror("mod_mkfusion.cpp", 89, APLOG_ERR, 0, r, "mod_mkfusion: Invalid header length.");
+								ap_log_rerror("mod_mkfusion.cpp", 118, APLOG_ERR, 0, r, "mod_mkfusion: Invalid header length.");
 								writeError(r, "Invalid header length.");
 								return OK;
 							}
@@ -141,7 +168,7 @@ static int mkfusion_handler(request_rec *r)
 	}
 	else
 	{
-		ap_log_rerror("mod_mkfusion.cpp", 142, APLOG_ERR, 0, r, "mod_mkfusion: Can\'t connect to mkfusion. Make sure mkfusion server is running.");
+		ap_log_rerror("mod_mkfusion.cpp", 171, APLOG_ERR, 0, r, "mod_mkfusion: Can\'t connect to mkfusion. Make sure mkfusion server is running.");
 		writeError(r, "Can\'t connect to mkfusion.<br />\nMake sure mkfusion server is running.");
 	}
 

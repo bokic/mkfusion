@@ -4,6 +4,7 @@
 #include "qcfserver.h"
 #include "qcfparser.h"
 
+//#include <QCoreApplication>
 #include <QTextCodec>
 #include <QLocalSocket>
 #include <QFileInfo>
@@ -132,6 +133,8 @@ void QCFServer::on_workerTerminated()
 	m_runningTemplates.removeOne(l_sender);
 
 	l_sender->deleteLater();
+
+	//qApp->quit();
 }
 
 void QCFServer::start()
@@ -238,7 +241,7 @@ void QCFServer::stop()
 	m_LocalServer.close();
 }
 
-QString QCFServer::compileTemplate(const QString &p_Filename)
+QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_URI)
 {
 	if (m_CompiledTemplates.contains(p_Filename))
 	{
@@ -257,7 +260,7 @@ QString QCFServer::compileTemplate(const QString &p_Filename)
 	QFile file(p_Filename);
 	if (!file.open(QIODevice::ReadOnly))
 	{
-		throw QMKFusionTemplateException("File not found: ");
+		throw QMKFusionTemplateException("File not found: " + p_URI);
 	}
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QString l_FileContent = codec->toUnicode(file.readAll());

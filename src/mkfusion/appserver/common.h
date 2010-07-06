@@ -12,12 +12,14 @@ struct QCFRunningTemplate_Request{
 	QString m_AcceptEncoding;
 	QString m_AcceptLanguage;
 	QString m_Connection;
-	QString m_Host;
+	QString m_RemoteHost;
 	QString m_Referer;
 	QString m_UserAgent;
 	QString m_Args;
 	QString m_Method;
 	QString m_Protocol;
+	QString m_Host;
+	QString m_URI;
 };
 
 #ifdef Q_WS_WIN

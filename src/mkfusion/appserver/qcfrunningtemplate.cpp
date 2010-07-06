@@ -118,7 +118,7 @@ void QCFRunningTemplate::worker()
 		l_ds >> tempstr;
 		if (tempstr)
 		{
-			m_Request.m_Host = QString::fromUtf8(tempstr);
+			m_Request.m_RemoteHost = QString::fromUtf8(tempstr);
 			delete[] tempstr;
 		}
 
@@ -157,36 +157,50 @@ void QCFRunningTemplate::worker()
 			delete[] tempstr;
 		}
 
+		l_ds >> tempstr;
+		if (tempstr)
+		{
+			m_Request.m_Host = QString::fromUtf8(tempstr);
+			delete[] tempstr;
+		}
+
+		l_ds >> tempstr;
+		if (tempstr)
+		{
+			m_Request.m_URI = QString::fromUtf8(tempstr);
+			delete[] tempstr;
+		}
+
 		QLibrary l_TemplateLib;
 		QCFTemplate* l_page = NULL;
 		createCFMTemplateDef createCFMTemplate = NULL;
 
-		((QCFServer*)m_CFServer)->m_runningTemplatesLock.lockForRead();
-
-		QString err = ((QCFServer*)m_CFServer)->compileTemplate(m_Request.m_Filename);
-		if (err.isEmpty())
+		try
 		{
-			l_TemplateLib.setFileName(((QCFServer*)m_CFServer)->m_MKFusionPath + "templates/" + ((QCFServer*)m_CFServer)->m_CompiledTemplates[m_Request.m_Filename].m_CompiledFileName);
-			if (l_TemplateLib.load() != false)
+			((QCFServer*)m_CFServer)->m_runningTemplatesLock.lockForRead();
+
+			QString err = ((QCFServer*)m_CFServer)->compileTemplate(m_Request.m_Filename, m_Request.m_URI);
+			if (err.isEmpty())
 			{
-				createCFMTemplate = (createCFMTemplateDef) l_TemplateLib.resolve("createCFMTemplate");
+				l_TemplateLib.setFileName(((QCFServer*)m_CFServer)->m_MKFusionPath + "templates/" + ((QCFServer*)m_CFServer)->m_CompiledTemplates[m_Request.m_Filename].m_CompiledFileName);
+				if (l_TemplateLib.load() != false)
+				{
+					createCFMTemplate = (createCFMTemplateDef) l_TemplateLib.resolve("createCFMTemplate");
+				}
+				else
+				{
+					m_Status = 500;
+					m_Output = "Can\'t load template library.";
+				}
 			}
 			else
 			{
 				m_Status = 500;
-				m_Output = "Can\'t load template library.";
+				m_Output = "Compiling error: " + err;
 			}
-		}
-		else
-		{
-			m_Status = 500;
-			m_Output = "Compiling error: " + err;
-		}
 
-		((QCFServer*)m_CFServer)->m_runningTemplatesLock.unlock();
+			((QCFServer*)m_CFServer)->m_runningTemplatesLock.unlock();
 
-		try
-		{
 			if (createCFMTemplate != NULL)
 			{
 				l_page = createCFMTemplate();
@@ -265,12 +279,12 @@ void QCFRunningTemplate::worker()
 					m_CGI.wr(true)["PATH_INFO"] = "";
 					m_CGI.wr(true)["PATH_TRANSLATED"] = m_Request.m_Filename;
 					m_CGI.wr(true)["QUERY_STRING"] = m_Request.m_Args;
-					m_CGI.wr(true)["REMOTE_ADDR"] = "Todo";
-					m_CGI.wr(true)["REMOTE_HOST"] = m_Request.m_Host;
+					m_CGI.wr(true)["REMOTE_ADDR"] = m_Request.m_RemoteHost; // TODO: please check me.
+					m_CGI.wr(true)["REMOTE_HOST"] = m_Request.m_RemoteHost;
 					m_CGI.wr(true)["REMOTE_USER"] = "";
 					m_CGI.wr(true)["REQUEST_METHOD"] = m_Request.m_Method;
-					m_CGI.wr(true)["SCRIPT_NAME"] = "Todo";
-					m_CGI.wr(true)["SERVER_NAME"] = "Todo";
+					m_CGI.wr(true)["SCRIPT_NAME"] = m_Request.m_URI;
+					m_CGI.wr(true)["SERVER_NAME"] = m_Request.m_Host;
 					m_CGI.wr(true)["SERVER_PORT"] = QString::number(80); // TODO: Hardcoded.
 					m_CGI.wr(true)["SERVER_PORT_SECURE"] = "0";
 					m_CGI.wr(true)["SERVER_PROTOCOL"] = m_Request.m_Protocol;
@@ -326,6 +340,12 @@ void QCFRunningTemplate::worker()
 		}
 		catch (QMKFusionCFAbortException&)
 		{
+		}
+		catch (QMKFusionTemplateException& ex)
+		{
+			m_Status = 500;
+			((QCFServer*)m_CFServer)->m_runningTemplatesLock.unlock();
+			m_Output += WriteException(ex, this->m_Request);
 		}
 		catch (QMKFusionException& ex)
 		{

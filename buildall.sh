@@ -28,7 +28,7 @@ mkdir install/ubuntu/mkfusion/opt/mkfusion/templates
 mkdir install/ubuntu/mkfusion/etc
 mkdir install/ubuntu/mkfusion/etc/apache2
 mkdir install/ubuntu/mkfusion/etc/apache2/mods-available
-mkdir install/ubuntu/mkfusion/etc/apache2/mods-enabled
+mkdir install/ubuntu/mkfusion/etc/init.d
 cp install/ubuntu/mkfusion_control install/ubuntu/mkfusion/DEBIAN/control
 cp install/ubuntu/mkfusion_postinst install/ubuntu/mkfusion/DEBIAN/postinst
 chmod 0755 install/ubuntu/mkfusion/DEBIAN/postinst
@@ -45,6 +45,8 @@ cp src/mkfusion/appserver/qmkfusionexception.h install/ubuntu/mkfusion/opt/mkfus
 cp src/mkfusion/appserver/qwddx.h install/ubuntu/mkfusion/opt/mkfusion/include/qwddx.h
 cp install/ubuntu/mkfusion_mkfusion.conf install/ubuntu/mkfusion/etc/apache2/mods-available/mkfusion.conf
 cp install/ubuntu/mkfusion_mkfusion.load install/ubuntu/mkfusion/etc/apache2/mods-available/mkfusion.load
+cp install/ubuntu/mkfusion_init install/ubuntu/mkfusion/etc/init.d/mkfusion
+chmod 0755 install/ubuntu/mkfusion/etc/init.d/mkfusion
 dpkg -b install/ubuntu/mkfusion mkfusion_0.4.1-0ubuntu0_i386.deb
 rm -rf install/ubuntu/mkfusion
 

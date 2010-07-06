@@ -6,11 +6,13 @@
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # X-Interactive:     true
-# Short-Description: Start/stop mkfusion app server
+# Short-Description: Start/stop mkfusion application server
 ### END INIT INFO
 #
 # mkfusion		This init.d script is used to start mkfusion.
-#			It basically just calls /opt/mkfusion/bin/mkfusion.
+#			It basically just calls /opt/mkfusion/bin/mkfusion with right arguments.
+
+set -e
 
 . /lib/lsb/init-functions
 
@@ -19,19 +21,19 @@ MKFUSION="/opt/mkfusion/bin/mkfusion"
 case $1 in
 	start)
 		log_daemon_msg "Starting application server" "mkfusion"
-		if $MKFUSION -s; then
-                        log_end_msg 0
-                else
-                        log_end_msg 1
-                fi
+		if $MKFUSION >/opt/mkfusion/logs/stdout.log 2>/opt/mkfusion/logs/stderr.log; then
+			log_end_msg 0
+		else
+			log_end_msg 1
+		fi
 	;;
 	stop)
-		log_daemon_msg "Stopping application server" "mkfusion"
+		log_daemon_msg "Stoping application server" "mkfusion"
 		if $MKFUSION -t; then
-                        log_end_msg 0
-                else
-                        log_end_msg 1
-                fi
+			log_end_msg 0
+		else
+			log_end_msg 1
+		fi
 	;;
 	restart)
 		$0 stop

@@ -30,7 +30,7 @@ public:
 	QLocalServer m_LocalServer;
 	QReadWriteLock m_runningTemplatesLock;
 	QList<QThread*> m_runningTemplates;
-	QString compileTemplate(const QString&);
+	QString compileTemplate(const QString&, const QString&);
 	QString m_MKFusionPath;
 	int m_mainTimer;
 	int m_MaxSimulRunningTemplates;
