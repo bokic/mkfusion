@@ -10,7 +10,7 @@ QAppMainDialog::QAppMainDialog(QWidget *parent) :
 
 	QCodeEditWidget *widget = new QCodeEditWidget(this);
 	widget->setObjectName(QString::fromUtf8("widget"));
-	widget->setText("1ako\n2ako\n3ako\n");
+	widget->setText("1ako\n2ako\n3ako\n4ako\n5ako\n6ako\n");
 
 	ui->gridLayout->addWidget(widget, 0, 0, 1, 1);
 }

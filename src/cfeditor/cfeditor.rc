@@ -43,14 +43,14 @@ BEGIN
     BEGIN
         BLOCK "000904b0"
         BEGIN
-            VALUE "Comments", "Unpublic demonstration version"
+            VALUE "Comments", "Public demonstration version"
             VALUE "CompanyName", "BokiCSoft"
-            VALUE "FileDescription", "Coldfusion editor"
+            VALUE "FileDescription", "ColdFusion editor"
             VALUE "FileVersion", "0, 4, 1, 0"
             VALUE "InternalName", "CFEditor"
             VALUE "LegalCopyright", "Copyright (C) 2008"
             VALUE "OriginalFilename", "cfeditor.exe"
-            VALUE "ProductName", "Coldfusion editor"
+            VALUE "ProductName", "ColdFusion editor"
             VALUE "ProductVersion", "0, 4, 1, 0"
         END
     END

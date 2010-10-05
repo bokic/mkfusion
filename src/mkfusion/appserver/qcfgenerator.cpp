@@ -648,6 +648,10 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 			{
 				ret = "]";
 			}
+			else if (l_ElementName.compare("mod", Qt::CaseInsensitive) == 0)
+			{
+				ret = "%";
+			}
 			else
 			{
 				ret = " " + l_ElementName + " ";
@@ -688,6 +692,22 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 			}
 
 			break;
+		case SubExpression:
+			ret += "( ";
+			for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+			{
+				if (c == 0)
+				{
+					ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], p_CanCreateChildren);
+				}
+				else
+				{
+					ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], "false");
+				}
+
+				ret += " ";
+			}
+			ret += ")";
 		default:;
 			break;
 	}

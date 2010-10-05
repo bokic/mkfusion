@@ -1065,6 +1065,17 @@ QWDDX cf_Duplicate(const QWDDX&)
 // Page3
 
 
+Q_DECL_EXPORT int cf_Fix(double value)
+{
+	if (value >= 0)
+	{
+		return floor (value);
+	}
+	else
+	{
+		return ceil(value);
+	}
+}
 
 
 QString WriteException(QMKFusionException &ex, const QCFRunningTemplate_Request& r)

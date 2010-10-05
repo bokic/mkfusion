@@ -34,12 +34,15 @@ public:
 	};
 
 	explicit QCodeEditWidget(QWidget* = 0);
+	~QCodeEditWidget();
 	QString getText();
 	void clearFormatting();
 	void addFormat(const QCodeEditWidgetColorItem&);
 
 protected:
 	void paintEvent(QPaintEvent*);
+	void timerEvent(QTimerEvent*);
+	void keyPressEvent(QKeyEvent*);
 
 private:
 	QBrush m_LineNumbersBackground;
@@ -52,10 +55,18 @@ private:
 	QList<QCodeEditWidgetLine> m_Lines;
 	QList<QCodeEditWidgetColorItem> m_ColorItems;
 
-	int m_ScrollXPixelPos;
-	int m_ScrollYLinePos;
-	int m_CaretXPos;
-	int m_CaretYPos;
+	quint32 m_ScrollXPixelPos;
+	quint32 m_ScrollYLinePos;
+	int m_LineNumbersPanelWidth;
+	int m_currentlyBlinkCursorShowen;
+	int m_CursorTimerID;
+	int m_CursorHeight;
+
+	struct
+	{
+		quint32 m_Row;
+		quint32 m_Column;
+	} m_CarretPosition;
 
 signals:
 

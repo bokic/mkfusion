@@ -729,5 +729,8 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	//ret.insert("BitNot", QCFFunction("BitNot"));
 	//ret.insert("BitNot", QCFFunction("BitNot"));
 
+	ret.insert("fix", QCFFunction("Fix", QCFFunction::ReturnInt));
+	ret["fix"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
+
 	return ret;
 }

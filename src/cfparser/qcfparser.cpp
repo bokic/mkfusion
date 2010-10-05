@@ -99,6 +99,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 	ret.m_Type = p_ElementType;
 	int l_Offset = p_Offset;
 
+	//if ((p_ElementType != Expression)&&(TrimCFCode(p_Text, l_Offset)))
 	if (TrimCFCode(p_Text, l_Offset))
 	{
 		ret.m_Type = Error;
@@ -386,13 +387,18 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 					{
 						ret.m_Type = Operator;
 					}
-
-					if (
+					else if (
 							(ret.m_Text.compare("true", Qt::CaseInsensitive) == 0)||
 							(ret.m_Text.compare("false", Qt::CaseInsensitive) == 0)
 						)
 					{
 						ret.m_Type = Boolean;
+					}
+					else if (
+							(ret.m_Text.compare("mod", Qt::CaseInsensitive) == 0)
+							)
+					{
+						ret.m_Type = Operator;
 					}
 
 					return ret;
@@ -896,7 +902,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 	}
 
 #ifdef QT_DEBUG
-	if ((ret.m_Position > p_Text.length())||(ret.m_Position < l_Offset))
+	//if ((ret.m_Position > p_Text.length())||(ret.m_Position < l_Offset))
+	if (ret.m_Position > p_Text.length())
 	{
 		qDebug() << tr("Bad position %1.").arg(ret.m_Position);
 	}

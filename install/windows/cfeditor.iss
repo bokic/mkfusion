@@ -13,7 +13,7 @@ SolidCompression=yes
 OutputBaseFilename=CFEditor
 OutputDir=.
 VersionInfoVersion=0.4.1
-VersionInfoDescription=CFEditor is free, opensource, multiplatform ColdFusion Editor(Qt 4.6.3)
+VersionInfoDescription=CFEditor is free, opensource, multiplatform ColdFusion Editor(Qt 4.7.0)
 
 [Files]
 
@@ -21,15 +21,15 @@ VersionInfoDescription=CFEditor is free, opensource, multiplatform ColdFusion Ed
 ; Source: "runtime\vcredist_x86.exe"; DestDir: "{tmp}";
 
 ; MinGW runtime
-Source: "c:\Qt\4.6.3\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.6.3\bin\mingwm10.dll"; DestDir: "{app}";
+Source: "c:\Qt\4.7.0\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}";
+Source: "c:\Qt\4.7.0\bin\mingwm10.dll"; DestDir: "{app}";
 
 ; QT library
-Source: "c:\Qt\4.6.3\bin\QtCore4.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.6.3\bin\QtGui4.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.6.3\bin\QtNetwork4.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.6.3\bin\QtXml4.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.6.3\bin\QtWebKit4.dll"; DestDir: "{app}";
+Source: "c:\Qt\4.7.0\bin\QtCore4.dll"; DestDir: "{app}";
+Source: "c:\Qt\4.7.0\bin\QtGui4.dll"; DestDir: "{app}";
+Source: "c:\Qt\4.7.0\bin\QtNetwork4.dll"; DestDir: "{app}";
+Source: "c:\Qt\4.7.0\bin\QtXml4.dll"; DestDir: "{app}";
+Source: "c:\Qt\4.7.0\bin\QtWebKit4.dll"; DestDir: "{app}";
 
 ; libssh library
 Source: "..\..\libs\libssh\bin\libeay32.dll"; DestDir: "{app}";

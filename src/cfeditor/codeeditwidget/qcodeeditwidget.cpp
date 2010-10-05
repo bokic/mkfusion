@@ -1,28 +1,146 @@
 #include "qcodeeditwidget.h"
 #include <QPainter>
 #include <QFontMetrics>
+#include <QTimerEvent>
+#include <QKeyEvent>
+
+#include <math.h>
 
 QCodeEditWidget::QCodeEditWidget(QWidget *parent) :
-	QAbstractScrollArea(parent)
+	QAbstractScrollArea(parent),
+	m_LineNumbersBackground(QBrush(QColor(236, 233, 216), Qt::SolidPattern)),
+	m_LineNumbersNormal(QPen(QColor(172, 168, 153))),
+	m_LineNumbersCurrent(QPen(QColor(128, 128, 128))),
+	m_LineModifiedAndNotSavedBackground(QColor(128, 0, 0)),
+	m_LineModifiedAndSavedBackground(QColor(0, 128, 0)),
+	m_CurrentLineBackground(QColor(224, 233, 247)),
+	m_TextFont(QFont("Courier", 10, 0, false)),
+	m_ScrollXPixelPos(0),
+	m_ScrollYLinePos(0),
+	m_LineNumbersPanelWidth(3),
+	m_currentlyBlinkCursorShowen(1)
 {
-	m_ScrollXPixelPos = 0;
-	m_ScrollYLinePos = 0;
-	m_CaretXPos = 0;
-	m_CaretYPos = 0;
+	m_CarretPosition.m_Row = 1;
+	m_CarretPosition.m_Column = 1;
 
-	m_LineNumbersBackground = QBrush(QColor(236, 233, 216), Qt::SolidPattern);
-	m_LineNumbersNormal = QPen(QColor(172, 168, 153));
-	m_LineNumbersCurrent = QPen(QColor(128, 128, 128));
-	m_LineModifiedAndNotSavedBackground = QColor(128, 0, 0);
-	m_LineModifiedAndSavedBackground = QColor(0, 128, 0);
-	m_CurrentLineBackground = QColor(224, 233, 247);
-	m_TextFont = QFont("Courier", 10, 0, false);
+	setAutoFillBackground(false);
+
+	m_CursorHeight = QFontMetrics(m_TextFont).height();
+
 	m_TextFont.setStyleHint(QFont::Courier, QFont::PreferAntialias);
 
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
 	setText("");
+
+	m_CursorTimerID = startTimer(500);
+}
+
+QCodeEditWidget::~QCodeEditWidget()
+{
+	killTimer(m_CursorTimerID);
+}
+
+void QCodeEditWidget::timerEvent(QTimerEvent *event)
+{
+	if (event->timerId() ==  m_CursorTimerID)
+	{
+		m_currentlyBlinkCursorShowen ^= 1;
+
+		//viewport()->update(0, 0, ceil(m_CursorHeight * 0.05) + 1, m_CursorHeight + 1);
+		viewport()->update(); // TODO: optimize this call, by updating the affected region only!!
+	}
+}
+
+void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
+{
+	quint32 l_ScanCode = event->nativeScanCode();
+	Qt::KeyboardModifiers l_Modifiers = event->modifiers();
+
+	if (l_ScanCode == 29) // Ctrl
+	{
+		return;
+	}
+
+	switch(l_ScanCode)
+	{
+	case 327: // Home
+		if (l_Modifiers == Qt::NoModifier)
+		{
+			m_CarretPosition.m_Column = 1;
+		}
+		else if (l_Modifiers == Qt::ControlModifier)
+		{
+			m_CarretPosition.m_Column = 1;
+			m_CarretPosition.m_Row = 1;
+		}
+		break;
+	case 335: // End
+		if (l_Modifiers == Qt::NoModifier)
+		{
+			m_CarretPosition.m_Column = (quint32)m_Lines.at(m_CarretPosition.m_Row - 1).Content.length() + 1;
+		}
+		else if (l_Modifiers == Qt::ControlModifier)
+		{
+			m_CarretPosition.m_Row = (quint32)m_Lines.count();
+			m_CarretPosition.m_Column = (quint32)m_Lines.at(m_CarretPosition.m_Row - 1).Content.length() + 1;
+		}
+		break;
+
+	case 328: // Up
+		if (m_CarretPosition.m_Row <= 1)
+		{
+			return;
+		}
+
+		m_CarretPosition.m_Row--;
+		break;
+
+	case 336: // Down
+		if (m_CarretPosition.m_Row < (quint32)m_Lines.count())
+		{
+			m_CarretPosition.m_Row++;
+		}
+		break;
+
+	case 331: // Left
+		if (m_CarretPosition.m_Column <= 1)
+		{
+			return;
+		}
+
+		m_CarretPosition.m_Column--;
+		break;
+
+	case 333: // Right
+		if (m_CarretPosition.m_Column <= (quint32)m_Lines.at(m_CarretPosition.m_Row - 1).Content.length())
+		{
+			m_CarretPosition.m_Column++;
+		}
+		break;
+
+	default:
+		// Add key.
+		break;
+	}
+
+	if (!event->text().isEmpty())
+	{
+		QCodeEditWidgetLine line = m_Lines.at(m_CarretPosition.m_Row - 1);
+
+		line.Content.insert(m_CarretPosition.m_Column - 1, event->text());
+
+		m_Lines.replace(m_CarretPosition.m_Row - 1, line);
+		m_CarretPosition.m_Column += event->text().size();
+	}
+
+	m_currentlyBlinkCursorShowen = 1;
+
+	killTimer(m_CursorTimerID);
+	m_CursorTimerID = startTimer(500);
+
+	viewport()->update(); // TODO: optimize this call, by updating the affected region only!!
 }
 
 void QCodeEditWidget::paintEvent(QPaintEvent *event)
@@ -31,20 +149,22 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
 	QFontMetrics l_fm(m_TextFont);
 	int l_fontHeight = l_fm.height();
-	int l_LinesToDraw = (viewport()->height() / l_fontHeight) + 1;
+	int l_fontWidth = l_fm.width(' ');
+	quint32 l_LinesToDraw = (viewport()->height() / l_fontHeight) + 1;
+	int l_LineNumbersPanelWidth = l_fm.width(" ") * m_LineNumbersPanelWidth;
 
-	painter.fillRect(QRect(0, 0, 100, viewport()->height()), m_LineNumbersBackground); // TODO: 100 is hardcoded
+	painter.fillRect(QRect(0, 0, l_LineNumbersPanelWidth, viewport()->height()), m_LineNumbersBackground);
 
-	for(int c = 0; c < l_LinesToDraw; c++)
+	for(quint32 c = 0; c < l_LinesToDraw; c++)
 	{
-		if (m_ScrollYLinePos + c >= m_Lines.count())
+		if (m_ScrollYLinePos + c >= (quint32)m_Lines.count())
 		{
 			break;
 		}
 
 		//painter.set
 
-		if (c == m_CaretYPos)
+		if ((m_ScrollYLinePos + c + 1) == m_CarretPosition.m_Row)
 		{
 			QFont l_tmpFont = m_TextFont;
 			l_tmpFont.setBold(true);
@@ -57,24 +177,32 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 			painter.setPen(m_LineNumbersNormal);
 		}
 
-		painter.drawText(QRect(0, c * l_fontHeight, 100 - 5, l_fontHeight), Qt::AlignRight, QString::number(m_ScrollYLinePos + c + 1)); // TODO: 100 is hardcoded
+		painter.drawText(QRect(0, c * l_fontHeight, l_LineNumbersPanelWidth - 5, l_fontHeight), Qt::AlignRight, QString::number(m_ScrollYLinePos + c + 1));
 
-		if (c == m_CaretYPos)
+		if ((m_ScrollYLinePos + c + 1) == m_CarretPosition.m_Row)
 		{
 			painter.setFont(m_TextFont);
 		}
 
 		painter.setPen(QColor(0, 0, 0));
 
-		if (c == m_CaretYPos)
+		if ((m_ScrollYLinePos + c + 1) == m_CarretPosition.m_Row)
 		{
-			painter.fillRect(100, c * l_fontHeight, viewport()->width() - 100, l_fontHeight, m_CurrentLineBackground);
+			painter.fillRect(l_LineNumbersPanelWidth, c * l_fontHeight, viewport()->width() - l_LineNumbersPanelWidth, l_fontHeight, m_CurrentLineBackground);
 		}
 
-		painter.drawText(100, (c * l_fontHeight) + 12, m_Lines.at(m_ScrollYLinePos + c).Content); // TODO: 100, 12 is hardcoded
+		painter.drawText(l_LineNumbersPanelWidth, (c * l_fontHeight) + 12, m_Lines.at(m_ScrollYLinePos + c).Content); // TODO: 12 is hardcoded
 	}
 
 	setFont(m_TextFont);
+
+	if (m_currentlyBlinkCursorShowen == 1)
+	{
+		const QBrush oldBrush = painter.brush();
+		painter.setBrush(QColor(Qt::black));
+		painter.drawRect(l_LineNumbersPanelWidth + ((m_CarretPosition.m_Column - 1) * l_fontWidth), ((m_CarretPosition.m_Row - 1) * l_fontHeight), ceil(m_CursorHeight * 0.05), l_fontHeight - 1);
+		painter.setBrush(oldBrush);
+	}
 }
 
 QString QCodeEditWidget::getText()
@@ -204,7 +332,6 @@ void QCodeEditWidget::addFormat(const QCodeEditWidgetColorItem &p_item)
 			return;
 		}
 	}
-
 
 	m_ColorItems.append(p_item);
 }
