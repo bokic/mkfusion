@@ -120,19 +120,105 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 		}
 		break;
 
-	default:
-		// Add key.
-		break;
 	}
 
-	if (!event->text().isEmpty())
+	QString l_EventText = event->text();
+
+	if (!l_EventText.isEmpty())
 	{
-		QCodeEditWidgetLine line = m_Lines.at(m_CarretPosition.m_Row - 1);
+		for(int c = 0; c < l_EventText.count(); c++)
+		{
+			QChar l_Char = l_EventText.at(c);
 
-		line.Content.insert(m_CarretPosition.m_Column - 1, event->text());
+			switch(l_Char.unicode())
+			{
+			case 8: // Backspace
+				{
+					if ((m_CarretPosition.m_Row == 1)&&(m_CarretPosition.m_Column == 1))
+					{
+						break;
+					}
 
-		m_Lines.replace(m_CarretPosition.m_Row - 1, line);
-		m_CarretPosition.m_Column += event->text().size();
+					if (m_CarretPosition.m_Column > 1)
+					{
+						QCodeEditWidgetLine line = m_Lines.takeAt(m_CarretPosition.m_Row - 1);
+
+						line.Content = line.Content.left(m_CarretPosition.m_Column - 2) + line.Content.right(line.Content.length() - m_CarretPosition.m_Column + 1);
+
+						m_Lines.insert(m_CarretPosition.m_Row - 1, line);
+
+						m_CarretPosition.m_Column--;
+					}
+					else
+					{
+						QCodeEditWidgetLine line = m_Lines.takeAt(m_CarretPosition.m_Row - 1);
+						QCodeEditWidgetLine line2 = m_Lines.takeAt(m_CarretPosition.m_Row - 2);
+
+						int l_oldPos = line2.Content.length();
+
+						line2.Content.append(line.Content);
+
+						m_Lines.insert(m_CarretPosition.m_Row - 2, line2);
+
+						m_CarretPosition.m_Row--;
+						m_CarretPosition.m_Column = l_oldPos + 1;
+					}
+				}
+
+				break;
+
+			case 13: // Enter
+				{
+					QCodeEditWidgetLine line = m_Lines.takeAt(m_CarretPosition.m_Row - 1);
+					QString l_NewLineText = line.Content.right(line.Content.length() - m_CarretPosition.m_Column + 1);
+					line.Content.remove(m_CarretPosition.m_Column - 1, line.Content.length() - m_CarretPosition.m_Column + 1);
+
+					QCodeEditWidgetLine line2;
+					line2.Content = l_NewLineText;
+					line2.EndLine = line.EndLine;
+					line2.LineStatus = LineStatusTypeLineModified;
+
+					m_Lines.insert(m_CarretPosition.m_Row - 1, line);
+					m_Lines.insert(m_CarretPosition.m_Row, line2);
+
+					m_CarretPosition.m_Row++;
+					m_CarretPosition.m_Column = 1;
+				}
+				break;
+
+			case 127: // Delete
+				{
+					QCodeEditWidgetLine line = m_Lines.at(m_CarretPosition.m_Row - 1);
+
+					if (m_CarretPosition.m_Column - 1 == (quint32)line.Content.length())
+					{
+						if ((quint32)m_Lines.length() > m_CarretPosition.m_Row)
+						{
+							QCodeEditWidgetLine line2 = m_Lines.takeAt(m_CarretPosition.m_Row);
+
+							line.Content.append(line2.Content);
+						}
+					}
+					else
+					{
+						line.Content.remove(m_CarretPosition.m_Column - 1, 1);
+					}
+
+					m_Lines.replace(m_CarretPosition.m_Row - 1, line);
+				}
+				break;
+
+			default:
+				{
+					QCodeEditWidgetLine line = m_Lines.at(m_CarretPosition.m_Row - 1);
+
+					line.Content.insert(m_CarretPosition.m_Column - 1, l_EventText);
+
+					m_Lines.replace(m_CarretPosition.m_Row - 1, line);
+					m_CarretPosition.m_Column += l_EventText.size();
+				}
+			}
+		}
 	}
 
 	m_currentlyBlinkCursorShowen = 1;

@@ -64,8 +64,8 @@ private:
 
 	struct
 	{
-		quint32 m_Row;
-		quint32 m_Column;
+		quint32 m_Row; // TODO: change this into int, and remove the casting in implementation.
+		quint32 m_Column; // TODO: change this into int, and remove the casting in implementation.
 	} m_CarretPosition;
 
 signals:
