@@ -2,9 +2,36 @@
 #include <QPainter>
 #include <QFontMetrics>
 #include <QTimerEvent>
+#include <QScrollBar>
 #include <QKeyEvent>
 
 #include <math.h>
+
+const quint32 KBD_BACKSPACE = 8;
+const quint32 KBD_ENTER = 13;
+const quint32 KBD_DELETE = 127;
+
+#ifdef Q_WS_WIN
+const quint32 KBD_LCTRL = 29;
+const quint32 KBD_RCTRL = 285;
+const quint32 KBD_HOME = 327;
+const quint32 KBD_END = 335;
+const quint32 KBD_UP = 328;
+const quint32 KBD_DOWN = 336;
+const quint32 KBD_LEFT = 331;
+const quint32 KBD_RIGHT = 333;
+#elif defined Q_WS_X11
+const quint32 KBD_LCTRL = 37;
+const quint32 KBD_RCTRL = 105;
+const quint32 KBD_HOME = 110;
+const quint32 KBD_END = 115;
+const quint32 KBD_UP = 111;
+const quint32 KBD_DOWN = 116;
+const quint32 KBD_LEFT = 113;
+const quint32 KBD_RIGHT = 114;
+#else
+	#error Unsupported OS.
+#endif
 
 QCodeEditWidget::QCodeEditWidget(QWidget *parent) :
 	QAbstractScrollArea(parent),
@@ -14,7 +41,13 @@ QCodeEditWidget::QCodeEditWidget(QWidget *parent) :
 	m_LineModifiedAndNotSavedBackground(QColor(128, 0, 0)),
 	m_LineModifiedAndSavedBackground(QColor(0, 128, 0)),
 	m_CurrentLineBackground(QColor(224, 233, 247)),
+#ifdef Q_WS_WIN
 	m_TextFont(QFont("Courier", 10, 0, false)),
+#elif defined Q_WS_X11
+	m_TextFont(QFont("Monospace", 10, 0, false)),
+#else
+	#error Unsupported OS.
+#endif
 	m_ScrollXPixelPos(0),
 	m_ScrollYLinePos(0),
 	m_LineNumbersPanelWidth(3),
@@ -31,6 +64,9 @@ QCodeEditWidget::QCodeEditWidget(QWidget *parent) :
 
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+	verticalScrollBar()->setRange(1, 1);
+	horizontalScrollBar()->setRange(1, 30);
 
 	setText("");
 
@@ -58,14 +94,14 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 	quint32 l_ScanCode = event->nativeScanCode();
 	Qt::KeyboardModifiers l_Modifiers = event->modifiers();
 
-	if (l_ScanCode == 29) // Ctrl
+	if ((l_ScanCode == KBD_LCTRL)||(l_ScanCode == KBD_RCTRL))
 	{
 		return;
 	}
 
 	switch(l_ScanCode)
 	{
-	case 327: // Home
+	case KBD_HOME:
 		if (l_Modifiers == Qt::NoModifier)
 		{
 			m_CarretPosition.m_Column = 1;
@@ -76,7 +112,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 			m_CarretPosition.m_Row = 1;
 		}
 		break;
-	case 335: // End
+	case KBD_END:
 		if (l_Modifiers == Qt::NoModifier)
 		{
 			m_CarretPosition.m_Column = (quint32)m_Lines.at(m_CarretPosition.m_Row - 1).Content.length() + 1;
@@ -88,7 +124,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 		}
 		break;
 
-	case 328: // Up
+	case KBD_UP:
 		if (m_CarretPosition.m_Row <= 1)
 		{
 			return;
@@ -97,14 +133,14 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 		m_CarretPosition.m_Row--;
 		break;
 
-	case 336: // Down
+	case KBD_DOWN:
 		if (m_CarretPosition.m_Row < (quint32)m_Lines.count())
 		{
 			m_CarretPosition.m_Row++;
 		}
 		break;
 
-	case 331: // Left
+	case KBD_LEFT:
 		if (m_CarretPosition.m_Column <= 1)
 		{
 			return;
@@ -113,7 +149,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 		m_CarretPosition.m_Column--;
 		break;
 
-	case 333: // Right
+	case KBD_RIGHT:
 		if (m_CarretPosition.m_Column <= (quint32)m_Lines.at(m_CarretPosition.m_Row - 1).Content.length())
 		{
 			m_CarretPosition.m_Column++;
@@ -132,7 +168,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 
 			switch(l_Char.unicode())
 			{
-			case 8: // Backspace
+			case KBD_BACKSPACE:
 				{
 					if ((m_CarretPosition.m_Row == 1)&&(m_CarretPosition.m_Column == 1))
 					{
@@ -167,7 +203,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 
 				break;
 
-			case 13: // Enter
+			case KBD_ENTER:
 				{
 					QCodeEditWidgetLine line = m_Lines.takeAt(m_CarretPosition.m_Row - 1);
 					QString l_NewLineText = line.Content.right(line.Content.length() - m_CarretPosition.m_Column + 1);
@@ -186,7 +222,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 				}
 				break;
 
-			case 127: // Delete
+			case KBD_DELETE:
 				{
 					QCodeEditWidgetLine line = m_Lines.at(m_CarretPosition.m_Row - 1);
 
