@@ -356,10 +356,27 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 						return child;
 					}
 
-					ret.m_Text = p_Text.mid(l_Offset, c - l_Offset);
+					ret.m_Text = p_Text.mid(l_Offset, c - l_Offset).trimmed();
 					ret.m_Size = child.m_Position + child.m_Size - ret.m_Position;
 					ret.m_ChildElements.append(child);
 					return ret;
+				}
+
+				if (ch == ' ')
+				{
+					int start_bracket = p_Text.indexOf("(", c);
+
+					if ((start_bracket > c)&&(p_Text.mid(c, start_bracket - c).trimmed() == "")) // TODO: Optimize me when possible.
+					{
+						continue;
+					}
+
+					start_bracket = p_Text.indexOf("[", c);
+
+					if ((start_bracket > c)&&(p_Text.mid(c, start_bracket - c).trimmed() == "")) // TODO: Optimize me when possible.
+					{
+						continue;
+					}
 				}
 
 				if ((ch == ' ')||(ch == '\'')||(ch == '\"')||(ch == '=')||(ch == '&')||(ch == '#')||(ch == '>')||(ch == '/')||(ch == ')')||(ch == ']')||(ch == ',')) // TODO: Add other operators
@@ -770,7 +787,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 		}
 
 		ret.m_ChildElements.append(child);
-		ret.m_Text = p_Text.mid(l_Offset, c - l_Offset);
+		ret.m_Text = p_Text.mid(l_Offset, c - l_Offset).trimmed();
 		ret.m_Position = l_Offset;
 		ret.m_Size = c - l_Offset + child.m_Size;
 		break;
