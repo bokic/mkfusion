@@ -148,7 +148,7 @@ void TestCases::testcase11()
 void TestCases::testcase12()
 {
 	QCFParser parser;
-	QCFParserErrorType error;
+	QCFParserErrorType error(NoError);
 
 	QBENCHMARK {
 		error = parser.Parse("<cfset tmp_val = (final[i] * 4) + transfer />");
