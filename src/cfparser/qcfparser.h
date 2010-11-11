@@ -48,7 +48,7 @@ private:
 	QString m_Error;
 	QString m_Text;
 	static bool TrimCFCode(const QString&, int&);
-	QCFParserElement ParseCFCode(const QString&, const qint32, const QCFParserElementType);
+	QCFParserElement ParseCFCode(const QString&, const qint32, const QCFParserElementType, QCFParserElement*);
 	static quint32 FindCFCommentSize(QString, quint32);
 public:
 	QCFParser();

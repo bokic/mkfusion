@@ -559,7 +559,9 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	//ret.insert("cfregistry", QCFTag("cfregistry"));
 	//ret.insert("cfreport", QCFTag("cfreport"));
 	//ret.insert("cfreportparam", QCFTag("cfreportparam"));
-	//ret.insert("cfrethrow", QCFTag("cfrethrow"));
+
+	ret.insert("cfrethrow", QCFTag("cfrethrow", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
 	ret.insert("cfreturn", QCFTag("cfreturn", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeExpression));
 
 	ret.insert("cfsavecontent", QCFTag("cfsavecontent", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
@@ -600,7 +602,15 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	ret.insert("cfthrow", QCFTag("cfthrow", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 	//ret.insert("cftimer", QCFTag("cftimer"));
 	//ret.insert("cftooltip", QCFTag("cftooltip"));
-	//ret.insert("cftrace", QCFTag("cftrace"));
+
+	ret.insert("cftrace", QCFTag("cftrace", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	args.clear();
+	args.append(QCFTagArgument("abort"));
+	args.append(QCFTagArgument("category"));
+	args.append(QCFTagArgument("inline"));
+	args.append(QCFTagArgument("text"));
+	ret["cftrace"].m_ArgumentVariants.append(args);
+
 	ret.insert("cftransaction", QCFTag("cftransaction", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 	//ret.insert("cftree", QCFTag("cftree"));
 	//ret.insert("cftreeitem", QCFTag("cftreeitem"));

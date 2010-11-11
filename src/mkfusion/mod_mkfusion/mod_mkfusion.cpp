@@ -177,7 +177,9 @@ static int mkfusion_handler(request_rec *r)
 
 static void mkfusion_register_hooks(apr_pool_t *p)
 {
+#ifdef QT_DEBUG
 	ap_log_perror("mod_mkfusion.cpp", 150, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
+#endif
 
 	ap_hook_handler(mkfusion_handler, NULL, NULL, APR_HOOK_MIDDLE);
 #ifdef Q_WS_WIN

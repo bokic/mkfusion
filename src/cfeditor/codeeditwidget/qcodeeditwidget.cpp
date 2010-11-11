@@ -4,6 +4,7 @@
 #include <QTimerEvent>
 #include <QScrollBar>
 #include <QKeyEvent>
+#include <QPalette>
 
 #include <math.h>
 
@@ -35,7 +36,6 @@ const quint32 KBD_RIGHT = 114;
 
 QCodeEditWidget::QCodeEditWidget(QWidget *parent) :
 	QAbstractScrollArea(parent),
-	m_LineNumbersBackground(QBrush(QColor(236, 233, 216), Qt::SolidPattern)),
 	m_LineNumbersNormal(QPen(QColor(172, 168, 153))),
 	m_LineNumbersCurrent(QPen(QColor(128, 128, 128))),
 	m_LineModifiedAndNotSavedBackground(QColor(128, 0, 0)),
@@ -44,7 +44,7 @@ QCodeEditWidget::QCodeEditWidget(QWidget *parent) :
 #ifdef Q_WS_WIN
 	m_TextFont(QFont("Courier", 10, 0, false)),
 #elif defined Q_WS_X11
-	m_TextFont(QFont("Monospace", 10, 0, false)),
+	m_TextFont(QFont("Monospace", 9, 0, false)),
 #else
 	#error Unsupported OS.
 #endif
@@ -56,6 +56,8 @@ QCodeEditWidget::QCodeEditWidget(QWidget *parent) :
 	m_CarretPosition.m_Row = 1;
 	m_CarretPosition.m_Column = 1;
 
+	QPalette l_Palette;
+	m_LineNumbersBackground = QBrush(l_Palette.color(QPalette::Window), Qt::SolidPattern);
 	setAutoFillBackground(false);
 
 	m_CursorHeight = QFontMetrics(m_TextFont).height();
@@ -200,7 +202,6 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 						m_CarretPosition.m_Column = l_oldPos + 1;
 					}
 				}
-
 				break;
 
 			case KBD_ENTER:
