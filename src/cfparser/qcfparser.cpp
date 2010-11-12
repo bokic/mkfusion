@@ -716,7 +716,6 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 					ret.m_Size = c - p_Offset;
 					break;
 				} else if ((ch == '#')&&(parent)&&(parent->m_Type == SharpExpression)) {
-				//} else if (ch == '#') {
 					ret.m_Size = c - p_Offset;
 					break;
 				} else if (((ch == '/')&&(nextch == '>'))||(ch == '>')) {
@@ -733,7 +732,11 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 				}
 				else
 				{
-					child = ParseCFCode(p_Text, c, Variable, &ret);
+					if (((ch == '+')||(ch == '-'))&&(ret.m_ChildElements.count() > 0)&&(ret.m_ChildElements.last().m_Type != Operator)) {
+						child = ParseCFCode(p_Text, c, Operator, &ret);
+					} else {
+						child = ParseCFCode(p_Text, c, Variable, &ret);
+					}
 					if (child.m_Type == Error)
 					{
 						return child;
@@ -1065,6 +1068,10 @@ QCFParserErrorType QCFParser::Parse(const QString& p_Text, bool* p_Terminate)
 				endName = endNameTemp;
 
 			endNameTemp = p_Text.indexOf('>', cf_pos + 3, Qt::CaseInsensitive);
+			if (endNameTemp < endName)
+				endName = endNameTemp;
+
+			endNameTemp = p_Text.indexOf('(', cf_pos + 3, Qt::CaseInsensitive);
 			if (endNameTemp < endName)
 				endName = endNameTemp;
 

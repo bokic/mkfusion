@@ -19,6 +19,7 @@ private slots:
 	void testcase10();
 	void testcase11();
 	void testcase12();
+	void testcase13();
 };
 
 void TestCases::initTestCase()
@@ -175,6 +176,23 @@ void TestCases::testcase12()
 	tag = l_tags.at(0);
 
 	QVERIFY(tag.m_Name == "cfset");
+}
+
+void TestCases::testcase13()
+{
+	QCFParser parser;
+	QCFParserErrorType error = parser.Parse("<cfset a = 1 +1 />");
+
+	QVERIFY(error == NoError);
+
+	QList<QCFParserTag> l_tags = parser.getTags();
+	QVERIFY(l_tags.count() == 1);
+
+	QCFParserTag tag = l_tags.at(0);
+
+	QVERIFY(tag.m_Arguments.m_ChildElements.count() == 5);
+
+
 }
 
 

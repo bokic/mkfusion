@@ -406,7 +406,37 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	ret["cfinclude"].m_ArgumentVariants.append(args);
 
 	ret.insert("cfindex", QCFTag("cfindex", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
-	//ret.insert("cfinput", QCFTag("cfinput"));
+
+	ret.insert("cfinput", QCFTag("cfinput", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	args.clear();
+	args.append(QCFTagArgument("name", true, QCFTagArgument::TypeConstantString));
+	args.append(QCFTagArgument("autosuggest"));
+	args.append(QCFTagArgument("autosuggestBindDelay"));
+	args.append(QCFTagArgument("autosuggestMinLength"));
+	args.append(QCFTagArgument("bind"));
+	args.append(QCFTagArgument("bindAttribute"));
+	args.append(QCFTagArgument("bindOnLoad"));
+	args.append(QCFTagArgument("checked"));
+	args.append(QCFTagArgument("dayNames"));
+	args.append(QCFTagArgument("delimiter"));
+	args.append(QCFTagArgument("disabled"));
+	args.append(QCFTagArgument("enabled"));
+	args.append(QCFTagArgument("firstDayOfWeek"));
+	args.append(QCFTagArgument("height"));
+	args.append(QCFTagArgument("id"));
+	args.append(QCFTagArgument("label"));
+	args.append(QCFTagArgument("mask"));
+	args.append(QCFTagArgument("maxLength"));
+	args.append(QCFTagArgument("maxResultsDisplayed"));
+	args.append(QCFTagArgument("message"));
+	args.append(QCFTagArgument("monthNames"));
+	args.append(QCFTagArgument("onBindError"));
+	args.append(QCFTagArgument("onChange"));
+	args.append(QCFTagArgument("onClick"));
+	args.append(QCFTagArgument("onError"));
+	// TODO: more
+	ret["cfinput"].m_ArgumentVariants.append(args);
+
 	//ret.insert("cfinsert", QCFTag("cfinsert"));
 	//ret.insert("cfinterface", QCFTag("cfinterface"));
 	ret.insert("cfinvoke", QCFTag("cfinvoke", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
@@ -571,7 +601,12 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	ret.insert("cfscript", QCFTag("cfscript", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cfsearch", QCFTag("cfsearch", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
-	//ret.insert("cfselect", QCFTag("cfselect"));
+
+	ret.insert("cfselect", QCFTag("cfselect", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	args.clear();
+	// TODO: more..
+	ret["cfselect"].m_ArgumentVariants.append(args);
+
 	//ret.insert("cfservlet", QCFTag("cfservlet"));
 	//ret.insert("cfservletparam", QCFTag("cfservletparam"));
 
