@@ -267,7 +267,7 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 	file.close();
 
 	// ---- Parse .cfm file. ----
-	QCFParser l_parser;
+	QCFParser l_parser(CompilerMode);
 	QFileInfo fileinfo(p_Filename);
 	l_parser.m_FileName = p_Filename;
 	l_parser.m_CFMFileSize = fileinfo.size();

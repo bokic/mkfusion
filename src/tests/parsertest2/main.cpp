@@ -20,6 +20,8 @@ private slots:
 	void testcase11();
 	void testcase12();
 	void testcase13();
+	void testcase14();
+	void testcase15();
 };
 
 void TestCases::initTestCase()
@@ -190,11 +192,114 @@ void TestCases::testcase13()
 
 	QCFParserTag tag = l_tags.at(0);
 
+	QVERIFY(tag.m_Name == "cfset");
 	QVERIFY(tag.m_Arguments.m_ChildElements.count() == 5);
-
-
 }
 
+void TestCases::testcase14()
+{
+	QCFParser parser;
+	QCFParserErrorType error = parser.Parse("<cfset a = \"12\" />");
+
+	QVERIFY(error == NoError);
+
+	QList<QCFParserTag> l_tags = parser.getTags();
+	QVERIFY(l_tags.count() == 1);
+
+	QCFParserTag tag = l_tags.at(0);
+
+	QVERIFY(tag.m_Name == "cfset");
+	QVERIFY(tag.m_Start == 0);
+	QVERIFY(tag.m_Length == 18);
+	QVERIFY(tag.m_Arguments.m_ChildElements.count() == 3);
+
+	QCFParserElement el;
+
+	el = tag.m_Arguments.m_ChildElements.at(0);
+	QVERIFY(el.m_Position == 7);
+	QVERIFY(el.m_Size == 1);
+	QVERIFY(el.m_Type == Variable);
+	QVERIFY(el.m_Text == "a");
+
+	el = tag.m_Arguments.m_ChildElements.at(1);
+	QVERIFY(el.m_Position == 9);
+	QVERIFY(el.m_Size == 1);
+	QVERIFY(el.m_Type == Operator);
+	QVERIFY(el.m_Text == "=");
+
+	el = tag.m_Arguments.m_ChildElements.at(2);
+	QVERIFY(el.m_Position == 11);
+	QVERIFY(el.m_Size == 4);
+	QVERIFY(el.m_Type == String);
+	QVERIFY(el.m_Text == "12");
+
+	QVERIFY(el.m_ChildElements.count() == 1);
+
+	el = el.m_ChildElements.at(0);
+	QVERIFY(el.m_Position == 12);
+	QVERIFY(el.m_Size == 2);
+	QVERIFY(el.m_Type == Number);
+	QVERIFY(el.m_Text == "12");
+}
+
+void TestCases::testcase15()
+{
+	QCFParser parser;
+	QCFParserErrorType error = parser.Parse("<cfset a = \"#boro#\" />");
+
+	QVERIFY(error == NoError);
+
+	QList<QCFParserTag> l_tags = parser.getTags();
+	QVERIFY(l_tags.count() == 1);
+
+	QCFParserTag tag = l_tags.at(0);
+
+	QVERIFY(tag.m_Name == "cfset");
+	QVERIFY(tag.m_Start == 0);
+	QVERIFY(tag.m_Length == 22);
+	QVERIFY(tag.m_Arguments.m_ChildElements.count() == 3);
+
+	QCFParserElement el;
+
+	el = tag.m_Arguments.m_ChildElements.at(0);
+	QVERIFY(el.m_Position == 7);
+	QVERIFY(el.m_Size == 1);
+	QVERIFY(el.m_Type == Variable);
+	QVERIFY(el.m_Text == "a");
+
+	el = tag.m_Arguments.m_ChildElements.at(1);
+	QVERIFY(el.m_Position == 9);
+	QVERIFY(el.m_Size == 1);
+	QVERIFY(el.m_Type == Operator);
+	QVERIFY(el.m_Text == "=");
+
+	el = tag.m_Arguments.m_ChildElements.at(2);
+	QVERIFY(el.m_Position == 11);
+	QVERIFY(el.m_Size == 8);
+	QVERIFY(el.m_Type == String);
+
+	QVERIFY(el.m_ChildElements.count() == 1);
+
+	el = el.m_ChildElements.at(0);
+	QVERIFY(el.m_Position == 12);
+	QVERIFY(el.m_Size == 6);
+	QVERIFY(el.m_Type == SharpExpression);
+
+	QVERIFY(el.m_ChildElements.count() == 1);
+
+	el = el.m_ChildElements.at(0);
+	QVERIFY(el.m_Position == 13);
+	QVERIFY(el.m_Size == 4);
+	QVERIFY(el.m_Type == Expression);
+
+	QVERIFY(el.m_ChildElements.count() == 1);
+
+	el = el.m_ChildElements.at(0);
+	QVERIFY(el.m_Position == 13);
+	QVERIFY(el.m_Size == 4);
+	QVERIFY(el.m_Type == Variable);
+	QVERIFY(el.m_Text == "boro");
+}
 
 QTEST_MAIN(TestCases)
 #include "main.moc"

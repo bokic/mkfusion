@@ -32,7 +32,19 @@ QCFParser::QCFParser(): QObject()
 {
 	this->m_CFTagsDef = QCF8::generateCFTags();
 	this->m_CFFunctionsDef = QCF8::generateCFFunctions();
+
+	m_Mode = FullParseMode;
 }
+
+QCFParser::QCFParser(QCFParserMode mode): QObject()
+{
+	this->m_CFTagsDef = QCF8::generateCFTags();
+	this->m_CFFunctionsDef = QCF8::generateCFFunctions();
+
+	m_Mode = mode;
+}
+
+QCFParser(QCFParserMode);
 
 quint32 GetLineNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset)
 {
@@ -554,7 +566,17 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 								ret.m_Text.toDouble(&l_bool);
 								if (l_bool)
 								{
-									ret.m_Type = Number;
+									if (m_Mode == FullParseMode)
+									{
+										child = QCFParserElement();
+										child.m_Position = ret.m_Position + 1;
+										child.m_Size = ret.m_Size - 2;
+										child.m_Type = Number;
+										child.m_Text = ret.m_Text;
+										ret.m_ChildElements.append(child);
+									} else {
+										ret.m_Type = Number;
+									}
 								}
 							}
 
