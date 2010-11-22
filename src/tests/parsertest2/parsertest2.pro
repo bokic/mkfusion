@@ -2,6 +2,7 @@ QT       = core network
 CONFIG  += debug_and_release qtestlib
 #MAKEFILE = ../../../obj/tests/parsertest2/Makefile
 DESTDIR  = ../../../bin
+DEFINES += ENABLE_CFSCRIPT
 
 debug {
 	OBJECTS_DIR = ../../../obj/tests/parsertest2/debug

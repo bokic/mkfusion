@@ -5,7 +5,7 @@ class TestCases : public QObject
 {
 	Q_OBJECT
 private slots:
-	void initTestCase();
+/*	void initTestCase();
 	void cleanupTestCase();
 	void testcase1();
 	void testcase2();
@@ -21,10 +21,12 @@ private slots:
 	void testcase12();
 	void testcase13();
 	void testcase14();
-	void testcase15();
+    void testcase15();
+    void testcase16();*/
+    void testcase17();
 };
 
-void TestCases::initTestCase()
+/*void TestCases::initTestCase()
 {
 }
 
@@ -299,6 +301,38 @@ void TestCases::testcase15()
 	QVERIFY(el.m_Size == 4);
 	QVERIFY(el.m_Type == Variable);
 	QVERIFY(el.m_Text == "boro");
+}
+
+void TestCases::testcase16()
+{
+    QCFParser parser;
+    QCFParserErrorType error = parser.Parse("<cfscript>a = Abs(-12);</cfscript>");
+
+    QVERIFY(error == NoError);
+
+    QList<QCFParserTag> l_tags = parser.getTags();
+    QVERIFY(l_tags.count() == 2);
+
+    QCFParserTag tag = l_tags.at(0);
+
+    QCFParserElement expession = tag.m_Arguments;
+    QVERIFY(expession.m_Type = Expression);
+}*/
+
+void TestCases::testcase17()
+{
+    QCFParser parser;
+    QCFParserErrorType error = parser.Parse("<CFSCRIPT>funct1(\"<!---\");</CFSCRIPT>");
+
+    QVERIFY(error == NoError);
+
+    QList<QCFParserTag> l_tags = parser.getTags();
+    QVERIFY(l_tags.count() == 2);
+
+    QCFParserTag tag = l_tags.at(0);
+
+    QCFParserElement expession = tag.m_Arguments;
+    QVERIFY(expession.m_Type = Expression);
 }
 
 QTEST_MAIN(TestCases)

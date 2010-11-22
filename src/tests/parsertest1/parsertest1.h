@@ -20,7 +20,8 @@ private:
 	Ui::CFTest1Class ui;
 
 private slots:
-	void on_pushButton_clicked();
+    void on_listWidget_itemDoubleClicked(QListWidgetItem* item);
+ void on_pushButton_clicked();
 };
 
 #endif // CFTEST1_H

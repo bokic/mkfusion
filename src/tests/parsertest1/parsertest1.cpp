@@ -1,10 +1,12 @@
 #include "parsertest1.h"
 #include "qcfparser.h"
+#include "qdetail.h"
 
 #include <QtGui/QListWidgetItem>
 #include <QtCore/QFileInfoList>
 #include <QtGui/QColor>
 #include <QtCore/QHash>
+#include <QtGui/QFileDialog>
 #include <QtCore/QDir>
 
 CFTest1::CFTest1(QWidget *parent, Qt::WFlags flags)
@@ -89,19 +91,47 @@ void CFTest1::parseDir(QString p_dir)
 
 void CFTest1::on_pushButton_clicked()
 {
-	ui.listWidget->clear();
-	m_hash.clear();
-	parseDir(QDir::currentPath());
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::DirectoryOnly);
 
-	ui.listWidget->addItem(new QListWidgetItem("-------------------- CF Tags stats -------------------------"));
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        ui.listWidget->clear();
+        m_hash.clear();
 
-	QStringList keys = m_hash.uniqueKeys();
-	keys.sort();
+        parseDir(dialog.directory().absolutePath());
 
-	for (int c = 0; c < keys.size(); c++)
-	{
-		ui.listWidget->addItem(new QListWidgetItem(keys[c] + " = " + QString::number(m_hash[keys[c]])));
-	}
+        ui.listWidget->addItem(new QListWidgetItem("-------------------- CF Tags stats -------------------------"));
 
-	ui.listWidget->scrollToBottom();
+        QStringList keys = m_hash.uniqueKeys();
+        keys.sort();
+
+        for (int c = 0; c < keys.size(); c++)
+        {
+            ui.listWidget->addItem(new QListWidgetItem(keys[c] + " = " + QString::number(m_hash[keys[c]])));
+        }
+
+        ui.listWidget->scrollToBottom();
+    }
+}
+
+void CFTest1::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
+{
+    QString file = item->text();
+
+    int err = file.indexOf(" error");
+    if (err > -1)
+    {
+        file = file.left(err);
+    }
+
+    if (file.at(0) == QDir::separator()) // TODO: Only works with Linux
+    {
+        QDetail detailForm(this);
+
+        detailForm.setFileForParsing(file);
+        detailForm.setModal(true);
+
+        detailForm.exec();
+    }
 }
