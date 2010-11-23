@@ -125,13 +125,25 @@ void CFTest1::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
         file = file.left(err);
     }
 
-    if (file.at(0) == QDir::separator()) // TODO: Only works with Linux
-    {
-        QDetail detailForm(this);
+#ifdef Q_WS_WIN
+	if ((file.count() > 3)&&(file.at(1) == ':')&&(file.at(2) == QDir::separator()))
+	{
+		QDetail detailForm(this);
 
-        detailForm.setFileForParsing(file);
-        detailForm.setModal(true);
+		detailForm.setFileForParsing(file);
+		detailForm.setModal(true);
 
-        detailForm.exec();
-    }
+		detailForm.exec();
+	}
+#else
+	if (file.at(0) == QDir::separator())
+	{
+		QDetail detailForm(this);
+
+		detailForm.setFileForParsing(file);
+		detailForm.setModal(true);
+
+		detailForm.exec();
+	}
+#endif
 }

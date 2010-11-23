@@ -12,6 +12,8 @@ QDetail::QDetail(QWidget *parent) :
 {
     ui->setupUi(this);
 
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+
 #ifdef Q_WS_WIN
     QFont l_Font = QFont("Courier", 10, 0, false);
 #else
@@ -33,7 +35,7 @@ void QDetail::setFileForParsing(const QString& p_File)
     fileContent = fileContent.replace("\r\n", "\n"); // TODO: Investigate this when possible.
     file.close();
 
-    ui->textEdit->setText(fileContent);
+	ui->textEdit->setPlainText(fileContent);
 
     m_Parser.Parse(fileContent);
 

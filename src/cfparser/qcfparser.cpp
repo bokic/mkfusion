@@ -388,16 +388,32 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 
 				if (ch == '[')
 				{
-					child = ParseCFCode(p_Text, c, VariableIndex, &ret);
-
-					if (child.m_Type == Error)
+					do
 					{
-						return child;
-					}
+						child = ParseCFCode(p_Text, c, VariableIndex, &ret);
 
-					ret.m_Text = p_Text.mid(l_Offset, c - l_Offset).trimmed();
-					ret.m_Size = child.m_Position + child.m_Size - ret.m_Position;
-					ret.m_ChildElements.append(child);
+						if (child.m_Type == Error)
+						{
+							return child;
+						}
+
+						ret.m_Text = p_Text.mid(l_Offset, c - l_Offset).trimmed();
+						ret.m_Size = child.m_Position + child.m_Size - ret.m_Position;
+						ret.m_ChildElements.append(child);
+
+						c = ret.m_Position + ret.m_Size;
+
+						if (p_Text.length() > c)
+						{
+							ch = p_Text.at(c);
+						}
+						else
+						{
+							ch = 0;
+						}
+
+					} while(ch == '[');
+
 					return ret;
 				}
 

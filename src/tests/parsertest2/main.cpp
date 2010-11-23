@@ -22,8 +22,10 @@ private slots:
 	void testcase13();
 	void testcase14();
     void testcase15();
-    void testcase16();*/
-    void testcase17();
+	void testcase16();
+	void testcase17();*/
+	void testcase18();
+	void testcase19();
 };
 
 /*void TestCases::initTestCase()
@@ -317,7 +319,7 @@ void TestCases::testcase16()
 
     QCFParserElement expession = tag.m_Arguments;
     QVERIFY(expession.m_Type = Expression);
-}*/
+}
 
 void TestCases::testcase17()
 {
@@ -333,6 +335,21 @@ void TestCases::testcase17()
 
     QCFParserElement expession = tag.m_Arguments;
     QVERIFY(expession.m_Type = Expression);
+}*/
+
+void TestCases::testcase18()
+{
+	QCFParser parser;
+	QCFParserErrorType error = parser.Parse("<cfset a[1][2] = 12 />");
+
+	return;
+}
+
+void TestCases::testcase19()
+{
+	QCFParser parser;
+	QCFParserErrorType error = parser.Parse("<cfset destination=\"#ExpandPath('pods/images')#/img_#Val(id)#.#extFile#\" />");
+
 }
 
 QTEST_MAIN(TestCases)
