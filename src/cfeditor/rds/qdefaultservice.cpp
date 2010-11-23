@@ -6,6 +6,8 @@
 
 QByteArray QDefaultService::ExecuteRDSCommand(QRDSServer rdsserver, quint8 command, QMap<QString, QString> map)
 {
+    Q_UNUSED(map);
+
 	QByteArray ret;
 
 	switch (command)

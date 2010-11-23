@@ -342,7 +342,7 @@ void TestCases::testcase18()
 	QCFParser parser;
 	QCFParserErrorType error = parser.Parse("<cfset a[1][2] = 12 />");
 
-	return;
+	Q_UNUSED(error);
 }
 
 void TestCases::testcase19()
@@ -350,6 +350,7 @@ void TestCases::testcase19()
 	QCFParser parser;
 	QCFParserErrorType error = parser.Parse("<cfset destination=\"#ExpandPath('pods/images')#/img_#Val(id)#.#extFile#\" />");
 
+	Q_UNUSED(error);
 }
 
 QTEST_MAIN(TestCases)

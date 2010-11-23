@@ -56,6 +56,8 @@ QByteArray CompareDialog::filterChars(const QByteArray &p_Text)
 
 void CompareDialog::updateEditor(QPlainTextEdit* p_TextEdit, const QByteArray &p_Text, const QByteArray &p_TextCompareTo)
 {
+    Q_UNUSED(p_TextCompareTo);
+
 	QString l_Text;
 
 	int l_rows = p_Text.size() / 8;

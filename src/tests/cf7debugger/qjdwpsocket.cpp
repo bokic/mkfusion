@@ -67,7 +67,7 @@ void QJDWPSocket::on_m_Socket_readyRead()
 
 	m_reciveBuf.append(m_Socket.readAll());
 	
-	qDebug(QString::number(m_reciveBuf.length()).toAscii());
+    qDebug() << QString::number(m_reciveBuf.length());
 
 	if (m_Initialized)
 	{
@@ -75,7 +75,7 @@ void QJDWPSocket::on_m_Socket_readyRead()
 		{
 			l_BufSize = ((quint8)m_reciveBuf[0] << 24) + ((quint8)m_reciveBuf[1] << 16) + ((quint8)m_reciveBuf[2] << 8) + ((quint8)m_reciveBuf[3]);
 
-			qDebug(QString::number(l_BufSize).toAscii());
+            qDebug() << QString::number(l_BufSize);
 
 			if (m_reciveBuf.length() >= l_BufSize)
 			{

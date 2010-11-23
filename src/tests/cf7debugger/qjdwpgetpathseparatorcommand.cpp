@@ -18,6 +18,8 @@ char QJDWPGetPathSeparatorCommand::getPathSeparator()
 
 void QJDWPGetPathSeparatorCommand::processRecivedCommand(QByteArray p_Data)
 {
+    Q_UNUSED(p_Data);
+
 	switch (m_Progress)
 	{
 		case CLASSES_BY_SIGNATURE:

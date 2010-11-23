@@ -47,13 +47,13 @@ void QJDWPDebugger::on_m_JDWP_gotPacket(quint32 p_Id, quint8 p_Flags, quint16 p_
 
 	if (p_Flags != 0x80)
 	{
-		qDebug(QString("Bad JDWP Flag got. It should be 0x80, but it\'s 0x%1").arg(QString::number(p_Flags, 16)).toAscii());
+        qDebug() << QString("Bad JDWP Flag got. It should be 0x80, but it\'s 0x%1").arg(QString::number(p_Flags, 16));
 		return;
 	}
 
 	if (p_ErrorCode != 0)
 	{
-		qDebug(QString("JDWP Error code 0x%1").arg(QString::number(p_ErrorCode, 16)).toAscii());
+        qDebug() << QString("JDWP Error code 0x%1").arg(QString::number(p_ErrorCode, 16));
 		return;
 	}
 

@@ -268,6 +268,8 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 
 void QCodeEditWidget::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event);
+
 	QPainter painter(viewport());
 
 	QFontMetrics l_fm(m_TextFont);

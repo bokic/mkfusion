@@ -43,21 +43,36 @@ double cf_ACos(double val)
 
 void cf_AddSOAPRequestHeader(QWDDX *p_WebService, const QString& p_Namespace, const QString& p_Name, const QWDDX& p_Value, bool p_MustUnderstand)
 {
+    Q_UNUSED(p_WebService);
+    Q_UNUSED(p_Namespace);
+    Q_UNUSED(p_Name);
+    Q_UNUSED(p_Value);
+    Q_UNUSED(p_MustUnderstand);
+
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
 void cf_AddSOAPResponseHeader(const QString& p_Namespace, const QString& p_Name, const QWDDX& p_Value, bool p_MustUnderstand)
 {
+    Q_UNUSED(p_Namespace);
+    Q_UNUSED(p_Name);
+    Q_UNUSED(p_Value);
+    Q_UNUSED(p_MustUnderstand);
+
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
 QString cf_AjaxLink(const QString& p_URL)
 {
+    Q_UNUSED(p_URL);
+
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
 void cf_AjaxOnLoad(const QString& p_FunctionName)
 {
+    Q_UNUSED(p_FunctionName);
+
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
@@ -473,6 +488,10 @@ bool cf_ArraySet(QWDDX *p_Array, int p_Start, int p_End, const QWDDX &p_Value)
 
 bool cf_ArraySort(QWDDX *p_Array, const QString &p_SortType, const QString &p_SortOrder)
 {
+    Q_UNUSED(p_Array);
+    Q_UNUSED(p_SortType);
+    Q_UNUSED(p_SortOrder);
+
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
@@ -581,12 +600,18 @@ double cf_Atn(double val)
 
 QString cf_BinaryDecode(const QString& p_String, const QString& p_Type)
 {
+    Q_UNUSED(p_String);
+    Q_UNUSED(p_Type);
+
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
 QString cf_BinaryEncode(const QString& p_String, const QString& p_Type)
 {
-	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
+    Q_UNUSED(p_String);
+    Q_UNUSED(p_Type);
+
+    throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
 int cf_BitAnd(int p_num1, int p_num2)
@@ -939,6 +964,10 @@ QDateTime cf_DateAdd(const QString& p_DatePart, int p_Value, const QWDDX& p_Date
 
 int cf_DateCompare(const QWDDX& p_Date1, const QWDDX& p_Date2, const QString& p_DatePart)
 {
+    Q_UNUSED(p_Date1);
+    Q_UNUSED(p_Date2);
+    Q_UNUSED(p_DatePart);
+
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 

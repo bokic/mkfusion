@@ -526,6 +526,8 @@ void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
 
 void QAppMainWindow::on_m_TabPanel_currentChanged(int index)
 {
+    Q_UNUSED(index);
+
 	// Update Structure widget.
 }
 

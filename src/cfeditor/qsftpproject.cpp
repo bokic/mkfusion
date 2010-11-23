@@ -111,6 +111,7 @@ void QSFTPProject::WriteFile(QString p_File, QByteArray p_FileContent)
 
 void QSFTPProject::DeleteFile(QString p_File)
 {
+    Q_UNUSED(p_File);
 }
 
 void QSFTPProject::RenameFile(QString, QString)

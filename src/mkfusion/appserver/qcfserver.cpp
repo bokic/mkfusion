@@ -68,6 +68,8 @@ QCFServer::QCFServer()
 
 void QCFServer::timerEvent(QTimerEvent *event)
 {
+    Q_UNUSED(event);
+
 	return;
 }
 

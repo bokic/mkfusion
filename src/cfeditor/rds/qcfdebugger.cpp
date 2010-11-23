@@ -240,6 +240,8 @@ void QCFDebugger::onEventDisconnected()
 
 void QCFDebugger::onEventError(QAbstractSocket::SocketError p_Error)
 {
+    Q_UNUSED(p_Error);
+
 	qDebug("QCFDebugger::onEventError");
 	m_EventReconect = false;
 }

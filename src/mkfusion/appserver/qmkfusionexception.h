@@ -59,6 +59,10 @@ class QMKFusionIllegalNumRangeException : public QMKFusionException
 public:
 	QMKFusionIllegalNumRangeException(double p_Value, double p_MinValue, double p_MaxValue):QMKFusionException("", "")
 	{
+        Q_UNUSED(p_Value);
+        Q_UNUSED(p_MinValue);
+        Q_UNUSED(p_MaxValue);
+
 		m_Type = new QString("template");
 	}
 };
@@ -81,6 +85,8 @@ class QMKFusionInvalidArrayIndexException : public QMKFusionException
 public:
 	QMKFusionInvalidArrayIndexException(int p_Size, int p_Index):QMKFusionException("", "")
 	{
+        Q_UNUSED(p_Size);
+        Q_UNUSED(p_Index);
 	}
 };
 
@@ -89,7 +95,7 @@ class QMKFusionBadArrayDimensionException : public QMKFusionException
 public:
 	QMKFusionBadArrayDimensionException(int p_Dimension):QMKFusionException("", "")
 	{
-
+        Q_UNUSED(p_Dimension);
 	}
 };
 
@@ -98,7 +104,8 @@ class QMKFusionArraySetRangeException : public QMKFusionException
 public:
 	QMKFusionArraySetRangeException(int p_Start, int p_End):QMKFusionException("", "")
 	{
-
+        Q_UNUSED(p_Start);
+        Q_UNUSED(p_End);
 	}
 };
 
@@ -107,8 +114,9 @@ class QMKFusionArraySwapRangeException : public QMKFusionException
 public:
 	QMKFusionArraySwapRangeException(int p_Start, int p_End):QMKFusionException("", "")
 	{
-
-	}
+        Q_UNUSED(p_Start);
+        Q_UNUSED(p_End);
+    }
 };
 
 class QMKFusionInvalidArgumentException : public QMKFusionException
@@ -116,11 +124,18 @@ class QMKFusionInvalidArgumentException : public QMKFusionException
 public:
 	QMKFusionInvalidArgumentException(QString p_Function, int p_argument, double p_argumentValue, double p_minValue, double p_maxValue):QMKFusionException("", "")
 	{
-
+        Q_UNUSED(p_Function);
+        Q_UNUSED(p_argument);
+        Q_UNUSED(p_argumentValue);
+        Q_UNUSED(p_minValue);
+        Q_UNUSED(p_maxValue);
 	}
 	QMKFusionInvalidArgumentException(QString p_Function, int p_argument, double p_argumentValue, QString p_Error):QMKFusionException("", "")
 	{
-
+        Q_UNUSED(p_Function);
+        Q_UNUSED(p_argument);
+        Q_UNUSED(p_argumentValue);
+        Q_UNUSED(p_Error);
 	}
 };
 

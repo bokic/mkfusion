@@ -5,7 +5,7 @@
 #include <QtCore/QCoreApplication>
 
 
-int main(int argc, char *argv[])
+int main()
 {
 	// INIT
 	ssh_session sshsession = ssh_new();
