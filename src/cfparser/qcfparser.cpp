@@ -373,7 +373,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
                             (str.compare("not", Qt::CaseInsensitive) == 0)||
                             (str.compare("and", Qt::CaseInsensitive) == 0)||
                             (str.compare("or", Qt::CaseInsensitive) == 0)||
-                            (str.compare("mod", Qt::CaseInsensitive) == 0)
+                            (str.compare("mod", Qt::CaseInsensitive) == 0)||
+                            (str.compare("contains", Qt::CaseInsensitive) == 0)
                         )
                     {
                         ret.m_Type = Operator;
@@ -458,7 +459,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
                             (ret.m_Text.compare("not", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("and", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("or", Qt::CaseInsensitive) == 0)||
-                            (ret.m_Text.compare("mod", Qt::CaseInsensitive) == 0)
+                            (ret.m_Text.compare("mod", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("contains", Qt::CaseInsensitive) == 0)
                         )
 					{
 						ret.m_Type = Operator;
@@ -567,13 +569,14 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 							if (!str.isEmpty())
 							{
 								child = QCFParserElement();
-                                child.m_Position = ret.m_Position;
-                                child.m_Size = c - ret.m_Position;
+								child.m_Position = c - str.length();
+								child.m_Size = str.length();
 								child.m_Type = String;
 								child.m_Text = str;
 								ret.m_ChildElements.append(child);
 								str.clear();
 							}
+
 							child = ParseCFCode(p_Text, c, SharpExpression, &ret);
 							ret.m_ChildElements.append(child);
 							c = child.m_Position + child.m_Size - 1;
@@ -595,8 +598,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 								if (!str.isEmpty())
 								{
 									child = QCFParserElement();
-                                    child.m_Position = c - str.length();
-                                    child.m_Size = str.length() + 1;
+									child.m_Position = c - str.length();
+									child.m_Size = str.length() + 1;
 									child.m_Type = String;
 									child.m_Text = str;
 									ret.m_ChildElements.append(child);
@@ -617,7 +620,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 										child.m_Type = Number;
 										child.m_Text = ret.m_Text;
 										ret.m_ChildElements.append(child);
-									} else {
+                                    }else {
 										ret.m_Type = Number;
 									}
 								}
@@ -697,14 +700,6 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 				ret.m_Position = l_Offset;
 				ret.m_Size = 8;
 				ret.m_Text = p_Text.mid(l_Offset, 8).toUpper();
-				break;
-			}
-
-			if (p_Text.mid(l_Offset, 16).compare("does not contain", Qt::CaseInsensitive) == 0)
-			{
-				ret.m_Position = l_Offset;
-				ret.m_Size = 16;
-				ret.m_Text = p_Text.mid(l_Offset, 16).toUpper();
 				break;
 			}
 
@@ -887,6 +882,23 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 						child = ParseCFCode(p_Text, c, Operator, &ret);
 					} else {
 						child = ParseCFCode(p_Text, c, Variable, &ret);
+
+                        if ((child.m_Type == Variable)&&(child.m_Text.compare("contain", Qt::CaseInsensitive) == 0)&&(ret.m_ChildElements.count() >= 2))
+                        {
+                            QCFParserElement l_DoesElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 2);
+                            QCFParserElement l_NotElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 1);
+
+                            if ((l_DoesElement.m_Type == Variable)&&(l_DoesElement.m_Text.compare("does", Qt::CaseInsensitive) == 0)&&(l_NotElement.m_Type == Operator)&&(l_NotElement.m_Text.compare("not", Qt::CaseInsensitive) == 0))
+                            {
+                                ret.m_ChildElements.takeLast();
+                                ret.m_ChildElements.takeLast();
+
+                                child.m_Type = Operator;
+                                child.m_Size = child.m_Position + child.m_Size - l_DoesElement.m_Position;
+                                child.m_Position = l_DoesElement.m_Position;
+                                child.m_Text = "does not contain";
+                            }
+                        }
 					}
 					if (child.m_Type == Error)
 					{

@@ -365,15 +365,18 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	args.append(QCFTagArgument("verifyClient"));
 	ret["cffunction"].m_ArgumentVariants.append(args);
 
-	//ret.insert("cfgraph", QCFTag("cfgraph"));
-	//ret.insert("cfgraphdata", QCFTag("cfgraphdata"));
+	ret.insert("cfgraph", QCFTag("cfgraph", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfgraphdata", QCFTag("cfgraphdata", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
     ret.insert("cfgrid", QCFTag("cfgrid", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
     ret.insert("cfgridcolumn", QCFTag("cfgridcolumn", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-    //ret.insert("cfgridrow", QCFTag("cfgridrow"));
-	//ret.insert("cfgridupdate", QCFTag("cfgridupdate"));
+	ret.insert("cfgridrow", QCFTag("cfgridrow", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfgridupdate", QCFTag("cfgridupdate", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
 	ret.insert("cfheader", QCFTag("cfheader", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
 	args.append(QCFTagArgument("charset", false, QCFTagArgument::TypeConstantString));
@@ -394,8 +397,9 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 
 	ret.insert("cfif", QCFTag("cfif", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeExpression));
 
-	//ret.insert("cfimage", QCFTag("cfimage"));
-	//ret.insert("cfimpersonate", QCFTag("cfimpersonate"));
+	ret.insert("cfimage", QCFTag("cfimage", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfimpersonate", QCFTag("cfimpersonate", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cfimport", QCFTag("cfimport", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
@@ -440,13 +444,19 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	// TODO: more
 	ret["cfinput"].m_ArgumentVariants.append(args);
 
-	//ret.insert("cfinsert", QCFTag("cfinsert"));
-	//ret.insert("cfinterface", QCFTag("cfinterface"));
+	ret.insert("cfinsert", QCFTag("cfinsert", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfinterface", QCFTag("cfinterface", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
 	ret.insert("cfinvoke", QCFTag("cfinvoke", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+
 	ret.insert("cfinvokeargument", QCFTag("cfinvokeargument", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
-	//ret.insert("cflayout", QCFTag("cflayout"));
-	//ret.insert("cflayoutarea", QCFTag("cflayoutarea"));
-	//ret.insert("cfldap", QCFTag("cfldap"));
+
+	ret.insert("cflayout", QCFTag("cflayout", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cflayoutarea", QCFTag("cflayoutarea", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfldap", QCFTag("cfldap", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cflocation", QCFTag("cflocation", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
@@ -514,12 +524,18 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	ret["cfloop"].m_ArgumentVariants.append(args);
 
 	ret.insert("cfmail", QCFTag("cfmail", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithExpressionInside));
-	//ret.insert("cfmailparam", QCFTag("cfmailparam"));
+
+	ret.insert("cfmailparam", QCFTag("cfmailparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
 	ret.insert("cfmailpart", QCFTag("cfmailpart", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
-	//ret.insert("cfmenu", QCFTag("cfmenu"));
-	//ret.insert("cfmenuitem", QCFTag("cfmenuitem"));
+
+	ret.insert("cfmenu", QCFTag("cfmenu", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfmenuitem", QCFTag("cfmenuitem", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
 	ret.insert("cfmodule", QCFTag("cfmodule", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
-	//ret.insert("cfNTauthenticate", QCFTag("cfNTauthenticate"));
+
+	ret.insert("cfNTauthenticate", QCFTag("cfNTauthenticate", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cfobject", QCFTag("cfobject", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
@@ -528,7 +544,7 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	args.append(QCFTagArgument("type", false, QCFTagArgument::TypeConstantString, "component"));
 	ret["cfobject"].m_ArgumentVariants.append(args);
 
-	//ret.insert("cfobjectcache", QCFTag("cfobjectcache"));
+	ret.insert("cfobjectcache", QCFTag("cfobjectcache", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cfoutput", QCFTag("cfoutput", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithExpressionInside));
 
@@ -542,17 +558,27 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	args.append(QCFTagArgument("type"));
 	ret["cfparam"].m_ArgumentVariants.append(args);
 
-	//ret.insert("cfpdf", QCFTag("cfpdf"));
-	//ret.insert("cfpdfform", QCFTag("cfpdfform"));
-	//ret.insert("cfpdfformparam", QCFTag("cfpdfformparam"));
-	//ret.insert("cfpdfparam", QCFTag("cfpdfparam"));
-	//ret.insert("cfpdfsubform", QCFTag("cfpdfsubform"));
-	//ret.insert("cfpod", QCFTag("cfpod"));
-	//ret.insert("cfpop", QCFTag("cfpop"));
-	//ret.insert("cfpresentation", QCFTag("cfpresentation"));
-	//ret.insert("cfpresentationslide", QCFTag("cfpresentationslide"));
-	//ret.insert("cfpresenter", QCFTag("cfpresenter"));
-	//ret.insert("cfprint", QCFTag("cfprint"));
+	ret.insert("cfpdf", QCFTag("cfpdf", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfpdfform", QCFTag("cfpdfform", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfpdfformparam", QCFTag("cfpdfformparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfpdfparam", QCFTag("cfpdfparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfpdfsubform", QCFTag("cfpdfsubform", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfpod", QCFTag("cfpod", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfpop", QCFTag("cfpop", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfpresentation", QCFTag("cfpresentation", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfpresentationslide", QCFTag("cfpresentationslide", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfpresenter", QCFTag("cfpresenter", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfprint", QCFTag("cfprint", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cfprocessingdirective", QCFTag("cfprocessingdirective", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 	args.clear();
@@ -593,9 +619,11 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	args.append(QCFTagArgument("separator"));
 	ret["cfqueryparam"].m_ArgumentVariants.append(args);
 
-	//ret.insert("cfregistry", QCFTag("cfregistry"));
-	//ret.insert("cfreport", QCFTag("cfreport"));
-	//ret.insert("cfreportparam", QCFTag("cfreportparam"));
+	ret.insert("cfregistry", QCFTag("cfregistry", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfreport", QCFTag("cfreport", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfreportparam", QCFTag("cfreportparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cfrethrow", QCFTag("cfrethrow", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
@@ -614,8 +642,9 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	// TODO: more..
 	ret["cfselect"].m_ArgumentVariants.append(args);
 
-	//ret.insert("cfservlet", QCFTag("cfservlet"));
-	//ret.insert("cfservletparam", QCFTag("cfservletparam"));
+	ret.insert("cfservlet", QCFTag("cfservlet", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfservletparam", QCFTag("cfservletparam", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cfset", QCFTag("cfset", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeExpression));
 
@@ -628,8 +657,9 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 
 	ret.insert("cfsilent", QCFTag("cfsilent", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	//ret.insert("cfslider", QCFTag("cfslider"));
-	//ret.insert("cfsprydataset", QCFTag("cfsprydataset"));
+	ret.insert("cfslider", QCFTag("cfslider", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfsprydataset", QCFTag("cfsprydataset", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
     ret.insert("cfstoredproc", QCFTag("cfstoredproc", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
@@ -638,15 +668,19 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	args.append(QCFTagArgument("expression", true));
 	ret["cfswitch"].m_ArgumentVariants.append(args);
 
-	//ret.insert("cftable", QCFTag("cftable"));
+	ret.insert("cftable", QCFTag("cftable", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
     ret.insert("cftextarea", QCFTag("cftextarea", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
-    //ret.insert("cftextinput", QCFTag("cftextinput"));
+	ret.insert("cftextinput", QCFTag("cftextinput", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+
 	ret.insert("cfthread", QCFTag("cfthread", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+
 	ret.insert("cfthrow", QCFTag("cfthrow", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
-	//ret.insert("cftimer", QCFTag("cftimer"));
-	//ret.insert("cftooltip", QCFTag("cftooltip"));
+
+	ret.insert("cftimer", QCFTag("cftimer", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cftooltip", QCFTag("cftooltip", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cftrace", QCFTag("cftrace", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
@@ -657,14 +691,18 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	ret["cftrace"].m_ArgumentVariants.append(args);
 
 	ret.insert("cftransaction", QCFTag("cftransaction", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
-	//ret.insert("cftree", QCFTag("cftree"));
-	//ret.insert("cftreeitem", QCFTag("cftreeitem"));
+
+	ret.insert("cftree", QCFTag("cftree", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cftreeitem", QCFTag("cftreeitem", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+
 	ret.insert("cftry", QCFTag("cftry", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
-	//ret.insert("cfupdate", QCFTag("cfupdate"));
+
+	ret.insert("cfupdate", QCFTag("cfupdate", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
     ret.insert("cfwddx", QCFTag("cfwddx", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-    //ret.insert("cfwindow", QCFTag("cfwindow"));
+	ret.insert("cfwindow", QCFTag("cfwindow", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cfxml", QCFTag("cfxml", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
@@ -672,8 +710,9 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	args.append(QCFTagArgument("caseSensitive"));
 	ret["cfxml"].m_ArgumentVariants.append(args);
 
-	//ret.insert("cfzip", QCFTag("cfzip"));
-	//ret.insert("cfzipparam", QCFTag("cfzipparam"));
+	ret.insert("cfzip", QCFTag("cfzip", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+
+	ret.insert("cfzipparam", QCFTag("cfzipparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
 	return ret;
 }

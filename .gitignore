@@ -7,4 +7,6 @@ lib
 logs
 obj
 templates
+docs
+mkfusion-build-desktop
 
