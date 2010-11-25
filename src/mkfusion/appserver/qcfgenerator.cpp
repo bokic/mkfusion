@@ -571,13 +571,17 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 	switch(p_CFExpression.m_Type)
 	{
 		case Boolean:
-			ret = "QWDDX(\"" + l_ElementName.toLower() + "\")";
+			ret = "QWDDX(" + l_ElementName.toLower() + ")";
 			break;
 		case Number:
-			ret = "QWDDX(\"" + l_ElementName + "\")";
+			ret = "QWDDX(" + l_ElementName + ")";
 			break;
 		case String:
-			if (p_CFExpression.m_ChildElements.size() > 0)
+			if (p_CFExpression.m_ChildElements.size() == 1)
+			{
+				ret = GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[0], p_CanCreateChildren);
+			}
+			else if (p_CFExpression.m_ChildElements.size() > 0)
 			{
 				for(int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
 				{
