@@ -33,7 +33,7 @@ win32: {
 # Main app
 SOURCES = main.cpp qappmainwindow.cpp qprojectproperties.cpp ../cfparser/qcfparser.cpp ../cfparser/qcf8.cpp ../cfparser/qcffunction.cpp ../cfparser/qcftag.cpp
 HEADERS =          qappmainwindow.h   qprojectproperties.h   ../cfparser/qcfparser.h   ../cfparser/qcf8.h   ../cfparser/qcffunction.h   ../cfparser/qcftag.h
-FORMS   =          qprojectproperties.ui
+FORMS   =          qappmainwindow.ui  qprojectproperties.ui
 
 # RDS
 SOURCES += rds/qabstractrdsservice.cpp rds/qrdsserver.cpp rds/qfileioservice.cpp rds/qdatabaseservice.cpp

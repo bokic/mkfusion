@@ -2,7 +2,6 @@ QT       = core gui
 CONFIG  += debug_and_release
 #MAKEFILE = ../../../obj/tests/parsertest1/Makefile
 DESTDIR  = ../../../bin
-DEFINES += ENABLE_CFSCRIPT
 
 debug {
 	OBJECTS_DIR = ../../../obj/tests/parsertest1/debug

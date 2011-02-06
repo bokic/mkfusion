@@ -1098,7 +1098,7 @@ Q_DECL_EXPORT int cf_Fix(double value)
 {
 	if (value >= 0)
 	{
-		return floor (value);
+		return floor(value);
 	}
 	else
 	{

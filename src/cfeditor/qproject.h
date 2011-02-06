@@ -16,27 +16,27 @@ class QProject: public QObject
 {
 public:
 	QProject();
-	static QProject* LoadProjectFromFile(QString);
-	static QProject* LoadProjectFromText(QString);
+	static QProject* LoadProjectFromFile(const QString&);
+	static QProject* LoadProjectFromText(const QString&);
 	enum ProjectType{LocalProject, RDSProject, FTPProject, SFTPProject};
 	virtual char getDirSeparator() = 0;
-	virtual QList<QProjectFile> getFolderItems(QString) = 0;
-	virtual QByteArray ReadFile(QString) = 0;
-	virtual void WriteFile(QString, QByteArray) = 0;
-	virtual void DeleteFile(QString) = 0;
-	virtual void RenameFile(QString, QString) = 0;
-	virtual void CreateDir(QString) = 0;
-	virtual void DeleteDir(QString, bool) = 0;
-	virtual void RenameDir(QString, QString) = 0;
-	QString getUrl();
+	virtual QList<QProjectFile> getFolderItems(const QString&) = 0;
+	virtual QByteArray ReadFile(const QString&) = 0;
+	virtual void WriteFile(const QString&, const QByteArray&) = 0;
+	virtual void DeleteFile(const QString&) = 0;
+	virtual void RenameFile(const QString&, const QString&) = 0;
+	virtual void CreateDir(const QString&) = 0;
+	virtual void DeleteDir(const QString&, bool) = 0;
+	virtual void RenameDir(const QString&, const QString&) = 0;
+	const QString& getUrl();
 protected:
 	QString m_Url;
 	QString m_Path;
 private:
 	ProjectType m_Type;
 	QHash<QString, QString> m_Arguments;
-	QString m_SavedAt;
-	bool m_Modified;
+	QString m_ProjectFile;
+	bool m_ProjectFileSaved;
 };
 
 QT_END_NAMESPACE

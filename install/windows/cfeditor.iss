@@ -30,6 +30,19 @@ Source: "c:\Qt\4.7.1\bin\QtGui4.dll"; DestDir: "{app}";
 Source: "c:\Qt\4.7.1\bin\QtNetwork4.dll"; DestDir: "{app}";
 Source: "c:\Qt\4.7.1\bin\QtXml4.dll"; DestDir: "{app}";
 Source: "c:\Qt\4.7.1\bin\QtWebKit4.dll"; DestDir: "{app}";
+Source: "c:\Qt\4.7.1\bin\phonon4.dll"; DestDir: "{app}";
+Source: "c:\Qt\4.7.1\bin\QtSvg4.dll"; DestDir: "{app}";
+
+; Qt image icon engines
+Source: "c:\Qt\4.7.1\plugins\iconengines\qsvgicon4.dll"; DestDir: "{app}\iconengines\qsvgicon4.dll";
+
+; Qt image formats
+Source: "c:\Qt\4.7.1\plugins\imageformats\qgif4.dll"; DestDir: "{app}\imageformats\qgif4.dll";
+Source: "c:\Qt\4.7.1\plugins\imageformats\qico4.dll"; DestDir: "{app}\imageformats\qico4.dll";
+Source: "c:\Qt\4.7.1\plugins\imageformats\qjpeg4.dll"; DestDir: "{app}\imageformats\qjpeg4.dll";
+Source: "c:\Qt\4.7.1\plugins\imageformats\qmng4.dll"; DestDir: "{app}\imageformats\qmng4.dll";
+Source: "c:\Qt\4.7.1\plugins\imageformats\qsvg4.dll"; DestDir: "{app}\imageformats\qsvg4.dll";
+Source: "c:\Qt\4.7.1\plugins\imageformats\qtiff4.dll"; DestDir: "{app}\imageformats\qtiff4.dll";
 
 ; libssh library
 Source: "..\..\libs\libssh\bin\libeay32.dll"; DestDir: "{app}";

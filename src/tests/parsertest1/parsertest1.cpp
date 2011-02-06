@@ -50,29 +50,29 @@ void CFTest1::parseDir(QString p_dir)
 			file.close();
 
 			QList<QCFParserTag> l_tags;
-			QCFParser* parser = new QCFParser();
+			QCFParser parser;
 
 			this->setWindowTitle("CFTest1 - " + item.fileName());qApp->processEvents();
 
-			if (parser->Parse(fileContent) != NoError)
+			if (parser.Parse(fileContent) != NoError)
 			{
 				this->setWindowTitle("CFTest1");qApp->processEvents();
 
-				lastItem->setText(lastItem->text() + " error: " + parser->getError() + ", at position: " + QString::number(parser->getErrorPosition()));
+				lastItem->setText(lastItem->text() + " error: " + parser.getError() + ", at position: " + QString::number(parser.getErrorPosition()));
 				lastItem->setBackgroundColor(QColor(255, 0, 0));
 			}
 			else
 			{
 				this->setWindowTitle("CFTest1");qApp->processEvents();
 
-				if (parser->BuildTagTree() != NoError)
+				if (parser.BuildTagTree() != NoError)
 				{
-				lastItem->setText(lastItem->text() + " error: " + parser->getError() + ", at position: " + QString::number(parser->getErrorPosition()));
+				lastItem->setText(lastItem->text() + " error: " + parser.getError() + ", at position: " + QString::number(parser.getErrorPosition()));
 				lastItem->setBackgroundColor(QColor(0, 255, 255));
 				}
 				else
 				{
-					l_tags = parser->getTags();
+					l_tags = parser.getTags();
 					for (int c = 0; c < l_tags.size(); c++)
 					{
 						if (l_tags[c].m_TagType == CFTagType)
@@ -84,7 +84,7 @@ void CFTest1::parseDir(QString p_dir)
 			}
 
 			ui.listWidget->addItem(lastItem);
-			delete parser;
+			//delete parser;
 		}
 	}
 }

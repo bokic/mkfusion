@@ -2,7 +2,6 @@
 #include "qcf8.h"
 
 #include <QtCore/QString>
-#include <QtCore/QChar>
 #ifdef QT_DEBUG
 #include <QDebug>
 #endif
@@ -81,7 +80,7 @@ quint32 GetColumnNumberFromPosition(const QString &p_FileContent, const qint32 p
 bool QCFParser::TrimCFCode(const QString& p_Text, int& p_Offset)
 {
 	int l_Len = p_Text.length();
-	QChar l_ch;
+	ushort l_ch;
 
 	for(; ; )
 	{
@@ -90,7 +89,7 @@ bool QCFParser::TrimCFCode(const QString& p_Text, int& p_Offset)
 			return true;
 		}
 
-		l_ch = p_Text.at(p_Offset);
+		l_ch = p_Text.at(p_Offset).unicode();
 		if ((l_ch == ' ')||(l_ch == '\t')||(l_ch == '\r')||(l_ch == '\n'))
 		{
 			p_Offset++;
@@ -107,7 +106,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 	QCFParserElement ret;
 	QCFParserElement child;
 	QString str;
-	QChar ch, ch2;
+	ushort ch, ch2;
 	ret.m_Type = p_ElementType;
 	int l_Offset = p_Offset;
 
@@ -125,7 +124,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 	switch(p_ElementType)
 	{
 		case CFTagExpression:
-			ch = p_Text.at(l_Offset);
+			ch = p_Text.at(l_Offset).unicode();
 
 			if (ch == '>')
 			{
@@ -143,7 +142,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 					return ret;
 				}
 
-				ch2 = p_Text.at(l_Offset + 1);
+				ch2 = p_Text.at(l_Offset + 1).unicode();
 				if (ch2 == '>')
 				{
 					ret.m_Size = l_Offset - p_Offset + 1;
@@ -176,7 +175,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 					ret.m_Text = tr("cftag not closed.");
 					return ret;
 				}
-				ch = p_Text.at(l_Offset);
+				ch = p_Text.at(l_Offset).unicode();
 
 				if (ch == '>')
 				{
@@ -194,7 +193,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 						return ret;
 					}
 
-					ch2 = p_Text.at(l_Offset + 1);
+					ch2 = p_Text.at(l_Offset + 1).unicode();
 					if (ch2 == '>')
 					{
 						ret.m_Position = p_Offset;
@@ -240,7 +239,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 					ret.m_Text = tr("End of file found.");
 					return ret;
 				}
-				ch = p_Text.at(c);
+				ch = p_Text.at(c).unicode();
 
 				if (ch == '>')
 				{
@@ -258,7 +257,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 						return ret;
 					}
 
-					ch2 = p_Text.at(c + 1);
+					ch2 = p_Text.at(c + 1).unicode();
 					if (ch2 == '>')
 					{
 						ret.m_Size = lastElementFound - ret.m_Position;
@@ -336,7 +335,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 		case Variable:
 			for (int c = l_Offset; c < p_Text.length(); c++)
 			{
-				ch = p_Text.at(c);
+				ch = p_Text.at(c).unicode();
 
 				if ((l_Offset == c)&&(((ch >= '0')&&(ch <= '9'))||(ch == '-')||(ch == '+')))
 				{
@@ -406,7 +405,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 
 						if (p_Text.length() > c)
 						{
-							ch = p_Text.at(c);
+							ch = p_Text.at(c).unicode();
 						}
 						else
 						{
@@ -478,15 +477,17 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 					return ret;
 				}
 			}
-			ret.m_Type = Error;
-			ret.m_Size = 1;
-			ret.m_Text = tr("Variable name not set.");
+			//ret.m_Type = Error;
+			//ret.m_Size = 1;
+			//ret.m_Text = tr("Variable name not set.");
+			ret.m_Size = p_Text.length() - l_Offset;
+			ret.m_Text = p_Text.mid(l_Offset, ret.m_Size);
 			break;
 		case Number:
 			bool comma;
 			int signOffset;
 
-			ch = p_Text.at(l_Offset);
+			ch = p_Text.at(l_Offset).unicode();
 			if (((ch < '0')||(ch > '9'))&&(ch !='-')&&(ch !='+'))
 			{
 				ret.m_Type = Error;
@@ -500,7 +501,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 
 			for (int c = l_Offset; c < p_Text.length(); c++)
 			{
-				ch = p_Text.at(c);
+				ch = p_Text.at(c).unicode();
 
 				if ((c == signOffset)&&((ch == '-')||(ch == '+')))
 				{
@@ -527,16 +528,16 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 			ret.m_Type = Error;
 			break;
 		case String:
-			char stringType;
+			ushort stringType;
 			stringType = 0;
 
 			for (int c = l_Offset; c < p_Text.length(); c++)
 			{
-				ch = p_Text.at(c);
+				ch = p_Text.at(c).unicode();
 
 				if (c == l_Offset)
 				{
-					stringType = ch.toLatin1();
+					stringType = ch;
 
 					if ((ch != '\'')&&(ch != '\"'))
 					{
@@ -560,7 +561,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 
 						if (p_Text.at(c + 1) == '#')
 						{
-							str.append(ch);
+							str.append(QChar(ch));
 							c++;
 							continue;
 						}
@@ -628,7 +629,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 
 							return ret;
 						}
-						str.append(ch);
+						str.append(QChar(ch));
 					}
 				}
 			}
@@ -637,13 +638,13 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 			ret.m_Text = tr("String not finished.");
 			break;
 		case Operator:
-			ch = p_Text.at(l_Offset);
+			ch = p_Text.at(l_Offset).unicode();
 
 			if ((ch == '=')||(ch == '&')||(ch == '*')||(ch == '/')||(ch == '+')||(ch == '-')||(ch == '.')) // TODO: Add more operator strings.
 			{
 				ret.m_Position = l_Offset;
 				ret.m_Size = 1;
-				ret.m_Text = ch;
+				ret.m_Text = QChar(ch);
 				break;
 			}
 
@@ -751,7 +752,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 					return ret;
 				}
 
-				ch = p_Text.at(c);
+				ch = p_Text.at(c).unicode();
 
                 if ((c == l_Offset)&&(ch == '{'))
                 {
@@ -978,7 +979,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 		c = l_Offset;
 		for(;;)
 		{
-			ch = p_Text.at(c);
+			ch = p_Text.at(c).unicode();
 
 			if (ch == ')')
 			{
@@ -1027,7 +1028,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 		ret.m_ChildElements.append(child);
 		break;
 	case VariableIndex:
-		ch = p_Text.at(l_Offset);
+		ch = p_Text.at(l_Offset).unicode();
 		if (ch != '[')
 		{
 			ret.m_Size = 1;
@@ -1395,14 +1396,12 @@ QCFParserErrorType QCFParser::Parse(const QString& p_Text, bool* p_Terminate)
 				}
 			}
 
-#ifdef ENABLE_CFSCRIPT // TODO: Experimental
             if (openTag.m_Name.compare("cfscript", Qt::CaseInsensitive) == 0)
 			{
                 openTag.m_Arguments = ParseCFCode(p_Text, openTag.m_Start + openTag.m_Length, CFScript);
 
                 pos = openTag.m_Arguments.m_Position + openTag.m_Arguments.m_Size;
             }
-#endif
 
 			m_Tags.append(openTag);
 
@@ -1423,9 +1422,8 @@ QCFParserErrorType QCFParser::Parse(const QString& p_Text, bool* p_Terminate)
 				}
 			}
 
-            if (openTag.m_Name.compare("cfscript", Qt::CaseInsensitive) != 0)
-            {
-                //pos = endName + openTag.m_Arguments.m_Size;
+			if (openTag.m_Name.compare("cfscript", Qt::CaseInsensitive) != 0)
+			{
                 pos = openTag.m_Start + openTag.m_Length;
             }
 		}
@@ -1436,6 +1434,7 @@ QCFParserErrorType QCFParser::Parse(const QString& p_Text, bool* p_Terminate)
 			{
 				m_Error = tr("Tag not closed. Missing '>'");
 				m_ErrorPosition = cf_epos + 1;
+
 				return ParsingError;
 			}
 
@@ -1500,7 +1499,14 @@ QCFParserErrorType QCFParser::Parse(const QString& p_Text, bool* p_Terminate)
 		}
 	}
 
-	return BuildTagTree();
+	QCFParserErrorType l_tagTree = BuildTagTree();
+
+	if (l_tagTree != NoError)
+	{
+		return l_tagTree;
+	}
+
+	return validate();
 }
 
 QCFParserErrorType QCFParser::BuildTagTree()
@@ -1508,7 +1514,7 @@ QCFParserErrorType QCFParser::BuildTagTree()
 	QList<quint32> nestedList;
 	bool Found;
 
-	for (qint32 c = 0; c < m_Tags.size(); c++)
+	for (int c = 0; c < m_Tags.size(); c++)
 	{
 		switch(m_Tags[c].m_TagType)
 		{
@@ -1542,6 +1548,157 @@ QCFParserErrorType QCFParser::BuildTagTree()
 			break;
 		}
 	}
+
+	return NoError;
+}
+
+void updateElementOffset(QCFParserElement* p_Element, int p_Offset)
+{
+	p_Element->m_Position += p_Offset;
+
+	for(int c = 0; c < p_Element->m_ChildElements.count(); c++)
+	{
+		updateElementOffset(&p_Element->m_ChildElements[c], p_Offset);
+	}
+}
+
+QCFParserErrorType QCFParser::validate()
+{
+	for (int c = 0; c < m_Tags.size(); c++)
+	{
+		QCFParserTag &tag = m_Tags[c];
+
+		if (tag.m_TagType != CFTagType)
+		{
+			continue;
+		}
+
+		QString l_tagName = tag.m_Name;
+
+		if (!m_CFTagsDef.contains(l_tagName))
+		{
+#ifdef QT_DEBUG
+			qDebug() << l_tagName;
+#endif
+			return InvalidCFTagError;
+		}
+
+		QCFTag l_tagDef = m_CFTagsDef[l_tagName];
+
+		if (l_tagDef.m_ArgumentsType != QCFTag::ArgumentsTypeArguments)
+		{
+			continue;
+		}
+
+		if ((l_tagDef.m_ArgumentVariants.count() == 0)&&(tag.m_Arguments.m_ChildElements.count() > 0))
+		{
+			return InvalidArgumentError;
+		}
+
+		if (l_tagDef.m_ArgumentVariants.count() == 0)
+		{
+			continue;
+		}
+
+		bool l_variantFound = true;
+
+		for (int c2 = 0; c2 < l_tagDef.m_ArgumentVariants.count(); c2++)
+		{
+			QList<QCFTagArgument> l_argumentVariant = l_tagDef.m_ArgumentVariants[c2];
+			QList<QString> l_requiredArgs;
+			l_variantFound = true;
+
+			// Get all required parametars
+			for(int c3 = 0; c3 < l_argumentVariant.length(); c3++)
+			{
+				QCFTagArgument l_argument = l_argumentVariant[c3];
+
+				if (l_argument.m_Required)
+				{
+					l_requiredArgs.append(l_argument.m_Name);
+				}
+			}
+
+			// check if all of them are present
+			for(int c3 = 0; c3 < l_requiredArgs.length(); c3++)
+			{
+				bool l_requiredArgFound = false;
+				for (int c4 = 0; c4 < tag.m_Arguments.m_ChildElements.length(); c4++)
+				{
+					if (tag.m_Arguments.m_ChildElements[c4].m_ChildElements[0].m_Text == l_requiredArgs[c3])
+					{
+						l_requiredArgFound = true;
+						break;
+					}
+				}
+
+				if (l_requiredArgFound == false)
+				{
+					l_variantFound = false;
+					break;
+				}
+			}
+
+			if (l_variantFound == false)
+			{
+				continue;
+			}
+
+			// check rest of the parametars, generate error if not match here.
+			bool l_invalidOptionalArgs = false;
+			/*for(int c3 = 0; c3 < l_argumentVariant.length(); c3++)
+			{
+				QCFTagArgument l_argument = l_argumentVariant[c3];
+
+				if (!l_argument.m_Required)
+				{
+					// TODO: Do ovde..
+					if (l_argument.m_Name)
+					{
+
+					}
+				}
+			}*/
+
+			if (l_invalidOptionalArgs)
+			{
+				return InvalidArgumentError;
+			}
+
+			// change parametar value type if nesessary
+			for(int c3 = 0; c3 < l_argumentVariant.length(); c3++)
+			{
+				if (l_argumentVariant[c3].m_Type == QCFTagArgument::TypeExpression)
+				{
+					for (int c4 = 0; c4 < tag.m_Arguments.m_ChildElements.count(); c4++)
+					{
+						if (tag.m_Arguments.m_ChildElements[c4].m_ChildElements.length() == 3)
+						{
+							QString argName = tag.m_Arguments.m_ChildElements[c4].m_ChildElements[0].m_Text;
+
+							if (l_argumentVariant[c3].m_Name == argName)
+							{
+								QString argValue = tag.m_Arguments.m_ChildElements[c4].m_ChildElements[2].m_Text;
+
+								tag.m_Arguments.m_ChildElements[c4].m_ChildElements[2].m_ChildElements.clear();
+
+								QCFParserElement el = ParseCFCode(argValue, 0, Expression);
+
+								updateElementOffset(&el, tag.m_Arguments.m_ChildElements[c4].m_ChildElements[2].m_Position + 1);
+
+								tag.m_Arguments.m_ChildElements[c4].m_ChildElements[2].m_ChildElements.append(el);
+							}
+						}
+						else
+						{
+							// TODO: Add error.
+						}
+					}
+				}
+			}
+		}
+	}
+
 	return NoError;
 }
 

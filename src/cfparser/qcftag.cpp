@@ -41,7 +41,7 @@ QCFTag::QCFTag(const QCFTag& p_Tag):QObject()
 	m_CloseTagType = p_Tag.m_CloseTagType;
 	m_ArgumentsType = p_Tag.m_ArgumentsType;
 	m_ExpressionInside = p_Tag.m_ExpressionInside;
-
+	m_ArgumentVariants = p_Tag.m_ArgumentVariants;
 }
 
 QCFTag::QCFTag(const QString& p_TagName, CloseTagType p_CloseTagType, ArgumentsType p_ArgumentsType, ExpressionInside p_ExpressionInside):QObject()
@@ -58,6 +58,7 @@ QCFTag& QCFTag::operator=(const QCFTag& p_Tag)
 	m_CloseTagType = p_Tag.m_CloseTagType;
 	m_ArgumentsType = p_Tag.m_ArgumentsType;
 	m_ExpressionInside = p_Tag.m_ExpressionInside;
+	m_ArgumentVariants = p_Tag.m_ArgumentVariants;
 
 	return *this;
 }

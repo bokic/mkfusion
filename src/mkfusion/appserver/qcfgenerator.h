@@ -8,10 +8,10 @@ class QCFGenerator
 public:
 	QCFGenerator();
 	QString compile(QCFParser&, const QString&, const QString&);
-	QString GenerateVariable(const QString&, const QString&);
-	QString GenerateCFExpressionToCExpression(const QCFParserElement&, QString);
+	QString GenerateVariable(const QString&);
+	QString GenerateCFExpressionToCExpression(const QCFParserElement&);
 	QCFParserElement OprimizeQCFParserElement(QCFParserElement);
-	QString CFTagGetArgument(const QCFParserTag&, const QString&, const QString&);
+	QString CFTagGetArgument(const QCFParserTag&, const QString&);
 	QString GenerateCCodeFromCFTag(const QCFParserTag&);
 private:
 	QHash<QString, QCFTag> m_CFTagsDef;

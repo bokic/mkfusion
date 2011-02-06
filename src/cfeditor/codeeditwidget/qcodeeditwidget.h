@@ -2,6 +2,7 @@
 #define QCODEEDITWIDGET_H
 
 #include <QAbstractScrollArea>
+#include <QPixmap>
 #include <QColor>
 #include <QFont>
 #include <QList>
@@ -16,6 +17,7 @@ public:
 	enum LineStatusType {LineStatusTypeLineNotModified, LineStatusTypeLineSaved, LineStatusTypeLineModified};
 	enum EndLineType {EndLineTypeNoEndLine, EndLineTypeCREndLine, EndLineTypeLFEndLine, EndLineTypeCRLFEndLine, EndLineTypeLFCREndLine};
 	enum UnderlineType {UnderlineTypeNoUnderline, UnderlineTypeLine, UnderlineTypeWave};
+	enum BreakpointType {BreakpointTypeNoBreakpoint, BreakpointTypeBreakpoint, BreakpointTypeBreakpointPending, BreakpointTypeDisabled};
 
 	struct QCodeEditWidgetColorItem {
 		int index;
@@ -24,13 +26,13 @@ public:
 		QColor backgroundColor;
 		QColor underlineColor;
 		UnderlineType underline;
-
 	};
 
 	struct QCodeEditWidgetLine {
 		LineStatusType LineStatus;
 		QString Content;
 		EndLineType EndLine;
+		BreakpointType Breakpoint;
 	};
 
 	explicit QCodeEditWidget(QWidget* = 0);
@@ -38,11 +40,19 @@ public:
 	QString getText();
 	void clearFormatting();
 	void addFormat(const QCodeEditWidgetColorItem&);
+	void setBreakpoint(int, BreakpointType);
+	BreakpointType breakpoint(int);
 
 protected:
 	void paintEvent(QPaintEvent*);
 	void timerEvent(QTimerEvent*);
 	void keyPressEvent(QKeyEvent*);
+	void updatePanelWidth();
+	void ensureCaretIsVisible();
+	void scrollContentsBy(int, int);
+	void mouseMoveEvent(QMouseEvent*);
+	void mousePressEvent(QMouseEvent*);
+	void mouseReleaseEvent(QMouseEvent*);
 
 private:
 	QBrush m_LineNumbersBackground;
@@ -52,23 +62,28 @@ private:
 	QBrush m_LineModifiedAndSavedBackground;
 	QBrush m_CurrentLineBackground;
 	QFont m_TextFont;
+	QPixmap m_BreakPointPixmap;
+	QPixmap m_BreakPointPixmapPending;
+	QPixmap m_BreakPointPixmapDisabled;
 	QList<QCodeEditWidgetLine> m_Lines;
 	QList<QCodeEditWidgetColorItem> m_ColorItems;
 
-	quint32 m_ScrollXPixelPos;
-	quint32 m_ScrollYLinePos;
+	int m_ScrollXCharPos;
+	int m_ScrollYLinePos;
 	int m_LineNumbersPanelWidth;
 	int m_currentlyBlinkCursorShowen;
 	int m_CursorTimerID;
 	int m_CursorHeight;
 
-	struct
-	{
-		quint32 m_Row; // TODO: change this into int, and remove the casting in implementation.
-		quint32 m_Column; // TODO: change this into int, and remove the casting in implementation.
+	struct {
+		int m_Row;
+		int m_Column;
 	} m_CarretPosition;
 
 signals:
+	void on_key_press(QKeyEvent *);
+	void on_text_change();
+	void on_breakpoint_change(int);
 
 public slots:
 	void setText(const QString &text);

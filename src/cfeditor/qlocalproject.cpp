@@ -3,10 +3,15 @@
 #include <QFile>
 #include <QDir>
 
-QLocalProject::QLocalProject(QHash<QString, QString> p_Args)
+QLocalProject::QLocalProject(const QHash<QString, QString>& p_Args)
 {
 	m_Url = p_Args["Url"];
 	m_Path = p_Args["Path"];
+
+	if (!m_Path.endsWith(getDirSeparator()))
+	{
+		m_Path += getDirSeparator();
+	}
 }
 
 char QLocalProject::getDirSeparator()
@@ -14,7 +19,7 @@ char QLocalProject::getDirSeparator()
 	return '/';
 }
 
-QByteArray QLocalProject::ReadFile(QString p_File)
+QByteArray QLocalProject::ReadFile(const QString& p_File)
 {
 	QFile file(m_Path + p_File);
 	
@@ -28,7 +33,7 @@ QByteArray QLocalProject::ReadFile(QString p_File)
 	return ba;
 }
 
-void QLocalProject::WriteFile(QString p_File, QByteArray p_Content)
+void QLocalProject::WriteFile(const QString& p_File, const QByteArray& p_Content)
 {
 	QFile l_file(m_Path + p_File);
 	
@@ -40,17 +45,17 @@ void QLocalProject::WriteFile(QString p_File, QByteArray p_Content)
 	l_file.close();
 }
 
-void QLocalProject::DeleteFile(QString p_File)
+void QLocalProject::DeleteFile(const QString& p_File)
 {
 	QFile::remove(m_Path + p_File);
 }
 
-void QLocalProject::RenameFile(QString p_FromFile, QString p_ToFile)
+void QLocalProject::RenameFile(const QString& p_FromFile, const QString& p_ToFile)
 {
 	QFile::rename(m_Path + p_FromFile, m_Path + p_ToFile);
 }
 
-QList<QProjectFile> QLocalProject::getFolderItems(QString p_Folder)
+QList<QProjectFile> QLocalProject::getFolderItems(const QString& p_Folder)
 {
 	QList<QProjectFile> ret;
 
@@ -78,13 +83,13 @@ QList<QProjectFile> QLocalProject::getFolderItems(QString p_Folder)
 	return ret;
 }
 
-void QLocalProject::CreateDir(QString p_Dir)
+void QLocalProject::CreateDir(const QString& p_Dir)
 {
 	QDir l_dir;
 	l_dir.mkdir(m_Path + p_Dir);
 }
 
-void QLocalProject::DeleteDir(QString p_Dir, bool p_Recursive)
+void QLocalProject::DeleteDir(const QString& p_Dir, bool p_Recursive)
 {
 	QDir l_dir;
 
@@ -96,7 +101,7 @@ void QLocalProject::DeleteDir(QString p_Dir, bool p_Recursive)
 	l_dir.rmdir(m_Path + p_Dir);
 }
 
-void QLocalProject::RenameDir(QString p_OldDir, QString p_NewDir)
+void QLocalProject::RenameDir(const QString& p_OldDir, const QString& p_NewDir)
 {
 	QDir l_dir;
 	l_dir.rename(m_Path + p_OldDir, m_Path + p_NewDir);

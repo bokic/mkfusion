@@ -22,11 +22,11 @@ public:
 	{
 		QWDDX ret(QWDDX::Struct);
 
-		ret["Type"] = *m_Type;
-		ret["Message"] = *m_message;
-		ret["Detail"] = *m_Detail;
-		ret["StackTrace"] = "Todo, schedule for v1.1";
-		ret["TagContext"] = "Todo, schedule for v1.1";
+		ret[L"Type"] = *m_Type;
+		ret[L"Message"] = *m_message;
+		ret[L"Detail"] = *m_Detail;
+		ret[L"StackTrace"] = L"Todo, schedule for v1.1";
+		ret[L"TagContext"] = L"Todo, schedule for v1.1";
 
 		return ret;
 	}

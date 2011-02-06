@@ -214,82 +214,82 @@ void QCFRunningTemplate::worker()
 					m_VARIABLES.m_Type = QWDDX::Struct;
 
 					// Run compiled template(dll/so).
-					m_SERVER.wr(true)["COLDFUSION"] = QWDDX(QWDDX::Struct);
-					m_SERVER.wr(true)["COLDFUSION"]["APPSERVER"] = "mkfusion";
-					m_SERVER.wr(true)["COLDFUSION"]["EXPIRATION"] = QDateTime::currentDateTime();
+					m_SERVER[L"COLDFUSION"] = QWDDX(QWDDX::Struct);
+					m_SERVER[L"COLDFUSION"][L"APPSERVER"] = L"mkfusion";
+					m_SERVER[L"COLDFUSION"][L"EXPIRATION"] = QDateTime::currentDateTime();
 #ifdef Q_WS_WIN
-					m_SERVER.wr(true)["COLDFUSION"]["INSTALLKIT"] = "Windows";
+					m_SERVER[L"COLDFUSION"][L"INSTALLKIT"] = L"Windows";
 #elif defined Q_WS_X11
-					m_SERVER.wr(true)["COLDFUSION"]["INSTALLKIT"] = "Linux";
+					m_SERVER[L"COLDFUSION"][L"INSTALLKIT"] = L"Linux";
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
-					m_SERVER.wr(true)["COLDFUSION"]["PRODUCTLEVEL"] = "Free";
-					m_SERVER.wr(true)["COLDFUSION"]["PRODUCTNAME"] = "MKFusion Server";
-					m_SERVER.wr(true)["COLDFUSION"]["PRODUCTVERSION"] = "0.4.1";
-					m_SERVER.wr(true)["COLDFUSION"]["ROOTDIR"] = ((QCFServer*)m_CFServer)->m_MKFusionPath.left(-1);
-					m_SERVER.wr(true)["COLDFUSION"]["SUPPORTEDLOCALES"] = "English (US),en,en_US";
-					m_SERVER.wr(true)["OS"] = QWDDX(QWDDX::Struct);
+					m_SERVER[L"COLDFUSION"][L"PRODUCTLEVEL"] = L"Free";
+					m_SERVER[L"COLDFUSION"][L"PRODUCTNAME"] = L"MKFusion Server";
+					m_SERVER[L"COLDFUSION"][L"PRODUCTVERSION"] = L"0.4.1";
+					m_SERVER[L"COLDFUSION"][L"ROOTDIR"] = ((QCFServer*)m_CFServer)->m_MKFusionPath.left(-1);
+					m_SERVER[L"COLDFUSION"][L"SUPPORTEDLOCALES"] = L"English (US),en,en_US";
+					m_SERVER[L"OS"] = QWDDX(QWDDX::Struct);
 #ifdef Q_WS_WIN
-					m_SERVER.wr(true)["OS"]["ADDITIONALINFORMATION"] = "Windows";
-					m_SERVER.wr(true)["OS"]["ARCH"] = "i386";
-					m_SERVER.wr(true)["OS"]["BUILDNUMBER"] = "";
-					m_SERVER.wr(true)["OS"]["NAME"] = "WINDOWS";
-					m_SERVER.wr(true)["OS"]["VERSION"] = "XP";
+					m_SERVER[L"OS"][L"ADDITIONALINFORMATION"] = L"Windows";
+					m_SERVER[L"OS"][L"ARCH"] = L"i386";
+					m_SERVER[L"OS"][L"BUILDNUMBER"] = L"";
+					m_SERVER[L"OS"][L"NAME"] = L"WINDOWS";
+					m_SERVER[L"OS"][L"VERSION"] = L"XP";
 #elif defined Q_WS_X11
-					m_SERVER.wr(true)["OS"]["ADDITIONALINFORMATION"] = "Linux";
-					m_SERVER.wr(true)["OS"]["ARCH"] = "i386";
-					m_SERVER.wr(true)["OS"]["BUILDNUMBER"] = "";
-					m_SERVER.wr(true)["OS"]["NAME"] = "Linux";
-					m_SERVER.wr(true)["OS"]["VERSION"] = "(unknown distribution)";
+					m_SERVER[L"OS"][L"ADDITIONALINFORMATION"] = L"Linux";
+					m_SERVER[L"OS"][L"ARCH"] = L"i386";
+					m_SERVER[L"OS"][L"BUILDNUMBER"] = L"";
+					m_SERVER[L"OS"][L"NAME"] = L"Linux";
+					m_SERVER[L"OS"][L"VERSION"] = L"(unknown distribution)";
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
 
-					m_CGI.wr(true)["AUTH_PASSWORD"] = "";
-					m_CGI.wr(true)["AUTH_TYPE"] = m_Request.m_AuthType;
-					m_CGI.wr(true)["AUTH_USER"] = m_Request.m_User;
-					m_CGI.wr(true)["CERT_COOKIE"] = "";
-					m_CGI.wr(true)["CERT_FLAGS"] = "";
-					m_CGI.wr(true)["CERT_ISSUER"] = "";
-					m_CGI.wr(true)["CERT_KEYSIZE"] = "";
-					m_CGI.wr(true)["CERT_SECRETKEYSIZE"] = "";
-					m_CGI.wr(true)["CERT_SERIALNUMBER"] = "";
-					m_CGI.wr(true)["CERT_SERVER_ISSUER"] = "";
-					m_CGI.wr(true)["CERT_SERVER_SUBJECT"] = "";
-					m_CGI.wr(true)["CERT_SUBJECT"] = "";
-					m_CGI.wr(true)["CF_TEMPLATE_PATH"] = m_Request.m_Filename;
-					m_CGI.wr(true)["CONTENT_LENGTH"] = "";
-					m_CGI.wr(true)["CONTENT_TYPE"] = "";
-					m_CGI.wr(true)["CONTEXT_PATH"] = "";
-					m_CGI.wr(true)["GATEWAY_INTERFACE"] = "CGI/1.1"; // TODO: Hardcoded.
-					m_CGI.wr(true)["HTTPS"] = "";
-					m_CGI.wr(true)["HTTPS_KEYSIZE"] = "";
-					m_CGI.wr(true)["HTTPS_SECRETKEYSIZE"] = "";
-					m_CGI.wr(true)["HTTPS_SERVER_ISSUER"] = "";
-					m_CGI.wr(true)["HTTPS_SERVER_SUBJECT"] = "";
-					m_CGI.wr(true)["HTTP_ACCEPT"] = m_Request.m_Accept;
-					m_CGI.wr(true)["HTTP_ACCEPT_ENCODING"] = m_Request.m_AcceptEncoding;
-					m_CGI.wr(true)["HTTP_ACCEPT_LANGUAGE"] = m_Request.m_AcceptLanguage;
-					m_CGI.wr(true)["HTTP_CONNECTION"] = m_Request.m_Connection;
-					m_CGI.wr(true)["HTTP_COOKIE"] = "";
-					m_CGI.wr(true)["HTTP_HOST"] = m_Request.m_Host;
-					m_CGI.wr(true)["HTTP_REFERER"] = m_Request.m_Referer;
-					m_CGI.wr(true)["HTTP_USER_AGENT"] = m_Request.m_UserAgent;
-					m_CGI.wr(true)["PATH_INFO"] = "";
-					m_CGI.wr(true)["PATH_TRANSLATED"] = m_Request.m_Filename;
-					m_CGI.wr(true)["QUERY_STRING"] = m_Request.m_Args;
-					m_CGI.wr(true)["REMOTE_ADDR"] = m_Request.m_RemoteHost; // TODO: please check me.
-					m_CGI.wr(true)["REMOTE_HOST"] = m_Request.m_RemoteHost;
-					m_CGI.wr(true)["REMOTE_USER"] = "";
-					m_CGI.wr(true)["REQUEST_METHOD"] = m_Request.m_Method;
-					m_CGI.wr(true)["SCRIPT_NAME"] = m_Request.m_URI;
-					m_CGI.wr(true)["SERVER_NAME"] = m_Request.m_Host;
-					m_CGI.wr(true)["SERVER_PORT"] = QString::number(80); // TODO: Hardcoded.
-					m_CGI.wr(true)["SERVER_PORT_SECURE"] = "0";
-					m_CGI.wr(true)["SERVER_PROTOCOL"] = m_Request.m_Protocol;
-					m_CGI.wr(true)["SERVER_SOFTWARE"] = "Todo";
-					m_CGI.wr(true)["WEB_SERVER_API"] = "";
+					m_CGI[L"AUTH_PASSWORD"] = L"";
+					m_CGI[L"AUTH_TYPE"] = m_Request.m_AuthType;
+					m_CGI[L"AUTH_USER"] = m_Request.m_User;
+					m_CGI[L"CERT_COOKIE"] = L"";
+					m_CGI[L"CERT_FLAGS"] = L"";
+					m_CGI[L"CERT_ISSUER"] = L"";
+					m_CGI[L"CERT_KEYSIZE"] = L"";
+					m_CGI[L"CERT_SECRETKEYSIZE"] = L"";
+					m_CGI[L"CERT_SERIALNUMBER"] = L"";
+					m_CGI[L"CERT_SERVER_ISSUER"] = L"";
+					m_CGI[L"CERT_SERVER_SUBJECT"] = L"";
+					m_CGI[L"CERT_SUBJECT"] = L"";
+					m_CGI[L"CF_TEMPLATE_PATH"] = m_Request.m_Filename;
+					m_CGI[L"CONTENT_LENGTH"] = L"";
+					m_CGI[L"CONTENT_TYPE"] = L"";
+					m_CGI[L"CONTEXT_PATH"] = L"";
+					m_CGI[L"GATEWAY_INTERFACE"] = L"CGI/1.1"; // TODO: Hardcoded.
+					m_CGI[L"HTTPS"] = L"";
+					m_CGI[L"HTTPS_KEYSIZE"] = L"";
+					m_CGI[L"HTTPS_SECRETKEYSIZE"] = L"";
+					m_CGI[L"HTTPS_SERVER_ISSUER"] = L"";
+					m_CGI[L"HTTPS_SERVER_SUBJECT"] = L"";
+					m_CGI[L"HTTP_ACCEPT"] = m_Request.m_Accept;
+					m_CGI[L"HTTP_ACCEPT_ENCODING"] = m_Request.m_AcceptEncoding;
+					m_CGI[L"HTTP_ACCEPT_LANGUAGE"] = m_Request.m_AcceptLanguage;
+					m_CGI[L"HTTP_CONNECTION"] = m_Request.m_Connection;
+					m_CGI[L"HTTP_COOKIE"] = L"";
+					m_CGI[L"HTTP_HOST"] = m_Request.m_Host;
+					m_CGI[L"HTTP_REFERER"] = m_Request.m_Referer;
+					m_CGI[L"HTTP_USER_AGENT"] = m_Request.m_UserAgent;
+					m_CGI[L"PATH_INFO"] = L"";
+					m_CGI[L"PATH_TRANSLATED"] = m_Request.m_Filename;
+					m_CGI[L"QUERY_STRING"] = m_Request.m_Args;
+					m_CGI[L"REMOTE_ADDR"] = m_Request.m_RemoteHost; // TODO: please check me.
+					m_CGI[L"REMOTE_HOST"] = m_Request.m_RemoteHost;
+					m_CGI[L"REMOTE_USER"] = L"";
+					m_CGI[L"REQUEST_METHOD"] = m_Request.m_Method;
+					m_CGI[L"SCRIPT_NAME"] = m_Request.m_URI;
+					m_CGI[L"SERVER_NAME"] = m_Request.m_Host;
+					m_CGI[L"SERVER_PORT"] = QString::number(80); // TODO: Hardcoded.
+					m_CGI[L"SERVER_PORT_SECURE"] = L"0";
+					m_CGI[L"SERVER_PROTOCOL"] = m_Request.m_Protocol;
+					m_CGI[L"SERVER_SOFTWARE"] = L"Todo";
+					m_CGI[L"WEB_SERVER_API"] = L"";
 					/*
 					
 					  public void fillKnownVariables()
@@ -318,7 +318,7 @@ void QCFRunningTemplate::worker()
 					{
 						QString key = l_Argument.first;
 						QString value = l_Argument.second;
-						m_URL.wr(true)[key] = value;
+						m_URL[key] = value;
 					}
 
 					l_page->run(this);
@@ -409,6 +409,8 @@ void QCFRunningTemplate::worker()
 	}
 
 	m_Socket->close();
+
+	QThread::currentThread()->setPriority(QThread::IdlePriority);
 	m_Socket->deleteLater();
 	deleteLater();
 

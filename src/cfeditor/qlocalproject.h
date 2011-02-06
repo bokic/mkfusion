@@ -9,16 +9,16 @@
 class QLocalProject: public QProject
 {
 public:
-	QLocalProject(QHash<QString, QString>);
+	QLocalProject(const QHash<QString, QString>&);
 	virtual char getDirSeparator();
-	virtual QByteArray ReadFile(QString);
-	virtual void WriteFile(QString, QByteArray);
-	virtual void DeleteFile(QString);
-	virtual void RenameFile(QString, QString);
-	virtual QList<QProjectFile> getFolderItems(QString);
-	virtual void CreateDir(QString);
-	virtual void DeleteDir(QString, bool);
-	virtual void RenameDir(QString, QString);
+	virtual QByteArray ReadFile(const QString&);
+	virtual void WriteFile(const QString&, const QByteArray&);
+	virtual void DeleteFile(const QString&);
+	virtual void RenameFile(const QString&, const QString&);
+	virtual QList<QProjectFile> getFolderItems(const QString&);
+	virtual void CreateDir(const QString&);
+	virtual void DeleteDir(const QString&, bool);
+	virtual void RenameDir(const QString&, const QString&);
 protected:
 private:
 };

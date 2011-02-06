@@ -1,153 +1,273 @@
-#include <qappmainwindow.h>
-#include <qcodeeditwidget.h>
-#include <qprojectfile.h>
-#include <QTreeWidgetItem>
-#include <QApplication>
-#include <QInputDialog>
-#include <QMessageBox>
-#include <QHeaderView>
-#include <QComboBox>
-#include <QToolBar>
-#include <QList>
+#include "qappmainwindow.h"
+#include "ui_qappmainwindow.h"
 
-QAppMainWindow::QAppMainWindow(QWidget *parent, Qt::WFlags flags)
-	: QMainWindow(parent, flags)
+#include "qprojectproperties.h"
+#include "qcodeeditwidget.h"
+
+QAppMainWindow::QAppMainWindow(QWidget *parent) :
+    QMainWindow(parent),
+	ui(new Ui::QAppMainWindow),
+	m_Project(NULL)
 {
-	setWindowTitle("CFEditor v0.4.1");
-
-	QMenu* menu_File = new QMenu();
-	menu_File->setTitle(tr("&File"));
-	menu_File->addAction(QIcon(":/CFEditor/Commands/new.png"), tr("&New"), this, SLOT(slotFileNew()));
-	menu_File->addAction(tr("&Open"), this, SLOT(slotFileOpen()));
-	menu_File->addSeparator();
-	menu_File->addAction(tr("&Close"), this, SLOT(slotFileClose()));
-	menu_File->addAction(tr("Close A&ll"), this, SLOT(slotFileCloseAll()));
-	menu_File->addSeparator();
-	menu_File->addAction(QIcon(":/CFEditor/Commands/save.png"), tr("&Save"), this, SLOT(slotFileSave()));
-	menu_File->addAction(QIcon(":/CFEditor/Commands/save_as.png"), tr("Save As"), this, SLOT(slotFileSaveAs()));
-	menu_File->addAction(QIcon(":/CFEditor/Commands/save_all.png"), tr("Sav&e All"), this, SLOT(slotFileSaveAll()));
-	menu_File->addSeparator();
-	menu_File->addAction(QIcon(":/CFEditor/Commands/print.png"), tr("&Print"), this, SLOT(slotFilePrint()));
-	menu_File->addAction(QIcon(":/CFEditor/Commands/print_preview.png"), tr("Print Previe&w"), this, SLOT(slotFilePrintPreview()));
-	menu_File->addSeparator();
-	menu_File->addAction(QIcon(":/CFEditor/Commands/settings.png"), tr("P&roperties"), this, SLOT(slotFileProperties()));
-	menu_File->addSeparator();
-	menu_File->addSeparator();
-	menu_File->addAction(tr("E&xit"), this, SLOT(slotFileExit()));
-	menu_File->addSeparator();
-
-	QMenu* edit_File = new QMenu();
-	edit_File->setTitle(tr("&Edit"));
-	edit_File->addAction(tr("&Undo"), this, SLOT(slotEditUndo()));
-	edit_File->addAction(tr("&Redo"), this, SLOT(slotEditRedo()));
-	edit_File->addSeparator();
-	edit_File->addAction(QIcon(":/CFEditor/Commands/copy.png"), tr("&Copy"), this, SLOT(slotEditCopy()));
-	edit_File->addAction(QIcon(":/CFEditor/Commands/cut.png"), tr("&Cut"), this, SLOT(slotEditCut()));
-	edit_File->addAction(QIcon(":/CFEditor/Commands/paste.png"), tr("&Paste"), this, SLOT(slotEditPaste()));
-	edit_File->addSeparator();
-	edit_File->addAction(tr("Select &All"), this, SLOT(slotEditSelectAll()));
-	edit_File->addSeparator();
-	edit_File->addAction(QIcon(":/CFEditor/Commands/find.png"), tr("&Find"), this, SLOT(slotEditFind()));
-	edit_File->addAction(tr("Goto &Line"), this, SLOT(slotEditGotoLine()));
-
-	QMenu* project_File = new QMenu();
-	project_File->setTitle(tr("&Project"));
-	project_File->addAction(tr("&Open Project"), this, SLOT(slotProjectOpenProject()));
-	project_File->addAction(tr("&Close Project"), this, SLOT(slotProjectCloseProject()));
-	project_File->addSeparator();
-	project_File->addAction(QIcon(":/CFEditor/Commands/settings.png"), tr("P&roperties"), this, SLOT(slotProjectProperties()));
-
-	QMenu* tools_File = new QMenu();
-	tools_File->setTitle(tr("&Tools"));
-	tools_File->addAction(QIcon(":/CFEditor/Commands/validate.png"), tr("&Check Project"), this, SLOT(slotToolsCheckProject()));
-
-	QMenu* window_File = new QMenu();
-	window_File->setTitle(tr("&Window"));
-	window_File->addAction(QIcon(":/CFEditor/Commands/fullscreen.png"), tr("&Full Screen"), this, SLOT(slotWindowFullScreen()));
-
-	QMenu* help_File = new QMenu();
-	help_File->setTitle(tr("&Help"));
-	help_File->addAction(QIcon(":/CFEditor/Commands/help.png"), tr("&ColdFusion Help"), this, SLOT(slotHelpColdfusionHelp()));
-	help_File->addSeparator();
-	help_File->addAction(QIcon(":/CFEditor/Commands/about.png"), tr("&About"), this, SLOT(slotHelpAbout()));
-
-	menuBar()->addMenu(menu_File);
-	menuBar()->addMenu(edit_File);
-	menuBar()->addMenu(project_File);
-	menuBar()->addMenu(tools_File);
-	menuBar()->addMenu(window_File);
-	menuBar()->addMenu(help_File);
-
-	QToolBar* mainToolBar = new QToolBar(this);
-	mainToolBar->addWidget(new QComboBox(mainToolBar));
-	mainToolBar->addSeparator();
-
-	addToolBar(mainToolBar);
-
-	m_TabPanel = new QTabWidget(this);
-
-	setCentralWidget(m_TabPanel);
-	connect(m_TabPanel, SIGNAL(currentChanged(int)), SLOT(on_m_TabPanel_currentChanged(int)));
-	connect(m_TabPanel, SIGNAL(tabCloseRequested(int)), SLOT(on_m_TabPanel_tabCloseRequested(int)));
-
-	m_ProjectDock = new QDockWidget(tr("Project Files"), this);
-	m_ProjectDock->setObjectName("m_ProjectDock");
-	m_ProjectDock->setFeatures(QDockWidget::DockWidgetClosable);
-	m_ProjectTree = new QAdvancedTreeWidget();
-	m_ProjectTree->setParent(m_ProjectDock);
-
-	m_ProjectTree->setObjectName("m_ProjectTree");
-	m_ProjectTree->header()->hide();
-
-	connect(m_ProjectTree, SIGNAL(itemExpanded(QTreeWidgetItem*)), this, SLOT(on_m_ProjectTree_itemExpanded(QTreeWidgetItem*)));
-	connect(m_ProjectTree, SIGNAL(itemCollapsed(QTreeWidgetItem*)), this, SLOT(on_m_ProjectTree_itemCollapsed(QTreeWidgetItem*)));
-	connect(m_ProjectTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem*, int)));
-	connect(m_ProjectTree, SIGNAL(keyPress(QAdvancedTreeWidget*, QKeyEvent*)), this, SLOT(on_m_ProjectTree_keyPress(QAdvancedTreeWidget*, QKeyEvent*)));
-
-	m_ProjectDock->setWidget(m_ProjectTree);
-
-	addDockWidget(Qt::LeftDockWidgetArea,m_ProjectDock);
-
-	m_StructureDock = new QDockWidget(tr("Structure"), this);
-	m_StructureTree = new QTreeWidget(m_StructureDock);
-	m_StructureTree->header()->hide();
-	m_StructureDock->setWidget(m_StructureTree);
-
-	addDockWidget(Qt::RightDockWidgetArea,m_StructureDock);
-
-	m_BrowserDock = new QDockWidget(tr("Browser"), this);
-	m_BrowserDock->setFixedHeight(150);
-	m_Browser = new QWebView(m_BrowserDock);
-	m_Browser->setGeometry(0, 0, 0, 150);
-	m_BrowserDock->setWidget(m_Browser);
-	m_Browser->load(QUrl());
-
-	addDockWidget(Qt::BottomDockWidgetArea,m_BrowserDock);
-
-	statusBar()->showMessage("");
+    ui->setupUi(this);
 
 	if (qApp->argc() > 1)
 	{
-		m_Project = QProject::LoadProjectFromFile(qApp->argv()[1]);
-		if (m_Project == NULL)
-		{
-			qDebug("m_Project = null");
-		} else {
-			m_Project->setParent(this);
-			m_Browser->load(QUrl(m_Project->getUrl()));
-
-			UpdateProjectFileList("", NULL);
-		}
+		LoadProject(qApp->argv()[1]);
 	}
 }
 
 QAppMainWindow::~QAppMainWindow()
 {
+	if (m_Project != NULL)
+	{
+		delete m_Project;
+		m_Project = NULL;
+	}
+
+    delete ui;
+}
+
+void QAppMainWindow::on_m_Browser_titleChanged(QString title)
+{
+	if (!title.isEmpty())
+	{
+		ui->m_BrowserDock->setWindowTitle(tr("Browser - ") + title);
+	}
+	else
+	{
+		ui->m_BrowserDock->setWindowTitle(tr("Browser"));
+	}
+}
+
+void QAppMainWindow::on_action_New_activated()
+{
 
 }
 
-void QAppMainWindow::UpdateProjectFileList(QString level, QTreeWidgetItem* parentItem)
-{// Todo: Please finish me!!
+void QAppMainWindow::on_action_Open_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Close_activated()
+{
+}
+
+void QAppMainWindow::on_action_Close_All_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Save_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Save_As_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Save_All_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Print_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Print_Preview_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Exit_activated()
+{
+	QApplication::quit();
+}
+
+void QAppMainWindow::on_action_Undo_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Redo_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Cut_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Copy_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Paste_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Select_All_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Find_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Goto_Line_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Open_Project_activated()
+{
+	QString l_FileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("ColdFusion project (*.cfes)"));
+
+	if (!l_FileName.isEmpty())
+	{
+		if (m_Project != NULL)
+		{
+			on_action_Close_Project_activated(); // m_Project is deleted/nulled here
+
+			QApplication::processEvents();
+		}
+
+		m_Project = QProject::LoadProjectFromFile(l_FileName);
+	}
+}
+
+void QAppMainWindow::on_action_Save_Project_activated()
+{
+	QString l_FileName;
+
+	if (m_ProjectFileName.isEmpty())
+	{
+		QString l_FileName = QFileDialog::getSaveFileName(this, tr("Save Project"), "", tr("ColdFusion project (*.cfes)"));
+
+		if (l_FileName.isEmpty())
+		{
+			return;
+		}
+
+		QApplication::processEvents();
+	}
+
+	l_FileName = m_ProjectFileName;
+	on_action_Close_Project_activated();
+	m_ProjectFileName = l_FileName;
+
+	m_Project = QProject::LoadProjectFromFile(l_FileName);
+	m_ProjectFileName = l_FileName;
+}
+
+void QAppMainWindow::on_action_Close_Project_activated()
+{
+	if (m_Project != NULL)
+	{
+		delete m_Project;
+		m_Project = NULL;
+	}
+
+	while (ui->centralwidget->count() > 0)
+	{
+		ui->centralwidget->removeTab(0);
+	}
+
+	ui->m_ProjectTree->clear();
+
+	ui->m_StructureTree->clear();
+
+	ui->m_Browser->setUrl(QUrl());
+
+	m_ProjectFileName.clear();
+}
+
+void QAppMainWindow::on_action_Project_Properties_activated()
+{
+	// TODO: Asks should open files be closed and saved.
+
+	QProjectProperties l_ProjectProperties;
+
+	if (l_ProjectProperties.exec() == QDialog::Accepted)
+	{
+		on_action_Close_Project_activated();
+
+		m_Project = QProject::LoadProjectFromText(l_ProjectProperties.getConnectionString());
+
+		if (m_Project != NULL)
+		{
+			m_Project->setParent(this);
+
+			ui->m_Browser->setUrl(QUrl(m_Project->getUrl()));
+
+			ui->m_ProjectTree->clear();
+			UpdateProjectFileList();
+
+			ui->action_Save_Project->setEnabled(true);
+		}
+		else
+		{
+			statusBar()->showMessage(tr("Could't load project file."));
+		}
+	}
+}
+
+void QAppMainWindow::on_action_Check_Project_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_Full_Screen_activated()
+{
+	setWindowState(windowState() ^ Qt::WindowFullScreen);
+}
+
+void QAppMainWindow::on_action_ColdFusion_Help_activated()
+{
+
+}
+
+void QAppMainWindow::on_action_About_activated()
+{
+
+}
+
+void QAppMainWindow::LoadProject(const QString& p_File)
+{
+	if (m_Project)
+	{
+		delete m_Project;
+		m_Project = NULL;
+	}
+
+	m_Project = QProject::LoadProjectFromFile(p_File);
+
+	if (m_Project != NULL)
+	{
+		m_Project->setParent(this);
+
+		ui->m_Browser->setUrl(QUrl(m_Project->getUrl()));
+
+		UpdateProjectFileList();
+	}
+	else
+	{
+		statusBar()->showMessage(tr("Could't load project file."));
+	}
+}
+
+void QAppMainWindow::UpdateProjectFileList(const QString& level, QTreeWidgetItem* parentItem)
+{// Todo: Please finish me!! Bad coding style...
 	QTreeWidgetItem* item;
 	int c = 0;
 
@@ -157,9 +277,9 @@ void QAppMainWindow::UpdateProjectFileList(QString level, QTreeWidgetItem* paren
 	{
 		foreach(QProjectFile l_file, l_files)
 		{
-			if (m_ProjectTree->topLevelItemCount() <= c)
+			if (ui->m_ProjectTree->topLevelItemCount() <= c)
 			{
-				item = new QTreeWidgetItem(m_ProjectTree, 0);
+				item = new QTreeWidgetItem(ui->m_ProjectTree, 0);
 				item->setText(0, l_file.m_FileName);
 				if (l_file.m_IsFolder == true)
 				{
@@ -253,8 +373,10 @@ void QAppMainWindow::on_m_ProjectTree_itemCollapsed(QTreeWidgetItem* item)
 	}
 }
 
-void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem* item, int /*column*/)
+void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem* item, int column)
 {
+	Q_UNUSED(column);
+
 	if (item->data(0, Qt::UserRole) == true)
 		return;
 
@@ -267,28 +389,31 @@ void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem* item, i
 		file = currentitem->text(0) + m_Project->getDirSeparator() + file;
 	}
 
-	for(int c = 0; c < m_TabPanel->count(); c++)
+	for(int c = 0; c < ui->centralwidget->count(); c++)
 	{
-		if ((m_TabPanel->tabText(c) == file)||(m_TabPanel->tabText(c) == file + "*"))
+		if ((ui->centralwidget->tabText(c) == file)||(ui->centralwidget->tabText(c) == file + "*"))
 		{
-			m_TabPanel->setCurrentIndex(c);
-			m_TabPanel->currentWidget()->setFocus();
+			ui->centralwidget->setCurrentIndex(c);
+			ui->centralwidget->currentWidget()->setFocus();
 			return;
 		}
 	}
 
-	m_TabPanel->setTabsClosable(true);
+	ui->centralwidget->setTabsClosable(true);
 
-	QCodeEditWidget* l_textEdit = new QCodeEditWidget();    //QAdvancedTextEdit* l_textEdit = new QAdvancedTextEdit();
-	l_textEdit->setParent(m_TabPanel);                      //l_textEdit->setParent(m_TabPanel);
-															//l_textEdit->setTabStopWidth(32);
-															//l_textEdit->setWordWrapMode(QTextOption::NoWrap);
-															//l_textEdit->setFont(QFont("Courier", 10, 0, false));
-	l_textEdit->setText(m_Project->ReadFile(file));         //l_textEdit->setPlainText(m_Project->ReadFile(file));
-															//connect(l_textEdit, SIGNAL(keyPress(QAdvancedTextEdit*, QKeyEvent*)), this, SLOT(on_m_TabPanel_Item_keyPress(QAdvancedTextEdit*, QKeyEvent*)));
-															//connect(l_textEdit, SIGNAL(textChanged()), this, SLOT(on_m_TabPanel_Item_textChanged()));
-	m_TabPanel->setCurrentIndex(m_TabPanel->addTab(l_textEdit, file));
-	l_textEdit->setFocus();                                 //l_textEdit->setFocus();
+	QCodeEditWidget* l_textEdit = new QCodeEditWidget();
+
+	connect(l_textEdit, SIGNAL(on_key_press(QKeyEvent *)), this, SLOT(on_textedit_key_press(QKeyEvent *)));
+	connect(l_textEdit, SIGNAL(on_text_change()), this, SLOT(on_textedit_text_change()));
+	connect(l_textEdit, SIGNAL(on_breakpoint_change(int)), this, SLOT(on_textedit_breakpoint_change(int)));
+
+	l_textEdit->setParent(ui->centralwidget);
+
+	l_textEdit->setText(m_Project->ReadFile(file));
+
+	ui->centralwidget->setCurrentIndex(ui->centralwidget->addTab(l_textEdit, file));
+	l_textEdit->setFocus();
+
 	recolor();
 }
 
@@ -310,13 +435,21 @@ void QAppMainWindow::on_m_ProjectTree_keyPress(QAdvancedTreeWidget* tree, QKeyEv
 			newFile = QInputDialog::getText(this, tr("Rename File"), tr("Enter new filename."), QLineEdit::Normal, oldFile);
 
 			m_Project->RenameFile(oldFile, newFile);
-			UpdateProjectFileList("", NULL);
+			UpdateProjectFileList();
 		}
 		break;
 	case 0x01000034: // F5
 		break;
 	case 0x01000036: // F7
 		newDir = QInputDialog::getText(this, tr("New Directorium"), tr("Enter name of new directorium."));
+
+		if (!newDir.isEmpty())
+		{
+			m_Project->CreateDir(newDir);
+
+			UpdateProjectFileList();
+		}
+
 		break;
 	case 0x01000006: // Insert
 
@@ -337,7 +470,8 @@ void QAppMainWindow::on_m_ProjectTree_keyPress(QAdvancedTreeWidget* tree, QKeyEv
 		}
 
 		m_Project->WriteFile(newFile, QByteArray());
-		UpdateProjectFileList("", NULL);
+
+		UpdateProjectFileList();
 		break;
 	case 0x01000007: // Delete
 
@@ -356,54 +490,116 @@ void QAppMainWindow::on_m_ProjectTree_keyPress(QAdvancedTreeWidget* tree, QKeyEv
 		}
 
 		m_Project->DeleteFile(file);
-		UpdateProjectFileList("", NULL);
+		UpdateProjectFileList();
 		break;
 	}
 }
 
-/*void QAppMainWindow::on_m_TabPanel_Item_keyPress(QAdvancedTextEdit* edit, QKeyEvent* e)
+void QAppMainWindow::on_centralwidget_tabCloseRequested(int index)
 {
-	if (e->key() == 0x01000034) // F5
+	if (ui->centralwidget->tabText(index).endsWith("*"))
 	{
-		int index = m_TabPanel->indexOf(edit);
-		QString panelText = m_TabPanel->tabText(index);
+		QMessageBox::StandardButtons l_DlgResult = QMessageBox::question(this, tr("Question"), tr("Save file before close?"), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
 
-		if (panelText.endsWith("*"))
+		if (l_DlgResult == QMessageBox::Cancel)
 		{
-			statusBar()->showMessage(tr("Saving file."));
-			QCoreApplication::processEvents();
-			QString newPanelText = panelText.left(panelText.size() - 1);
-			m_Project->WriteFile(newPanelText, edit->toPlainText().toUtf8()); // Todo: needs complex-dynamic charset conversation
-			m_TabPanel->setTabText(index, newPanelText);
-			panelText = newPanelText;
-			statusBar()->clearMessage();
-			QCoreApplication::processEvents();
+			return;
 		}
 
-		panelText = panelText.replace("\\", "/");
-		QString fileUrl = m_Project->getUrl() + panelText;
-		m_Browser->setUrl(QUrl(fileUrl));
-	}
-}*/
+		if (l_DlgResult == QMessageBox::Yes)
+		{
+			QString l_Filename = ui->centralwidget->tabText(index);
+			l_Filename = l_Filename.left(l_Filename.length() - 1);
 
-void QAppMainWindow::on_m_TabPanel_Item_textChanged()
+			QByteArray l_FileContent = ((QCodeEditWidget*)ui->centralwidget->currentWidget())->getText().toUtf8();
+
+			statusBar()->showMessage(tr("Saving file.")); QApplication::processEvents();
+			m_Project->WriteFile(l_Filename, l_FileContent);
+			statusBar()->clearMessage(); QApplication::processEvents();
+		}
+	}
+
+	ui->centralwidget->removeTab(index);
+}
+
+void QAppMainWindow::on_centralwidget_Item_textChanged()
 {
-	int index = m_TabPanel->currentIndex();
-	QString panelText = m_TabPanel->tabText(index);
+	int index = ui->centralwidget->currentIndex();
+	QString panelText = ui->centralwidget->tabText(index);
 
 	if (!panelText.endsWith("*"))
 	{
-		m_TabPanel->setTabText(index, panelText + "*");
+		ui->centralwidget->setTabText(index, panelText + "*");
 	}
 
 	recolor();
 }
 
+void QAppMainWindow::on_centralwidget_currentChanged(int index)
+{
+	Q_UNUSED(index);
+
+	// Update Structure widget.
+}
+
+void QAppMainWindow::on_textedit_key_press(QKeyEvent *event)
+{
+	if ((event->key() == Qt::Key_F5)&&(event->modifiers() == Qt::NoModifier))
+	{
+		int index = ui->centralwidget->currentIndex();
+		QString panelText = ui->centralwidget->tabText(index);
+
+		if (!panelText.isEmpty())
+		{
+			if (panelText.endsWith("*"))
+			{
+				statusBar()->showMessage(tr("Saving file.")); QApplication::processEvents();
+
+				panelText = panelText.left(panelText.size() - 1);
+				m_Project->WriteFile(panelText, ((QCodeEditWidget*)sender())->getText().toUtf8()); // Todo: needs complex-dynamic charset conversation
+				ui->centralwidget->setTabText(index, panelText);
+
+				statusBar()->clearMessage(); QApplication::processEvents();
+			}
+
+			ui->m_Browser->setUrl(QUrl(m_Project->getUrl() + panelText));
+		}
+	}
+}
+
+void QAppMainWindow::on_textedit_text_change()
+{
+	int index = ui->centralwidget->currentIndex();
+	QString panelText = ui->centralwidget->tabText(index);
+
+	if (!panelText.endsWith("*"))
+	{
+		ui->centralwidget->setTabText(index, panelText + "*");
+		ui->action_Save->setEnabled(true);
+		ui->action_Save_All->setEnabled(true);
+	}
+}
+
+void QAppMainWindow::on_textedit_breakpoint_change(int line)
+{
+	QCodeEditWidget *edit = ((QCodeEditWidget*) sender());
+
+	if (edit->breakpoint(line) != QCodeEditWidget::BreakpointTypeBreakpoint)
+	{
+		edit->setBreakpoint(line, QCodeEditWidget::BreakpointTypeBreakpoint);
+	}
+	else
+	{
+		edit->setBreakpoint(line, QCodeEditWidget::BreakpointTypeNoBreakpoint);
+	}
+}
+
 void QAppMainWindow::recolor()
 {
-	QCFParser parser;
-	QCodeEditWidget *edit = ((QCodeEditWidget*) m_TabPanel->currentWidget());
+	QCodeEditWidget *edit = ((QCodeEditWidget*) ui->centralwidget->currentWidget());
 	QString panelText = edit->getText();
+
+	QCFParser parser;
 	parser.Parse(panelText);
 
 	statusBar()->showMessage(parser.getError());
@@ -450,7 +646,7 @@ void QAppMainWindow::recolor()
 
 void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
 {
-	QCodeEditWidget *edit = ((QCodeEditWidget*) m_TabPanel->currentWidget());
+	QCodeEditWidget *edit = ((QCodeEditWidget*) ui->centralwidget->currentWidget());
 
 	QCodeEditWidget::QCodeEditWidgetColorItem tagColor;
 
@@ -522,30 +718,4 @@ void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
 	{
 		colorElement(l_ChildElement);
 	}
-}
-
-void QAppMainWindow::on_m_TabPanel_currentChanged(int index)
-{
-    Q_UNUSED(index);
-
-	// Update Structure widget.
-}
-
-void QAppMainWindow::on_m_TabPanel_tabCloseRequested(int index)
-{
-	if (m_TabPanel->tabText(index).endsWith("*"))
-	{
-		QMessageBox::StandardButtons l_DlgResult = QMessageBox::question(this, tr("Question"), tr("Save file before close?"), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
-
-		if (l_DlgResult == QMessageBox::Cancel)
-		{
-			return;
-		}
-
-		if (l_DlgResult == QMessageBox::Yes)
-		{
-			// Save
-		}
-	}
-	m_TabPanel->removeTab(index);
 }

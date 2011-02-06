@@ -1,14 +1,22 @@
 #include "qsftpproject.h"
+#include <sys/stat.h>
 
 
-QSFTPProject::QSFTPProject(QHash<QString, QString> p_Args)
+QSFTPProject::QSFTPProject(const QHash<QString, QString>& p_Args)
 {
 	int err;
 
 	m_Url = p_Args["Url"];
 	m_Path = p_Args["Path"];
 
+	if (!m_Path.endsWith(getDirSeparator()))
+	{
+		m_Path += getDirSeparator();
+	}
+
+
 	m_SSHSession = ssh_new();
+
 	ssh_options_set(m_SSHSession, SSH_OPTIONS_HOST, p_Args["Host"].toLatin1());
 
 	if (p_Args["Port"].toInt() != 0)
@@ -43,7 +51,8 @@ QSFTPProject::QSFTPProject(QHash<QString, QString> p_Args)
 
 QSFTPProject::~QSFTPProject()
 {
-
+	sftp_free(m_SFTPSession);
+	ssh_free(m_SSHSession);
 }
 
 char QSFTPProject::getDirSeparator()
@@ -51,7 +60,7 @@ char QSFTPProject::getDirSeparator()
 	return '/';
 }
 
-QByteArray QSFTPProject::ReadFile(QString p_File)
+QByteArray QSFTPProject::ReadFile(const QString& p_File)
 {
 	QByteArray ret;
 
@@ -60,10 +69,9 @@ QByteArray QSFTPProject::ReadFile(QString p_File)
 		return "";
 	}
 
-
 	QString l_File = m_Path + p_File;
 
-	sftp_file l_file = sftp_open(m_SFTPSession, l_File.toLatin1(), O_RDONLY, 0);
+	sftp_file l_file = sftp_open(m_SFTPSession, l_File.toUtf8(), O_RDONLY, 0);
 	if (l_file == NULL)
 	{
 		return NULL;
@@ -89,7 +97,7 @@ QByteArray QSFTPProject::ReadFile(QString p_File)
 	return ret;
 }
 
-void QSFTPProject::WriteFile(QString p_File, QByteArray p_FileContent)
+void QSFTPProject::WriteFile(const QString& p_File, const QByteArray& p_FileContent)
 {
 	if (m_SFTPSession == NULL)
 	{
@@ -98,7 +106,17 @@ void QSFTPProject::WriteFile(QString p_File, QByteArray p_FileContent)
 
 	QString l_File = m_Path + p_File;
 
-	sftp_file l_file = sftp_open(m_SFTPSession, l_File.toLatin1(), O_WRONLY | O_TRUNC, 0);
+	sftp_file l_file = sftp_open(m_SFTPSession, l_File.toUtf8(), O_WRONLY | O_TRUNC | O_CREAT, 0x01A4);
+	// 0x0001 = ot_exec
+	// 0x0002 = ot_writ
+	// 0x0004 = ot_read
+	// 0x0008 = gr_exec
+	// 0x0010 = gr_writ
+	// 0x0020 = gr_read
+	// 0x0040 = ow_exec
+	// 0x0080 = ow_writ
+	// 0x0100 = ow_read
+
 	if (l_file == NULL)
 	{
 		return;
@@ -109,16 +127,27 @@ void QSFTPProject::WriteFile(QString p_File, QByteArray p_FileContent)
 	sftp_close(l_file);
 }
 
-void QSFTPProject::DeleteFile(QString p_File)
+void QSFTPProject::DeleteFile(const QString& p_File)
 {
-    Q_UNUSED(p_File);
+	if (m_SFTPSession == NULL)
+	{
+		return;
+	}
+
+	sftp_unlink(m_SFTPSession, m_Path.toUtf8() + p_File.toUtf8());
 }
 
-void QSFTPProject::RenameFile(QString, QString)
+void QSFTPProject::RenameFile(const QString& p_FromFile, const QString& p_ToFile)
 {
+	if (m_SFTPSession == NULL)
+	{
+		return;
+	}
+
+	sftp_rename(m_SFTPSession, m_Path.toUtf8() + p_FromFile.toUtf8(), m_Path.toUtf8() + p_ToFile.toUtf8());
 }
 
-QList<QProjectFile> QSFTPProject::getFolderItems(QString p_Folder)
+QList<QProjectFile> QSFTPProject::getFolderItems(const QString& p_Folder)
 {
 	QList<QProjectFile> ret;
 
@@ -129,7 +158,7 @@ QList<QProjectFile> QSFTPProject::getFolderItems(QString p_Folder)
 
 	QString l_Dir = m_Path + p_Folder;
 
-	sftp_dir dir = sftp_opendir(m_SFTPSession, l_Dir.toLatin1());
+	sftp_dir dir = sftp_opendir(m_SFTPSession, l_Dir.toUtf8());
 	if (dir != NULL)
 	{
 		sftp_attributes file;
@@ -151,7 +180,7 @@ QList<QProjectFile> QSFTPProject::getFolderItems(QString p_Folder)
 				l_Item.m_IsFolder = false;
 			}
 
-			l_Item.m_FileName = file->name;
+			l_Item.m_FileName = QString::fromUtf8(file->name);
 
 			ret.append(l_Item);
 		}
@@ -164,14 +193,32 @@ QList<QProjectFile> QSFTPProject::getFolderItems(QString p_Folder)
 	return ret;
 }
 
-void QSFTPProject::CreateDir(QString)
+void QSFTPProject::CreateDir(const QString& p_Folder)
 {
+	if (m_SFTPSession == NULL)
+	{
+		return;
+	}
+
+	sftp_mkdir(m_SFTPSession, m_Path.toUtf8() + p_Folder.toUtf8(), 0x01ED); // 0x01ED = 755
 }
 
-void QSFTPProject::DeleteDir(QString, bool)
+void QSFTPProject::DeleteDir(const QString& p_Folder, bool p_Recursive)
 {
+	if (m_SFTPSession == NULL)
+	{
+		return;
+	}
+
+	sftp_unlink(m_SFTPSession, m_Path.toUtf8() + p_Folder.toUtf8());
 }
 
-void QSFTPProject::RenameDir(QString, QString)
+void QSFTPProject::RenameDir(const QString& p_FromFolder, const QString& p_ToFolder)
 {
+	if (m_SFTPSession == NULL)
+	{
+		return;
+	}
+
+	sftp_rename(m_SFTPSession, m_Path.toUtf8() + p_FromFolder.toUtf8(), m_Path.toUtf8() + p_ToFolder.toUtf8());
 }

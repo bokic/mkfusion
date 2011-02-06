@@ -10,7 +10,7 @@
 #include <QHash>
 
 enum QCFParserElementType {Boolean, Number, String, Variable, Function, Operator, SharpExpression, Expression, SubExpression, Parameters, Parameter, CFScript, CFComment, CFTagExpression, CFTagArguments, CFTagArgument, ObjectFunction, VariableIndex, Error};
-enum QCFParserErrorType {NoError, ForcedTerminationError, ParsingError, InvalidCloseTagError, InvalidArgumentError, InvalidArgumentTypeError, InvalidNestedTagPositionError};
+enum QCFParserErrorType {NoError, ForcedTerminationError, ParsingError, InvalidCloseTagError, InvalidCFTagError, InvalidArgumentError, InvalidArgumentTypeError, InvalidNestedTagPositionError};
 enum QCFParserTagType {UnknownTagType, CFTagType, EndCFTagType, CommentTagType, ExpressionTagType};
 enum QCFParserMode {FullParseMode, CompilerMode};
 
@@ -60,6 +60,7 @@ public:
 	quint32 getErrorPosition();
 	QCFParserErrorType Parse(const QString&, bool* = NULL);
 	QCFParserErrorType BuildTagTree();
+	QCFParserErrorType validate();
 	QList<QCFParserTag> getTags();
 	QString m_FileName;
 	qint64 m_CFMFileSize;

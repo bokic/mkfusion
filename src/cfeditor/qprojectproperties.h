@@ -11,14 +11,20 @@ class QProjectProperties : public QDialog
 
 public:
 	QProjectProperties(QWidget *parent = 0, Qt::WFlags flags = 0);
-	//QString GetURL();
-	//bool GetStartImmedietely();
+	QString getConnectionString();
 private slots:
 	void on_buttonBox_accepted();
-	void on_RDS_Test_pushButton_clicked();
-	//void on_dialogButtonBox_rejected();
+	void on_buttonBox_rejected();
+	void on_local_Browse_button_clicked();
+	void on_ftp_Test_button_clicked();
+	void on_ftp_Browse_button_clicked();
+	void on_sftp_Test_button_clicked();
+	void on_sftp_Browse_button_clicked();
+	void on_rds_Test_button_clicked();
+	void on_rds_Browse_button_clicked();
 private:
 	Ui::Dialog ui;
+	QString m_ConnectionString;
 };
 
 #endif // QPROJECTPROPERTIES_H

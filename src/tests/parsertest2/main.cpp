@@ -1,5 +1,11 @@
+#include <qcfrunningtemplate.h>
 #include <qcfparser.h>
+#include <qwddx.h>
 #include <QTest>
+#include <QFile>
+
+#include <string>
+#include <map>
 
 class TestCases : public QObject
 {
@@ -23,9 +29,17 @@ private slots:
 	void testcase14();
     void testcase15();
 	void testcase16();
-	void testcase17();*/
+	void testcase17();
 	void testcase18();
 	void testcase19();
+	void BenchUnoptimisedCode();
+	void BenchOptimisedCode();
+	void BenchOptimisedCode2();
+	void bench1_stl();
+	void bench1_qt();
+	void bench_parser();*/
+	void verificator_improove_test();
+	void parseBigFile();
 };
 
 /*void TestCases::initTestCase()
@@ -335,7 +349,7 @@ void TestCases::testcase17()
 
     QCFParserElement expession = tag.m_Arguments;
     QVERIFY(expession.m_Type = Expression);
-}*/
+}
 
 void TestCases::testcase18()
 {
@@ -351,6 +365,191 @@ void TestCases::testcase19()
 	QCFParserErrorType error = parser.Parse("<cfset destination=\"#ExpandPath('pods/images')#/img_#Val(id)#.#extFile#\" />");
 
 	Q_UNUSED(error);
+}
+
+void TestCases::BenchUnoptimisedCode()
+{
+	// <cfset a = 1 /><cfloop from=”1” to=”1000000” index=”c”><cfset a = a + 1 /></cfloop><cfoutput>#a#</cfoutput>
+	// ColdFusion9: 338ms
+	// Railo: 377ms
+	// BlueDragon: 956ms
+	// MKFusion: 21ms ???, 100ms
+
+
+	QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
+
+	m_TemplateInstance->m_VARIABLES.m_Type = QWDDX::Struct;
+
+	QBENCHMARK
+	{
+		m_TemplateInstance->m_VARIABLES[L"A"] = QWDDX(1);
+
+		for (m_TemplateInstance->m_VARIABLES[L"C"] = QWDDX(1); m_TemplateInstance->m_VARIABLES[L"C"] <= QWDDX(1000000); m_TemplateInstance->m_VARIABLES[L"C"] = m_TemplateInstance->m_VARIABLES[L"C"] + QWDDX(1))
+		{
+			m_TemplateInstance->m_VARIABLES[L"A"] = m_TemplateInstance->m_VARIABLES[L"A"] + QWDDX(1);
+		}
+	}
+
+	delete m_TemplateInstance;
+}
+
+void TestCases::BenchOptimisedCode()
+{
+	QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
+
+	m_TemplateInstance->m_VARIABLES.m_Type = QWDDX::Struct;
+
+	QBENCHMARK
+	{
+		{
+			//QWDDX *opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES["A"]; *opt_m_VARIABLES_A = 1;
+			m_TemplateInstance->m_VARIABLES[L"A"] = 1;
+
+			//QWDDX *opt_m_VARIABLES_A = NULL;
+			QWDDX *opt_m_VARIABLES_C = &m_TemplateInstance->m_VARIABLES[L"C"]; *opt_m_VARIABLES_C = 1;
+			for(; ; )
+			{
+				//if (opt_m_VARIABLES_A == NULL) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[L"A"];
+
+				// *opt_m_VARIABLES_A = *opt_m_VARIABLES_A + 1;
+
+				if (*opt_m_VARIABLES_C >= 1000000)
+				{
+					break;
+				}
+
+				*opt_m_VARIABLES_C += 1;
+			}
+		}
+	}
+
+	delete m_TemplateInstance;
+}
+
+void TestCases::BenchOptimisedCode2()
+{
+	QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
+
+	m_TemplateInstance->m_VARIABLES.m_Type = QWDDX::Struct;
+
+	QBENCHMARK
+	{
+		{
+			//QWDDX *opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES["A"]; *opt_m_VARIABLES_A = 1;
+			m_TemplateInstance->m_VARIABLES[L"A"] = 1;
+
+			QWDDX *opt_m_VARIABLES_A = NULL;
+			quint32 l_loopCounter = 1;
+			for(; ; )
+			{
+				if (opt_m_VARIABLES_A == NULL) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[L"A"];
+
+				// *opt_m_VARIABLES_A = *opt_m_VARIABLES_A + 1;
+
+				if (l_loopCounter >= 1000000)
+				{
+					break;
+				}
+
+				l_loopCounter += 1;
+			}
+		}
+	}
+
+	delete m_TemplateInstance;
+}
+
+void TestCases::bench1_stl()
+{
+
+	using namespace std;
+
+	QBENCHMARK
+	{
+		map<wstring, int> m_VARIABLES;
+
+		for(m_VARIABLES[L"C"] = 1; m_VARIABLES[L"C"] < 1000000; m_VARIABLES[L"C"] = m_VARIABLES[L"C"] + 1)
+		{
+			m_VARIABLES[L"A"] = m_VARIABLES[L"A"] + 1;
+		}
+	}
+}
+
+void TestCases::bench1_qt()
+{
+	QBENCHMARK
+	{
+		QMap<QString, int> m_VARIABLES;
+
+		for(m_VARIABLES["C"] = 1; m_VARIABLES["C"] < 1000000; m_VARIABLES["C"] = m_VARIABLES["C"] + 1)
+		{
+			m_VARIABLES["A"] = m_VARIABLES["A"] + 1;
+		}
+	}
+}
+
+void TestCases::bench_parser()
+{
+	QFile file("site/bigones/frontend.cfm");
+	QString l_fileContent;
+
+	if (file.open(QIODevice::ReadOnly))
+	{
+		QByteArray l_content = file.readAll();
+
+		l_fileContent = QString::fromUtf8(l_content.constData(), l_content.length());
+
+		file.close();
+	}
+
+
+	QBENCHMARK {
+		QCFParser parser;
+		QList<QCFParserTag> tags;
+
+		parser.Parse(l_fileContent);
+
+		tags = parser.getTags();
+	}
+}
+*/
+void TestCases::verificator_improove_test()
+{
+	QFile file("site/pi.cfm");
+	QString l_fileContent;
+
+	if (file.open(QIODevice::ReadOnly))
+	{
+		QByteArray l_content = file.readAll();
+
+		l_fileContent = QString::fromUtf8(l_content.constData(), l_content.length());
+
+		file.close();
+	}
+
+	QCFParser parser;
+	QCFParserErrorType error = parser.Parse(l_fileContent);
+
+	QVERIFY(error == NoError);
+}
+
+void TestCases::parseBigFile()
+{
+	QCFParser parser;
+
+	QFile file("index.cfm");
+
+	file.open(QIODevice::ReadOnly);
+
+	QString str = file.readAll();
+
+	QBENCHMARK {
+		parser.Parse(str);
+
+		//int c = parser.getTags().count();
+
+		//qDebug("Parser element count is %u\n", c);
+	}
 }
 
 QTEST_MAIN(TestCases)

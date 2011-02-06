@@ -5,7 +5,13 @@
 QWDDX::QWDDX()
 {
 	m_Type = QWDDX::Null;
-	m_CanCreateChildren = false;
+	m_ArrayDimension = 1;
+}
+
+QWDDX::QWDDX(bool p_NewValue)
+{
+	m_Type = Boolean;
+	m_Bool = p_NewValue;
 	m_ArrayDimension = 1;
 }
 
@@ -23,12 +29,6 @@ QWDDX::QWDDX(double p_NewValue)
 	m_ArrayDimension = 1;
 }
 
-QWDDX::QWDDX(const char *p_NewValue)
-{
-	m_Type = String;
-	m_String = p_NewValue;
-	m_ArrayDimension = 1;
-}
 
 QWDDX::QWDDX(const wchar_t *p_NewValue)
 {
@@ -111,34 +111,18 @@ QWDDX& QWDDX::operator[](const double p_Index)
 
 		if (m_Array.size() <= (int)p_Index)
 		{
-			if (m_CanCreateChildren == false)
-			{
-				throw QMKFusionExpressionException("The element at position " + QString::number((int)p_Index) + " of dimension xxx, of array variable \"xxx\" cannot be found.");
-			}
-			else
-			{
-				m_Array.resize((int)p_Index + 1);
-			}
+			m_Array.resize((int)p_Index + 1);
 		}
 
-		m_Array[(int)p_Index] = m_CanCreateChildren;
 		return m_Array[(int)p_Index];
 	}
 	else
 	{
 		if (m_Struct.contains(QString::number(p_Index)) == false)
 		{
-			if (m_CanCreateChildren == false)
-			{
-				throw QMKFusionExpressionException("Variable " + QString::number(p_Index) + " is undefined.");
-			}
-			else
-			{
-				m_Struct.insert(QString::number(p_Index), QWDDX(QWDDX::Null));
-			}
+			m_Struct.insert(QString::number(p_Index), QWDDX(QWDDX::Null));
 		}
 
-		m_Struct[QString::number(p_Index)] = m_CanCreateChildren;
 		return m_Struct[QString::number(p_Index)];
 	}
 }
@@ -154,17 +138,9 @@ QWDDX& QWDDX::operator[](const QString& key)
 	{
 		if (m_Struct.contains(key) == false)
 		{
-			if (m_CanCreateChildren == false)
-			{
-				throw QMKFusionExpressionException("Variable " + key + " is undefined.");
-			}
-			else
-			{
-				m_Struct.insert(key, QWDDX(QWDDX::Null));
-			}
+			m_Struct.insert(key, QWDDX(QWDDX::Null));
 		}
 
-		m_Struct[key].m_CanCreateChildren = m_CanCreateChildren;
 		return m_Struct[key];
 	}
 	else
@@ -183,72 +159,9 @@ QWDDX& QWDDX::operator[](const QString& key)
 
 		if (m_Array.size() > val)
 		{
-			if (m_CanCreateChildren == false)
-			{
-				throw QMKFusionExpressionException("Variable " + key + " is undefined.");
-			}
-			else
-			{
-				m_Array.resize(val);
-			}
+			m_Array.resize(val);
 		}
 
-		m_Array[val - 1].m_CanCreateChildren = m_CanCreateChildren;
-		return m_Array[val - 1];
-	}
-}
-
-QWDDX& QWDDX::operator[](const char* key)
-{
-	if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array))
-	{
-		throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class char* as a structure with members.");
-	}
-
-	if (m_Type == QWDDX::Struct)
-	{
-		if (m_Struct.contains(key) == false)
-		{
-			if (m_CanCreateChildren == false)
-			{
-				throw QMKFusionExpressionException("Variable " + QString(key) + " is undefined.");
-			}
-			else
-			{
-				m_Struct.insert(key, QWDDX(QWDDX::Null));
-			}
-		}
-
-		m_Struct[key].m_CanCreateChildren = m_CanCreateChildren;
-		return m_Struct[key];
-	}
-	else
-	{
-		bool ok;
-		qint32 val = (qint32)QString(key).toDouble(&ok);
-		if (ok == false)
-		{
-			throw QMKFusionExpressionException("The value " + QString(key) + " cannot be converted to a number.");
-		}
-
-		if (val < 1)
-		{
-			throw QMKFusionExpressionException("The element at position " + QString::number(val) + " of array variable xxx cannot be found.");
-		}
-
-		if (m_Array.size() > val)
-		{
-			if (m_CanCreateChildren == false)
-			{
-				throw QMKFusionExpressionException("Variable " + QString(key) + " is undefined.");
-			}
-			else
-			{
-				m_Array.resize(val);
-			}
-		}
-
-		m_Array[val - 1].m_CanCreateChildren = m_CanCreateChildren;
 		return m_Array[val - 1];
 	}
 }
@@ -266,17 +179,9 @@ QWDDX& QWDDX::operator[](const wchar_t* key)
 	{
 		if (m_Struct.contains(l_key) == false)
 		{
-			if (m_CanCreateChildren == false)
-			{
-				throw QMKFusionExpressionException("Variable " + l_key + " is undefined.");
-			}
-			else
-			{
-				m_Struct.insert(l_key, QWDDX(QWDDX::Null));
-			}
+			m_Struct.insert(l_key, QWDDX(QWDDX::Null));
 		}
 
-		m_Struct[l_key].m_CanCreateChildren = m_CanCreateChildren;
 		return m_Struct[l_key];
 	}
 	else
@@ -295,17 +200,9 @@ QWDDX& QWDDX::operator[](const wchar_t* key)
 
 		if (m_Array.size() > val)
 		{
-			if (m_CanCreateChildren == false)
-			{
-				throw QMKFusionExpressionException("Variable " + l_key + " is undefined.");
-			}
-			else
-			{
-				m_Array.resize(val);
-			}
+			m_Array.resize(val);
 		}
 
-		m_Array[val - 1].m_CanCreateChildren = m_CanCreateChildren;
 		return m_Array[val - 1];
 	}
 }
@@ -330,34 +227,18 @@ QWDDX& QWDDX::operator[](const QWDDX& key)
 
 		if (m_Array.size() < (int)l_key)
 		{
-			if (m_CanCreateChildren == false)
-			{
-				throw QMKFusionExpressionException("The element at position " + QString::number((int)l_key) + " of dimension xxx, of array variable \"xxx\" cannot be found.");
-			}
-			else
-			{
-				m_Array.resize((int)l_key);
-			}
+			m_Array.resize((int)l_key);
 		}
 
-		m_Array[(int)l_key - 1].m_CanCreateChildren = m_CanCreateChildren;
 		return m_Array[(int)l_key - 1];
 	}
 	else
 	{
 		if (m_Struct.contains(QString::number(l_key)) == false)
 		{
-			if (m_CanCreateChildren == false)
-			{
-				throw QMKFusionExpressionException("Variable " + QString::number(l_key) + " is undefined.");
-			}
-			else
-			{
-				m_Struct.insert(QString::number(l_key), QWDDX(QWDDX::Null));
-			}
+			m_Struct.insert(QString::number(l_key), QWDDX(QWDDX::Null));
 		}
 
-		m_Struct[QString::number(l_key)].m_CanCreateChildren = m_CanCreateChildren;
 		return m_Struct[QString::number(l_key)];
 	}
 }
@@ -366,12 +247,12 @@ bool QWDDX::operator ==(int p_Value)
 {
 	if ((m_Type == Number))
 	{
-		return (int)m_Number == p_Value;
+		return m_Number == (double)p_Value;
 	}
 
 	if ((m_Type == String))
 	{
-		return (int)toNumber() == p_Value;
+		return toNumber() == (double)p_Value;
 	}
 
 	throw new QMKFusionExpressionException("Unsupported compare.");
@@ -436,12 +317,12 @@ bool QWDDX::operator !=(int p_Value)
 {
 	if ((m_Type == Number))
 	{
-		return (int)m_Number != p_Value;
+		return m_Number != (double)p_Value;
 	}
 
 	if ((m_Type == String))
 	{
-		return (int)toNumber() != p_Value;
+		return toNumber() != (double)p_Value;
 	}
 
 	throw new QMKFusionExpressionException("Unsupported compare.");
@@ -506,12 +387,12 @@ bool QWDDX::operator <=(int p_Value)
 {
 	if ((m_Type == Number))
 	{
-		return (int)m_Number <= p_Value;
+		return m_Number <= (double)p_Value;
 	}
 
 	if ((m_Type == String))
 	{
-		return (int)toNumber() <= p_Value;
+		return toNumber() <=(double)p_Value;
 	}
 
 	throw new QMKFusionExpressionException("Unsupported compare.");
@@ -576,12 +457,12 @@ bool QWDDX::operator >=(int p_Value)
 {
 	if ((m_Type == Number))
 	{
-		return (int)m_Number >= p_Value;
+		return m_Number >= (double)p_Value;
 	}
 
 	if ((m_Type == String))
 	{
-		return (int)toNumber() >= p_Value;
+		return toNumber() >= (double)p_Value;
 	}
 
 	throw new QMKFusionExpressionException("Unsupported compare.");
@@ -646,12 +527,12 @@ bool QWDDX::operator <(int p_Value)
 {
 	if ((m_Type == Number))
 	{
-		return (int)m_Number < p_Value;
+		return m_Number < (double)p_Value;
 	}
 
 	if ((m_Type == String))
 	{
-		return (int)toNumber() < p_Value;
+		return toNumber() < (double)p_Value;
 	}
 
 	throw new QMKFusionExpressionException("Unsupported compare.");
@@ -716,12 +597,12 @@ bool QWDDX::operator >(int p_Value)
 {
 	if ((m_Type == Number))
 	{
-		return (int)m_Number > p_Value;
+		return m_Number > (double)p_Value;
 	}
 
 	if ((m_Type == String))
 	{
-		return (int)toNumber() > p_Value;
+		return toNumber() > (double)p_Value;
 	}
 
 	throw new QMKFusionExpressionException("Unsupported compare.");
@@ -798,13 +679,6 @@ QWDDX& QWDDX::operator=(double p_newValue)
 	return *this;
 }
 
-QWDDX& QWDDX::operator=(const char *p_newValue)
-{
-	m_Type = String;
-	m_String = p_newValue;
-
-	return *this;
-}
 
 QWDDX& QWDDX::operator=(const wchar_t *p_newValue)
 {
@@ -832,79 +706,91 @@ QWDDX& QWDDX::operator=(const QDateTime& p_newValue)
 
 QWDDX& QWDDX::operator+(int p_Value)
 {
-	return *(new QWDDX(toNumber() + p_Value));
+	if (m_Type == Number)
+	{
+		m_Number += p_Value;
+	}
+	else
+	{
+		m_Number = toNumber() + p_Value;
+	}
+	
+	return *this;
 }
 
 QWDDX& QWDDX::operator+(double p_Value)
 {
-	return *(new QWDDX(toNumber() + p_Value));
-}
-
-QWDDX& QWDDX::operator+(const char* p_Value)
-{
-	QWDDX temp = QWDDX(p_Value);
-
-	if((canToNumber())&&(temp.canToNumber()))
+	if (m_Type == Number)
 	{
-		return *(new QWDDX(toNumber() + temp.toNumber()));
+		m_Number += p_Value;
 	}
 	else
 	{
-		return *(new QWDDX(toString() + temp.toString()));
+		m_Number = toNumber() + p_Value;
 	}
+
+	return *this;
 }
 
 QWDDX& QWDDX::operator+(const wchar_t* p_Value)
 {
-	QWDDX temp = QWDDX(p_Value);
+	QWDDX tmp = QWDDX(p_Value);
 
-	if((canToNumber())&&(temp.canToNumber()))
+	if (m_Type == Number)
 	{
-		return *(new QWDDX(toNumber() + temp.toNumber()));
+		m_Number += tmp.toNumber();
 	}
 	else
 	{
-		return *(new QWDDX(toString() + temp.toString()));
+		m_Number = toNumber() + tmp.toNumber();
 	}
+
+	return *this;
 }
 
 QWDDX& QWDDX::operator+(const QString& p_Value)
 {
-	QWDDX temp = QWDDX(p_Value);
+	QWDDX tmp = QWDDX(p_Value);
 
-	if((canToNumber())&&(temp.canToNumber()))
+	if (m_Type == Number)
 	{
-		return *(new QWDDX(toNumber() + temp.toNumber()));
+		m_Number += tmp.toNumber();
 	}
 	else
 	{
-		return *(new QWDDX(toString() + temp.toString()));
+		m_Number = toNumber() + tmp.toNumber();
 	}
+
+	return *this;
 }
 
 QWDDX& QWDDX::operator+(const QWDDX& p_Value)
 {
-	QWDDX temp = p_Value;
+	QWDDX tmp = p_Value;
 
-	if((canToNumber())&&(temp.canToNumber()))
+	if (m_Type == Number)
 	{
-		return *(new QWDDX(toNumber() + temp.toNumber()));
+		m_Number += tmp.toNumber();
 	}
 	else
 	{
-		return *(new QWDDX(toString() + temp.toString()));
+		m_Number = toNumber() + tmp.toNumber();
 	}
+
+	return *this;
 }
 
 QWDDX& operator+(int p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp = p_Value2;
+
 	return *(new QWDDX(p_Value1 + temp.toNumber()));
 }
 
 QWDDX& operator+(double p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp = p_Value2;
+
 	return *(new QWDDX(p_Value1 + temp.toNumber()));
 }
 
@@ -912,23 +798,59 @@ QWDDX& operator+(const QString& p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp1 = QWDDX(p_Value1);
 	QWDDX temp2 = p_Value2;
+
 	return *(new QWDDX(temp1.toNumber() + temp2.toNumber()));
+}
+
+QWDDX& QWDDX::operator+=(int p_Value)
+{
+	if (m_Type == QWDDX::Number)
+	{
+		m_Number += p_Value;
+	}
+	else
+	{
+		m_Number = toNumber() + p_Value;
+	}
+
+	return *this;
 }
 
 QWDDX& QWDDX::operator-(int p_Value)
 {
-	return *(new QWDDX(toNumber() - p_Value));
+	if (m_Type == Number)
+	{
+		m_Number -= p_Value;
+	}
+	else
+	{
+		m_Number = toNumber() - p_Value;
+	}
+
+	return *this;
 }
 
 QWDDX& QWDDX::operator-(double p_Value)
 {
-	return *(new QWDDX(toNumber() - p_Value));
+	if (m_Type == Number)
+	{
+		m_Number += p_Value;
+	}
+	else
+	{
+		m_Number = toNumber() + p_Value;
+	}
+
+	return *this;
 }
 
 QWDDX& QWDDX::operator-(const QString& p_Value)
 {
-	QWDDX temp = QWDDX(p_Value);
-	return *(new QWDDX(toNumber() - temp.toNumber()));
+	QWDDX tmp = QWDDX(p_Value);
+
+	m_Number = toNumber() - tmp.toNumber();
+
+	return *this;
 }
 
 QWDDX& QWDDX::operator-(const QWDDX& p_Value)
@@ -940,12 +862,14 @@ QWDDX& QWDDX::operator-(const QWDDX& p_Value)
 QWDDX& operator-(int p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp = p_Value2;
+
 	return *(new QWDDX(p_Value1 - temp.toNumber()));
 }
 
 QWDDX& operator-(double p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp = p_Value2;
+
 	return *(new QWDDX(p_Value1 - temp.toNumber()));
 }
 
@@ -953,6 +877,7 @@ QWDDX& operator-(const QString& p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp1 = QWDDX(p_Value1);
 	QWDDX temp2 = p_Value2;
+
 	return *(new QWDDX(temp1.toNumber() - temp2.toNumber()));
 }
 
@@ -1048,11 +973,6 @@ QWDDX& QWDDX::operator&(double p_Value)
 	return *(new QWDDX(toString() + QString::number(p_Value)));
 }
 
-QWDDX& QWDDX::operator&(const char* p_Value)
-{
-	return *(new QWDDX(toString() + p_Value));
-}
-
 QWDDX& QWDDX::operator&(const wchar_t* p_Value)
 {
 	return *(new QWDDX(toString() + p_Value));
@@ -1094,12 +1014,6 @@ QWDDX& QWDDX::join(const QWDDX& p_Value)
 	return *(new QWDDX(toString() + temp.toString()));
 }
 
-QWDDX& QWDDX::wr(bool p_CanCreateChildren)
-{
-	m_CanCreateChildren = p_CanCreateChildren;
-	return *this;
-}
-
 QString QWDDX::StructKeyAt(const int p_Index)
 {
 	if (m_Struct.size() <= p_Index)
@@ -1122,7 +1036,7 @@ QString QWDDX::toString()
 		{
 			temp = QString::number(m_Number, 'E', 11);
 
-			if ((temp.length() > 3)&&(temp[temp.length() - 3] == '+'))
+			if ((temp.length() > 3)&&(temp.at(temp.length() - 3) == '+'))
 			{
 				temp.insert(temp.length() - 2, '0');
 			}
