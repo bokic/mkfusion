@@ -22,6 +22,6 @@ release {
 DEPENDPATH  += . ../../../libs
 INCLUDEPATH += . ../../../libs
 
-DEF_FILE = mkfusion_isapi.def
+DEF_FILE = $$PWD/mkfusion_isapi.def
 
 SOURCES = mkfusion_isapi.cpp
