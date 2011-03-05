@@ -2,7 +2,6 @@
 #define QWDDX_H
 
 #include <QDateTime>
-#include <QVariant>
 #include <QVector>
 #include <QString>
 #include <QMap>
