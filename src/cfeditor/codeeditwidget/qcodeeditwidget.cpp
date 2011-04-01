@@ -323,16 +323,34 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 	case KBD_LEFT:
 		if (m_CarretPosition.m_Column <= 1)
 		{
-			return;
+			if (m_CarretPosition.m_Row > 1)
+			{
+				m_CarretPosition.m_Row--;
+				m_CarretPosition.m_Column = m_Lines.at(m_CarretPosition.m_Row - 1).Content.length() + 1;
+			}
+			else
+			{
+				return;
+			}
 		}
-
-		m_CarretPosition.m_Column--;
+		else
+		{
+			m_CarretPosition.m_Column--;
+		}
 		break;
 
 	case KBD_RIGHT:
 		if (m_CarretPosition.m_Column <= m_Lines.at(m_CarretPosition.m_Row - 1).Content.length())
 		{
 			m_CarretPosition.m_Column++;
+		}
+		else
+		{
+			if (m_CarretPosition.m_Row < m_Lines.count())
+			{
+				m_CarretPosition.m_Row++;
+				m_CarretPosition.m_Column = 1;
+			}
 		}
 		break;
 
@@ -393,6 +411,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 					line2.Content = l_NewLineText;
 					line2.EndLine = line.EndLine;
 					line2.LineStatus = LineStatusTypeLineModified;
+					line2.Breakpoint = QCodeEditWidget::BreakpointTypeNoBreakpoint;
 
 					line.EndLine = EndLineTypeLFEndLine;
 
@@ -693,6 +712,8 @@ void QCodeEditWidget::mousePressEvent(QMouseEvent *event)
 #ifdef QT_DEBUG
 	qDebug() << "QCodeEditWidget::mousePressEvent(QMouseEvent *event)";
 #endif
+
+	//event->x()
 }
 
 void QCodeEditWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -757,6 +778,7 @@ void QCodeEditWidget::setText(const QString &text)
 	int pos = 0;
 
 	l_Line.LineStatus = QCodeEditWidget::LineStatusTypeLineNotModified;
+	l_Line.Breakpoint = QCodeEditWidget::BreakpointTypeNoBreakpoint;
 
 	forever
 	{
