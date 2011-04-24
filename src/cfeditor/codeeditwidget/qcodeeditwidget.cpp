@@ -713,7 +713,29 @@ void QCodeEditWidget::mousePressEvent(QMouseEvent *event)
 	qDebug() << "QCodeEditWidget::mousePressEvent(QMouseEvent *event)";
 #endif
 
-	//event->x()
+	// TODO: unhardcode 30
+	if (event->x() > 30)
+	{
+		QFontMetrics l_fm(m_TextFont);
+		int l_fontHeight = l_fm.height();
+		int l_fontWidth = l_fm.width(' ');
+
+		m_CarretPosition.m_Row = m_ScrollYLinePos + (event->y() / l_fontHeight) + 1;
+
+		if (m_CarretPosition.m_Row > (m_Lines.count()))
+		{
+			m_CarretPosition.m_Row = m_Lines.count();
+		}
+
+		m_CarretPosition.m_Column = (event->x() - 30 + (l_fontWidth / 2)) / l_fontWidth;
+
+		if (m_CarretPosition.m_Column > m_Lines[m_CarretPosition.m_Row - 1].Content.count() + 1)
+		{
+			m_CarretPosition.m_Column = m_Lines[m_CarretPosition.m_Row - 1].Content.count() + 1;
+		}
+
+		viewport()->update();
+	}
 }
 
 void QCodeEditWidget::mouseReleaseEvent(QMouseEvent *event)
