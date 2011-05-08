@@ -74,11 +74,17 @@ private:
 	int m_currentlyBlinkCursorShowen;
 	int m_CursorTimerID;
 	int m_CursorHeight;
+	bool m_SelectMouseDown;
 
 	struct {
 		int m_Row;
 		int m_Column;
 	} m_CarretPosition;
+
+	struct {
+		int m_Row;
+		int m_Column;
+	} m_SelectionPosition;
 
 signals:
 	void on_key_press(QKeyEvent *);

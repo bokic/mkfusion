@@ -18,8 +18,8 @@ release {
 	UI_DIR      = ../../../obj/mkfusion/mod_mkfusion/release
 }
 
-DEPENDPATH  += . ../simplifiedlocalsocket ../../../libs/apache2/include
-INCLUDEPATH += . ../simplifiedlocalsocket ../../../libs/apache2/include
+DEPENDPATH  += . ../simplifiedlocalsocket
+INCLUDEPATH += . ../simplifiedlocalsocket
 
 win32:INCLUDEPATH += apache2/include      apr/include apr-util/include
 unix:INCLUDEPATH  += /usr/include/apache2 /usr/include/apr-1.0

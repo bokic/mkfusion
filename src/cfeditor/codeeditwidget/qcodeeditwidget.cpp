@@ -228,10 +228,14 @@ QCodeEditWidget::QCodeEditWidget(QWidget *parent) :
 	m_ScrollXCharPos(0),
 	m_ScrollYLinePos(0),
 	m_LineNumbersPanelWidth(3),
-	m_currentlyBlinkCursorShowen(1)
+	m_currentlyBlinkCursorShowen(1),
+	m_SelectMouseDown(false)
 {
 	m_CarretPosition.m_Row = 1;
 	m_CarretPosition.m_Column = 1;
+
+	m_SelectionPosition.m_Row = 1;
+	m_SelectionPosition.m_Column = 1;
 
 	QPalette l_Palette;
 	m_LineNumbersBackground = QBrush(l_Palette.color(QPalette::Window), Qt::SolidPattern);
@@ -354,6 +358,12 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 		}
 		break;
 
+	}
+
+	if ((l_Modifiers & Qt::ShiftModifier) == 0)
+	{
+		m_SelectionPosition.m_Row = m_CarretPosition.m_Row;
+		m_SelectionPosition.m_Column = m_CarretPosition.m_Column;
 	}
 
 	QString l_EventText = event->text();
@@ -544,6 +554,33 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
 	QPainter painter(viewport());
 
+	bool has_selection;
+	int selection_start_row;
+	int selection_end_row;
+
+	if ((m_SelectionPosition.m_Row == m_CarretPosition.m_Row)&&(m_SelectionPosition.m_Column == m_CarretPosition.m_Column))
+	{
+		has_selection = false;
+
+		selection_start_row = 0;
+		selection_end_row = 0;
+	}
+	else
+	{
+		has_selection = true;
+
+		if (m_SelectionPosition.m_Row > m_CarretPosition.m_Row)
+		{
+			selection_start_row = m_CarretPosition.m_Row;
+			selection_end_row = m_SelectionPosition.m_Row;
+		}
+		else
+		{
+			selection_start_row = m_SelectionPosition.m_Row;
+			selection_end_row = m_CarretPosition.m_Row;
+		}
+	}
+
 	QFontMetrics l_fm(m_TextFont);
 	int l_fontHeight = l_fm.height();
 	int l_fontWidth = l_fm.width(' ');
@@ -620,6 +657,65 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 			default:;
 			}
 
+			if ((has_selection)&&(m_ScrollYLinePos + c >= (selection_start_row - 1))&&(m_ScrollYLinePos + c <= (selection_end_row - 1)))
+			{
+				if (selection_start_row == selection_end_row)
+				{
+					int from = m_SelectionPosition.m_Column - 1;
+					int to = m_CarretPosition.m_Column - 1;
+
+					if (from > to)
+					{
+						int tmp = from;
+						from = to;
+						to = tmp;
+					}
+
+					painter.fillRect(l_LineNumbersPanelWidth + (from * l_fontWidth), c * l_fontHeight, ((to - from) * l_fontWidth), l_fontHeight, Qt::blue);
+				}
+				else if (m_ScrollYLinePos + c == (selection_start_row - 1))
+				{
+					int from;
+					int to;
+
+					if (m_SelectionPosition.m_Row < m_CarretPosition.m_Row)
+					{
+						from = m_SelectionPosition.m_Column - 1;
+						to = l_Line.length();
+					}
+					else
+					{
+						from = m_CarretPosition.m_Column - 1;
+						to = l_Line.length();
+					}
+
+					painter.fillRect(l_LineNumbersPanelWidth + (from * l_fontWidth), c * l_fontHeight, ((to - from) * l_fontWidth), l_fontHeight, Qt::blue);
+				}
+				else if (m_ScrollYLinePos + c == (selection_end_row - 1))
+				{
+					int from = 0;
+					int to = 0;
+
+					if (m_SelectionPosition.m_Row > m_CarretPosition.m_Row)
+					{
+						to = m_SelectionPosition.m_Column - 1;
+					}
+					else
+					{
+						to = m_CarretPosition.m_Column - 1;
+					}
+
+					painter.fillRect(l_LineNumbersPanelWidth + (from * l_fontWidth), c * l_fontHeight, ((to - from) * l_fontWidth), l_fontHeight, Qt::blue);
+				}
+				else
+				{
+					int from = 0;
+					int to = l_Line.length();
+
+					painter.fillRect(l_LineNumbersPanelWidth + (from * l_fontWidth), c * l_fontHeight, ((to - from) * l_fontWidth), l_fontHeight, Qt::blue);
+				}
+			}
+
 			l_Line = l_Line.left(l_HorizontalValue + l_CharsToDraw);
 
 			l_Line = l_Line.replace("\t", "    "); // TODO: Tab hardcoded to 4 spaces.
@@ -687,35 +783,60 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
 void QCodeEditWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if (event->type() == QEvent::Enter)
+		if (event->type() == QEvent::MouseMove)
 	{
 #ifdef QT_DEBUG
-		qDebug() << "QCodeEditWidget::mouseMoveEvent(QMouseEvent *event) <-- event->type() == QEvent::Enter";
+		//qDebug() << "QCodeEditWidget::mouseMoveEvent(QMouseEvent *event) <-- event->type() == QEvent::MouseMove";
 #endif
-	}
-	else if (event->type() == QEvent::Leave)
-	{
-#ifdef QT_DEBUG
-		qDebug() << "QCodeEditWidget::mouseMoveEvent(QMouseEvent *event) <-- event->type() == QEvent::Leave";
-#endif
-	}
-	else if (event->type() == QEvent::MouseMove)
-	{
-#ifdef QT_DEBUG
-		qDebug() << "QCodeEditWidget::mouseMoveEvent(QMouseEvent *event) <-- event->type() == QEvent::MouseMove";
-#endif
+
+		if (m_SelectMouseDown)
+		{
+			m_SelectMouseDown = true;
+
+			killTimer(m_CursorTimerID);
+			m_CursorTimerID = startTimer(500);
+			m_currentlyBlinkCursorShowen = 1;
+
+			QFontMetrics l_fm(m_TextFont);
+			int l_fontHeight = l_fm.height();
+			int l_fontWidth = l_fm.width(' ');
+
+			m_CarretPosition.m_Row = m_ScrollYLinePos + (event->y() / l_fontHeight) + 1;
+
+			if (m_CarretPosition.m_Row < 1)
+			{
+				m_CarretPosition.m_Row = 1;
+			}
+
+			if (m_CarretPosition.m_Row > (m_Lines.count()))
+			{
+				m_CarretPosition.m_Row = m_Lines.count();
+			}
+
+			m_CarretPosition.m_Column = (event->x() - 30 + (l_fontWidth / 2)) / l_fontWidth;
+
+			if (m_CarretPosition.m_Column < 1)
+			{
+				m_CarretPosition.m_Column = 1;
+			}
+
+			if (m_CarretPosition.m_Column > m_Lines[m_CarretPosition.m_Row - 1].Content.count() + 1)
+			{
+				m_CarretPosition.m_Column = m_Lines[m_CarretPosition.m_Row - 1].Content.count() + 1;
+			}
+
+			viewport()->update();
+		}
 	}
 }
 
 void QCodeEditWidget::mousePressEvent(QMouseEvent *event)
 {
-#ifdef QT_DEBUG
-	qDebug() << "QCodeEditWidget::mousePressEvent(QMouseEvent *event)";
-#endif
-
 	// TODO: unhardcode 30
 	if (event->x() > 30)
 	{
+		m_SelectMouseDown = true;
+
 		QFontMetrics l_fm(m_TextFont);
 		int l_fontHeight = l_fm.height();
 		int l_fontWidth = l_fm.width(' ');
@@ -734,6 +855,14 @@ void QCodeEditWidget::mousePressEvent(QMouseEvent *event)
 			m_CarretPosition.m_Column = m_Lines[m_CarretPosition.m_Row - 1].Content.count() + 1;
 		}
 
+		if (m_CarretPosition.m_Column < 1)
+		{
+			m_CarretPosition.m_Column = 1;
+		}
+
+		m_SelectionPosition.m_Column = m_CarretPosition.m_Column;
+		m_SelectionPosition.m_Row = m_CarretPosition.m_Row;
+
 		viewport()->update();
 	}
 }
@@ -741,8 +870,10 @@ void QCodeEditWidget::mousePressEvent(QMouseEvent *event)
 void QCodeEditWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 #ifdef QT_DEBUG
-	qDebug() << "QCodeEditWidget::mouseReleaseEvent(QMouseEvent *event)";
+	//qDebug() << "QCodeEditWidget::mouseReleaseEvent(QMouseEvent *event)";
 #endif
+
+	m_SelectMouseDown = false;
 
 	if ((event->button() == Qt::LeftButton)&&(event->x() < 16))
 	{
@@ -857,14 +988,14 @@ void QCodeEditWidget::setText(const QString &text)
 
 	updatePanelWidth();
 
-	update();
+	viewport()->update();
 }
 
 void QCodeEditWidget::clearFormatting()
 {
 	m_ColorItems.clear();
 
-	update();
+	viewport()->update();
 }
 
 void QCodeEditWidget::addFormat(const QCodeEditWidgetColorItem &p_item)
