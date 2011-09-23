@@ -30,5 +30,5 @@ win32:SOURCES += ../../../libs/qtservice/qtservice_win.cpp
 unix:SOURCES  += ../../../libs/qtservice/qtservice_unix.cpp ../../../libs/qtservice/qtunixsocket.cpp ../../../libs/qtservice/qtunixserversocket.cpp
 unix:HEADERS +=                                             ../../../libs/qtservice/qtunixsocket.h   ../../../libs/qtservice/qtunixserversocket.h
 
-win32:QMAKE_LFLAGS += -Wl,--out-implib,../../../lib/mkfusion.a
+win32:QMAKE_LFLAGS += -Wl,--out-implib,../../../libs/mkfusion.a
 unix:QMAKE_LFLAGS += -Wl,-E

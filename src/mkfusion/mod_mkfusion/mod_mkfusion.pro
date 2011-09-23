@@ -21,7 +21,7 @@ release {
 DEPENDPATH  += . ../simplifiedlocalsocket
 INCLUDEPATH += . ../simplifiedlocalsocket
 
-win32:INCLUDEPATH += apache2/include      apr/include apr-util/include
+win32:INCLUDEPATH += ../../../libs/apache2/include
 unix:INCLUDEPATH  += /usr/include/apache2 /usr/include/apr-1.0
 
 win32:LIBS += "-L../../../libs/apache2/lib" -llibhttpd -llibapr-1 libpsapi
