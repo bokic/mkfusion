@@ -471,6 +471,8 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 			}
 		}
 
+        // TODO: Call parser here.
+
 		updatePanelWidth();
 
 		emit on_text_change();
@@ -993,37 +995,18 @@ void QCodeEditWidget::setText(const QString &text)
 
 void QCodeEditWidget::clearFormatting()
 {
-	m_ColorItems.clear();
+    for(int c = 0; c < m_Lines.count(); c++)
+    {
+        m_Lines[c].ColorItems.clear();
+    }
 
 	viewport()->update();
 }
 
-void QCodeEditWidget::addFormat(const QCodeEditWidgetColorItem &p_item)
+void QCodeEditWidget::addFormat(int p_line, const QCodeEditWidgetColorItem &p_item)
 {
-	if ((p_item.index < 0)||(p_item.length <= 0))
-	{
-		return;
-	}
-
-	int l_beginPoint = 0; // TODO: Optimize me to start from right position.
-	int l_endPoint = p_item.index + p_item.length;
-
-	for(int c = l_beginPoint; c < m_ColorItems.count(); c++)
-	{
-		const QCodeEditWidgetColorItem & item = m_ColorItems.at(c);
-		if(item.index > l_endPoint)
-		{
-			return;
-		}
-
-		if (item.index > p_item.index)
-		{
-			m_ColorItems.insert(c, p_item);
-			return;
-		}
-	}
-
-	m_ColorItems.append(p_item);
+    // TODO: Add more.
+    m_Lines[p_line].ColorItems.append(p_item);
 }
 
 void QCodeEditWidget::setBreakpoint(int line, BreakpointType newBreakpoint)

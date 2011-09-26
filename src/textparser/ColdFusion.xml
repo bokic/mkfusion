@@ -1,0 +1,51 @@
+<language Name="ColdFusion" EmptySegmentsLanguage="HTML" CaseSensitivity="false" DefaultFileExtensions="cfm,cfc" StartsWith="cftag,cfendtag,cfcomment">
+	<tokens>
+		<token Name="cftag" StartString="&lt;cf" EndString="\/?&gt;">
+			<if NameIsNotInOneOf="">
+				<error Description="Unknown ColdFusion tag." />
+			</if>
+			<if NameIsOneOf="">
+				<nested_tokens names="cftagexpression" />
+			<else />
+				<nested_tokens names="cftagparameters" />
+			</if>
+		</token>
+		<token Name="cfendtag" StartString="&lt;/cf" EndString="&gt;" />
+		<token Name="cfcomment" StartString="&lt;!---" EndString="---&gt;">
+			<nested_tokens names="cfcomment" />
+		</token>
+		<token Name="cftagparameters" TerminateString="\/?&gt;">
+			<nested_tokens names="cftagparametar" />
+		</token>
+		<token Name="cftagexpression" TerminateString="\/?&gt;">
+			<nested_tokens names="expression" />
+		</token>
+		<token Name="cfparametar">
+			<nested_tokens names="variable,operator,expression" require_all="true" require_in_same_order="true" />
+		</token>
+		<token Name="SingleString" StartString="&apos;" EndString="&apos;" ignoreTerminateStringList="True">
+			<nested_tokens names="SharpExpression" />
+		</token>
+		<token Name="DoubleString" StartString="&quot;" EndString="&quot;" ignoreTerminateStringList="True">
+			<nested_tokens names="SharpExpression" />
+		</token>
+		<token Name="Number" TokenString="???" />
+		<token Name="Boolean" TokenString="???" />
+		<token Name="Variable" TokenString="???" />
+		<token Name="Function" StartString="???(" EndString=")" />
+		<token Name="Operator" TokenString="???" />
+		<token Name="SharpExpression" StartString="#" EndString="#">
+			<nested_tokens names="Expression" />
+		</token>
+		<token Name="Expression" TokenString="???" />
+		<token Name="SubExpression" StartString="(" EndString=")" />
+		<token Name="Parameters" EndString="): TODO">
+			<nested_tokens names="Parameter" />
+		</token>
+		<token Name="Parameter" EndString=",): TODO" />
+		<token Name="ObjectFunction" TokenString="." />
+		<token Name="VariableIndex" StartString="[" EndString="]">
+			<nested_tokens names="Expression" />
+		</token>
+	</tokens>
+</language>

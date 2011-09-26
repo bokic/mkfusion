@@ -599,7 +599,7 @@ void QAppMainWindow::recolor()
 	QCodeEditWidget *edit = ((QCodeEditWidget*) ui->centralwidget->currentWidget());
 	QString panelText = edit->getText();
 
-	QCFParser parser;
+/*	QCFParser parser;
 	parser.Parse(panelText);
 
 	statusBar()->showMessage(parser.getError());
@@ -639,7 +639,7 @@ void QAppMainWindow::recolor()
 		edit->addFormat(tagColor);
 
 		colorElement(tag.m_Arguments);
-	}
+    }*/
 
 	edit->update();
 }
@@ -712,7 +712,7 @@ void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
 
 	tagColor.index = p_Element.m_Position;
 	tagColor.length = p_Element.m_Size;
-	edit->addFormat(tagColor);
+    //edit->addFormat(tagColor);
 
 	foreach(QCFParserElement l_ChildElement, p_Element.m_ChildElements)
 	{

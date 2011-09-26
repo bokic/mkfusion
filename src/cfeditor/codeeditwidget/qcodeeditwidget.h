@@ -33,13 +33,14 @@ public:
 		QString Content;
 		EndLineType EndLine;
 		BreakpointType Breakpoint;
+        QList<QCodeEditWidgetColorItem> ColorItems;
 	};
 
 	explicit QCodeEditWidget(QWidget* = 0);
 	~QCodeEditWidget();
 	QString getText();
 	void clearFormatting();
-	void addFormat(const QCodeEditWidgetColorItem&);
+    void addFormat(int p_line, const QCodeEditWidgetColorItem &p_item);
 	void setBreakpoint(int, BreakpointType);
 	BreakpointType breakpoint(int);
 
@@ -65,8 +66,7 @@ private:
 	QPixmap m_BreakPointPixmap;
 	QPixmap m_BreakPointPixmapPending;
 	QPixmap m_BreakPointPixmapDisabled;
-	QList<QCodeEditWidgetLine> m_Lines;
-	QList<QCodeEditWidgetColorItem> m_ColorItems;
+    QList<QCodeEditWidgetLine> m_Lines;
 
 	int m_ScrollXCharPos;
 	int m_ScrollYLinePos;
