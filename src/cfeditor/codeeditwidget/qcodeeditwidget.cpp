@@ -269,7 +269,7 @@ void QCodeEditWidget::timerEvent(QTimerEvent *event)
 		m_currentlyBlinkCursorShowen ^= 1;
 
 		//viewport()->update(0, 0, ceil(m_CursorHeight * 0.05) + 1, m_CursorHeight + 1);
-        //viewport()->update(); // TODO: optimize this call, by updating the affected region only!!
+        viewport()->update(); // TODO: optimize this call, by updating the affected region only!!
 	}
 }
 
@@ -802,7 +802,6 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
                             QString text = l_Line.mid(cur_pos - l_HorizontalValue, colorItem.index - cur_pos);
                             QFontMetrics fm(painter.font());
 
-                            painter.setPen(QPen(Qt::black));
                             painter.drawText(x, y, text);
                             Xcoord += fm.width(text);
                             cur_pos += text.length();
