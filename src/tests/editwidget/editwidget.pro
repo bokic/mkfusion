@@ -1,4 +1,4 @@
-QT       = core gui
+QT       = core gui xml
 CONFIG  += debug_and_release
 #MAKEFILE = ../../../obj/tests/editwidget/Makefile
 DESTDIR  = ../../../bin
@@ -16,9 +16,9 @@ release {
 	UI_DIR      = ../../../obj/tests/editwidget/release
 }
 
-DEPENDPATH  += . ../../cfeditor/codeeditwidget
-INCLUDEPATH += . ../../cfeditor/codeeditwidget
+DEPENDPATH  += . ../../cfeditor/codeeditwidget ../../textparser
+INCLUDEPATH += . ../../cfeditor/codeeditwidget ../../textparser
 
-SOURCES = main.cpp qappmaindialog.cpp qcodeeditwidget.cpp
-HEADERS =          qappmaindialog.h   qcodeeditwidget.h
+SOURCES = main.cpp qappmaindialog.cpp qcodeeditwidget.cpp ../../textparser/qtextparser.cpp
+HEADERS =          qappmaindialog.h   qcodeeditwidget.h   ../../textparser/qtextparser.h
 FORMS   =          qappmaindialog.ui

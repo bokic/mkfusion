@@ -1,6 +1,8 @@
 #ifndef QCODEEDITWIDGET_H
 #define QCODEEDITWIDGET_H
 
+#include "qtextparser.h"
+
 #include <QAbstractScrollArea>
 #include <QPixmap>
 #include <QColor>
@@ -14,33 +16,21 @@ Q_OBJECT
 Q_PROPERTY(QString Text READ getText WRITE setText DESIGNABLE false)
 public:
 
-	enum LineStatusType {LineStatusTypeLineNotModified, LineStatusTypeLineSaved, LineStatusTypeLineModified};
-	enum EndLineType {EndLineTypeNoEndLine, EndLineTypeCREndLine, EndLineTypeLFEndLine, EndLineTypeCRLFEndLine, EndLineTypeLFCREndLine};
-	enum UnderlineType {UnderlineTypeNoUnderline, UnderlineTypeLine, UnderlineTypeWave};
-	enum BreakpointType {BreakpointTypeNoBreakpoint, BreakpointTypeBreakpoint, BreakpointTypeBreakpointPending, BreakpointTypeDisabled};
+    enum LineStatusType {LineStatusTypeLineNotModified, LineStatusTypeLineSaved, LineStatusTypeLineModified};
+    enum BreakpointType {BreakpointTypeNoBreakpoint, BreakpointTypeBreakpoint, BreakpointTypeBreakpointPending, BreakpointTypeDisabled};
 
-	struct QCodeEditWidgetColorItem {
-		int index;
-		int length;
-		QColor foregroundColor;
-		QColor backgroundColor;
-		QColor underlineColor;
-		UnderlineType underline;
-	};
+    struct QCodeEditWidgetLine : QTextParser::QTextParserLine
+    {
+        BreakpointType Breakpoint;
+        LineStatusType LineStatus;
+    };
 
-	struct QCodeEditWidgetLine {
-		LineStatusType LineStatus;
-		QString Content;
-		EndLineType EndLine;
-		BreakpointType Breakpoint;
-        QList<QCodeEditWidgetColorItem> ColorItems;
-	};
-
-	explicit QCodeEditWidget(QWidget* = 0);
+    explicit QCodeEditWidget(QWidget* = 0);
 	~QCodeEditWidget();
 	QString getText();
+    void setFileExtension(const QString &);
 	void clearFormatting();
-    void addFormat(int p_line, const QCodeEditWidgetColorItem &p_item);
+    void addFormat(int p_line, const QTextParser::QTextParserColorItem &p_item);
 	void setBreakpoint(int, BreakpointType);
 	BreakpointType breakpoint(int);
 
@@ -67,6 +57,7 @@ private:
 	QPixmap m_BreakPointPixmapPending;
 	QPixmap m_BreakPointPixmapDisabled;
     QList<QCodeEditWidgetLine> m_Lines;
+    QTextParser m_Parser;
 
 	int m_ScrollXCharPos;
 	int m_ScrollYLinePos;

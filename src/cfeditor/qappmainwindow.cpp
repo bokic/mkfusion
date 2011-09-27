@@ -143,6 +143,19 @@ void QAppMainWindow::on_action_Open_Project_activated()
 		}
 
 		m_Project = QProject::LoadProjectFromFile(l_FileName);
+
+        if (m_Project != NULL)
+        {
+            m_Project->setParent(this);
+
+            ui->m_Browser->setUrl(QUrl(m_Project->getUrl()));
+
+            UpdateProjectFileList();
+        }
+        else
+        {
+            statusBar()->showMessage(tr("Could't load project file."));
+        }
 	}
 }
 
@@ -157,7 +170,7 @@ void QAppMainWindow::on_action_Save_Project_activated()
 		if (l_FileName.isEmpty())
 		{
 			return;
-		}
+        }
 
 		QApplication::processEvents();
 	}
@@ -168,6 +181,19 @@ void QAppMainWindow::on_action_Save_Project_activated()
 
 	m_Project = QProject::LoadProjectFromFile(l_FileName);
 	m_ProjectFileName = l_FileName;
+
+    if (m_Project != NULL)
+    {
+        m_Project->setParent(this);
+
+        ui->m_Browser->setUrl(QUrl(m_Project->getUrl()));
+
+        UpdateProjectFileList();
+    }
+    else
+    {
+        statusBar()->showMessage(tr("Could't load project file."));
+    }
 }
 
 void QAppMainWindow::on_action_Close_Project_activated()
@@ -403,13 +429,16 @@ void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem* item, i
 
 	QCodeEditWidget* l_textEdit = new QCodeEditWidget();
 
+    QFileInfo finfo(file);
+    l_textEdit->setFileExtension(finfo.suffix());
+
 	connect(l_textEdit, SIGNAL(on_key_press(QKeyEvent *)), this, SLOT(on_textedit_key_press(QKeyEvent *)));
 	connect(l_textEdit, SIGNAL(on_text_change()), this, SLOT(on_textedit_text_change()));
 	connect(l_textEdit, SIGNAL(on_breakpoint_change(int)), this, SLOT(on_textedit_breakpoint_change(int)));
 
 	l_textEdit->setParent(ui->centralwidget);
 
-	l_textEdit->setText(m_Project->ReadFile(file));
+    l_textEdit->setText(m_Project->ReadFile(file));
 
 	ui->centralwidget->setCurrentIndex(ui->centralwidget->addTab(l_textEdit, file));
 	l_textEdit->setFocus();
@@ -584,13 +613,13 @@ void QAppMainWindow::on_textedit_breakpoint_change(int line)
 {
 	QCodeEditWidget *edit = ((QCodeEditWidget*) sender());
 
-	if (edit->breakpoint(line) != QCodeEditWidget::BreakpointTypeBreakpoint)
+    if (edit->breakpoint(line) != QCodeEditWidget::BreakpointTypeBreakpoint)
 	{
-		edit->setBreakpoint(line, QCodeEditWidget::BreakpointTypeBreakpoint);
+        edit->setBreakpoint(line, QCodeEditWidget::BreakpointTypeBreakpoint);
 	}
 	else
 	{
-		edit->setBreakpoint(line, QCodeEditWidget::BreakpointTypeNoBreakpoint);
+        edit->setBreakpoint(line, QCodeEditWidget::BreakpointTypeNoBreakpoint);
 	}
 }
 
@@ -648,9 +677,9 @@ void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
 {
 	QCodeEditWidget *edit = ((QCodeEditWidget*) ui->centralwidget->currentWidget());
 
-	QCodeEditWidget::QCodeEditWidgetColorItem tagColor;
+    QTextParser::QTextParserColorItem tagColor;
 
-	tagColor.underline = QCodeEditWidget::UnderlineTypeNoUnderline;
+    tagColor.underline = QTextParser::UnderlineTypeNoUnderline;
 	tagColor.underlineColor = QColor(255, 255, 255);
 	tagColor.backgroundColor = QColor(255, 255, 255);
 	tagColor.foregroundColor = QColor(0, 0, 0);

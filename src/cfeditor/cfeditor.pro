@@ -17,11 +17,11 @@ release {
 }
 
 win32 {
-	DEPENDPATH  += . codeeditwidget/ rds/ ../cfparser/ ../../libs/libssh/include/
-	INCLUDEPATH += . codeeditwidget/ rds/ ../cfparser/ ../../libs/libssh/include/
+    DEPENDPATH  += . codeeditwidget/ rds/ ../cfparser/ ../textparser/ ../../libs/libssh/include/
+    INCLUDEPATH += . codeeditwidget/ rds/ ../cfparser/ ../textparser/ ../../libs/libssh/include/
 } else {
-	DEPENDPATH  += . codeeditwidget/ rds/ ../cfparser/
-	INCLUDEPATH += . codeeditwidget/ rds/ ../cfparser/
+    DEPENDPATH  += . codeeditwidget/ rds/ ../cfparser/ ../textparser/
+    INCLUDEPATH += . codeeditwidget/ rds/ ../cfparser/ ../textparser/
 }
 
 win32: {
@@ -54,6 +54,11 @@ HEADERS += qadvancedtreewidget.h
 # Custom(QtCreator looklike) edit widget
 SOURCES += codeeditwidget/qcodeeditwidget.cpp
 HEADERS += codeeditwidget/qcodeeditwidget.h
+
+# TextParser
+SOURCES += ../textparser/qtextparser.cpp
+HEADERS += ../textparser/qtextparser.h
+
 
 # Resources
 RESOURCES += cfeditor.qrc
