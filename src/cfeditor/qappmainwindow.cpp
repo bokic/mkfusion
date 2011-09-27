@@ -432,9 +432,9 @@ void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem* item, i
     QFileInfo finfo(file);
     l_textEdit->setFileExtension(finfo.suffix());
 
-	connect(l_textEdit, SIGNAL(on_key_press(QKeyEvent *)), this, SLOT(on_textedit_key_press(QKeyEvent *)));
-	connect(l_textEdit, SIGNAL(on_text_change()), this, SLOT(on_textedit_text_change()));
-	connect(l_textEdit, SIGNAL(on_breakpoint_change(int)), this, SLOT(on_textedit_breakpoint_change(int)));
+    connect(l_textEdit, SIGNAL(on_key_press(QKeyEvent *)), this, SLOT(onmy_textedit_key_press(QKeyEvent *)));
+    connect(l_textEdit, SIGNAL(on_text_change()), this, SLOT(onmy_textedit_text_change()));
+    connect(l_textEdit, SIGNAL(on_breakpoint_change(int)), this, SLOT(onmy_textedit_breakpoint_change(int)));
 
 	l_textEdit->setParent(ui->centralwidget);
 
@@ -551,18 +551,18 @@ void QAppMainWindow::on_centralwidget_tabCloseRequested(int index)
 	ui->centralwidget->removeTab(index);
 }
 
-void QAppMainWindow::on_centralwidget_Item_textChanged()
+/*void QAppMainWindow::on_centralwidget_Item_textChanged()
 {
-	int index = ui->centralwidget->currentIndex();
-	QString panelText = ui->centralwidget->tabText(index);
+    int index = ui->centralwidget->currentIndex();
+    QString panelText = ui->centralwidget->tabText(index);
 
-	if (!panelText.endsWith("*"))
-	{
-		ui->centralwidget->setTabText(index, panelText + "*");
-	}
+    if (!panelText.endsWith("*"))
+    {
+        ui->centralwidget->setTabText(index, panelText + "*");
+    }
 
-	recolor();
-}
+    recolor();
+}*/
 
 void QAppMainWindow::on_centralwidget_currentChanged(int index)
 {
@@ -571,7 +571,7 @@ void QAppMainWindow::on_centralwidget_currentChanged(int index)
 	// Update Structure widget.
 }
 
-void QAppMainWindow::on_textedit_key_press(QKeyEvent *event)
+void QAppMainWindow::onmy_textedit_key_press(QKeyEvent *event)
 {
 	if ((event->key() == Qt::Key_F5)&&(event->modifiers() == Qt::NoModifier))
 	{
@@ -596,7 +596,7 @@ void QAppMainWindow::on_textedit_key_press(QKeyEvent *event)
 	}
 }
 
-void QAppMainWindow::on_textedit_text_change()
+void QAppMainWindow::onmy_textedit_text_change()
 {
 	int index = ui->centralwidget->currentIndex();
 	QString panelText = ui->centralwidget->tabText(index);
@@ -609,7 +609,7 @@ void QAppMainWindow::on_textedit_text_change()
 	}
 }
 
-void QAppMainWindow::on_textedit_breakpoint_change(int line)
+void QAppMainWindow::onmy_textedit_breakpoint_change(int line)
 {
 	QCodeEditWidget *edit = ((QCodeEditWidget*) sender());
 

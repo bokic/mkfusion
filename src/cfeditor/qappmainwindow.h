@@ -52,12 +52,12 @@ private slots:
 	void on_m_ProjectTree_itemCollapsed(QTreeWidgetItem*);
 	void on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem*, int);
 	void on_m_ProjectTree_keyPress(QAdvancedTreeWidget*, QKeyEvent*);
-	void on_centralwidget_Item_textChanged();
+    //void on_centralwidget_Item_textChanged();
 	void on_centralwidget_currentChanged(int);
 	void on_centralwidget_tabCloseRequested(int);
-	void on_textedit_key_press(QKeyEvent*);
-	void on_textedit_text_change();
-	void on_textedit_breakpoint_change(int);
+    void onmy_textedit_key_press(QKeyEvent*);
+    void onmy_textedit_text_change();
+    void onmy_textedit_breakpoint_change(int);
 private:
 	void LoadProject(const QString&);
 	void UpdateProjectFileList(const QString& = "", QTreeWidgetItem* = NULL);
