@@ -17,11 +17,11 @@ release {
 }
 
 win32 {
-    DEPENDPATH  += . codeeditwidget/ rds/ ../cfparser/ ../textparser/ ../../libs/libssh/include/
-    INCLUDEPATH += . codeeditwidget/ rds/ ../cfparser/ ../textparser/ ../../libs/libssh/include/
+    DEPENDPATH  += . codeeditwidget/ rds/ ../textparser/ ../../libs/libssh/include/
+    INCLUDEPATH += . codeeditwidget/ rds/ ../textparser/ ../../libs/libssh/include/
 } else {
-    DEPENDPATH  += . codeeditwidget/ rds/ ../cfparser/ ../textparser/
-    INCLUDEPATH += . codeeditwidget/ rds/ ../cfparser/ ../textparser/
+    DEPENDPATH  += . codeeditwidget/ rds/ ../textparser/
+    INCLUDEPATH += . codeeditwidget/ rds/ ../textparser/
 }
 
 win32: {
@@ -31,8 +31,8 @@ win32: {
 }
 
 # Main app
-SOURCES = main.cpp qappmainwindow.cpp qprojectproperties.cpp ../cfparser/qcfparser.cpp ../cfparser/qcf8.cpp ../cfparser/qcffunction.cpp ../cfparser/qcftag.cpp
-HEADERS =          qappmainwindow.h   qprojectproperties.h   ../cfparser/qcfparser.h   ../cfparser/qcf8.h   ../cfparser/qcffunction.h   ../cfparser/qcftag.h
+SOURCES = main.cpp qappmainwindow.cpp qprojectproperties.cpp
+HEADERS =          qappmainwindow.h   qprojectproperties.h
 FORMS   =          qappmainwindow.ui  qprojectproperties.ui
 
 # RDS
