@@ -23,6 +23,7 @@ public:
     {
         BreakpointType Breakpoint;
         LineStatusType LineStatus;
+        QCodeEditWidgetLine() : QTextParserLine(), Breakpoint(BreakpointTypeNoBreakpoint), LineStatus(LineStatusTypeLineNotModified) {}
     };
 
     explicit QCodeEditWidget(QWidget* = 0);
@@ -67,14 +68,16 @@ private:
 	int m_CursorHeight;
 	bool m_SelectMouseDown;
 
-	struct {
+    struct CarretPosition {
 		int m_Row;
 		int m_Column;
+        CarretPosition() : m_Row(1), m_Column(1) {}
 	} m_CarretPosition;
 
-	struct {
+    struct SelectionPosition{
 		int m_Row;
 		int m_Column;
+        SelectionPosition() : m_Row(1), m_Column(1) {}
 	} m_SelectionPosition;
 
 signals:

@@ -5,7 +5,6 @@
 
 #include <QMainWindow>
 #include "qadvancedtreewidget.h"
-#include <qcfparser.h>
 
 namespace Ui {
     class QAppMainWindow;
@@ -62,7 +61,7 @@ private:
 	void LoadProject(const QString&);
 	void UpdateProjectFileList(const QString& = "", QTreeWidgetItem* = NULL);
 	void recolor();
-	void colorElement(const QCFParserElement &);
+//	void colorElement(const QCFParserElement &);
 	Ui::QAppMainWindow *ui;
 	QProject *m_Project;
 	QString m_ProjectFileName;

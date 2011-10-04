@@ -20,12 +20,14 @@ public:
         QColor backgroundColor;
         QColor underlineColor;
         QTextParserUnderlineType underline;
+        QTextParserColorItem() : index(0), length(0), underline(UnderlineTypeNoUnderline) {}
     };
 
     struct QTextParserLine {
         QString Content;
         QTextParserEndLineType EndLine;
         QList<QTextParserColorItem> ColorItems;
+        QTextParserLine() : EndLine(EndLineTypeNoEndLine) {}
     };
 
     typedef QList<QTextParserLine> QTextParserLines;

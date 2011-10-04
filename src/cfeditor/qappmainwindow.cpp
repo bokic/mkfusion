@@ -673,7 +673,7 @@ void QAppMainWindow::recolor()
 	edit->update();
 }
 
-void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
+/*void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
 {
 	QCodeEditWidget *edit = ((QCodeEditWidget*) ui->centralwidget->currentWidget());
 
@@ -747,4 +747,4 @@ void QAppMainWindow::colorElement(const QCFParserElement &p_Element)
 	{
 		colorElement(l_ChildElement);
 	}
-}
+}*/
