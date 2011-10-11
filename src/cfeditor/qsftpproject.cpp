@@ -6,8 +6,13 @@ QSFTPProject::QSFTPProject(const QHash<QString, QString>& p_Args)
 {
 	int err;
 
+    m_Type = QProject::SFTPProject;
 	m_Url = p_Args["Url"];
 	m_Path = p_Args["Path"];
+    m_HostName = p_Args["Host"];
+    m_Port = p_Args["Port"].toUShort();
+    m_Username = p_Args["Username"];
+    m_Password = p_Args["Password"];
 
 	if (!m_Path.endsWith(getDirSeparator()))
 	{
@@ -17,11 +22,11 @@ QSFTPProject::QSFTPProject(const QHash<QString, QString>& p_Args)
 
 	m_SSHSession = ssh_new();
 
-	ssh_options_set(m_SSHSession, SSH_OPTIONS_HOST, p_Args["Host"].toLatin1());
+    ssh_options_set(m_SSHSession, SSH_OPTIONS_HOST, m_HostName.toLatin1());
 
-	if (p_Args["Port"].toInt() != 0)
+    if (m_Port != 0)
 	{
-		ssh_options_set(m_SSHSession, SSH_OPTIONS_PORT_STR, p_Args["Port"].toLatin1());
+        ssh_options_set(m_SSHSession, SSH_OPTIONS_PORT_STR, QString::number(m_Port).toLatin1());
 	}
 
 	err = ssh_connect(m_SSHSession);
@@ -30,7 +35,7 @@ QSFTPProject::QSFTPProject(const QHash<QString, QString>& p_Args)
 		return;
 	}
 
-	err = ssh_userauth_password(m_SSHSession, p_Args["Username"].toLatin1(), p_Args["Password"].toLatin1());
+    err = ssh_userauth_password(m_SSHSession, m_Username.toLatin1(), m_Password.toLatin1());
 	if (err != 0)
 	{
 		return;
@@ -221,4 +226,24 @@ void QSFTPProject::RenameDir(const QString& p_FromFolder, const QString& p_ToFol
 	}
 
 	sftp_rename(m_SFTPSession, m_Path.toUtf8() + p_FromFolder.toUtf8(), m_Path.toUtf8() + p_ToFolder.toUtf8());
+}
+
+const QString& QSFTPProject::getHostName()
+{
+    return m_HostName;
+}
+
+quint16 QSFTPProject::getPort()
+{
+    return m_Port;
+}
+
+const QString& QSFTPProject::getUsername()
+{
+    return m_Username;
+}
+
+const QString& QSFTPProject::getPassword()
+{
+    return m_Password;
 }

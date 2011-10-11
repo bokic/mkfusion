@@ -3,9 +3,14 @@
 
 QRDSProject::QRDSProject(const QHash<QString, QString>& p_Args)
 {
+    m_Type = QProject::RDSProject;
 	m_Url = p_Args["Url"];
 	m_Path = p_Args["Path"];
-	m_DirSeparator = 0;
+    m_HostName = p_Args["Host"];
+    m_Port = p_Args["Port"].toUShort();
+    m_Username = p_Args["Username"];
+    m_Password = p_Args["Password"];
+    m_DirSeparator = 0;
 
 	m_Server.setHostName(p_Args["Host"]);
 	m_Server.setUserName(p_Args["Username"]);
@@ -196,4 +201,24 @@ void QRDSProject::RenameDir(const QString& p_OldDir, const QString& p_NewDir)
 	ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::FileRenameCommand, map);
 
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
+}
+
+const QString& QRDSProject::getHostName()
+{
+    return m_HostName;
+}
+
+quint16 QRDSProject::getPort()
+{
+    return m_Port;
+}
+
+const QString& QRDSProject::getUsername()
+{
+    return m_Username;
+}
+
+const QString& QRDSProject::getPassword()
+{
+    return m_Password;
 }

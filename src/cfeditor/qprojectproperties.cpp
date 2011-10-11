@@ -24,6 +24,49 @@ QString QProjectProperties::getConnectionString()
 	return m_ConnectionString;
 }
 
+void QProjectProperties::fillDialog(QProject *project)
+{
+    if (project->getType() != QProject::BlankProject)
+    {
+        switch(project->getType())
+        {
+        case QProject::LocalProject:
+            ui.tabWidget->setCurrentIndex(0);
+            ui.local_ProjectPath_lineEdit->setText(project->getPath());
+            ui.local_URL_lineEdit->setText(project->getUrl());
+            break;
+        case QProject::FTPProject:
+            ui.tabWidget->setCurrentIndex(1);
+            ui.ftp_Host_lineEdit->setText(((QFTPProject*)project)->getPath());
+            ui.ftp_Port_spinBox->setValue(((QFTPProject*)project)->getPort());
+            ui.ftp_Username_lineEdit->setText(((QFTPProject*)project)->getUsername());
+            ui.ftp_Password_lineEdit->setText(((QFTPProject*)project)->getPassword());
+            ui.ftp_ProjectPath_lineEdit->setText(project->getPath());
+            ui.ftp_URL_lineEdit->setText(project->getUrl());
+            break;
+        case QProject::SFTPProject:
+            ui.tabWidget->setCurrentIndex(2);
+            ui.sftp_Host_lineEdit->setText(((QFTPProject*)project)->getPath());
+            ui.sftp_Port_spinBox->setValue(((QFTPProject*)project)->getPort());
+            ui.sftp_Username_lineEdit->setText(((QFTPProject*)project)->getUsername());
+            ui.sftp_Password_lineEdit->setText(((QFTPProject*)project)->getPassword());
+            ui.sftp_ProjectPath_lineEdit->setText(project->getPath());
+            ui.sftp_URL_lineEdit->setText(project->getUrl());
+            break;
+        case QProject::RDSProject:
+            ui.tabWidget->setCurrentIndex(3);
+            ui.rds_Host_lineEdit->setText(((QFTPProject*)project)->getPath());
+            ui.rds_Port_spinBox->setValue(((QFTPProject*)project)->getPort());
+            ui.rds_Username_lineEdit->setText(((QFTPProject*)project)->getUsername());
+            ui.rds_Password_lineEdit->setText(((QFTPProject*)project)->getPassword());
+            ui.rds_ProjectPath_lineEdit->setText(project->getPath());
+            ui.rds_URL_lineEdit->setText(project->getUrl());
+            break;
+        default:;
+        }
+    }
+}
+
 void QProjectProperties::on_local_Browse_button_clicked()
 {
 	QString l_dirName = QFileDialog::getExistingDirectory(this, tr("Open Directory"), "", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);

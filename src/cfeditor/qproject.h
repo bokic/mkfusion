@@ -18,7 +18,8 @@ public:
 	QProject();
 	static QProject* LoadProjectFromFile(const QString&);
 	static QProject* LoadProjectFromText(const QString&);
-	enum ProjectType{LocalProject, RDSProject, FTPProject, SFTPProject};
+    enum QProjectType{BlankProject, LocalProject, RDSProject, FTPProject, SFTPProject};
+    QProjectType getType();
 	virtual char getDirSeparator() = 0;
 	virtual QList<QProjectFile> getFolderItems(const QString&) = 0;
 	virtual QByteArray ReadFile(const QString&) = 0;
@@ -29,11 +30,12 @@ public:
 	virtual void DeleteDir(const QString&, bool) = 0;
 	virtual void RenameDir(const QString&, const QString&) = 0;
 	const QString& getUrl();
+    const QString& getPath();
 protected:
 	QString m_Url;
 	QString m_Path;
+    QProjectType m_Type;
 private:
-	ProjectType m_Type;
 	QHash<QString, QString> m_Arguments;
 	QString m_ProjectFile;
 	bool m_ProjectFileSaved;

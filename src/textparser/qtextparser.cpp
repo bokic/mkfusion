@@ -223,22 +223,22 @@ void QTextParser::parseTextLines(QTextParserLines &lines)
     while(parseElement(lines, cur_lines, cur_column, language.startsWith));
 }
 
-int QTextParser::findElement(const QTextParserLines &lines, int &cur_lines, int &cur_column, const QStringList &tokens, QString &token)
+int QTextParser::findElement(const QTextParserLines &lines, int &cur_line, int &cur_column, const QStringList &tokens, QString &token)
 {
     int choosen_position = -1;
     QString choosen_token;
 
-    if ((tokens.count() == 0)||(cur_lines >= lines.count()))
+    if ((tokens.count() == 0)||(cur_line >= lines.count()))
     {
         return choosen_position;
     }
 
-    while (cur_lines < lines.count())
+    while (cur_line < lines.count())
     {
-        if (cur_column >= lines.at(cur_lines).Content.length())
+        if (cur_column >= lines.at(cur_line).Content.length())
         {
             cur_column = 0;
-            cur_lines++;
+            cur_line++;
             continue;
         }
 
@@ -272,7 +272,7 @@ int QTextParser::findElement(const QTextParserLines &lines, int &cur_lines, int 
 
                 QRegExp reg(searchRegEx, Qt::CaseInsensitive);
 
-                QString line = lines.at(cur_lines).Content;
+                QString line = lines.at(cur_line).Content;
 
                 int index = reg.indexIn(line, cur_column);
 
@@ -301,7 +301,7 @@ int QTextParser::findElement(const QTextParserLines &lines, int &cur_lines, int 
             break;
         }
 
-        cur_lines++;
+        cur_line++;
         cur_column = 0;
     }
 
@@ -315,12 +315,12 @@ int QTextParser::findElement(const QTextParserLines &lines, int &cur_lines, int 
     return choosen_position;
 }
 
-bool QTextParser::parseElement(QTextParserLines &lines, int &cur_lines, int &cur_column, const QStringList &tokens)
+bool QTextParser::parseElement(QTextParserLines &lines, int &cur_line, int &cur_column, const QStringList &tokens)
 {
     int closes_position;
     QString choosen_token;
 
-    closes_position = findElement(lines, cur_lines, cur_column, tokens, choosen_token);
+    closes_position = findElement(lines, cur_line, cur_column, tokens, choosen_token);
 
     // Parses closes token found
     if (closes_position >= 0)
@@ -344,7 +344,7 @@ bool QTextParser::parseElement(QTextParserLines &lines, int &cur_lines, int &cur
 
 
             QRegExp reg(targetToken, Qt::CaseInsensitive);
-            int index = reg.indexIn(lines.at(cur_lines).Content, cur_column);
+            int index = reg.indexIn(lines.at(cur_line).Content, cur_column);
 
             if(index >= 0)
             {
@@ -361,7 +361,7 @@ bool QTextParser::parseElement(QTextParserLines &lines, int &cur_lines, int &cur
                     Q_ASSERT(reg.cap(0).length() > 0);
                     colorItem.length = reg.cap(0).length();
 
-                    lines[cur_lines].ColorItems.append(colorItem);
+                    lines[cur_line].ColorItems.append(colorItem);
                 }
 
                 Q_ASSERT(reg.cap(0).length() > 0);
@@ -378,12 +378,12 @@ bool QTextParser::parseElement(QTextParserLines &lines, int &cur_lines, int &cur
                     while(choosen_token != endToken)
                     {
                         // TODO: Not optimal element search. parseElement called after findElement call.
-                        if (findElement(lines, cur_lines, cur_column, newTokens, choosen_token) == -1)
+                        if (findElement(lines, cur_line, cur_column, newTokens, choosen_token) == -1)
                         {
                             break;
                         }
 
-                        parseElement(lines, cur_lines, cur_column, newTokens);
+                        parseElement(lines, cur_line, cur_column, newTokens);
                     }
                 }
             }
@@ -396,7 +396,7 @@ bool QTextParser::parseElement(QTextParserLines &lines, int &cur_lines, int &cur
         {
             // token
             QRegExp reg(language.tokens[choosen_token].tokenString, Qt::CaseInsensitive);
-            int index = reg.indexIn(lines.at(cur_lines).Content, cur_column);
+            int index = reg.indexIn(lines.at(cur_line).Content, cur_column);
 
             if(index >= 0)
             {
@@ -411,7 +411,7 @@ bool QTextParser::parseElement(QTextParserLines &lines, int &cur_lines, int &cur
                     colorItem.index = index;
                     colorItem.length = reg.cap(0).length();
 
-                    lines[cur_lines].ColorItems.append(colorItem);
+                    lines[cur_line].ColorItems.append(colorItem);
                 }
 
                 cur_column += reg.cap(0).length();

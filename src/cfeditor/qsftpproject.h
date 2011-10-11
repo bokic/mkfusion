@@ -27,7 +27,15 @@ public:
 	virtual void CreateDir(const QString&);
 	virtual void DeleteDir(const QString&, bool);
 	virtual void RenameDir(const QString&, const QString&);
+    const QString& getHostName();
+    quint16 getPort();
+    const QString& getUsername();
+    const QString& getPassword();
 protected:
+    QString m_HostName;
+    quint16 m_Port;
+    QString m_Username;
+    QString m_Password;
 private:
 	ssh_session m_SSHSession;
 	sftp_session m_SFTPSession;

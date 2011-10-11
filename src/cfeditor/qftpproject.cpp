@@ -3,33 +3,34 @@
 
 QFTPProject::QFTPProject(const QHash<QString, QString>& p_Args)
 {
+    m_Type = QProject::FTPProject;
 	m_Url = p_Args["Url"];
 	m_Path = p_Args["Path"];
+    m_HostName = p_Args["Host"];
+    m_Port = p_Args["Port"].toUShort();
+    m_Username = p_Args["Username"];
+    m_Password = p_Args["Password"];
 
 	if (!m_Path.endsWith(getDirSeparator()))
 	{
 		m_Path += getDirSeparator();
 	}
 
-	QString l_Host = p_Args["Host"];
-	quint16 l_Port = p_Args["Port"].toUShort();
-	QString l_Username = p_Args["Username"];
-	QString l_Password = p_Args["Password"];
 
-	if (l_Port == 0)
+    if (m_Port == 0)
 	{
-		l_Port = 21;
+        m_Port = 21;
 	}
 
-	m_FTP.connectToHost(l_Host, l_Port);
+    m_FTP.connectToHost(m_HostName, m_Port);
 
-	if ((l_Username.isEmpty())&&(l_Password.isEmpty()))
+    if ((m_Username.isEmpty())&&(m_Password.isEmpty()))
 	{
 		m_FTP.login();
 	}
 	else
 	{
-		m_FTP.login(l_Username, l_Password);
+        m_FTP.login(m_Username, m_Password);
 	}
 
 	while(m_FTP.currentCommand() != QFtp::None)
@@ -141,4 +142,24 @@ void QFTPProject::RenameDir(const QString& p_FromDir, const QString& p_ToDir)
 	{
 		QThread::currentThread()->wait(1);
 	}
+}
+
+const QString& QFTPProject::getHostName()
+{
+    return m_HostName;
+}
+
+quint16 QFTPProject::getPort()
+{
+    return m_Port;
+}
+
+const QString& QFTPProject::getUsername()
+{
+    return m_Username;
+}
+
+const QString& QFTPProject::getPassword()
+{
+    return m_Password;
 }

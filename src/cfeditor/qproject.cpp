@@ -6,8 +6,14 @@
 #include <QStringList>
 #include <QFile>
 
-QProject::QProject()
+QProject::QProject() :
+    m_Type(BlankProject)
 {
+}
+
+QProject::QProjectType QProject::getType()
+{
+    return m_Type;
 }
 
 QProject* QProject::LoadProjectFromFile(const QString& p_File)
@@ -78,4 +84,9 @@ QProject* QProject::LoadProjectFromText(const QString& p_Text)
 const QString& QProject::getUrl()
 {
 	return m_Url;
+}
+
+const QString& QProject::getPath()
+{
+    return m_Path;
 }

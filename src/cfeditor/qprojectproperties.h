@@ -5,6 +5,11 @@
 
 #include "ui_qprojectproperties.h"
 
+#include "qproject.h"
+#include "qftpproject.h"
+#include "qsftpproject.h"
+#include "qrdsproject.h"
+
 class QProjectProperties : public QDialog
 {
 	Q_OBJECT
@@ -12,6 +17,7 @@ class QProjectProperties : public QDialog
 public:
 	QProjectProperties(QWidget *parent = 0, Qt::WFlags flags = 0);
 	QString getConnectionString();
+    void fillDialog(QProject *project);
 private slots:
 	void on_buttonBox_accepted();
 	void on_buttonBox_rejected();

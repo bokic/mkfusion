@@ -5,6 +5,7 @@
 
 QLocalProject::QLocalProject(const QHash<QString, QString>& p_Args)
 {
+    m_Type = QProject::LocalProject;
 	m_Url = p_Args["Url"];
 	m_Path = p_Args["Path"];
 

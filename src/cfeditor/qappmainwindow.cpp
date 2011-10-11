@@ -224,6 +224,8 @@ void QAppMainWindow::on_action_Project_Properties_activated()
 
 	QProjectProperties l_ProjectProperties;
 
+    l_ProjectProperties.fillDialog(m_Project);
+
 	if (l_ProjectProperties.exec() == QDialog::Accepted)
 	{
 		on_action_Close_Project_activated();
