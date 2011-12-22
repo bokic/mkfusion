@@ -4,7 +4,7 @@
 #include <QStringList>
 #include <QString>
 #include <QColor>
-#include <Qlist>
+#include <QList>
 #include <QHash>
 
 class QTextParser

@@ -27,7 +27,12 @@ win32 {
 win32: {
 	LIBS += ../../libs/libssh/lib/libssh.dll.a
 } else {
-	LIBS += /usr/lib/libssh.so
+	CONFIG(CONFIG_TARGET.arch, x86) {
+		LIBS += /usr/lib/i386-linux-gnu/libssh.so
+	}
+	CONFIG(CONFIG_TARGET.arch, x86_64) {
+		LIBS += /usr/lib/x86_64-linux-gnu/libssh.so
+	}
 }
 
 # Main app
