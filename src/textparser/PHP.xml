@@ -1,0 +1,25 @@
+<language Name="PHP" CaseSensitivity="false" DefaultFileExtensions="php,php5" StartsWith="phptag">
+	<tokens>
+		<token Name="phptag" StartString="(&lt;?)|(&lt;?php)" EndString="?&gt;">
+			<nested_tokens names="LineComment,BlockComment,operator,singleString,doubleString,number,boolean" />
+		</token>
+		<token Name="LineComment" StartString="//" EndString="(\n)|(\r)" />
+		<token Name="BlockComment" StartString="/*" EndString="*/" />
+		<token Name="Boolean" TokenString="(FALSE)|(TRUE)" />
+		<token Name="Integer" TokenString="" />
+		<token Name="Float" TokenString="" />
+		<token Name="ArrayKeyValue" TokenString="=>" />
+		<token Name="MemberAccess" TokenString="->" />
+		<token Name="Variable" TokenString="[$][a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*" />
+		<token Name="CodeBlock" StartString="{" EndString="}">
+			<nested_tokens names="LineComment,BlockComment,operator,singleString,doubleString,number,boolean" />
+		</token>
+		<token Name="operator" TokenString="=" />
+		<token Name="singleString" StartString="&apos;" EndString="&apos;" ignoreTerminateStringList="True" />
+		<token Name="doubleString" StartString="&quot;" EndString="&quot;" ignoreTerminateStringList="True">
+			<nested_tokens names="Variable,CodeBlock" />
+		</token>
+		<token Name="number" TokenString="[-+]?[0-9]+\.?[0-9]*" />
+		<token Name="boolean" TokenString="(true|false)" />
+	</tokens>
+</language>
