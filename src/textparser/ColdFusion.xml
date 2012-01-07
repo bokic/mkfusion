@@ -1,27 +1,33 @@
-<language Name="ColdFusion" EmptySegmentsLanguage="HTML" CaseSensitivity="false" DefaultFileExtensions="cfm,cfc" StartsWith="cftag,cfendtag,cfcomment">
+<language Name="ColdFusion" EmptySegmentsLanguage="HTML" CaseSensitivity="false" DefaultFileExtensions="cfm,cfc" StartsWith="CFScript,CFTag,CFEndTag,CFComment">
 	<tokens>
-		<token Name="cftag" StartString="&lt;cf" EndString="\/?&gt;">
-			<if NameIsNotInOneOf="">
+		<token Name="CFScript" StartString="&lt;cfscript&gt;" EndString="&lt;/cfscript&gt;" MultiLine="true">
+			<nested_tokens names="CFScriptExpressions" />
+		</token>
+		<token Name="CFTag" StartString="&lt;cf" EndString="\/?&gt;" TextColor="Red"  MultiLine="true">
+			<if NameIsNotInOneOf="cfabort,cfajaximport,cfajaxproxy,cfapplet,cfapplication,cfargument,cfassociate,cfbreak,cfcache,cfcalendar,cfcase,cfcatch,cfchart,cfchartdata,cfchartseries,cfcol,cfcollection,cfcomponent,cfcookie,cfdbinfo,cfdefaultcase,cfdirectory,cfdiv,cfdocument,cfdocumentitem,cfdocumentsection,cfdump,cfelse,cfelseif,cferror,cfexchangecalendar,cfexchangeconnection,cfexchangecontact,cfexchangefilter,cfexchangemail,cfexchangetask,cfexecute,cfexit,cffeed,cffile,cfflush,cfform,cfformgroup,cfformitem,cfftp,cffunction,cfgrid,cfgridcolumn,cfgridrow,cfgridupdate,cfheader,cfhtmlhead,cfhttp,cfhttpparam,cfif,cfimage,cfimport,cfinclude,cfindex,cfinput,cfinsert,cfinterface,cfinvoke,cfinvokeargument,cflayout,cflayoutarea,cfldap,cflocation,cflock,cflog,cflogin,cfloginuser,cflogout,cfloop,cfmail,cfmailparam,cfmailpart,cfmenu,cfmenuitem,cfmodule,cfNTauthenticate,cfobject,cfobjectcache,cfoutput,cfparam,cfpdf,cfpdfformparam,cfpdfparam,cfpdfsubform,cfpod,cfpresentation,cfpresentationslide,cfpresenter,cfprint,cfprocessingdirective,cfprocparam,cfprocresult,cfproperty,cfquery,cfqueryparam,cfregistry,cfreport,cfreportparam,cfrethrow,cfreturn,cfsavecontent,cfshcedule,cfscript,cfsearch,cfselect,cfset,cfsetting,cfsilent,cfslider,cfsprydataset,cfstoredproc,cfswitch,cftable,cdtextarea,cfthread,cfthrow,cftimer,cftooltip,cftrace,cftransaction,cftree,cftreeitem,cftry,cfupdate,cfwindow,cfxml,cfzip,cfzipparam" Exclude="cf_">
 				<error Description="Unknown ColdFusion tag." />
 			</if>
-			<if NameIsOneOf="">
-				<nested_tokens names="cftagexpression" />
+			<if NameIsOneOf="cfelseif,cfif,cfreturn,cfset">
+				<nested_tokens names="CFTagExpression" />
 			<else />
-				<nested_tokens names="cftagparameters" />
+				<nested_tokens names="CFTagParameters" />
 			</if>
 		</token>
-		<token Name="cfendtag" StartString="&lt;/cf" EndString="&gt;" />
-		<token Name="cfcomment" StartString="&lt;!---" EndString="---&gt;">
-			<nested_tokens names="cfcomment" />
+		<token Name="CFEndTag" StartString="&lt;/cf" EndString="&gt;" />
+		<token Name="CFComment" StartString="&lt;!---" EndString="---&gt;"  MultiLine="true">
+			<nested_tokens names="CFComment" />
 		</token>
-		<token Name="cftagparameters" TerminateString="\/?&gt;">
+		<token Name="CFScriptExpressions">
+			<nested_tokens names="Expression,ExpressionEnd" />
+		</token>
+		<token Name="CFTagParameters" TerminateString="\/?&gt;">
 			<nested_tokens names="cftagparametar" />
 		</token>
-		<token Name="cftagexpression" TerminateString="\/?&gt;">
-			<nested_tokens names="expression" />
+		<token Name="CFTagExpression" TerminateString="\/?&gt;">
+			<nested_tokens names="Expression" />
 		</token>
-		<token Name="cfparametar">
-			<nested_tokens names="variable,operator,expression" require_all="true" require_in_same_order="true" />
+		<token Name="CFParametar">
+			<nested_tokens names="Variable,Operator,Expression" require_all="true" require_in_same_order="true" />
 		</token>
 		<token Name="SingleString" StartString="&apos;" EndString="&apos;" ignoreTerminateStringList="True">
 			<nested_tokens names="SharpExpression" />
@@ -43,8 +49,8 @@
 			<nested_tokens names="Parameter" />
 		</token>
 		<token Name="Parameter" EndString=",): TODO" />
-		<token Name="ObjectFunction" TokenString="." />
-		<token Name="VariableIndex" StartString="[" EndString="]">
+		<token Name="ObjectMember" TokenString="." MergedToLeft="true" MergedToRigth="true" />
+		<token Name="VariableIndex" StartString="[" EndString="]" MergedToLeft="true">
 			<nested_tokens names="Expression" />
 		</token>
 	</tokens>
