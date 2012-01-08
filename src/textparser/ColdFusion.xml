@@ -19,20 +19,40 @@
 			<nested_tokens names="Expression" />
 		</token>
 		<token Name="Expression">
-			<nested_tokens names="SingleString,DoubleString,ExpressionEnd,Number,Boolean,Operator,Variable,Function,ObjectMember,SubExpression,VariableIndex" />
+			<nested_tokens names="SingleString,DoubleString,Assigment,ExpressionEnd,Number,Boolean,Operator,Function,Variable,ObjectMember,SubExpression,VariableIndex" />
 		</token>
 		<token Name="ExpressionEnd" TokenString=";" />
 		<token Name="Number" TokenString="[-+]?\b[0-9]*\.?[0-9]+\b" />
 		<token Name="Boolean" TokenString="(true|false|yes|no)" />
-		<token Name="Variable" TokenString="[a-z]+" />
-		<token Name="Function" StartString="[a-z]+\(" EndString="\)">
+		<token Name="Function" StartString="[a-z]+[a-z0-9_]*\(" EndString="\)">
 			<nested_tokens names="Parameter" />
 		</token>
 		<token Name="Parameter" EndString="(,|\))" ExcludeEndString="true">
+		<token Name="Variable" TokenString="[a-z]+[a-z0-9_]*" />
 			<nested_tokens names="Expression" />
 		</token>
 		<token Name="ObjectMember" TokenString="." />
-		<token Name="Operator" TokenString="(greater\s+than\s+or\s+equal\s+to|less\s+than\s+or\s+equal\s+to|does\s+not\s+contain|greater\s+than|not\s+equal|less\s+than|contains|is\s+not|equal|\+\+|mod|not|and|xor|eqv|gte|lte|imp|neq|\+=|\*=|is|or|gt|ge|lt|le|--|-=|/=|%=|&amp;=|\+|\*|\\|\^|&amp;&amp;|\|\|eq|\?|-|/|=|&amp;|%|:|!)" />
+		<token Name="Assigment" TokenString="(=|\+=|\-=|*=|/=|%=|&amp;=)" />
+		
+		<!--
+		
+		Small part of the operator token behaviour will be hardcoded.
+		
+		So the parser can correctly understand the following:
+		a=+12
+		a=a+12
+		
+		or, if previous token was `Operator` or `Assigment` then try to parse token `Number` before token `Operator`, else try to parse token `Operator` before token `Number`.
+		
+		If no prvious token exist(current token is the first token), then try to parse token `Operator` first. So it can correctly parse situations like this:
+		
+		a = 12;
+		++a;
+		
+		thus token name `Operator` is special one.
+		
+		-->
+		<token Name="Operator" TokenString="(greater\s+than\s+or\s+equal\s+to|less\s+than\s+or\s+equal\s+to|does\s+not\s+contain|greater\s+than|not\s+equal|less\s+than|contains|is\s+not|equal|\+\+|mod|not|and|xor|eqv|gte|lte|imp|neq|is|or|gt|ge|lt|le|--|\+|\*|\\|\^|&amp;&amp;|\|\|eq|\?|-|/|&amp;|%|:|!)" />
 		<token Name="SubExpression" StartString="(" EndString=")">
 			<nested_tokens names="Expression" />
 		</token>
