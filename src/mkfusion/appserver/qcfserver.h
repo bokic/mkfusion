@@ -16,6 +16,8 @@ struct QCFCompiledTemplateItem {
 	QIsTemplateModified m_ModifiedInfo;
 };
 
+extern QString getCurrentExecutableFileName();
+
 class QCFServer : public QObject
 {
 	Q_OBJECT

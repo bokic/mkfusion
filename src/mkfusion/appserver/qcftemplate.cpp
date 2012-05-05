@@ -1,10 +1,8 @@
 #include "qcftemplate.h"
 
 QCFTemplate::QCFTemplate()
-{ // TODO: please verify in the following 3 lines are nessesary.
-	m_isModified.m_Filename = "";
-	m_isModified.m_Size = 0;
-	m_isModified.m_Modified = 0;
+	: m_TemplateInstance(NULL)
+{
 }
 
 void QCFTemplate::run(QCFRunningTemplate* p_TemplateInstance)

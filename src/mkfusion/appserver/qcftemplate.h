@@ -10,6 +10,10 @@ struct QIsTemplateModified {
 	QString m_Filename;
 	qint64 m_Size;
 	uint m_Modified;
+	QIsTemplateModified() {
+		m_Size = 0;
+		m_Modified = 0;
+	}
 };
 
 class Q_DECL_EXPORT QCFTemplate : public QObject

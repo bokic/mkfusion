@@ -21,43 +21,6 @@
 #error Windows and Linux OSs are currently supported.
 #endif
 
-QString getCurrentModuleFileName(void* p_Pointer) // TODO: This function is for windows only. Please implement Linux version.
-{
-		QString ret;
-#ifdef Q_WS_WIN
-		tagMODULEENTRY32W l_moduleEntry;
-		l_moduleEntry.dwSize = sizeof(tagMODULEENTRY32W);
-		bool l_MoreModules;
-
-		if (p_Pointer == NULL)
-		{
-				p_Pointer = (void*)&getCurrentModuleFileName;
-		}
-
-		HANDLE l_handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
-		if (l_handle != INVALID_HANDLE_VALUE)
-		{
-				for(l_MoreModules = Module32FirstW(l_handle, &l_moduleEntry); l_MoreModules == true; l_MoreModules = Module32NextW(l_handle, &l_moduleEntry))
-				{
-						if ((((quint32)p_Pointer) >= (((quint32)l_moduleEntry.modBaseAddr)))&&(((quint32)p_Pointer) < (((quint32)l_moduleEntry.modBaseAddr + l_moduleEntry.modBaseSize))))
-						{
-								ret = QString::fromWCharArray(l_moduleEntry.szExePath);
-								break;
-						}
-				}
-
-				CloseHandle(l_handle);
-		}
-#elif defined Q_WS_X11
-		Q_UNUSED(p_Pointer);
-
-		ret = "/opt/mkfusion/bin/"; // TODO: Hardcoded path..
-#else
-#error Windows and Linux OSs are currently supported.
-#endif
-
-	return ret;
-}
 
 QCFServer::QCFServer()
 {
@@ -172,9 +135,9 @@ void QCFServer::start()
 
 	m_mainTimer = startTimer(1000);
 
-	QFileInfo fi(getCurrentModuleFileName((void*)&getCurrentModuleFileName));
+	QFileInfo fi(getCurrentExecutableFileName());
 	QDir fi_dir = fi.absoluteDir();
-	fi_dir.cdUp(); // TODO: Linux do not like this line..
+	fi_dir.cdUp();
 	m_MKFusionPath = fi_dir.absolutePath() + "/";
 	QLibrary l_TemplateLib;
 

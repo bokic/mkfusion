@@ -2,15 +2,47 @@
 #include <QString>
 #include <QFile>
 
-void log(const QString& p_Line)
+
+QString getCurrentExecutableFileName()
 {
+	QString ret;
 #ifdef Q_WS_WIN
-	QFile l_Log("c:\\mkfusion.log"); // TODO: Hardcoded path..
+	static volatile int dummy = 0;
+
+	tagMODULEENTRY32W l_moduleEntry;
+	l_moduleEntry.dwSize = sizeof(tagMODULEENTRY32W);
+	bool l_MoreModules;
+
+	HANDLE l_handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
+	if (l_handle != INVALID_HANDLE_VALUE)
+	{
+		for(l_MoreModules = Module32FirstW(l_handle, &l_moduleEntry); l_MoreModules == true; l_MoreModules = Module32NextW(l_handle, &l_moduleEntry))
+		{
+			if ((((quint32)&dummy) >= (((quint32)l_moduleEntry.modBaseAddr)))&&(((quint32)&dummy) < (((quint32)l_moduleEntry.modBaseAddr + l_moduleEntry.modBaseSize))))
+			{
+				ret = QString::fromWCharArray(l_moduleEntry.szExePath);
+				break;
+			}
+		}
+
+		CloseHandle(l_handle);
+	}
 #elif defined Q_WS_X11
-	QFile l_Log("/opt/mkfusion/logs/server.log"); // TODO: Hardcoded path..
+
+	QFile filename("/proc/" + QString::number(getpid()) + "/exe");
+	filename.open(QFile::ReadOnly);
+
+	ret = filename.readLine();
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
+
+	return ret;
+}
+
+void log(const QString &p_filename, const QString &p_Line)
+{
+	QFile l_Log(p_filename);
 	l_Log.open(QIODevice::WriteOnly	| QIODevice::Append);
 #ifdef Q_WS_WIN
 	l_Log.write(p_Line.toUtf8() + "\r\n");
