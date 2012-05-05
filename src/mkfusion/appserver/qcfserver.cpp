@@ -51,7 +51,7 @@ QString getCurrentModuleFileName(void* p_Pointer) // TODO: This function is for 
 #elif defined Q_WS_X11
 		Q_UNUSED(p_Pointer);
 
-		ret = "/opt/mkfusion/bin/";
+		ret = "/opt/mkfusion/bin/"; // TODO: Hardcoded path..
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
@@ -174,7 +174,7 @@ void QCFServer::start()
 
 	QFileInfo fi(getCurrentModuleFileName((void*)&getCurrentModuleFileName));
 	QDir fi_dir = fi.absoluteDir();
-	fi_dir.cdUp();
+	fi_dir.cdUp(); // TODO: Linux do not like this line..
 	m_MKFusionPath = fi_dir.absolutePath() + "/";
 	QLibrary l_TemplateLib;
 

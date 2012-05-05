@@ -5,9 +5,9 @@
 void log(const QString& p_Line)
 {
 #ifdef Q_WS_WIN
-	QFile l_Log("c:\\mkfusion.log");
+	QFile l_Log("c:\\mkfusion.log"); // TODO: Hardcoded path..
 #elif defined Q_WS_X11
-	QFile l_Log("/opt/mkfusion/logs/server.log");
+	QFile l_Log("/opt/mkfusion/logs/server.log"); // TODO: Hardcoded path..
 #else
 #error Windows and Linux OSs are currently supported.
 #endif

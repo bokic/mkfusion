@@ -9,7 +9,7 @@ class QMKFusionService : public QtService<QCoreApplication>
 {
 public:
 	QMKFusionService(int argc, char **argv): QtService<QCoreApplication>(argc, argv, "MKFusion")
-    {
+	{
 		setStartupType(QtServiceController::AutoStartup);
 		setServiceDescription("MKFusion application server.");
 #ifdef Q_WS_WIN
@@ -18,13 +18,13 @@ public:
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
-    }
+	}
 
 protected:
-    void start()
-    {
-        m_CFServer.start();
-    }
+	void start()
+	{
+		m_CFServer.start();
+	}
 
 	void stop()
 	{

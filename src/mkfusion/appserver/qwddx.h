@@ -29,6 +29,7 @@ public:
 	QWDDX(bool);
 	QWDDX(int);
 	QWDDX(double);
+	QWDDX(const char*);
 	QWDDX(const wchar_t*);
 	QWDDX(const QString&);
 	QWDDX(const QDateTime&);
@@ -129,6 +130,7 @@ public:
 
 	QWDDX& operator[](const double);
 	QWDDX& operator[](const QString&);
+	QWDDX& operator[](const char*);
 	QWDDX& operator[](const wchar_t*);
 	QWDDX& operator[](const QWDDX&);
 
@@ -162,11 +164,12 @@ public:
 	bool operator>(const QString&);
 	bool operator>(const QWDDX&);
 
-	QWDDX& operator=(int);
-	QWDDX& operator=(double);
-	QWDDX& operator=(const wchar_t*);
-	QWDDX& operator=(const QString&);
-	QWDDX& operator=(const QDateTime&);
+	//QWDDX& operator=(int);
+	//QWDDX& operator=(double);
+	//QWDDX& operator=(const char*);
+	//QWDDX& operator=(const wchar_t*);
+	//QWDDX& operator=(const QString&);
+	//QWDDX& operator=(const QDateTime&);
 
 	QWDDX& join(const QWDDX&);
 	QWDDXType getType();
