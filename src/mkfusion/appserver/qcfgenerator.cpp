@@ -495,7 +495,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 
 	if ((finished == false)||(process.exitCode() != 0))
 	{
-		return "compile error: " + process.readAllStandardError() + process.readAllStandardOutput();
+		return "compile error: " + QString::fromUtf8(process.readAllStandardError()) + QString::fromUtf8(process.readAllStandardOutput());
 	}
 
 	// Link
