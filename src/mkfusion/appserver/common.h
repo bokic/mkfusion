@@ -4,7 +4,8 @@
 #include <QString>
 #include "qwddx.h"
 
-struct QCFRunningTemplate_Request{
+struct QCFRunningTemplate_Request
+{
 	QString m_AuthType;
 	QString m_User;
 	QString m_Filename;
@@ -31,6 +32,6 @@ struct QCFRunningTemplate_Request{
 QString getCurrentExecutableFileName();
 void log(const QString &p_filename, const QString& p_Line);
 
-extern "C" MY_EXPORT const QString mk_cfdump(const QWDDX&);
+extern "C" MY_EXPORT QString mk_cfdump(const QWDDX&);
 
 #endif // COMMON_H

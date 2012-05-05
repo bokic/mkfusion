@@ -1,67 +1,81 @@
 #include "qwddx.h"
 #include "qmkfusionexception.h"
-#include "math.h"
+#include <math.h>
 
 QWDDX::QWDDX()
+	: m_ArrayDimension(1)
+	, m_Number(0)
+	, m_Bool(false)
+	, m_Type(Null)
 {
-	m_Type = QWDDX::Null;
-	m_ArrayDimension = 1;
 }
 
 QWDDX::QWDDX(bool p_NewValue)
+	: m_ArrayDimension(1)
+	, m_Number(0)
+	, m_Bool(p_NewValue)
+	, m_Type(Boolean)
 {
-	m_Type = Boolean;
-	m_Bool = p_NewValue;
-	m_ArrayDimension = 1;
 }
 
 QWDDX::QWDDX(int p_NewValue)
+	: m_ArrayDimension(1)
+	, m_Number(p_NewValue)
+	, m_Bool(false)
+	, m_Type(Number)
 {
-	m_Type = Number;
-	m_Number = p_NewValue;
-	m_ArrayDimension = 1;
 }
 
 QWDDX::QWDDX(double p_NewValue)
+	: m_ArrayDimension(1)
+	, m_Number(p_NewValue)
+	, m_Bool(false)
+	, m_Type(Number)
 {
-	m_Type = Number;
-	m_Number = p_NewValue;
-	m_ArrayDimension = 1;
 }
 
-
 QWDDX::QWDDX(const char *p_NewValue)
+	: m_ArrayDimension(1)
+	, m_String(p_NewValue)
+	, m_Number(0)
+	, m_Bool(false)
+	, m_Type(String)
 {
-	m_Type = String;
-	m_String = p_NewValue;
-	m_ArrayDimension = 1;
 }
 
 QWDDX::QWDDX(const wchar_t *p_NewValue)
+	: m_ArrayDimension(1)
+	, m_String(QString::fromWCharArray(p_NewValue))
+	, m_Number(0)
+	, m_Bool(false)
+	, m_Type(String)
 {
-	m_Type = String;
-	m_String = QString::fromWCharArray(p_NewValue);
-	m_ArrayDimension = 1;
 }
 
 QWDDX::QWDDX(const QString& p_NewValue)
+	: m_ArrayDimension(1)
+	, m_String(p_NewValue)
+	, m_Number(0)
+	, m_Bool(false)
+	, m_Type(String)
 {
-	m_Type = String;
-	m_String = p_NewValue;
-	m_ArrayDimension = 1;
 }
 
 QWDDX::QWDDX(const QDateTime& p_NewValue)
+	: m_ArrayDimension(1)
+	, m_Number(0)
+	, m_Bool(false)
+	, m_DateTime(p_NewValue)
+	, m_Type(DateTime)
 {
-	m_Type = DateTime;
-	m_DateTime = p_NewValue;
-	m_ArrayDimension = 1;
 }
 
 QWDDX::QWDDX(const QWDDXType p_Type)
+	: m_ArrayDimension(1)
+	, m_Number(0)
+	, m_Bool(false)
+	, m_Type(p_Type)
 {
-	m_Type = p_Type;
-	m_ArrayDimension = 1;
 }
 
 QWDDX::QWDDXType QWDDX::getType()

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "qwddx.h"
 #include <QString>
 #include <QFile>
 
@@ -68,21 +69,21 @@ QString cfdump_var(const QWDDX& p_Variable)
 			ret = l_temp.toString();
 			break;
 		case QWDDX::Struct:
-			ret = "<table class=\"cfdump_struct\"><tr><th class=\"struct\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" style=\"cursor:pointer;\" title=\"click to collapse\">struct</th></tr>\n";
+			ret = "<table class=\"cfdump_struct\"><tr><th class=\"struct\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">struct</th></tr>\n";
 
 			foreach(QString l_key, l_temp.m_Struct.keys())
 			{
-				ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key + "</td><td>" + cfdump_var(l_temp.m_Struct[l_key]) + "</td></tr>\n";
+				ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key + "</td><td>" + cfdump_var(l_temp.m_Struct[l_key]) + "</td></tr>\n";
 			}
 
 			ret += "</table>\n";
 			break;
 		case QWDDX::Array:
-			ret = "<table class=\"cfdump_array\"><tr><th class=\"array\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" style=\"cursor:pointer;\" title=\"click to collapse\">array</th></tr>\n";
+			ret = "<table class=\"cfdump_array\"><tr><th class=\"array\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">array</th></tr>\n";
 
 			for(int i = 0; i < p_Variable.m_Array.size(); i++)
 			{
-				ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i + 1) + "</td><td>" + cfdump_var(l_temp.m_Array[i]) + "</td></tr>\n";
+				ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i + 1) + "</td><td>" + cfdump_var(l_temp.m_Array[i]) + "</td></tr>\n";
 			}
 
 			ret += "</table>\n";
@@ -94,7 +95,7 @@ QString cfdump_var(const QWDDX& p_Variable)
 	return ret;
 }
 
-const QString mk_cfdump(const QWDDX& p_Variable)
+QString mk_cfdump(const QWDDX& p_Variable)
 {
 	QString ret;
 

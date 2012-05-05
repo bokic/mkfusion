@@ -12,6 +12,8 @@ class QCFRunningTemplate : public QObject
 	Q_OBJECT
 public:
 	QCFRunningTemplate();
+
+	// Class members
 	QWDDX m_CGI;
 	QWDDX m_SERVER;
 	QWDDX m_APPLICATION;

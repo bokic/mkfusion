@@ -10,12 +10,14 @@
 #include <QUrl>
 
 QCFRunningTemplate::QCFRunningTemplate()
+	: QObject()
+	, m_CFOutput(0)
+	, m_ContentType("text/html; charset=utf-8")
+	, m_Status(200)
+	, m_HeadersSent(false)
+	, m_Socket(NULL)
+	, m_CFServer(NULL)
 {
-	m_Socket = NULL;
-	m_CFServer = NULL;
-	m_ContentType = "text/html; charset=utf-8";
-	m_Status = 200;
-	m_HeadersSent = false;
 }
 
 void QCFRunningTemplate::worker()
