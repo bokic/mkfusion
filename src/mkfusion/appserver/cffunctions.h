@@ -304,9 +304,11 @@ IsXmlRoot
 JavaCast
 JSStringFormat
 // Page6
-LCase
-Left
-Len
+*/
+Q_DECL_EXPORT QString cf_LCase(const QString&);
+Q_DECL_EXPORT QString cf_Left(const QString&, int);
+Q_DECL_EXPORT int cf_Len(const QString&);
+/*
 ListAppend
 ListChangeDelims
 ListContains

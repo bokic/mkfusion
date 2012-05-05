@@ -1107,6 +1107,21 @@ Q_DECL_EXPORT int cf_Fix(double value)
 }
 
 
+Q_DECL_EXPORT QString cf_LCase(const QString& str)
+{
+	return str.toLower();
+}
+
+Q_DECL_EXPORT QString cf_Left(const QString& str, int count)
+{
+	return str.left(count);
+}
+
+Q_DECL_EXPORT int cf_Len(const QString& str)
+{
+	return str.length();
+}
+
 QString WriteException(QMKFusionException &ex, const QCFRunningTemplate_Request& r)
 {
 	QString ret;

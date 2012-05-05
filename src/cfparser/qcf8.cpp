@@ -828,5 +828,15 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	ret.insert("fix", QCFFunction("Fix", QCFFunction::ReturnInt));
 	ret["fix"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
 
+	ret.insert("lcase", QCFFunction("LCase", QCFFunction::ReturnString));
+	ret["lcase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+	ret.insert("left", QCFFunction("Left", QCFFunction::ReturnString));
+	ret["left"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+	ret["left"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+	ret.insert("len", QCFFunction("Len", QCFFunction::ReturnInt));
+	ret["len"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
 	return ret;
 }
