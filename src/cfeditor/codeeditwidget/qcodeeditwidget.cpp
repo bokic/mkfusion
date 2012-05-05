@@ -269,7 +269,7 @@ void QCodeEditWidget::timerEvent(QTimerEvent *event)
 		m_currentlyBlinkCursorShowen ^= 1;
 
 		//viewport()->update(0, 0, ceil(m_CursorHeight * 0.05) + 1, m_CursorHeight + 1);
-        viewport()->update(); // TODO: optimize this call, by updating the affected region only!!
+		viewport()->update(); // TODO: optimize this call, by updating the affected region only!!
 	}
 }
 
@@ -392,6 +392,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 						m_Lines.insert(m_CarretPosition.m_Row - 1, line);
 
 						m_CarretPosition.m_Column--;
+						m_SelectionPosition.m_Column = m_CarretPosition.m_Column;
 					}
 					else
 					{
@@ -405,7 +406,9 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 						m_Lines.insert(m_CarretPosition.m_Row - 2, line2);
 
 						m_CarretPosition.m_Row--;
+						m_SelectionPosition.m_Row = m_CarretPosition.m_Row;
 						m_CarretPosition.m_Column = l_oldPos + 1;
+						m_SelectionPosition.m_Column = m_CarretPosition.m_Column;
 					}
 				}
 				break;
@@ -421,9 +424,9 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 					line2.Content = l_NewLineText;
 					line2.EndLine = line.EndLine;
 					line2.LineStatus = LineStatusTypeLineModified;
-                    line2.Breakpoint = BreakpointTypeNoBreakpoint;
+					line2.Breakpoint = BreakpointTypeNoBreakpoint;
 
-                    line.EndLine = QTextParser::EndLineTypeLFEndLine;
+					line.EndLine = QTextParser::EndLineTypeLFEndLine;
 
 					m_Lines.insert(m_CarretPosition.m_Row - 1, line);
 					m_Lines.insert(m_CarretPosition.m_Row, line2);
@@ -467,11 +470,12 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 
 					m_Lines.replace(m_CarretPosition.m_Row - 1, line);
 					m_CarretPosition.m_Column += l_EventText.size();
+					m_SelectionPosition.m_Column = m_CarretPosition.m_Column;
 				}
 			}
 		}
 
-        // TODO: Call parser here.
+		// TODO: Call parser here.
 
 		updatePanelWidth();
 
@@ -552,7 +556,7 @@ void QCodeEditWidget::scrollContentsBy(int dx, int dy)
 
 void QCodeEditWidget::paintEvent(QPaintEvent *event)
 {
-    Q_UNUSED(event);
+	Q_UNUSED(event);
 
 	QPainter painter(viewport());
 
@@ -592,14 +596,14 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
 	painter.fillRect(QRect(0, 0, l_LineNumbersPanelWidth, viewport()->height()), m_LineNumbersBackground);
 
-    for(int l_line = 0; l_line < l_LinesToDraw; l_line++)
+	for(int l_line = 0; l_line < l_LinesToDraw; l_line++)
 	{
-        if (m_ScrollYLinePos + l_line >= m_Lines.count())
+		if (m_ScrollYLinePos + l_line >= m_Lines.count())
 		{
 			break;
 		}
 
-        if ((m_ScrollYLinePos + l_line + 1) == m_CarretPosition.m_Row)
+		if ((m_ScrollYLinePos + l_line + 1) == m_CarretPosition.m_Row)
 		{
 			QFont l_tmpFont = m_TextFont;
 			l_tmpFont.setBold(true);
@@ -611,9 +615,9 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 			painter.setPen(m_LineNumbersNormal);
 		}
 
-        painter.drawText(QRect(0, l_line * l_fontHeight, l_LineNumbersPanelWidth - 4, l_fontHeight), Qt::AlignRight, QString::number(m_ScrollYLinePos + l_line + 1));
+		painter.drawText(QRect(0, l_line * l_fontHeight, l_LineNumbersPanelWidth - 4, l_fontHeight), Qt::AlignRight, QString::number(m_ScrollYLinePos + l_line + 1));
 
-        if ((m_ScrollYLinePos + l_line + 1) == m_CarretPosition.m_Row)
+		if ((m_ScrollYLinePos + l_line + 1) == m_CarretPosition.m_Row)
 		{
 			painter.setFont(m_TextFont);
 		}
@@ -632,43 +636,43 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
 			int l_HorizontalValue = horizontalScrollBar()->value();
 
-            QString l_Line = m_Lines.at(m_ScrollYLinePos + l_line).Content;
+			QString l_Line = m_Lines.at(m_ScrollYLinePos + l_line).Content;
 
-            switch(m_Lines.at(m_ScrollYLinePos + l_line).LineStatus)
+			switch(m_Lines.at(m_ScrollYLinePos + l_line).LineStatus)
 			{
-            case QCodeEditWidget::LineStatusTypeLineModified:
-                painter.fillRect(l_LineNumbersPanelWidth - 2, l_fontHeight * l_line, 2, l_fontHeight, QColor(Qt::red));
+			case QCodeEditWidget::LineStatusTypeLineModified:
+				painter.fillRect(l_LineNumbersPanelWidth - 2, l_fontHeight * l_line, 2, l_fontHeight, QColor(Qt::red));
 				break;
 			case QCodeEditWidget::LineStatusTypeLineSaved:
-                painter.fillRect(l_LineNumbersPanelWidth - 2, l_fontHeight * l_line, 2, l_fontHeight, QColor(Qt::green));
+				painter.fillRect(l_LineNumbersPanelWidth - 2, l_fontHeight * l_line, 2, l_fontHeight, QColor(Qt::green));
 				break;
 			default:;
 			}
 
-            switch(m_Lines.at(m_ScrollYLinePos + l_line).Breakpoint)
+			switch(m_Lines.at(m_ScrollYLinePos + l_line).Breakpoint)
 			{
 			case BreakpointTypeBreakpoint:
-                painter.drawPixmap(0, (l_line * l_fontHeight), m_BreakPointPixmap);
+				painter.drawPixmap(0, (l_line * l_fontHeight), m_BreakPointPixmap);
 				break;
 			case BreakpointTypeBreakpointPending:
-                painter.drawPixmap(0, (l_line * l_fontHeight), m_BreakPointPixmapPending);
+				painter.drawPixmap(0, (l_line * l_fontHeight), m_BreakPointPixmapPending);
 				break;
 			case BreakpointTypeDisabled:
-                painter.drawPixmap(0, (l_line * l_fontHeight), m_BreakPointPixmapDisabled);
+				painter.drawPixmap(0, (l_line * l_fontHeight), m_BreakPointPixmapDisabled);
 				break;
 			default:;
 			}
 
-            // Paint selection background
-            if ((has_selection)&&(m_ScrollYLinePos + l_line >= (selection_start_row - 1))&&(m_ScrollYLinePos + l_line <= (selection_end_row - 1)))
+			// Paint selection background
+			if ((has_selection)&&(m_ScrollYLinePos + l_line >= (selection_start_row - 1))&&(m_ScrollYLinePos + l_line <= (selection_end_row - 1)))
 			{
 				if (selection_start_row == selection_end_row)
 				{
-                    int from = m_SelectionPosition.m_Column - 1 - l_HorizontalValue;
-                    int to = m_CarretPosition.m_Column - 1 - l_HorizontalValue;
+					int from = m_SelectionPosition.m_Column - 1 - l_HorizontalValue;
+					int to = m_CarretPosition.m_Column - 1 - l_HorizontalValue;
 
-                    if (from < 0) from = 0;
-                    if (to < 0) to = 0;
+					if (from < 0) from = 0;
+					if (to < 0) to = 0;
 
 					if (from > to)
 					{
@@ -677,7 +681,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 						to = tmp;
 					}
 
-                    if (to > from)
+					if (to > from)
                     {
                         painter.fillRect(l_LineNumbersPanelWidth + (from * l_fontWidth), l_line * l_fontHeight, ((to - from) * l_fontWidth), l_fontHeight, Qt::blue);
                     }
@@ -983,16 +987,16 @@ QString QCodeEditWidget::getText()
 		ret.append(l_Line.Content);
 		switch(l_Line.EndLine)
 		{
-            case QTextParser::EndLineTypeCREndLine:
+			case QTextParser::EndLineTypeCREndLine:
 				ret.append('\r');
 				break;
-            case QTextParser::EndLineTypeLFEndLine:
+			case QTextParser::EndLineTypeLFEndLine:
 				ret.append('\n');
 				break;
-            case QTextParser::EndLineTypeCRLFEndLine:
+			case QTextParser::EndLineTypeCRLFEndLine:
 				ret.append("\r\n");
 				break;
-            case QTextParser::EndLineTypeLFCREndLine:
+			case QTextParser::EndLineTypeLFCREndLine:
 				ret.append("\n\r");
 				break;
 			default:

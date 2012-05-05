@@ -1,5 +1,5 @@
 QT       += core xml
-QT       -= gui
+#QT       -= gui
 CONFIG  += debug_and_release
 #MAKEFILE = ../../../obj/tests/test_textparser/Makefile
 DESTDIR  = ../../../bin
