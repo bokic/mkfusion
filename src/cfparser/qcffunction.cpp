@@ -1,58 +1,74 @@
 #include "qcffunction.h"
+#include <QString>
+#include <QObject>
+#include <QList>
 
-QCFFunctionArgument::QCFFunctionArgument():QObject()
+QCFFunctionArgument::QCFFunctionArgument()
+	: QObject()
+	, m_DataType(ArgumentDataTypeAny)
+	, m_Type(TypeAny)
+	, m_Required(false)
 {
 }
 
-QCFFunctionArgument::QCFFunctionArgument(const QCFFunctionArgument& p_FunctionArgument):QObject()
+QCFFunctionArgument::QCFFunctionArgument(const QCFFunctionArgument &other)
+	: QObject()
 {
-	m_DataType = p_FunctionArgument.m_DataType;
-	m_Type = p_FunctionArgument.m_Type;
-	m_Required = p_FunctionArgument.m_Required;
+	m_DataType = other.m_DataType;
+	m_Type = other.m_Type;
+	m_Required = other.m_Required;
 }
 
-QCFFunctionArgument::QCFFunctionArgument(ArgumentDataType p_DataType, bool p_Required, ArgumentType p_Type):QObject()
+QCFFunctionArgument::QCFFunctionArgument(QCFFunctionArgumentDataType p_DataType, bool p_Required, QCFFunctionArgumentType p_Type)
+	: QObject()
 {
 	m_DataType = p_DataType;
 	m_Required = p_Required;
 	m_Type = p_Type;
 }
 
-QCFFunctionArgument& QCFFunctionArgument::operator=(const QCFFunctionArgument& p_FunctionArgument)
+QCFFunctionArgument& QCFFunctionArgument::operator=(const QCFFunctionArgument &other)
 {
-	m_DataType = p_FunctionArgument.m_DataType;
-	m_Required = p_FunctionArgument.m_Required;
-	m_Type = p_FunctionArgument.m_Type;
+	m_DataType = other.m_DataType;
+	m_Required = other.m_Required;
+	m_Type = other.m_Type;
 
 	return *this;
 }
 
-QCFFunction::QCFFunction():QObject()
+QCFFunction::QCFFunction()
+	: QObject()
+	, m_ReturnType(ReturnVoid)
 {
 }
 
-QCFFunction::QCFFunction(const QCFFunction& p_Function):QObject()
+QCFFunction::QCFFunction(const QCFFunction &other)
+	: QObject()
 {
-	m_Name = p_Function.m_Name;
-	m_ReturnType = p_Function.m_ReturnType;
+	m_Name = other.m_Name;
+	m_ReturnType = other.m_ReturnType;
+	m_Arguments = other.m_Arguments;
 }
 
-QCFFunction::QCFFunction(const QString& p_FunctionName, ReturnType p_ReturnType):QObject()
+QCFFunction::QCFFunction(const QString &p_FunctionName, QCFFunctionReturnType p_ReturnType, const QList<QCFFunctionArgument> &p_Arguments)
+	: QObject()
 {
 	m_Name = p_FunctionName;
 	m_ReturnType = p_ReturnType;
+	m_Arguments = p_Arguments;
 }
 
-QCFFunction& QCFFunction::operator=(const QCFFunction& p_Function)
+QCFFunction& QCFFunction::operator=(const QCFFunction &other)
 {
-	m_Name = p_Function.m_Name;
-	m_ReturnType = p_Function.m_ReturnType;
+	m_Name = other.m_Name;
+	m_ReturnType = other.m_ReturnType;
+	m_Arguments = other.m_Arguments;
 
 	return *this;
 }
 
 
-void QCFFunction::setName(const QString& p_FunctionName)
+void QCFFunction::setName(const QString &p_FunctionName)
 {
 	m_Name = p_FunctionName;
 }
