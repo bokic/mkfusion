@@ -29,7 +29,6 @@ struct QCFRunningTemplate_Request
 #define MY_EXPORT
 #endif
 
-QString getCurrentExecutableFileName();
 void log(const QString &p_filename, const QString& p_Line);
 
 extern "C" MY_EXPORT QString mk_cfdump(const QWDDX&);
