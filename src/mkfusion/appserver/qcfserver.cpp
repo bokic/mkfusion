@@ -48,7 +48,7 @@ QString getCurrentExecutableFileName()
 	}
 #elif defined Q_WS_X11
 
-	QFile filename("/proc/" + QString::number(getpid()) + "/exe");
+	QFile filename("/proc/" + QString::number(getpid()) + "/cmdline");
 	filename.open(QFile::ReadOnly);
 
 	ret = filename.readLine();
