@@ -838,5 +838,7 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	ret.insert("len", QCFFunction("Len", QCFFunction::ReturnInt));
 	ret["len"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
-	return ret;
+    ret.insert("structnew", QCFFunction("StructNew", QCFFunction::ReturnQWDDX));
+
+    return ret;
 }
