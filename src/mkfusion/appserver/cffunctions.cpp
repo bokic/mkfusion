@@ -1199,3 +1199,8 @@ QString WriteException(QMKFusionException &ex, const QCFRunningTemplate_Request&
 
 	return  ret;
 }
+
+Q_DECL_EXPORT QWDDX cf_StructNew()
+{
+    return QWDDX(QWDDX::Struct);
+}

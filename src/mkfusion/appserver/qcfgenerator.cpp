@@ -110,6 +110,19 @@ QString getMingwDir()// TODO: reimplement when qt 4.7 is released.
 	DWORD valType;
 	DWORD dwordVal;
 
+    QString envStr = QProcessEnvironment::systemEnvironment().value("mingw");
+    if (!envStr.isEmpty())
+    {
+        envStr = QDir::toNativeSeparators(envStr);
+
+        if (!envStr.endsWith("\\"))
+        {
+            envStr += '\\';
+        }
+
+        return envStr;
+    }
+
 	QString retQtSDK, retQtOpenSource, retMingw, retQtCreator;
 
 	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.toStdWString().c_str(), 0, KEY_ENUMERATE_SUB_KEYS, &reg) == ERROR_SUCCESS)

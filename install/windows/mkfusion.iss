@@ -13,11 +13,13 @@ SolidCompression=yes
 OutputBaseFilename=MKFusion
 OutputDir=.
 VersionInfoVersion=0.4.1
-VersionInfoDescription=MKFusion is free, opensource, multiplatform ColdFusion application server(Qt 4.7.2)
+VersionInfoDescription=MKFusion is free, opensource, multiplatform ColdFusion application server(Qt 4.8.2)
 
 [Dirs]
 Name: "{app}\bin";
+Name: "{app}\bin\mingw";
 Name: "{app}\bin\sqldrivers";
+Name: "{app}\bin\qt";
 Name: "{app}\include";
 Name: "{app}\lib";
 Name: "{app}\logs";
@@ -25,22 +27,25 @@ Name: "{app}\templates";
 
 [Files]
 ; MinGW runtime
-Source: "c:\Qt\4.7.2\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.7.2\bin\mingwm10.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.8.2\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.8.2\bin\mingwm10.dll"; DestDir: "{app}\bin";
 
-Source: "c:\Qt\4.7.2\bin\QtCore4.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.7.2\bin\QtNetwork4.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.7.2\bin\QtSql4.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.7.2\bin\QtXml4.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.8.2\bin\QtCore4.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.8.2\bin\QtNetwork4.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.8.2\bin\QtSql4.dll"; DestDir: "{app}\bin";
+Source: "c:\Qt\4.8.2\bin\QtXml4.dll"; DestDir: "{app}\bin";
 Source: "..\..\bin\mkfusion.exe"; DestDir: "{app}\bin"; Flags: ignoreversion;
 Source: "..\..\bin\mod_mkfusion.dll"; DestDir: "{app}\bin"; Flags: ignoreversion;
 Source: "..\..\install\mkfusion.db"; DestDir: "{app}\bin"; Flags: onlyifdoesntexist;
 Source: "uninstall.dll"; DestDir: "{app}"; Flags: ignoreversion;
 
-Source: "c:\Qt\4.7.2\plugins\sqldrivers\qsqlite4.dll"; DestDir: "{app}\bin\sqldrivers";
-Source: "c:\Qt\4.7.2\plugins\sqldrivers\qsqlodbc4.dll"; DestDir: "{app}\bin\sqldrivers";
-Source: "c:\Qt\4.7.2\plugins\sqldrivers\qsqlmysql4.dll"; DestDir: "{app}\bin\sqldrivers";
-Source: "c:\Qt\4.7.2\plugins\sqldrivers\qsqlpsql4.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "..\..\bin\mingw\*"; DestDir: "{app}\bin\mingw"; Flags: recursesubdirs;
+Source: "..\..\bin\qt\*"; DestDir: "{app}\bin\qt"; Flags: recursesubdirs;
+
+Source: "c:\Qt\4.8.2\plugins\sqldrivers\qsqlite4.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "c:\Qt\4.8.2\plugins\sqldrivers\qsqlodbc4.dll"; DestDir: "{app}\bin\sqldrivers";
+;Source: "c:\Qt\4.8.2\plugins\sqldrivers\qsqlmysql4.dll"; DestDir: "{app}\bin\sqldrivers";
+;Source: "c:\Qt\4.8.2\plugins\sqldrivers\qsqlpsql4.dll"; DestDir: "{app}\bin\sqldrivers";
 
 ;Source: "..\runtime\comerr32.dll"; DestDir: "{app}\bin";
 ;Source: "runtime\gssapi32.dll"; DestDir: "{app}\bin";

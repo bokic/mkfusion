@@ -466,9 +466,9 @@ StructInsert
 StructIsEmpty
 StructKeyArray
 StructKeyExists
-StructKeyList
-StructNew
-StructSort
+StructKeyList*/
+Q_DECL_EXPORT QWDDX cf_StructNew();
+/*StructSort
 StructUpdate
 // Page9
 Tan
