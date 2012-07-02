@@ -53,7 +53,7 @@ public:
 	friend QWDDX& operator+(const wchar_t*, const QWDDX&);
 	friend QWDDX& operator+(const QString&, const QWDDX&);
 
-	QWDDX& operator+=(int);
+	//QWDDX& operator+=(int);
 	//QWDDX& operator+=(double);
 	//QWDDX& operator+=(const wchar_t*);
 	//QWDDX& operator+=(const QString&);
@@ -98,9 +98,9 @@ public:
 	QWDDX& operator/(double);
 	QWDDX& operator/(const QString&);
 	QWDDX& operator/(const QWDDX&);
-	friend QWDDX& operator/(int, const QWDDX&);
-	friend QWDDX& operator/(double, const QWDDX&);
-	friend QWDDX& operator/(const QString&, const QWDDX&);
+    //friend QWDDX& operator/(int, const QWDDX&);
+    //friend QWDDX& operator/(double, const QWDDX&);
+    //friend QWDDX& operator/(const QString&, const QWDDX&);
 
 	//QWDDX& operator/=(int);
 	//QWDDX& operator/=(double);
@@ -115,9 +115,6 @@ public:
 	QWDDX& operator&(const wchar_t*);
 	QWDDX& operator&(const QString&);
 	QWDDX& operator&(const QWDDX&);
-	friend QWDDX& operator&(int, const QWDDX&);
-	friend QWDDX& operator&(double, const QWDDX&);
-	friend QWDDX& operator&(const QString&, const QWDDX&);
 
 	//QWDDX& operator&=(int);
 	//QWDDX& operator&=(double);
@@ -194,5 +191,9 @@ public:
 	QDateTime m_DateTime;
 	QWDDXType m_Type;
 };
+
+Q_DECL_EXPORT QWDDX& operator&(int, const QWDDX&);
+Q_DECL_EXPORT QWDDX& operator&(double, const QWDDX&);
+Q_DECL_EXPORT QWDDX& operator&(const QString&, const QWDDX&);
 
 #endif // QWDDX_H

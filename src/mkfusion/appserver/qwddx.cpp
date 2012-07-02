@@ -2,7 +2,7 @@
 #include "qmkfusionexception.h"
 #include <math.h>
 
-QWDDX::QWDDX()
+Q_DECL_EXPORT QWDDX::QWDDX()
 	: m_ArrayDimension(1)
 	, m_Number(0)
 	, m_Bool(false)
@@ -10,7 +10,7 @@ QWDDX::QWDDX()
 {
 }
 
-QWDDX::QWDDX(bool p_NewValue)
+Q_DECL_EXPORT QWDDX::QWDDX(bool p_NewValue)
 	: m_ArrayDimension(1)
 	, m_Number(0)
 	, m_Bool(p_NewValue)
@@ -18,7 +18,7 @@ QWDDX::QWDDX(bool p_NewValue)
 {
 }
 
-QWDDX::QWDDX(int p_NewValue)
+Q_DECL_EXPORT QWDDX::QWDDX(int p_NewValue)
 	: m_ArrayDimension(1)
 	, m_Number(p_NewValue)
 	, m_Bool(false)
@@ -26,7 +26,7 @@ QWDDX::QWDDX(int p_NewValue)
 {
 }
 
-QWDDX::QWDDX(double p_NewValue)
+Q_DECL_EXPORT QWDDX::QWDDX(double p_NewValue)
 	: m_ArrayDimension(1)
 	, m_Number(p_NewValue)
 	, m_Bool(false)
@@ -34,7 +34,7 @@ QWDDX::QWDDX(double p_NewValue)
 {
 }
 
-QWDDX::QWDDX(const char *p_NewValue)
+Q_DECL_EXPORT QWDDX::QWDDX(const char *p_NewValue)
 	: m_ArrayDimension(1)
 	, m_String(p_NewValue)
 	, m_Number(0)
@@ -43,7 +43,7 @@ QWDDX::QWDDX(const char *p_NewValue)
 {
 }
 
-QWDDX::QWDDX(const wchar_t *p_NewValue)
+Q_DECL_EXPORT QWDDX::QWDDX(const wchar_t *p_NewValue)
 	: m_ArrayDimension(1)
 	, m_String(QString::fromWCharArray(p_NewValue))
 	, m_Number(0)
@@ -52,7 +52,7 @@ QWDDX::QWDDX(const wchar_t *p_NewValue)
 {
 }
 
-QWDDX::QWDDX(const QString& p_NewValue)
+Q_DECL_EXPORT QWDDX::QWDDX(const QString& p_NewValue)
 	: m_ArrayDimension(1)
 	, m_String(p_NewValue)
 	, m_Number(0)
@@ -61,7 +61,7 @@ QWDDX::QWDDX(const QString& p_NewValue)
 {
 }
 
-QWDDX::QWDDX(const QDateTime& p_NewValue)
+Q_DECL_EXPORT QWDDX::QWDDX(const QDateTime& p_NewValue)
 	: m_ArrayDimension(1)
 	, m_Number(0)
 	, m_Bool(false)
@@ -70,7 +70,7 @@ QWDDX::QWDDX(const QDateTime& p_NewValue)
 {
 }
 
-QWDDX::QWDDX(const QWDDXType p_Type)
+Q_DECL_EXPORT QWDDX::QWDDX(const QWDDXType p_Type)
 	: m_ArrayDimension(1)
 	, m_Number(0)
 	, m_Bool(false)
@@ -78,32 +78,32 @@ QWDDX::QWDDX(const QWDDXType p_Type)
 {
 }
 
-QWDDX::QWDDXType QWDDX::getType()
+Q_DECL_EXPORT QWDDX::QWDDXType QWDDX::getType()
 {
 	return m_Type;
 }
 
-QWDDX::operator int()
+Q_DECL_EXPORT QWDDX::operator int()
 {
 	return (int)toNumber();
 }
 
-QWDDX::operator double()
+Q_DECL_EXPORT QWDDX::operator double()
 {
 	return toNumber();
 }
 
-QWDDX::operator QString()
+Q_DECL_EXPORT QWDDX::operator QString()
 {
 	return toString();
 }
 
-QWDDX::operator QDateTime()
+Q_DECL_EXPORT QWDDX::operator QDateTime()
 {
 	return toDateTime();
 }
 
-int QWDDX::size()
+Q_DECL_EXPORT int QWDDX::size()
 {
 	switch(m_Type)
 	{
@@ -116,7 +116,7 @@ int QWDDX::size()
 	}
 }
 
-QWDDX& QWDDX::operator[](const double p_Index)
+Q_DECL_EXPORT QWDDX& QWDDX::operator[](const double p_Index)
 {
 	if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array))
 	{
@@ -148,7 +148,7 @@ QWDDX& QWDDX::operator[](const double p_Index)
 	}
 }
 
-QWDDX& QWDDX::operator[](const QString& key)
+Q_DECL_EXPORT QWDDX& QWDDX::operator[](const QString& key)
 {
 	if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array))
 	{
@@ -187,7 +187,7 @@ QWDDX& QWDDX::operator[](const QString& key)
 	}
 }
 
-QWDDX& QWDDX::operator[](const char* key)
+Q_DECL_EXPORT QWDDX& QWDDX::operator[](const char* key)
 {
 	QString l_key = QString::fromLatin1(key);
 
@@ -228,7 +228,7 @@ QWDDX& QWDDX::operator[](const char* key)
 	}
 }
 
-QWDDX& QWDDX::operator[](const wchar_t* key)
+Q_DECL_EXPORT QWDDX& QWDDX::operator[](const wchar_t* key)
 {
 	QString l_key = QString::fromStdWString(key);
 
@@ -269,7 +269,7 @@ QWDDX& QWDDX::operator[](const wchar_t* key)
 	}
 }
 
-QWDDX& QWDDX::operator[](const QWDDX& key)
+Q_DECL_EXPORT QWDDX& QWDDX::operator[](const QWDDX& key)
 {
 	if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array))
 	{
@@ -305,7 +305,7 @@ QWDDX& QWDDX::operator[](const QWDDX& key)
 	}
 }
 
-bool QWDDX::operator ==(int p_Value)
+Q_DECL_EXPORT bool QWDDX::operator ==(int p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -320,7 +320,7 @@ bool QWDDX::operator ==(int p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator ==(double p_Value)
+Q_DECL_EXPORT bool QWDDX::operator ==(double p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -335,7 +335,7 @@ bool QWDDX::operator ==(double p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator ==(const QString& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator ==(const QString& p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -350,7 +350,7 @@ bool QWDDX::operator ==(const QString& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator ==(const QWDDX& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator ==(const QWDDX& p_Value)
 {
 	QWDDX l_temp1, l_temp2;
 
@@ -375,7 +375,7 @@ bool QWDDX::operator ==(const QWDDX& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator !=(int p_Value)
+Q_DECL_EXPORT bool QWDDX::operator !=(int p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -390,7 +390,7 @@ bool QWDDX::operator !=(int p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator !=(double p_Value)
+Q_DECL_EXPORT bool QWDDX::operator !=(double p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -405,7 +405,7 @@ bool QWDDX::operator !=(double p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator !=(const QString& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator !=(const QString& p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -420,7 +420,7 @@ bool QWDDX::operator !=(const QString& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator !=(const QWDDX& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator !=(const QWDDX& p_Value)
 {
 	QWDDX l_temp1, l_temp2;
 
@@ -445,7 +445,7 @@ bool QWDDX::operator !=(const QWDDX& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator <=(int p_Value)
+Q_DECL_EXPORT bool QWDDX::operator <=(int p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -460,7 +460,7 @@ bool QWDDX::operator <=(int p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator <=(double p_Value)
+Q_DECL_EXPORT bool QWDDX::operator <=(double p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -475,7 +475,7 @@ bool QWDDX::operator <=(double p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator <=(const QString& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator <=(const QString& p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -490,7 +490,7 @@ bool QWDDX::operator <=(const QString& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator <=(const QWDDX& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator <=(const QWDDX& p_Value)
 {
 	QWDDX l_temp1, l_temp2;
 
@@ -515,7 +515,7 @@ bool QWDDX::operator <=(const QWDDX& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator >=(int p_Value)
+Q_DECL_EXPORT bool QWDDX::operator >=(int p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -530,7 +530,7 @@ bool QWDDX::operator >=(int p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator >=(double p_Value)
+Q_DECL_EXPORT bool QWDDX::operator >=(double p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -545,7 +545,7 @@ bool QWDDX::operator >=(double p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator >=(const QString& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator >=(const QString& p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -560,7 +560,7 @@ bool QWDDX::operator >=(const QString& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator >=(const QWDDX& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator >=(const QWDDX& p_Value)
 {
 	QWDDX l_temp1, l_temp2;
 
@@ -585,7 +585,7 @@ bool QWDDX::operator >=(const QWDDX& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator <(int p_Value)
+Q_DECL_EXPORT bool QWDDX::operator <(int p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -600,7 +600,7 @@ bool QWDDX::operator <(int p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator <(double p_Value)
+Q_DECL_EXPORT bool QWDDX::operator <(double p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -615,7 +615,7 @@ bool QWDDX::operator <(double p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator <(const QString& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator <(const QString& p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -630,7 +630,7 @@ bool QWDDX::operator <(const QString& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator <(const QWDDX& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator <(const QWDDX& p_Value)
 {
 	QWDDX l_temp1, l_temp2;
 
@@ -655,7 +655,7 @@ bool QWDDX::operator <(const QWDDX& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator >(int p_Value)
+Q_DECL_EXPORT bool QWDDX::operator >(int p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -670,7 +670,7 @@ bool QWDDX::operator >(int p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator >(double p_Value)
+Q_DECL_EXPORT bool QWDDX::operator >(double p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -685,7 +685,7 @@ bool QWDDX::operator >(double p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator >(const QString& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator >(const QString& p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -700,7 +700,7 @@ bool QWDDX::operator >(const QString& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-bool QWDDX::operator >(const QWDDX& p_Value)
+Q_DECL_EXPORT bool QWDDX::operator >(const QWDDX& p_Value)
 {
 	QWDDX l_temp1, l_temp2;
 
@@ -725,7 +725,7 @@ bool QWDDX::operator >(const QWDDX& p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-/*QWDDX& QWDDX::operator=(int p_newValue)
+/*Q_DECL_EXPORT QWDDX& QWDDX::operator=(int p_newValue)
 {
 	m_Type = Number;
 	m_Number = p_newValue;
@@ -733,7 +733,7 @@ bool QWDDX::operator >(const QWDDX& p_Value)
 	return *this;
 }
 
-QWDDX& QWDDX::operator=(double p_newValue)
+Q_DECL_EXPORT QWDDX& QWDDX::operator=(double p_newValue)
 {
 	m_Type = Number;
 	m_Number = p_newValue;
@@ -742,7 +742,7 @@ QWDDX& QWDDX::operator=(double p_newValue)
 }
 
 
-QWDDX& QWDDX::operator=(const wchar_t *p_newValue)
+Q_DECL_EXPORT QWDDX& QWDDX::operator=(const wchar_t *p_newValue)
 {
 	m_Type = String;
 	m_String = QString::fromWCharArray(p_newValue);
@@ -750,7 +750,7 @@ QWDDX& QWDDX::operator=(const wchar_t *p_newValue)
 	return *this;
 }
 
-QWDDX& QWDDX::operator=(const QString& p_newValue)
+Q_DECL_EXPORT QWDDX& QWDDX::operator=(const QString& p_newValue)
 {
 	m_Type = String;
 	m_String = p_newValue;
@@ -758,7 +758,7 @@ QWDDX& QWDDX::operator=(const QString& p_newValue)
 	return *this;
 }
 
-QWDDX& QWDDX::operator=(const QDateTime& p_newValue)
+Q_DECL_EXPORT QWDDX& QWDDX::operator=(const QDateTime& p_newValue)
 {
 	m_Type = DateTime;
 	m_DateTime = p_newValue;
@@ -766,14 +766,14 @@ QWDDX& QWDDX::operator=(const QDateTime& p_newValue)
 	return *this;
 }
 
-QWDDX& QWDDX::operator=(const QDateTime& p_newValue)
+Q_DECL_EXPORT QWDDX& QWDDX::operator=(const QDateTime& p_newValue)
 {
 	toDateTime()p_newValue);
 
 	return *this;
 }*/
 
-QWDDX& QWDDX::operator+(int p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator+(int p_Value)
 {
 	if (m_Type == Number)
 	{
@@ -785,7 +785,7 @@ QWDDX& QWDDX::operator+(int p_Value)
 	}
 }
 
-QWDDX& QWDDX::operator+(double p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator+(double p_Value)
 {
 	if (m_Type == Number)
 	{
@@ -797,7 +797,7 @@ QWDDX& QWDDX::operator+(double p_Value)
 	}
 }
 
-QWDDX& QWDDX::operator+(const wchar_t* p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator+(const wchar_t* p_Value)
 {
 	QWDDX tmp = QWDDX(p_Value);
 
@@ -811,7 +811,7 @@ QWDDX& QWDDX::operator+(const wchar_t* p_Value)
 	}
 }
 
-QWDDX& QWDDX::operator+(const QString& p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator+(const QString& p_Value)
 {
 	QWDDX tmp = QWDDX(p_Value);
 
@@ -825,7 +825,7 @@ QWDDX& QWDDX::operator+(const QString& p_Value)
 	}
 }
 
-QWDDX& QWDDX::operator+(const QWDDX& p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator+(const QWDDX& p_Value)
 {
 	QWDDX tmp = QWDDX(p_Value);
 
@@ -861,7 +861,7 @@ QWDDX& operator+(const QString& p_Value1, const QWDDX &p_Value2)
 	return *(new QWDDX(temp1.toNumber() + temp2.toNumber()));
 }
 
-QWDDX& QWDDX::operator+=(int p_Value)
+/*Q_DECL_EXPORT QWDDX& QWDDX::operator+=(int p_Value)
 {
 	if (m_Type == QWDDX::Number)
 	{
@@ -873,9 +873,9 @@ QWDDX& QWDDX::operator+=(int p_Value)
 	}
 
 	return *this;
-}
+}*/
 
-QWDDX& QWDDX::operator-(int p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator-(int p_Value)
 {
 	if (m_Type == Number)
 	{
@@ -889,7 +889,7 @@ QWDDX& QWDDX::operator-(int p_Value)
 	return *this;
 }
 
-QWDDX& QWDDX::operator-(double p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator-(double p_Value)
 {
 	if (m_Type == Number)
 	{
@@ -903,7 +903,7 @@ QWDDX& QWDDX::operator-(double p_Value)
 	return *this;
 }
 
-QWDDX& QWDDX::operator-(const QString& p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator-(const QString& p_Value)
 {
 	QWDDX tmp = QWDDX(p_Value);
 
@@ -912,7 +912,7 @@ QWDDX& QWDDX::operator-(const QString& p_Value)
 	return *this;
 }
 
-QWDDX& QWDDX::operator-(const QWDDX& p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator-(const QWDDX& p_Value)
 {
 	QWDDX temp = p_Value;
 	return *(new QWDDX(toNumber() - temp.toNumber()));
@@ -940,23 +940,23 @@ QWDDX& operator-(const QString& p_Value1, const QWDDX &p_Value2)
 	return *(new QWDDX(temp1.toNumber() - temp2.toNumber()));
 }
 
-QWDDX& QWDDX::operator*(int p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator*(int p_Value)
 {
 	return *(new QWDDX(toNumber() * p_Value));
 }
 
-QWDDX& QWDDX::operator*(double p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator*(double p_Value)
 {
 	return *(new QWDDX(toNumber() * p_Value));
 }
 
-QWDDX& QWDDX::operator*(const QString& p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator*(const QString& p_Value)
 {
 	QWDDX temp = QWDDX(p_Value);
 	return *(new QWDDX(toNumber() * temp.toNumber()));
 }
 
-QWDDX& QWDDX::operator*(const QWDDX& p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator*(const QWDDX& p_Value)
 {
 	QWDDX temp = p_Value;
 	return *(new QWDDX(toNumber() * temp.toNumber()));
@@ -981,99 +981,99 @@ QWDDX& operator*(const QString& p_Value1, const QWDDX &p_Value2)
 	return *(new QWDDX(temp1.toNumber() * temp2.toNumber()));
 }
 
-QWDDX& QWDDX::operator/(int p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator/(int p_Value)
 {
 	return *(new QWDDX(toNumber() / p_Value));
 }
 
-QWDDX& QWDDX::operator/(double p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator/(double p_Value)
 {
 	return *(new QWDDX(toNumber() / p_Value));
 }
 
-QWDDX& QWDDX::operator/(const QString& p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator/(const QString& p_Value)
 {
 	QWDDX temp = QWDDX(p_Value);
 	return *(new QWDDX(toNumber() / temp.toNumber()));
 }
 
-QWDDX& QWDDX::operator/(const QWDDX& p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator/(const QWDDX& p_Value)
 {
 	QWDDX temp = p_Value;
 	return *(new QWDDX(toNumber() / temp.toNumber()));
 }
 
-QWDDX& operator/(int p_Value1, const QWDDX &p_Value2)
+/*Q_DECL_EXPORT QWDDX& QWDDX::operator/(int p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp = p_Value2;
 	return *(new QWDDX(p_Value1 / temp.toNumber()));
 }
 
-QWDDX& operator/(double p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX& QWDDX::operator/(double p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp = p_Value2;
 	return *(new QWDDX(p_Value1 / temp.toNumber()));
 }
 
-QWDDX& operator/(const QString& p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX& QWDDX::operator/(const QString& p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp1 = QWDDX(p_Value1);
 	QWDDX temp2 = p_Value2;
 	return *(new QWDDX(temp1.toNumber() / temp2.toNumber()));
-}
+}*/
 
-QWDDX& QWDDX::operator&(int p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator&(int p_Value)
 {
 	return *(new QWDDX(toString() + QString::number(p_Value)));
 }
 
-QWDDX& QWDDX::operator&(double p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator&(double p_Value)
 {
 	return *(new QWDDX(toString() + QString::number(p_Value)));
 }
 
-QWDDX& QWDDX::operator&(const wchar_t* p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator&(const wchar_t* p_Value)
 {
 	return *(new QWDDX(toString() + p_Value));
 }
 
 
-QWDDX& QWDDX::operator&(const QString& p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator&(const QString& p_Value)
 {
 	return *(new QWDDX(toString() + p_Value));
 }
 
-QWDDX& QWDDX::operator&(const QWDDX& p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::operator&(const QWDDX& p_Value)
 {
 	QWDDX temp = QWDDX(p_Value);
 	return *(new QWDDX(toString() + temp.toString()));
 }
 
-QWDDX& operator&(int p_Value1, const QWDDX& p_Value2)
+Q_DECL_EXPORT QWDDX& operator&(int p_Value1, const QWDDX& p_Value2)
 {
 	QWDDX temp = QWDDX(p_Value2);
 	return *(new QWDDX(QString::number(p_Value1) + temp.toString()));
 }
 
-QWDDX& operator&(double p_Value1, const QWDDX& p_Value2)
+Q_DECL_EXPORT QWDDX& operator&(double p_Value1, const QWDDX& p_Value2)
 {
 	QWDDX temp = QWDDX(p_Value2);
 	return *(new QWDDX(QString::number(p_Value1) + temp.toString()));
 }
 
-QWDDX& operator&(const QString& p_Value1, const QWDDX& p_Value2)
+Q_DECL_EXPORT QWDDX& operator&(const QString& p_Value1, const QWDDX& p_Value2)
 {
 	QWDDX temp = QWDDX(p_Value2);
 	return *(new QWDDX(p_Value1 + temp.toString()));
 }
 
-QWDDX& QWDDX::join(const QWDDX& p_Value)
+Q_DECL_EXPORT QWDDX& QWDDX::join(const QWDDX& p_Value)
 {
 	QWDDX temp = p_Value;
 	return *(new QWDDX(toString() + temp.toString()));
 }
 
-QString QWDDX::StructKeyAt(const int p_Index)
+Q_DECL_EXPORT QString QWDDX::StructKeyAt(const int p_Index)
 {
 	if (m_Struct.size() <= p_Index)
 		return "";
@@ -1081,7 +1081,7 @@ QString QWDDX::StructKeyAt(const int p_Index)
 	return m_Struct.keys().at(p_Index);
 }
 
-QString QWDDX::toString()
+Q_DECL_EXPORT QString QWDDX::toString()
 {
 	QString temp;
 
@@ -1154,7 +1154,7 @@ QString QWDDX::toString()
 	return m_String;
 }
 
-double QWDDX::toNumber()
+Q_DECL_EXPORT double QWDDX::toNumber()
 {
 	double ret;
 	bool ok;
@@ -1182,7 +1182,7 @@ double QWDDX::toNumber()
 	return m_Number;
 }
 
-bool QWDDX::canToNumber()
+Q_DECL_EXPORT bool QWDDX::canToNumber()
 {
 	if (m_Type == Number)
 	{
@@ -1205,7 +1205,7 @@ bool QWDDX::canToNumber()
 	return false;
 }
 
-QDateTime QWDDX::toDateTime()
+Q_DECL_EXPORT QDateTime QWDDX::toDateTime()
 {
 	if (m_Type != QWDDX::DateTime)
 		throw QMKFusionExpressionException("The value cannot be converted to a datetime.");
@@ -1213,7 +1213,7 @@ QDateTime QWDDX::toDateTime()
 	return m_DateTime;
 }
 
-bool QWDDX::toBool()
+Q_DECL_EXPORT bool QWDDX::toBool()
 {
 	switch(m_Type)
 	{

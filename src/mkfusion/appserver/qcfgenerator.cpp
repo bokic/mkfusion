@@ -8,258 +8,6 @@
 #include <QList>
 #include <QDir>
 
-#ifdef Q_WS_WIN
-
-#include <windows.h>
-
-
-#define MAX_KEY_LENGTH 255
-#define MAX_VALUE_NAME 16383
-
-QString getQtDir()// TODO: reimplement when qt 4.7 is released.
-{
-	HKEY reg, reg2;
-	QString key = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", subkey;
-	WCHAR temp[MAX_KEY_LENGTH];
-	DWORD valstrsize = MAX_KEY_LENGTH;
-	DWORD valType;
-	DWORD dwordVal;
-
-	QString retQtSDK, retQtOpenSource;
-
-	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.toStdWString().c_str(), 0, KEY_ENUMERATE_SUB_KEYS, &reg) == ERROR_SUCCESS)
-	{
-
-		for(quint32 c = 0; ; c++)
-		{
-			if (RegEnumKey(reg, c, temp, MAX_KEY_LENGTH) != ERROR_SUCCESS)
-			{
-				break;
-			}
-
-			subkey = QString::fromStdWString(temp);
-
-			if (subkey.startsWith("Qt SDK "))
-			{
-				if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.append("\\"+subkey).toStdWString().c_str(), 0, KEY_QUERY_VALUE, &reg2) == ERROR_SUCCESS)
-				{
-
-					valstrsize = MAX_KEY_LENGTH;
-					if (RegQueryValueEx(reg2, L"QtInstalled", NULL, &valType, (BYTE*)&dwordVal, &valstrsize) == ERROR_SUCCESS)
-					{
-						if (dwordVal == 1)
-						{
-							valstrsize = MAX_KEY_LENGTH;
-							if (RegQueryValueEx(reg2, L"QTSDK_INSTDIR", NULL, &valType, (BYTE*)temp, &valstrsize) == ERROR_SUCCESS)
-							{
-								retQtSDK = QString::fromStdWString(temp) + "\\qt\\";
-							}
-						}
-					}
-
-					RegCloseKey(reg2);
-				}
-			}
-
-			if (subkey.startsWith("Qt OpenSource "))
-			{
-				if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.append("\\"+subkey).toStdWString().c_str(), 0, KEY_QUERY_VALUE, &reg2) == ERROR_SUCCESS)
-				{
-					valstrsize = MAX_KEY_LENGTH;
-					if (RegQueryValueEx(reg2, L"QTSDK_INSTDIR", NULL, &valType, (BYTE*)temp, &valstrsize) == ERROR_SUCCESS)
-					{
-						retQtOpenSource = QString::fromStdWString(temp) + '\\';
-					}
-					else
-					{
-						valstrsize = MAX_KEY_LENGTH;
-						if (RegQueryValueEx(reg2, L"MINGW_INSTDIR", NULL, &valType, (BYTE*)temp, &valstrsize) == ERROR_SUCCESS)
-						{
-							retQtOpenSource = QString::fromStdWString(temp) + '\\';
-						}
-					}
-
-					RegCloseKey(reg2);
-				}
-			}
-		}
-
-		RegCloseKey(reg);
-	}
-
-	if (!retQtSDK.isEmpty())
-	{
-		return retQtSDK;
-	}
-
-	if (!retQtOpenSource.isEmpty())
-	{
-		return retQtOpenSource;
-	}
-
-	return "";
-}
-
-QString getMingwDir()// TODO: reimplement when qt 4.7 is released.
-{
-	HKEY reg, reg2;
-	QString key = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", subkey;
-	QString tempQSt;
-	WCHAR temp[MAX_KEY_LENGTH];
-	DWORD valstrsize = MAX_KEY_LENGTH;
-	DWORD valType;
-	DWORD dwordVal;
-
-    QString envStr = QProcessEnvironment::systemEnvironment().value("mingw");
-    if (!envStr.isEmpty())
-    {
-        envStr = QDir::toNativeSeparators(envStr);
-
-        if (!envStr.endsWith("\\"))
-        {
-            envStr += '\\';
-        }
-
-        return envStr;
-    }
-
-	QString retQtSDK, retQtOpenSource, retMingw, retQtCreator;
-
-	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.toStdWString().c_str(), 0, KEY_ENUMERATE_SUB_KEYS, &reg) == ERROR_SUCCESS)
-	{
-
-		for(quint32 c = 0; ; c++)
-		{
-			if (RegEnumKey(reg, c, temp, MAX_KEY_LENGTH) != ERROR_SUCCESS)
-			{
-				break;
-			}
-
-			subkey = QString::fromStdWString(temp);
-
-			if (subkey.startsWith("Qt SDK "))
-			{
-				if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.append("\\"+subkey).toStdWString().c_str(), 0, KEY_QUERY_VALUE, &reg2) == ERROR_SUCCESS)
-				{
-					valstrsize = MAX_KEY_LENGTH;
-					if (RegQueryValueEx(reg2, L"MinGWInstalled", NULL, &valType, (BYTE*)&dwordVal, &valstrsize) == ERROR_SUCCESS)
-					{
-						if (dwordVal == 1)
-						{
-							valstrsize = MAX_KEY_LENGTH;
-							if (RegQueryValueEx(reg2, L"QTSDK_INSTDIR", NULL, &valType, (BYTE*)temp, &valstrsize) == ERROR_SUCCESS)
-							{
-								retQtSDK = QString::fromStdWString(temp) + "\\mingw\\";
-							}
-						}
-					}
-
-					RegCloseKey(reg2);
-				}
-			}
-
-			if (subkey.startsWith("Qt OpenSource "))
-			{
-				if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.append("\\"+subkey).toStdWString().c_str(), 0, KEY_QUERY_VALUE, &reg2) == ERROR_SUCCESS)
-				{
-					valstrsize = MAX_KEY_LENGTH;
-					if (RegQueryValueEx(reg2, L"MINGWInstalled", NULL, &valType, (BYTE*)&dwordVal, &valstrsize) == ERROR_SUCCESS)
-					{
-						if (dwordVal == 1)
-						{
-							valstrsize = MAX_KEY_LENGTH;
-							if (RegQueryValueEx(reg2, L"MinGWInstDir", NULL, &valType, (BYTE*)temp, &valstrsize) == ERROR_SUCCESS)
-							{
-								retQtOpenSource = QString::fromStdWString(temp) + "\\";
-							}
-						}
-					}
-
-					RegCloseKey(reg2);
-				}
-			}
-
-			if (subkey.startsWith("Qt Creator "))
-			{
-				if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.append("\\"+subkey).toStdWString().c_str(), 0, KEY_QUERY_VALUE, &reg2) == ERROR_SUCCESS)
-				{
-					valstrsize = MAX_KEY_LENGTH;
-					if (RegQueryValueEx(reg2, L"UninstallString", NULL, &valType, (BYTE*)temp, &valstrsize) == ERROR_SUCCESS)
-					{
-						retQtCreator = QString::fromStdWString(temp);
-						if (retQtCreator.endsWith("\\uninst.exe"))
-						{
-							QDir l_dir;
-
-							retQtCreator = retQtCreator.left(retQtCreator.length() - 10);
-
-							if (l_dir.exists(retQtCreator + "mingw\\bin"))
-							{
-								retQtCreator = retQtCreator + "mingw\\";
-							} else
-							{
-								retQtCreator = "";
-							}
-						}
-						else
-						{
-							retQtCreator = "";
-						}
-					}
-
-					RegCloseKey(reg2);
-				}
-			}
-
-			if (subkey.startsWith("MinGW "))
-			{
-				if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, key.append("\\"+subkey).toStdWString().c_str(), 0, KEY_QUERY_VALUE, &reg2) == ERROR_SUCCESS)
-				{
-					valstrsize = MAX_KEY_LENGTH;
-					if (RegQueryValueEx(reg2, L"UninstallString", NULL, &valType, (BYTE*)temp, &valstrsize) == ERROR_SUCCESS)
-					{
-						retMingw = QString::fromStdWString(temp);
-						if (retMingw.endsWith("\\uninst.exe"))
-						{
-							retMingw = retMingw.left(retMingw.length() - 10);
-						}
-						else
-						{
-							retMingw = "";
-						}
-					}
-
-					RegCloseKey(reg2);
-				}
-			}
-		}
-
-		RegCloseKey(reg);
-	}
-
-	if (!retQtSDK.isEmpty())
-	{
-		return retQtSDK;
-	}
-
-	if (!retQtOpenSource.isEmpty())
-	{
-		return retQtOpenSource;
-	}
-
-	if (!retQtCreator.isEmpty())
-	{
-		return retQtCreator;
-	}
-
-	if (!retMingw.isEmpty())
-	{
-		return retMingw;
-	}
-
-	return "";
-}
-#endif
 
 QString toCPPEncodeStr(const QString& str)
 {
@@ -479,14 +227,9 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 
 	// Compile
 #ifdef Q_WS_WIN
-	QString l_QtPath = getQtDir(); // "C:\\Qt\\4.6.2\\" or "C:\\Qt\\2009.04\\qt\\";
+    QString l_QtPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\qt\\";
+    QString l_MingwPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\mingw\\";
 
-	if (l_QtPath.isEmpty())
-	{
-		l_QtPath = "C:\\Qt\\4.6.3\\"; // TODO: Fallback
-	}
-
-	QString l_MingwPath = getMingwDir(); // "C:\\Qt\\qtcreator-1.3.1\\mingw\\" or "C:\\Qt\\2009.04\\mingw\\", TODO: please check if Nokia has fixed their uninstaller registry entry.
 #ifdef QT_NO_DEBUG
 	process.start(l_MingwPath+"bin\\g++.exe -c -O2 -frtti -fexceptions -mthreads -Wall -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I\""+l_MingwPath+"include\" -I\""+l_QtPath+"include\\QtCore\" -I\""+l_QtPath+"include\\QtNetwork\" -I\""+l_QtPath+"include\" -I\""+p_MKFusionPath+"include\" -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".cpp\"");
 #else
@@ -514,9 +257,9 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 	// Link
 #ifdef Q_WS_WIN
 #ifdef QT_NO_DEBUG
-	process.start(l_MingwPath+"bin\\g++.exe -enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -mthreads -Wl -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQtCore4");
+    process.start(l_MingwPath+"bin\\g++.exe -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -mthreads -Wl -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQtCore4");
 #else
-	process.start(l_MingwPath+"bin\\g++.exe -enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -mthreads -Wl -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQtCored4");
+    process.start(l_MingwPath+"bin\\g++.exe -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -mthreads -Wl -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQtCored4");
 #endif
 #elif defined Q_WS_X11
 #ifdef QT_NO_DEBUG
@@ -611,7 +354,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 			}
 			else
 			{
-				ret = "\""+l_ElementName+"\"";
+				ret = "QString(\"" + l_ElementName + "\")";
 			}
 			break;
 		case Variable:
