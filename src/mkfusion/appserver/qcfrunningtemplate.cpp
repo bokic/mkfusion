@@ -214,6 +214,7 @@ void QCFRunningTemplate::worker()
 					m_CGI.m_Type = QWDDX::Struct;
 					m_FORM.m_Type = QWDDX::Struct;
 					m_VARIABLES.m_Type = QWDDX::Struct;
+					m_URL.m_Type = QWDDX::Struct;
 
 					// Run compiled template(dll/so).
 					m_SERVER[L"COLDFUSION"] = QWDDX(QWDDX::Struct);
