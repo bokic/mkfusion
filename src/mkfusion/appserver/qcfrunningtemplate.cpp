@@ -321,7 +321,7 @@ void QCFRunningTemplate::worker()
 					{
 						QString key = l_Argument.first;
 						QString value = l_Argument.second;
-						m_URL[key] = value;
+						m_URL[key.toUpper()] = value;
 					}
 
 					l_page->run(this);
