@@ -641,7 +641,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag& p_CFTag)
 
 				if ((l_Index.m_Type != Error)&&(l_Index.m_ChildElements.size() == 3))
 				{
-					return "for (" + GenerateVariable(l_IndexStr) + " = " + CFTagGetArgument(p_CFTag, "from") + "; " + GenerateVariable(l_IndexStr) + l_Comparation + CFTagGetArgument(p_CFTag, "to") + "; " + GenerateVariable(l_IndexStr) + " = " + GenerateVariable(l_IndexStr) + " + " + l_Step + ") {";
+					return "for (" + GenerateVariable(l_IndexStr) + " = (" + CFTagGetArgument(p_CFTag, "from") + ").toNumber(); (" + GenerateVariable(l_IndexStr) + ").toNumber() " + l_Comparation + " (" + CFTagGetArgument(p_CFTag, "to") + ").toNumber(); " + GenerateVariable(l_IndexStr) + " = (" + GenerateVariable(l_IndexStr) + ").toNumber() + " + l_Step + ") {";
 				}
 			}
 			else if (CFTagHasArgument(p_CFTag, "condition"))
