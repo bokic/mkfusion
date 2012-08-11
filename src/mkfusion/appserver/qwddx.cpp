@@ -292,6 +292,12 @@ Q_DECL_EXPORT QWDDX& QWDDX::operator[](const QWDDX& key)
 			m_Array.resize((int)l_key);
 		}
 
+        if ((m_Array[(int)l_key - 1].m_Type != QWDDX::Array)&&(m_ArrayDimension > 1))
+        {
+            m_Array[(int)l_key - 1] = QWDDX(QWDDX::Array);
+            m_Array[(int)l_key - 1].m_ArrayDimension = m_ArrayDimension - 1;
+        }
+
 		return m_Array[(int)l_key - 1];
 	}
 	else

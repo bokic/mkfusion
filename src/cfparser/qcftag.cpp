@@ -35,30 +35,33 @@ QCFTag::QCFTag():QObject()
 {
 }
 
-QCFTag::QCFTag(const QCFTag& p_Tag):QObject()
+QCFTag::QCFTag(const QCFTag& other):QObject()
 {
-	m_Name = p_Tag.m_Name;
-	m_CloseTagType = p_Tag.m_CloseTagType;
-	m_ArgumentsType = p_Tag.m_ArgumentsType;
-	m_ExpressionInside = p_Tag.m_ExpressionInside;
-	m_ArgumentVariants = p_Tag.m_ArgumentVariants;
+    m_Name = other.m_Name;
+    m_CloseTagType = other.m_CloseTagType;
+    m_ArgumentsType = other.m_ArgumentsType;
+    m_ExpressionInside = other.m_ExpressionInside;
+    m_ArgumentVariants = other.m_ArgumentVariants;
+    m_AnyParam = other.m_AnyParam;
 }
 
-QCFTag::QCFTag(const QString& p_TagName, CloseTagType p_CloseTagType, ArgumentsType p_ArgumentsType, ExpressionInside p_ExpressionInside):QObject()
+QCFTag::QCFTag(const QString& p_TagName, CloseTagType p_CloseTagType, ArgumentsType p_ArgumentsType, ExpressionInside p_ExpressionInside, bool p_AnyParam):QObject()
 {
 	m_Name = p_TagName;
 	m_CloseTagType = p_CloseTagType;
 	m_ArgumentsType = p_ArgumentsType;
 	m_ExpressionInside = p_ExpressionInside;
+    m_AnyParam = p_AnyParam;
 }
 
-QCFTag& QCFTag::operator=(const QCFTag& p_Tag)
+QCFTag& QCFTag::operator=(const QCFTag& other)
 {
-	m_Name = p_Tag.m_Name;
-	m_CloseTagType = p_Tag.m_CloseTagType;
-	m_ArgumentsType = p_Tag.m_ArgumentsType;
-	m_ExpressionInside = p_Tag.m_ExpressionInside;
-	m_ArgumentVariants = p_Tag.m_ArgumentVariants;
+    m_Name = other.m_Name;
+    m_CloseTagType = other.m_CloseTagType;
+    m_ArgumentsType = other.m_ArgumentsType;
+    m_ExpressionInside = other.m_ExpressionInside;
+    m_ArgumentVariants = other.m_ArgumentVariants;
+    m_AnyParam = other.m_AnyParam;
 
 	return *this;
 }
