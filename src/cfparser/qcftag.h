@@ -27,7 +27,7 @@ public:
 	enum ExpressionInside{WithoutExpressionInside, WithExpressionInside};
 	QCFTag();
     QCFTag(const QCFTag&);
-    QCFTag(const QString&, CloseTagType, ArgumentsType, ExpressionInside = WithoutExpressionInside, bool);
+    QCFTag(const QString&, CloseTagType, ArgumentsType, ExpressionInside = WithoutExpressionInside, bool = false);
 	QCFTag& operator=(const QCFTag&);
 	QString m_Name;
 	enum CloseTagType m_CloseTagType;

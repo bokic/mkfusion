@@ -43,8 +43,6 @@ QCFParser::QCFParser(QCFParserMode mode): QObject()
 	m_Mode = mode;
 }
 
-QCFParser(QCFParserMode);
-
 quint32 GetLineNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset)
 {
 	quint32 ret = 1;
@@ -1617,6 +1615,11 @@ QCFParserErrorType QCFParser::validate()
 		}
 
 		QCFTag l_tagDef = m_CFTagsDef[l_tagName];
+
+        if (l_tagDef.m_AnyParam)
+        {
+            continue;
+        }
 
 		if (l_tagDef.m_ArgumentsType != QCFTag::ArgumentsTypeArguments)
 		{
