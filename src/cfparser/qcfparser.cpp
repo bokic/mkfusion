@@ -1,7 +1,7 @@
 #include "qcfparser.h"
 #include "qcf8.h"
 
-#include <QtCore/QString>
+#include <QString>
 #ifdef QT_DEBUG
 #include <QDebug>
 #endif

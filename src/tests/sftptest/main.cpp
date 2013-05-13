@@ -2,7 +2,7 @@
 #include <libssh/sftp.h>
 #include <fcntl.h>
 
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
 
 
 int main()
