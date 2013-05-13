@@ -52,6 +52,8 @@ char QFTPProject::getDirSeparator()
 
 QByteArray QFTPProject::ReadFile(const QString& p_File)
 {
+    Q_UNUSED(p_File);
+
 	QByteArray ret;
 
     /*m_FTP.get(p_File);
@@ -68,6 +70,9 @@ QByteArray QFTPProject::ReadFile(const QString& p_File)
 
 void QFTPProject::WriteFile(const QString& p_File, const QByteArray& p_FileContent)
 {
+    Q_UNUSED(p_File);
+    Q_UNUSED(p_FileContent);
+
     /*m_FTP.put(p_FileContent, p_File);
 
 	while(m_FTP.currentCommand() != QFtp::None)
@@ -78,6 +83,8 @@ void QFTPProject::WriteFile(const QString& p_File, const QByteArray& p_FileConte
 
 void QFTPProject::DeleteFile(const QString& p_File)
 {
+    Q_UNUSED(p_File);
+
     /*m_FTP.remove(p_File);
 
 	while(m_FTP.currentCommand() != QFtp::None)
@@ -88,6 +95,9 @@ void QFTPProject::DeleteFile(const QString& p_File)
 
 void QFTPProject::RenameFile(const QString& p_FromFilename, const QString& p_ToFilename)
 {
+    Q_UNUSED(p_FromFilename);
+    Q_UNUSED(p_ToFilename);
+
     /*m_FTP.rename(p_FromFilename, p_ToFilename);
 
 	while(m_FTP.currentCommand() != QFtp::None)
@@ -98,6 +108,8 @@ void QFTPProject::RenameFile(const QString& p_FromFilename, const QString& p_ToF
 
 QList<QProjectFile> QFTPProject::getFolderItems(const QString& p_Folder)
 {
+    Q_UNUSED(p_Folder);
+
     QList<QProjectFile> ret;
 
     /*m_FTP.list(p_Folder);
@@ -116,6 +128,8 @@ QList<QProjectFile> QFTPProject::getFolderItems(const QString& p_Folder)
 
 void QFTPProject::CreateDir(const QString& p_Dirname)
 {
+    Q_UNUSED(p_Dirname);
+
     /*m_FTP.mkdir(p_Dirname);
 
 	while(m_FTP.currentCommand() != QFtp::None)
@@ -126,6 +140,7 @@ void QFTPProject::CreateDir(const QString& p_Dirname)
 
 void QFTPProject::DeleteDir(const QString& p_Dirname, bool p_Recursive)
 {
+    Q_UNUSED(p_Dirname);
     Q_UNUSED(p_Recursive); // TODO: Recursive
 
     /*m_FTP.rmdir(p_Dirname);
@@ -138,6 +153,9 @@ void QFTPProject::DeleteDir(const QString& p_Dirname, bool p_Recursive)
 
 void QFTPProject::RenameDir(const QString& p_FromDir, const QString& p_ToDir)
 {
+    Q_UNUSED(p_FromDir);
+    Q_UNUSED(p_ToDir);
+
     /*m_FTP.rename(p_FromDir, p_ToDir);
 
 	while(m_FTP.currentCommand() != QFtp::None)

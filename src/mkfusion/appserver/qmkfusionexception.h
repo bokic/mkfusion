@@ -7,17 +7,17 @@
 #include <QDateTime>
 #include <QString>
 
-class Q_DECL_EXPORT QMKFusionException : public QtConcurrent::Exception
+class Q_DECL_EXPORT QMKFusionException : public QException
 {
 public:
-	QMKFusionException(QString p_message, QString p_Detail = "") : QtConcurrent::Exception()
+    QMKFusionException(QString p_message, QString p_Detail = "") : QException()
 	{ // TODO: Please find a smarter way to keep and destroy QStrings inside exception class;
 		m_Type = new QString("Any");
 		m_message = new QString(p_message);
 		m_Detail = new QString(p_Detail);
 	}
 	void raise() const { throw *this; }
-    QtConcurrent::Exception *clone() const { return new QMKFusionException(*this); }
+    QException *clone() const { return new QMKFusionException(*this); }
 	QWDDX GenerateCFCatch()
 	{
 		QWDDX ret(QWDDX::Struct);
@@ -36,10 +36,10 @@ public:
 	QString *m_Detail;
 };
 
-class QMKFusionCFAbortException : public QtConcurrent::Exception
+class QMKFusionCFAbortException : public QException
 {
 public:
-	QMKFusionCFAbortException() : QtConcurrent::Exception() {}
+    QMKFusionCFAbortException() : QException() {}
 };
 
 /*class QMKFusionApplictionException : public QMKFusionException
