@@ -1,7 +1,7 @@
 #include <QMainWindow>
 #include "qappmainwindow.h"
 
-QAppMainWindow::QAppMainWindow(QWidget *parent, Qt::WFlags flags)
+QAppMainWindow::QAppMainWindow(QWidget *parent, Qt::WindowFlags flags)
 	: QMainWindow(parent, flags)
 {
 	setWindowTitle("test");

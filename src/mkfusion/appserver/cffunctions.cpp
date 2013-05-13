@@ -41,6 +41,27 @@ double cf_ACos(double val)
 	return acos(val);
 }
 
+QWDDX cf_ACos(const QWDDX& val)
+{
+    QWDDX ret;
+
+    ret = val;
+
+    if (ret.m_Type != QWDDX::Number)
+    {
+        ret = ret.toNumber();
+    }
+
+    if ((ret.toNumber() < -1)||(ret.toNumber() > 1))
+    {
+        throw QMKFusionInvalidArgumentException("ACos", 1, ret, -1, 1);
+    }
+
+    ret.m_Number = acos(ret.m_Number);
+
+    return ret;
+}
+
 void cf_AddSOAPRequestHeader(QWDDX *p_WebService, const QString& p_Namespace, const QString& p_Name, const QWDDX& p_Value, bool p_MustUnderstand)
 {
     Q_UNUSED(p_WebService);

@@ -1,6 +1,7 @@
 QT       = core gui network
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 CONFIG  += debug_and_release
-#MAKEFILE = ../../../obj/tests/cf7debugger/Makefile
 DESTDIR  = ../../../bin
 
 debug {

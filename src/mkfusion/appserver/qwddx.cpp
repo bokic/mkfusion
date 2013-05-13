@@ -1254,3 +1254,28 @@ Q_DECL_EXPORT bool QWDDX::toBool()
 	}
 	throw QMKFusionExpressionException("The value cannot be converted to a boolean.");
 }
+
+Q_DECL_EXPORT bool asBool()
+{
+    return false; // TODO: Implement me.
+}
+
+Q_DECL_EXPORT int QWDDX::asInt()
+{
+    return 0; // TODO: Implement me.
+}
+
+Q_DECL_EXPORT double QWDDX::asDouble()
+{
+    return 0.0; // TODO: Implement me.
+}
+
+Q_DECL_EXPORT int QWDDX::asNumber()
+{
+    return 0; // TODO: Implement me.
+}
+
+Q_DECL_EXPORT QString QWDDX::asString()
+{
+    return QString(); // TODO: Implement me.
+}

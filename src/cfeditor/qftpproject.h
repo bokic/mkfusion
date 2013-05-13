@@ -2,10 +2,10 @@
 #define QFTPPROJECT_H
 
 #include "qproject.h"
+#include <QNetworkAccessManager>
 #include <QString>
 #include <QHash>
 #include <QList>
-#include <QFtp>
 
 class QFTPProject: public QProject
 {
@@ -30,7 +30,7 @@ protected:
     QString m_Username;
     QString m_Password;
 private:
-	QFtp m_FTP;
+    QNetworkAccessManager m_Network;
 };
 
 #endif // QFTPPROJECT_H

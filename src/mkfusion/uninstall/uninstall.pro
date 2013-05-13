@@ -1,7 +1,6 @@
 TEMPLATE = lib
 QT       =
 CONFIG  += debug_and_release
-#MAKEFILE = ../../../obj/mkfusion/uninstall/Makefile
 DESTDIR  = ../../../install/windows
 
 debug {

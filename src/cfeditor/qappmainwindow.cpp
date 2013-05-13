@@ -4,6 +4,12 @@
 #include "qprojectproperties.h"
 #include "qcodeeditwidget.h"
 
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QtWebKit>
+
+
 QAppMainWindow::QAppMainWindow(QWidget *parent) :
     QMainWindow(parent),
 	ui(new Ui::QAppMainWindow),
@@ -11,9 +17,9 @@ QAppMainWindow::QAppMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-	if (qApp->argc() > 1)
+    if (qApp->arguments().count() > 1)
 	{
-		LoadProject(qApp->argv()[1]);
+        LoadProject(qApp->arguments()[1]);
 	}
 }
 

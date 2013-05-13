@@ -8,9 +8,9 @@ void log(const QString &p_filename, const QString &p_Line)
 {
 	QFile l_Log(p_filename);
 	l_Log.open(QIODevice::WriteOnly	| QIODevice::Append);
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	l_Log.write(p_Line.toUtf8() + "\r\n");
-#elif defined Q_WS_X11
+#elif defined Q_OS_LINUX
 	l_Log.write(p_Line.toUtf8() + "\n");
 #else
 #error Windows and Linux OSs are currently supported.

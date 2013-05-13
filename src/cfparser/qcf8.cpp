@@ -192,6 +192,14 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	ret.insert("cfcol", QCFTag("cfcol", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cfcollection", QCFTag("cfcollection", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    args.clear();
+    args.append(QCFTagArgument("action", true));
+    args.append(QCFTagArgument("categories"));
+    args.append(QCFTagArgument("collection"));
+    args.append(QCFTagArgument("language"));
+    args.append(QCFTagArgument("name"));
+    args.append(QCFTagArgument("path"));
+    ret["cfcollection"].m_ArgumentVariants.append(args);
 
 	ret.insert("cfcomponent", QCFTag("cfcomponent", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
@@ -461,6 +469,22 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
     ret["cfform"].m_ArgumentVariants.append(args);
 
 	ret.insert("cfformgroup", QCFTag("cfformgroup", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+    args.clear();
+    args.append(QCFTagArgument("type", true, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument("label"));
+    args.append(QCFTagArgument("style"));
+    args.append(QCFTagArgument("selectedIndex"));
+    args.append(QCFTagArgument("width"));
+    args.append(QCFTagArgument("height"));
+    args.append(QCFTagArgument("enabled"));
+    args.append(QCFTagArgument("visible"));
+    args.append(QCFTagArgument("onChange"));
+    args.append(QCFTagArgument("tooltip"));
+    args.append(QCFTagArgument("id"));
+    args.append(QCFTagArgument("query"));
+    args.append(QCFTagArgument("maxrows"));
+    args.append(QCFTagArgument("startrow"));
+    ret["cfformgroup"].m_ArgumentVariants.append(args);
 
 	ret.insert("cfformitem", QCFTag("cfformitem", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
@@ -501,10 +525,110 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	ret.insert("cfgraphdata", QCFTag("cfgraphdata", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
     ret.insert("cfgrid", QCFTag("cfgrid", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+    args.clear();
+    args.append(QCFTagArgument("name", true));
+    args.append(QCFTagArgument("align"));
+    args.append(QCFTagArgument("appendKey"));
+    args.append(QCFTagArgument("autoWidth"));
+    args.append(QCFTagArgument("bgColor"));
+    args.append(QCFTagArgument("bind"));
+    args.append(QCFTagArgument("bindOnLoad"));
+    args.append(QCFTagArgument("bold"));
+    args.append(QCFTagArgument("colHeaderAlign"));
+    args.append(QCFTagArgument("colHeaderBold"));
+    args.append(QCFTagArgument("colHeaderFont"));
+    args.append(QCFTagArgument("colHeaderFontSize"));
+    args.append(QCFTagArgument("colHeaderItalic"));
+    args.append(QCFTagArgument("colHeaders"));
+    args.append(QCFTagArgument("colHeaderTextColor"));
+    args.append(QCFTagArgument("delete"));
+    args.append(QCFTagArgument("deleteButton"));
+    args.append(QCFTagArgument("enabled"));
+    args.append(QCFTagArgument("font"));
+    args.append(QCFTagArgument("fontSize"));
+    args.append(QCFTagArgument("format"));
+    args.append(QCFTagArgument("gridDataAlign"));
+    args.append(QCFTagArgument("gridLines"));
+    args.append(QCFTagArgument("height"));
+    args.append(QCFTagArgument("highlightHref"));
+    args.append(QCFTagArgument("href"));
+    args.append(QCFTagArgument("hrefKey"));
+    args.append(QCFTagArgument("hSpace"));
+    args.append(QCFTagArgument("insert"));
+    args.append(QCFTagArgument("insertButton"));
+    args.append(QCFTagArgument("italic"));
+    args.append(QCFTagArgument("maxRows"));
+    args.append(QCFTagArgument("notSupported"));
+    args.append(QCFTagArgument("onBlur"));
+    args.append(QCFTagArgument("onChange"));
+    args.append(QCFTagArgument("onError"));
+    args.append(QCFTagArgument("onFocus"));
+    args.append(QCFTagArgument("onValidate"));
+    args.append(QCFTagArgument("pageSize"));
+    args.append(QCFTagArgument("pictureBar"));
+    args.append(QCFTagArgument("preservePageOnSort"));
+    args.append(QCFTagArgument("query"));
+    args.append(QCFTagArgument("rowHeaderAlign"));
+    args.append(QCFTagArgument("rowHeaderBold"));
+    args.append(QCFTagArgument("rowHeaderFont"));
+    args.append(QCFTagArgument("rowHeaderFontSize"));
+    args.append(QCFTagArgument("rowHeaderItalic"));
+    args.append(QCFTagArgument("rowHeaders"));
+    args.append(QCFTagArgument("rowHeaderTextColor"));
+    args.append(QCFTagArgument("rowHeight"));
+    args.append(QCFTagArgument("selectColor"));
+    args.append(QCFTagArgument("selectMode"));
+    args.append(QCFTagArgument("selectOnLoad"));
+    args.append(QCFTagArgument("sort"));
+    args.append(QCFTagArgument("sortAscendingButton"));
+    args.append(QCFTagArgument("sortDescendingButton"));
+    args.append(QCFTagArgument("stripeRowColor"));
+    args.append(QCFTagArgument("stripeRows"));
+    args.append(QCFTagArgument("style"));
+    args.append(QCFTagArgument("target"));
+    args.append(QCFTagArgument("textColor"));
+    args.append(QCFTagArgument("tooltip"));
+    args.append(QCFTagArgument("visible"));
+    args.append(QCFTagArgument("vSpace"));
+    args.append(QCFTagArgument("width"));
+    ret["cfgrid"].m_ArgumentVariants.append(args);
 
     ret.insert("cfgridcolumn", QCFTag("cfgridcolumn", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    args.clear();
+    args.append(QCFTagArgument("name", true));
+    args.append(QCFTagArgument("bgColor"));
+    args.append(QCFTagArgument("bold"));
+    args.append(QCFTagArgument("dataAlign"));
+    args.append(QCFTagArgument("display"));
+    args.append(QCFTagArgument("font"));
+    args.append(QCFTagArgument("fontSize"));
+    args.append(QCFTagArgument("header"));
+    args.append(QCFTagArgument("headerAlign"));
+    args.append(QCFTagArgument("headerBold"));
+    args.append(QCFTagArgument("headerFont"));
+    args.append(QCFTagArgument("headerFontSize"));
+    args.append(QCFTagArgument("headerItalic"));
+    args.append(QCFTagArgument("headerTextColor"));
+    args.append(QCFTagArgument("href"));
+    args.append(QCFTagArgument("hrefKey"));
+    args.append(QCFTagArgument("italic"));
+    args.append(QCFTagArgument("mask"));
+    args.append(QCFTagArgument("numberFormat"));
+    args.append(QCFTagArgument("select"));
+    args.append(QCFTagArgument("target"));
+    args.append(QCFTagArgument("textColor"));
+    args.append(QCFTagArgument("type"));
+    args.append(QCFTagArgument("values"));
+    args.append(QCFTagArgument("valuesDelimiter"));
+    args.append(QCFTagArgument("valuesDisplay"));
+    args.append(QCFTagArgument("width"));
+    ret["cfgridcolumn"].m_ArgumentVariants.append(args);
+    args.clear();
 
 	ret.insert("cfgridrow", QCFTag("cfgridrow", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    args.clear();
+    args.append(QCFTagArgument("data", true));
+    ret["cfgridrow"].m_ArgumentVariants.append(args);
 
 	ret.insert("cfgridupdate", QCFTag("cfgridupdate", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
@@ -584,6 +708,27 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	ret["cfinclude"].m_ArgumentVariants.append(args);
 
 	ret.insert("cfindex", QCFTag("cfindex", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    args.clear();
+    args.append(QCFTagArgument("action", true));
+    args.append(QCFTagArgument("collection", true));
+    args.append(QCFTagArgument("key", true));
+    args.append(QCFTagArgument("body"));
+    args.append(QCFTagArgument("category"));
+    args.append(QCFTagArgument("categoryTree"));
+    args.append(QCFTagArgument("custom1"));
+    args.append(QCFTagArgument("custom2"));
+    args.append(QCFTagArgument("custom3"));
+    args.append(QCFTagArgument("custom4"));
+    args.append(QCFTagArgument("extensions"));
+    args.append(QCFTagArgument("language"));
+    args.append(QCFTagArgument("prefix"));
+    args.append(QCFTagArgument("query"));
+    args.append(QCFTagArgument("recurse"));
+    args.append(QCFTagArgument("status"));
+    args.append(QCFTagArgument("title"));
+    args.append(QCFTagArgument("type"));
+    args.append(QCFTagArgument("URLpath"));
+    ret["cfindex"].m_ArgumentVariants.append(args);
 
 	ret.insert("cfinput", QCFTag("cfinput", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
@@ -694,6 +839,11 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
     ret.insert("cflogin", QCFTag("cflogin", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
     ret.insert("cfloginuser", QCFTag("cfloginuser", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    args.clear();
+    args.append(QCFTagArgument("name", true));
+    args.append(QCFTagArgument("password", true));
+    args.append(QCFTagArgument("roles", true));
+    ret["cfloginuser"].m_ArgumentVariants.append(args);
 
     ret.insert("cflogout", QCFTag("cflogout", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
@@ -932,6 +1082,24 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
     ret["cfscript"].m_ArgumentVariants.append(args);
 
 	ret.insert("cfsearch", QCFTag("cfsearch", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    args.clear();
+    args.append(QCFTagArgument("name", true));
+    args.append(QCFTagArgument("collection", true));
+    args.append(QCFTagArgument("category"));
+    args.append(QCFTagArgument("categoryTree"));
+    args.append(QCFTagArgument("contextBytes"));
+    args.append(QCFTagArgument("contextHighlightBegin"));
+    args.append(QCFTagArgument("contextHighlightEnd"));
+    args.append(QCFTagArgument("contextPassages"));
+    args.append(QCFTagArgument("criteria"));
+    args.append(QCFTagArgument("language"));
+    args.append(QCFTagArgument("maxRows"));
+    args.append(QCFTagArgument("previousCriteria"));
+    args.append(QCFTagArgument("startRow"));
+    args.append(QCFTagArgument("status"));
+    args.append(QCFTagArgument("suggestions"));
+    args.append(QCFTagArgument("type"));
+    ret["cfsearch"].m_ArgumentVariants.append(args);
 
 	ret.insert("cfselect", QCFTag("cfselect", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
@@ -977,10 +1145,61 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	ret.insert("cftable", QCFTag("cftable", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
     ret.insert("cftextarea", QCFTag("cftextarea", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+    args.clear();
+    args.append(QCFTagArgument("name", true));
+    args.append(QCFTagArgument("basepath"));
+    args.append(QCFTagArgument("bind"));
+    args.append(QCFTagArgument("bindAttribute"));
+    args.append(QCFTagArgument("bindOnLoad"));
+    args.append(QCFTagArgument("disabled"));
+    args.append(QCFTagArgument("enabled"));
+    args.append(QCFTagArgument("fontFormats"));
+    args.append(QCFTagArgument("fontNames"));
+    args.append(QCFTagArgument("fontSizes"));
+    args.append(QCFTagArgument("height"));
+    args.append(QCFTagArgument("html"));
+    args.append(QCFTagArgument("label"));
+    args.append(QCFTagArgument("maxlength"));
+    args.append(QCFTagArgument("message"));
+    args.append(QCFTagArgument("onBindError"));
+    args.append(QCFTagArgument("onChange"));
+    args.append(QCFTagArgument("onClick"));
+    args.append(QCFTagArgument("onError"));
+    args.append(QCFTagArgument("onKeyDown"));
+    args.append(QCFTagArgument("onKeyUp"));
+    args.append(QCFTagArgument("onMouseDown"));
+    args.append(QCFTagArgument("onMouseUp"));
+    args.append(QCFTagArgument("onValidate"));
+    args.append(QCFTagArgument("pattern"));
+    args.append(QCFTagArgument("range"));
+    args.append(QCFTagArgument("required"));
+    args.append(QCFTagArgument("richtext"));
+    args.append(QCFTagArgument("skin"));
+    args.append(QCFTagArgument("sourceForToolTip"));
+    args.append(QCFTagArgument("style"));
+    args.append(QCFTagArgument("stylesXML"));
+    args.append(QCFTagArgument("templatesXML"));
+    args.append(QCFTagArgument("toolbar"));
+    args.append(QCFTagArgument("toolbarOnFocus"));
+    args.append(QCFTagArgument("tooltip"));
+    args.append(QCFTagArgument("validate"));
+    args.append(QCFTagArgument("validateAt"));
+    args.append(QCFTagArgument("value"));
+    args.append(QCFTagArgument("visible"));
+    args.append(QCFTagArgument("width"));
+    args.append(QCFTagArgument("wrap"));
+    ret["cftextarea"].m_ArgumentVariants.append(args);
 
 	ret.insert("cftextinput", QCFTag("cftextinput", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
 	ret.insert("cfthread", QCFTag("cfthread", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+    args.clear();
+    args.append(QCFTagArgument("action"));
+    args.append(QCFTagArgument("duration"));
+    args.append(QCFTagArgument("name"));
+    args.append(QCFTagArgument("priority"));
+    args.append(QCFTagArgument("timeout"));
+    ret["cfthread"].m_ArgumentVariants.append(args);
 
 	ret.insert("cfthrow", QCFTag("cfthrow", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();

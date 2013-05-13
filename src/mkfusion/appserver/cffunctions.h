@@ -12,6 +12,7 @@ Q_DECL_EXPORT double cf_Abs(double);
 Q_DECL_EXPORT int cf_Abs(int);
 Q_DECL_EXPORT QWDDX cf_Abs(const QWDDX&);
 Q_DECL_EXPORT double cf_ACos(double);
+Q_DECL_EXPORT QWDDX cf_ACos(const QWDDX&);
 Q_DECL_EXPORT void cf_AddSOAPRequestHeader(QWDDX*, const QString&, const QString&, const QWDDX&, bool);
 Q_DECL_EXPORT void cf_AddSOAPResponseHeader(const QString&, const QString&, const QWDDX&, bool);
 Q_DECL_EXPORT QString cf_AjaxLink(const QString&);

@@ -14,7 +14,7 @@ QDetail::QDetail(QWidget *parent) :
 
 	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     QFont l_Font = QFont("Courier", 10, 0, false);
 #else
     QFont l_Font = QFont("Monospace", 9, 0, false);

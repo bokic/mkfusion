@@ -12,9 +12,9 @@ public:
 	{
 		setStartupType(QtServiceController::AutoStartup);
 		setServiceDescription("MKFusion application server.");
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 		setDependsOnServices(QStringList() << "Tcpip");
-#elif defined Q_WS_X11
+#elif defined Q_OS_LINUX
 #else
 #error Windows and Linux OSs are currently supported.
 #endif

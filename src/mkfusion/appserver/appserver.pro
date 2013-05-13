@@ -1,7 +1,6 @@
-QT       = core network sql xml
+QT       = core network sql concurrent xml
 CONFIG  += debug_and_release
 TARGET   = mkfusion
-#MAKEFILE = ../../../obj/mkfusion/appserver/Makefile
 DESTDIR  = ../../../bin
 
 debug {

@@ -21,16 +21,12 @@ static void writeError(request_rec *r, const char *error)
 }
 
 #ifdef QT_DEBUG
-
 int iterate_func(void *req, const char *key, const char *value)
 {
-	ap_log_rerror("mod_mkfusion.cpp", 27, APLOG_NOTICE, 0, (request_rec *)req, "New Key/Value pair:");
-	ap_log_rerror("mod_mkfusion.cpp", 28, APLOG_NOTICE, 0, (request_rec *)req, key);
-	ap_log_rerror("mod_mkfusion.cpp", 29, APLOG_NOTICE, 0, (request_rec *)req, value);
+    ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, (request_rec *)req, "New Key/Value pair:[%s], [%s]", key, value);
 
 	return 1;
 }
-
 #endif
 
 static int mkfusion_handler(request_rec *r)
@@ -43,23 +39,23 @@ static int mkfusion_handler(request_rec *r)
 #ifdef QT_DEBUG
 	apr_table_do(iterate_func, r, r->headers_in, NULL);
 
-	ap_log_rerror("mod_mkfusion.cpp", 46, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
-	ap_log_rerror("mod_mkfusion.cpp", 47, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
-	ap_log_rerror("mod_mkfusion.cpp", 48, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
+    ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
+    ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
+    ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
 #endif
 	QSimplifiedLocalSocket l_localSocket;
 #ifdef QT_DEBUG
-	ap_log_rerror("mod_mkfusion.cpp", 52, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
+    ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
 #endif
 	l_localSocket.connectToServer("mkfusion", TIMEOUT);
 #ifdef QT_DEBUG
-	ap_log_rerror("mod_mkfusion.cpp", 56, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
+    ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
 #endif
 
 	if (l_localSocket.waitForConnected())
 	{
 #ifdef QT_DEBUG
-		ap_log_rerror("mod_mkfusion.cpp", 62, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnected() == true.");
+        ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnected() == true.");
 #endif
 		QByteArray l_Send;
 		QDataStream l_IOStream(&l_Send, QIODevice::WriteOnly);
@@ -98,7 +94,7 @@ static int mkfusion_handler(request_rec *r)
 
 		while(l_localSocket.isValid())
 		{
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 			if (l_localSocket.waitForReadyRead())
 #endif
 			{
@@ -115,7 +111,7 @@ static int mkfusion_handler(request_rec *r)
 							l_HeadersDataStream >> l_HeaderSize;
 							if ((l_HeaderSize <= 0)||(l_HeaderSize > 0x01000000))
 							{
-								ap_log_rerror("mod_mkfusion.cpp", 118, APLOG_ERR, 0, r, "mod_mkfusion: Invalid header length.");
+                                ap_log_rerror(__FILE__, __LINE__, APLOG_ERR, 0, r, "mod_mkfusion: Invalid header length.");
 								writeError(r, "Invalid header length.");
 								return OK;
 							}
@@ -168,7 +164,7 @@ static int mkfusion_handler(request_rec *r)
 	}
 	else
 	{
-		ap_log_rerror("mod_mkfusion.cpp", 171, APLOG_ERR, 0, r, "mod_mkfusion: Can\'t connect to mkfusion. Make sure mkfusion server is running.");
+        ap_log_rerror(__FILE__, __LINE__, APLOG_ERR, 0, r, "mod_mkfusion: Can\'t connect to mkfusion. Make sure mkfusion server is running.");
 		writeError(r, "Can\'t connect to mkfusion.<br />\nMake sure mkfusion server is running.");
 	}
 
@@ -178,13 +174,13 @@ static int mkfusion_handler(request_rec *r)
 static void mkfusion_register_hooks(apr_pool_t *p)
 {
 #ifdef QT_DEBUG
-	ap_log_perror("mod_mkfusion.cpp", 150, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
+    ap_log_perror(__FILE__, __LINE__, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
 #endif
 
 	ap_hook_handler(mkfusion_handler, NULL, NULL, APR_HOOK_MIDDLE);
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	ap_add_version_component(p, "MKFusion/0.4.1 (Win32)");
-#elif defined Q_WS_X11
+#elif defined Q_OS_LINUX
 	ap_add_version_component(p, "MKFusion/0.4.1 (Linux)");
 #else
 #error Windows and Linux OSs are currently supported.

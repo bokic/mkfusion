@@ -1,6 +1,5 @@
-QT       = core network
-CONFIG  += debug_and_release qtestlib
-#MAKEFILE = ../../../obj/tests/parsertest2/Makefile
+QT       = core network concurrent testlib
+CONFIG  += debug_and_release
 DESTDIR  = ../../../bin
 
 debug {

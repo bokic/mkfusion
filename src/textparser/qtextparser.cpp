@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QFileInfo>
 #include <QRegExp>
+#include <QDebug>
 #include <QFile>
 #include <QDir>
 
@@ -179,7 +180,7 @@ void QTextParser::setTextTypeByLanguageName(const QString &langName)
     }
 }
 
-/*void QTextParser::parseFile(const QString &fileName)
+void QTextParser::parseFile(const QString &fileName)
 {
     QFileInfo finfo(fileName);
 
@@ -187,7 +188,7 @@ void QTextParser::setTextTypeByLanguageName(const QString &langName)
     if (file.open(QIODevice::ReadOnly))
     {
         QTextStream ts;
-        QStringList fileLines;
+        QTextParserLines fileLines;
 
         ts.setDevice(&file);
         ts.setCodec("UTF-8");
@@ -195,7 +196,10 @@ void QTextParser::setTextTypeByLanguageName(const QString &langName)
 
         while(!ts.atEnd())
         {
-            fileLines.append(ts.readLine());
+            QTextParserLine line;
+            line.Content = ts.readLine();
+            line.EndLine = EndLineTypeCRLFEndLine;
+            fileLines.append(line);
         }
 
         file.close();
@@ -210,10 +214,20 @@ void QTextParser::setTextTypeByLanguageName(const QString &langName)
 
 void QTextParser::parseText(const QString &text, const QString &fileExt)
 {
+    QTextParserLines fileLines;
+
     setTextTypeByFileExtension(fileExt);
 
-    parseTextLines(text.split(QRegExp("(\r\n|\n\r|\r|\n)")));
-}*/
+    foreach(QString curline, text.split(QRegExp("(\r\n|\n\r|\r|\n)")))
+    {
+        QTextParserLine line;
+        line.Content = curline;
+        line.EndLine = EndLineTypeCRLFEndLine;
+        fileLines.append(line);
+    }
+
+    parseTextLines(fileLines);
+}
 
 void QTextParser::parseTextLines(QTextParserLines &lines)
 {
@@ -241,6 +255,8 @@ int QTextParser::findElement(const QTextParserLines &lines, int &cur_line, int &
             cur_line++;
             continue;
         }
+
+        QString line = lines.at(cur_line).Content;
 
         // Searches for closes token
         foreach(QString name, tokens)
@@ -272,8 +288,6 @@ int QTextParser::findElement(const QTextParserLines &lines, int &cur_line, int &
 
                 QRegExp reg(searchRegEx, Qt::CaseInsensitive);
 
-                QString line = lines.at(cur_line).Content;
-
                 int index = reg.indexIn(line, cur_column);
 
                 if ((index >= 0)&&((choosen_position < 0)||(index < choosen_position)))
@@ -288,6 +302,10 @@ int QTextParser::findElement(const QTextParserLines &lines, int &cur_line, int &
                     {
                         choosen_token = name + "_end";
                     }
+
+                    token = choosen_token;
+
+                    return choosen_position;
                 }
             }
             else
@@ -360,6 +378,10 @@ bool QTextParser::parseElement(QTextParserLines &lines, int &cur_line, int &cur_
 
                     Q_ASSERT(reg.cap(0).length() > 0);
                     colorItem.length = reg.cap(0).length();
+
+                    colorItem.type = realToken;
+
+                    qDebug() << "Element: " << colorItem.type << "(" << reg.cap() << ")" << ":" << cur_line << ":" << index;
 
                     lines[cur_line].ColorItems.append(colorItem);
                 }

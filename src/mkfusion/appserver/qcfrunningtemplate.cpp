@@ -5,6 +5,9 @@
 #include "common.h"
 
 #include <QDataStream>
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 #include <QLibrary>
 #include <QDir>
 #include <QUrl>
@@ -220,9 +223,9 @@ void QCFRunningTemplate::worker()
 					m_SERVER[L"COLDFUSION"] = QWDDX(QWDDX::Struct);
 					m_SERVER[L"COLDFUSION"][L"APPSERVER"] = L"mkfusion";
 					m_SERVER[L"COLDFUSION"][L"EXPIRATION"] = QDateTime::currentDateTime();
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 					m_SERVER[L"COLDFUSION"][L"INSTALLKIT"] = L"Windows";
-#elif defined Q_WS_X11
+#elif defined Q_OS_LINUX
 					m_SERVER[L"COLDFUSION"][L"INSTALLKIT"] = L"Linux";
 #else
 #error Windows and Linux OSs are currently supported.
@@ -233,13 +236,13 @@ void QCFRunningTemplate::worker()
 					m_SERVER[L"COLDFUSION"][L"ROOTDIR"] = ((QCFServer*)m_CFServer)->m_MKFusionPath.left(-1);
 					m_SERVER[L"COLDFUSION"][L"SUPPORTEDLOCALES"] = L"English (US),en,en_US";
 					m_SERVER[L"OS"] = QWDDX(QWDDX::Struct);
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 					m_SERVER[L"OS"][L"ADDITIONALINFORMATION"] = L"Windows";
 					m_SERVER[L"OS"][L"ARCH"] = L"i386";
 					m_SERVER[L"OS"][L"BUILDNUMBER"] = L"";
 					m_SERVER[L"OS"][L"NAME"] = L"WINDOWS";
 					m_SERVER[L"OS"][L"VERSION"] = L"XP";
-#elif defined Q_WS_X11
+#elif defined Q_OS_LINUX
 					m_SERVER[L"OS"][L"ADDITIONALINFORMATION"] = L"Linux";
 					m_SERVER[L"OS"][L"ARCH"] = L"i386";
 					m_SERVER[L"OS"][L"BUILDNUMBER"] = L"";
@@ -314,7 +317,11 @@ void QCFRunningTemplate::worker()
 					*/
 					QUrl l_url = QUrl::fromEncoded(QByteArray("?") + m_Request.m_Args.toUtf8(), QUrl::StrictMode);
 
+#if QT_VERSION >= 0x050000
+                    QList<QPair<QString, QString> > l_Arguments = QUrlQuery(l_url).queryItems();
+#else
 					QList<QPair<QString, QString> > l_Arguments = l_url.queryItems();
+#endif
 					QPair<QString, QString> l_Argument;
 
 					foreach(l_Argument, l_Arguments)

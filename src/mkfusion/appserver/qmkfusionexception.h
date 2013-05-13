@@ -17,7 +17,7 @@ public:
 		m_Detail = new QString(p_Detail);
 	}
 	void raise() const { throw *this; }
-	Exception *clone() const { return new QMKFusionException(*this); }
+    QtConcurrent::Exception *clone() const { return new QMKFusionException(*this); }
 	QWDDX GenerateCFCatch()
 	{
 		QWDDX ret(QWDDX::Struct);

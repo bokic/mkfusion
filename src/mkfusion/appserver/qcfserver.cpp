@@ -11,12 +11,13 @@
 #include <QLibrary>
 #include <QDir>
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <windows.h>
 #include <Tlhelp32.h>
 #include <Psapi.h>
-#elif defined Q_WS_X11
-#include<sys/stat.h>
+#elif defined Q_OS_LINUX
+#include <sys/stat.h>
+#include <unistd.h>
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
@@ -25,7 +26,7 @@
 QString getCurrentExecutableFileName()
 {
 	QString ret;
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	static volatile int dummy = 0;
 
 	tagMODULEENTRY32W l_moduleEntry;
@@ -46,7 +47,7 @@ QString getCurrentExecutableFileName()
 
 		CloseHandle(l_handle);
 	}
-#elif defined Q_WS_X11
+#elif defined Q_OS_LINUX
 
 	QFile filename("/proc/" + QString::number(getpid()) + "/cmdline");
 	filename.open(QFile::ReadOnly);
@@ -153,7 +154,7 @@ void QCFServer::start()
 		killTimer(m_mainTimer);
 	}
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
 	if (QFile::exists("/tmp/mkfusion"))
 	{
 		QFile::remove("/tmp/mkfusion");
@@ -165,7 +166,7 @@ void QCFServer::start()
 		return;
 	}
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
 	::chmod("/tmp/mkfusion", S_IRUSR|S_IRGRP|S_IROTH|S_IWUSR|S_IWGRP|S_IWOTH);
 #endif
 
@@ -179,9 +180,9 @@ void QCFServer::start()
 	QLibrary l_TemplateLib;
 
 	QDir l_TemplatesDir(m_MKFusionPath + "templates");
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	QStringList l_Templates = l_TemplatesDir.entryList(QStringList() << "*.dll", QDir::Files, QDir::Name);
-#elif defined Q_WS_X11
+#elif defined Q_OS_LINUX
 	QStringList l_Templates = l_TemplatesDir.entryList(QStringList() << "*.so", QDir::Files, QDir::Name);
 #else
 #error Windows and Linux OSs are currently supported.
@@ -287,9 +288,9 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 	}
 
 	// Generate c file, compile it to dll/so, move it to target dir.
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	QString l_NewTemplateFile = QFileInfo(p_Filename).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".dll";
-#elif defined Q_WS_X11
+#elif defined Q_OS_LINUX
 	QString l_NewTemplateFile = QFileInfo(p_Filename).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".so";
 #else
 #error Windows and Linux OSs are currently supported.

@@ -19,6 +19,7 @@ public:
         QColor foregroundColor;
         QColor backgroundColor;
         QColor underlineColor;
+        QString type;
         QTextParserUnderlineType underline;
         QTextParserColorItem() : index(0), length(0), underline(UnderlineTypeNoUnderline) {}
     };
@@ -57,12 +58,14 @@ public:
     };
 
     QTextParser();
-    static void loadParserDefinitionsFromDir(const QString &);
-    void setTextTypeByFileExtension(const QString &);
-    void setTextTypeByLanguageName(const QString &);
-    void parseTextLines(QTextParserLines &);
-    int findElement(const QTextParserLines &, int &, int &, const QStringList &, QString &);
-    bool parseElement(QTextParserLines &, int &, int &, const QStringList &);
+    static void loadParserDefinitionsFromDir(const QString &dir);
+    void setTextTypeByFileExtension(const QString &fileExt);
+    void setTextTypeByLanguageName(const QString &langName);
+    void parseFile(const QString &fileName);
+    void parseText(const QString &text, const QString &fileExt);
+    void parseTextLines(QTextParserLines &lines);
+    int findElement(const QTextParserLines &lines, int &cur_line, int &cur_column, const QStringList &tokens, QString &token);
+    bool parseElement(QTextParserLines &lines, int &cur_line, int &cur_column, const QStringList &tokens);
 private:
     QTextParserLanguageDefinition language;
 };

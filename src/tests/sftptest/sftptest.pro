@@ -1,6 +1,5 @@
 QT       = core
 CONFIG  += debug_and_release
-#MAKEFILE = ../../../obj/tests/sftptest/Makefile
 DESTDIR  = ../../../bin
 
 debug {
@@ -22,4 +21,4 @@ INCLUDEPATH += . ../../../libs/libssh/include
 SOURCES += main.cpp
 
 win32:LIBS += ../../../libs/libssh/lib/libssh.dll.a
-unix:LIBS  += /usr/lib/libssh.so
+unix:LIBS += -lssh

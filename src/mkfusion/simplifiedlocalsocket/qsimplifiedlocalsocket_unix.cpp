@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <sys/errno.h>
 #include <sys/un.h>
+#include <unistd.h>
 #include <fcntl.h>
 #include <poll.h>
 
@@ -58,13 +59,15 @@ void QSimplifiedLocalSocket::connectToServer(QString p_Name, int msecs)
 	}
 
 	l_SocketName.sun_family = AF_LOCAL;
-	QByteArray l_AsciiName = l_Name.toAscii();
+    QByteArray l_AsciiName = l_Name.toLatin1();
 
 	::strncpy(l_SocketName.sun_path, l_AsciiName.constData(), l_AsciiName.count() + 1);
 
 	int c = ::connect(m_Handle, (struct sockaddr *) &l_SocketName, SUN_LEN(&l_SocketName));
 	int t = errno;
-	c = 0;
+
+    Q_UNUSED(c); // TODO: make use of this variable.
+    Q_UNUSED(t); // TODO: make use of this variable.
 }
 
 bool QSimplifiedLocalSocket::waitForConnected()

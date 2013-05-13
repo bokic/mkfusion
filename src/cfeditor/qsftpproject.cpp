@@ -210,6 +210,8 @@ void QSFTPProject::CreateDir(const QString& p_Folder)
 
 void QSFTPProject::DeleteDir(const QString& p_Folder, bool p_Recursive)
 {
+    Q_UNUSED(p_Recursive); // TODO: Recursive
+
 	if (m_SFTPSession == NULL)
 	{
 		return;

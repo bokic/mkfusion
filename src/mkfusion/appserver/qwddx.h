@@ -180,6 +180,12 @@ public:
 	QDateTime toDateTime();
 	bool toBool();
 
+    bool asBool();
+    int asInt();
+    double asDouble();
+    int asNumber();
+    QString asString();
+
 	// Member Variables
 	QVector<QWDDX> m_Array;
 	quint32 m_ArrayDimension;

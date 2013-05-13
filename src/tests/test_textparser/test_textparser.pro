@@ -1,8 +1,6 @@
 QT       += core xml
-#QT       -= gui
-CONFIG  += debug_and_release
-#MAKEFILE = ../../../obj/tests/test_textparser/Makefile
-DESTDIR  = ../../../bin
+CONFIG   += debug_and_release
+DESTDIR   = ../../../bin
 
 debug {
 	OBJECTS_DIR = ../../../obj/tests/test_textparser/debug

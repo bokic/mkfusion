@@ -1,6 +1,7 @@
 QT       = core gui xml
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 CONFIG  += debug_and_release
-#MAKEFILE = ../../../obj/tests/editwidget/Makefile
 DESTDIR  = ../../../bin
 
 debug {
@@ -19,6 +20,6 @@ release {
 DEPENDPATH  += . ../../cfeditor/codeeditwidget ../../textparser
 INCLUDEPATH += . ../../cfeditor/codeeditwidget ../../textparser
 
-SOURCES = main.cpp qappmaindialog.cpp qcodeeditwidget.cpp ../../textparser/qtextparser.cpp
-HEADERS =          qappmaindialog.h   qcodeeditwidget.h   ../../textparser/qtextparser.h
+SOURCES = main.cpp qappmaindialog.cpp ../../cfeditor/codeeditwidget/qcodeeditwidget.cpp ../../textparser/qtextparser.cpp
+HEADERS =          qappmaindialog.h   ../../cfeditor/codeeditwidget/qcodeeditwidget.h   ../../textparser/qtextparser.h
 FORMS   =          qappmaindialog.ui

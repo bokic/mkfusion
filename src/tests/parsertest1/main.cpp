@@ -1,4 +1,4 @@
-#include <QtGui/QApplication>
+#include <QApplication>
 #include "parsertest1.h"
 
 int main(int argc, char *argv[])

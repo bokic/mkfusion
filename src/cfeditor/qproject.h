@@ -7,6 +7,7 @@
 
 #include "qprojectfile.h"
 #include <QString>
+#include <QObject>
 #include <QHash>
 #include <QList>
 

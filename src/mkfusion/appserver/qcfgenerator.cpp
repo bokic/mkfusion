@@ -97,7 +97,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 	l_cppFile.write("#include \"cffunctions.h\"\n");
 	l_cppFile.write("#include \"common.h\"\n");
 	l_cppFile.write("\n");
-	l_cppFile.write("#ifdef Q_WS_WIN\n");
+    l_cppFile.write("#ifdef Q_OS_WIN\n");
 	l_cppFile.write("#define MY_EXPORT __declspec(dllexport)\n");
 	l_cppFile.write("#else\n");
 	l_cppFile.write("#define MY_EXPORT\n");
@@ -108,9 +108,9 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 	l_cppFile.write("public:\n");
 	l_cppFile.write("	QCFGeneratedTemplate()\n");
 	l_cppFile.write("	{\n");
-	l_cppFile.write(("		m_isModified.m_Filename = QString::fromWCharArray(L\"" + toCPPEncodeStr(p_Parser.m_FileName) + "\");\n").toAscii());
-	l_cppFile.write(("		m_isModified.m_Size = " + QString::number(p_Parser.m_CFMFileSize) + ";\n").toAscii());
-	l_cppFile.write(("		m_isModified.m_Modified = " + QString::number(p_Parser.m_CFMModifyDateTime) + ";\n").toAscii());
+    l_cppFile.write(("		m_isModified.m_Filename = QString::fromWCharArray(L\"" + toCPPEncodeStr(p_Parser.m_FileName) + "\");\n").toLatin1());
+    l_cppFile.write(("		m_isModified.m_Size = " + QString::number(p_Parser.m_CFMFileSize) + ";\n").toLatin1());
+    l_cppFile.write(("		m_isModified.m_Modified = " + QString::number(p_Parser.m_CFMModifyDateTime) + ";\n").toLatin1());
 	l_cppFile.write("	}\n");
 	l_cppFile.write("	\n");
 	l_cppFile.write("	virtual void run(QCFRunningTemplate* p_TemplateInstance)\n");
@@ -139,7 +139,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 
 				if (!m_EnableCFOutputOnly)
 				{
-					l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+                    l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toLatin1());
 				}
 			}
 		}
@@ -156,7 +156,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 
 				if (!m_EnableCFOutputOnly)
 				{
-					l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+                    l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toLatin1());
 				}
 			}
 		}
@@ -164,8 +164,8 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 		QString l_CFromCFTag = GenerateCCodeFromCFTag(l_Tags[c]);
 		if (!l_CFromCFTag.isEmpty())
 		{
-			l_cppFile.write(QString("\n// Line %1.\n").arg(l_Tags[c].m_Start).toAscii());
-			l_cppFile.write((line + l_CFromCFTag + "\n").toAscii());
+            l_cppFile.write(QString("\n// Line %1.\n").arg(l_Tags[c].m_Start).toLatin1());
+            l_cppFile.write((line + l_CFromCFTag + "\n").toLatin1());
 		}
 
 		if ((l_cf8tags.contains(l_Tags[c].m_Name))&&(l_cf8tags[l_Tags[c].m_Name].m_ExpressionInside == QCFTag::WithExpressionInside))
@@ -193,7 +193,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 
 		if (!m_EnableCFOutputOnly)
 		{
-			l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+            l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toLatin1());
 		}
 	}
 	else
@@ -209,7 +209,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 
 			if (!m_EnableCFOutputOnly)
 			{
-				l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toAscii());
+                l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toLatin1());
 			}
 		}
 	}
@@ -226,7 +226,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 	QProcess process;
 
 	// Compile
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     QString l_QtPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\qt\\";
     QString l_MingwPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\mingw\\";
 
@@ -235,7 +235,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 #else
 	process.start(l_MingwPath+"bin\\g++.exe -c -g  -frtti -fexceptions -mthreads -Wall -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I\""+l_MingwPath+"include\" -I\""+l_QtPath+"include\\QtCore\" -I\""+l_QtPath+"include\\QtNetwork\" -I\""+l_QtPath+"include\" -I\""+p_MKFusionPath+"include\" -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".cpp\"");
 #endif // #ifdef QT_NO_DEBUG
-#elif defined Q_WS_X11
+#elif defined Q_OS_LINUX
 #ifdef QT_NO_DEBUG
 	process.start("/usr/bin/g++ -c -pipe -O2 -Wall -W -D_REENTRANT -fPIC -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtNetwork -I/usr/include/qt4 -I\""+p_MKFusionPath+"include\" -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".cpp\"");
 #else
@@ -243,7 +243,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 #endif // #ifdef QT_NO_DEBUG
 #else
 #error Windows and Linux OSs are currently supported.
-#endif // #ifdef Q_WS_WIN
+#endif // #ifdef Q_OS_WIN
 
 	bool finished = process.waitForFinished(-1); // TODO: This line blocks on ubuntu.
 
@@ -255,13 +255,13 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 	}
 
 	// Link
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #ifdef QT_NO_DEBUG
     process.start(l_MingwPath+"bin\\g++.exe -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -mthreads -Wl -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQtCore4");
 #else
     process.start(l_MingwPath+"bin\\g++.exe -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -mthreads -Wl -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQtCored4");
 #endif
-#elif defined Q_WS_X11
+#elif defined Q_OS_LINUX
 #ifdef QT_NO_DEBUG
 	process.start("/usr/bin/g++ -Wl,-O1 -shared -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".so\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" -L/usr/lib -lQtCore -lpthread");
 #else

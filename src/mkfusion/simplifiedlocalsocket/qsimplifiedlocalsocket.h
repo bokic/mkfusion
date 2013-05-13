@@ -2,7 +2,7 @@
 #define QSIMPLIFIEDLOCALSOCKET_H
 
 #include <qglobal.h>
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <windows.h>
 #endif
 #include <QByteArray>
@@ -21,10 +21,10 @@ public:
 	QByteArray readAll();
 	void close();
 private:
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	HANDLE m_Handle;
 #endif
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
 	int m_Handle;
 	int m_Timeout;
 #endif

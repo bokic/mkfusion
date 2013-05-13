@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QByteArray>
+#include <QDebug>
 #include <QDir>
 
 // SFTP
@@ -12,7 +13,7 @@
 #include <fcntl.h>
 
 
-QProjectProperties::QProjectProperties(QWidget *parent, Qt::WFlags flags): QDialog(parent, flags)
+QProjectProperties::QProjectProperties(QWidget *parent, Qt::WindowFlags flags): QDialog(parent, flags)
 {
 	ui.setupUi(this);
 
@@ -99,12 +100,12 @@ void QProjectProperties::on_sftp_Test_button_clicked()
 
 	if (ui.sftp_Port_spinBox->value() != 0)
 	{
-		ssh_options_set(l_SSHSession, SSH_OPTIONS_PORT_STR, QString::number(ui.sftp_Port_spinBox->value()).toAscii());
+        ssh_options_set(l_SSHSession, SSH_OPTIONS_PORT_STR, QString::number(ui.sftp_Port_spinBox->value()).toLatin1());
 	}
 
 	if (ssh_connect(l_SSHSession) == 0)
 	{
-		if (ssh_userauth_password(l_SSHSession, ui.sftp_Username_lineEdit->text().toAscii(), ui.sftp_Password_lineEdit->text().toAscii()) == 0)
+        if (ssh_userauth_password(l_SSHSession, ui.sftp_Username_lineEdit->text().toLatin1(), ui.sftp_Password_lineEdit->text().toLatin1()) == 0)
 		{
 			QMessageBox::information(this, tr("Information"), tr("Login successfull."));
 		}
@@ -136,7 +137,7 @@ void QProjectProperties::on_rds_Test_button_clicked()
 
 	l_RDSServer.setHostName(ui.rds_Host_lineEdit->text());
 	l_RDSServer.setUserName(ui.rds_Username_lineEdit->text());
-	l_RDSServer.setPassword(ui.rds_Password_lineEdit->text().toAscii());
+    l_RDSServer.setPassword(ui.rds_Password_lineEdit->text().toLatin1());
 
 	QFileIOService l_FileIO;
 	QMap<QString, QString> l_map;

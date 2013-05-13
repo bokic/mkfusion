@@ -2,7 +2,6 @@ TEMPLATE  = lib
 QT        = core
 CONFIG   += debug_and_release
 TARGET    = mod_mkfusion
-#MAKEFILE  = ../../../obj/mkfusion/mod_mkfusion/Makefile
 DESTDIR   = ../../../bin
 
 debug {

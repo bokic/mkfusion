@@ -1,6 +1,5 @@
 QT       =
 CONFIG  += debug_and_release
-#MAKEFILE = ../../../obj/mkfusion/servicecontrol/Makefile
 DESTDIR  = ../../../WINDOWS
 
 debug {

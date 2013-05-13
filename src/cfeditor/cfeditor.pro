@@ -1,6 +1,7 @@
-QT       = core gui network xml webkit
+QT       = core gui network xml webkit webkitwidgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 CONFIG  += debug_and_release
-#MAKEFILE = ../../obj/cfeditor/Makefile
 DESTDIR  = ../../bin
 
 debug {

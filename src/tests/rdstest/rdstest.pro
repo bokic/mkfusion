@@ -1,6 +1,5 @@
-QT       = core network xml
-CONFIG  += debug_and_release qtestlib
-#MAKEFILE = ../../../obj/tests/rdstest/Makefile
+QT       = core network xml testlib
+CONFIG  += debug_and_release
 DESTDIR  = ../../../bin
 
 debug {

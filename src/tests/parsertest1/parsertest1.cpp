@@ -2,14 +2,14 @@
 #include "qcfparser.h"
 #include "qdetail.h"
 
-#include <QtGui/QListWidgetItem>
-#include <QtCore/QFileInfoList>
-#include <QtGui/QColor>
-#include <QtCore/QHash>
-#include <QtGui/QFileDialog>
-#include <QtCore/QDir>
+#include <QListWidgetItem>
+#include <QFileInfoList>
+#include <QFileDialog>
+#include <QColor>
+#include <QHash>
+#include <QDir>
 
-CFTest1::CFTest1(QWidget *parent, Qt::WFlags flags)
+CFTest1::CFTest1(QWidget *parent, Qt::WindowFlags flags)
 	: QDialog(parent, flags)
 {
 	ui.setupUi(this);
@@ -125,7 +125,7 @@ void CFTest1::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
         file = file.left(err);
     }
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	if ((file.count() > 3)&&(file.at(1) == ':')&&(file.at(2) == QDir::separator()))
 	{
 		QDetail detailForm(this);
