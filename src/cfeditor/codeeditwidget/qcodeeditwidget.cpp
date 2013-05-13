@@ -5,9 +5,6 @@
 #include <QScrollBar>
 #include <QKeyEvent>
 #include <QPalette>
-#ifdef QT_DEBUG
-#include <QDebug>
-#endif
 #include <QEvent>
 #include <QImage>
 
@@ -238,12 +235,16 @@ QCodeEditWidget::QCodeEditWidget(QWidget *parent) :
 	m_SelectionPosition.m_Column = 1;
 
 	QPalette l_Palette;
+    QFontMetrics l_fm = QFontMetrics(m_TextFont);
 	m_LineNumbersBackground = QBrush(l_Palette.color(QPalette::Window), Qt::SolidPattern);
 	setAutoFillBackground(false);
 
-	m_CursorHeight = QFontMetrics(m_TextFont).height();
-
 	m_TextFont.setStyleHint(QFont::Courier, QFont::PreferAntialias);
+
+    m_FontHeight = l_fm.height();
+    m_LineHeight = m_FontHeight + 1;
+
+    m_LineYOffset = m_LineHeight - l_fm.descent() - 1;
 
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -523,9 +524,9 @@ void QCodeEditWidget::ensureCaretIsVisible()
 	{
 		verticalScrollBar()->setValue(m_CarretPosition.m_Row - 1);
 	}
-	else if (m_CarretPosition.m_Row > m_ScrollYLinePos + (viewport()->height() / 16)) // TODO: 16 is hardcoded line spaceing
+    else if (m_CarretPosition.m_Row > m_ScrollYLinePos + (viewport()->height() / m_LineHeight))
 	{
-		verticalScrollBar()->setValue(m_CarretPosition.m_Row - (viewport()->height() / 16)); // TODO: 16 is hardcoded line spaceing
+        verticalScrollBar()->setValue(m_CarretPosition.m_Row - (viewport()->height() / m_LineHeight));
 	}
 
 	// Horizontal aligment
@@ -533,9 +534,9 @@ void QCodeEditWidget::ensureCaretIsVisible()
 	{
 		verticalScrollBar()->setValue(m_CarretPosition.m_Column - 1);
 	}
-	else if (m_CarretPosition.m_Column > m_ScrollXCharPos + (viewport()->width() / 12)) // TODO: 12 is hardcoded line spaceing
+    else if (m_CarretPosition.m_Column > m_ScrollXCharPos + (viewport()->width() / m_LineYOffset))
 	{
-		verticalScrollBar()->setValue(m_ScrollXCharPos + (viewport()->width() / 12)); // TODO: 12 is hardcoded line spaceing
+        verticalScrollBar()->setValue(m_ScrollXCharPos + (viewport()->width() / m_LineYOffset));
 	}
 
 	viewport()->update();
@@ -769,7 +770,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
                 if (colorItems.count() == 0)
                 {
                     int x = l_LineNumbersPanelWidth;
-                    int y = (l_line * l_fontHeight) + 12; // TODO: 12 is hardcoded line spaceing
+                    int y = (l_line * l_fontHeight) + m_LineYOffset;
                     QString text = l_Line;
 
                     painter.drawText(x, y, text);
@@ -789,7 +790,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
                             painter.setPen(colorItems.at(c).foregroundColor);
 
                             int x = Xcoord;
-                            int y = (l_line * l_fontHeight) + 12; // TODO: 12 is hardcoded line spaceing
+                            int y = (l_line * l_fontHeight) + m_LineYOffset;
                             QString text = l_Line.mid(colorItem.index - l_HorizontalValue, colorItem.length);
 
                             painter.drawText(x, y, text);
@@ -802,7 +803,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
                         else if (colorItem.index > cur_pos)
                         {
                             int x = Xcoord;
-                            int y = (l_line * l_fontHeight) + 12; // TODO: 12 is hardcoded line spaceing
+                            int y = (l_line * l_fontHeight) + m_LineYOffset;
                             QString text = l_Line.mid(cur_pos - l_HorizontalValue, colorItem.index - cur_pos);
                             QFontMetrics fm(painter.font());
 
@@ -834,7 +835,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 	{
 		const QBrush oldBrush = painter.brush();
 		painter.setBrush(QColor(Qt::black));
-		painter.drawRect(l_LineNumbersPanelWidth + ((m_CarretPosition.m_Column - m_ScrollXCharPos - 1) * l_fontWidth), ((m_CarretPosition.m_Row - m_ScrollYLinePos - 1) * l_fontHeight), ceil(m_CursorHeight * 0.05), l_fontHeight - 1);
+        painter.drawRect(l_LineNumbersPanelWidth + ((m_CarretPosition.m_Column - m_ScrollXCharPos - 1) * l_fontWidth), ((m_CarretPosition.m_Row - m_ScrollYLinePos - 1) * l_fontHeight), ceil(m_LineHeight * 0.05), l_fontHeight - 1);
 		painter.setBrush(oldBrush);
 	}
 
@@ -870,12 +871,8 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
 void QCodeEditWidget::mouseMoveEvent(QMouseEvent *event)
 {
-		if (event->type() == QEvent::MouseMove)
-	{
-#ifdef QT_DEBUG
-		//qDebug() << "QCodeEditWidget::mouseMoveEvent(QMouseEvent *event) <-- event->type() == QEvent::MouseMove";
-#endif
-
+    if (event->type() == QEvent::MouseMove)
+    {
 		if (m_SelectMouseDown)
 		{
 			m_SelectMouseDown = true;
@@ -956,10 +953,6 @@ void QCodeEditWidget::mousePressEvent(QMouseEvent *event)
 
 void QCodeEditWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-#ifdef QT_DEBUG
-	//qDebug() << "QCodeEditWidget::mouseReleaseEvent(QMouseEvent *event)";
-#endif
-
 	m_SelectMouseDown = false;
 
 	if ((event->button() == Qt::LeftButton)&&(event->x() < 16))

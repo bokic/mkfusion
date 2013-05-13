@@ -65,7 +65,9 @@ private:
 	int m_LineNumbersPanelWidth;
 	int m_currentlyBlinkCursorShowen;
 	int m_CursorTimerID;
-	int m_CursorHeight;
+    int m_FontHeight;
+    int m_LineHeight;
+    int m_LineYOffset;
 	bool m_SelectMouseDown;
 
     struct CarretPosition {
