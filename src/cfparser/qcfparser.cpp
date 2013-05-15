@@ -639,7 +639,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 										child.m_Type = Number;
 										child.m_Text = ret.m_Text;
 										ret.m_ChildElements.append(child);
-                                    }else {
+                                    } else {
 										ret.m_Type = Number;
 									}
 								}

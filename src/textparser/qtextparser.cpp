@@ -7,6 +7,7 @@
 #include <QRegExp>
 #include <QDebug>
 #include <QFile>
+#include <QList>
 #include <QDir>
 
 QList<QTextParser::QTextParserLanguageDefinition> languageDefinitions;
@@ -180,8 +181,9 @@ void QTextParser::setTextTypeByLanguageName(const QString &langName)
     }
 }
 
-void QTextParser::parseFile(const QString &fileName)
+QTextParser::QTextParserLines QTextParser::parseFile(const QString &fileName)
 {
+    QTextParserLines fileLines;
     QFileInfo finfo(fileName);
 
     QFile file(fileName);
@@ -210,9 +212,11 @@ void QTextParser::parseFile(const QString &fileName)
 
         parseTextLines(fileLines);
     }
+
+    return fileLines;
 }
 
-void QTextParser::parseText(const QString &text, const QString &fileExt)
+QTextParser::QTextParserLines QTextParser::parseText(const QString &text, const QString &fileExt)
 {
     QTextParserLines fileLines;
 
@@ -227,6 +231,8 @@ void QTextParser::parseText(const QString &text, const QString &fileExt)
     }
 
     parseTextLines(fileLines);
+
+    return fileLines;
 }
 
 void QTextParser::parseTextLines(QTextParserLines &lines)
@@ -235,6 +241,122 @@ void QTextParser::parseTextLines(QTextParserLines &lines)
     int cur_column = 0;
 
     while(parseElement(lines, cur_lines, cur_column, language.startsWith));
+}
+
+bool QTextParser::parseElement(QTextParserLines &lines, int &cur_line, int &cur_column, const QStringList &tokens)
+{
+    QString choosen_token;
+    int pos;
+
+    pos = findElement(lines, cur_line, cur_column, tokens, choosen_token);
+
+    // Parses closes token found
+    if (pos >= 0)
+    {
+        if (language.tokens[choosen_token].tokenString.isEmpty())
+        {
+            // start end token
+            QString targetToken;
+            QString realToken;
+
+            if (!choosen_token.endsWith("_end"))
+            {
+                realToken = choosen_token;
+                targetToken = language.tokens[realToken].startString;
+            }
+            else
+            {
+                realToken = choosen_token.left(choosen_token.count() - 4);
+                targetToken = language.tokens[realToken].endString;
+            }
+
+            QRegExp reg(targetToken, Qt::CaseInsensitive);
+            int index = reg.indexIn(lines.at(cur_line).Content, cur_column);
+
+            if(index >= 0)
+            {
+                if (!language.tokens[realToken].textColor.isEmpty())
+                {
+                    QColor col(language.tokens[realToken].textColor);
+
+                    QTextParserColorItem colorItem;
+
+                    colorItem.foregroundColor = col;
+
+                    colorItem.index = index;
+
+                    Q_ASSERT(reg.cap(0).length() > 0);
+                    colorItem.length = reg.cap(0).length();
+
+                    colorItem.type = realToken;
+
+                    qDebug() << "Element: " << colorItem.type << "(" << reg.cap() << ")" << ":" << cur_line << ":" << index;
+
+                    lines[cur_line].ColorItems.append(colorItem);
+                }
+
+                Q_ASSERT(reg.cap(0).length() > 0);
+                cur_column += reg.cap(0).length();
+
+
+                if (!choosen_token.endsWith("_end"))
+                {
+                    QStringList newTokens = language.tokens[choosen_token].nestedTokens;
+                    QString endToken = choosen_token + "_end";
+                    newTokens.prepend(endToken);
+                    choosen_token.clear();
+
+                    while(choosen_token != endToken)
+                    {
+                        // TODO: Not optimal element search. parseElement called after findElement call.
+                        if (findElement(lines, cur_line, cur_column, newTokens, choosen_token) == -1)
+                        {
+                            break;
+                        }
+
+                        parseElement(lines, cur_line, cur_column, newTokens);
+                    }
+                }
+            }
+            else
+            {
+                qDebug("Parser error. File: %s, line: %u", __FILE__, __LINE__);
+            }
+        }
+        else
+        {
+            // token
+            QRegExp reg(language.tokens[choosen_token].tokenString, Qt::CaseInsensitive);
+            int index = reg.indexIn(lines.at(cur_line).Content, cur_column);
+
+            if(index >= 0)
+            {
+                if (!language.tokens[choosen_token].textColor.isEmpty())
+                {
+                    QColor col(language.tokens[choosen_token].textColor);
+
+                    QTextParserColorItem colorItem;
+
+                    colorItem.foregroundColor = col;
+
+                    colorItem.index = index;
+                    colorItem.length = reg.cap(0).length();
+
+                    lines[cur_line].ColorItems.append(colorItem);
+                }
+
+                cur_column += reg.cap(0).length();
+            }
+            else
+            {
+                qDebug("Parser error. File: %s, line: %u", __FILE__, __LINE__);
+            }
+        }
+
+        return true;
+    }
+
+    return false;
 }
 
 int QTextParser::findElement(const QTextParserLines &lines, int &cur_line, int &cur_column, const QStringList &tokens, QString &token)
@@ -331,121 +453,4 @@ int QTextParser::findElement(const QTextParserLines &lines, int &cur_line, int &
     }
 
     return choosen_position;
-}
-
-bool QTextParser::parseElement(QTextParserLines &lines, int &cur_line, int &cur_column, const QStringList &tokens)
-{
-    int closes_position;
-    QString choosen_token;
-
-    closes_position = findElement(lines, cur_line, cur_column, tokens, choosen_token);
-
-    // Parses closes token found
-    if (closes_position >= 0)
-    {
-        if (language.tokens[choosen_token].tokenString.isEmpty())
-        {
-            // start end token
-            QString targetToken;
-            QString realToken;
-
-            if (!choosen_token.endsWith("_end"))
-            {
-                realToken = choosen_token;
-                targetToken = language.tokens[realToken].startString;
-            }
-            else
-            {
-                realToken = choosen_token.left(choosen_token.count() - 4);
-                targetToken = language.tokens[realToken].endString;
-            }
-
-
-            QRegExp reg(targetToken, Qt::CaseInsensitive);
-            int index = reg.indexIn(lines.at(cur_line).Content, cur_column);
-
-            if(index >= 0)
-            {
-                if (!language.tokens[realToken].textColor.isEmpty())
-                {
-                    QColor col(language.tokens[realToken].textColor);
-
-                    QTextParserColorItem colorItem;
-
-                    colorItem.foregroundColor = col;
-
-                    colorItem.index = index;
-
-                    Q_ASSERT(reg.cap(0).length() > 0);
-                    colorItem.length = reg.cap(0).length();
-
-                    colorItem.type = realToken;
-
-                    qDebug() << "Element: " << colorItem.type << "(" << reg.cap() << ")" << ":" << cur_line << ":" << index;
-
-                    lines[cur_line].ColorItems.append(colorItem);
-                }
-
-                Q_ASSERT(reg.cap(0).length() > 0);
-                cur_column += reg.cap(0).length();
-
-
-                if (!choosen_token.endsWith("_end"))
-                {
-                    QStringList newTokens = language.tokens[choosen_token].nestedTokens;
-                    QString endToken = choosen_token + "_end";
-                    newTokens.prepend(endToken);
-                    choosen_token.clear();
-
-                    while(choosen_token != endToken)
-                    {
-                        // TODO: Not optimal element search. parseElement called after findElement call.
-                        if (findElement(lines, cur_line, cur_column, newTokens, choosen_token) == -1)
-                        {
-                            break;
-                        }
-
-                        parseElement(lines, cur_line, cur_column, newTokens);
-                    }
-                }
-            }
-            else
-            {
-                qDebug("Parser error. File: %s, line: %u", __FILE__, __LINE__);
-            }
-        }
-        else
-        {
-            // token
-            QRegExp reg(language.tokens[choosen_token].tokenString, Qt::CaseInsensitive);
-            int index = reg.indexIn(lines.at(cur_line).Content, cur_column);
-
-            if(index >= 0)
-            {
-                if (!language.tokens[choosen_token].textColor.isEmpty())
-                {
-                    QColor col(language.tokens[choosen_token].textColor);
-
-                    QTextParserColorItem colorItem;
-
-                    colorItem.foregroundColor = col;
-
-                    colorItem.index = index;
-                    colorItem.length = reg.cap(0).length();
-
-                    lines[cur_line].ColorItems.append(colorItem);
-                }
-
-                cur_column += reg.cap(0).length();
-            }
-            else
-            {
-                qDebug("Parser error. File: %s, line: %u", __FILE__, __LINE__);
-            }
-        }
-
-        return true;
-    }
-
-    return false;
 }

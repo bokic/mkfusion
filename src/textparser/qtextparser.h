@@ -61,11 +61,11 @@ public:
     static void loadParserDefinitionsFromDir(const QString &dir);
     void setTextTypeByFileExtension(const QString &fileExt);
     void setTextTypeByLanguageName(const QString &langName);
-    void parseFile(const QString &fileName);
-    void parseText(const QString &text, const QString &fileExt);
+    QTextParserLines parseFile(const QString &fileName);
+    QTextParserLines parseText(const QString &text, const QString &fileExt);
     void parseTextLines(QTextParserLines &lines);
-    int findElement(const QTextParserLines &lines, int &cur_line, int &cur_column, const QStringList &tokens, QString &token);
     bool parseElement(QTextParserLines &lines, int &cur_line, int &cur_column, const QStringList &tokens);
+    int findElement(const QTextParserLines &lines, int &cur_line, int &cur_column, const QStringList &tokens, QString &token);
 private:
     QTextParserLanguageDefinition language;
 };
