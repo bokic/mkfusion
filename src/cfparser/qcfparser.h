@@ -49,16 +49,17 @@ private:
 	QString m_Error;
 	QString m_Text;
 	QCFParserMode m_Mode;
-	static bool TrimCFCode(const QString&, int&);
-	QCFParserElement ParseCFCode(const QString&, const qint32, const QCFParserElementType, QCFParserElement*);
+    static bool TrimCFCode(const QString &, int &);
+    bool isValidVarChar(const QString &p_Text, int index);
+    QCFParserElement ParseCFCode(const QString &, const qint32, const QCFParserElementType, QCFParserElement *);
     quint32 FindCFCommentSize(QString, quint32);
 public:
 	QCFParser();
 	QCFParser(QCFParserMode);
 	QString getError();
-	const QString& getText();
+    const QString &getText();
 	quint32 getErrorPosition();
-	QCFParserErrorType Parse(const QString&, bool* = NULL);
+    QCFParserErrorType Parse(const QString &, bool * = NULL);
 	QCFParserErrorType BuildTagTree();
 	QCFParserErrorType validate();
 	QList<QCFParserTag> getTags();

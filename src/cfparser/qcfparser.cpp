@@ -99,6 +99,23 @@ bool QCFParser::TrimCFCode(const QString& p_Text, int& p_Offset)
 	return false;
 }
 
+bool QCFParser::isValidVarChar(const QString &p_Text, int index)
+{
+    if ((index < 0)||(index >= p_Text.count()))
+    {
+        return false;
+    }
+
+    ushort ch = p_Text.at(index).unicode();
+
+    if (((ch >= 'A')&&(ch <= 'Z'))||((ch >= 'a')&&(ch <= 'z'))||((ch >= '0')&&(ch <= '9'))||(ch == '_'))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Offset, const QCFParserElementType p_ElementType, QCFParserElement *parent = 0)
 {
 	QCFParserElement ret;
@@ -649,7 +666,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 				break;
 			}
 
-			if (p_Text.mid(l_Offset, 2).compare("eq", Qt::CaseInsensitive) == 0)
+            if ((p_Text.mid(l_Offset, 2).compare("eq", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 3)))
 			{
 				ret.m_Position = l_Offset;
 				ret.m_Size = 2;
@@ -657,7 +674,15 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 				break;
 			}
 
-			if (p_Text.mid(l_Offset, 3).compare("neq", Qt::CaseInsensitive) == 0)
+            if ((p_Text.mid(l_Offset, 3).compare("neq", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 4)))
+			{
+				ret.m_Position = l_Offset;
+				ret.m_Size = 3;
+				ret.m_Text = p_Text.mid(l_Offset, 3).toUpper();
+				break;
+            }
+
+            if ((p_Text.mid(l_Offset, 3).compare("and", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 4)))
 			{
 				ret.m_Position = l_Offset;
 				ret.m_Size = 3;
@@ -665,15 +690,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 				break;
 			}
 
-			if (p_Text.mid(l_Offset, 3).compare("and", Qt::CaseInsensitive) == 0)
-			{
-				ret.m_Position = l_Offset;
-				ret.m_Size = 3;
-				ret.m_Text = p_Text.mid(l_Offset, 3).toUpper();
-				break;
-			}
-
-			if (p_Text.mid(l_Offset, 2).compare("or", Qt::CaseInsensitive) == 0)
+            if ((p_Text.mid(l_Offset, 2).compare("or", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 3)))
 			{
 				ret.m_Position = l_Offset;
 				ret.m_Size = 2;
@@ -681,7 +698,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 				break;
 			}
 
-			if (p_Text.mid(l_Offset, 2).compare("is", Qt::CaseInsensitive) == 0)
+            if ((p_Text.mid(l_Offset, 2).compare("is", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 3)))
 			{
 				ret.m_Position = l_Offset;
 				ret.m_Size = 2;
@@ -689,7 +706,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 				break;
 			}
 
-			if (p_Text.mid(l_Offset, 6).compare("is not", Qt::CaseInsensitive) == 0)
+            if ((p_Text.mid(l_Offset, 6).compare("is not", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 7)))
 			{
 				ret.m_Position = l_Offset;
 				ret.m_Size = 6;
@@ -697,7 +714,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 				break;
 			}
 
-			if (p_Text.mid(l_Offset, 8).compare("contains", Qt::CaseInsensitive) == 0)
+            if ((p_Text.mid(l_Offset, 8).compare("contains", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 9)))
 			{
 				ret.m_Position = l_Offset;
 				ret.m_Size = 8;
@@ -950,6 +967,13 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 		ret.m_ChildElements.append(child);
 		break;
 	case Function:
+        child = ParseCFCode(p_Text, l_Offset, Operator, &ret);
+        if (child.m_Type == Operator)
+        {
+            ret = child;
+            break;
+        }
+
 		c = p_Text.indexOf('(', l_Offset);
 
 		if (c == -1)
@@ -960,6 +984,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 			ret.m_Size = 1;
 			return ret;
 		}
+
+
 
 		if (c + 1 >= p_Text.length())
 		{
