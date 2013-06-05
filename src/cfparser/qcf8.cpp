@@ -1210,6 +1210,25 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
     ret["cfthrow"].m_ArgumentVariants.append(args);
 
 	ret.insert("cftimer", QCFTag("cftimer", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+    args.clear();
+    args.append(QCFTagArgument("label", false, QCFTagArgument::TypeConstantString));
+    ret["cftimer"].m_ArgumentVariants.append(args);
+    args.clear();
+    args.append(QCFTagArgument("label", false, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument("type", false, QCFTagArgument::TypeConstantString, "inline"));
+    ret["cftimer"].m_ArgumentVariants.append(args);
+    args.clear();
+    args.append(QCFTagArgument("label", false, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument("type", false, QCFTagArgument::TypeConstantString, "outline"));
+    ret["cftimer"].m_ArgumentVariants.append(args);
+    args.clear();
+    args.append(QCFTagArgument("label", false, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument("type", false, QCFTagArgument::TypeConstantString, "comment"));
+    ret["cftimer"].m_ArgumentVariants.append(args);
+    args.clear();
+    args.append(QCFTagArgument("label", false, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument("type", false, QCFTagArgument::TypeConstantString, "debug"));
+    ret["cftimer"].m_ArgumentVariants.append(args);
 
 	ret.insert("cftooltip", QCFTag("cftooltip", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
