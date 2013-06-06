@@ -491,6 +491,10 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 					{
 						ret.m_Type = Boolean;
                     }
+                    else if (ret.m_Text.compare("var", Qt::CaseInsensitive) == 0)
+                    {
+                        ret.m_Type = Keyword;
+                    }
 
 					return ret;
 				}

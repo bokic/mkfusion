@@ -152,6 +152,9 @@ void QDetail::addSubTrees(const QCFParserElement& p_ParserElement, QTreeWidgetIt
         case VariableIndex:
             name = "VariableIndex";
             break;
+        case Keyword:
+            name = "Keyword";
+            break;
         case Error:
             name = "Error";
             break;
