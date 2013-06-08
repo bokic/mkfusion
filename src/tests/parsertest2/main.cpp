@@ -369,7 +369,7 @@ void TestCases::testcase19()
 
 void TestCases::BenchUnoptimisedCode()
 {
-	// <cfset a = 1 /><cfloop from=”1” to=”1000000” index=”c”><cfset a = a + 1 /></cfloop><cfoutput>#a#</cfoutput>
+	// <cfset a = 1 /><cfloop from="1" to="1000000" index="c"><cfset a = a + 1 /></cfloop><cfoutput>#a#</cfoutput>
 	// ColdFusion9: 338ms
 	// Railo: 377ms
 	// BlueDragon: 956ms
