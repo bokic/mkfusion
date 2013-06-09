@@ -22,25 +22,25 @@
 			<nested_tokens names="Expression" />
 		</token>
 		<token Name="Expression">
-			<nested_tokens names="SingleString,DoubleString,Assigment,ExpressionEnd,Number,Boolean,Operator,Keyword,Function,Variable,ObjectMember,SubExpression,VariableIndex" />
+			<nested_tokens names="SingleString,DoubleString,Assigment,ExpressionEnd,Number,Boolean,Operator,Keyword,Function,Object,Variable,SubExpression,VariableIndex" />
 		</token>
 		<token Name="ExpressionEnd" TokenString=";" />
 		<token Name="Number" TokenString="[-+]?\b[0-9]*\.?[0-9]+\b" />
-		<token Name="Boolean" TokenString="(true|false|yes|no)" />
+		<token Name="Boolean" TokenString="(\btrue\b|\bfalse\b|\byes\b|\bno\b)" />
 		<token Name="Function" StartString="[a-z]+[a-z0-9_]*[ \t]*\(" EndString="\)">
 			<nested_tokens names="Expression,Separator" />
 		</token>
 		<token Name="Separator" TokenString=","/>
-		<token Name="Variable" TokenString="[a-z]+[a-z0-9_]*" />
-		<token Name="ObjectMember" TokenString="\." />
+		<token Name="Variable" TokenString="[a-z_]+[a-z0-9_]*" />
+		<token Name="Object" TokenString="[a-z_]+[a-z0-9_]*\." />
 		<token Name="Assigment" TokenString="(=|\+=|\-=|\*=|/=|%=|&amp;=)" />
-		<token Name="Operator" TokenString="(greater\s+than\s+or\s+equal\s+to|less\s+than\s+or\s+equal\s+to|does\s+not\s+contain|greater\s+than|not\s+equal|less\s+than|contains|is\s+not|equal|\+\+|mod|not|and|xor|eqv|gte|lte|imp|neq|is|or|gt|ge|lt|le|--|\+|\*|\\|\^|&amp;&amp;|\|\|eq|\?|-|/|&amp;|%|:|!)" />
+		<token Name="Operator" TokenString="(\bgreater\s+than\s+or\s+equal\s+to\b|\bless\s+than\s+or\s+equal\s+to\b|\bdoes\s+not\s+contain\b|\bgreater\s+than\b|\bnot\s+equal\b|\bless\s+than\b|\bcontains\b|\bis\s+not\b|\bequal\b|\+\+|\bmod\b|\bnot\b|\band\b|\bxor\b|\beqv\b|\bgte\b|\blte\b|\bimp\b|\bneq\b|\bis\b|\bor\b|\bgt\b|\bge\b|\blt\b|\ble\b|--|\+|\*|\\|\^|&amp;&amp;|\|\|eq|\?|-|/|&amp;|%|:|!)" />
 		<token Name="SubExpression" StartString="(" EndString=")">
 			<nested_tokens names="Expression" />
 		</token>
 		<token Name="VariableIndex" StartString="[" EndString="]">
 			<nested_tokens names="Expression" />
 		</token>
-		<token Name="Keyword" TokenString="(var|function|this)" />
+		<token Name="Keyword" TokenString="(\bvar\b|\bfunction\b|\bthis\b)" />
 	</tokens>
 </language>
