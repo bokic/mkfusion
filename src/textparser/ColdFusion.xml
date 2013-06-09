@@ -22,7 +22,7 @@
 			<nested_tokens names="Expression" />
 		</token>
 		<token Name="Expression">
-			<nested_tokens names="SingleString,DoubleString,Assigment,ExpressionEnd,Number,Boolean,Operator,Function,Variable,ObjectMember,SubExpression,VariableIndex" />
+			<nested_tokens names="SingleString,DoubleString,Assigment,ExpressionEnd,Number,Boolean,Operator,Keyword,Function,Variable,ObjectMember,SubExpression,VariableIndex" />
 		</token>
 		<token Name="ExpressionEnd" TokenString=";" />
 		<token Name="Number" TokenString="[-+]?\b[0-9]*\.?[0-9]+\b" />
@@ -41,5 +41,6 @@
 		<token Name="VariableIndex" StartString="[" EndString="]">
 			<nested_tokens names="Expression" />
 		</token>
+		<token Name="Keyword" TokenString="(var|function|this)" />
 	</tokens>
 </language>

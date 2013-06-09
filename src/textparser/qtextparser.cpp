@@ -17,17 +17,10 @@ QList<QTextParser::QTextParserLanguageDefinition> languageDefinitions;
 QTextParser::QTextParser():
     language()
 {
-#ifdef DEBUG_QTEXTPARSER
-    qDebug() << "QTextParser::QTextParser called.";
-#endif
 }
 
 void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
 {
-#ifdef DEBUG_QTEXTPARSER
-    qDebug() << "QTextParser::loadParserDefinitionsFromDir called, for (" << dir << ") dir.";
-#endif
-
     QDir l_dir;
 
     l_dir.setPath(dir);
@@ -164,10 +157,6 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
 
 void QTextParser::setTextTypeByFileExtension(const QString &fileExt)
 {
-#ifdef DEBUG_QTEXTPARSER
-    qDebug() << "QTextParser::setTextTypeByFileExtension called, for (" << fileExt << ") file extension.";
-#endif
-
     if (languageDefinitions.count() == 0)
     {
          QTextParser::loadParserDefinitionsFromDir(".");
@@ -195,10 +184,6 @@ void QTextParser::setTextTypeByFileExtension(const QString &fileExt)
 
 void QTextParser::setTextTypeByLanguageName(const QString &langName)
 {
-#ifdef DEBUG_QTEXTPARSER
-    qDebug() << "QTextParser::setTextTypeByLanguageName called, for languane name(" << langName << ").";
-#endif
-
     if (languageDefinitions.count() == 0)
     {
          QTextParser::loadParserDefinitionsFromDir(".");
@@ -224,10 +209,6 @@ void QTextParser::setTextTypeByLanguageName(const QString &langName)
 
 QTextParser::QTextParserElements QTextParser::parseFile(const QString &fileName)
 {
-#ifdef DEBUG_QTEXTPARSER
-    qDebug() << "QTextParser::parseFile called, for filename(" << fileName << ").";
-#endif
-
     QTextParserElements ret;
     QFileInfo finfo(fileName);
 
@@ -263,10 +244,6 @@ QTextParser::QTextParserElements QTextParser::parseFile(const QString &fileName)
 
 QTextParser::QTextParserElements QTextParser::parseText(const QString &text, const QString &fileExt)
 {
-#ifdef DEBUG_QTEXTPARSER
-    qDebug() << "QTextParser::parseText called, for (" << fileExt << ") file extension.";
-#endif
-
     QTextParserElements ret;
     QTextParserLines fileLines;
 
@@ -287,10 +264,6 @@ QTextParser::QTextParserElements QTextParser::parseText(const QString &text, con
 
 QTextParser::QTextParserElements QTextParser::parseTextLines(const QTextParserLines &lines)
 {
-#ifdef DEBUG_QTEXTPARSER
-    qDebug() << "QTextParser::parseTextLines called, with" << lines.count() << "lines.";
-#endif
-
     QTextParserElements ret;
 
     if (lines.count() <= 0)
@@ -328,10 +301,6 @@ QTextParser::QTextParserElements QTextParser::parseTextLines(const QTextParserLi
 
 QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, const QVector<int> &tokens, int &start_line, int &start_column, int end_line, int end_column, int end_token)
 {
-#ifdef DEBUG_QTEXTPARSER
-    qDebug() << "QTextParser::parseElement called.";
-#endif
-
     QTextParserElement ret;
     QRegExp reg;
     bool found;
@@ -340,10 +309,6 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
 
     if ((found == false)||(start_line > end_line)||((start_line == end_line)&&(start_column >= end_column)))
     {
-#ifdef DEBUG_QTEXTPARSER
-        qDebug() << "QTextParser::parseElement, no other element found!";
-#endif
-
         return ret;
     }
 
@@ -361,10 +326,6 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
 
         if (index == start_column)
         {
-#ifdef DEBUG_QTEXTPARSER
-            qDebug() << "QTextParser::parseElement, end of Token found(" << reg.cap() << ").";
-#endif
-
             return ret;
         }
     }
@@ -381,10 +342,6 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
 
             if (index == start_column)
             {
-#ifdef DEBUG_QTEXTPARSER
-                qDebug() << "QTextParser::parseElement, new child token found(" << reg.cap() << ").";
-#endif
-
                 ret.m_StartLine = start_line;
                 ret.m_StartColumn = start_column;
 
@@ -424,6 +381,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                     ret.m_Debug = "Error -1";
 #endif
                 }
+                break;
             }
         }
         else if ((token.startString.isEmpty())&&(token.endString.isEmpty())&&(token.tokenString.isEmpty())&&(token.nestedTokens.count() > 0)&&(end_token >= 0))
@@ -456,7 +414,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
 #ifdef DEBUG_QTEXTPARSER
                 ret.m_Debug = language.tokens.keys()[nToken];
 #endif
-
+                break;
             }
             else
             {
@@ -487,6 +445,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
 #ifdef DEBUG_QTEXTPARSER
                 ret.m_Debug = language.tokens.keys()[nToken];
 #endif
+                break;
             }
         }
         else
@@ -500,10 +459,6 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
 
 bool QTextParser::findFirstElement(const QTextParserLines &lines, int &cur_line, int &cur_column, const QVector<int> &tokens, int end_token)
 {
-#ifdef DEBUG_QTEXTPARSER
-    qDebug() << "QTextParser::findFirstElement called.";
-#endif
-
     for(int line = cur_line; line < lines.count(); line++)
     {
         bool found;
@@ -517,10 +472,6 @@ bool QTextParser::findFirstElement(const QTextParserLines &lines, int &cur_line,
         {
             col = 0;
         }
-
-#ifdef DEBUG_QTEXTPARSER
-        qDebug() << "QTextParser::findFirstElement for line" << line << ", column" << cur_column << ".";
-#endif
 
         found = findFirstElement(lines.at(line).Content, col, tokens, end_token);
 
@@ -538,10 +489,6 @@ bool QTextParser::findFirstElement(const QTextParserLines &lines, int &cur_line,
 
 bool QTextParser::findFirstElement(const QString &line, int &cur_column, const QVector<int> &tokens, int end_token)
 {
-#ifdef DEBUG_QTEXTPARSER
-    qDebug() << "QTextParser::findFirstElement(for one line) called.";
-#endif
-
     bool ret = false;
 
     int closest_index = INT_MAX;
@@ -566,10 +513,6 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
 
         closest_index = index;
         ret = true;
-
-#ifdef DEBUG_QTEXTPARSER
-        qDebug() << "QTextParser::findFirstElement found end token candidate(" << reg.cap() << ").";
-#endif
     }
     no_end_token:
 
@@ -591,9 +534,6 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
 
             if ((index > -1)&&(index < closest_index))
             {
-#ifdef DEBUG_QTEXTPARSER
-                qDebug() << "QTextParser::findFirstElement found new child token candidate(" << reg.cap() << ").";
-#endif
                 closest_index = index;
                 ret = true;
             }
@@ -605,9 +545,6 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
 
             if ((index > -1)&&(index < closest_index))
             {
-#ifdef DEBUG_QTEXTPARSER
-                qDebug() << "QTextParser::findFirstElement found new child token candidate(" << reg.cap() << ").";
-#endif
                 closest_index = index;
                 ret = true;
             }
@@ -616,17 +553,10 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
         {
             int tmp_col = cur_column;
 
-#ifdef DEBUG_QTEXTPARSER
-            qDebug() << "QTextParser::findFirstElement search thru nested tokens.";
-#endif
-
             if (findFirstElement(line, tmp_col, language.tokens.values()[nToken].nestedTokens, -1))
             {
                 if ((tmp_col > -1)&&(tmp_col < closest_index))
                 {
-#ifdef DEBUG_QTEXTPARSER
-                    qDebug() << "QTextParser::findFirstElement found nested tokens.";
-#endif
                     closest_index = tmp_col;
                     ret = true;
                 }
