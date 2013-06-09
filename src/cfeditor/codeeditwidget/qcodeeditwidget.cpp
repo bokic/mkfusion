@@ -1090,11 +1090,11 @@ void QCodeEditWidget::clearFormatting()
 	viewport()->update();
 }
 
-void QCodeEditWidget::addFormat(int p_line, const QTextParser::QTextParserColorItem &p_item)
+/*void QCodeEditWidget::addFormat(int p_line, const QTextParser::QTextParserColorItem &p_item)
 {
     // TODO: Add more.
     m_Lines[p_line].ColorItems.append(p_item);
-}
+}*/
 
 void QCodeEditWidget::setBreakpoint(int line, BreakpointType newBreakpoint)
 {

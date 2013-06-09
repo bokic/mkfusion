@@ -64,7 +64,7 @@ static int mkfusion_handler(request_rec *r)
 		l_IOStream << (quint32)0;
 		l_IOStream << r->ap_auth_type;
 		l_IOStream << r->user;
-		l_IOStream << QDir::toNativeSeparators(r->filename).toLatin1(); // TODO: Currently only latin filenames.
+        l_IOStream << QDir::toNativeSeparators(r->filename).toUtf8();
 		l_IOStream << apr_table_get(r->headers_in, "Accept");
 		l_IOStream << apr_table_get(r->headers_in, "Accept-Encoding");
 		l_IOStream << apr_table_get(r->headers_in, "Accept-Language");
@@ -179,7 +179,7 @@ static void mkfusion_register_hooks(apr_pool_t *p)
 
 	ap_hook_handler(mkfusion_handler, NULL, NULL, APR_HOOK_MIDDLE);
 #ifdef Q_OS_WIN
-	ap_add_version_component(p, "MKFusion/0.4.1 (Win32)");
+    ap_add_version_component(p, "MKFusion/0.4.1 (Windows)");
 #elif defined Q_OS_LINUX
 	ap_add_version_component(p, "MKFusion/0.4.1 (Linux)");
 #else

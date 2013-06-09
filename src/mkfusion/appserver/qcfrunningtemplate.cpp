@@ -69,6 +69,7 @@ void QCFRunningTemplate::worker()
 
 		QDataStream l_ds(&l_RecievedBuffer, QIODevice::ReadOnly);
 		char *tempstr;
+        QByteArray tempba;
 
 		l_ds >> l_RecieveBufSize;
 		l_ds >> tempstr;
@@ -85,11 +86,10 @@ void QCFRunningTemplate::worker()
 			delete[] tempstr;
 		}
 
-		l_ds >> tempstr;
-		if (tempstr)
+        l_ds >> tempba;
+        if (!tempba.isEmpty())
 		{
-			m_Request.m_Filename = QDir::toNativeSeparators(QString::fromUtf8(tempstr));
-			delete[] tempstr;
+            m_Request.m_Filename = QString::fromUtf8(tempba.constData());
 		}
 
 		l_ds >> tempstr;

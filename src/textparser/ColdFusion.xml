@@ -1,20 +1,23 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
 <language Name="ColdFusion" EmptySegmentsLanguage="HTML" CaseSensitivity="false" DefaultFileExtensions="cfm,cfc" StartsWith="CFScript,CFTag,CFEndTag,CFComment">
 	<tokens>
 		<token Name="CFScript" StartString="&lt;cfscript&gt;" EndString="&lt;/cfscript&gt;" MultiLine="true">
 			<nested_tokens names="Expression" />
 		</token>
-		<token Name="CFTag" StartString="&lt;cf" EndString="\/?&gt;" TextColor="Red" MultiLine="true" />
+		<token Name="CFTag" StartString="&lt;cf[a-z0-9_]+" EndString="\/?&gt;" MultiLine="true">
+			<nested_tokens names="Expression" />
+		</token>
 		<token Name="CFEndTag" StartString="&lt;/cf" EndString="&gt;" />
 		<token Name="CFComment" StartString="&lt;!---" EndString="---&gt;" MultiLine="true">
 			<nested_tokens names="CFComment" />
 		</token>
-		<token Name="SingleString" StartString="&apos;" EndString="&apos;" ignoreTerminateStringList="true">
-			<nested_tokens names="SharpExpression" />
+		<token Name="SingleString" StartString="&apos;" EndString="&apos;" ignoreTerminateStringList="true" EndStringIsLast="true">
+			<nested_tokens names="SharpExpression,SingleChar" />
 		</token>
-		<token Name="DoubleString" StartString="&quot;" EndString="&quot;" ignoreTerminateStringList="true">
-			<nested_tokens names="SharpExpression" />
+		<token Name="SingleChar" TokenString="&apos;&apos;"/>
+		<token Name="DoubleString" StartString="&quot;" EndString="&quot;" ignoreTerminateStringList="true" EndStringIsLast="true">
+			<nested_tokens names="SharpExpression,DoubleChar" />
 		</token>
+		<token Name="DoubleChar" TokenString="&quot;&quot;"/>
 		<token Name="SharpExpression" StartString="#" EndString="#">
 			<nested_tokens names="Expression" />
 		</token>
@@ -24,34 +27,13 @@
 		<token Name="ExpressionEnd" TokenString=";" />
 		<token Name="Number" TokenString="[-+]?\b[0-9]*\.?[0-9]+\b" />
 		<token Name="Boolean" TokenString="(true|false|yes|no)" />
-		<token Name="Function" StartString="[a-z]+[a-z0-9_]*\(" EndString="\)">
-			<nested_tokens names="Parameter" />
+		<token Name="Function" StartString="[a-z]+[a-z0-9_]*[ \t]*\(" EndString="\)">
+			<nested_tokens names="Expression,Separator" />
 		</token>
-		<token Name="Parameter" EndString="(,|\))" ExcludeEndString="true">
+		<token Name="Separator" TokenString=","/>
 		<token Name="Variable" TokenString="[a-z]+[a-z0-9_]*" />
-			<nested_tokens names="Expression" />
-		</token>
-		<token Name="ObjectMember" TokenString="." />
-		<token Name="Assigment" TokenString="(=|\+=|\-=|*=|/=|%=|&amp;=)" />
-		
-		<!--
-		
-		Small part of the operator token behaviour will be hardcoded.
-		
-		So the parser can correctly understand the following:
-		a=+12
-		a=a+12
-		
-		or, if previous token was `Operator` or `Assigment` then try to parse token `Number` before token `Operator`, else try to parse token `Operator` before token `Number`.
-		
-		If no prvious token exist(current token is the first token), then try to parse token `Operator` first. So it can correctly parse situations like this:
-		
-		a = 12;
-		++a;
-		
-		thus token name `Operator` is special one.
-		
-		-->
+		<token Name="ObjectMember" TokenString="\." />
+		<token Name="Assigment" TokenString="(=|\+=|\-=|\*=|/=|%=|&amp;=)" />
 		<token Name="Operator" TokenString="(greater\s+than\s+or\s+equal\s+to|less\s+than\s+or\s+equal\s+to|does\s+not\s+contain|greater\s+than|not\s+equal|less\s+than|contains|is\s+not|equal|\+\+|mod|not|and|xor|eqv|gte|lte|imp|neq|is|or|gt|ge|lt|le|--|\+|\*|\\|\^|&amp;&amp;|\|\|eq|\?|-|/|&amp;|%|:|!)" />
 		<token Name="SubExpression" StartString="(" EndString=")">
 			<nested_tokens names="Expression" />

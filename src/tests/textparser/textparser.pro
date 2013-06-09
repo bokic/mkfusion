@@ -2,6 +2,8 @@ QT       += core xml
 CONFIG   += debug_and_release
 DESTDIR   = ../../../bin
 
+DEFINES  += DEBUG_QTEXTPARSER
+
 debug {
 	OBJECTS_DIR = ../../../obj/tests/test_textparser/debug
 	MOC_DIR     = ../../../obj/tests/test_textparser/debug

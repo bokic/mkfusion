@@ -31,7 +31,7 @@ public:
 	QString getText();
     void setFileExtension(const QString &);
 	void clearFormatting();
-    void addFormat(int p_line, const QTextParser::QTextParserColorItem &p_item);
+    //void addFormat(int p_line, const QTextParser::QTextParserColorItem &p_item);
 	void setBreakpoint(int, BreakpointType);
 	BreakpointType breakpoint(int);
 
