@@ -349,13 +349,16 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
             return ret;
         }
 
-        reg = QRegExp(language.tokens.values()[end_token].endString, language.caseSensitivity);
-
-        int index = reg.indexIn(lines.at(start_line).Content, start_column);
-
-        if (index == start_column)
+        if (language.tokens.values()[end_token].searchEndStringLast == false)
         {
-            return ret;
+            reg = QRegExp(language.tokens.values()[end_token].endString, language.caseSensitivity);
+
+            int index = reg.indexIn(lines.at(start_line).Content, start_column);
+
+            if (index == start_column)
+            {
+                return ret;
+            }
         }
     }
 
@@ -504,6 +507,21 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
         else
         {
             qDebug() << "Invalid nested tokens coombination.";
+        }
+    }
+
+    if (end_token >= 0)
+    {
+        if (language.tokens.values()[end_token].searchEndStringLast == true)
+        {
+            reg = QRegExp(language.tokens.values()[end_token].endString, language.caseSensitivity);
+
+            int index = reg.indexIn(lines.at(start_line).Content, start_column);
+
+            if (index == start_column)
+            {
+                return ret;
+            }
         }
     }
 
