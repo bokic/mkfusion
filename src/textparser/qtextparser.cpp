@@ -321,6 +321,11 @@ QTextParser::QTextParserElements QTextParser::parseTextLines(const QTextParserLi
     return ret;
 }
 
+const QTextParser::QTextParserLanguageDefinition &QTextParser::getLanguage()
+{
+    return language;
+}
+
 QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, const QVector<int> &tokens, int &start_line, int &start_column, int end_line, int end_column, int end_token)
 {
     QTextParserElement ret;
@@ -397,7 +402,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                 }
                 else
                 {
-                    ret.m_Text = "Cound not find end segment"; // TODO: think of some more clever text
+                    ret.m_Text = "End segment NOT found!";
                     ret.m_Type = -1;
 #ifdef DEBUG_QTEXTPARSER
                     ret.m_Debug = "Error -1";
@@ -440,7 +445,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
             }
             else
             {
-                ret.m_Text = "Cound not find end segment"; // TODO: think of some more clever text
+                ret.m_Text = "End segment NOT found!";
                 ret.m_Type = -1;
 #ifdef DEBUG_QTEXTPARSER
                 ret.m_Debug = "Error -1";

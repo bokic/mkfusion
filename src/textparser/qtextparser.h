@@ -89,6 +89,7 @@ public:
     QTextParserElements parseFile(const QString &fileName);
     QTextParserElements parseText(const QString &text, const QString &fileExt);
     QTextParserElements parseTextLines(const QTextParserLines &lines);
+    const QTextParserLanguageDefinition &getLanguage();
 
 private:
     QTextParserElement parseElement(const QTextParserLines &lines, const QVector<int> &tokens, int &start_line, int &start_column, int end_line, int end_column, int end_token = -1);
