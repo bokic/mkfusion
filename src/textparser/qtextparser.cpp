@@ -86,7 +86,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                 const QString startsWith = language_node.attributes().namedItem("StartsWith").nodeValue();
 
                 def.languageName = languageName;
-                def.caseSensitivity = (caseSensitivity.compare("true", Qt::CaseInsensitive)?Qt::CaseInsensitive:Qt::CaseSensitive);
+                def.caseSensitivity = ((caseSensitivity.compare("true", Qt::CaseInsensitive) == 0)?Qt::CaseSensitive:Qt::CaseInsensitive);
                 def.defaultExtensions = defaultExtensions.split(',');
 
                 // Iterate thry tokens
@@ -110,7 +110,6 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             const QString tokenStartString = token_node.attributes().namedItem("StartString").nodeValue();
                             const QString tokenEndString = token_node.attributes().namedItem("EndString").nodeValue();
                             const QString tokenTokenString = token_node.attributes().namedItem("TokenString").nodeValue();
-                            const QString ignoreParentTokenEndString = token_node.attributes().namedItem("IgnoreParentTokenEndString").nodeValue();
                             const QString searchEndStringLast = token_node.attributes().namedItem("SearchEndStringLast").nodeValue();
                             const QString tokenImmediateStart = token_node.attributes().namedItem("ImmediateStart").nodeValue();
 
@@ -129,9 +128,8 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             token.startString = tokenStartString;
                             token.endString = tokenEndString;
                             token.tokenString = tokenTokenString;
-                            token.ignoreParentTokenEndString = ignoreParentTokenEndString.compare("true", Qt::CaseInsensitive);
-                            token.searchEndStringLast = searchEndStringLast.compare("true", Qt::CaseInsensitive);
-                            token.immediateStartString = tokenImmediateStart.compare("true", Qt::CaseInsensitive);
+                            token.searchEndStringLast = (searchEndStringLast.compare("true", Qt::CaseInsensitive) == 0);
+                            token.immediateStartString = (tokenImmediateStart.compare("true", Qt::CaseInsensitive) == 0);
                             token.nestedTokens.clear();
 
                             def.tokens[tokenName] = token;
@@ -333,6 +331,9 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
     QRegExp reg;
     bool found;
 
+    const int orig_start_line = start_line;
+    const int orig_start_column = start_column;
+
     found = findFirstElement(lines, start_line, start_column, tokens, end_token);
 
     if ((found == false)||(start_line > end_line)||((start_line == end_line)&&(start_column >= end_column)))
@@ -370,8 +371,16 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
 
             if (index == start_column)
             {
-                ret.m_StartLine = start_line;
-                ret.m_StartColumn = start_column;
+                if (token.immediateStartString)
+                {
+                    ret.m_StartLine = orig_start_line;
+                    ret.m_StartColumn = orig_start_column;
+                }
+                else
+                {
+                    ret.m_StartLine = start_line;
+                    ret.m_StartColumn = start_column;
+                }
 
                 start_column += reg.cap().length();
 
@@ -414,8 +423,16 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
         }
         else if ((token.startString.isEmpty())&&(token.endString.isEmpty())&&(token.tokenString.isEmpty())&&(token.nestedTokens.count() > 0)&&(end_token >= 0))
         {
-            ret.m_StartLine = start_line;
-            ret.m_StartColumn = start_column;
+            if (token.immediateStartString)
+            {
+                ret.m_StartLine = orig_start_line;
+                ret.m_StartColumn = orig_start_column;
+            }
+            else
+            {
+                ret.m_StartLine = start_line;
+                ret.m_StartColumn = start_column;
+            }
 
             while(1)
             {
@@ -461,8 +478,16 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
 
             if (index == start_column)
             {
-                ret.m_StartLine = start_line;
-                ret.m_StartColumn = start_column;
+                if (token.immediateStartString)
+                {
+                    ret.m_StartLine = orig_start_line;
+                    ret.m_StartColumn = orig_start_column;
+                }
+                else
+                {
+                    ret.m_StartLine = start_line;
+                    ret.m_StartColumn = start_column;
+                }
                 ret.m_Text = reg.cap();
 
                 start_column += reg.cap().count();
