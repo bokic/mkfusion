@@ -65,11 +65,11 @@ public:
         QString startString;
         QString endString;
         QString tokenString;
-        bool ignoreTerminateString;
+        bool ignoreParentTokenEndString; // TODO: Unimplemented yet
+        bool searchEndStringLast; // TODO: Unimplemented yet
+        bool immediateStartString; // TODO: Unimplemented yet
         QVector<int> nestedTokens;
-        bool nestedTokensRequireAll;
-        bool nestedTokensInSameOrder;
-        QTextParserLanguageDefinitionToken() : ignoreTerminateString(false), nestedTokensRequireAll(false), nestedTokensInSameOrder(false) {}
+        QTextParserLanguageDefinitionToken() : ignoreParentTokenEndString(false), searchEndStringLast(false), immediateStartString(false) {}
     };
 
     struct QTextParserLanguageDefinition

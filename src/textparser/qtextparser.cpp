@@ -110,7 +110,9 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             const QString tokenStartString = token_node.attributes().namedItem("StartString").nodeValue();
                             const QString tokenEndString = token_node.attributes().namedItem("EndString").nodeValue();
                             const QString tokenTokenString = token_node.attributes().namedItem("TokenString").nodeValue();
-                            const QString tokenIgnoreTerminate = token_node.attributes().namedItem("IgnoreTerminate").nodeValue();
+                            const QString ignoreParentTokenEndString = token_node.attributes().namedItem("IgnoreParentTokenEndString").nodeValue();
+                            const QString searchEndStringLast = token_node.attributes().namedItem("SearchEndStringLast").nodeValue();
+                            const QString tokenImmediateStart = token_node.attributes().namedItem("ImmediateStart").nodeValue();
 
                             const QDomNode nestedTokens_node = token_node.namedItem("nested_tokens");
                             QString tokenNestedTokensRequireAll;
@@ -127,11 +129,10 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             token.startString = tokenStartString;
                             token.endString = tokenEndString;
                             token.tokenString = tokenTokenString;
-                            token.ignoreTerminateString = tokenIgnoreTerminate.compare("true", Qt::CaseInsensitive);
+                            token.ignoreParentTokenEndString = ignoreParentTokenEndString.compare("true", Qt::CaseInsensitive);
+                            token.searchEndStringLast = searchEndStringLast.compare("true", Qt::CaseInsensitive);
+                            token.immediateStartString = tokenImmediateStart.compare("true", Qt::CaseInsensitive);
                             token.nestedTokens.clear();
-
-                            token.nestedTokensRequireAll = tokenNestedTokensRequireAll.compare("true", Qt::CaseInsensitive);
-                            token.nestedTokensInSameOrder = tokenNestedTokensInSameOrder.compare("true", Qt::CaseInsensitive);
 
                             def.tokens[tokenName] = token;
                         }
