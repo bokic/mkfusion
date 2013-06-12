@@ -14,13 +14,14 @@
 			<nested_tokens names="CFComment" />
 		</token>
 		<token Name="SingleString" StartString="&apos;" EndString="&apos;" IgnoreParentTokenEndString="true" SearchEndStringLast="true">
-			<nested_tokens names="SharpExpression,SingleChar" />
+			<nested_tokens names="SharpExpression,SharpChar,SingleChar" />
 		</token>
 		<token Name="DoubleString" StartString="&quot;" EndString="&quot;" IgnoreParentTokenEndString="true" SearchEndStringLast="true">
-			<nested_tokens names="SharpExpression,DoubleChar" />
+			<nested_tokens names="SharpExpression,SharpChar,DoubleChar" />
 		</token>
 		<token Name="SingleChar" TokenString="&apos;&apos;"/>
 		<token Name="DoubleChar" TokenString="&quot;&quot;"/>
+		<token Name="SharpChar" TokenString="##"/>
 		<token Name="SharpExpression" StartString="#" EndString="#">
 			<nested_tokens names="Expression" />
 		</token>
