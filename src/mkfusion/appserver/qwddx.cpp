@@ -226,10 +226,11 @@ Q_DECL_EXPORT void QWDDX::setType(QWDDXType type)
         m_DateTime = new QDateTime();
         break;
     case Array:
-        m_Array = new QVector<QWDDX>;
+        m_Array = new QVector<QWDDX>();
+        m_ArrayDimension = 1;
         break;
     case Struct:
-        m_Struct = new QMap<QString, QWDDX>;
+        m_Struct = new QMap<QString, QWDDX>();
         break;
     case Binary:
         m_ByteArray = new QByteArray;
@@ -453,9 +454,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QWDDX &key)
 		throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members.", "");
 	}
 
-	QWDDX temp = key;
-
-	double l_key = temp.toNumber();
+    double l_key = key.toNumber();
 
 	if (m_Type == QWDDX::Array)
 	{
@@ -479,12 +478,14 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QWDDX &key)
 	}
 	else
 	{
-        if (m_Struct->contains(QString::number(l_key)) == false)
+        const QString &keyStr = QString::number(l_key);
+
+        if (m_Struct->contains(keyStr) == false)
 		{
-            m_Struct->insert(QString::number(l_key), QWDDX(QWDDX::Null));
+            m_Struct->insert(keyStr, QWDDX(QWDDX::Null));
 		}
 
-        return (*m_Struct)[QString::number(l_key)];
+        return (*m_Struct)[keyStr];
 	}
 }
 
@@ -1028,22 +1029,19 @@ Q_DECL_EXPORT QWDDX QWDDX::operator=(const QWDDX &p_newValue)
         m_Number = p_newValue.m_Number;
         break;
     case String:
-        m_String = new QString(*p_newValue.m_String);
+        *m_String = *p_newValue.m_String;
         break;
     case DateTime:
-        m_DateTime = new QDateTime(*p_newValue.m_DateTime);
+        *m_DateTime = *p_newValue.m_DateTime;
         break;
     case Array:
-        m_Array = new QVector<QWDDX>();
         *m_Array = *p_newValue.m_Array;
         m_ArrayDimension = p_newValue.m_ArrayDimension;
         break;
     case Struct:
-        m_Struct = new QMap<QString, QWDDX>();
         *m_Struct = *p_newValue.m_Struct;
         break;
     case Binary:
-        m_ByteArray = new QByteArray();
         *m_ByteArray = *p_newValue.m_ByteArray;
         break;
     case Recordset:
@@ -1055,6 +1053,11 @@ Q_DECL_EXPORT QWDDX QWDDX::operator=(const QWDDX &p_newValue)
     }
 
 	return *this;
+}
+
+Q_DECL_EXPORT QWDDX QWDDX::operator+(bool p_Value)
+{
+    throw QMKFusionExpressionException("Illegal operation. Can\'t accumulate bool.");
 }
 
 Q_DECL_EXPORT QWDDX QWDDX::operator+(int p_Value)
@@ -1081,7 +1084,7 @@ Q_DECL_EXPORT QWDDX QWDDX::operator+(double p_Value)
 	}
 }
 
-Q_DECL_EXPORT QWDDX QWDDX::operator+(const wchar_t* p_Value)
+Q_DECL_EXPORT QWDDX QWDDX::operator+(const wchar_t *p_Value)
 {
 	QWDDX tmp = QWDDX(p_Value);
 
@@ -1111,16 +1114,22 @@ Q_DECL_EXPORT QWDDX QWDDX::operator+(const QString &p_Value)
 
 Q_DECL_EXPORT QWDDX QWDDX::operator+(const QWDDX &p_Value)
 {
-	QWDDX tmp = QWDDX(p_Value);
-
 	if (m_Type == Number)
 	{
-        return QWDDX(m_Number + tmp.toNumber());
+        return QWDDX(m_Number + p_Value.toNumber());
 	}
 	else
 	{
-        return QWDDX(toNumber() + tmp.toNumber());
+        return QWDDX(this->toNumber() + p_Value.toNumber());
 	}
+}
+
+QWDDX operator+(bool p_Value1, const QWDDX &p_Value2)
+{
+    Q_UNUSED(p_Value1);
+    Q_UNUSED(p_Value2);
+
+    throw QMKFusionExpressionException("Illegal operation. Can\'t accumulate bool.");
 }
 
 QWDDX operator+(int p_Value1, const QWDDX &p_Value2)
@@ -1135,6 +1144,14 @@ QWDDX operator+(double p_Value1, const QWDDX &p_Value2)
 	QWDDX temp = p_Value2;
 
     return QWDDX(p_Value1 + temp.toNumber());
+}
+
+QWDDX operator+(const wchar_t *p_Value1, const QWDDX &p_Value2)
+{
+    QWDDX temp1 = QWDDX(p_Value1);
+    QWDDX temp2 = p_Value2;
+
+    return QWDDX(temp1.toNumber() + temp2.toNumber());
 }
 
 QWDDX operator+(const QString &p_Value1, const QWDDX &p_Value2)
@@ -1192,31 +1209,24 @@ Q_DECL_EXPORT QWDDX QWDDX::operator-(const QString &p_Value)
 
 Q_DECL_EXPORT QWDDX QWDDX::operator-(const QWDDX &p_Value)
 {
-	QWDDX temp = p_Value;
-
-    return QWDDX(toNumber() - temp.toNumber());
+    return QWDDX(this->toNumber() - p_Value.toNumber());
 }
 
 QWDDX operator-(int p_Value1, const QWDDX &p_Value2)
 {
-	QWDDX temp = p_Value2;
-
-    return QWDDX(p_Value1 - temp.toNumber());
+    return QWDDX(p_Value1 - p_Value2.toNumber());
 }
 
 QWDDX operator-(double p_Value1, const QWDDX &p_Value2)
 {
-	QWDDX temp = p_Value2;
-
-    return QWDDX(p_Value1 - temp.toNumber());
+    return QWDDX(p_Value1 - p_Value2.toNumber());
 }
 
 QWDDX operator-(const QString &p_Value1, const QWDDX &p_Value2)
 {
-	QWDDX temp1 = QWDDX(p_Value1);
-	QWDDX temp2 = p_Value2;
+    QWDDX temp = QWDDX(p_Value1);
 
-    return QWDDX(temp1.toNumber() - temp2.toNumber());
+    return QWDDX(temp.toNumber() - p_Value2.toNumber());
 }
 
 Q_DECL_EXPORT QWDDX QWDDX::operator*(int p_Value)
@@ -1285,24 +1295,22 @@ Q_DECL_EXPORT QWDDX QWDDX::operator/(const QWDDX &p_Value)
     return QWDDX(this->toNumber() / p_Value.toNumber());
 }
 
-/*Q_DECL_EXPORT QWDDX QWDDX::operator/(int p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator/(int p_Value1, const QWDDX &p_Value2)
 {
-	QWDDX temp = p_Value2;
-	return *(new QWDDX(p_Value1 / temp.toNumber()));
+    return QWDDX(p_Value1 / p_Value2.toNumber());
 }
 
-Q_DECL_EXPORT QWDDX QWDDX::operator/(double p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator/(double p_Value1, const QWDDX &p_Value2)
 {
-	QWDDX temp = p_Value2;
-	return *(new QWDDX(p_Value1 / temp.toNumber()));
+    return QWDDX(p_Value1 / p_Value2.toNumber());
 }
 
-Q_DECL_EXPORT QWDDX QWDDX::operator/(const QString &p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator/(const QString &p_Value1, const QWDDX &p_Value2)
 {
-	QWDDX temp1 = QWDDX(p_Value1);
-	QWDDX temp2 = p_Value2;
-	return *(new QWDDX(temp1.toNumber() / temp2.toNumber()));
-}*/
+    QWDDX temp = QWDDX(p_Value1);
+
+    return QWDDX(temp.toNumber() / p_Value2.toNumber());
+}
 
 Q_DECL_EXPORT QWDDX QWDDX::operator&(int p_Value)
 {
@@ -1448,7 +1456,8 @@ Q_DECL_EXPORT double QWDDX::toNumber() const
 	switch(m_Type)
 	{
 	case QWDDX::Number:
-		break;
+        return m_Number;
+        break;
 	case QWDDX::String:
         ret = m_String->toDouble(&ok);
 		if (ok == false)
@@ -1458,17 +1467,15 @@ Q_DECL_EXPORT double QWDDX::toNumber() const
 
 		return ret;
 		break;
-	case QWDDX::DateTime:
-        ret = m_DateTime->toTime_t(); // TODO: What here?
-		break;
+    //case QWDDX::DateTime:
+    //    ret = m_DateTime->toTime_t(); // TODO: What here?
+    //    break;
 	default:
 		throw QMKFusionExpressionException("The value cannot be converted to a number.");
 	}
-
-	return m_Number;
 }
 
-Q_DECL_EXPORT bool QWDDX::canToNumber()
+Q_DECL_EXPORT bool QWDDX::canConvertToNumber()
 {
 	if (m_Type == Number)
 	{

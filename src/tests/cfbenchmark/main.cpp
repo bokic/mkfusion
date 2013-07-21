@@ -41,9 +41,11 @@ void TestCases::optPI()
         m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
 
         optTemplate.run(m_TemplateInstance);
+
+        delete m_TemplateInstance;
+        m_TemplateInstance = NULL;
     }
 }
 
 QTEST_MAIN(TestCases)
 #include "main.moc"
-

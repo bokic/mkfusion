@@ -52,6 +52,7 @@ public:
     QWDDX operator+(const wchar_t *);
     QWDDX operator+(const QString &);
     QWDDX operator+(const QWDDX &);
+    friend QWDDX operator+(bool, const QWDDX &);
     friend QWDDX operator+(int, const QWDDX &);
     friend QWDDX operator+(double, const QWDDX &);
     friend QWDDX operator+(const wchar_t *, const QWDDX &);
@@ -66,12 +67,16 @@ public:
     //friend QWDDX operator+=(double, const QWDDX &);
     //friend QWDDX operator+=(const QString &, const QWDDX &);
 
+    QWDDX operator-(bool);
     QWDDX operator-(int);
     QWDDX operator-(double);
+    QWDDX operator-(const wchar_t *);
     QWDDX operator-(const QString &);
     QWDDX operator-(const QWDDX &);
+    friend QWDDX operator-(bool, const QWDDX &);
     friend QWDDX operator-(int, const QWDDX &);
     friend QWDDX operator-(double, const QWDDX &);
+    friend QWDDX operator-(const wchar_t *, const QWDDX &);
     friend QWDDX operator-(const QString &, const QWDDX &);
 
     //QWDDX operator-=(int);
@@ -102,9 +107,6 @@ public:
     QWDDX operator/(double);
     QWDDX operator/(const QString &);
     QWDDX operator/(const QWDDX &);
-    //friend QWDDX operator/(int, const QWDDX &);
-    //friend QWDDX operator/(double, const QWDDX &);
-    //friend QWDDX operator/(const QString &, const QWDDX &);
 
     //QWDDX operator/=(int);
     //QWDDX operator/=(double);
@@ -188,7 +190,7 @@ public:
     QString toString() const;
     QByteArray toBinary() const;
     double toNumber() const;
-	bool canToNumber();
+    bool canConvertToNumber();
     QDateTime toDateTime() const;
     bool toBool() const;
 
@@ -205,6 +207,9 @@ public:
 	QWDDXType m_Type;
 };
 
+Q_DECL_EXPORT QWDDX operator/(int, const QWDDX &);
+Q_DECL_EXPORT QWDDX operator/(double, const QWDDX &);
+Q_DECL_EXPORT QWDDX operator/(const QString &, const QWDDX &);
 Q_DECL_EXPORT QWDDX operator&(int, const QWDDX &);
 Q_DECL_EXPORT QWDDX operator&(double, const QWDDX &);
 Q_DECL_EXPORT QWDDX operator&(const QString &, const QWDDX &);
