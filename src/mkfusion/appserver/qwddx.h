@@ -31,8 +31,8 @@ public:
 	QWDDX(double);
 	QWDDX(const char*);
 	QWDDX(const wchar_t*);
-	QWDDX(const QString&);
-	QWDDX(const QDateTime&);
+    QWDDX(const QString &);
+    QWDDX(const QDateTime &);
 
 	QWDDX(const QWDDXType);
 
@@ -44,25 +44,25 @@ public:
 	operator QString();
 	operator QDateTime();
 
-	QWDDX& operator+(bool);
-	QWDDX& operator+(int);
-	QWDDX& operator+(double);
-	QWDDX& operator+(const wchar_t*);
-	QWDDX& operator+(const QString&);
-	QWDDX& operator+(const QWDDX&);
-	friend QWDDX& operator+(int, const QWDDX&);
-	friend QWDDX& operator+(double, const QWDDX&);
-	friend QWDDX& operator+(const wchar_t*, const QWDDX&);
-	friend QWDDX& operator+(const QString&, const QWDDX&);
+    QWDDX operator+(bool);
+    QWDDX operator+(int);
+    QWDDX operator+(double);
+    QWDDX operator+(const wchar_t *);
+    QWDDX operator+(const QString &);
+    QWDDX operator+(const QWDDX &);
+    friend QWDDX operator+(int, const QWDDX &);
+    friend QWDDX operator+(double, const QWDDX &);
+    friend QWDDX operator+(const wchar_t *, const QWDDX &);
+    friend QWDDX operator+(const QString &, const QWDDX &);
 
-	//QWDDX& operator+=(int);
-	//QWDDX& operator+=(double);
-	//QWDDX& operator+=(const wchar_t*);
-	//QWDDX& operator+=(const QString&);
-	//QWDDX& operator+=(const QWDDX&);
-	//friend QWDDX& operator+=(int, const QWDDX&);
-	//friend QWDDX& operator+=(double, const QWDDX&);
-	//friend QWDDX& operator+=(const QString&, const QWDDX&);
+    //QWDDX operator+=(int);
+    //QWDDX operator+=(double);
+    //QWDDX operator+=(const wchar_t *);
+    //QWDDX operator+=(const QString &);
+    //QWDDX operator+=(const QWDDX &);
+    //friend QWDDX operator+=(int, const QWDDX &);
+    //friend QWDDX operator+=(double, const QWDDX &);
+    //friend QWDDX operator+=(const QString &, const QWDDX &);
 
     QWDDX operator-(int);
     QWDDX operator-(double);
@@ -72,127 +72,121 @@ public:
     friend QWDDX operator-(double, const QWDDX &);
     friend QWDDX operator-(const QString &, const QWDDX &);
 
-	//QWDDX& operator-=(int);
-	//QWDDX& operator-=(double);
-	//QWDDX& operator-=(const QString&);
-	//QWDDX& operator-=(const QWDDX&);
-	//friend QWDDX& operator-=(int, const QWDDX&);
-	//friend QWDDX& operator-=(double, const QWDDX&);
-	//friend QWDDX& operator-=(const QString&, const QWDDX&);
+    //QWDDX operator-=(int);
+    //QWDDX operator-=(double);
+    //QWDDX operator-=(const QString &);
+    //QWDDX operator-=(const QWDDX &);
+    //friend QWDDX operator-=(int, const QWDDX &);
+    //friend QWDDX operator-=(double, const QWDDX &);
+    //friend QWDDX operator-=(const QString &, const QWDDX &);
 
-	QWDDX& operator*(int);
-	QWDDX& operator*(double);
-	QWDDX& operator*(const QString&);
-	QWDDX& operator*(const QWDDX&);
-	friend QWDDX& operator*(int, const QWDDX&);
-	friend QWDDX& operator*(double, const QWDDX&);
-	friend QWDDX& operator*(const QString&, const QWDDX&);
+    QWDDX operator*(int);
+    QWDDX operator*(double);
+    QWDDX operator*(const QString &);
+    QWDDX operator*(const QWDDX &);
+    friend QWDDX operator*(int, const QWDDX &);
+    friend QWDDX operator*(double, const QWDDX &);
+    friend QWDDX operator*(const QString &, const QWDDX &);
 
-	//QWDDX& operator*=(int);
-	//QWDDX& operator*=(double);
-	//QWDDX& operator*=(const QString&);
-	//QWDDX& operator*=(const QWDDX&);
-	//friend QWDDX& operator*=(int, const QWDDX&);
-	//friend QWDDX& operator*=(double, const QWDDX&);
-	//friend QWDDX& operator*=(const QString&, const QWDDX&);
+    //QWDDX operator*=(int);
+    //QWDDX operator*=(double);
+    //QWDDX operator*=(const QString &);
+    //QWDDX operator*=(const QWDDX &);
+    //friend QWDDX operator*=(int, const QWDDX &);
+    //friend QWDDX operator*=(double, const QWDDX &);
+    //friend QWDDX operator*=(const QString &, const QWDDX &);
 
-	QWDDX& operator/(int);
-	QWDDX& operator/(double);
-	QWDDX& operator/(const QString&);
-	QWDDX& operator/(const QWDDX&);
-    //friend QWDDX& operator/(int, const QWDDX&);
-    //friend QWDDX& operator/(double, const QWDDX&);
-    //friend QWDDX& operator/(const QString&, const QWDDX&);
+    QWDDX operator/(int);
+    QWDDX operator/(double);
+    QWDDX operator/(const QString &);
+    QWDDX operator/(const QWDDX &);
+    //friend QWDDX operator/(int, const QWDDX &);
+    //friend QWDDX operator/(double, const QWDDX &);
+    //friend QWDDX operator/(const QString &, const QWDDX &);
 
-	//QWDDX& operator/=(int);
-	//QWDDX& operator/=(double);
-	//QWDDX& operator/=(const QString&);
-	//QWDDX& operator/=(const QWDDX&);
-	//friend QWDDX& operator/=(int, const QWDDX&);
-	//friend QWDDX& operator/=(double, const QWDDX&);
-	//friend QWDDX& operator/=(const QString&, const QWDDX&);
+    //QWDDX operator/=(int);
+    //QWDDX operator/=(double);
+    //QWDDX operator/=(const QString &);
+    //QWDDX operator/=(const QWDDX &);
+    //friend QWDDX operator/=(int, const QWDDX &);
+    //friend QWDDX operator/=(double, const QWDDX &);
+    //friend QWDDX operator/=(const QString &, const QWDDX &);
 
-	QWDDX& operator&(int);
-	QWDDX& operator&(double);
-	QWDDX& operator&(const wchar_t*);
-	QWDDX& operator&(const QString&);
-	QWDDX& operator&(const QWDDX&);
+    QWDDX operator&(int);
+    QWDDX operator&(double);
+    QWDDX operator&(const wchar_t *);
+    QWDDX operator&(const QString &);
+    QWDDX operator&(const QWDDX &);
 
-	//QWDDX& operator&=(int);
-	//QWDDX& operator&=(double);
-	//QWDDX& operator&=(const wchar_t*);
-	//QWDDX& operator&=(const QString&);
-	//QWDDX& operator&=(const QWDDX&);
-	//friend QWDDX& operator&=(int, const QWDDX&);
-	//friend QWDDX& operator&=(double, const QWDDX&);
-	//friend QWDDX& operator&=(const QString&, const QWDDX&);
+    //QWDDX operator&=(int);
+    //QWDDX operator&=(double);
+    //QWDDX operator&=(const wchar_t *);
+    //QWDDX operator&=(const QString &);
+    //QWDDX operator&=(const QWDDX &);
+    //friend QWDDX operator&=(int, const QWDDX &);
+    //friend QWDDX operator&=(double, const QWDDX &);
+    //friend QWDDX operator&=(const QString &, const QWDDX &);
 
-	QWDDX& operator[](const double);
-	QWDDX& operator[](const QString&);
-	QWDDX& operator[](const char*);
-	QWDDX& operator[](const wchar_t*);
-	QWDDX& operator[](const QWDDX&);
+    QWDDX &operator[](const double);
+    QWDDX &operator[](const QString &);
+    QWDDX &operator[](const char *);
+    QWDDX &operator[](const wchar_t *);
+    QWDDX &operator[](const QWDDX &);
 
     bool operator==(bool);
     bool operator==(int);
 	bool operator==(double);
-	bool operator==(const QString&);
-	bool operator==(const QWDDX&);
+    bool operator==(const QString &);
+    bool operator==(const QWDDX &);
 
     //bool operator!();
     QWDDX operator!();
-    //friend bool operator!(const QWDDX&);
-    friend QWDDX operator!(const QWDDX&);
+    //friend bool operator!(const QWDDX &);
+    friend QWDDX operator!(const QWDDX &);
 
     bool operator!=(int);
 	bool operator!=(double);
-	bool operator!=(const QString&);
-	bool operator!=(const QWDDX&);
+    bool operator!=(const QString &);
+    bool operator!=(const QWDDX &);
 
 	bool operator<=(int);
 	bool operator<=(double);
-	bool operator<=(const QString&);
-	bool operator<=(const QWDDX&);
+    bool operator<=(const QString &);
+    bool operator<=(const QWDDX &);
 
 	bool operator>=(int);
 	bool operator>=(double);
-	bool operator>=(const QString&);
-	bool operator>=(const QWDDX&);
+    bool operator>=(const QString &);
+    bool operator>=(const QWDDX &);
 
 	bool operator<(int);
 	bool operator<(double);
-	bool operator<(const QString&);
-	bool operator<(const QWDDX&);
+    bool operator<(const QString &);
+    bool operator<(const QWDDX &);
 
 	bool operator>(int);
 	bool operator>(double);
-	bool operator>(const QString&);
-	bool operator>(const QWDDX&);
+    bool operator>(const QString &);
+    bool operator>(const QWDDX &);
 
-	//QWDDX& operator=(int);
-	//QWDDX& operator=(double);
-	//QWDDX& operator=(const char*);
-	//QWDDX& operator=(const wchar_t*);
-	//QWDDX& operator=(const QString&);
-	//QWDDX& operator=(const QDateTime&);
+    //QWDDX operator=(int);
+    //QWDDX operator=(double);
+    //QWDDX operator=(const char *);
+    //QWDDX operator=(const wchar_t *);
+    //QWDDX operator=(const QString &);
+    //QWDDX operator=(const QDateTime &);
 
-	QWDDX& join(const QWDDX&);
+    QWDDX join(const QWDDX &);
 	QWDDXType getType();
 	int size();
-	QWDDX& wr(bool);
 	QString StructKeyAt(const int);
-	QString toString();
-	QByteArray toBinary();
-	double toNumber();
+    QString toString() const;
+    QByteArray toBinary() const;
+    double toNumber() const;
 	bool canToNumber();
-	QDateTime toDateTime();
-	bool toBool();
+    QDateTime toDateTime() const;
+    bool toBool() const;
 
-    bool asBool() const;
-    int asInt() const;
-    double asDouble() const;
-    int asNumber() const;
-    QString asString() const;
 
 	// Member Variables
 	QVector<QWDDX> m_Array;
@@ -206,8 +200,8 @@ public:
 	QWDDXType m_Type;
 };
 
-Q_DECL_EXPORT QWDDX& operator&(int, const QWDDX&);
-Q_DECL_EXPORT QWDDX& operator&(double, const QWDDX&);
-Q_DECL_EXPORT QWDDX& operator&(const QString&, const QWDDX&);
+Q_DECL_EXPORT QWDDX operator&(int, const QWDDX &);
+Q_DECL_EXPORT QWDDX operator&(double, const QWDDX &);
+Q_DECL_EXPORT QWDDX operator&(const QString &, const QWDDX &);
 
 #endif // QWDDX_H
