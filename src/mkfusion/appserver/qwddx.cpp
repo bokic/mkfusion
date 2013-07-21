@@ -3,87 +3,249 @@
 #include <math.h>
 
 Q_DECL_EXPORT QWDDX::QWDDX()
-	: m_ArrayDimension(1)
-	, m_Number(0)
+    : m_Array(NULL)
+    , m_ArrayDimension(1)
+    , m_Struct(NULL)
+    , m_String(NULL)
+    , m_ByteArray(NULL)
+    , m_Number(0)
 	, m_Bool(false)
+    , m_DateTime(NULL)
 	, m_Type(Null)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(bool p_NewValue)
-	: m_ArrayDimension(1)
-	, m_Number(0)
+    : m_Array(NULL)
+    , m_ArrayDimension(1)
+    , m_Struct(NULL)
+    , m_String(NULL)
+    , m_ByteArray(NULL)
+    , m_Number(0)
 	, m_Bool(p_NewValue)
+    , m_DateTime(NULL)
 	, m_Type(Boolean)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(int p_NewValue)
-	: m_ArrayDimension(1)
+    : m_Array(NULL)
+    , m_ArrayDimension(1)
+    , m_Struct(NULL)
+    , m_String(NULL)
+    , m_ByteArray(NULL)
 	, m_Number(p_NewValue)
 	, m_Bool(false)
+    , m_DateTime(NULL)
 	, m_Type(Number)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(double p_NewValue)
-	: m_ArrayDimension(1)
+    : m_Array(NULL)
+    , m_ArrayDimension(1)
+    , m_Struct(NULL)
+    , m_String(NULL)
+    , m_ByteArray(NULL)
 	, m_Number(p_NewValue)
 	, m_Bool(false)
+    , m_DateTime(NULL)
 	, m_Type(Number)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const char *p_NewValue)
-	: m_ArrayDimension(1)
-	, m_String(p_NewValue)
+    : m_Array(NULL)
+    , m_ArrayDimension(1)
+    , m_Struct(NULL)
+    , m_String(new QString(p_NewValue))
+    , m_ByteArray(NULL)
 	, m_Number(0)
 	, m_Bool(false)
+    , m_DateTime(NULL)
 	, m_Type(String)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const wchar_t *p_NewValue)
-	: m_ArrayDimension(1)
-	, m_String(QString::fromWCharArray(p_NewValue))
+    : m_Array(NULL)
+    , m_ArrayDimension(1)
+    , m_Struct(NULL)
+    , m_String(new QString(QString::fromWCharArray(p_NewValue)))
+    , m_ByteArray(NULL)
 	, m_Number(0)
 	, m_Bool(false)
+    , m_DateTime(NULL)
 	, m_Type(String)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const QString& p_NewValue)
-	: m_ArrayDimension(1)
-	, m_String(p_NewValue)
+    : m_Array(NULL)
+    , m_ArrayDimension(1)
+    , m_Struct(NULL)
+    , m_String(new QString(p_NewValue))
+    , m_ByteArray(NULL)
 	, m_Number(0)
 	, m_Bool(false)
+    , m_DateTime(NULL)
 	, m_Type(String)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const QDateTime& p_NewValue)
-	: m_ArrayDimension(1)
+
+    : m_Array(NULL)
+    , m_ArrayDimension(1)
+    , m_Struct(NULL)
+    , m_String(NULL)
+    , m_ByteArray(NULL)
 	, m_Number(0)
 	, m_Bool(false)
-	, m_DateTime(p_NewValue)
+    , m_DateTime(new QDateTime(p_NewValue))
 	, m_Type(DateTime)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const QWDDXType p_Type)
-	: m_ArrayDimension(1)
+    : m_Array(NULL)
+    , m_ArrayDimension(1)
+    , m_Struct(NULL)
+    , m_String(NULL)
+    , m_ByteArray(NULL)
 	, m_Number(0)
 	, m_Bool(false)
-	, m_Type(p_Type)
+    , m_DateTime(NULL)
+    , m_Type(Null)
 {
+    setType(p_Type);
 }
+
+Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
+    : m_Array(NULL)
+    , m_ArrayDimension(1)
+    , m_Struct(NULL)
+    , m_String(NULL)
+    , m_ByteArray(NULL)
+    , m_Number(0)
+    , m_Bool(false)
+    , m_DateTime(NULL)
+    , m_Type(other.m_Type)
+{
+    switch(other.m_Type)
+    {
+    case Null:
+        break;
+    case Boolean:
+        m_Bool = other.m_Bool;
+        break;
+    case Number:
+        m_Number = other.m_Number;
+        break;
+    case String:
+        m_String = new QString(*other.m_String);
+        break;
+    case DateTime:
+        m_DateTime = new QDateTime(*other.m_DateTime);
+        break;
+    case Array:
+        m_Array = new QVector<QWDDX>();
+        *m_Array = *other.m_Array;
+        m_ArrayDimension = other.m_ArrayDimension;
+        break;
+    case Struct:
+        m_Struct = new QMap<QString, QWDDX>();
+        *m_Struct = *other.m_Struct;
+        break;
+    case Binary:
+        m_ByteArray = new QByteArray();
+        *m_ByteArray = *other.m_ByteArray;
+        break;
+    case Recordset:
+        break;
+    case NotImplemented:
+        break;
+    case Error:
+        break;
+    }
+}
+
 
 Q_DECL_EXPORT QWDDX::~QWDDX()
 {
-    return;
+    setType(Null);
 }
 
-Q_DECL_EXPORT QWDDX::QWDDXType QWDDX::getType()
+Q_DECL_EXPORT void QWDDX::setType(QWDDXType type)
+{
+    if (m_Type == type)
+    {
+        return;
+    }
+
+    switch(m_Type)
+    {
+    case String:
+        delete m_String;
+        m_String = NULL;
+        break;
+    case DateTime:
+        delete m_DateTime;
+        m_DateTime = NULL;
+        break;
+    case Array:
+        delete m_Array;
+        m_Array = NULL;
+        break;
+    case Struct:
+        delete m_Struct;
+        m_Struct = NULL;
+        break;
+    case Binary:
+        delete m_ByteArray;
+        m_ByteArray = NULL;
+        break;
+    case Recordset:
+        break;
+    case NotImplemented:
+        break;
+    case Error:
+        break;
+    default:
+        break;
+    }
+
+    m_Type = type;
+
+    switch(m_Type)
+    {
+    case String:
+        m_String = new QString();
+        break;
+    case DateTime:
+        m_DateTime = new QDateTime();
+        break;
+    case Array:
+        m_Array = new QVector<QWDDX>;
+        break;
+    case Struct:
+        m_Struct = new QMap<QString, QWDDX>;
+        break;
+    case Binary:
+        m_ByteArray = new QByteArray;
+        break;
+    case Recordset:
+        break;
+    case NotImplemented:
+        break;
+    case Error:
+        break;
+    default:
+        break;
+    }
+}
+
+Q_DECL_EXPORT QWDDX::QWDDXType QWDDX::type() const
 {
 	return m_Type;
 }
@@ -123,9 +285,9 @@ Q_DECL_EXPORT int QWDDX::size()
 	switch(m_Type)
 	{
 	case QWDDX::Array:
-		return m_Array.size();
+        return m_Array->size();
 	case QWDDX::Struct:
-		return m_Struct.size();
+        return m_Struct->size();
 	default:
 		return 1;
 	}
@@ -145,21 +307,21 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const double p_Index)
 			throw QMKFusionExpressionException("The element at position " + QString::number((int)p_Index) + " of array variable \"xxx\" cannot be found.", "");
 		}
 
-		if (m_Array.size() <= (int)p_Index)
+        if (m_Array->size() <= (int)p_Index)
 		{
-			m_Array.resize((int)p_Index + 1);
+            m_Array->resize((int)p_Index + 1);
 		}
 
-		return m_Array[(int)p_Index];
+        return (*m_Array)[(int)p_Index];
 	}
 	else
 	{
-		if (m_Struct.contains(QString::number(p_Index)) == false)
+        if (m_Struct->contains(QString::number(p_Index)) == false)
 		{
-			m_Struct.insert(QString::number(p_Index), QWDDX(QWDDX::Null));
+            m_Struct->insert(QString::number(p_Index), QWDDX(QWDDX::Null));
 		}
 
-		return m_Struct[QString::number(p_Index)];
+        return (*m_Struct)[QString::number(p_Index)];
 	}
 }
 
@@ -172,12 +334,12 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QString& key)
 
 	if (m_Type == QWDDX::Struct)
 	{
-		if (m_Struct.contains(key) == false)
+        if (m_Struct->contains(key) == false)
 		{
-			m_Struct.insert(key, QWDDX(QWDDX::Null));
+            m_Struct->insert(key, QWDDX(QWDDX::Null));
 		}
 
-		return m_Struct[key];
+        return (*m_Struct)[key];
 	}
 	else
 	{
@@ -193,12 +355,12 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QString& key)
 			throw QMKFusionExpressionException("The element at position " + QString::number(val) + " of array variable xxx cannot be found.");
 		}
 
-		if (m_Array.size() > val)
+        if (m_Array->size() > val)
 		{
-			m_Array.resize(val);
+            m_Array->resize(val);
 		}
 
-		return m_Array[val - 1];
+        return (*m_Array)[val - 1];
 	}
 }
 
@@ -213,12 +375,12 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const char* key)
 
 	if (m_Type == QWDDX::Struct)
 	{
-		if (m_Struct.contains(l_key) == false)
+        if (m_Struct->contains(l_key) == false)
 		{
-			m_Struct.insert(l_key, QWDDX(QWDDX::Null));
+            m_Struct->insert(l_key, QWDDX(QWDDX::Null));
 		}
 
-		return m_Struct[l_key];
+        return (*m_Struct)[l_key];
 	}
 	else
 	{
@@ -234,12 +396,12 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const char* key)
 			throw QMKFusionExpressionException("The element at position " + QString::number(val) + " of array variable xxx cannot be found.");
 		}
 
-		if (m_Array.size() > val)
+        if (m_Array->size() > val)
 		{
-			m_Array.resize(val);
+            m_Array->resize(val);
 		}
 
-		return m_Array[val - 1];
+        return (*m_Array)[val - 1];
 	}
 }
 
@@ -254,12 +416,12 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const wchar_t* key)
 
 	if (m_Type == QWDDX::Struct)
 	{
-		if (m_Struct.contains(l_key) == false)
+        if (m_Struct->contains(l_key) == false)
 		{
-			m_Struct.insert(l_key, QWDDX(QWDDX::Null));
+            m_Struct->insert(l_key, QWDDX(QWDDX::Null));
 		}
 
-		return m_Struct[l_key];
+        return (*m_Struct)[l_key];
 	}
 	else
 	{
@@ -275,12 +437,12 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const wchar_t* key)
 			throw QMKFusionExpressionException("The element at position " + QString::number(val) + " of array variable xxx cannot be found.");
 		}
 
-		if (m_Array.size() > val)
+        if (m_Array->size() > val)
 		{
-			m_Array.resize(val);
+            m_Array->resize(val);
 		}
 
-		return m_Array[val - 1];
+        return (*m_Array)[val - 1];
 	}
 }
 
@@ -302,27 +464,27 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QWDDX &key)
 			throw QMKFusionExpressionException("The element at position " + QString::number((int)l_key) + " of array variable \"xxx\" cannot be found.", "");
 		}
 
-		if (m_Array.size() < (int)l_key)
+        if (m_Array->size() < (int)l_key)
 		{
-			m_Array.resize((int)l_key);
+            m_Array->resize((int)l_key);
 		}
 
-        if ((m_Array[(int)l_key - 1].m_Type != QWDDX::Array)&&(m_ArrayDimension > 1))
+        if (((*m_Array)[(int)l_key - 1].m_Type != QWDDX::Array)&&(m_ArrayDimension > 1))
         {
-            m_Array[(int)l_key - 1] = QWDDX(QWDDX::Array);
-            m_Array[(int)l_key - 1].m_ArrayDimension = m_ArrayDimension - 1;
+            (*m_Array)[(int)l_key - 1] = QWDDX(QWDDX::Array);
+            (*m_Array)[(int)l_key - 1].m_ArrayDimension = m_ArrayDimension - 1;
         }
 
-		return m_Array[(int)l_key - 1];
+        return (*m_Array)[(int)l_key - 1];
 	}
 	else
 	{
-		if (m_Struct.contains(QString::number(l_key)) == false)
+        if (m_Struct->contains(QString::number(l_key)) == false)
 		{
-			m_Struct.insert(QString::number(l_key), QWDDX(QWDDX::Null));
+            m_Struct->insert(QString::number(l_key), QWDDX(QWDDX::Null));
 		}
 
-		return m_Struct[QString::number(l_key)];
+        return (*m_Struct)[QString::number(l_key)];
 	}
 }
 
@@ -561,7 +723,7 @@ Q_DECL_EXPORT bool QWDDX::operator <=(const QString& p_Value)
 
 	if ((m_Type == String))
 	{
-		return m_String <= p_Value;
+        return *m_String <= p_Value;
 	}
 
 	throw new QMKFusionExpressionException("Unsupported compare.");
@@ -631,7 +793,7 @@ Q_DECL_EXPORT bool QWDDX::operator >=(const QString& p_Value)
 
 	if ((m_Type == String))
 	{
-		return m_String >= p_Value;
+        return *m_String >= p_Value;
 	}
 
 	throw new QMKFusionExpressionException("Unsupported compare.");
@@ -701,7 +863,7 @@ Q_DECL_EXPORT bool QWDDX::operator <(const QString& p_Value)
 
 	if ((m_Type == String))
 	{
-		return m_String < p_Value;
+        return *m_String < p_Value;
 	}
 
 	throw new QMKFusionExpressionException("Unsupported compare.");
@@ -771,7 +933,7 @@ Q_DECL_EXPORT bool QWDDX::operator >(const QString &p_Value)
 
 	if ((m_Type == String))
 	{
-		return m_String > p_Value;
+        return *m_String > p_Value;
 	}
 
 	throw new QMKFusionExpressionException("Unsupported compare.");
@@ -802,9 +964,17 @@ Q_DECL_EXPORT bool QWDDX::operator>(const QWDDX &p_Value)
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
 
-/*Q_DECL_EXPORT QWDDX QWDDX::operator=(int p_newValue)
+Q_DECL_EXPORT QWDDX QWDDX::operator=(bool p_newValue)
 {
-	m_Type = Number;
+    setType(Boolean);
+    m_Bool = p_newValue;
+
+    return *this;
+}
+
+Q_DECL_EXPORT QWDDX QWDDX::operator=(int p_newValue)
+{
+    setType(Number);
 	m_Number = p_newValue;
 
 	return *this;
@@ -812,7 +982,7 @@ Q_DECL_EXPORT bool QWDDX::operator>(const QWDDX &p_Value)
 
 Q_DECL_EXPORT QWDDX QWDDX::operator=(double p_newValue)
 {
-	m_Type = Number;
+    setType(Number);
 	m_Number = p_newValue;
 
 	return *this;
@@ -821,34 +991,71 @@ Q_DECL_EXPORT QWDDX QWDDX::operator=(double p_newValue)
 
 Q_DECL_EXPORT QWDDX QWDDX::operator=(const wchar_t *p_newValue)
 {
-	m_Type = String;
-	m_String = QString::fromWCharArray(p_newValue);
+    setType(String);
+    *m_String = QString::fromWCharArray(p_newValue);
 
 	return *this;
 }
 
 Q_DECL_EXPORT QWDDX QWDDX::operator=(const QString &p_newValue)
 {
-	m_Type = String;
-	m_String = p_newValue;
+    setType(String);
+    *m_String = p_newValue;
 
 	return *this;
 }
 
 Q_DECL_EXPORT QWDDX QWDDX::operator=(const QDateTime &p_newValue)
 {
-	m_Type = DateTime;
-	m_DateTime = p_newValue;
+    setType(DateTime);
+    *m_DateTime = p_newValue;
 
 	return *this;
 }
 
-Q_DECL_EXPORT QWDDX QWDDX::operator=(const QDateTime &p_newValue)
+Q_DECL_EXPORT QWDDX QWDDX::operator=(const QWDDX &p_newValue)
 {
-	toDateTime()p_newValue);
+    setType(p_newValue.type());
+
+    switch(type())
+    {
+    case Null:
+        break;
+    case Boolean:
+        m_Bool = p_newValue.m_Bool;
+        break;
+    case Number:
+        m_Number = p_newValue.m_Number;
+        break;
+    case String:
+        m_String = new QString(*p_newValue.m_String);
+        break;
+    case DateTime:
+        m_DateTime = new QDateTime(*p_newValue.m_DateTime);
+        break;
+    case Array:
+        m_Array = new QVector<QWDDX>();
+        *m_Array = *p_newValue.m_Array;
+        m_ArrayDimension = p_newValue.m_ArrayDimension;
+        break;
+    case Struct:
+        m_Struct = new QMap<QString, QWDDX>();
+        *m_Struct = *p_newValue.m_Struct;
+        break;
+    case Binary:
+        m_ByteArray = new QByteArray();
+        *m_ByteArray = *p_newValue.m_ByteArray;
+        break;
+    case Recordset:
+        break;
+    case NotImplemented:
+        break;
+    case Error:
+        break;
+    }
 
 	return *this;
-}*/
+}
 
 Q_DECL_EXPORT QWDDX QWDDX::operator+(int p_Value)
 {
@@ -1154,10 +1361,10 @@ Q_DECL_EXPORT QWDDX QWDDX::join(const QWDDX &p_Value)
 
 Q_DECL_EXPORT QString QWDDX::StructKeyAt(const int p_Index)
 {
-	if (m_Struct.size() <= p_Index)
+    if (m_Struct->size() <= p_Index)
 		return "";
 
-	return m_Struct.keys().at(p_Index);
+    return m_Struct->keys().at(p_Index);
 }
 
 Q_DECL_EXPORT QString QWDDX::toString() const
@@ -1216,7 +1423,7 @@ Q_DECL_EXPORT QString QWDDX::toString() const
 		break;
 
 	case QWDDX::DateTime:
-		return "{ts \'"+m_DateTime.toString("yyyy-MM-dd hh:mm:ss")+"\'}";
+        return "{ts \'" + m_DateTime->toString("yyyy-MM-dd hh:mm:ss") + "\'}";
 		break;
 
 	case QWDDX::Boolean:
@@ -1230,7 +1437,7 @@ Q_DECL_EXPORT QString QWDDX::toString() const
 		break;
 	}
 
-	return m_String;
+    return *m_String;
 }
 
 Q_DECL_EXPORT double QWDDX::toNumber() const
@@ -1243,16 +1450,16 @@ Q_DECL_EXPORT double QWDDX::toNumber() const
 	case QWDDX::Number:
 		break;
 	case QWDDX::String:
-		ret = m_String.toDouble(&ok);
+        ret = m_String->toDouble(&ok);
 		if (ok == false)
 		{
-			throw QMKFusionExpressionException("The value " + m_String + " cannot be converted to a number.");
+            throw QMKFusionExpressionException("The value " + *m_String + " cannot be converted to a number.");
 		}
 
 		return ret;
 		break;
 	case QWDDX::DateTime:
-		ret = m_DateTime.toTime_t(); // TODO: What here?
+        ret = m_DateTime->toTime_t(); // TODO: What here?
 		break;
 	default:
 		throw QMKFusionExpressionException("The value cannot be converted to a number.");
@@ -1270,13 +1477,13 @@ Q_DECL_EXPORT bool QWDDX::canToNumber()
 
 	if (m_Type == String)
 	{
-		if (m_String.isEmpty())
+        if (m_String->isEmpty())
 		{
 			return false;
 		}
 
 		bool ok;
-		m_String.toDouble(&ok);
+        m_String->toDouble(&ok);
 
 		return ok;
 	}
@@ -1289,7 +1496,7 @@ Q_DECL_EXPORT QDateTime QWDDX::toDateTime() const
 	if (m_Type != QWDDX::DateTime)
 		throw QMKFusionExpressionException("The value cannot be converted to a datetime.");
 
-	return m_DateTime;
+    return *m_DateTime;
 }
 
 Q_DECL_EXPORT bool QWDDX::toBool() const
@@ -1299,11 +1506,11 @@ Q_DECL_EXPORT bool QWDDX::toBool() const
 		case QWDDX::Boolean:
 			return m_Bool;
 		case QWDDX::String:
-			if (m_String.compare("true", Qt::CaseInsensitive) == 0)
+            if (m_String->compare("true", Qt::CaseInsensitive) == 0)
 			{
 				return true;
 			}
-			else if (m_String.compare("false", Qt::CaseInsensitive) == 0)
+            else if (m_String->compare("false", Qt::CaseInsensitive) == 0)
 			{
 				return false;
 			}

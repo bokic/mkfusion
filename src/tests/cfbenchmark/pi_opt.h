@@ -13,12 +13,22 @@
 #define QCHECK_QWDDX_VAR_CACHE(VAR, STR) \
     if (VAR == NULL) \
     { \
-        if (!m_TemplateInstance->m_VARIABLES.m_Struct.contains(STR)) \
+        if (!m_TemplateInstance->m_VARIABLES.m_Struct->contains(STR)) \
         { \
-            m_TemplateInstance->m_VARIABLES.m_Struct[STR] = QWDDX(); \
+            (*m_TemplateInstance->m_VARIABLES.m_Struct)[STR] = QWDDX(); \
         } \
-        VAR = &m_TemplateInstance->m_VARIABLES.m_Struct[STR]; \
+        VAR = &(*m_TemplateInstance->m_VARIABLES.m_Struct)[STR]; \
     }
+
+
+/*if (c_VARIABLES_FINAL == NULL)
+{
+    if (!m_TemplateInstance->m_VARIABLES.m_Struct->contains("FINAL"))
+    {
+        (*m_TemplateInstance->m_VARIABLES.m_Struct)["FINAL"] = QWDDX();
+    }
+    c_VARIABLES_FINAL = &(*m_TemplateInstance->m_VARIABLES.m_Struct)["FINAL"];
+}*/
 
 
 class QCFGeneratedTemplateOpt : public QCFTemplate
@@ -50,98 +60,46 @@ public:
 		QCFTemplate::run(p_TemplateInstance);
 
         //m_TemplateInstance->m_VARIABLES["FINAL"] = cf_ArrayNew(QWDDX(1));
-        if (c_VARIABLES_FINAL == NULL)
-        {
-            if (!m_TemplateInstance->m_VARIABLES.m_Struct.contains("FINAL"))
-            {
-                m_TemplateInstance->m_VARIABLES.m_Struct["FINAL"] = QWDDX();
-            }
-            c_VARIABLES_FINAL = &m_TemplateInstance->m_VARIABLES.m_Struct["FINAL"];
-        }
-        *c_VARIABLES_FINAL = cf_ArrayNew(QWDDX(1));
+        QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_FINAL, "FINAL");
+        (*c_VARIABLES_FINAL) = cf_ArrayNew(1);
 
         //m_TemplateInstance->m_VARIABLES["TMP"] = cf_ArrayNew(QWDDX(1));
-        if (c_VARIABLES_TMP == NULL)
-        {
-            if (!m_TemplateInstance->m_VARIABLES.m_Struct.contains("TMP"))
-            {
-                m_TemplateInstance->m_VARIABLES.m_Struct["TMP"] = QWDDX();
-            }
-            c_VARIABLES_TMP = &m_TemplateInstance->m_VARIABLES.m_Struct["TMP"];
-        }
+        QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TMP, "TMP");
         *c_VARIABLES_TMP = cf_ArrayNew(1);
 
         //m_TemplateInstance->m_VARIABLES["PRECISION"] = QWDDX(6);
-        if (c_VARIABLES_PRECISION == NULL)
-        {
-            if (!m_TemplateInstance->m_VARIABLES.m_Struct.contains("PRECISION"))
-            {
-                m_TemplateInstance->m_VARIABLES.m_Struct["PRECISION"] = QWDDX();
-            }
-            c_VARIABLES_PRECISION = &m_TemplateInstance->m_VARIABLES.m_Struct["PRECISION"];
-        }
+        QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_PRECISION, "PRECISION");
         *c_VARIABLES_PRECISION = 6;
 
         //for (m_TemplateInstance->m_VARIABLES["I"] = (QWDDX(1)).toNumber(); (m_TemplateInstance->m_VARIABLES["I"]).toNumber()  <=  (m_TemplateInstance->m_VARIABLES["PRECISION"]).toNumber(); m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["I"]).toNumber() + 1)
-        if (c_VARIABLES_I == NULL)
-        {
-            if (!m_TemplateInstance->m_VARIABLES.m_Struct.contains("I"))
-            {
-                m_TemplateInstance->m_VARIABLES.m_Struct["I"] = QWDDX();
-            }
-            c_VARIABLES_I = &m_TemplateInstance->m_VARIABLES.m_Struct["I"];
-        }
+        QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
         for (*c_VARIABLES_I = 1; (*c_VARIABLES_I).toNumber()  <=  (*c_VARIABLES_PRECISION).toNumber(); *c_VARIABLES_I = c_VARIABLES_I->toNumber() + 1)
         {
             //m_TemplateInstance->m_VARIABLES["FINAL"][m_TemplateInstance->m_VARIABLES["I"]] = QWDDX(0);
+            QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_FINAL, "FINAL");
+            QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
             (*c_VARIABLES_FINAL)[*c_VARIABLES_I] = QWDDX(0);
 
             //m_TemplateInstance->m_VARIABLES["TMP"][m_TemplateInstance->m_VARIABLES["I"]] = QWDDX(0);
+            QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TMP, "TMP");
+            QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
             (*c_VARIABLES_TMP)[*c_VARIABLES_I] = QWDDX(0);
 		}
 
         //m_TemplateInstance->m_VARIABLES["KEEPLOOPING"] = QWDDX(true);
-        if (c_VARIABLES_KEEPLOOPING == NULL)
-        {
-            if (!m_TemplateInstance->m_VARIABLES.m_Struct.contains("KEEPLOOPING"))
-            {
-                m_TemplateInstance->m_VARIABLES.m_Struct["KEEPLOOPING"] = QWDDX();
-            }
-            c_VARIABLES_KEEPLOOPING = &m_TemplateInstance->m_VARIABLES.m_Struct["KEEPLOOPING"];
-        }
+        QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_KEEPLOOPING, "KEEPLOOPING");
         *c_VARIABLES_KEEPLOOPING = true;
 
         //m_TemplateInstance->m_VARIABLES["DIVIDER"] = QWDDX(1);
-        if (c_VARIABLES_DIVIDER == NULL)
-        {
-            if (!m_TemplateInstance->m_VARIABLES.m_Struct.contains("DIVIDER"))
-            {
-                m_TemplateInstance->m_VARIABLES.m_Struct["DIVIDER"] = QWDDX();
-            }
-            c_VARIABLES_DIVIDER = &m_TemplateInstance->m_VARIABLES.m_Struct["DIVIDER"];
-        }
+        QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_DIVIDER, "DIVIDER");
         *c_VARIABLES_DIVIDER = 1;
 
         //m_TemplateInstance->m_VARIABLES["POSITIVESIGN"] = QWDDX(true);
-        if (c_VARIABLES_POSITIVESIGN == NULL)
-        {
-            if (!m_TemplateInstance->m_VARIABLES.m_Struct.contains("POSITIVESIGN"))
-            {
-                m_TemplateInstance->m_VARIABLES.m_Struct["POSITIVESIGN"] = QWDDX();
-            }
-            c_VARIABLES_POSITIVESIGN = &m_TemplateInstance->m_VARIABLES.m_Struct["POSITIVESIGN"];
-        }
+        QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_POSITIVESIGN, "POSITIVESIGN");
         *c_VARIABLES_POSITIVESIGN = true;
 
         //m_TemplateInstance->m_VARIABLES["COUNTER"] = QWDDX(0);
-        if (c_VARIABLES_COUNTER == NULL)
-        {
-            if (!m_TemplateInstance->m_VARIABLES.m_Struct.contains("COUNTER"))
-            {
-                m_TemplateInstance->m_VARIABLES.m_Struct["COUNTER"] = QWDDX();
-            }
-            c_VARIABLES_COUNTER = &m_TemplateInstance->m_VARIABLES.m_Struct["COUNTER"];
-        }
+        QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_COUNTER, "COUNTER");
         *c_VARIABLES_COUNTER = 0;
 
         while(*c_VARIABLES_KEEPLOOPING == true)
@@ -150,25 +108,11 @@ public:
             *c_VARIABLES_KEEPLOOPING = false;
 
             //m_TemplateInstance->m_VARIABLES["VALUE"] = QWDDX(1);
-            if (c_VARIABLES_VALUE == NULL)
-            {
-                if (!m_TemplateInstance->m_VARIABLES.m_Struct.contains("VALUE"))
-                {
-                    m_TemplateInstance->m_VARIABLES.m_Struct["VALUE"] = QWDDX();
-                }
-                c_VARIABLES_VALUE = &m_TemplateInstance->m_VARIABLES.m_Struct["VALUE"];
-            }
+            QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_VALUE, "VALUE");
             *c_VARIABLES_VALUE = 1;
 
             //m_TemplateInstance->m_VARIABLES["REMAINING"] = QWDDX(0);
-            if (c_VARIABLES_REMAINING == NULL)
-            {
-                if (!m_TemplateInstance->m_VARIABLES.m_Struct.contains("REMAINING"))
-                {
-                    m_TemplateInstance->m_VARIABLES.m_Struct["REMAINING"] = QWDDX();
-                }
-                c_VARIABLES_REMAINING = &m_TemplateInstance->m_VARIABLES.m_Struct["REMAINING"];
-            }
+            QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_REMAINING, "REMAINING");
             *c_VARIABLES_REMAINING = 0;
 
             //for (m_TemplateInstance->m_VARIABLES["I"] = (QWDDX(1)).toNumber(); (m_TemplateInstance->m_VARIABLES["I"]).toNumber()  <=  (m_TemplateInstance->m_VARIABLES["PRECISION"]).toNumber(); m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["I"]).toNumber() + 1)

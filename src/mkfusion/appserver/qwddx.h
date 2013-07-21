@@ -34,6 +34,8 @@ public:
     QWDDX(const QString &);
     QWDDX(const QDateTime &);
 
+    QWDDX(const QWDDX &);
+
 	QWDDX(const QWDDXType);
 
     ~QWDDX();
@@ -169,15 +171,18 @@ public:
     bool operator>(const QString &);
     bool operator>(const QWDDX &);
 
-    //QWDDX operator=(int);
-    //QWDDX operator=(double);
-    //QWDDX operator=(const char *);
-    //QWDDX operator=(const wchar_t *);
-    //QWDDX operator=(const QString &);
-    //QWDDX operator=(const QDateTime &);
+    QWDDX operator=(bool);
+    QWDDX operator=(int);
+    QWDDX operator=(double);
+    QWDDX operator=(const char *);
+    QWDDX operator=(const wchar_t *);
+    QWDDX operator=(const QString &);
+    QWDDX operator=(const QDateTime &);
+    QWDDX operator=(const QWDDX &);
 
     QWDDX join(const QWDDX &);
-	QWDDXType getType();
+    void setType(QWDDXType);
+    QWDDXType type() const;
 	int size();
 	QString StructKeyAt(const int);
     QString toString() const;
@@ -189,14 +194,14 @@ public:
 
 
 	// Member Variables
-	QVector<QWDDX> m_Array;
+    QVector<QWDDX> *m_Array;
 	quint32 m_ArrayDimension;
-	QMap<QString, QWDDX> m_Struct;
-	QString m_String;
-	QByteArray m_ByteArray;
+    QMap<QString, QWDDX> *m_Struct;
+    QString *m_String;
+    QByteArray *m_ByteArray;
 	double m_Number;
 	bool m_Bool;
-	QDateTime m_DateTime;
+    QDateTime *m_DateTime;
 	QWDDXType m_Type;
 };
 

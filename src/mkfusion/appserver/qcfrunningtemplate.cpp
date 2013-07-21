@@ -211,13 +211,13 @@ void QCFRunningTemplate::worker()
 				l_page = createCFMTemplate();
 				if (l_page != NULL)
 				{
-					m_APPLICATION.m_Type = QWDDX::Error;
-					m_SESSION.m_Type = QWDDX::Error;
-					m_SERVER.m_Type = QWDDX::Struct;
-					m_CGI.m_Type = QWDDX::Struct;
-					m_FORM.m_Type = QWDDX::Struct;
-					m_VARIABLES.m_Type = QWDDX::Struct;
-					m_URL.m_Type = QWDDX::Struct;
+                    m_APPLICATION.setType(QWDDX::Error);
+                    m_SESSION.setType(QWDDX::Error);
+                    m_SERVER.setType(QWDDX::Struct);
+                    m_CGI.setType(QWDDX::Struct);
+                    m_FORM.setType(QWDDX::Struct);
+                    m_VARIABLES.setType(QWDDX::Struct);
+                    m_URL.setType(QWDDX::Struct);
 
 					// Run compiled template(dll/so).
 					m_SERVER[L"COLDFUSION"] = QWDDX(QWDDX::Struct);

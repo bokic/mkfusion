@@ -38,7 +38,7 @@ void TestCases::optPI()
 
         QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
 
-        m_TemplateInstance->m_VARIABLES.m_Type = QWDDX::Struct;
+        m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
 
         optTemplate.run(m_TemplateInstance);
     }

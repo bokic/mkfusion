@@ -17,18 +17,7 @@ int cf_Abs(int val)
 
 QWDDX cf_Abs(const QWDDX& val)
 {
-	QWDDX ret;
-
-	ret = val;
-
-	if (ret.m_Type != QWDDX::Number)
-	{
-		ret = ret.toNumber();
-	}
-
-	ret.m_Number = abs(ret.m_Number);
-
-	return ret;
+    return QWDDX(abs(val.toNumber()));
 }
 
 double cf_ACos(double val)
@@ -43,23 +32,16 @@ double cf_ACos(double val)
 
 QWDDX cf_ACos(const QWDDX& val)
 {
-    QWDDX ret;
+    double tmp;
 
-    ret = val;
+    tmp = val.toNumber();
 
-    if (ret.m_Type != QWDDX::Number)
+    if ((tmp < -1)||(tmp > 1))
     {
-        ret = ret.toNumber();
+        throw QMKFusionInvalidArgumentException("ACos", 1, tmp, -1, 1);
     }
 
-    if ((ret.toNumber() < -1)||(ret.toNumber() > 1))
-    {
-        throw QMKFusionInvalidArgumentException("ACos", 1, ret, -1, 1);
-    }
-
-    ret.m_Number = acos(ret.m_Number);
-
-    return ret;
+    return QWDDX(acos(tmp));
 }
 
 void cf_AddSOAPRequestHeader(QWDDX *p_WebService, const QString& p_Namespace, const QString& p_Name, const QWDDX& p_Value, bool p_MustUnderstand)
@@ -104,14 +86,14 @@ void cf_ApplicationStop()
 
 bool cf_ArrayAppend(QWDDX *p_Array, const QWDDX& p_Value)
 {
-	if (p_Array->m_Type != QWDDX::Array)
+    if (p_Array->type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
 	if (p_Array->m_ArrayDimension > 1)
 	{
-		if (p_Value.m_Type != QWDDX::Array)
+        if (p_Value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
@@ -121,14 +103,14 @@ bool cf_ArrayAppend(QWDDX *p_Array, const QWDDX& p_Value)
 		}
 	}
 
-	p_Array->m_Array.append(p_Value);
+    p_Array->m_Array->append(p_Value);
 
 	return true;
 }
 
 double cf_ArrayAvg(const QWDDX& p_Array)
 {
-	if (p_Array.m_Type != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -138,46 +120,45 @@ double cf_ArrayAvg(const QWDDX& p_Array)
 		throw new QMKFusionArrayNotOneDimensionException();
 	}
 
-	if (p_Array.m_Array.size() == 0)
+    if (p_Array.m_Array->size() == 0)
 	{
 		return 0;
 	}
 
 	double sum = 0;
-	QWDDX temp = p_Array;
 
-	for (int c = 0; c < temp.m_Array.size(); c++)
+    for (int c = 0; c < p_Array.m_Array->size(); c++)
 	{
-		sum += temp.m_Array[c].toNumber();
+        sum += p_Array.m_Array->at(c).toNumber();
 	}
 
-	return sum / temp.m_Array.size();
+    return sum / p_Array.m_Array->size();
 }
 
 bool cf_ArrayClear(QWDDX *p_Value)
 {
-	if (p_Value->m_Type != QWDDX::Array)
+    if (p_Value->type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	p_Value->m_Array.clear();
+    p_Value->m_Array->clear();
 
 	return true;
 }
 
 bool cf_ArrayContains(const QWDDX& p_Array, const QWDDX& p_Search)
 {
-	if (p_Array.m_Type != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
 	QWDDX temp2 = p_Search;
 
-	for(int c = 0; c < p_Array.m_Array.size(); c++)
+    for(int c = 0; c < p_Array.m_Array->size(); c++)
 	{
-		QWDDX temp1 = p_Array.m_Array[c];
+        QWDDX temp1 = p_Array.m_Array->at(c);
 		if (temp1.toString() == temp2.toString())
 		{
 			return true;
@@ -189,18 +170,18 @@ bool cf_ArrayContains(const QWDDX& p_Array, const QWDDX& p_Search)
 
 bool cf_ArrayDelete(QWDDX *p_Array, const QWDDX& p_Value)
 {
-	if (p_Array->m_Type != QWDDX::Array)
+    if (p_Array->type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
 	QWDDX temp = p_Value;
 
-	for(int c = 0; c < p_Array->m_Array.size(); c++)
+    for(int c = 0; c < p_Array->m_Array->size(); c++)
 	{
 		if (p_Array[c] == temp)
 		{
-			p_Array->m_Array.remove(c);
+            p_Array->m_Array->remove(c);
 			return true;
 		}
 	}
@@ -210,33 +191,33 @@ bool cf_ArrayDelete(QWDDX *p_Array, const QWDDX& p_Value)
 
 bool cf_ArrayDeleteAt(QWDDX *p_Array, int p_Index)
 {
-	if (p_Array->m_Type != QWDDX::Array)
+    if (p_Array->type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if ((p_Index < 1)||(p_Index > p_Array->m_Array.size()))
+    if ((p_Index < 1)||(p_Index > p_Array->m_Array->size()))
 	{
-		throw QMKFusionInvalidArrayIndexException(p_Index, p_Array->m_Array.size());
+        throw QMKFusionInvalidArrayIndexException(p_Index, p_Array->m_Array->size());
 	}
 
-	p_Array->m_Array.remove(p_Index - 1);
+    p_Array->m_Array->remove(p_Index - 1);
 
 	return true;
 }
 
 int cf_ArrayFind(const QWDDX& p_Array, const QWDDX& p_Search)
 {
-	if (p_Array.m_Type != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
 	QWDDX temp2 = p_Search;
 
-	for(int c = 0; c < p_Array.m_Array.size(); c++)
+    for(int c = 0; c < p_Array.m_Array->size(); c++)
 	{
-		QWDDX temp1 = p_Array.m_Array[c];
+        QWDDX temp1 = p_Array.m_Array->at(c);
 		if (temp1.toString() == temp2.toString())
 		{
 			return c + 1;
@@ -248,16 +229,16 @@ int cf_ArrayFind(const QWDDX& p_Array, const QWDDX& p_Search)
 
 int cf_ArrayFindNoCase(const QWDDX& p_Array, const QWDDX& p_Search)
 {
-	if (p_Array.m_Type != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
 	QWDDX temp2 = p_Search;
 
-	for(int c = 0; c < p_Array.m_Array.size(); c++)
+    for(int c = 0; c < p_Array.m_Array->size(); c++)
 	{
-		QWDDX temp1 = p_Array.m_Array[c];
+        QWDDX temp1 = p_Array.m_Array->at(c);
 		if (temp1.toString().compare(temp2.toString(), Qt::CaseInsensitive) == 0)
 		{
 			return c + 1;
@@ -269,19 +250,19 @@ int cf_ArrayFindNoCase(const QWDDX& p_Array, const QWDDX& p_Search)
 
 bool cf_ArrayInsertAt(QWDDX* p_Array, int p_Index, const QWDDX& p_Value)
 {
-	if (p_Array->m_Type != QWDDX::Array)
+    if (p_Array->type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if (p_Array->m_Type != QWDDX::Array)
+    if (p_Array->type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
 	if (p_Array->m_ArrayDimension > 1)
 	{
-		if (p_Value.m_Type != QWDDX::Array)
+        if (p_Value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
@@ -291,31 +272,31 @@ bool cf_ArrayInsertAt(QWDDX* p_Array, int p_Index, const QWDDX& p_Value)
 		}
 	}
 
-	if ((p_Index < 1)||(p_Index > p_Array->m_Array.size()))
+    if ((p_Index < 1)||(p_Index > p_Array->m_Array->size()))
 	{
-		throw QMKFusionInvalidArrayIndexException(p_Index, p_Array->m_Array.size());
+        throw QMKFusionInvalidArrayIndexException(p_Index, p_Array->m_Array->size());
 	}
 
 	QWDDX temp = p_Value;
 
-	p_Array->m_Array.insert(p_Index - 1, temp);
+    p_Array->m_Array->insert(p_Index - 1, temp);
 
 	return true;
 }
 
 bool cf_ArrayIsDefined(const QWDDX& p_Array, int p_Index)
 {
-	if (p_Array.m_Type != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if ((p_Index < 1)||(p_Index > p_Array.m_Array.size()))
+    if ((p_Index < 1)||(p_Index > p_Array.m_Array->size()))
 	{
-		throw QMKFusionInvalidArrayIndexException(p_Index, p_Array.m_Array.size());
+        throw QMKFusionInvalidArrayIndexException(p_Index, p_Array.m_Array->size());
 	}
 
-	if (p_Array.m_Array[p_Index - 1].m_Type == QWDDX::Null)
+    if (p_Array.m_Array->at(p_Index - 1).type() == QWDDX::Null)
 	{
 		return false;
 	}
@@ -325,12 +306,12 @@ bool cf_ArrayIsDefined(const QWDDX& p_Array, int p_Index)
 
 bool cf_ArrayIsEmpty(const QWDDX& p_Array)
 {
-	if (p_Array.m_Type != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if (p_Array.m_Array.size() == 0)
+    if (p_Array.m_Array->size() == 0)
 	{
 		return true;
 	}
@@ -340,17 +321,17 @@ bool cf_ArrayIsEmpty(const QWDDX& p_Array)
 
 int cf_ArrayLen(const QWDDX& p_Array)
 {
-	if (p_Array.m_Type != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	return p_Array.m_Array.size();
+    return p_Array.m_Array->size();
 }
 
 double cf_ArrayMax(const QWDDX& p_Array)
 {
-	if (p_Array.m_Type != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -362,9 +343,9 @@ double cf_ArrayMax(const QWDDX& p_Array)
 
 	double ret = 0;
 
-	for(int c = 0; c < p_Array.m_Array.size(); c++)
+    for(int c = 0; c < p_Array.m_Array->size(); c++)
 	{
-		QWDDX temp = p_Array.m_Array[c];
+        QWDDX temp = p_Array.m_Array->at(c);
 
 		if (c == 0)
 		{
@@ -384,7 +365,7 @@ double cf_ArrayMax(const QWDDX& p_Array)
 
 double cf_ArrayMin(const QWDDX& p_Array)
 {
-	if (p_Array.m_Type != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -396,9 +377,9 @@ double cf_ArrayMin(const QWDDX& p_Array)
 
 	double ret = 0;
 
-	for(int c = 0; c < p_Array.m_Array.size(); c++)
+    for(int c = 0; c < p_Array.m_Array->size(); c++)
 	{
-		QWDDX temp = p_Array.m_Array[c];
+        QWDDX temp = p_Array.m_Array->at(c);
 
 		if (c == 0)
 		{
@@ -433,14 +414,14 @@ QWDDX cf_ArrayNew(int p_Dimension)
 
 bool cf_ArrayPrepend(QWDDX *p_Array, const QWDDX &p_Value)
 {
-	if (p_Array->m_Type != QWDDX::Array)
+    if (p_Array->type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
 	if (p_Array->m_ArrayDimension > 1)
 	{
-		if (p_Value.m_Type != QWDDX::Array)
+        if (p_Value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
@@ -452,7 +433,7 @@ bool cf_ArrayPrepend(QWDDX *p_Array, const QWDDX &p_Value)
 
 	QWDDX temp = p_Value;
 
-	p_Array->m_Array.insert(0, temp);
+    p_Array->m_Array->insert(0, temp);
 
 	return true;
 }
@@ -460,14 +441,14 @@ bool cf_ArrayPrepend(QWDDX *p_Array, const QWDDX &p_Value)
 
 bool cf_ArrayResize(QWDDX *p_Array, int p_MinSize)
 {
-	if (p_Array->m_Type != QWDDX::Array)
+    if (p_Array->type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if (p_Array->m_Array.size() < p_MinSize)
+    if (p_Array->m_Array->size() < p_MinSize)
 	{
-		p_Array->m_Array.reserve(p_MinSize);
+        p_Array->m_Array->reserve(p_MinSize);
 	}
 
 	return true;
@@ -475,7 +456,7 @@ bool cf_ArrayResize(QWDDX *p_Array, int p_MinSize)
 
 bool cf_ArraySet(QWDDX *p_Array, int p_Start, int p_End, const QWDDX &p_Value)
 {
-	if (p_Array->m_Type != QWDDX::Array)
+    if (p_Array->type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -487,7 +468,7 @@ bool cf_ArraySet(QWDDX *p_Array, int p_Start, int p_End, const QWDDX &p_Value)
 
 	if (p_Array->m_ArrayDimension > 1)
 	{
-		if (p_Value.m_Type != QWDDX::Array)
+        if (p_Value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
@@ -501,7 +482,7 @@ bool cf_ArraySet(QWDDX *p_Array, int p_Start, int p_End, const QWDDX &p_Value)
 
 	for(int c = p_Start - 1; c < p_End; c++)
 	{
-		p_Array->m_Array[c] = temp;
+        p_Array->m_Array->replace(c, temp);
 	}
 
 	return true;
@@ -518,7 +499,7 @@ bool cf_ArraySort(QWDDX *p_Array, const QString &p_SortType, const QString &p_So
 
 double cf_ArraySum(const QWDDX& p_Array)
 {
-	if (p_Array.m_Type != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -528,7 +509,7 @@ double cf_ArraySum(const QWDDX& p_Array)
 		throw new QMKFusionArrayNotOneDimensionException();
 	}
 
-	if (p_Array.m_Array.size() == 0)
+    if (p_Array.m_Array->size() == 0)
 	{
 		return 0;
 	}
@@ -536,9 +517,9 @@ double cf_ArraySum(const QWDDX& p_Array)
 	double sum = 0;
 	QWDDX temp = p_Array;
 
-	for (int c = 0; c < temp.m_Array.size(); c++)
+    for (int c = 0; c < temp.m_Array->size(); c++)
 	{
-		sum += temp.m_Array[c].toNumber();
+        sum += temp.m_Array->at(c).toNumber();
 	}
 
 	return sum;
@@ -546,7 +527,7 @@ double cf_ArraySum(const QWDDX& p_Array)
 
 bool cf_ArraySwap(QWDDX *p_Array, int p_Pos1, int p_Pos2)
 {
-	if (p_Array->m_Type != QWDDX::Array)
+    if (p_Array->type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -554,18 +535,18 @@ bool cf_ArraySwap(QWDDX *p_Array, int p_Pos1, int p_Pos2)
 	p_Pos1--;
 	p_Pos2--;
 
-	if((p_Pos1 < 0)||(p_Pos1 >= p_Array->m_Array.size()))
+    if((p_Pos1 < 0)||(p_Pos1 >= p_Array->m_Array->size()))
 	{
-		throw QMKFusionArraySwapRangeException(p_Pos1 + 1, p_Array->m_Array.size());
+        throw QMKFusionArraySwapRangeException(p_Pos1 + 1, p_Array->m_Array->size());
 	}
-	if((p_Pos2 < 0)||(p_Pos2 >= p_Array->m_Array.size()))
+    if((p_Pos2 < 0)||(p_Pos2 >= p_Array->m_Array->size()))
 	{
-		throw QMKFusionArraySwapRangeException(p_Pos2 + 1, p_Array->m_Array.size());
+        throw QMKFusionArraySwapRangeException(p_Pos2 + 1, p_Array->m_Array->size());
 	}
 
-	QWDDX temp = p_Array->m_Array[p_Pos1];
+    QWDDX temp = p_Array->m_Array->at(p_Pos1);
 	p_Array->m_Array[p_Pos1] = p_Array->m_Array[p_Pos2];
-	p_Array->m_Array[p_Pos2] = temp;
+    p_Array->m_Array->replace(p_Pos2, temp);
 
 	return true;
 }
@@ -574,7 +555,7 @@ QString cf_ArrayToList(const QWDDX& p_Array, const QString& p_Delimiter)
 {
 	QString ret;
 
-	if (p_Array.m_Type != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -584,14 +565,14 @@ QString cf_ArrayToList(const QWDDX& p_Array, const QString& p_Delimiter)
 		throw new QMKFusionArrayNotOneDimensionException();
 	}
 
-	for(int c = 0; c < p_Array.m_Array.size(); c++)
+    for(int c = 0; c < p_Array.m_Array->size(); c++)
 	{
 		if (c > 0)
 		{
 			ret += p_Delimiter;
 		}
 
-		QWDDX temp = p_Array.m_Array[c];
+        QWDDX temp = p_Array.m_Array->at(c);
 
 		ret += temp.toString();
 	}
