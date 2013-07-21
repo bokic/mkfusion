@@ -67,6 +67,9 @@ public:
     //friend QWDDX operator+=(double, const QWDDX &);
     //friend QWDDX operator+=(const QString &, const QWDDX &);
 
+    QWDDX operator++();
+    QWDDX operator++(int);
+
     QWDDX operator-(bool);
     QWDDX operator-(int);
     QWDDX operator-(double);
@@ -86,6 +89,9 @@ public:
     //friend QWDDX operator-=(int, const QWDDX &);
     //friend QWDDX operator-=(double, const QWDDX &);
     //friend QWDDX operator-=(const QString &, const QWDDX &);
+
+    QWDDX operator--();
+    QWDDX operator--(int);
 
     QWDDX operator*(int);
     QWDDX operator*(double);

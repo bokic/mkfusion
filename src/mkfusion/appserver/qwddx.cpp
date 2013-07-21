@@ -1057,6 +1057,8 @@ Q_DECL_EXPORT QWDDX QWDDX::operator=(const QWDDX &p_newValue)
 
 Q_DECL_EXPORT QWDDX QWDDX::operator+(bool p_Value)
 {
+    Q_UNUSED(p_Value);
+
     throw QMKFusionExpressionException("Illegal operation. Can\'t accumulate bool.");
 }
 
@@ -1176,6 +1178,42 @@ QWDDX operator+(const QString &p_Value1, const QWDDX &p_Value2)
 	return *this;
 }*/
 
+Q_DECL_EXPORT QWDDX QWDDX::operator++()
+{
+    if (type() != Number)
+    {
+        double tmp = toNumber();
+
+        setType(Number);
+
+        m_Number = tmp;
+    }
+
+    m_Number++;
+
+    return *this;
+}
+
+Q_DECL_EXPORT QWDDX QWDDX::operator++(int tmp)
+{
+    QWDDX ret = *this;
+
+    Q_UNUSED(tmp);
+
+    if (type() != Number)
+    {
+        double tmp = toNumber();
+
+        setType(Number);
+
+        m_Number = tmp;
+    }
+
+    m_Number++;
+
+    return ret;
+}
+
 Q_DECL_EXPORT QWDDX QWDDX::operator-(int p_Value)
 {
 	if (m_Type == Number)
@@ -1227,6 +1265,42 @@ QWDDX operator-(const QString &p_Value1, const QWDDX &p_Value2)
     QWDDX temp = QWDDX(p_Value1);
 
     return QWDDX(temp.toNumber() - p_Value2.toNumber());
+}
+
+Q_DECL_EXPORT QWDDX QWDDX::operator--()
+{
+    if (type() != Number)
+    {
+        double tmp = toNumber();
+
+        setType(Number);
+
+        m_Number = tmp;
+    }
+
+    m_Number--;
+
+    return *this;
+}
+
+Q_DECL_EXPORT QWDDX QWDDX::operator--(int tmp)
+{
+    QWDDX ret = *this;
+
+    Q_UNUSED(tmp);
+
+    if (type() != Number)
+    {
+        double tmp = toNumber();
+
+        setType(Number);
+
+        m_Number = tmp;
+    }
+
+    m_Number--;
+
+    return ret;
 }
 
 Q_DECL_EXPORT QWDDX QWDDX::operator*(int p_Value)
