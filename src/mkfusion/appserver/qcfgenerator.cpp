@@ -348,7 +348,14 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 					}
 					else
 					{
-						ret += " + " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c]);
+                        if (p_CFExpression.m_Type == String)
+                        {
+                            ret += " & " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c]);
+                        }
+                        else
+                        {
+                            ret += " + " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c]);
+                        }
 					}
 				}
 			}
@@ -437,9 +444,9 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 			{
 				ret = "]";
 			}
-			else if (l_ElementName.compare("mod", Qt::CaseInsensitive) == 0)
+            else if (l_ElementName.compare("MOD", Qt::CaseInsensitive) == 0)
 			{
-				ret = "%";
+                ret = " % ";
 			}
 			else
 			{
@@ -467,6 +474,8 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 
 			break;
 		case SharpExpression:
+            ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[0]);
+        break;
 		case Expression:
 			for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
 			{
@@ -544,6 +553,27 @@ QCFParserElement CFTagGetArgumentObject(const QCFParserTag& p_CFTag, const QStri
 	return ret;
 }
 
+QString QCFGenerator::CFTagGetArgumentPlain(const QCFParserTag& p_CFTag, const QString& p_Argument)
+{
+    foreach(QCFParserElement l_Argument, p_CFTag.m_Arguments.m_ChildElements)
+    {
+        if ((l_Argument.m_Type != CFTagArgument)||(l_Argument.m_ChildElements.size() < 1))
+        {
+            continue;
+        }
+
+        if (l_Argument.m_ChildElements[0].m_Text.compare(p_Argument, Qt::CaseInsensitive) == 0)
+        {
+            if (l_Argument.m_ChildElements.size() == 3)
+            {
+                return l_Argument.m_ChildElements.at(2).m_Text;
+            }
+        }
+    }
+
+    return "";
+}
+
 QString QCFGenerator::CFTagGetArgument(const QCFParserTag& p_CFTag, const QString& p_Argument)
 {
 	foreach(QCFParserElement l_Argument, p_CFTag.m_Arguments.m_ChildElements)
@@ -555,7 +585,6 @@ QString QCFGenerator::CFTagGetArgument(const QCFParserTag& p_CFTag, const QStrin
 
 		if (l_Argument.m_ChildElements[0].m_Text.compare(p_Argument, Qt::CaseInsensitive) == 0)
 		{
-			QCFParserElement l_temp = l_Argument;
 			if (l_Argument.m_ChildElements.size() == 3)
 			{
 				return GenerateCFExpressionToCExpression(l_Argument.m_ChildElements.at(2));
@@ -578,7 +607,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag& p_CFTag)
 	{
 		if (CFTagHasArgument(p_CFTag, "showError"))
 		{
-			return "throw QMKFusionExpressionException(" + CFTagGetArgument(p_CFTag, "showError") + ");";
+            return "throw QMKFusionExpressionException(" + CFTagGetArgumentPlain(p_CFTag, "showError") + ");";
 		}
 		else
 		{
@@ -620,14 +649,14 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag& p_CFTag)
 
 				if (CFTagHasArgument(p_CFTag, "step"))
 				{
-					l_Step = CFTagGetArgument(p_CFTag, "step");
+                    l_Step = CFTagGetArgumentPlain(p_CFTag, "step");
 				}
 				else
 				{
 					l_Step = "1";
 				}
 
-				if (l_Step[0] == '-')
+                if (l_Step.startsWith('-'))
 				{
 					l_Comparation = " >= ";
 				}
@@ -636,20 +665,36 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag& p_CFTag)
 					l_Comparation = " <= ";
 				}
 
+                if (CFTagHasArgument(p_CFTag, "step"))
+                {
+                    l_Step = CFTagGetArgument(p_CFTag, "step");
+                }
+
 				QCFParserElement l_Index = CFTagGetArgumentObject(p_CFTag, "index");
 				QString l_IndexStr = l_Index.m_ChildElements[2].m_Text;
 
 				if ((l_Index.m_Type != Error)&&(l_Index.m_ChildElements.size() == 3))
 				{
-					return "for (" + GenerateVariable(l_IndexStr) + " = (" + CFTagGetArgument(p_CFTag, "from") + ").toNumber(); (" + GenerateVariable(l_IndexStr) + ").toNumber() " + l_Comparation + " (" + CFTagGetArgument(p_CFTag, "to") + ").toNumber(); " + GenerateVariable(l_IndexStr) + " = (" + GenerateVariable(l_IndexStr) + ").toNumber() + " + l_Step + ") {";
+                    return "for (" + GenerateVariable(l_IndexStr) + " = (" + CFTagGetArgument(p_CFTag, "from") + ").toNumber(); (" + GenerateVariable(l_IndexStr) + ").toNumber() " + l_Comparation + " (" + CFTagGetArgument(p_CFTag, "to") + ").toNumber(); " + GenerateVariable(l_IndexStr) + " = (" + GenerateVariable(l_IndexStr) + ").toNumber() + " + l_Step + ") {";
 				}
 			}
 			else if (CFTagHasArgument(p_CFTag, "condition"))
 			{
-				QCFParserElement l_condition = CFTagGetArgumentObject(p_CFTag, "condition");
-				return "while(" + GenerateCFExpressionToCExpression(OprimizeQCFParserElement(l_condition)) + ") {";
-			}
+                QCFParserElement l_conditionElement = CFTagGetArgumentObject(p_CFTag, "condition");
 
+                if (l_conditionElement.m_ChildElements.count() == 3)
+                {
+                    QCFParser parser;
+
+                    const QString &l_conditionStr = l_conditionElement.m_ChildElements.at(2).m_Text;
+
+                    QCFParserElement l_newConditionElement = parser.ParseCFCode(l_conditionStr, (qint32)0, Expression, NULL);
+
+                    return "while(" + GenerateCFExpressionToCExpression(OprimizeQCFParserElement(l_newConditionElement)) + ") {";
+                }
+
+                // TODO: Generate Error.
+			}
 		}
 
 		if (p_CFTag.m_TagType == EndCFTagType)
@@ -714,7 +759,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag& p_CFTag)
 	}
 	else if(!p_CFTag.m_Name.compare("cfsetting", Qt::CaseInsensitive))
 	{
-		QString l_enablecfoutputonly = CFTagGetArgument(p_CFTag, "enablecfoutputonly");
+        QString l_enablecfoutputonly = CFTagGetArgumentPlain(p_CFTag, "enablecfoutputonly");
 		l_enablecfoutputonly = l_enablecfoutputonly.remove('\'');
 		l_enablecfoutputonly = l_enablecfoutputonly.remove('\"');
 

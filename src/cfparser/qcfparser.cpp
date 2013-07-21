@@ -504,6 +504,38 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 			//ret.m_Text = tr("Variable name not set.");
 			ret.m_Size = p_Text.length() - l_Offset;
 			ret.m_Text = p_Text.mid(l_Offset, ret.m_Size);
+
+            if (
+                    (ret.m_Text.compare("eq", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("is", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("neq", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("gt", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("gte", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("lt", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("lte", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("not", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("and", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("or", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("mod", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("contains", Qt::CaseInsensitive) == 0)
+                )
+            {
+                ret.m_Type = Operator;
+            }
+            else if (
+                    (ret.m_Text.compare("true", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("false", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("yes", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("no", Qt::CaseInsensitive) == 0)
+                )
+            {
+                ret.m_Type = Boolean;
+            }
+            else if (ret.m_Text.compare("var", Qt::CaseInsensitive) == 0)
+            {
+                ret.m_Type = Keyword;
+            }
+
 			break;
 		case Number:
 			bool comma;

@@ -37,9 +37,10 @@ private slots:
 	void BenchOptimisedCode2();
 	void bench1_stl();
 	void bench1_qt();
-	void bench_parser();*/
-	void verificator_improove_test();
-	void parseBigFile();
+    void bench_parser();
+    void verificator_improove_test();*/
+    void parseBigFile();
+    void benchPI();
 };
 
 /*void TestCases::initTestCase()
@@ -512,7 +513,7 @@ void TestCases::bench_parser()
 		tags = parser.getTags();
 	}
 }
-*/
+
 void TestCases::verificator_improove_test()
 {
 	QFile file("site/pi.cfm");
@@ -532,7 +533,7 @@ void TestCases::verificator_improove_test()
 
 	QVERIFY(error == NoError);
 }
-
+*/
 void TestCases::parseBigFile()
 {
 	QCFParser parser;
@@ -550,6 +551,13 @@ void TestCases::parseBigFile()
 
 		//qDebug("Parser element count is %u\n", c);
 	}
+}
+
+void TestCases::benchPI()
+{
+    QBENCHMARK {
+
+    }
 }
 
 QTEST_MAIN(TestCases)

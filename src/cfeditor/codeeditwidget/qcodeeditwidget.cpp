@@ -597,7 +597,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
 	painter.fillRect(QRect(0, 0, l_LineNumbersPanelWidth, viewport()->height()), m_LineNumbersBackground);
 
-	for(int l_line = 0; l_line < l_LinesToDraw; l_line++)
+    /*for(int l_line = 0; l_line < l_LinesToDraw; l_line++)
 	{
 		if (m_ScrollYLinePos + l_line >= m_Lines.count())
 		{
@@ -827,7 +827,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
                 }
 			}
 		}
-	}
+    }*/
 
 	setFont(m_TextFont);
 
@@ -1084,7 +1084,7 @@ void QCodeEditWidget::clearFormatting()
 {
     for(int c = 0; c < m_Lines.count(); c++)
     {
-        m_Lines[c].ColorItems.clear();
+        //m_Lines[c].ColorItems.clear();
     }
 
 	viewport()->update();

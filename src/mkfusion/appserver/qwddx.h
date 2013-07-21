@@ -36,6 +36,8 @@ public:
 
 	QWDDX(const QWDDXType);
 
+    ~QWDDX();
+
 	operator bool();
 	operator int();
 	operator double();
@@ -62,13 +64,13 @@ public:
 	//friend QWDDX& operator+=(double, const QWDDX&);
 	//friend QWDDX& operator+=(const QString&, const QWDDX&);
 
-	QWDDX& operator-(int);
-	QWDDX& operator-(double);
-	QWDDX& operator-(const QString&);
-	QWDDX& operator-(const QWDDX&);
-	friend QWDDX& operator-(int, const QWDDX&);
-	friend QWDDX& operator-(double, const QWDDX&);
-	friend QWDDX& operator-(const QString&, const QWDDX&);
+    QWDDX operator-(int);
+    QWDDX operator-(double);
+    QWDDX operator-(const QString &);
+    QWDDX operator-(const QWDDX &);
+    friend QWDDX operator-(int, const QWDDX &);
+    friend QWDDX operator-(double, const QWDDX &);
+    friend QWDDX operator-(const QString &, const QWDDX &);
 
 	//QWDDX& operator-=(int);
 	//QWDDX& operator-=(double);
@@ -131,12 +133,18 @@ public:
 	QWDDX& operator[](const wchar_t*);
 	QWDDX& operator[](const QWDDX&);
 
-	bool operator==(int);
+    bool operator==(bool);
+    bool operator==(int);
 	bool operator==(double);
 	bool operator==(const QString&);
 	bool operator==(const QWDDX&);
 
-	bool operator!=(int);
+    //bool operator!();
+    QWDDX operator!();
+    //friend bool operator!(const QWDDX&);
+    friend QWDDX operator!(const QWDDX&);
+
+    bool operator!=(int);
 	bool operator!=(double);
 	bool operator!=(const QString&);
 	bool operator!=(const QWDDX&);
@@ -180,11 +188,11 @@ public:
 	QDateTime toDateTime();
 	bool toBool();
 
-    bool asBool();
-    int asInt();
-    double asDouble();
-    int asNumber();
-    QString asString();
+    bool asBool() const;
+    int asInt() const;
+    double asDouble() const;
+    int asNumber() const;
+    QString asString() const;
 
 	// Member Variables
 	QVector<QWDDX> m_Array;

@@ -1,6 +1,11 @@
 #ifndef QCFPARSER_H
 #define QCFPARSER_H
 
+struct QCFParserElement;
+struct QCFParserTag;
+class QCFParser;
+
+#include "qcfgenerator.h"
 #include "qcffunction.h"
 #include "qcftag.h"
 
@@ -67,6 +72,8 @@ public:
 	qint64 m_CFMFileSize;
 	uint m_CFMModifyDateTime;
 	bool m_InsideCFScript;
+
+    friend class QCFGenerator;
 };
 
 #endif // QCFPARSER_H

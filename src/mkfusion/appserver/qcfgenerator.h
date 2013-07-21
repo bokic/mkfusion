@@ -1,7 +1,11 @@
 #ifndef QCFGENERATOR_H
 #define QCFGENERATOR_H
 
+#include "qcffunction.h"
 #include "qcfparser.h"
+#include <qcftag.h>
+#include <QString>
+#include <QHash>
 
 class QCFGenerator
 {
@@ -11,6 +15,7 @@ public:
 	QString GenerateVariable(const QString&);
 	QString GenerateCFExpressionToCExpression(const QCFParserElement&);
 	QCFParserElement OprimizeQCFParserElement(QCFParserElement);
+    QString CFTagGetArgumentPlain(const QCFParserTag&, const QString&);
 	QString CFTagGetArgument(const QCFParserTag&, const QString&);
 	QString GenerateCCodeFromCFTag(const QCFParserTag&);
 private:

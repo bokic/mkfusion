@@ -17,8 +17,8 @@ release {
 	UI_DIR      = ../../../obj/tests/parsertest1/release
 }
 
-DEPENDPATH  = . ../../cfparser/
-INCLUDEPATH = . ../../cfparser/
+DEPENDPATH  += . ../../cfparser ../../mkfusion/appserver
+INCLUDEPATH += . ../../cfparser ../../mkfusion/appserver
 
 SOURCES     = main.cpp parsertest1.cpp qdetail.cpp ../../cfparser/qcfparser.cpp ../../cfparser/qcffunction.cpp ../../cfparser/qcftag.cpp ../../cfparser/qcf8.cpp
 HEADERS     =          parsertest1.h   qdetail.h   ../../cfparser/qcfparser.h   ../../cfparser/qcffunction.h   ../../cfparser/qcftag.h   ../../cfparser/qcf8.h

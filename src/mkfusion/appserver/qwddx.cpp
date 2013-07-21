@@ -78,9 +78,24 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDXType p_Type)
 {
 }
 
+Q_DECL_EXPORT QWDDX::~QWDDX()
+{
+    return;
+}
+
 Q_DECL_EXPORT QWDDX::QWDDXType QWDDX::getType()
 {
 	return m_Type;
+}
+
+Q_DECL_EXPORT QWDDX::operator bool()
+{
+    if (m_Type != Boolean)
+    {
+        throw new QMKFusionExpressionException("Unsupported compare.");
+    }
+
+    return m_Bool;
 }
 
 Q_DECL_EXPORT QWDDX::operator int()
@@ -311,6 +326,16 @@ Q_DECL_EXPORT QWDDX& QWDDX::operator[](const QWDDX& key)
 	}
 }
 
+Q_DECL_EXPORT bool QWDDX::operator ==(bool p_Value)
+{
+    if ((m_Type == Boolean))
+    {
+        return m_Bool == p_Value;
+    }
+
+    throw new QMKFusionExpressionException("Unsupported compare.");
+}
+
 Q_DECL_EXPORT bool QWDDX::operator ==(int p_Value)
 {
 	if ((m_Type == Number))
@@ -360,6 +385,11 @@ Q_DECL_EXPORT bool QWDDX::operator ==(const QWDDX& p_Value)
 {
 	QWDDX l_temp1, l_temp2;
 
+    if ((m_Type == Boolean)&&(p_Value.m_Type == Boolean))
+    {
+        return m_Bool == p_Value.m_Bool;
+    }
+
 	if ((m_Type == Number)&&(p_Value.m_Type == Number))
 	{
 		return m_Number == p_Value.m_Number;
@@ -380,6 +410,47 @@ Q_DECL_EXPORT bool QWDDX::operator ==(const QWDDX& p_Value)
 
 	throw new QMKFusionExpressionException("Unsupported compare.");
 }
+
+/*Q_DECL_EXPORT bool operator !()
+{
+    if ((m_Type == Boolean))
+    {
+        return QWDDX(!m_Bool);
+    }
+
+    throw new QMKFusionExpressionException("Unsupported compare.");
+}*/
+
+Q_DECL_EXPORT QWDDX QWDDX::operator !()
+{
+    if ((m_Type == Boolean))
+    {
+        return QWDDX(!m_Bool);
+    }
+
+    throw new QMKFusionExpressionException("Unsupported compare.");
+}
+
+/*Q_DECL_EXPORT bool operator!(const QWDDX &operand)
+{
+    if ((operand.m_Type == QWDDX::Boolean))
+    {
+        return !operand.m_Bool;
+    }
+
+    throw new QMKFusionExpressionException("Unsupported compare.");
+}*/
+
+Q_DECL_EXPORT QWDDX operator!(const QWDDX &operand)
+{
+    if ((operand.m_Type == QWDDX::Boolean))
+    {
+        return QWDDX(!operand.m_Bool);
+    }
+
+    throw new QMKFusionExpressionException("Unsupported compare.");
+}
+
 
 Q_DECL_EXPORT bool QWDDX::operator !=(int p_Value)
 {
@@ -881,21 +952,19 @@ QWDDX& operator+(const QString& p_Value1, const QWDDX &p_Value2)
 	return *this;
 }*/
 
-Q_DECL_EXPORT QWDDX& QWDDX::operator-(int p_Value)
+Q_DECL_EXPORT QWDDX QWDDX::operator-(int p_Value)
 {
 	if (m_Type == Number)
 	{
-		m_Number -= p_Value;
+        return QWDDX(m_Number - p_Value);
 	}
 	else
 	{
-		m_Number = toNumber() - p_Value;
-	}
-
-	return *this;
+        return QWDDX(asNumber() - p_Value);
+    }
 }
 
-Q_DECL_EXPORT QWDDX& QWDDX::operator-(double p_Value)
+Q_DECL_EXPORT QWDDX QWDDX::operator-(double p_Value)
 {
 	if (m_Type == Number)
 	{
@@ -909,7 +978,7 @@ Q_DECL_EXPORT QWDDX& QWDDX::operator-(double p_Value)
 	return *this;
 }
 
-Q_DECL_EXPORT QWDDX& QWDDX::operator-(const QString& p_Value)
+Q_DECL_EXPORT QWDDX QWDDX::operator-(const QString& p_Value)
 {
 	QWDDX tmp = QWDDX(p_Value);
 
@@ -918,27 +987,27 @@ Q_DECL_EXPORT QWDDX& QWDDX::operator-(const QString& p_Value)
 	return *this;
 }
 
-Q_DECL_EXPORT QWDDX& QWDDX::operator-(const QWDDX& p_Value)
+Q_DECL_EXPORT QWDDX QWDDX::operator-(const QWDDX& p_Value)
 {
 	QWDDX temp = p_Value;
 	return *(new QWDDX(toNumber() - temp.toNumber()));
 }
 
-QWDDX& operator-(int p_Value1, const QWDDX &p_Value2)
+QWDDX operator-(int p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp = p_Value2;
 
 	return *(new QWDDX(p_Value1 - temp.toNumber()));
 }
 
-QWDDX& operator-(double p_Value1, const QWDDX &p_Value2)
+QWDDX operator-(double p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp = p_Value2;
 
 	return *(new QWDDX(p_Value1 - temp.toNumber()));
 }
 
-QWDDX& operator-(const QString& p_Value1, const QWDDX &p_Value2)
+QWDDX operator-(const QString& p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp1 = QWDDX(p_Value1);
 	QWDDX temp2 = p_Value2;
@@ -1005,8 +1074,7 @@ Q_DECL_EXPORT QWDDX& QWDDX::operator/(const QString& p_Value)
 
 Q_DECL_EXPORT QWDDX& QWDDX::operator/(const QWDDX& p_Value)
 {
-	QWDDX temp = p_Value;
-	return *(new QWDDX(toNumber() / temp.toNumber()));
+    return *(new QWDDX(this->asDouble() / p_Value.asDouble()));
 }
 
 /*Q_DECL_EXPORT QWDDX& QWDDX::operator/(int p_Value1, const QWDDX &p_Value2)
@@ -1255,27 +1323,42 @@ Q_DECL_EXPORT bool QWDDX::toBool()
 	throw QMKFusionExpressionException("The value cannot be converted to a boolean.");
 }
 
-Q_DECL_EXPORT bool asBool()
+Q_DECL_EXPORT bool QWDDX::asBool() const
 {
+    throw new QMKFusionExpressionException("Unimplemented.");
+
     return false; // TODO: Implement me.
 }
 
-Q_DECL_EXPORT int QWDDX::asInt()
+Q_DECL_EXPORT int QWDDX::asInt() const
 {
+    throw new QMKFusionExpressionException("Unimplemented.");
+
     return 0; // TODO: Implement me.
 }
 
-Q_DECL_EXPORT double QWDDX::asDouble()
+Q_DECL_EXPORT double QWDDX::asDouble() const
 {
-    return 0.0; // TODO: Implement me.
+    if (m_Type == Number)
+    {
+        return m_Number;
+    }
+
+    throw new QMKFusionExpressionException("Variable not number.");
+
+    return 0.0;
 }
 
-Q_DECL_EXPORT int QWDDX::asNumber()
+Q_DECL_EXPORT int QWDDX::asNumber() const
 {
+    throw new QMKFusionExpressionException("Unimplemented.");
+
     return 0; // TODO: Implement me.
 }
 
-Q_DECL_EXPORT QString QWDDX::asString()
+Q_DECL_EXPORT QString QWDDX::asString() const
 {
+    throw new QMKFusionExpressionException("Unimplemented.");
+
     return QString(); // TODO: Implement me.
 }
