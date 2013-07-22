@@ -263,7 +263,30 @@ void QAppMainWindow::on_action_Check_Project_activated()
 
 void QAppMainWindow::on_action_Full_Screen_activated()
 {
-	setWindowState(windowState() ^ Qt::WindowFullScreen);
+    if (ui->action_Full_Screen->isChecked())
+    {
+        setWindowState(windowState() | Qt::WindowFullScreen);
+    }
+    else
+    {
+        setWindowState(windowState() & ~Qt::WindowFullScreen);
+    }
+}
+
+void QAppMainWindow::on_action_Hide_Everything_activated()
+{
+    if (ui->action_Hide_Everything->isChecked())
+    {
+        ui->m_ProjectDock->hide();
+        ui->m_StructureDock->hide();
+        ui->m_BrowserDock->hide();
+    }
+    else
+    {
+        ui->m_ProjectDock->show();
+        ui->m_StructureDock->show();
+        ui->m_BrowserDock->show();
+    }
 }
 
 void QAppMainWindow::on_action_ColdFusion_Help_activated()

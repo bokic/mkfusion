@@ -45,7 +45,8 @@ private slots:
 	void on_action_Project_Properties_activated();
 	void on_action_Check_Project_activated();
 	void on_action_Full_Screen_activated();
-	void on_action_ColdFusion_Help_activated();
+    void on_action_Hide_Everything_activated();
+    void on_action_ColdFusion_Help_activated();
 	void on_action_About_activated();
 	void on_m_ProjectTree_itemExpanded(QTreeWidgetItem*);
 	void on_m_ProjectTree_itemCollapsed(QTreeWidgetItem*);
@@ -57,6 +58,7 @@ private slots:
     void onmy_textedit_key_press(QKeyEvent*);
     void onmy_textedit_text_change();
     void onmy_textedit_breakpoint_change(int);
+
 private:
 	void LoadProject(const QString&);
 	void UpdateProjectFileList(const QString& = "", QTreeWidgetItem* = NULL);
