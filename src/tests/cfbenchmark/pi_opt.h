@@ -73,17 +73,17 @@ public:
 
         //for (m_TemplateInstance->m_VARIABLES["I"] = (QWDDX(1)).toNumber(); (m_TemplateInstance->m_VARIABLES["I"]).toNumber()  <=  (m_TemplateInstance->m_VARIABLES["PRECISION"]).toNumber(); m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["I"]).toNumber() + 1)
         QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
-        for (*c_VARIABLES_I = 1; (*c_VARIABLES_I).toNumber()  <=  (*c_VARIABLES_PRECISION).toNumber(); *c_VARIABLES_I = c_VARIABLES_I->toNumber() + 1)
+        for (*c_VARIABLES_I = 1; (*c_VARIABLES_I)  <=  (*c_VARIABLES_PRECISION); *c_VARIABLES_I = c_VARIABLES_I->toNumber() + 1)
         {
             //m_TemplateInstance->m_VARIABLES["FINAL"][m_TemplateInstance->m_VARIABLES["I"]] = QWDDX(0);
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_FINAL, "FINAL");
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
-            (*c_VARIABLES_FINAL)[*c_VARIABLES_I] = QWDDX(0);
+            (*c_VARIABLES_FINAL)[*c_VARIABLES_I] = 0;
 
             //m_TemplateInstance->m_VARIABLES["TMP"][m_TemplateInstance->m_VARIABLES["I"]] = QWDDX(0);
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TMP, "TMP");
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
-            (*c_VARIABLES_TMP)[*c_VARIABLES_I] = QWDDX(0);
+            (*c_VARIABLES_TMP)[*c_VARIABLES_I] = 0;
 		}
 
         //m_TemplateInstance->m_VARIABLES["KEEPLOOPING"] = QWDDX(true);
@@ -118,7 +118,7 @@ public:
             //for (m_TemplateInstance->m_VARIABLES["I"] = (QWDDX(1)).toNumber(); (m_TemplateInstance->m_VARIABLES["I"]).toNumber()  <=  (m_TemplateInstance->m_VARIABLES["PRECISION"]).toNumber(); m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["I"]).toNumber() + 1)
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_PRECISION, "PRECISION");
-            for (*c_VARIABLES_I = 1; (*c_VARIABLES_I).toNumber()  <=  (*c_VARIABLES_PRECISION).toNumber(); *c_VARIABLES_I = c_VARIABLES_I->toNumber() + 1)
+            for ((*c_VARIABLES_I) = 1; (*c_VARIABLES_I) <= (*c_VARIABLES_PRECISION); (*c_VARIABLES_I)++)
             {
                 //m_TemplateInstance->m_VARIABLES["TMP"][m_TemplateInstance->m_VARIABLES["I"]] = cf_Fix(m_TemplateInstance->m_VARIABLES["VALUE"] / m_TemplateInstance->m_VARIABLES["DIVIDER"]);
                 QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TMP, "TMP");
@@ -161,7 +161,7 @@ public:
                     //for (m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["PRECISION"]).toNumber(); (m_TemplateInstance->m_VARIABLES["I"]).toNumber()  >=  (QWDDX(1)).toNumber(); m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["I"]).toNumber() + QWDDX(-1))
                     QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
                     QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_PRECISION, "PRECISION");
-                    for ((*c_VARIABLES_I) = (*c_VARIABLES_PRECISION).toNumber(); (*c_VARIABLES_I).toNumber()  >=  1; (*c_VARIABLES_I) = (*c_VARIABLES_I).toNumber() -1)
+                    for ((*c_VARIABLES_I) = (*c_VARIABLES_PRECISION); (*c_VARIABLES_I) >= 1; (*c_VARIABLES_I)--)
                     {
                         //m_TemplateInstance->m_VARIABLES["TMP_VAL"] = m_TemplateInstance->m_VARIABLES["FINAL"][m_TemplateInstance->m_VARIABLES["I"]] + m_TemplateInstance->m_VARIABLES["TMP"][m_TemplateInstance->m_VARIABLES["I"]] + m_TemplateInstance->m_VARIABLES["TRANSFER"];
                         QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TMP_VAL, "TMP_VAL");
@@ -208,7 +208,7 @@ public:
                     //for (m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["PRECISION"]).toNumber(); (m_TemplateInstance->m_VARIABLES["I"]).toNumber()  >=  (QWDDX(1)).toNumber(); m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["I"]).toNumber() + QWDDX(-1))
                     QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
                     QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_PRECISION, "PRECISION");
-                    for ((*c_VARIABLES_I) = (*c_VARIABLES_PRECISION).toNumber(); (*c_VARIABLES_I).toNumber()  >=  1; (*c_VARIABLES_I) = (*c_VARIABLES_I).toNumber() -1)
+                    for ((*c_VARIABLES_I) = (*c_VARIABLES_PRECISION); (*c_VARIABLES_I)  >=  1; (*c_VARIABLES_I)--)
                     {
 
                         //m_TemplateInstance->m_VARIABLES["TMP_VAL"] = m_TemplateInstance->m_VARIABLES["FINAL"][m_TemplateInstance->m_VARIABLES["I"]] - m_TemplateInstance->m_VARIABLES["TMP"][m_TemplateInstance->m_VARIABLES["I"]] - m_TemplateInstance->m_VARIABLES["TRANSFER"];
@@ -269,7 +269,7 @@ public:
         //for (m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["PRECISION"]).toNumber(); (m_TemplateInstance->m_VARIABLES["I"]).toNumber()  >=  (QWDDX(1)).toNumber(); m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["I"]).toNumber() + QWDDX(-1))
         QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
         QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_PRECISION, "PRECISION");
-        for ((*c_VARIABLES_I) = (*c_VARIABLES_PRECISION).toNumber(); (*c_VARIABLES_I).toNumber()  >=  1; (*c_VARIABLES_I) = (*c_VARIABLES_I).toNumber() -1)
+        for ((*c_VARIABLES_I) = (*c_VARIABLES_PRECISION); (*c_VARIABLES_I)  >=  1; (*c_VARIABLES_I)--)
         {
             //m_TemplateInstance->m_VARIABLES["TMP_VAL"] = ( m_TemplateInstance->m_VARIABLES["FINAL"][m_TemplateInstance->m_VARIABLES["I"]] * QWDDX(4) ) + m_TemplateInstance->m_VARIABLES["TRANSFER"];
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TMP_VAL, "TMP_VAL");
@@ -297,13 +297,13 @@ public:
         //for (m_TemplateInstance->m_VARIABLES["I"] = (QWDDX(1)).toNumber(); (m_TemplateInstance->m_VARIABLES["I"]).toNumber()  <=  (m_TemplateInstance->m_VARIABLES["PRECISION"]).toNumber(); m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["I"]).toNumber() + 1)
         QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
         QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_PRECISION, "PRECISION");
-        for ((*c_VARIABLES_I) = 1; (*c_VARIABLES_I).toNumber()  <=  (*c_VARIABLES_PRECISION).toNumber(); (*c_VARIABLES_I) = (*c_VARIABLES_I).toNumber() + 1)
+        for ((*c_VARIABLES_I) = 1; (*c_VARIABLES_I) <= (*c_VARIABLES_PRECISION); (*c_VARIABLES_I)++)
         {
             //m_TemplateInstance->m_VARIABLES["PI"] = m_TemplateInstance->m_VARIABLES["PI"] & cf_Chr(QWDDX(48) + m_TemplateInstance->m_VARIABLES["FINAL"][m_TemplateInstance->m_VARIABLES["I"]]);
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_PI, "PI");
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_FINAL, "FINAL");
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
-            (*c_VARIABLES_PI) = (*c_VARIABLES_PI) & cf_Chr(QWDDX(48) + (*c_VARIABLES_FINAL)[(*c_VARIABLES_I)]);
+            (*c_VARIABLES_PI) = (*c_VARIABLES_PI) & cf_Chr(48 + (*c_VARIABLES_FINAL)[(*c_VARIABLES_I)]);
 
             //if (m_TemplateInstance->m_VARIABLES["I"] == QWDDX(1))
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");

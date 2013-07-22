@@ -179,14 +179,14 @@ public:
     bool operator>(const QString &);
     bool operator>(const QWDDX &);
 
-    QWDDX operator=(bool);
-    QWDDX operator=(int);
-    QWDDX operator=(double);
-    QWDDX operator=(const char *);
-    QWDDX operator=(const wchar_t *);
-    QWDDX operator=(const QString &);
-    QWDDX operator=(const QDateTime &);
-    QWDDX operator=(const QWDDX &);
+    QWDDX &operator=(bool);
+    QWDDX &operator=(int);
+    QWDDX &operator=(double);
+    QWDDX &operator=(const char *);
+    QWDDX &operator=(const wchar_t *);
+    QWDDX &operator=(const QString &);
+    QWDDX &operator=(const QDateTime &);
+    QWDDX &operator=(const QWDDX &);
 
     QWDDX join(const QWDDX &);
     void setType(QWDDXType);
@@ -216,6 +216,8 @@ public:
 Q_DECL_EXPORT QWDDX operator/(int, const QWDDX &);
 Q_DECL_EXPORT QWDDX operator/(double, const QWDDX &);
 Q_DECL_EXPORT QWDDX operator/(const QString &, const QWDDX &);
+Q_DECL_EXPORT double operator/(const QWDDX &, const QWDDX &);
+
 Q_DECL_EXPORT QWDDX operator&(int, const QWDDX &);
 Q_DECL_EXPORT QWDDX operator&(double, const QWDDX &);
 Q_DECL_EXPORT QWDDX operator&(const QString &, const QWDDX &);

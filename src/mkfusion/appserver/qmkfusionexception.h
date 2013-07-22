@@ -176,7 +176,7 @@ class QMKFusionExpressionException : public QMKFusionException
 {
 	qint32 m_errorNumber;
 public:
-	QMKFusionExpressionException(QString p_message, QString p_Detail = "", qint32 p_errorNumber = 0):QMKFusionException(p_message, p_Detail)
+    QMKFusionExpressionException(QString p_message, QString p_Detail = QString(), qint32 p_errorNumber = 0): QMKFusionException(p_message, p_Detail)
 	{
 		*m_Type = "expression";
 		m_errorNumber = p_errorNumber;
