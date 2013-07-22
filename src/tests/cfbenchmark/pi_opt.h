@@ -186,7 +186,6 @@ public:
                             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TRANSFER, "TRANSFER");
                             (*c_VARIABLES_TRANSFER) = 0;
                         }
-
                     }
 
                 } else {
@@ -224,7 +223,6 @@ public:
                             (*c_VARIABLES_TRANSFER) = 1;
 
                         } else {
-
                             //m_TemplateInstance->m_VARIABLES["FINAL"][m_TemplateInstance->m_VARIABLES["I"]] = m_TemplateInstance->m_VARIABLES["TMP_VAL"];
                             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_FINAL, "FINAL");
                             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
