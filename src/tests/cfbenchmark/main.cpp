@@ -14,22 +14,22 @@ class TestCases : public QObject
 {
 	Q_OBJECT
 private slots:
-    //void origPI();
+    void origPI();
     void optPI();
 };
 
-/*void TestCases::origPI()
+void TestCases::origPI()
 {
     QBENCHMARK {
         QCFGeneratedTemplateOrig origTemplate;
 
         QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
 
-        m_TemplateInstance->m_VARIABLES.m_Type = QWDDX::Struct;
+        m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
 
         origTemplate.run(m_TemplateInstance);
     }
-}*/
+}
 
 void TestCases::optPI()
 {

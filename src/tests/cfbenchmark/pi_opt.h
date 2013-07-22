@@ -21,16 +21,6 @@
     }
 
 
-/*if (c_VARIABLES_FINAL == NULL)
-{
-    if (!m_TemplateInstance->m_VARIABLES.m_Struct->contains("FINAL"))
-    {
-        (*m_TemplateInstance->m_VARIABLES.m_Struct)["FINAL"] = QWDDX();
-    }
-    c_VARIABLES_FINAL = &(*m_TemplateInstance->m_VARIABLES.m_Struct)["FINAL"];
-}*/
-
-
 class QCFGeneratedTemplateOpt : public QCFTemplate
 {
 public:
@@ -125,7 +115,7 @@ public:
                 QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
                 QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_VALUE, "VALUE");
                 QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_DIVIDER, "DIVIDER");
-                (*c_VARIABLES_TMP)[*c_VARIABLES_I] = cf_Fix(*c_VARIABLES_VALUE / *c_VARIABLES_DIVIDER);
+                (*c_VARIABLES_TMP)[(*c_VARIABLES_I)] = cf_Fix((*c_VARIABLES_VALUE) / (*c_VARIABLES_DIVIDER));
 
                 //if (( m_TemplateInstance->m_VARIABLES["TMP"][m_TemplateInstance->m_VARIABLES["I"]] != QWDDX(0) ) && ( m_TemplateInstance->m_VARIABLES["KEEPLOOPING"] == QWDDX(false) ))
                 QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TMP, "TMP");
