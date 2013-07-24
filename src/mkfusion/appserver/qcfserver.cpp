@@ -199,20 +199,21 @@ void QCFServer::start()
 			createCFMTemplateDef createCFMTemplate = (createCFMTemplateDef) l_TemplateLib.resolve("createCFMTemplate");
 			if (createCFMTemplate != NULL)
 			{
-				QCFTemplate* l_page = createCFMTemplate();
-				if ((l_page != NULL)&&(QFile::exists(l_page->m_isModified.m_Filename) == true))
-				{
-					QFileInfo l_FileInfo(l_page->m_isModified.m_Filename);
-					if ((l_FileInfo.size() == l_page->m_isModified.m_Size)&&(l_FileInfo.lastModified().toTime_t() == l_page->m_isModified.m_Modified))
-					{
-						l_DeleteTemplate = false;
-						l_TemplateModifyInfo = l_page->m_isModified;
-					}
-				}
+                QCFTemplate *l_page = createCFMTemplate();
+                if (l_page)
+                {
+                    if(QFile::exists(l_page->m_isModified.m_Filename))
+                    {
+                        QFileInfo l_FileInfo(l_page->m_isModified.m_Filename);
+                        if ((l_FileInfo.size() == l_page->m_isModified.m_Size)&&(l_FileInfo.lastModified().toTime_t() == l_page->m_isModified.m_Modified))
+                        {
+                            l_DeleteTemplate = false;
+                            l_TemplateModifyInfo = l_page->m_isModified;
+                        }
+                    }
 
-				if (l_page != NULL)
-				{
 					delete l_page;
+                    l_page = NULL;
 				}
 			}
 
