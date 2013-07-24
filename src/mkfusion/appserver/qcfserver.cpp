@@ -67,6 +67,10 @@ QCFServer::QCFServer()
 	connect(&m_LocalServer, SIGNAL(newConnection()), SLOT(on_newConnection()));
 }
 
+QCFServer::~QCFServer()
+{
+}
+
 void QCFServer::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
@@ -197,7 +201,7 @@ void QCFServer::start()
 		if (l_TemplateLib.load() == true)
 		{
 			createCFMTemplateDef createCFMTemplate = (createCFMTemplateDef) l_TemplateLib.resolve("createCFMTemplate");
-			if (createCFMTemplate != NULL)
+            if (createCFMTemplate)
 			{
                 QCFTemplate *l_page = createCFMTemplate();
                 if (l_page)

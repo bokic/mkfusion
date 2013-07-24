@@ -2,8 +2,12 @@
 
 QJDWPCommand::QJDWPCommand(QObject* parent)
 	: QObject(parent)
+	, m_CommandID(0)
+{	
+}
+
+QJDWPCommand::~QJDWPCommand()
 {
-	m_CommandID = 0;
 }
 
 quint32 QJDWPCommand::getCommandID()

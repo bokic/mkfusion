@@ -1,7 +1,7 @@
 #include <windows.h>
 #include "iis/httpext.h"
 
-BOOL WINAPI GetExtensionVersion(HSE_VERSION_INFO* pVer)
+BOOL WINAPI GetExtensionVersion(HSE_VERSION_INFO *pVer)
 {
 	pVer->dwExtensionVersion = HSE_VERSION;
 	strncpy(pVer->lpszExtensionDesc, "MKFusion ISAPI Extension", HSE_MAX_EXT_DLL_NAME_LEN);

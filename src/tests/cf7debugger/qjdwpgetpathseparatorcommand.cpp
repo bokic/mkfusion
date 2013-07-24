@@ -11,6 +11,10 @@ QJDWPGetPathSeparatorCommand::QJDWPGetPathSeparatorCommand(QJDWPDebugger* parent
 	//parent->
 }
 
+QJDWPGetPathSeparatorCommand::~QJDWPGetPathSeparatorCommand()
+{
+}
+
 char QJDWPGetPathSeparatorCommand::getPathSeparator()
 {
 	return this->m_PathSeparator;

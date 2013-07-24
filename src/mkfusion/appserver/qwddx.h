@@ -25,6 +25,7 @@ public:
 
 public:
 	QWDDX();
+    virtual ~QWDDX();
 
     QWDDX(bool);
     QWDDX(int);
@@ -35,8 +36,6 @@ public:
     QWDDX(const QDateTime &);
     QWDDX(const QWDDX &);
     QWDDX(const QWDDXType);
-
-    ~QWDDX();
 
 	operator bool();
 	operator int();
@@ -201,7 +200,6 @@ public:
 
 	// Member Variables
     QVector<QWDDX> *m_Array;
-	quint32 m_ArrayDimension;
     QMap<QString, QWDDX> *m_Struct;
     QString *m_String;
     QByteArray *m_ByteArray;
@@ -209,6 +207,7 @@ public:
 	bool m_Bool;
     QDateTime *m_DateTime;
 	QWDDXType m_Type;
+    quint32 m_ArrayDimension;
 };
 
 Q_DECL_EXPORT QWDDX operator/(int, const QWDDX &);

@@ -17,6 +17,7 @@ class QJDWPClassesBySignatureCommand : public QJDWPCommand
 	Q_OBJECT
 public:
 	explicit QJDWPClassesBySignatureCommand(QObject* = 0);
+    virtual ~QJDWPClassesBySignatureCommand();
 	quint32 sendCommand(QString);
 	virtual void processRecivedCommand(QByteArray);
     QList<QJDWPClassesBySignature*> getResult() const;

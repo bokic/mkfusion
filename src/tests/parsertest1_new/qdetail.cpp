@@ -27,6 +27,7 @@ QDetail::QDetail(QWidget *parent) :
 QDetail::~QDetail()
 {
     delete ui;
+	ui = 0;
 }
 
 void QDetail::setFileForParsing(const QString &p_File)

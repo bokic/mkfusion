@@ -57,7 +57,7 @@ void QJDWPDebugger::on_m_JDWP_gotPacket(quint32 p_Id, quint8 p_Flags, quint16 p_
 		return;
 	}
 
-	QJDWPCommand* l_Command = NULL;
+	QJDWPCommand* l_Command = 0;
 
 	foreach(QJDWPCommand* l_Item, m_Commands)
 	{

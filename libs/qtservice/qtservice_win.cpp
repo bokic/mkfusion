@@ -420,7 +420,7 @@ bool QtServiceController::sendCommand(int code)
 }
 
 #if defined(QTSERVICE_DEBUG)
-extern void qtServiceLogDebug(QtMsgType type, const char* msg);
+extern void qtServiceLogDebug(QtMsgType type, const char *msg);
 #endif
 
 void QtServiceBase::logMessage(const QString &message, MessageType type,
@@ -544,7 +544,7 @@ void WINAPI QtServiceSysPrivate::serviceMain(DWORD dwArgc, wchar_t** lpszArgv)
     instance->startSemaphore.release(); // let the qapp creation start
     instance->startSemaphore2.acquire(); // wait until its done
     // Register the control request handler
-    instance->serviceStatus = pRegisterServiceCtrlHandler((TCHAR*)QtServiceBase::instance()->serviceName().utf16(), handler);
+    instance->serviceStatus = pRegisterServiceCtrlHandler((TCHAR *)QtServiceBase::instance()->serviceName().utf16(), handler);
 
     if (!instance->serviceStatus) // cannot happen - something is utterly wrong
         return;
@@ -833,11 +833,11 @@ bool QtServiceBasePrivate::install(const QString &account, const QString &passwo
         if (!act) dwServiceType |= SERVICE_INTERACTIVE_PROCESS;
 
 		QByteArray l_DependsOnServices;
-		QByteArray l_DependsOnServiceGroups((char*)ServiceGroup.utf16(), (ServiceGroup.length() + 1) * 2);
+        QByteArray l_DependsOnServiceGroups((char *)ServiceGroup.utf16(), (ServiceGroup.length() + 1) * 2);
 
 		foreach(QString dependsOnService, dependsOnServices)
 		{
-			l_DependsOnServices.append((char*)dependsOnService.utf16(), (dependsOnService.length() + 1) * 2);
+            l_DependsOnServices.append((char *)dependsOnService.utf16(), (dependsOnService.length() + 1) * 2);
 		}
 		l_DependsOnServices.append('\0');
 		l_DependsOnServices.append('\0');

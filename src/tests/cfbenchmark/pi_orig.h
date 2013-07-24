@@ -20,6 +20,10 @@ public:
 		m_isModified.m_Modified = 1374408058;
 	}
 	
+    virtual ~QCFGeneratedTemplateOrig()
+	{
+	}
+	
 	virtual void run(QCFRunningTemplate* p_TemplateInstance)
 	{
 		QCFTemplate::run(p_TemplateInstance);

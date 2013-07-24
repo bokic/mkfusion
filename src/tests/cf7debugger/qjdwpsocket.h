@@ -32,6 +32,7 @@ class QJDWPSocket : public QObject
 	Q_OBJECT
 public:
     QJDWPSocket();
+	virtual ~QJDWPSocket();
 	void connectToHost(const QString&, quint16);
 	quint32 sendCommand(quint8, quint8, const QByteArray&);
 	virtual void timerEvent(QTimerEvent*);

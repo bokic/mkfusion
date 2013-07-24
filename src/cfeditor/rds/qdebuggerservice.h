@@ -11,14 +11,17 @@
 class QDebuggerService : public QAbstractRDSService
 {
 public:
-	QDebuggerService() : QAbstractRDSService(){};
-  enum Command {
-    getServerInfo,
-    doDebugStart,
-    doDebugStop,
-    doDebugRequest,
-    doDebugEvents
+	enum Command {
+		getServerInfo,
+		doDebugStart,
+		doDebugStop,
+		doDebugRequest,
+		doDebugEvents
 	};
+
+	QDebuggerService() : QAbstractRDSService(){};
+	virtual ~QDebuggerService() {};
+	
 	virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
 protected:
 private:

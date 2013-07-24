@@ -19,6 +19,7 @@ QAppMainDialog::QAppMainDialog(QWidget *parent) :
 QAppMainDialog::~QAppMainDialog()
 {
 	delete ui;
+	ui = 0;
 }
 
 void QAppMainDialog::changeEvent(QEvent *e)

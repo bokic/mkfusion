@@ -27,7 +27,7 @@ public:
     };
 
     explicit QCodeEditWidget(QWidget *parent = 0);
-	~QCodeEditWidget();
+    virtual ~QCodeEditWidget();
 	QString getText();
     void setFileExtension(const QString &Extension);
 	void clearFormatting();

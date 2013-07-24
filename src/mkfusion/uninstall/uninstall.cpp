@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
-bool IsServiceInstalled(char* ServiceName)
+bool IsServiceInstalled(char *ServiceName)
 {
 	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
 	if (l_SCMHandle == NULL)
@@ -23,7 +23,7 @@ bool IsServiceInstalled(char* ServiceName)
 	return true;
 }
 
-bool IsServiceStatus(char* ServiceName, DWORD ServiceStatus) // SERVICE_RUNNING or SERVICE_STOPPED
+bool IsServiceStatus(char *ServiceName, DWORD ServiceStatus) // SERVICE_RUNNING or SERVICE_STOPPED
 {
 	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
 	if (l_SCMHandle == NULL)
@@ -57,7 +57,7 @@ bool IsServiceStatus(char* ServiceName, DWORD ServiceStatus) // SERVICE_RUNNING 
 	return false;
 }
 
-bool StartWinService(char* ServiceName)
+bool StartWinService(char *ServiceName)
 {
 	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
 	if (l_SCMHandle == NULL)
@@ -85,7 +85,7 @@ bool StartWinService(char* ServiceName)
 	return true;
 }
 
-bool StopWinService(char* ServiceName)
+bool StopWinService(char *ServiceName)
 {
 	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
 	if (l_SCMHandle == NULL)
@@ -114,7 +114,7 @@ bool StopWinService(char* ServiceName)
 	return true;
 }
 
-char* GetServiceExeFilename(char* ServiceName)
+char *GetServiceExeFilename(char *ServiceName)
 {
 	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
 	if (l_SCMHandle == NULL)
@@ -157,7 +157,7 @@ char* GetServiceExeFilename(char* ServiceName)
 	CloseHandle(l_Handle);
 	CloseHandle(l_SCMHandle);
 
-	char* ret = (char*)LocalAlloc(LPTR, strlen(l_QueryServiceConfig->lpBinaryPathName) + 1);
+	char *ret = (char *)LocalAlloc(LPTR, strlen(l_QueryServiceConfig->lpBinaryPathName) + 1);
 	if (ret == NULL)
 	{
 		LocalFree(l_QueryServiceConfig);
@@ -170,11 +170,11 @@ char* GetServiceExeFilename(char* ServiceName)
 
 	LocalFree(l_QueryServiceConfig);
 
-	char* quote1 = strchr(ret, '"');
-	if (quote1 != NULL)
+	char *quote1 = strchr(ret, '"');
+    if (quote1)
 	{
 		quote1++;
-		char* quote2 = strchr(quote1, '"');
+		char *quote2 = strchr(quote1, '"');
 		if (quote2 == NULL)
 		{
 			LocalFree(ret);
@@ -188,11 +188,11 @@ char* GetServiceExeFilename(char* ServiceName)
 	return ret;
 }
 
-bool AddMKFusionToApacheConfig(char* FileName, char* MKFusionPath)
+bool AddMKFusionToApacheConfig(char *FileName, char *MKFusionPath)
 {
 	HANDLE l_File;
 	DWORD  l_FileSize;
-	char*  l_FileContent;
+    char  *l_FileContent;
 	DWORD  l_Readed;
 	int    l_BufWritten;
 	DWORD  l_Written;
@@ -205,7 +205,7 @@ bool AddMKFusionToApacheConfig(char* FileName, char* MKFusionPath)
 
 	l_FileSize = GetFileSize(l_File, NULL);
 
-	l_FileContent = (char*)LocalAlloc(LPTR, l_FileSize + 1024);
+    l_FileContent = (char *)LocalAlloc(LPTR, l_FileSize + 1024);
 	if(l_FileContent == NULL)
 	{
 		CloseHandle(l_File);
@@ -250,11 +250,11 @@ bool AddMKFusionToApacheConfig(char* FileName, char* MKFusionPath)
 	return true;
 }
 
-bool RemoveMKFusionFromApacheConfig(char* FileName)
+bool RemoveMKFusionFromApacheConfig(char *FileName)
 {
 	HANDLE l_File;
 	DWORD  l_FileSize;
-	char*  l_FileContent;
+    char  *l_FileContent;
 	DWORD  l_Readed;
 	DWORD  l_Written;
 
@@ -266,7 +266,7 @@ bool RemoveMKFusionFromApacheConfig(char* FileName)
 
 	l_FileSize = GetFileSize(l_File, NULL);
 
-	l_FileContent = (char*)LocalAlloc(LMEM_FIXED, l_FileSize + 1);
+    l_FileContent = (char *)LocalAlloc(LMEM_FIXED, l_FileSize + 1);
 
 	if (ReadFile(l_File, l_FileContent, l_FileSize, &l_Readed, NULL) == 0)
 	{
@@ -276,7 +276,7 @@ bool RemoveMKFusionFromApacheConfig(char* FileName)
 	}
 	l_FileContent[l_FileSize] = 0;
 
-	char* from = strstr(l_FileContent, "\r\n### MkFusion from here\r\n");
+    char *from = strstr(l_FileContent, "\r\n### MkFusion from here\r\n");
 	if (from == NULL)
 	{
 		LocalFree(l_FileContent);
@@ -284,7 +284,7 @@ bool RemoveMKFusionFromApacheConfig(char* FileName)
 		return false;
 	}
 
-	char* to = strstr(from, "\r\n### MkFusion to here\r\n");
+    char *to = strstr(from, "\r\n### MkFusion to here\r\n");
 	if (to == NULL)
 	{
 		LocalFree(l_FileContent);
@@ -333,8 +333,8 @@ bool RemoveMKFusionFromApacheConfig(char* FileName)
 	//ret = IsServiceStatus("apache2.2", SERVICE_RUNNING); // SERVICE_RUNNING, SERVICE_STOPPED
 	//ret = StartWinService("apache2.2");
 	//ret = StopWinService("apache2.2");
-	//char* name = GetServiceExeFilename("apache2.2");
-	//if (name != NULL)
+    //char *name = GetServiceExeFilename("apache2.2");
+    //if (name)
 	//{
 	//	LocalFree(name);
 	//}

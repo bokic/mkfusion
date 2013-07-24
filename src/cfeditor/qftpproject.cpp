@@ -1,7 +1,7 @@
 #include "qftpproject.h"
 #include <QThread>
 
-QFTPProject::QFTPProject(const QHash<QString, QString>& p_Args)
+QFTPProject::QFTPProject(const QHash<QString, QString> &p_Args)
 {
     m_Type = QProject::FTPProject;
 	m_Url = p_Args["Url"];
@@ -50,7 +50,7 @@ char QFTPProject::getDirSeparator()
 	return '/';
 }
 
-QByteArray QFTPProject::ReadFile(const QString& p_File)
+QByteArray QFTPProject::ReadFile(const QString &p_File)
 {
     Q_UNUSED(p_File);
 
@@ -68,7 +68,7 @@ QByteArray QFTPProject::ReadFile(const QString& p_File)
 	return ret;
 }
 
-void QFTPProject::WriteFile(const QString& p_File, const QByteArray& p_FileContent)
+void QFTPProject::WriteFile(const QString &p_File, const QByteArray &p_FileContent)
 {
     Q_UNUSED(p_File);
     Q_UNUSED(p_FileContent);
@@ -81,7 +81,7 @@ void QFTPProject::WriteFile(const QString& p_File, const QByteArray& p_FileConte
     }*/
 }
 
-void QFTPProject::DeleteFile(const QString& p_File)
+void QFTPProject::DeleteFile(const QString &p_File)
 {
     Q_UNUSED(p_File);
 
@@ -93,7 +93,7 @@ void QFTPProject::DeleteFile(const QString& p_File)
     }*/
 }
 
-void QFTPProject::RenameFile(const QString& p_FromFilename, const QString& p_ToFilename)
+void QFTPProject::RenameFile(const QString &p_FromFilename, const QString &p_ToFilename)
 {
     Q_UNUSED(p_FromFilename);
     Q_UNUSED(p_ToFilename);
@@ -106,7 +106,7 @@ void QFTPProject::RenameFile(const QString& p_FromFilename, const QString& p_ToF
     }*/
 }
 
-QList<QProjectFile> QFTPProject::getFolderItems(const QString& p_Folder)
+QList<QProjectFile> QFTPProject::getFolderItems(const QString &p_Folder)
 {
     Q_UNUSED(p_Folder);
 
@@ -126,7 +126,7 @@ QList<QProjectFile> QFTPProject::getFolderItems(const QString& p_Folder)
 	return ret;
 }
 
-void QFTPProject::CreateDir(const QString& p_Dirname)
+void QFTPProject::CreateDir(const QString &p_Dirname)
 {
     Q_UNUSED(p_Dirname);
 
@@ -138,7 +138,7 @@ void QFTPProject::CreateDir(const QString& p_Dirname)
     }*/
 }
 
-void QFTPProject::DeleteDir(const QString& p_Dirname, bool p_Recursive)
+void QFTPProject::DeleteDir(const QString &p_Dirname, bool p_Recursive)
 {
     Q_UNUSED(p_Dirname);
     Q_UNUSED(p_Recursive); // TODO: Recursive
@@ -151,7 +151,7 @@ void QFTPProject::DeleteDir(const QString& p_Dirname, bool p_Recursive)
     }*/
 }
 
-void QFTPProject::RenameDir(const QString& p_FromDir, const QString& p_ToDir)
+void QFTPProject::RenameDir(const QString &p_FromDir, const QString &p_ToDir)
 {
     Q_UNUSED(p_FromDir);
     Q_UNUSED(p_ToDir);

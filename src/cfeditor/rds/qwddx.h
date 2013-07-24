@@ -37,7 +37,7 @@ public:
 	int size();
 	QWDDX & operator[](const int);
 	QWDDX & operator[](QString);
-	QWDDX & operator[](char*);
+    QWDDX & operator[](char *);
 	QString StructKeyAt(int);
 	QString toString();
 	QByteArray toBinary();

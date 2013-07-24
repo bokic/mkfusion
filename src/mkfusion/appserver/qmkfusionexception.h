@@ -22,7 +22,7 @@ public:
 		m_message = new QString(p_message);
 		m_Detail = new QString(p_Detail);
 	}
-	void raise() const { throw this; }
+	void raise() const { throw *this; }
     QException *clone() const { return new QMKFusionException(*this); }
     /*QWDDX GenerateCFCatch()
 	{

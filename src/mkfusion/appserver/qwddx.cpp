@@ -4,7 +4,6 @@
 
 Q_DECL_EXPORT QWDDX::QWDDX()
     : m_Array(NULL)
-    , m_ArrayDimension(1)
     , m_Struct(NULL)
     , m_String(NULL)
     , m_ByteArray(NULL)
@@ -12,12 +11,17 @@ Q_DECL_EXPORT QWDDX::QWDDX()
 	, m_Bool(false)
     , m_DateTime(NULL)
 	, m_Type(Null)
+    , m_ArrayDimension(1)
 {
+}
+
+Q_DECL_EXPORT QWDDX::~QWDDX()
+{
+    setType(Null);
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(bool p_NewValue)
     : m_Array(NULL)
-    , m_ArrayDimension(1)
     , m_Struct(NULL)
     , m_String(NULL)
     , m_ByteArray(NULL)
@@ -25,12 +29,12 @@ Q_DECL_EXPORT QWDDX::QWDDX(bool p_NewValue)
 	, m_Bool(p_NewValue)
     , m_DateTime(NULL)
 	, m_Type(Boolean)
+    , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(int p_NewValue)
     : m_Array(NULL)
-    , m_ArrayDimension(1)
     , m_Struct(NULL)
     , m_String(NULL)
     , m_ByteArray(NULL)
@@ -38,12 +42,12 @@ Q_DECL_EXPORT QWDDX::QWDDX(int p_NewValue)
 	, m_Bool(false)
     , m_DateTime(NULL)
 	, m_Type(Number)
+    , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(double p_NewValue)
     : m_Array(NULL)
-    , m_ArrayDimension(1)
     , m_Struct(NULL)
     , m_String(NULL)
     , m_ByteArray(NULL)
@@ -51,12 +55,12 @@ Q_DECL_EXPORT QWDDX::QWDDX(double p_NewValue)
 	, m_Bool(false)
     , m_DateTime(NULL)
 	, m_Type(Number)
+    , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const char *p_NewValue)
     : m_Array(NULL)
-    , m_ArrayDimension(1)
     , m_Struct(NULL)
     , m_String(new QString(p_NewValue))
     , m_ByteArray(NULL)
@@ -64,12 +68,12 @@ Q_DECL_EXPORT QWDDX::QWDDX(const char *p_NewValue)
 	, m_Bool(false)
     , m_DateTime(NULL)
 	, m_Type(String)
+    , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const wchar_t *p_NewValue)
     : m_Array(NULL)
-    , m_ArrayDimension(1)
     , m_Struct(NULL)
     , m_String(new QString(QString::fromWCharArray(p_NewValue)))
     , m_ByteArray(NULL)
@@ -77,12 +81,12 @@ Q_DECL_EXPORT QWDDX::QWDDX(const wchar_t *p_NewValue)
 	, m_Bool(false)
     , m_DateTime(NULL)
 	, m_Type(String)
+    , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const QString &p_NewValue)
     : m_Array(NULL)
-    , m_ArrayDimension(1)
     , m_Struct(NULL)
     , m_String(new QString(p_NewValue))
     , m_ByteArray(NULL)
@@ -90,13 +94,13 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QString &p_NewValue)
 	, m_Bool(false)
     , m_DateTime(NULL)
 	, m_Type(String)
+    , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const QDateTime &p_NewValue)
 
     : m_Array(NULL)
-    , m_ArrayDimension(1)
     , m_Struct(NULL)
     , m_String(NULL)
     , m_ByteArray(NULL)
@@ -104,12 +108,12 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QDateTime &p_NewValue)
 	, m_Bool(false)
     , m_DateTime(new QDateTime(p_NewValue))
 	, m_Type(DateTime)
+    , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const QWDDXType p_Type)
     : m_Array(NULL)
-    , m_ArrayDimension(1)
     , m_Struct(NULL)
     , m_String(NULL)
     , m_ByteArray(NULL)
@@ -117,13 +121,13 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDXType p_Type)
 	, m_Bool(false)
     , m_DateTime(NULL)
     , m_Type(Null)
+    , m_ArrayDimension(1)
 {
     setType(p_Type);
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
     : m_Array(NULL)
-    , m_ArrayDimension(1)
     , m_Struct(NULL)
     , m_String(NULL)
     , m_ByteArray(NULL)
@@ -131,6 +135,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
     , m_Bool(false)
     , m_DateTime(NULL)
     , m_Type(other.m_Type)
+    , m_ArrayDimension(1)
 {
     switch(other.m_Type)
     {
@@ -168,11 +173,6 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
     case Error:
         break;
     }
-}
-
-Q_DECL_EXPORT QWDDX::~QWDDX()
-{
-    setType(Null);
 }
 
 Q_DECL_EXPORT void QWDDX::setType(QWDDXType type)
@@ -329,7 +329,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QString &key)
 {
 	if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array))
 	{
-		throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class char* as a structure with members.");
+        throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class \'char *\' as a structure with members.");
 	}
 
 	if (m_Type == QWDDX::Struct)

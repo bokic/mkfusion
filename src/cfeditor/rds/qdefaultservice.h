@@ -11,10 +11,12 @@
 class QDefaultService : public QAbstractRDSService
 {
 public:
-	QDefaultService() : QAbstractRDSService(){};
-  enum Command {
-    IdeDefaultCommand
+	enum Command {
+		IdeDefaultCommand
 	};
+
+	QDefaultService() : QAbstractRDSService(){};
+	virtual ~QDefaultService() {};
 	virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
 protected:
 private:

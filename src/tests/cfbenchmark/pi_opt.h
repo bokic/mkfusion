@@ -31,21 +31,25 @@ public:
 		m_isModified.m_Modified = 1374408058;
 	}
 	
+    virtual ~QCFGeneratedTemplateOpt()
+	{
+	}
+	
 	virtual void run(QCFRunningTemplate* p_TemplateInstance)
 	{
-        QWDDX *c_VARIABLES_FINAL = NULL;
-        QWDDX *c_VARIABLES_TMP = NULL;
-        QWDDX *c_VARIABLES_PRECISION = NULL;
-        QWDDX *c_VARIABLES_I = NULL;
-        QWDDX *c_VARIABLES_KEEPLOOPING = NULL;
-        QWDDX *c_VARIABLES_DIVIDER = NULL;
-        QWDDX *c_VARIABLES_POSITIVESIGN = NULL;
-        QWDDX *c_VARIABLES_COUNTER = NULL;
-        QWDDX *c_VARIABLES_VALUE = NULL;
-        QWDDX *c_VARIABLES_REMAINING = NULL;
-        QWDDX *c_VARIABLES_TRANSFER = NULL;
-        QWDDX *c_VARIABLES_TMP_VAL = NULL;
-        QWDDX *c_VARIABLES_PI = NULL;
+        QWDDX *c_VARIABLES_FINAL = 0;
+        QWDDX *c_VARIABLES_TMP = 0;
+        QWDDX *c_VARIABLES_PRECISION = 0;
+        QWDDX *c_VARIABLES_I = 0;
+        QWDDX *c_VARIABLES_KEEPLOOPING = 0;
+        QWDDX *c_VARIABLES_DIVIDER = 0;
+        QWDDX *c_VARIABLES_POSITIVESIGN = 0;
+        QWDDX *c_VARIABLES_COUNTER = 0;
+        QWDDX *c_VARIABLES_VALUE = 0;
+        QWDDX *c_VARIABLES_REMAINING = 0;
+        QWDDX *c_VARIABLES_TRANSFER = 0;
+        QWDDX *c_VARIABLES_TMP_VAL = 0;
+        QWDDX *c_VARIABLES_PI = 0;
 
 		QCFTemplate::run(p_TemplateInstance);
 

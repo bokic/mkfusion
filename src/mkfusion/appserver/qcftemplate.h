@@ -20,6 +20,7 @@ class Q_DECL_EXPORT QCFTemplate : public QObject
 {
 public:
 	QCFTemplate();
+	virtual ~QCFTemplate();
 	virtual void run(QCFRunningTemplate*);
 
 	void f_WriteOutput(const QString &);

@@ -11,6 +11,10 @@ QAbstractRDSService::QAbstractRDSService(): QObject()
 {
 }
 
+QAbstractRDSService::~QAbstractRDSService()
+{
+}
+
 QByteArray QAbstractRDSService::StringToSTR(QString p_String)
 {
         QByteArray l_ba = p_String.toUtf8(); // TODO: hardcoded utf-8
@@ -211,7 +215,7 @@ QByteArray QAbstractRDSService::XORString(QByteArray p_String)
 	return ret;
 }
 
-int QAbstractRDSService::readToColon(QByteArray& str, QByteArray buf, int offset)
+int QAbstractRDSService::readToColon(QByteArray &str, QByteArray buf, int offset)
 {
 	str = "";
 

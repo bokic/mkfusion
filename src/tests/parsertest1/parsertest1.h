@@ -12,7 +12,7 @@ class CFTest1 : public QDialog
 
 public:
     CFTest1(QWidget *parent = 0, Qt::WindowFlags flags = 0);
-	~CFTest1();
+    virtual ~CFTest1();
 private:
 	void parseDir(QString);
 	QHash<QString, int> m_hash;

@@ -12,7 +12,7 @@ class QSimplifiedLocalSocket
 {
 public:
 	QSimplifiedLocalSocket();
-	~QSimplifiedLocalSocket();
+    virtual ~QSimplifiedLocalSocket();
 	void connectToServer(QString, int = 500);
 	bool waitForConnected();
 	int write(QByteArray);

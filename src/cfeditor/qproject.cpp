@@ -16,7 +16,7 @@ QProject::QProjectType QProject::getType()
     return m_Type;
 }
 
-QProject* QProject::LoadProjectFromFile(const QString& p_File)
+QProject* QProject::LoadProjectFromFile(const QString &p_File)
 {
 	QFile file(p_File);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -29,7 +29,7 @@ QProject* QProject::LoadProjectFromFile(const QString& p_File)
 	return ret;
 }
 
-QProject* QProject::LoadProjectFromText(const QString& p_Text)
+QProject* QProject::LoadProjectFromText(const QString &p_Text)
 {
 	QHash<QString, QString> hashList;
 	QStringList strList = p_Text.split('\n').at(0).split(";");

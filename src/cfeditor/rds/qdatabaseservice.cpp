@@ -7,6 +7,10 @@
  QDatabaseService::QDatabaseService(): QAbstractRDSService()
  {
  }
+ 
+ QDatabaseService::~QDatabaseService()
+ {
+ }
 
 QByteArray QDatabaseService::ExecuteRDSCommand(QRDSServer rdsserver, quint8 command, QMap<QString, QString> map)
 {

@@ -26,13 +26,14 @@ QAppMainWindow::QAppMainWindow(QWidget *parent)
 
 QAppMainWindow::~QAppMainWindow()
 {
-	if (m_Project != NULL)
+    if (m_Project)
 	{
 		delete m_Project;
-		m_Project = NULL;
+		m_Project = 0;
 	}
 
     delete ui;
+    ui = 0;
 }
 
 void QAppMainWindow::on_m_Browser_titleChanged(QString title)
@@ -142,7 +143,7 @@ void QAppMainWindow::on_action_Open_Project_activated()
 
 	if (!l_FileName.isEmpty())
 	{
-		if (m_Project != NULL)
+        if (m_Project)
 		{
 			on_action_Close_Project_activated(); // m_Project is deleted/nulled here
 
@@ -151,7 +152,7 @@ void QAppMainWindow::on_action_Open_Project_activated()
 
 		m_Project = QProject::LoadProjectFromFile(l_FileName);
 
-        if (m_Project != NULL)
+        if (m_Project)
         {
             m_Project->setParent(this);
 
@@ -189,7 +190,7 @@ void QAppMainWindow::on_action_Save_Project_activated()
 	m_Project = QProject::LoadProjectFromFile(l_FileName);
 	m_ProjectFileName = l_FileName;
 
-    if (m_Project != NULL)
+    if (m_Project)
     {
         m_Project->setParent(this);
 
@@ -205,10 +206,10 @@ void QAppMainWindow::on_action_Save_Project_activated()
 
 void QAppMainWindow::on_action_Close_Project_activated()
 {
-	if (m_Project != NULL)
+    if (m_Project)
 	{
 		delete m_Project;
-		m_Project = NULL;
+        m_Project = 0;
 	}
 
 	while (ui->centralwidget->count() > 0)
@@ -239,7 +240,7 @@ void QAppMainWindow::on_action_Project_Properties_activated()
 
 		m_Project = QProject::LoadProjectFromText(l_ProjectProperties.getConnectionString());
 
-		if (m_Project != NULL)
+        if (m_Project)
 		{
 			m_Project->setParent(this);
 
@@ -300,7 +301,7 @@ void QAppMainWindow::on_action_About_activated()
 
 }
 
-void QAppMainWindow::LoadProject(const QString& p_File)
+void QAppMainWindow::LoadProject(const QString &p_File)
 {
 	if (m_Project)
 	{
@@ -310,7 +311,7 @@ void QAppMainWindow::LoadProject(const QString& p_File)
 
 	m_Project = QProject::LoadProjectFromFile(p_File);
 
-	if (m_Project != NULL)
+    if (m_Project)
 	{
 		m_Project->setParent(this);
 
@@ -324,9 +325,9 @@ void QAppMainWindow::LoadProject(const QString& p_File)
 	}
 }
 
-void QAppMainWindow::UpdateProjectFileList(const QString& level, QTreeWidgetItem* parentItem)
+void QAppMainWindow::UpdateProjectFileList(const QString &level, QTreeWidgetItem *parentItem)
 {// Todo: Please finish me!! Bad coding style...
-	QTreeWidgetItem* item;
+	QTreeWidgetItem *item;
 	int c = 0;
 
 	QList<QProjectFile> l_files = m_Project->getFolderItems(level);
@@ -405,25 +406,25 @@ void QAppMainWindow::UpdateProjectFileList(const QString& level, QTreeWidgetItem
 	}
 }
 
-void QAppMainWindow::on_m_ProjectTree_itemExpanded(QTreeWidgetItem* item)
+void QAppMainWindow::on_m_ProjectTree_itemExpanded(QTreeWidgetItem *item)
 {
 	if (item->data(0, Qt::UserRole) == true)
 	{
 		QString path = "";
-		QTreeWidgetItem* currentitem = item;
+		QTreeWidgetItem *currentitem = item;
 
 		item->setIcon(0, QIcon(":/CFEditor/dir_open.gif"));
 		do
 		{
 			path = currentitem->text(0) + m_Project->getDirSeparator() + path;
 			currentitem = currentitem->parent();
-		} while (currentitem != NULL);
+        } while (currentitem);
 
 	UpdateProjectFileList(path, item);
 	}
 }
 
-void QAppMainWindow::on_m_ProjectTree_itemCollapsed(QTreeWidgetItem* item)
+void QAppMainWindow::on_m_ProjectTree_itemCollapsed(QTreeWidgetItem *item)
 {
 	if (item->data(0, Qt::UserRole) == true)
 	{
@@ -431,7 +432,7 @@ void QAppMainWindow::on_m_ProjectTree_itemCollapsed(QTreeWidgetItem* item)
 	}
 }
 
-void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem* item, int column)
+void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
 	Q_UNUSED(column);
 
@@ -439,9 +440,9 @@ void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem* item, i
 		return;
 
 	QString file = item->text(0);
-	QTreeWidgetItem* currentitem = item;
+	QTreeWidgetItem *currentitem = item;
 
-	while(currentitem->parent() != NULL)
+    while(currentitem->parent())
 	{
 		currentitem = currentitem->parent();
 		file = currentitem->text(0) + m_Project->getDirSeparator() + file;
@@ -459,7 +460,7 @@ void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem* item, i
 
 	ui->centralwidget->setTabsClosable(true);
 
-	QCodeEditWidget* l_textEdit = new QCodeEditWidget();
+	QCodeEditWidget *l_textEdit = new QCodeEditWidget();
 
     QFileInfo finfo(file);
     l_textEdit->setFileExtension(finfo.suffix());
@@ -478,10 +479,10 @@ void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem* item, i
 	recolor();
 }
 
-void QAppMainWindow::on_m_ProjectTree_keyPress(QAdvancedTreeWidget* tree, QKeyEvent* e)
+void QAppMainWindow::on_m_ProjectTree_keyPress(QAdvancedTreeWidget *tree, QKeyEvent *e)
 {
 	//int a = e->key();
-	QTreeWidgetItem* currentitem;
+	QTreeWidgetItem *currentitem;
 	QString newDir;
 	QString oldFile, newFile;
 
@@ -523,7 +524,7 @@ void QAppMainWindow::on_m_ProjectTree_keyPress(QAdvancedTreeWidget* tree, QKeyEv
 			if (currentitem->data(0, Qt::UserRole) == true)
 				newFile = currentitem->text(0) + m_Project->getDirSeparator() + newFile;
 
-			while(currentitem->parent() != NULL)
+            while(currentitem->parent())
 			{
 				currentitem = currentitem->parent();
 				newFile = currentitem->text(0) + m_Project->getDirSeparator() + newFile;
@@ -544,7 +545,7 @@ void QAppMainWindow::on_m_ProjectTree_keyPress(QAdvancedTreeWidget* tree, QKeyEv
 
 		currentitem = tree->selectedItems()[0];
 		QString file = currentitem->text(0);
-		while(currentitem->parent() != NULL)
+        while(currentitem->parent())
 		{
 			currentitem = currentitem->parent();
 			file = currentitem->text(0) + m_Project->getDirSeparator() + file;

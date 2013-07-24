@@ -7,6 +7,10 @@ QJDWPClassesBySignatureCommand::QJDWPClassesBySignatureCommand(QObject* parent)
 {
 }
 
+QJDWPClassesBySignatureCommand::~QJDWPClassesBySignatureCommand()
+{
+}
+
 quint32 QJDWPClassesBySignatureCommand::sendCommand(QString p_ClassName) // "Ljava/io/File;"
 {
 	if (strcmp(parent()->metaObject()->className(), "QJDWPDebugger") != 0)

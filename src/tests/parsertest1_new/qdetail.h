@@ -18,7 +18,7 @@ class QDetail : public QDialog
 
 public:
     explicit QDetail(QWidget *parent = 0);
-    ~QDetail();
+    virtual ~QDetail();
 
     void setFileForParsing(const QString &p_File);
 

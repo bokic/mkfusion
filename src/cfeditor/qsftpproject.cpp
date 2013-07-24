@@ -2,7 +2,7 @@
 #include <sys/stat.h>
 
 
-QSFTPProject::QSFTPProject(const QHash<QString, QString>& p_Args)
+QSFTPProject::QSFTPProject(const QHash<QString, QString> &p_Args)
 {
 	int err;
 
@@ -65,7 +65,7 @@ char QSFTPProject::getDirSeparator()
 	return '/';
 }
 
-QByteArray QSFTPProject::ReadFile(const QString& p_File)
+QByteArray QSFTPProject::ReadFile(const QString &p_File)
 {
 	QByteArray ret;
 
@@ -102,7 +102,7 @@ QByteArray QSFTPProject::ReadFile(const QString& p_File)
 	return ret;
 }
 
-void QSFTPProject::WriteFile(const QString& p_File, const QByteArray& p_FileContent)
+void QSFTPProject::WriteFile(const QString &p_File, const QByteArray &p_FileContent)
 {
 	if (m_SFTPSession == NULL)
 	{
@@ -132,7 +132,7 @@ void QSFTPProject::WriteFile(const QString& p_File, const QByteArray& p_FileCont
 	sftp_close(l_file);
 }
 
-void QSFTPProject::DeleteFile(const QString& p_File)
+void QSFTPProject::DeleteFile(const QString &p_File)
 {
 	if (m_SFTPSession == NULL)
 	{
@@ -142,7 +142,7 @@ void QSFTPProject::DeleteFile(const QString& p_File)
 	sftp_unlink(m_SFTPSession, m_Path.toUtf8() + p_File.toUtf8());
 }
 
-void QSFTPProject::RenameFile(const QString& p_FromFile, const QString& p_ToFile)
+void QSFTPProject::RenameFile(const QString &p_FromFile, const QString &p_ToFile)
 {
 	if (m_SFTPSession == NULL)
 	{
@@ -152,7 +152,7 @@ void QSFTPProject::RenameFile(const QString& p_FromFile, const QString& p_ToFile
 	sftp_rename(m_SFTPSession, m_Path.toUtf8() + p_FromFile.toUtf8(), m_Path.toUtf8() + p_ToFile.toUtf8());
 }
 
-QList<QProjectFile> QSFTPProject::getFolderItems(const QString& p_Folder)
+QList<QProjectFile> QSFTPProject::getFolderItems(const QString &p_Folder)
 {
 	QList<QProjectFile> ret;
 
@@ -164,7 +164,7 @@ QList<QProjectFile> QSFTPProject::getFolderItems(const QString& p_Folder)
 	QString l_Dir = m_Path + p_Folder;
 
 	sftp_dir dir = sftp_opendir(m_SFTPSession, l_Dir.toUtf8());
-	if (dir != NULL)
+    if (dir)
 	{
 		sftp_attributes file;
 
@@ -198,7 +198,7 @@ QList<QProjectFile> QSFTPProject::getFolderItems(const QString& p_Folder)
 	return ret;
 }
 
-void QSFTPProject::CreateDir(const QString& p_Folder)
+void QSFTPProject::CreateDir(const QString &p_Folder)
 {
 	if (m_SFTPSession == NULL)
 	{
@@ -208,7 +208,7 @@ void QSFTPProject::CreateDir(const QString& p_Folder)
 	sftp_mkdir(m_SFTPSession, m_Path.toUtf8() + p_Folder.toUtf8(), 0x01ED); // 0x01ED = 755
 }
 
-void QSFTPProject::DeleteDir(const QString& p_Folder, bool p_Recursive)
+void QSFTPProject::DeleteDir(const QString &p_Folder, bool p_Recursive)
 {
     Q_UNUSED(p_Recursive); // TODO: Recursive
 
@@ -220,7 +220,7 @@ void QSFTPProject::DeleteDir(const QString& p_Folder, bool p_Recursive)
 	sftp_unlink(m_SFTPSession, m_Path.toUtf8() + p_Folder.toUtf8());
 }
 
-void QSFTPProject::RenameDir(const QString& p_FromFolder, const QString& p_ToFolder)
+void QSFTPProject::RenameDir(const QString &p_FromFolder, const QString &p_ToFolder)
 {
 	if (m_SFTPSession == NULL)
 	{
@@ -230,7 +230,7 @@ void QSFTPProject::RenameDir(const QString& p_FromFolder, const QString& p_ToFol
 	sftp_rename(m_SFTPSession, m_Path.toUtf8() + p_FromFolder.toUtf8(), m_Path.toUtf8() + p_ToFolder.toUtf8());
 }
 
-const QString& QSFTPProject::getHostName()
+const QString &QSFTPProject::getHostName()
 {
     return m_HostName;
 }
@@ -240,12 +240,12 @@ quint16 QSFTPProject::getPort()
     return m_Port;
 }
 
-const QString& QSFTPProject::getUsername()
+const QString &QSFTPProject::getUsername()
 {
     return m_Username;
 }
 
-const QString& QSFTPProject::getPassword()
+const QString &QSFTPProject::getPassword()
 {
     return m_Password;
 }

@@ -21,6 +21,7 @@ class QCFServer : public QObject
 	Q_OBJECT
 public:
 	QCFServer();
+	virtual ~QCFServer();
 	void start();
 	void stop();
 protected:

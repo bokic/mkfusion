@@ -1,6 +1,6 @@
 #include "qadvancedtreewidget.h"
 
-void QAdvancedTreeWidget::keyPressEvent(QKeyEvent* e)
+void QAdvancedTreeWidget::keyPressEvent(QKeyEvent *e)
 {
 	QTreeWidget::keyPressEvent(e);
 

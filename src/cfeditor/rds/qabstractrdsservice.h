@@ -12,6 +12,7 @@ class QAbstractRDSService : public QObject
 {
 public:
 	QAbstractRDSService();
+	virtual ~QAbstractRDSService();
 	static QByteArray StringToSTR(QString);
 	static QByteArray EncodePassword(QByteArray);
 	static QVector<QByteArray> BreakByteArrayIntoVector(QByteArray);

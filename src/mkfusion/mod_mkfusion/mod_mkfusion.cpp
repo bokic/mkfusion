@@ -11,7 +11,7 @@
 #include <http_protocol.h>
 #include <ap_config.h>
 
-#define TIMEOUT 100
+const int TIMEOUT = 100;
 
 static void writeError(request_rec *r, const char *error)
 {
@@ -133,7 +133,7 @@ static int mkfusion_handler(request_rec *r)
 					QString l_tempStr;
 					l_HeadersDataStream >> l_tempStr;
 					QByteArray l_tempByte = l_tempStr.toUtf8();
-					char* l_content_type = (char*)apr_palloc(r->pool, l_tempByte.size() + 1);
+					char *l_content_type = (char *)apr_palloc(r->pool, l_tempByte.size() + 1);
 					memcpy(l_content_type, l_tempByte.constData(), l_tempByte.size() + 1);
 					r->content_type = l_content_type;
 

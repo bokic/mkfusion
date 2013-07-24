@@ -1,7 +1,7 @@
 #include "qrdsproject.h"
 #include "qfileioservice.h"
 
-QRDSProject::QRDSProject(const QHash<QString, QString>& p_Args)
+QRDSProject::QRDSProject(const QHash<QString, QString> &p_Args)
 {
     m_Type = QProject::RDSProject;
 	m_Url = p_Args["Url"];
@@ -21,6 +21,10 @@ QRDSProject::QRDSProject(const QHash<QString, QString>& p_Args)
 	{
 		m_Path.append(QRDSProject::getDirSeparator());
 	}
+}
+
+QRDSProject::~QRDSProject()
+{
 }
 
 char QRDSProject::getDirSeparator()
@@ -55,7 +59,7 @@ char QRDSProject::getDirSeparator()
 	return m_DirSeparator;
 }
 
-QByteArray QRDSProject::ReadFile(const QString& file)
+QByteArray QRDSProject::ReadFile(const QString &file)
 {
 	QMap<QString, QString> map;
 	QByteArray ba;
@@ -78,7 +82,7 @@ QByteArray QRDSProject::ReadFile(const QString& file)
 	}
 }
 
-void QRDSProject::WriteFile(const QString& p_File, const QByteArray& p_Content)
+void QRDSProject::WriteFile(const QString &p_File, const QByteArray &p_Content)
 {
 	QMap<QString, QString> map;
 	QByteArray ba;
@@ -93,7 +97,7 @@ void QRDSProject::WriteFile(const QString& p_File, const QByteArray& p_Content)
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }
 
-void QRDSProject::DeleteFile(const QString& p_File)
+void QRDSProject::DeleteFile(const QString &p_File)
 {
 	QMap<QString, QString> map;
 	QByteArray ba;
@@ -107,7 +111,7 @@ void QRDSProject::DeleteFile(const QString& p_File)
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }
 
-void QRDSProject::RenameFile(const QString& p_OldFile, const QString& p_NewFile)
+void QRDSProject::RenameFile(const QString &p_OldFile, const QString &p_NewFile)
 {
 	QMap<QString, QString> map;
 	QByteArray ba;
@@ -122,7 +126,7 @@ void QRDSProject::RenameFile(const QString& p_OldFile, const QString& p_NewFile)
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }
 
-QList<QProjectFile> QRDSProject::getFolderItems(const QString& p_Folder)
+QList<QProjectFile> QRDSProject::getFolderItems(const QString &p_Folder)
 {
 	QList<QProjectFile> ret;
 
@@ -160,7 +164,7 @@ QList<QProjectFile> QRDSProject::getFolderItems(const QString& p_Folder)
 	return ret;
 }
 
-void QRDSProject::CreateDir(const QString& p_NewDir)
+void QRDSProject::CreateDir(const QString &p_NewDir)
 {
 	QMap<QString, QString> map;
 	QByteArray ba;
@@ -174,7 +178,7 @@ void QRDSProject::CreateDir(const QString& p_NewDir)
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }
 
-void QRDSProject::DeleteDir(const QString& p_Dir, bool)
+void QRDSProject::DeleteDir(const QString &p_Dir, bool)
 {
 	QMap<QString, QString> map;
 	QByteArray ba;
@@ -188,7 +192,7 @@ void QRDSProject::DeleteDir(const QString& p_Dir, bool)
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }
 
-void QRDSProject::RenameDir(const QString& p_OldDir, const QString& p_NewDir)
+void QRDSProject::RenameDir(const QString &p_OldDir, const QString &p_NewDir)
 {
 	QMap<QString, QString> map;
 	QByteArray ba;

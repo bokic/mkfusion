@@ -8,6 +8,10 @@ QJDWPSocket::QJDWPSocket()
 	connect(&m_Socket, SIGNAL(readyRead()), this, SLOT(on_m_Socket_readyRead()));
 }
 
+QJDWPSocket::~QJDWPSocket()
+{
+}
+
 void QJDWPSocket::connectToHost(const QString& p_Host, quint16 p_Port)
 {
 	m_Socket.disconnectFromHost();

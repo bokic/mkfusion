@@ -1317,7 +1317,7 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 	for ( ; ; )
 	{
 		// For multithread applications. Set p_Terminate to true to stop parsing.
-		if ((p_Terminate != NULL)&&(*p_Terminate == true))
+        if ((p_Terminate)&&(*p_Terminate == true))
 			return ForcedTerminationError;
 
 		if (cf_pos <= pos)

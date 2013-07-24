@@ -11,7 +11,6 @@
 class QFileIOService : public QAbstractRDSService
 {
 public:
-	QFileIOService() : QAbstractRDSService(){};
     enum Command {
         BrowseDirCommand,
         FileReadCommand,
@@ -22,7 +21,11 @@ public:
         FileExistCommand,
         FileCreateDirCommand,
 		FileGetRootDirCommand
-	};
+    };
+
+    QFileIOService() : QAbstractRDSService(){}
+    virtual ~QFileIOService() {}
+	
 	virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
 protected:
 private:

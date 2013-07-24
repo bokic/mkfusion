@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <stdio.h>
 
-bool StartWinService(char* ServiceName)
+bool StartWinService(char *ServiceName)
 {
 	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
 	if (l_SCMHandle == NULL)
@@ -29,7 +29,7 @@ bool StartWinService(char* ServiceName)
 	return true;
 }
 
-bool StopWinService(char* ServiceName)
+bool StopWinService(char *ServiceName)
 {
 	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
 	if (l_SCMHandle == NULL)
@@ -75,7 +75,7 @@ bool StopWinService(char* ServiceName)
 	return true;
 }
 
-int main(int argc, char ** argv)
+int main(int argc, char **argv)
 {
 	if (argc != 3)
 	{

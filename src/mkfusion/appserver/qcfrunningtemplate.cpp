@@ -206,10 +206,10 @@ void QCFRunningTemplate::worker()
 
 			((QCFServer*)m_CFServer)->m_runningTemplatesLock.unlock();
 
-			if (createCFMTemplate != NULL)
+            if (createCFMTemplate)
 			{
 				l_page = createCFMTemplate();
-				if (l_page != NULL)
+                if (l_page)
 				{
                     m_APPLICATION.setType(QWDDX::Error);
                     m_SESSION.setType(QWDDX::Error);
@@ -238,14 +238,22 @@ void QCFRunningTemplate::worker()
 					m_SERVER[L"OS"] = QWDDX(QWDDX::Struct);
 #ifdef Q_OS_WIN
 					m_SERVER[L"OS"][L"ADDITIONALINFORMATION"] = L"Windows";
-					m_SERVER[L"OS"][L"ARCH"] = L"i386";
-					m_SERVER[L"OS"][L"BUILDNUMBER"] = L"";
+#ifdef _WIN64
+                    m_SERVER[L"OS"][L"ARCH"] = L"amd64";
+#else
+                    m_SERVER[L"OS"][L"ARCH"] = L"i386";
+#endif
+                    m_SERVER[L"OS"][L"BUILDNUMBER"] = L"";
 					m_SERVER[L"OS"][L"NAME"] = L"WINDOWS";
 					m_SERVER[L"OS"][L"VERSION"] = L"XP";
 #elif defined Q_OS_LINUX
 					m_SERVER[L"OS"][L"ADDITIONALINFORMATION"] = L"Linux";
-					m_SERVER[L"OS"][L"ARCH"] = L"i386";
-					m_SERVER[L"OS"][L"BUILDNUMBER"] = L"";
+#ifdef __amd64__
+                    m_SERVER[L"OS"][L"ARCH"] = L"amd64";
+#else
+                    m_SERVER[L"OS"][L"ARCH"] = L"i386";
+#endif
+                    m_SERVER[L"OS"][L"BUILDNUMBER"] = L"";
 					m_SERVER[L"OS"][L"NAME"] = L"Linux";
 					m_SERVER[L"OS"][L"VERSION"] = L"(unknown distribution)";
 #else

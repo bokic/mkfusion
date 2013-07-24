@@ -11,7 +11,6 @@
 class QDatabaseService : public QAbstractRDSService
 {
 public:
-        QDatabaseService();
     enum Command {
         GetDataSource,
         GetTablesForDS,
@@ -21,6 +20,9 @@ public:
         GetSQLMetadata,
         GetSQLSupportedCommands
 	};
+
+	QDatabaseService();
+	virtual ~QDatabaseService();
 	virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
 protected:
 private:

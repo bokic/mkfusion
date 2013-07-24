@@ -16,7 +16,7 @@ class QAppMainWindow : public QMainWindow
 
 public:
     explicit QAppMainWindow(QWidget *parent = 0);
-    ~QAppMainWindow();
+    virtual ~QAppMainWindow();
 
 private slots:
 	void on_m_Browser_titleChanged(QString title);

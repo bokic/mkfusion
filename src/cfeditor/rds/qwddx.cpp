@@ -92,7 +92,7 @@ QWDDX & QWDDX::operator[](QString key)
 	return m_Struct[key];
 }
 
-QWDDX &QWDDX::operator[](char* key)
+QWDDX &QWDDX::operator[](char *key)
 {
 	if (m_Type == QWDDX::Null)
 		m_Type = QWDDX::Struct;

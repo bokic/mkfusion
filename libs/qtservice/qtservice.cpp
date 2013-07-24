@@ -78,7 +78,7 @@ static void qtServiceCloseDebugLog()
     f = 0;
 }
 
-void qtServiceLogDebug(QtMsgType type, const char* msg)
+void qtServiceLogDebug(QtMsgType type, const char *msg)
 {
     static QMutex mutex;
     QMutexLocker locker(&mutex);
