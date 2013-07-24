@@ -27,12 +27,12 @@ public:
 public:
 	QWDDX();
 	QWDDX(QWDDXType);
-	const QWDDX & operator=(QString);
-	const QWDDX & operator=(char*);
-	const QWDDX & operator=(double);
-	const QWDDX & operator=(bool);
-	const QWDDX & operator=(QDateTime);
-	const QWDDX & operator=(QByteArray);
+    QWDDX &operator=(const QString &);
+    QWDDX &operator=(const char *);
+    QWDDX &operator=(const double);
+    QWDDX &operator=(const bool);
+    QWDDX &operator=(const QDateTime &);
+    QWDDX &operator=(const QByteArray &);
 	QWDDXType getType();
 	int size();
 	QWDDX & operator[](const int);

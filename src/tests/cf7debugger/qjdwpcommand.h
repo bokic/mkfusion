@@ -8,7 +8,7 @@ class QJDWPCommand : public QObject
 {
 	Q_OBJECT
 public:
-	QJDWPCommand(QObject* = 0);
+	explicit QJDWPCommand(QObject* = 0);
 	quint32 getCommandID();
 	virtual void processRecivedCommand(QByteArray) = 0;
 protected:

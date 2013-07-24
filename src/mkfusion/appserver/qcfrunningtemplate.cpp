@@ -1,5 +1,5 @@
-#include "qmkfusionexception.h"
 #include "qcfrunningtemplate.h"
+#include "qmkfusionexception.h"
 #include "cffunctions.h"
 #include "qcfserver.h"
 #include "common.h"
@@ -177,8 +177,8 @@ void QCFRunningTemplate::worker()
 		}
 
 		QLibrary l_TemplateLib;
-		QCFTemplate* l_page = NULL;
-		createCFMTemplateDef createCFMTemplate = NULL;
+		QCFTemplate *l_page = 0;
+		createCFMTemplateDef createCFMTemplate = 0;
 
 		try
 		{
@@ -348,16 +348,16 @@ void QCFRunningTemplate::worker()
 				}
 			}
 		}
-		catch (QMKFusionCFAbortException&)
+		catch (const QMKFusionCFAbortException &ex)
 		{
 		}
-		catch (QMKFusionTemplateException& ex)
+		catch (const QMKFusionTemplateException &ex)
 		{
 			m_Status = 500;
 			((QCFServer*)m_CFServer)->m_runningTemplatesLock.unlock();
 			m_Output += WriteException(ex, this->m_Request);
 		}
-		catch (QMKFusionException& ex)
+		catch (const QMKFusionException &ex)
 		{
 			m_Status = 500;
 			m_Output += WriteException(ex, this->m_Request);

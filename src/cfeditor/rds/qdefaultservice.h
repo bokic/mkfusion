@@ -15,7 +15,7 @@ public:
   enum Command {
     IdeDefaultCommand
 	};
-	QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
+	virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
 protected:
 private:
 	QByteArray IdeDefault(QRDSServer);

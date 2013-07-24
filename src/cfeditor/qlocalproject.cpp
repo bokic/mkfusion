@@ -9,9 +9,9 @@ QLocalProject::QLocalProject(const QHash<QString, QString>& p_Args)
 	m_Url = p_Args["Url"];
 	m_Path = p_Args["Path"];
 
-	if (!m_Path.endsWith(getDirSeparator()))
+    if (!m_Path.endsWith(QLocalProject::getDirSeparator()))
 	{
-		m_Path += getDirSeparator();
+        m_Path.append(QLocalProject::getDirSeparator());
 	}
 }
 

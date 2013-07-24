@@ -9,7 +9,7 @@
 class QLocalProject: public QProject
 {
 public:
-	QLocalProject(const QHash<QString, QString>&);
+	explicit QLocalProject(const QHash<QString, QString>&);
 	virtual char getDirSeparator();
 	virtual QByteArray ReadFile(const QString&);
 	virtual void WriteFile(const QString&, const QByteArray&);

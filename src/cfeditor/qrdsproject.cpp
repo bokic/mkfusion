@@ -17,9 +17,9 @@ QRDSProject::QRDSProject(const QHash<QString, QString>& p_Args)
     m_Server.setPassword(p_Args["Password"].toLatin1());
 	m_Server.setPort(p_Args["Port"].toInt());
 
-	if (!m_Path.endsWith(getDirSeparator()))
+	if (!m_Path.endsWith(QRDSProject::getDirSeparator()))
 	{
-		m_Path += getDirSeparator();
+		m_Path.append(QRDSProject::getDirSeparator());
 	}
 }
 

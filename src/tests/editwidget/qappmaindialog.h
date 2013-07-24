@@ -10,7 +10,7 @@ namespace Ui {
 class QAppMainDialog : public QDialog {
     Q_OBJECT
 public:
-    QAppMainDialog(QWidget *parent = 0);
+    explicit QAppMainDialog(QWidget *parent = 0);
     ~QAppMainDialog();
 
 protected:

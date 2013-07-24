@@ -509,6 +509,6 @@ YesNoFormat
 
 */
 
-QString WriteException(QMKFusionException &, const QCFRunningTemplate_Request&);
+QString WriteException(const QMKFusionException &, const QCFRunningTemplate_Request &);
 
 #endif // CFFUNCTIONS_H

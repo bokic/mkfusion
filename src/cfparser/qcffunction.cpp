@@ -29,9 +29,12 @@ QCFFunctionArgument::QCFFunctionArgument(QCFFunctionArgumentDataType p_DataType,
 
 QCFFunctionArgument& QCFFunctionArgument::operator=(const QCFFunctionArgument &other)
 {
-	m_DataType = other.m_DataType;
-	m_Required = other.m_Required;
-	m_Type = other.m_Type;
+	if (this != &other)
+	{
+		m_DataType = other.m_DataType;
+		m_Required = other.m_Required;
+		m_Type = other.m_Type;
+	}
 
 	return *this;
 }
@@ -60,13 +63,15 @@ QCFFunction::QCFFunction(const QString &p_FunctionName, QCFFunctionReturnType p_
 
 QCFFunction& QCFFunction::operator=(const QCFFunction &other)
 {
-	m_Name = other.m_Name;
-	m_ReturnType = other.m_ReturnType;
-	m_Arguments = other.m_Arguments;
+	if (this != &other)
+	{
+		m_Name = other.m_Name;
+		m_ReturnType = other.m_ReturnType;
+		m_Arguments = other.m_Arguments;
+	}
 
 	return *this;
 }
-
 
 void QCFFunction::setName(const QString &p_FunctionName)
 {

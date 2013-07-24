@@ -218,7 +218,7 @@ int QAbstractRDSService::readToColon(QByteArray& str, QByteArray buf, int offset
 	int c = offset;
 	int ret = -1;
 
-	for(;;)
+	for(; ; )
 	{
 		if (c >= buf.size())
 			break;

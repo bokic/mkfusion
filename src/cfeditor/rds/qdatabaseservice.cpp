@@ -16,28 +16,21 @@ QByteArray QDatabaseService::ExecuteRDSCommand(QRDSServer rdsserver, quint8 comm
 	{
 	case 0:
 		return GetDSNs(rdsserver);
-		break;
 	case 1:
 		return GetTables(rdsserver, map);
-		break;
 	case 2:
 		return GetColumns(rdsserver, map);
-		break;
 	case 3:
 		return GetPrimaryKeys(rdsserver, map);
-		break;
 	case 4:
 		return ExecuteStatement(rdsserver, map);
-		break;
 	case 5:
 		return GetMetaData(rdsserver, map);
-		break;
 	case 6:
 		return GetSupportedCommands(rdsserver);
-		break;
+	default:
+		return ret;
 	}
-	
-	return ret;
 }
 
 QByteArray QDatabaseService::GetDSNs(QRDSServer rdsserver)

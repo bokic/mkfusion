@@ -24,7 +24,7 @@ public:
 	void start();
 	void stop();
 protected:
-	void timerEvent(QTimerEvent*);
+	virtual void timerEvent(QTimerEvent*);
 public:
 	QHash<QString, QCFCompiledTemplateItem> m_CompiledTemplates;
 	QLocalServer m_LocalServer;

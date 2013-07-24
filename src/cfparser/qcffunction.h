@@ -12,7 +12,7 @@ public:
 	enum QCFFunctionArgumentDataType {ArgumentDataTypeBool, ArgumentDataTypeInt, ArgumentDataTypeDouble, ArgumentDataTypeString, ArgumentDataTypeDateTime, ArgumentDataTypeQWDDX, ArgumentDataTypeAny};
 
 	QCFFunctionArgument();
-	QCFFunctionArgument(const QCFFunctionArgument &other);
+	explicit QCFFunctionArgument(const QCFFunctionArgument &other);
 	QCFFunctionArgument(QCFFunctionArgumentDataType p_DataType, bool p_Required = false, QCFFunctionArgumentType p_Type = QCFFunctionArgument::TypeExpression);
 	QCFFunctionArgument& operator=(const QCFFunctionArgument &other);
 
@@ -28,11 +28,11 @@ public:
 	enum QCFFunctionReturnType {ReturnVoid, ReturnBool, ReturnInt, ReturnDouble, ReturnString, ReturnDateTime, ReturnQWDDX};
 
 	QCFFunction();
-	QCFFunction(const QCFFunction &other);
-	QCFFunction(const QString &, QCFFunctionReturnType, const QList<QCFFunctionArgument> &p_Arguments = QList<QCFFunctionArgument>());
+	explicit QCFFunction(const QCFFunction &other);
+	QCFFunction(const QString &p_FunctionName, QCFFunctionReturnType p_ReturnType, const QList<QCFFunctionArgument> &p_Arguments = QList<QCFFunctionArgument>());
 	QCFFunction& operator=(const QCFFunction &other);
 	void setName(const QString &p_FunctionName);
-	const QString& getName();
+    const QString &getName();
 
 	// Class members
 	QString m_Name;

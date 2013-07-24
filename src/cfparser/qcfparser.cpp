@@ -75,12 +75,12 @@ quint32 GetColumnNumberFromPosition(const QString &p_FileContent, const qint32 p
 	return p_FileOffset - offset + 1;
 }
 
-bool QCFParser::TrimCFCode(const QString& p_Text, int& p_Offset)
+bool QCFParser::TrimCFCode(const QString &p_Text, int &p_Offset)
 {
 	int l_Len = p_Text.length();
 	ushort l_ch;
 
-	for(; ; )
+	for( ; ; )
 	{
 		if (p_Offset >= l_Len)
 		{
@@ -116,7 +116,7 @@ bool QCFParser::isValidVarChar(const QString &p_Text, int index)
     return false;
 }
 
-QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Offset, const QCFParserElementType p_ElementType, QCFParserElement *parent = 0)
+QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Offset, const QCFParserElementType p_ElementType, QCFParserElement *parent = 0)
 {
 	QCFParserElement ret;
 	QCFParserElement child;
@@ -1049,7 +1049,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 		break;
 	case Parameters:
 		c = l_Offset;
-		for(;;)
+		for( ; ; )
 		{
 			ch = p_Text.at(c).unicode();
 
@@ -1152,7 +1152,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString& p_Text, const qint32 p_Of
 
 		m_InsideCFScript = true;
 
-		for(;;)
+		for( ; ; )
 		{
 			if (TrimCFCode(p_Text, l_Offset))
 			{
@@ -1208,7 +1208,7 @@ QString QCFParser::getError()
 	return m_Error;
 }
 
-const QString& QCFParser::getText()
+const QString &QCFParser::getText() const
 {
 	return m_Text;
 }
@@ -1218,7 +1218,7 @@ quint32 QCFParser::getErrorPosition()
 	return m_ErrorPosition;
 }
 
-quint32 QCFParser::FindCFCommentSize(QString p_Text, const quint32 p_Position) /* Done */
+quint32 QCFParser::FindCFCommentSize(const QString &p_Text, const quint32 p_Position) /* Done */
 {
     quint32 pos = p_Position;
 
@@ -1280,7 +1280,7 @@ quint32 QCFParser::FindCFCommentSize(QString p_Text, const quint32 p_Position) /
 
         pos += 5;
 
-        for (; ; )
+        for ( ; ; )
         {
             begCFComment = p_Text.indexOf("<!---", pos, Qt::CaseInsensitive);
             endCFComment = p_Text.indexOf("--->", pos, Qt::CaseInsensitive);
@@ -1303,7 +1303,7 @@ quint32 QCFParser::FindCFCommentSize(QString p_Text, const quint32 p_Position) /
     return 0;
 }
 
-QCFParserErrorType QCFParser::Parse(const QString& p_Text, bool* p_Terminate)
+QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 {
 	m_Text = p_Text;
 	m_Tags.clear();
@@ -1314,7 +1314,7 @@ QCFParserErrorType QCFParser::Parse(const QString& p_Text, bool* p_Terminate)
 	qint32 l_CodeInside = 0;
 	quint32 pos = 0, cf_pos = 0, cf_epos = 0, cf_comment = 0, cf_expression = 0;
 
-	for (; ; )
+	for ( ; ; )
 	{
 		// For multithread applications. Set p_Terminate to true to stop parsing.
 		if ((p_Terminate != NULL)&&(*p_Terminate == true))
@@ -1637,13 +1637,16 @@ QCFParserErrorType QCFParser::BuildTagTree()
 	return NoError;
 }
 
-void updateElementOffset(QCFParserElement* p_Element, int p_Offset)
+void updateElementOffset(QCFParserElement *p_Element, int p_Offset)
 {
-	p_Element->m_Position += p_Offset;
-
-	for(int c = 0; c < p_Element->m_ChildElements.count(); c++)
+	if (p_Element)
 	{
-		updateElementOffset(&p_Element->m_ChildElements[c], p_Offset);
+		p_Element->m_Position += p_Offset;
+
+		for(int c = 0; c < p_Element->m_ChildElements.count(); c++)
+		{
+			updateElementOffset(&p_Element->m_ChildElements[c], p_Offset);
+		}
 	}
 }
 
@@ -1676,7 +1679,7 @@ QCFParserErrorType QCFParser::validate()
             return InvalidCFTagError;
 		}
 
-		QCFTag l_tagDef = m_CFTagsDef[l_tagName];
+        const QCFTag &l_tagDef = m_CFTagsDef[l_tagName];
 
         if (l_tagDef.m_AnyParam)
         {
@@ -1712,7 +1715,7 @@ QCFParserErrorType QCFParser::validate()
 			// Get all required parametars
 			for(int c3 = 0; c3 < l_argumentVariant.length(); c3++)
 			{
-				QCFTagArgument l_argument = l_argumentVariant[c3];
+                const QCFTagArgument &l_argument = l_argumentVariant[c3];
 
 				if (l_argument.m_Required)
 				{

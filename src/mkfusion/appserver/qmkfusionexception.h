@@ -22,9 +22,9 @@ public:
 		m_message = new QString(p_message);
 		m_Detail = new QString(p_Detail);
 	}
-	void raise() const { throw *this; }
+	void raise() const { throw this; }
     QException *clone() const { return new QMKFusionException(*this); }
-	QWDDX GenerateCFCatch()
+    /*QWDDX GenerateCFCatch()
 	{
 		QWDDX ret(QWDDX::Struct);
 
@@ -35,7 +35,7 @@ public:
 		ret[L"TagContext"] = L"Todo, schedule for v1.1";
 
 		return ret;
-	}
+    }*/
 
 	QString *m_Type;
 	QString *m_message;
@@ -99,7 +99,7 @@ public:
 class QMKFusionBadArrayDimensionException : public QMKFusionException
 {
 public:
-	QMKFusionBadArrayDimensionException(int p_Dimension):QMKFusionException("", "")
+	explicit QMKFusionBadArrayDimensionException(int p_Dimension): QMKFusionException("", "")
 	{
         Q_UNUSED(p_Dimension);
 	}

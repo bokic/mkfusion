@@ -18,7 +18,7 @@ void log(const QString &p_filename, const QString &p_Line)
 	l_Log.close();
 }
 
-QString cfdump_var(const QWDDX& p_Variable)
+QString cfdump_var(const QWDDX &p_Variable)
 {
 	QString ret;
 
@@ -58,7 +58,7 @@ QString cfdump_var(const QWDDX& p_Variable)
 	return ret;
 }
 
-QString mk_cfdump(const QWDDX& p_Variable)
+QString mk_cfdump(const QWDDX &p_Variable)
 {
 	QString ret;
 

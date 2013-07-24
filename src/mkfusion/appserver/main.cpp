@@ -21,12 +21,12 @@ public:
 	}
 
 protected:
-	void start()
+	virtual void start()
 	{
 		m_CFServer.start();
 	}
 
-	void stop()
+	virtual void stop()
 	{
 		m_CFServer.stop();
 	}

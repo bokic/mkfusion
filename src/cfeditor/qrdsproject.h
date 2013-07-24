@@ -10,7 +10,7 @@
 class QRDSProject: public QProject
 {
 public:
-	QRDSProject(const QHash<QString, QString>&);
+	explicit QRDSProject(const QHash<QString, QString>&);
 	virtual char getDirSeparator();
 	virtual QByteArray ReadFile(const QString&);
 	virtual void WriteFile(const QString&, const QByteArray&);

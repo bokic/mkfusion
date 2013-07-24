@@ -22,10 +22,10 @@ public:
 	QCFTemplate();
 	virtual void run(QCFRunningTemplate*);
 
-	void f_WriteOutput(const QString&);
-	void f_WriteOutput(const QWDDX&);
+	void f_WriteOutput(const QString &);
+	void f_WriteOutput(const QWDDX &);
 
-	QCFRunningTemplate* m_TemplateInstance;
+	QCFRunningTemplate *m_TemplateInstance;
 	QIsTemplateModified m_isModified;
 };
 

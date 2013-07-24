@@ -40,7 +40,7 @@ void QJDWPClassesBySignatureCommand::processRecivedCommand(QByteArray p_Data)
 	m_CommandID = 0;
 }
 
-const QList<QJDWPClassesBySignature*> QJDWPClassesBySignatureCommand::getResult()
+QList<QJDWPClassesBySignature*> QJDWPClassesBySignatureCommand::getResult() const
 {
 	return m_Result;
 }

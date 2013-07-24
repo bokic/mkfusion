@@ -1,7 +1,7 @@
+#include "qcfserver.h"
 #include "qmkfusionexception.h"
 #include "qcfgenerator.h"
 #include "qcftemplate.h"
-#include "qcfserver.h"
 #include "qcfparser.h"
 
 //#include <QCoreApplication>
@@ -78,7 +78,7 @@ void QCFServer::on_newConnection()
 {
 	for (; ; )
 	{
-		QLocalSocket* l_LocalSocket = m_LocalServer.nextPendingConnection();
+		QLocalSocket *l_LocalSocket = m_LocalServer.nextPendingConnection();
 
 		if (l_LocalSocket == NULL)
 		{
@@ -91,7 +91,7 @@ void QCFServer::on_newConnection()
 		{
 			m_runningTemplatesLock.unlock();
 
-			l_LocalSocket->write("\4\0\0\0", 4);
+			l_LocalSocket->write("\x04\x00\x00\x00", 4);
 			l_LocalSocket->write("Maximum running templates.");
 			l_LocalSocket->waitForBytesWritten(30000);
 
@@ -107,11 +107,11 @@ void QCFServer::on_newConnection()
 			return;
 		}
 
-		QThread* l_thread = new QThread(this);
+		QThread *l_thread = new QThread(this);
 
 		m_runningTemplates.append(l_thread);
 
-		QCFRunningTemplate* l_runningTemplate = new QCFRunningTemplate();
+		QCFRunningTemplate *l_runningTemplate = new QCFRunningTemplate();
 
 		l_runningTemplate->m_CFServer = this;
 		l_runningTemplate->moveToThread(l_thread);
@@ -131,7 +131,7 @@ void QCFServer::on_newConnection()
 
 void QCFServer::on_workerTerminated()
 {
-	QThread* l_sender = (QThread*)sender();
+	QThread *l_sender = (QThread*)sender();
 
 	m_runningTemplates.removeOne(l_sender);
 

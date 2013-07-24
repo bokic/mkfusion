@@ -10,9 +10,9 @@ public:
 	enum ArgumentType {TypeConstantNumber, TypeConstantString, TypeExpression, TypeVariable, TypeAny};
 
 	QCFTagArgument();
-	QCFTagArgument(const QCFTagArgument&);
-	QCFTagArgument(const QString&, bool = false, ArgumentType = TypeAny, const QString& = "");
-	QCFTagArgument& operator=(const QCFTagArgument&);
+	explicit QCFTagArgument(const QCFTagArgument &p_TagArgument);
+	QCFTagArgument(const QString &p_Name, bool p_Required = false, ArgumentType p_Type = TypeAny, const QString &p_MustBeValue = "");
+	QCFTagArgument& operator=(const QCFTagArgument &p_TagArgument);
 	QString m_Name;
 	bool m_Required;
 	ArgumentType m_Type;
@@ -26,9 +26,9 @@ public:
 	enum ArgumentsType{ArgumentsTypeArguments, ArgumentsTypeExpression};
 	enum ExpressionInside{WithoutExpressionInside, WithExpressionInside};
 	QCFTag();
-    QCFTag(const QCFTag&);
-    QCFTag(const QString&, CloseTagType, ArgumentsType, ExpressionInside = WithoutExpressionInside, bool = false);
-	QCFTag& operator=(const QCFTag&);
+    explicit QCFTag(const QCFTag &other);
+    QCFTag(const QString &p_TagName, CloseTagType p_CloseTagType, ArgumentsType p_ArgumentsType, ExpressionInside p_ExpressionInside = WithoutExpressionInside, bool p_AnyParam = false);
+	QCFTag& operator=(const QCFTag &other);
 	QString m_Name;
 	enum CloseTagType m_CloseTagType;
 	enum ArgumentsType m_ArgumentsType;

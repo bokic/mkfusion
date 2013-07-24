@@ -5,12 +5,12 @@ QCFTemplate::QCFTemplate()
 {
 }
 
-void QCFTemplate::run(QCFRunningTemplate* p_TemplateInstance)
+void QCFTemplate::run(QCFRunningTemplate *p_TemplateInstance)
 {
 	m_TemplateInstance = p_TemplateInstance;
 }
 
-void QCFTemplate::f_WriteOutput(const QString& p_Text)
+void QCFTemplate::f_WriteOutput(const QString &p_Text)
 {
 	if (m_TemplateInstance != NULL)
 	{
@@ -18,7 +18,7 @@ void QCFTemplate::f_WriteOutput(const QString& p_Text)
 	}
 }
 
-void QCFTemplate::f_WriteOutput(const QWDDX& p_Wddx)
+void QCFTemplate::f_WriteOutput(const QWDDX &p_Wddx)
 {
 	QWDDX l_temp = p_Wddx;
 

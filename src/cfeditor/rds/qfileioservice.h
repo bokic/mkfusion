@@ -23,7 +23,7 @@ public:
         FileCreateDirCommand,
 		FileGetRootDirCommand
 	};
-	QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
+	virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
 protected:
 private:
 	QByteArray BrowseDir(QRDSServer, QMap<QString, QString>);

@@ -10,10 +10,11 @@
 #include <QtWebKit>
 
 
-QAppMainWindow::QAppMainWindow(QWidget *parent) :
-    QMainWindow(parent),
-	ui(new Ui::QAppMainWindow),
-	m_Project(NULL)
+QAppMainWindow::QAppMainWindow(QWidget *parent)
+    : QMainWindow(parent)
+	, ui(new Ui::QAppMainWindow)
+	, m_Project(NULL)
+	, m_ProjectFileName()
 {
     ui->setupUi(this);
 

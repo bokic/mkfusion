@@ -78,7 +78,7 @@ public:
         QStringList defaultExtensions;
         QVector<int> startsWith;
         QHash<QString, QTextParserLanguageDefinitionToken> tokens;
-        QTextParserLanguageDefinition() : caseSensitivity(Qt::CaseInsensitive) {}
+        QTextParserLanguageDefinition() : languageName(), caseSensitivity(Qt::CaseInsensitive), defaultExtensions(), startsWith(), tokens() {}
     };
 
     QTextParser();
@@ -88,7 +88,7 @@ public:
     QTextParserElements parseFile(const QString &fileName);
     QTextParserElements parseText(const QString &text, const QString &fileExt);
     QTextParserElements parseTextLines(const QTextParserLines &lines);
-    const QTextParserLanguageDefinition &getLanguage();
+    const QTextParserLanguageDefinition &getLanguage() const;
 
 private:
     QTextParserElement parseElement(const QTextParserLines &lines, const QVector<int> &tokens, int &start_line, int &start_column, int end_line, int end_column, int end_token = -1);

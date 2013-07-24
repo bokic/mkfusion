@@ -9,7 +9,7 @@ class QJDWPDebugger : public QObject
 {
 	Q_OBJECT
 public:
-	QJDWPDebugger(QObject *parent=0);
+	explicit QJDWPDebugger(QObject *parent=0);
 	void connectToHost(QString, quint16);
 	void addCommand(QJDWPCommand*);
 	quint32 sendCommand(quint8, quint8, const QByteArray&);

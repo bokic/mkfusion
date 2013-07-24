@@ -16,10 +16,10 @@ class QJDWPClassesBySignatureCommand : public QJDWPCommand
 {
 	Q_OBJECT
 public:
-	QJDWPClassesBySignatureCommand(QObject* = 0);
+	explicit QJDWPClassesBySignatureCommand(QObject* = 0);
 	quint32 sendCommand(QString);
 	virtual void processRecivedCommand(QByteArray);
-	const QList<QJDWPClassesBySignature*> getResult();
+    QList<QJDWPClassesBySignature*> getResult() const;
 private:
 	QList<QJDWPClassesBySignature*> m_Result;
 };

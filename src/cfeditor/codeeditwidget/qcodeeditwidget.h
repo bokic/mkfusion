@@ -26,25 +26,25 @@ public:
         QCodeEditWidgetLine() : QTextParserLine(), Breakpoint(BreakpointTypeNoBreakpoint), LineStatus(LineStatusTypeLineNotModified) {}
     };
 
-    explicit QCodeEditWidget(QWidget* = 0);
+    explicit QCodeEditWidget(QWidget *parent = 0);
 	~QCodeEditWidget();
 	QString getText();
-    void setFileExtension(const QString &);
+    void setFileExtension(const QString &Extension);
 	void clearFormatting();
     //void addFormat(int p_line, const QTextParser::QTextParserColorItem &p_item);
-	void setBreakpoint(int, BreakpointType);
-	BreakpointType breakpoint(int);
+    void setBreakpoint(int line, BreakpointType newBreakpoint);
+    BreakpointType breakpoint(int line);
 
 protected:
-	void paintEvent(QPaintEvent*);
-	void timerEvent(QTimerEvent*);
-	void keyPressEvent(QKeyEvent*);
+    void paintEvent(QPaintEvent *event);
+    void timerEvent(QTimerEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 	void updatePanelWidth();
 	void ensureCaretIsVisible();
-	void scrollContentsBy(int, int);
-	void mouseMoveEvent(QMouseEvent*);
-	void mousePressEvent(QMouseEvent*);
-	void mouseReleaseEvent(QMouseEvent*);
+    void scrollContentsBy(int dx , int dy);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 
 private:
 	QBrush m_LineNumbersBackground;

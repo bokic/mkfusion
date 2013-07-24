@@ -27,8 +27,8 @@ public:
 	int m_Status;
 	QHash<QString, QString> m_Header;
 	bool m_HeadersSent;
-	QLocalSocket* m_Socket;
-	QObject* m_CFServer;
+	QLocalSocket *m_Socket;
+	QObject *m_CFServer;
 	QCFRunningTemplate_Request m_Request;
 
 signals:

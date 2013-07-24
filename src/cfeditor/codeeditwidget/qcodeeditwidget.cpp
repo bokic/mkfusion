@@ -208,25 +208,25 @@ quint8 breakpoint_disabled_png[] = /* 741 */
 ,0x4E,0x44,0xAE,0x42,0x60,0x82};
 /* end binary data. size = 741 bytes */
 
-QCodeEditWidget::QCodeEditWidget(QWidget *parent) :
-	QAbstractScrollArea(parent),
-	m_LineNumbersNormal(QPen(QColor(172, 168, 153))),
-	m_LineNumbersCurrent(QPen(QColor(128, 128, 128))),
-	m_LineModifiedAndNotSavedBackground(QColor(128, 0, 0)),
-	m_LineModifiedAndSavedBackground(QColor(0, 128, 0)),
-	m_CurrentLineBackground(QColor(224, 233, 247)),
+QCodeEditWidget::QCodeEditWidget(QWidget *parent)
+    : QAbstractScrollArea(parent)
+    , m_LineNumbersNormal(QPen(QColor(172, 168, 153)))
+    , m_LineNumbersCurrent(QPen(QColor(128, 128, 128)))
+    , m_LineModifiedAndNotSavedBackground(QColor(128, 0, 0))
+    , m_LineModifiedAndSavedBackground(QColor(0, 128, 0))
+    , m_CurrentLineBackground(QColor(224, 233, 247))
 #ifdef Q_OS_WIN
-	m_TextFont(QFont("Courier", 10, 0, false)),
+    , m_TextFont(QFont("Courier", 10, 0, false))
 #elif defined Q_OS_LINUX
-	m_TextFont(QFont("Monospace", 9, 0, false)),
+    , m_TextFont(QFont("Monospace", 9, 0, false))
 #else
 	#error Unsupported OS.
 #endif
-	m_ScrollXCharPos(0),
-	m_ScrollYLinePos(0),
-	m_LineNumbersPanelWidth(3),
-	m_currentlyBlinkCursorShowen(1),
-	m_SelectMouseDown(false)
+    , m_ScrollXCharPos(0)
+    , m_ScrollYLinePos(0)
+    , m_LineNumbersPanelWidth(3)
+    , m_currentlyBlinkCursorShowen(1)
+    , m_SelectMouseDown(false)
 {
 	m_CarretPosition.m_Row = 1;
 	m_CarretPosition.m_Column = 1;
@@ -251,9 +251,9 @@ QCodeEditWidget::QCodeEditWidget(QWidget *parent) :
 
 	setText("");
 
-	m_BreakPointPixmap = QPixmap::fromImage(QImage::fromData((uchar*)&breakpoint_png, sizeof(breakpoint_png)));
-	m_BreakPointPixmapPending = QPixmap::fromImage(QImage::fromData((uchar*)&breakpoint_pending_png, sizeof(breakpoint_pending_png)));
-	m_BreakPointPixmapDisabled = QPixmap::fromImage(QImage::fromData((uchar*)&breakpoint_disabled_png, sizeof(breakpoint_disabled_png)));
+    m_BreakPointPixmap = QPixmap::fromImage(QImage::fromData((uchar *)&breakpoint_png, sizeof(breakpoint_png)));
+    m_BreakPointPixmapPending = QPixmap::fromImage(QImage::fromData((uchar *)&breakpoint_pending_png, sizeof(breakpoint_pending_png)));
+    m_BreakPointPixmapDisabled = QPixmap::fromImage(QImage::fromData((uchar *)&breakpoint_disabled_png, sizeof(breakpoint_disabled_png)));
 
 	m_CursorTimerID = startTimer(500);
 }

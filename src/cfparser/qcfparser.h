@@ -54,17 +54,17 @@ private:
 	QString m_Error;
 	QString m_Text;
 	QCFParserMode m_Mode;
-    static bool TrimCFCode(const QString &, int &);
+    static bool TrimCFCode(const QString &p_Text, int &p_Offset);
     bool isValidVarChar(const QString &p_Text, int index);
-    QCFParserElement ParseCFCode(const QString &, const qint32, const QCFParserElementType, QCFParserElement *);
-    quint32 FindCFCommentSize(QString, quint32);
+    QCFParserElement ParseCFCode(const QString &p_Text, const qint32 p_Offset, const QCFParserElementType p_ElementType, QCFParserElement *parent);
+    quint32 FindCFCommentSize(const QString &p_Text, quint32 p_Position);
 public:
 	QCFParser();
-	QCFParser(QCFParserMode);
+	explicit QCFParser(QCFParserMode mode);
 	QString getError();
-    const QString &getText();
+    const QString &getText() const;
 	quint32 getErrorPosition();
-    QCFParserErrorType Parse(const QString &, bool * = NULL);
+    QCFParserErrorType Parse(const QString &p_Text, bool *p_Terminate = NULL);
 	QCFParserErrorType BuildTagTree();
 	QCFParserErrorType validate();
 	QList<QCFParserTag> getTags();

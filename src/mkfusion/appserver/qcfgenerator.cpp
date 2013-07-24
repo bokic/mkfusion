@@ -9,7 +9,7 @@
 #include <QDir>
 
 
-QString toCPPEncodeStr(const QString& str)
+QString toCPPEncodeStr(const QString &str)
 {
 	QString ret;
 
@@ -82,7 +82,7 @@ QCFGenerator::QCFGenerator()
 }
 
 
-QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, const QString& p_MKFusionPath)
+QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath)
 {
 	QFileInfo file(p_Target);
 	QString l_NewTarget = file.baseName();
@@ -282,7 +282,7 @@ QString QCFGenerator::compile(QCFParser& p_Parser, const QString& p_Target, cons
 	return "";
 }
 
-QString QCFGenerator::GenerateVariable(const QString& p_Variable)
+QString QCFGenerator::GenerateVariable(const QString &p_Variable)
 {
 	QString ret;
 	QString l_Variable = p_Variable;
@@ -320,7 +320,7 @@ QString QCFGenerator::GenerateVariable(const QString& p_Variable)
 	return ret;
 }
 
-QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& p_CFExpression)
+QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &p_CFExpression)
 {
 	QString ret;
 	QString l_ElementName = p_CFExpression.m_Text;
@@ -501,7 +501,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement& 
 
 QCFParserElement QCFGenerator::OprimizeQCFParserElement(QCFParserElement p_CFExpression)
 {
-	for(int c = 0; c  < p_CFExpression.m_ChildElements.count(); c++)
+	for(int c = 0; c < p_CFExpression.m_ChildElements.count(); c++)
 	{
 		p_CFExpression.m_ChildElements[c] = OprimizeQCFParserElement(p_CFExpression.m_ChildElements[c]);
 	}
@@ -514,7 +514,7 @@ QCFParserElement QCFGenerator::OprimizeQCFParserElement(QCFParserElement p_CFExp
 	return p_CFExpression;
 }
 
-bool CFTagHasArgument(const QCFParserTag& p_CFTag, const QString& p_Argument)
+bool CFTagHasArgument(const QCFParserTag &p_CFTag, const QString &p_Argument)
 {
 	foreach(QCFParserElement l_Argument, p_CFTag.m_Arguments.m_ChildElements)
 	{
@@ -532,7 +532,7 @@ bool CFTagHasArgument(const QCFParserTag& p_CFTag, const QString& p_Argument)
 	return false;
 }
 
-QCFParserElement CFTagGetArgumentObject(const QCFParserTag& p_CFTag, const QString& p_Argument)
+QCFParserElement CFTagGetArgumentObject(const QCFParserTag &p_CFTag, const QString &p_Argument)
 {
 	foreach(QCFParserElement l_Argument, p_CFTag.m_Arguments.m_ChildElements)
 	{
@@ -553,7 +553,7 @@ QCFParserElement CFTagGetArgumentObject(const QCFParserTag& p_CFTag, const QStri
 	return ret;
 }
 
-QString QCFGenerator::CFTagGetArgumentPlain(const QCFParserTag& p_CFTag, const QString& p_Argument)
+QString QCFGenerator::CFTagGetArgumentPlain(const QCFParserTag &p_CFTag, const QString &p_Argument)
 {
     foreach(QCFParserElement l_Argument, p_CFTag.m_Arguments.m_ChildElements)
     {
@@ -574,7 +574,7 @@ QString QCFGenerator::CFTagGetArgumentPlain(const QCFParserTag& p_CFTag, const Q
     return "";
 }
 
-QString QCFGenerator::CFTagGetArgument(const QCFParserTag& p_CFTag, const QString& p_Argument)
+QString QCFGenerator::CFTagGetArgument(const QCFParserTag &p_CFTag, const QString &p_Argument)
 {
 	foreach(QCFParserElement l_Argument, p_CFTag.m_Arguments.m_ChildElements)
 	{
@@ -595,7 +595,7 @@ QString QCFGenerator::CFTagGetArgument(const QCFParserTag& p_CFTag, const QStrin
 	return "";
 }
 
-QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag& p_CFTag)
+QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 {
 	if (p_CFTag.m_TagType == ExpressionTagType)
 	{

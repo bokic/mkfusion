@@ -320,7 +320,7 @@ QTextParser::QTextParserElements QTextParser::parseTextLines(const QTextParserLi
     return ret;
 }
 
-const QTextParser::QTextParserLanguageDefinition &QTextParser::getLanguage()
+const QTextParser::QTextParserLanguageDefinition &QTextParser::getLanguage() const
 {
     return language;
 }
@@ -567,26 +567,30 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
 
     if (end_token >= 0)
     {
-        if (language.tokens.keys().count() <= end_token)
-        {
-            qDebug() << "tokens.key count("<< language.tokens.keys().count() << ") is too low. At least" << (end_token + 1) << "needed. File:" << __FILE__ << ", line:" << __LINE__;
-            goto no_end_token;
-        }
+		while(true)
+		{
+			if (language.tokens.keys().count() <= end_token)
+			{
+				qDebug() << "tokens.key count("<< language.tokens.keys().count() << ") is too low. At least" << (end_token + 1) << "needed. File:" << __FILE__ << ", line:" << __LINE__;
 
-        reg = QRegExp(language.tokens.values()[end_token].endString, language.caseSensitivity);
+				break;
+			}
 
-        int index = reg.indexIn(line, cur_column);
+			reg = QRegExp(language.tokens.values()[end_token].endString, language.caseSensitivity);
 
-        if (index < 0)
-        {
-            goto no_end_token;
-        }
+			int index = reg.indexIn(line, cur_column);
 
-        closest_index = index;
-        ret = true;
+			if (index < 0)
+			{
+				break;
+			}
+
+			closest_index = index;
+			ret = true;
+			
+			break;
+		}
     }
-    no_end_token:
-
 
     for (int c = 0; c < tokens.count(); c++)
     {

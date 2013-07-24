@@ -11,7 +11,7 @@ namespace Ui {
 class CompareDialog : public QDialog {
     Q_OBJECT
 public:
-    CompareDialog(QWidget *parent = 0);
+    explicit CompareDialog(QWidget *parent = 0);
     ~CompareDialog();
 
 	void setLeftText(const QByteArray&);

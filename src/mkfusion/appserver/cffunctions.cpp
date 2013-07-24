@@ -15,7 +15,7 @@ int cf_Abs(int val)
 	return abs(val);
 }
 
-QWDDX cf_Abs(const QWDDX& val)
+QWDDX cf_Abs(const QWDDX &val)
 {
     return QWDDX(abs(val.toNumber()));
 }
@@ -30,7 +30,7 @@ double cf_ACos(double val)
 	return acos(val);
 }
 
-QWDDX cf_ACos(const QWDDX& val)
+QWDDX cf_ACos(const QWDDX &val)
 {
     double tmp;
 
@@ -44,7 +44,7 @@ QWDDX cf_ACos(const QWDDX& val)
     return QWDDX(acos(tmp));
 }
 
-void cf_AddSOAPRequestHeader(QWDDX *p_WebService, const QString& p_Namespace, const QString& p_Name, const QWDDX& p_Value, bool p_MustUnderstand)
+void cf_AddSOAPRequestHeader(QWDDX *p_WebService, const QString &p_Namespace, const QString &p_Name, const QWDDX &p_Value, bool p_MustUnderstand)
 {
     Q_UNUSED(p_WebService);
     Q_UNUSED(p_Namespace);
@@ -55,7 +55,7 @@ void cf_AddSOAPRequestHeader(QWDDX *p_WebService, const QString& p_Namespace, co
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-void cf_AddSOAPResponseHeader(const QString& p_Namespace, const QString& p_Name, const QWDDX& p_Value, bool p_MustUnderstand)
+void cf_AddSOAPResponseHeader(const QString &p_Namespace, const QString &p_Name, const QWDDX &p_Value, bool p_MustUnderstand)
 {
     Q_UNUSED(p_Namespace);
     Q_UNUSED(p_Name);
@@ -65,14 +65,14 @@ void cf_AddSOAPResponseHeader(const QString& p_Namespace, const QString& p_Name,
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-QString cf_AjaxLink(const QString& p_URL)
+QString cf_AjaxLink(const QString &p_URL)
 {
     Q_UNUSED(p_URL);
 
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-void cf_AjaxOnLoad(const QString& p_FunctionName)
+void cf_AjaxOnLoad(const QString &p_FunctionName)
 {
     Q_UNUSED(p_FunctionName);
 
@@ -84,7 +84,7 @@ void cf_ApplicationStop()
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-bool cf_ArrayAppend(QWDDX *p_Array, const QWDDX& p_Value)
+bool cf_ArrayAppend(QWDDX *p_Array, const QWDDX &p_Value)
 {
     if (p_Array->type() != QWDDX::Array)
 	{
@@ -108,7 +108,7 @@ bool cf_ArrayAppend(QWDDX *p_Array, const QWDDX& p_Value)
 	return true;
 }
 
-double cf_ArrayAvg(const QWDDX& p_Array)
+double cf_ArrayAvg(const QWDDX &p_Array)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -117,7 +117,7 @@ double cf_ArrayAvg(const QWDDX& p_Array)
 
 	if (p_Array.m_ArrayDimension != 1)
 	{
-		throw new QMKFusionArrayNotOneDimensionException();
+		throw QMKFusionArrayNotOneDimensionException();
 	}
 
     if (p_Array.m_Array->size() == 0)
@@ -147,7 +147,7 @@ bool cf_ArrayClear(QWDDX *p_Value)
 	return true;
 }
 
-bool cf_ArrayContains(const QWDDX& p_Array, const QWDDX& p_Search)
+bool cf_ArrayContains(const QWDDX &p_Array, const QWDDX &p_Search)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -168,7 +168,7 @@ bool cf_ArrayContains(const QWDDX& p_Array, const QWDDX& p_Search)
 	return false;
 }
 
-bool cf_ArrayDelete(QWDDX *p_Array, const QWDDX& p_Value)
+bool cf_ArrayDelete(QWDDX *p_Array, const QWDDX &p_Value)
 {
     if (p_Array->type() != QWDDX::Array)
 	{
@@ -206,7 +206,7 @@ bool cf_ArrayDeleteAt(QWDDX *p_Array, int p_Index)
 	return true;
 }
 
-int cf_ArrayFind(const QWDDX& p_Array, const QWDDX& p_Search)
+int cf_ArrayFind(const QWDDX &p_Array, const QWDDX &p_Search)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -227,7 +227,7 @@ int cf_ArrayFind(const QWDDX& p_Array, const QWDDX& p_Search)
 	return 0;
 }
 
-int cf_ArrayFindNoCase(const QWDDX& p_Array, const QWDDX& p_Search)
+int cf_ArrayFindNoCase(const QWDDX &p_Array, const QWDDX &p_Search)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -248,7 +248,7 @@ int cf_ArrayFindNoCase(const QWDDX& p_Array, const QWDDX& p_Search)
 	return 0;
 }
 
-bool cf_ArrayInsertAt(QWDDX* p_Array, int p_Index, const QWDDX& p_Value)
+bool cf_ArrayInsertAt(QWDDX *p_Array, int p_Index, const QWDDX &p_Value)
 {
     if (p_Array->type() != QWDDX::Array)
 	{
@@ -284,7 +284,7 @@ bool cf_ArrayInsertAt(QWDDX* p_Array, int p_Index, const QWDDX& p_Value)
 	return true;
 }
 
-bool cf_ArrayIsDefined(const QWDDX& p_Array, int p_Index)
+bool cf_ArrayIsDefined(const QWDDX &p_Array, int p_Index)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -304,7 +304,7 @@ bool cf_ArrayIsDefined(const QWDDX& p_Array, int p_Index)
 	return true;
 }
 
-bool cf_ArrayIsEmpty(const QWDDX& p_Array)
+bool cf_ArrayIsEmpty(const QWDDX &p_Array)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -319,7 +319,7 @@ bool cf_ArrayIsEmpty(const QWDDX& p_Array)
 	return false;
 }
 
-int cf_ArrayLen(const QWDDX& p_Array)
+int cf_ArrayLen(const QWDDX &p_Array)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -329,7 +329,7 @@ int cf_ArrayLen(const QWDDX& p_Array)
     return p_Array.m_Array->size();
 }
 
-double cf_ArrayMax(const QWDDX& p_Array)
+double cf_ArrayMax(const QWDDX &p_Array)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -338,7 +338,7 @@ double cf_ArrayMax(const QWDDX& p_Array)
 
 	if (p_Array.m_ArrayDimension != 1)
 	{
-		throw new QMKFusionArrayNotOneDimensionException();
+		throw QMKFusionArrayNotOneDimensionException();
 	}
 
 	double ret = 0;
@@ -363,7 +363,7 @@ double cf_ArrayMax(const QWDDX& p_Array)
 	return ret;
 }
 
-double cf_ArrayMin(const QWDDX& p_Array)
+double cf_ArrayMin(const QWDDX &p_Array)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -372,7 +372,7 @@ double cf_ArrayMin(const QWDDX& p_Array)
 
 	if (p_Array.m_ArrayDimension != 1)
 	{
-		throw new QMKFusionArrayNotOneDimensionException();
+		throw QMKFusionArrayNotOneDimensionException();
 	}
 
 	double ret = 0;
@@ -497,7 +497,7 @@ bool cf_ArraySort(QWDDX *p_Array, const QString &p_SortType, const QString &p_So
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-double cf_ArraySum(const QWDDX& p_Array)
+double cf_ArraySum(const QWDDX &p_Array)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -506,7 +506,7 @@ double cf_ArraySum(const QWDDX& p_Array)
 
 	if (p_Array.m_ArrayDimension != 1)
 	{
-		throw new QMKFusionArrayNotOneDimensionException();
+		throw QMKFusionArrayNotOneDimensionException();
 	}
 
     if (p_Array.m_Array->size() == 0)
@@ -551,7 +551,7 @@ bool cf_ArraySwap(QWDDX *p_Array, int p_Pos1, int p_Pos2)
 	return true;
 }
 
-QString cf_ArrayToList(const QWDDX& p_Array, const QString& p_Delimiter)
+QString cf_ArrayToList(const QWDDX &p_Array, const QString &p_Delimiter)
 {
 	QString ret;
 
@@ -562,7 +562,7 @@ QString cf_ArrayToList(const QWDDX& p_Array, const QString& p_Delimiter)
 
 	if (p_Array.m_ArrayDimension != 1)
 	{
-		throw new QMKFusionArrayNotOneDimensionException();
+		throw QMKFusionArrayNotOneDimensionException();
 	}
 
     for(int c = 0; c < p_Array.m_Array->size(); c++)
@@ -580,7 +580,7 @@ QString cf_ArrayToList(const QWDDX& p_Array, const QString& p_Delimiter)
 	return ret;
 }
 
-int cf_Asc(const QString& p_String)
+int cf_Asc(const QString &p_String)
 {
 	if (p_String.isEmpty())
 	{
@@ -600,7 +600,7 @@ double cf_Atn(double val)
 	return atan(val);
 }
 
-QString cf_BinaryDecode(const QString& p_String, const QString& p_Type)
+QString cf_BinaryDecode(const QString &p_String, const QString &p_Type)
 {
     Q_UNUSED(p_String);
     Q_UNUSED(p_Type);
@@ -608,7 +608,7 @@ QString cf_BinaryDecode(const QString& p_String, const QString& p_Type)
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-QString cf_BinaryEncode(const QString& p_String, const QString& p_Type)
+QString cf_BinaryEncode(const QString &p_String, const QString &p_Type)
 {
     Q_UNUSED(p_String);
     Q_UNUSED(p_Type);
@@ -682,7 +682,7 @@ int cf_BitSHLN(int p_number, int p_count)
 {
 	if ((p_count < 0)||(p_count > 31))
 	{
-		throw new QMKFusionInvalidArgumentException("BitSHLN", 2, p_count, 0, 31);
+		throw QMKFusionInvalidArgumentException("BitSHLN", 2, p_count, 0, 31);
 	}
 
 	return p_number << p_count;
@@ -692,7 +692,7 @@ int cf_BitSHRN(int p_number, int p_count)
 {
 	if ((p_count < 0)||(p_count > 31))
 	{
-		throw new QMKFusionInvalidArgumentException("BitSHRN", 2, p_count, 0, 31);
+		throw QMKFusionInvalidArgumentException("BitSHRN", 2, p_count, 0, 31);
 	}
 
 	return p_number >> p_count;
@@ -758,7 +758,7 @@ QString cf_Chr(int p_number)
 	return QString(QChar(p_number));
 }
 
-QString cf_CJustify(const QString& p_Value, int p_lenght)
+QString cf_CJustify(const QString &p_Value, int p_lenght)
 {
 	QString ret;
 
@@ -784,7 +784,7 @@ QString cf_CJustify(const QString& p_Value, int p_lenght)
 	return ret;
 }
 
-int cf_Compare(const QString& p_Value1, const QString& p_Value2)
+int cf_Compare(const QString &p_Value1, const QString &p_Value2)
 {
 	QWDDX l_Value1 = p_Value1;
 	QWDDX l_Value2 = p_Value2;
@@ -792,7 +792,7 @@ int cf_Compare(const QString& p_Value1, const QString& p_Value2)
 	return l_Value1.toString().compare(l_Value2.toString(), Qt::CaseSensitive);
 }
 
-int cf_CompareNoCase(const QString& p_Value1, const QString& p_Value2)
+int cf_CompareNoCase(const QString &p_Value1, const QString &p_Value2)
 {
 	QWDDX l_Value1 = p_Value1;
 	QWDDX l_Value2 = p_Value2;
@@ -855,17 +855,17 @@ QWDDX cf_CreateWebServiceObject(const QString&, const QString&, const QString&, 
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-QWDDX cf_CreateODBCDate(const QDateTime& p_Date)
+QWDDX cf_CreateODBCDate(const QDateTime &p_Date)
 {
 	return QDateTime(QDate(p_Date.date().year(), p_Date.date().month(), p_Date.date().day()));
 }
 
-QWDDX cf_CreateODBCDateTime(const QDateTime& p_Date)
+QWDDX cf_CreateODBCDateTime(const QDateTime &p_Date)
 {
 	return p_Date;
 }
 
-QWDDX cf_CreateODBCTime(const QDateTime& p_Date)
+QWDDX cf_CreateODBCTime(const QDateTime &p_Date)
 {
 	return QDateTime(QDate(1899, 12, 30), QTime(p_Date.time().hour(), p_Date.time().minute(), p_Date.time().second()));
 }
@@ -905,7 +905,7 @@ QString cf_CreateUUID()
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-QDateTime cf_DateAdd(const QString& p_DatePart, int p_Value, const QWDDX& p_Date)
+QDateTime cf_DateAdd(const QString &p_DatePart, int p_Value, const QWDDX &p_Date)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 
@@ -964,7 +964,7 @@ QDateTime cf_DateAdd(const QString& p_DatePart, int p_Value, const QWDDX& p_Date
 	return ret;
 }
 
-int cf_DateCompare(const QWDDX& p_Date1, const QWDDX& p_Date2, const QString& p_DatePart)
+int cf_DateCompare(const QWDDX &p_Date1, const QWDDX &p_Date2, const QString &p_DatePart)
 {
     Q_UNUSED(p_Date1);
     Q_UNUSED(p_Date2);
@@ -1109,22 +1109,22 @@ Q_DECL_EXPORT int cf_Fix(double value)
 }
 
 
-Q_DECL_EXPORT QString cf_LCase(const QString& str)
+Q_DECL_EXPORT QString cf_LCase(const QString &str)
 {
 	return str.toLower();
 }
 
-Q_DECL_EXPORT QString cf_Left(const QString& str, int count)
+Q_DECL_EXPORT QString cf_Left(const QString &str, int count)
 {
 	return str.left(count);
 }
 
-Q_DECL_EXPORT int cf_Len(const QString& str)
+Q_DECL_EXPORT int cf_Len(const QString &str)
 {
 	return str.length();
 }
 
-QString WriteException(QMKFusionException &ex, const QCFRunningTemplate_Request& r)
+QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Request &r)
 {
 	QString ret;
 
