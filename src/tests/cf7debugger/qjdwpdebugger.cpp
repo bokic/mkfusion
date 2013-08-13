@@ -7,8 +7,8 @@ QJDWPDebugger::QJDWPDebugger(QObject *parent)
 	m_Initialized = false;
 	m_PathSeparator = 0;
 
-	connect(&m_JDWP, SIGNAL(ready()), this, SLOT(on_m_JDWP_ready()));
-	connect(&m_JDWP, SIGNAL(gotPacket(quint32, quint8, quint16, QByteArray)), this, SLOT(on_m_JDWP_gotPacket(quint32, quint8, quint16, QByteArray)));
+    connect(&m_JDWP, &QJDWPSocket::ready, this, &QJDWPDebugger::on_m_JDWP_ready);
+    connect(&m_JDWP, &QJDWPSocket::gotPacket, this, &QJDWPDebugger::on_m_JDWP_gotPacket);
 }
 
 void QJDWPDebugger::connectToHost(QString p_Host, quint16 p_Port)

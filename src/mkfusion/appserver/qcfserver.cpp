@@ -64,7 +64,7 @@ QCFServer::QCFServer()
 {
 	m_mainTimer = 0;
 
-	connect(&m_LocalServer, SIGNAL(newConnection()), SLOT(on_newConnection()));
+    connect(&m_LocalServer, &QLocalServer::newConnection, this, &QCFServer::on_newConnection);
 }
 
 QCFServer::~QCFServer()
@@ -123,9 +123,9 @@ void QCFServer::on_newConnection()
 		l_LocalSocket->setParent(NULL);
 		l_LocalSocket->moveToThread(l_thread);
 
-		l_runningTemplate->connect(l_thread, SIGNAL(started()), SLOT(worker()));
-		l_thread->connect(l_runningTemplate, SIGNAL(finished()), SLOT(quit()));
-		connect(l_thread, SIGNAL(finished()), SLOT(on_workerTerminated()));
+        connect(l_thread, &QThread::started, l_runningTemplate, &QCFRunningTemplate::worker);
+        connect(l_runningTemplate, &QCFRunningTemplate::finished, l_thread, &QThread::quit);
+        connect(l_thread, &QThread::finished, this, &QCFServer::on_workerTerminated);
 
 		l_thread->start();
 

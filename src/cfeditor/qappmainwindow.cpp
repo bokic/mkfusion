@@ -465,9 +465,9 @@ void QAppMainWindow::on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem *item, i
     QFileInfo finfo(file);
     l_textEdit->setFileExtension(finfo.suffix());
 
-    connect(l_textEdit, SIGNAL(on_key_press(QKeyEvent *)), this, SLOT(onmy_textedit_key_press(QKeyEvent *)));
-    connect(l_textEdit, SIGNAL(on_text_change()), this, SLOT(onmy_textedit_text_change()));
-    connect(l_textEdit, SIGNAL(on_breakpoint_change(int)), this, SLOT(onmy_textedit_breakpoint_change(int)));
+    connect(l_textEdit, &QCodeEditWidget::on_key_press, this, &QAppMainWindow::onmy_textedit_key_press);
+    connect(l_textEdit, &QCodeEditWidget::on_text_change, this, &QAppMainWindow::onmy_textedit_text_change);
+    connect(l_textEdit, &QCodeEditWidget::on_breakpoint_change, this, &QAppMainWindow::onmy_textedit_breakpoint_change);
 
 	l_textEdit->setParent(ui->centralwidget);
 

@@ -10,11 +10,11 @@ QCFDebugger::QCFDebugger(QRDSServer rdsServer):QObject()
 	m_SessionID = "";
 	m_EventReconect = false;
 
-    connect(&m_EventSocket, SIGNAL(connected()), SLOT(onEventConnected()));
-    connect(&m_EventSocket, SIGNAL(disconnected()), SLOT(onEventDisconnected()));    
-    connect(&m_EventSocket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(onEventError(QAbstractSocket::SocketError)));
-    connect(&m_EventSocket, SIGNAL(readyRead()), SLOT(onEventReadyRead()));
-	connect(&m_EventSocket, SIGNAL(bytesWritten(qint64)), SLOT(onEventBytesWritten(qint64)));
+    connect(&m_EventSocket, &QTcpSocket::connected, this, &QCFDebugger::onEventConnected);
+    connect(&m_EventSocket, &QTcpSocket::disconnected, this, &QCFDebugger::onEventDisconnected);
+    connect(&m_EventSocket, static_cast<void (QTcpSocket::*)(QAbstractSocket::SocketError)>(&QAbstractSocket::error), this, &QCFDebugger::onEventError);
+    connect(&m_EventSocket, &QTcpSocket::readyRead, this, &QCFDebugger::onEventReadyRead);
+    connect(&m_EventSocket, &QTcpSocket::bytesWritten, this, &QCFDebugger::onEventBytesWritten);
 }
 
 quint16 QCFDebugger::getDebuggerPort()

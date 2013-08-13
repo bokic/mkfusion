@@ -4,8 +4,8 @@ QJDWPSocket::QJDWPSocket()
 {
 	m_InitTimer = 0;
 
-	connect(&m_Socket, SIGNAL(connected()), this, SLOT(on_m_Socket_connected()));
-	connect(&m_Socket, SIGNAL(readyRead()), this, SLOT(on_m_Socket_readyRead()));
+    connect(&m_Socket, &QTcpSocket::connected, this, &QJDWPSocket::on_m_Socket_connected);
+    connect(&m_Socket, &QTcpSocket::readyRead, this, &QJDWPSocket::on_m_Socket_readyRead);
 }
 
 QJDWPSocket::~QJDWPSocket()
