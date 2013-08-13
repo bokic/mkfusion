@@ -192,7 +192,7 @@ void QCFServer::start()
 #error Windows and Linux OSs are currently supported.
 #endif
 
-	foreach(QString l_Template, l_Templates)
+    for(const QString &l_Template: l_Templates)
 	{
 		bool l_DeleteTemplate = true;
 		l_TemplateLib.setFileName(m_MKFusionPath + "templates/" + l_Template);

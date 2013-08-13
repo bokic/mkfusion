@@ -835,7 +835,7 @@ bool QtServiceBasePrivate::install(const QString &account, const QString &passwo
 		QByteArray l_DependsOnServices;
         QByteArray l_DependsOnServiceGroups((char *)ServiceGroup.utf16(), (ServiceGroup.length() + 1) * 2);
 
-		foreach(QString dependsOnService, dependsOnServices)
+        for(const QString &dependsOnService: dependsOnServices)
 		{
             l_DependsOnServices.append((char *)dependsOnService.utf16(), (dependsOnService.length() + 1) * 2);
 		}

@@ -57,13 +57,13 @@ void QJDWPDebugger::on_m_JDWP_gotPacket(quint32 p_Id, quint8 p_Flags, quint16 p_
 		return;
 	}
 
-	QJDWPCommand* l_Command = 0;
+    QJDWPCommand *l_Command = 0;
 
-	foreach(QJDWPCommand* l_Item, m_Commands)
+    for(QJDWPCommand *l_Item: m_Commands)
 	{
-		if (l_Item->getCommandID() == p_Id)
+        if (l_Item->getCommandID() == p_Id)
 		{
-			l_Command = l_Item;
+            l_Command = l_Item;
 			break;
 		}
 	}

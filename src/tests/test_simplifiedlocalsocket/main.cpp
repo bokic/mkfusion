@@ -96,7 +96,7 @@ int main()
 
 				if (l_ReadBuf.size() > 0)
 				{
-					qDebug(l_ReadBuf);
+                    qDebug(l_ReadBuf.constData());
 				}
 
 				l_ReadBuf.clear();

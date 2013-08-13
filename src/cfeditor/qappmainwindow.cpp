@@ -334,7 +334,7 @@ void QAppMainWindow::UpdateProjectFileList(const QString &level, QTreeWidgetItem
 
 	if (parentItem == NULL)
 	{
-		foreach(QProjectFile l_file, l_files)
+        for(const QProjectFile &l_file: l_files)
 		{
 			if (ui->m_ProjectTree->topLevelItemCount() <= c)
 			{
@@ -369,7 +369,7 @@ void QAppMainWindow::UpdateProjectFileList(const QString &level, QTreeWidgetItem
 	}
 	else
 	{
-		foreach(QProjectFile l_file, l_files)
+        for(const QProjectFile &l_file: l_files)
 		{
 			if (parentItem->childCount() <= c)
 			{

@@ -8,9 +8,7 @@
 #include <QTcpSocket>
 #include <QColor>
 //#include <QHttp>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include <QUrl>
 
 Dialog::Dialog(QWidget *parent) :
@@ -55,11 +53,7 @@ QByteArray getUrlContent(QString p_URL)
 		return QByteArray();
 	}
 
-#if QT_VERSION >= 0x050000
     l_socket.write(QString("GET " + url.path(QUrl::EncodeSpaces | QUrl::EncodeUnicode | QUrl::EncodeDelimiters | QUrl::EncodeReserved) + "\r\n\r\n").toLatin1());
-#else
-    l_socket.write(QString("GET " + url.path() + "\r\n\r\n").toLatin1());
-#endif
 	l_socket.waitForBytesWritten(3000);
 
 	l_socket.waitForDisconnected(3000);

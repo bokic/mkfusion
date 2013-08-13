@@ -37,6 +37,10 @@ public:
     QWDDX(const QWDDX &);
     QWDDX(const QWDDXType);
 
+#ifdef Q_COMPILER_RVALUE_REFS
+    QWDDX &operator=(QWDDX &&other);
+#endif
+
 	operator bool();
 	operator int();
 	operator double();

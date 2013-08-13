@@ -10,7 +10,7 @@ QJDWPCommand::~QJDWPCommand()
 {
 }
 
-quint32 QJDWPCommand::getCommandID()
+quint32 QJDWPCommand::getCommandID() const
 {
 	return this->m_CommandID;
 }

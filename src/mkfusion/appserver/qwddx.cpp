@@ -175,6 +175,48 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
     }
 }
 
+#ifdef Q_COMPILER_RVALUE_REFS
+QWDDX &QWDDX::operator=(QWDDX &&other)
+{
+    switch(other.m_Type)
+    {
+    case Null:
+        break;
+    case Boolean:
+        qSwap(m_Bool, other.m_Bool);
+        break;
+    case Number:
+        qSwap(m_Number, other.m_Number);
+        break;
+    case String:
+        qSwap(m_String, other.m_String);
+        break;
+    case DateTime:
+        qSwap(m_DateTime, other.m_DateTime);
+        break;
+    case Array:
+        qSwap(m_Array, other.m_Array);
+        qSwap(m_ArrayDimension, other.m_ArrayDimension);
+        break;
+    case Struct:
+        qSwap(m_Struct, other.m_Struct);
+        break;
+    case Binary:
+        qSwap(m_ByteArray, other.m_ByteArray);
+        break;
+    case Recordset:
+        break;
+    case NotImplemented:
+        break;
+    case Error:
+        break;
+    }
+
+    return *this;
+}
+#endif
+
+
 Q_DECL_EXPORT void QWDDX::setType(QWDDXType type)
 {
     if (m_Type == type)

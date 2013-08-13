@@ -1,7 +1,10 @@
-QT       = core gui xml
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+lessThan(QT_MAJOR_VERSION, 5) {
+    error("Unsupported Qt version(Needs Qt5).")
+}
 
-CONFIG  += debug_and_release
+QT       = core gui widgets xml
+
+CONFIG  += debug_and_release c++11
 DESTDIR  = ../../../bin
 
 DEFINES  += DEBUG_QTEXTPARSER

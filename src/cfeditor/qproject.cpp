@@ -34,7 +34,7 @@ QProject* QProject::LoadProjectFromText(const QString &p_Text)
 	QHash<QString, QString> hashList;
 	QStringList strList = p_Text.split('\n').at(0).split(";");
 
-	foreach(QString item, strList)
+    for (const QString &item : strList)
 	{
 		if (item.indexOf('=') >= 0)
 		{

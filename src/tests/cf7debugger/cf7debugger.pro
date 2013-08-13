@@ -1,7 +1,10 @@
-QT       = core gui network
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+lessThan(QT_MAJOR_VERSION, 5) {
+    error("Unsupported Qt version(Needs Qt5).")
+}
 
-CONFIG  += debug_and_release
+QT       = core gui widgets network
+
+CONFIG  += debug_and_release c++11
 DESTDIR  = ../../../bin
 
 debug {

@@ -51,7 +51,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
 
     languageDefinitions.clear();
 
-    foreach(QString l_file, l_files)
+    for(const QString &l_file: l_files)
     {
         QDomDocument doc(l_file);
         QHash<QString, QString> tmpNestedTokens;
@@ -141,7 +141,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                 {
                     const QString key = tmpNestedTokens.keys().at(c);
 
-                    foreach(QString tokenStr, tmpNestedTokens[key].split(','))
+                    for(const QString &tokenStr: tmpNestedTokens[key].split(','))
                     {
                         int tokenIndex = def.tokens.keys().indexOf(tokenStr);
 
@@ -156,7 +156,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                     }
                 }
 
-                foreach(QString tokenStr, startsWith.split(','))
+                for(const QString &tokenStr: startsWith.split(','))
                 {
                     int tokenIndex = def.tokens.keys().indexOf(tokenStr);
 
@@ -270,7 +270,7 @@ QTextParser::QTextParserElements QTextParser::parseText(const QString &text, con
 
     setTextTypeByFileExtension(fileExt);
 
-    foreach(QString curline, text.split(QRegExp("(\r\n|\n\r|\r|\n)")))
+    for(const QString &curline: text.split(QRegExp("(\r\n|\n\r|\r|\n)")))
     {
         QTextParserLine line;
         line.Content = curline;
@@ -362,7 +362,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
         }
     }
 
-    foreach(int nToken, tokens) // debug when start_column == 10
+    for(const int &nToken: tokens) // debug when start_column == 10
     {
         const QTextParserLanguageDefinitionToken token = language.tokens.values()[nToken];
 

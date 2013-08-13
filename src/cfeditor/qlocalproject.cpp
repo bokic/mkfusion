@@ -69,7 +69,7 @@ QList<QProjectFile> QLocalProject::getFolderItems(const QString &p_Folder)
 
 	QFileInfoList list = dir.entryInfoList();
 
-	foreach(QFileInfo item, list)
+    for(const QFileInfo &item: list)
 	{
 		if ((item.fileName() == ".")||(item.fileName() == ".."))
 			continue;

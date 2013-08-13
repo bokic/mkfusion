@@ -7,12 +7,6 @@
 #include <QDateTime>
 #include <QString>
 
-#if (QT_VERSION < 0x050000)
-#ifndef QException
-#define QException QtConcurrent::Exception
-#endif
-#endif
-
 class Q_DECL_EXPORT QMKFusionException : public QException
 {
 public:

@@ -39,7 +39,7 @@ void QDetail::setFileForParsing(const QString &p_File)
     m_ElementTextColors.clear();
     m_ElementBackgroundColors.clear();
 
-    foreach(QTextParser::QTextParserLanguageDefinitionToken token, m_Parser.getLanguage().tokens)
+    for(const QTextParser::QTextParserLanguageDefinitionToken &token: m_Parser.getLanguage().tokens)
     {
         if ((token.name == "CFTag")||(token.name == "CFEndTag")||(token.name == "CFScript")||(token.name == "CFOutput"))
         {

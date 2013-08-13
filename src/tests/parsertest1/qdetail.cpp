@@ -44,7 +44,7 @@ void QDetail::setFileForParsing(const QString& p_File)
 
     ushort c = 0;
 
-    foreach(QCFParserTag tag, m_Parser.getTags())
+    for(const QCFParserTag &tag: m_Parser.getTags())
     {
         QString name;
 
@@ -90,7 +90,7 @@ void QDetail::addSubTrees(const QCFParserElement& p_ParserElement, QTreeWidgetIt
 {
     ushort c = 0;
 
-    foreach(QCFParserElement element, p_ParserElement.m_ChildElements)
+    for(const QCFParserElement &element: p_ParserElement.m_ChildElements)
     {
         QString name;
 
@@ -185,7 +185,7 @@ void QDetail::recolor()
 
     ushort c = 0;
 
-    foreach(QCFParserTag tag, tags)
+    for(const QCFParserTag &tag: tags)
     {
         QString TagString = QChar(c);
 
@@ -293,7 +293,7 @@ void QDetail::colorElement(const QCFParserElement &p_Element, const QString &p_E
 
     ushort c = 0;
 
-    foreach(QCFParserElement l_ChildElement, p_Element.m_ChildElements)
+    for(const QCFParserElement &l_ChildElement: p_Element.m_ChildElements)
     {
         colorElement(l_ChildElement, p_ElementIDString + QChar(c));
 

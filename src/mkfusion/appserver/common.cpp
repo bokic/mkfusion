@@ -34,7 +34,7 @@ QString cfdump_var(const QWDDX &p_Variable)
 		case QWDDX::Struct:
 			ret = "<table class=\"cfdump_struct\"><tr><th class=\"struct\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">struct</th></tr>\n";
 
-            foreach(QString l_key, l_temp.m_Struct->keys())
+            for(const QString &l_key: l_temp.m_Struct->keys())
 			{
                 ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key + "</td><td>" + cfdump_var((*l_temp.m_Struct)[l_key]) + "</td></tr>\n";
 			}

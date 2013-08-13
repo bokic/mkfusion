@@ -516,7 +516,7 @@ QCFParserElement QCFGenerator::OprimizeQCFParserElement(QCFParserElement p_CFExp
 
 bool CFTagHasArgument(const QCFParserTag &p_CFTag, const QString &p_Argument)
 {
-	foreach(QCFParserElement l_Argument, p_CFTag.m_Arguments.m_ChildElements)
+    for(const QCFParserElement &l_Argument: p_CFTag.m_Arguments.m_ChildElements)
 	{
 		if ((l_Argument.m_Type != CFTagArgument)||(l_Argument.m_ChildElements.size() < 1))
 		{
@@ -534,7 +534,7 @@ bool CFTagHasArgument(const QCFParserTag &p_CFTag, const QString &p_Argument)
 
 QCFParserElement CFTagGetArgumentObject(const QCFParserTag &p_CFTag, const QString &p_Argument)
 {
-	foreach(QCFParserElement l_Argument, p_CFTag.m_Arguments.m_ChildElements)
+    for(const QCFParserElement &l_Argument: p_CFTag.m_Arguments.m_ChildElements)
 	{
 		if ((l_Argument.m_Type != CFTagArgument)||(l_Argument.m_ChildElements.size() < 1))
 		{
@@ -555,7 +555,7 @@ QCFParserElement CFTagGetArgumentObject(const QCFParserTag &p_CFTag, const QStri
 
 QString QCFGenerator::CFTagGetArgumentPlain(const QCFParserTag &p_CFTag, const QString &p_Argument)
 {
-    foreach(QCFParserElement l_Argument, p_CFTag.m_Arguments.m_ChildElements)
+    for(const QCFParserElement &l_Argument: p_CFTag.m_Arguments.m_ChildElements)
     {
         if ((l_Argument.m_Type != CFTagArgument)||(l_Argument.m_ChildElements.size() < 1))
         {
@@ -576,7 +576,7 @@ QString QCFGenerator::CFTagGetArgumentPlain(const QCFParserTag &p_CFTag, const Q
 
 QString QCFGenerator::CFTagGetArgument(const QCFParserTag &p_CFTag, const QString &p_Argument)
 {
-	foreach(QCFParserElement l_Argument, p_CFTag.m_Arguments.m_ChildElements)
+    for(const QCFParserElement &l_Argument: p_CFTag.m_Arguments.m_ChildElements)
 	{
 		if ((l_Argument.m_Type != CFTagArgument)||(l_Argument.m_ChildElements.size() < 1))
 		{

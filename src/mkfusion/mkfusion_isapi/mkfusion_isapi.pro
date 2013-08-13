@@ -1,3 +1,7 @@
+lessThan(QT_MAJOR_VERSION, 5) {
+    error("Unsupported Qt version(Needs Qt5).")
+}
+
 TEMPLATE = lib
 QT       = core network
 CONFIG  += debug_and_release

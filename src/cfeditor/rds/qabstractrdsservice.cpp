@@ -165,7 +165,7 @@ QByteArray QAbstractRDSService::ArgumentsToString(QVector<QString> args)
 {
 	QByteArray ret;
 
-	foreach(QString item, args)
+    for(const QString &item: args)
 	{
 		ret += StringToSTR(item);
 	}

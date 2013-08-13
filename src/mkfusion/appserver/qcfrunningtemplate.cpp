@@ -5,9 +5,7 @@
 #include "common.h"
 
 #include <QDataStream>
-#if QT_VERSION >= 0x050000
 #include <QUrlQuery>
-#endif
 #include <QLibrary>
 #include <QDir>
 #include <QUrl>
@@ -325,14 +323,9 @@ void QCFRunningTemplate::worker()
 					*/
 					QUrl l_url = QUrl::fromEncoded(QByteArray("?") + m_Request.m_Args.toUtf8(), QUrl::StrictMode);
 
-#if QT_VERSION >= 0x050000
                     QList<QPair<QString, QString> > l_Arguments = QUrlQuery(l_url).queryItems();
-#else
-					QList<QPair<QString, QString> > l_Arguments = l_url.queryItems();
-#endif
-					QPair<QString, QString> l_Argument;
 
-					foreach(l_Argument, l_Arguments)
+                    for(const QPair<QString, QString> &l_Argument: l_Arguments)
 					{
 						QString key = l_Argument.first;
 						QString value = l_Argument.second;
@@ -391,7 +384,7 @@ void QCFRunningTemplate::worker()
 			l_headerDataStream << m_Status;
 
 			l_headerDataStream << (qint32) m_Header.size();
-			foreach(QString l_key, m_Header)
+            for(const QString &l_key: m_Header)
 			{
 				l_headerDataStream << l_key;
 				l_headerDataStream << m_Header[l_key];
