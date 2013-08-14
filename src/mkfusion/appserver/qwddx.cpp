@@ -212,6 +212,8 @@ QWDDX &QWDDX::operator=(QWDDX &&other)
         break;
     }
 
+    qSwap(m_Type, other.m_Type);
+
     return *this;
 }
 #endif
