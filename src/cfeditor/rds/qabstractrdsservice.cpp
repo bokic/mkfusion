@@ -17,8 +17,8 @@ QAbstractRDSService::~QAbstractRDSService()
 
 QByteArray QAbstractRDSService::StringToSTR(QString p_String)
 {
-        QByteArray l_ba = p_String.toUtf8(); // TODO: hardcoded utf-8
-        return QByteArray("STR:") + QString::number(l_ba.length()).toLatin1() + QByteArray(":") + l_ba;
+    QByteArray l_ba = p_String.toUtf8(); // TODO: hardcoded utf-8
+    return QByteArray("STR:") + QByteArray::number(l_ba.length()) + QByteArray(":") + l_ba;
 }
 
 QByteArray QAbstractRDSService::EncodePassword(QByteArray p_Password)

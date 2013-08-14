@@ -48,15 +48,15 @@ QByteArray getUrlContent(QString p_URL)
 
 	l_socket.connectToHost(url.host(), l_port);
 
-	if (l_socket.waitForConnected(3000) == false)
+    if (l_socket.waitForConnected(30000) == false)
 	{
 		return QByteArray();
 	}
 
-    l_socket.write(QString("GET " + url.path(QUrl::EncodeSpaces | QUrl::EncodeUnicode | QUrl::EncodeDelimiters | QUrl::EncodeReserved) + "\r\n\r\n").toLatin1());
-	l_socket.waitForBytesWritten(3000);
+    l_socket.write(QString("GET " + url.path(QUrl::EncodeSpaces | QUrl::EncodeUnicode | QUrl::EncodeDelimiters | QUrl::EncodeReserved) + "\r\n\r\n").toUtf8());
+    l_socket.waitForBytesWritten(30000);
 
-	l_socket.waitForDisconnected(3000);
+    l_socket.waitForDisconnected(30000);
 
 	return l_socket.readAll();
 }

@@ -108,9 +108,9 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 	l_cppFile.write("public:\n");
 	l_cppFile.write("	QCFGeneratedTemplate()\n");
 	l_cppFile.write("	{\n");
-    l_cppFile.write(("		m_isModified.m_Filename = QString::fromWCharArray(L\"" + toCPPEncodeStr(p_Parser.m_FileName) + "\");\n").toLatin1());
-    l_cppFile.write(("		m_isModified.m_Size = " + QString::number(p_Parser.m_CFMFileSize) + ";\n").toLatin1());
-    l_cppFile.write(("		m_isModified.m_Modified = " + QString::number(p_Parser.m_CFMModifyDateTime) + ";\n").toLatin1());
+    l_cppFile.write(QString("		m_isModified.m_Filename = QString::fromWCharArray(L\"" + toCPPEncodeStr(p_Parser.m_FileName) + "\");\n").toUtf8());
+    l_cppFile.write(QString("		m_isModified.m_Size = " + QString::number(p_Parser.m_CFMFileSize) + ";\n").toUtf8());
+    l_cppFile.write(QString("		m_isModified.m_Modified = " + QString::number(p_Parser.m_CFMModifyDateTime) + ";\n").toUtf8());
 	l_cppFile.write("	}\n");
 	l_cppFile.write("	\n");
 	l_cppFile.write("	virtual void run(QCFRunningTemplate* p_TemplateInstance)\n");
@@ -139,7 +139,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
 				if (!m_EnableCFOutputOnly)
 				{
-                    l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toLatin1());
+                    l_cppFile.write(QString(line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
 				}
 			}
 		}
@@ -156,7 +156,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
 				if (!m_EnableCFOutputOnly)
 				{
-                    l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toLatin1());
+                    l_cppFile.write(QString(line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
 				}
 			}
 		}
@@ -164,8 +164,8 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 		QString l_CFromCFTag = GenerateCCodeFromCFTag(l_Tags[c]);
 		if (!l_CFromCFTag.isEmpty())
 		{
-            l_cppFile.write(QString("\n// Line %1.\n").arg(l_Tags[c].m_Start).toLatin1());
-            l_cppFile.write((line + l_CFromCFTag + "\n").toLatin1());
+            l_cppFile.write(QString("\n// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
+            l_cppFile.write(QString(line + l_CFromCFTag + "\n").toUtf8());
 		}
 
 		if ((l_cf8tags.contains(l_Tags[c].m_Name))&&(l_cf8tags[l_Tags[c].m_Name].m_ExpressionInside == QCFTag::WithExpressionInside))
@@ -193,7 +193,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
 		if (!m_EnableCFOutputOnly)
 		{
-            l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toLatin1());
+            l_cppFile.write(QString(line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
 		}
 	}
 	else
@@ -209,7 +209,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
 			if (!m_EnableCFOutputOnly)
 			{
-                l_cppFile.write((line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toLatin1());
+                l_cppFile.write(QString(line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
 			}
 		}
 	}
@@ -316,7 +316,7 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable)
 
 	for(int c = 1; c < l_StrList.size(); c++)
 	{
-		ret += "[\""+l_StrList[c].toUpper()+"\"]";
+        ret += "[QStringLiteral(\""+l_StrList[c].toUpper()+"\")]";
 	}
 
 	return ret;
@@ -363,7 +363,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 			}
 			else
 			{
-				ret = "QString(\"" + l_ElementName + "\")";
+                ret = "QStringLiteral(\"" + l_ElementName + "\")"; // TODO: Currently this line will always convert Utf8 to Unicode.
 			}
 			break;
 		case Variable:
