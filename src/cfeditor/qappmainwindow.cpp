@@ -48,96 +48,96 @@ void QAppMainWindow::on_m_Browser_titleChanged(QString title)
 	}
 }
 
-void QAppMainWindow::on_action_New_activated()
+void QAppMainWindow::on_action_New_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Open_activated()
+void QAppMainWindow::on_action_Open_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Close_activated()
+void QAppMainWindow::on_action_Close_triggered()
 {
 }
 
-void QAppMainWindow::on_action_Close_All_activated()
-{
-
-}
-
-void QAppMainWindow::on_action_Save_activated()
+void QAppMainWindow::on_action_Close_All_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Save_As_activated()
+void QAppMainWindow::on_action_Save_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Save_All_activated()
+void QAppMainWindow::on_action_Save_As_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Print_activated()
+void QAppMainWindow::on_action_Save_All_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Print_Preview_activated()
+void QAppMainWindow::on_action_Print_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Exit_activated()
+void QAppMainWindow::on_action_Print_Preview_triggered()
+{
+
+}
+
+void QAppMainWindow::on_action_Exit_triggered()
 {
 	QApplication::quit();
 }
 
-void QAppMainWindow::on_action_Undo_activated()
+void QAppMainWindow::on_action_Undo_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Redo_activated()
+void QAppMainWindow::on_action_Redo_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Cut_activated()
+void QAppMainWindow::on_action_Cut_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Copy_activated()
+void QAppMainWindow::on_action_Copy_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Paste_activated()
+void QAppMainWindow::on_action_Paste_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Select_All_activated()
+void QAppMainWindow::on_action_Select_All_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Find_activated()
+void QAppMainWindow::on_action_Find_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Goto_Line_activated()
+void QAppMainWindow::on_action_Goto_Line_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Open_Project_activated()
+void QAppMainWindow::on_action_Open_Project_triggered()
 {
 	QString l_FileName = QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("ColdFusion project (*.cfes)"));
 
@@ -145,7 +145,7 @@ void QAppMainWindow::on_action_Open_Project_activated()
 	{
         if (m_Project)
 		{
-			on_action_Close_Project_activated(); // m_Project is deleted/nulled here
+            on_action_Close_Project_triggered(); // m_Project is deleted/nulled here
 
 			QApplication::processEvents();
 		}
@@ -167,7 +167,7 @@ void QAppMainWindow::on_action_Open_Project_activated()
 	}
 }
 
-void QAppMainWindow::on_action_Save_Project_activated()
+void QAppMainWindow::on_action_Save_Project_triggered()
 {
 	QString l_FileName;
 
@@ -184,7 +184,7 @@ void QAppMainWindow::on_action_Save_Project_activated()
 	}
 
 	l_FileName = m_ProjectFileName;
-	on_action_Close_Project_activated();
+    on_action_Close_Project_triggered();
 	m_ProjectFileName = l_FileName;
 
 	m_Project = QProject::LoadProjectFromFile(l_FileName);
@@ -204,7 +204,7 @@ void QAppMainWindow::on_action_Save_Project_activated()
     }
 }
 
-void QAppMainWindow::on_action_Close_Project_activated()
+void QAppMainWindow::on_action_Close_Project_triggered()
 {
     if (m_Project)
 	{
@@ -226,7 +226,7 @@ void QAppMainWindow::on_action_Close_Project_activated()
 	m_ProjectFileName.clear();
 }
 
-void QAppMainWindow::on_action_Project_Properties_activated()
+void QAppMainWindow::on_action_Project_Properties_triggered()
 {
 	// TODO: Asks should open files be closed and saved.
 
@@ -236,7 +236,7 @@ void QAppMainWindow::on_action_Project_Properties_activated()
 
 	if (l_ProjectProperties.exec() == QDialog::Accepted)
 	{
-		on_action_Close_Project_activated();
+        on_action_Close_Project_triggered();
 
 		m_Project = QProject::LoadProjectFromText(l_ProjectProperties.getConnectionString());
 
@@ -258,12 +258,12 @@ void QAppMainWindow::on_action_Project_Properties_activated()
 	}
 }
 
-void QAppMainWindow::on_action_Check_Project_activated()
+void QAppMainWindow::on_action_Check_Project_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_Full_Screen_activated()
+void QAppMainWindow::on_action_Full_Screen_triggered()
 {
     if (ui->action_Full_Screen->isChecked())
     {
@@ -275,7 +275,7 @@ void QAppMainWindow::on_action_Full_Screen_activated()
     }
 }
 
-void QAppMainWindow::on_action_Hide_Everything_activated()
+void QAppMainWindow::on_action_Hide_Everything_triggered()
 {
     if (ui->action_Hide_Everything->isChecked())
     {
@@ -291,12 +291,12 @@ void QAppMainWindow::on_action_Hide_Everything_activated()
     }
 }
 
-void QAppMainWindow::on_action_ColdFusion_Help_activated()
+void QAppMainWindow::on_action_ColdFusion_Help_triggered()
 {
 
 }
 
-void QAppMainWindow::on_action_About_activated()
+void QAppMainWindow::on_action_About_triggered()
 {
 
 }
@@ -663,3 +663,4 @@ void QAppMainWindow::recolor()
 
 	edit->update();
 }
+
