@@ -19,7 +19,7 @@ public:
 #error Windows and Linux OSs are currently supported.
 #endif
 	}
-	virtual ~QMKFusionService() {};
+    virtual ~QMKFusionService() {}
 
 protected:
 	virtual void start()

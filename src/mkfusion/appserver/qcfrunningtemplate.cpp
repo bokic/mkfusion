@@ -218,19 +218,19 @@ void QCFRunningTemplate::worker()
                     m_URL.setType(QWDDX::Struct);
 
 					// Run compiled template(dll/so).
-					m_SERVER[L"COLDFUSION"] = QWDDX(QWDDX::Struct);
-					m_SERVER[L"COLDFUSION"][L"APPSERVER"] = L"mkfusion";
-					m_SERVER[L"COLDFUSION"][L"EXPIRATION"] = QDateTime::currentDateTime();
+                    m_SERVER[QStringLiteral("COLDFUSION")] = QWDDX(QWDDX::Struct);
+                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("APPSERVER")] = QStringLiteral("mkfusion");
+                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("EXPIRATION")] = QDateTime::currentDateTime();
 #ifdef Q_OS_WIN
-					m_SERVER[L"COLDFUSION"][L"INSTALLKIT"] = L"Windows";
+                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("INSTALLKIT")] = QStringLiteral("Windows");
 #elif defined Q_OS_LINUX
-					m_SERVER[L"COLDFUSION"][L"INSTALLKIT"] = L"Linux";
+                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("INSTALLKIT")] = QStringLiteral("Linux");
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
 					m_SERVER[L"COLDFUSION"][L"PRODUCTLEVEL"] = L"Free";
 					m_SERVER[L"COLDFUSION"][L"PRODUCTNAME"] = L"MKFusion Server";
-					m_SERVER[L"COLDFUSION"][L"PRODUCTVERSION"] = L"0.4.1";
+                    m_SERVER[L"COLDFUSION"][L"PRODUCTVERSION"] = L"0.4.2";
 					m_SERVER[L"COLDFUSION"][L"ROOTDIR"] = ((QCFServer*)m_CFServer)->m_MKFusionPath.left(-1);
 					m_SERVER[L"COLDFUSION"][L"SUPPORTEDLOCALES"] = L"English (US),en,en_US";
 					m_SERVER[L"OS"] = QWDDX(QWDDX::Struct);
@@ -365,11 +365,17 @@ void QCFRunningTemplate::worker()
 		}
 
 		delete l_page;
+        l_page = 0;
+
 		createCFMTemplate = NULL;
 
 		if (l_TemplateLib.isLoaded())
 		{
-			l_TemplateLib.unload();
+#ifdef Q_OS_WIN
+            m_VARIABLES.m_Struct->clear(); // TODO: If this line is not here the app will crash. Check it when possible.
+#endif
+
+            l_TemplateLib.unload();
 		}
 
 		if (m_HeadersSent == false)

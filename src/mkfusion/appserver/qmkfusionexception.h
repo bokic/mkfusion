@@ -22,11 +22,11 @@ public:
 	{
 		QWDDX ret(QWDDX::Struct);
 
-		ret[L"Type"] = *m_Type;
-		ret[L"Message"] = *m_message;
-		ret[L"Detail"] = *m_Detail;
-		ret[L"StackTrace"] = L"Todo, schedule for v1.1";
-		ret[L"TagContext"] = L"Todo, schedule for v1.1";
+        ret[QStringLiteral("Type")] = *m_Type;
+        ret[QStringLiteral("Message")] = *m_message;
+        ret[QStringLiteral("Detail")] = *m_Detail;
+        ret[QStringLiteral("StackTrace")] = QStringLiteral("Todo, schedule for v1.1");
+        ret[QStringLiteral("TagContext")] = QStringLiteral("Todo, schedule for v1.1");
 
 		return ret;
     }*/

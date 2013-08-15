@@ -176,7 +176,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
 }
 
 #ifdef Q_COMPILER_RVALUE_REFS
-QWDDX &QWDDX::operator=(QWDDX &&other)
+Q_DECL_EXPORT QWDDX &QWDDX::operator=(QWDDX &&other)
 {
     switch(other.m_Type)
     {
@@ -217,7 +217,6 @@ QWDDX &QWDDX::operator=(QWDDX &&other)
     return *this;
 }
 #endif
-
 
 Q_DECL_EXPORT void QWDDX::setType(QWDDXType type)
 {
@@ -655,7 +654,6 @@ Q_DECL_EXPORT QWDDX operator!(const QWDDX &operand)
     throw QMKFusionExpressionException("Unsupported compare.");
 }
 
-
 Q_DECL_EXPORT bool QWDDX::operator !=(int p_Value)
 {
 	if ((m_Type == Number))
@@ -1020,7 +1018,6 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator=(const double p_newValue)
 	return *this;
 }
 
-
 Q_DECL_EXPORT QWDDX &QWDDX::operator=(const wchar_t *p_newValue)
 {
     setType(String);
@@ -1160,7 +1157,7 @@ Q_DECL_EXPORT QWDDX QWDDX::operator+(const QWDDX &p_Value)
 	}
 }
 
-QWDDX operator+(bool p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator+(bool p_Value1, const QWDDX &p_Value2)
 {
     Q_UNUSED(p_Value1);
     Q_UNUSED(p_Value2);
@@ -1168,24 +1165,24 @@ QWDDX operator+(bool p_Value1, const QWDDX &p_Value2)
     throw QMKFusionExpressionException("Illegal operation. Can\'t accumulate bool.");
 }
 
-QWDDX operator+(int p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator+(int p_Value1, const QWDDX &p_Value2)
 {
     return QWDDX(p_Value1 + p_Value2.toNumber());
 }
 
-QWDDX operator+(double p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator+(double p_Value1, const QWDDX &p_Value2)
 {
     return QWDDX(p_Value1 + p_Value2.toNumber());
 }
 
-QWDDX operator+(const wchar_t *p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator+(const wchar_t *p_Value1, const QWDDX &p_Value2)
 {
     QWDDX tmp = QWDDX(p_Value1);
 
     return QWDDX(tmp.toNumber() + p_Value2.toNumber());
 }
 
-QWDDX operator+(const QString &p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator+(const QString &p_Value1, const QWDDX &p_Value2)
 {
     QWDDX tmp = QWDDX(p_Value1);
 
@@ -1278,17 +1275,17 @@ Q_DECL_EXPORT QWDDX QWDDX::operator-(const QWDDX &p_Value)
     return QWDDX(this->toNumber() - p_Value.toNumber());
 }
 
-QWDDX operator-(int p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator-(int p_Value1, const QWDDX &p_Value2)
 {
     return QWDDX(p_Value1 - p_Value2.toNumber());
 }
 
-QWDDX operator-(double p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator-(double p_Value1, const QWDDX &p_Value2)
 {
     return QWDDX(p_Value1 - p_Value2.toNumber());
 }
 
-QWDDX operator-(const QString &p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator-(const QString &p_Value1, const QWDDX &p_Value2)
 {
     QWDDX temp = QWDDX(p_Value1);
 
@@ -1355,21 +1352,21 @@ Q_DECL_EXPORT QWDDX QWDDX::operator*(const QWDDX &p_Value)
     return QWDDX(toNumber() * temp.toNumber());
 }
 
-QWDDX operator*(int p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator*(int p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp = p_Value2;
 
     return QWDDX(p_Value1 * temp.toNumber());
 }
 
-QWDDX operator*(double p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator*(double p_Value1, const QWDDX &p_Value2)
 {
 	QWDDX temp = p_Value2;
 
     return QWDDX(p_Value1 * temp.toNumber());
 }
 
-QWDDX operator*(const QString &p_Value1, const QWDDX &p_Value2)
+Q_DECL_EXPORT QWDDX operator*(const QString &p_Value1, const QWDDX &p_Value2)
 {
     QWDDX tmp = QWDDX(p_Value1);
 

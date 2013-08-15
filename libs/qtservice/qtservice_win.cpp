@@ -1,47 +1,41 @@
 /****************************************************************************
-** 
-** Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
-** 
-** This file is part of a Qt Solutions component.
 **
-** Commercial Usage  
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Solutions Commercial License Agreement provided
-** with the Software or, alternatively, in accordance with the terms
-** contained in a written agreement between you and Nokia.
-** 
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
-** 
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.1, included in the file LGPL_EXCEPTION.txt in this
-** package.
-** 
-** GNU General Public License Usage 
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3.0 as published by the Free Software
-** Foundation and appearing in the file LICENSE.GPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU General Public License version 3.0 requirements will be
-** met: http://www.gnu.org/copyleft/gpl.html.
-** 
-** Please note Third Party Software included with Qt Solutions may impose
-** additional restrictions and it is the user's responsibility to ensure
-** that they have met the licensing requirements of the GPL, LGPL, or Qt
-** Solutions Commercial license and the relevant license of the Third
-** Party Software they are using.
-** 
-** If you are unsure which license is appropriate for your use, please
-** contact Nokia at qt-info@nokia.com.
-** 
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
+**
+** This file is part of the Qt Solutions component.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
+**     of its contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+** $QT_END_LICENSE$
+**
 ****************************************************************************/
 
 #include "qtservice.h"
@@ -60,7 +54,9 @@
 #include <QAbstractEventDispatcher>
 #include <QVector>
 #include <QThread>
-#include <QTextCodec>
+#if QT_VERSION >= 0x050000
+#  include <QAbstractNativeEventFilter>
+#endif
 #include <stdio.h>
 #if defined(QTSERVICE_DEBUG)
 #include <QDebug>
@@ -420,7 +416,7 @@ bool QtServiceController::sendCommand(int code)
 }
 
 #if defined(QTSERVICE_DEBUG)
-extern void qtServiceLogDebug(QtMsgType type, const char *msg);
+extern void qtServiceLogDebug(QtMsgType type, const char* msg);
 #endif
 
 void QtServiceBase::logMessage(const QString &message, MessageType type,
@@ -492,7 +488,9 @@ public:
     QStringList serviceArgs;
 
     static QtServiceSysPrivate *instance;
+#if QT_VERSION < 0x050000
     static QCoreApplication::EventFilter nextFilter;
+#endif
 
     QWaitCondition condition;
     QMutex mutex;
@@ -517,7 +515,9 @@ void QtServiceControllerHandler::customEvent(QEvent *e)
 
 
 QtServiceSysPrivate *QtServiceSysPrivate::instance = 0;
+#if QT_VERSION < 0x050000
 QCoreApplication::EventFilter QtServiceSysPrivate::nextFilter = 0;
+#endif
 
 QtServiceSysPrivate::QtServiceSysPrivate()
 {
@@ -544,7 +544,7 @@ void WINAPI QtServiceSysPrivate::serviceMain(DWORD dwArgc, wchar_t** lpszArgv)
     instance->startSemaphore.release(); // let the qapp creation start
     instance->startSemaphore2.acquire(); // wait until its done
     // Register the control request handler
-    instance->serviceStatus = pRegisterServiceCtrlHandler((TCHAR *)QtServiceBase::instance()->serviceName().utf16(), handler);
+    instance->serviceStatus = pRegisterServiceCtrlHandler((TCHAR*)QtServiceBase::instance()->serviceName().utf16(), handler);
 
     if (!instance->serviceStatus) // cannot happen - something is utterly wrong
         return;
@@ -608,7 +608,7 @@ void WINAPI QtServiceSysPrivate::handler( DWORD code )
         instance->setStatus(SERVICE_STOP_PENDING);
         QCoreApplication::postEvent(instance->controllerHandler, new QEvent(QEvent::Type(QEvent::User + code)));
         instance->condition.wait(&instance->mutex);
-        // status will be reported as stopped in start() when qapp::exec returns
+        // status will be reported as stopped by start() when qapp::exec returns
         break;
 
     case SERVICE_CONTROL_PAUSE: // 2
@@ -626,6 +626,13 @@ void WINAPI QtServiceSysPrivate::handler( DWORD code )
         break;
 
     case SERVICE_CONTROL_INTERROGATE: // 4
+        break;
+
+    case SERVICE_CONTROL_SHUTDOWN: // 5
+        // Don't waste time with reporting stop pending, just do it
+        QCoreApplication::postEvent(instance->controllerHandler, new QEvent(QEvent::Type(QEvent::User + SERVICE_CONTROL_STOP)));
+        instance->condition.wait(&instance->mutex);
+        // status will be reported as stopped by start() when qapp::exec returns
         break;
 
     default:
@@ -666,6 +673,9 @@ DWORD QtServiceSysPrivate::serviceFlags(QtServiceBase::ServiceFlags flags) const
         control |= SERVICE_ACCEPT_PAUSE_CONTINUE;
     if (!(flags & QtServiceBase::CannotBeStopped))
         control |= SERVICE_ACCEPT_STOP;
+    if (flags & QtServiceBase::NeedsStopOnShutdown)
+        control |= SERVICE_ACCEPT_SHUTDOWN;
+
     return control;
 }
 
@@ -676,7 +686,7 @@ class HandlerThread : public QThread
 {
 public:
     HandlerThread()
-		: QThread(), success(true), console(false)
+        : QThread(), success(true), console(false)
         {}
 
     bool calledOk() { return success; }
@@ -711,6 +721,30 @@ protected:
 /*
   Ignore WM_ENDSESSION system events, since they make the Qt kernel quit
 */
+
+#if QT_VERSION >= 0x050000
+
+class QtServiceAppEventFilter : public QAbstractNativeEventFilter
+{
+public:
+    QtServiceAppEventFilter() {}
+    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result);
+};
+
+bool QtServiceAppEventFilter::nativeEventFilter(const QByteArray &, void *message, long *result)
+{
+    MSG *winMessage = (MSG*)message;
+    if (winMessage->message == WM_ENDSESSION && (winMessage->lParam & ENDSESSION_LOGOFF)) {
+        *result = TRUE;
+        return true;
+    }
+    return false;
+}
+
+Q_GLOBAL_STATIC(QtServiceAppEventFilter, qtServiceAppEventFilter)
+
+#else
+
 bool myEventFilter(void* message, long* result)
 {
     MSG* msg = reinterpret_cast<MSG*>(message);
@@ -723,6 +757,8 @@ bool myEventFilter(void* message, long* result)
         *result = TRUE;
     return true;
 }
+
+#endif
 
 /* There are three ways we can be started:
 
@@ -782,7 +818,12 @@ bool QtServiceBasePrivate::start()
     QCoreApplication *app = QCoreApplication::instance();
     if (!app)
         return false;
+
+#if QT_VERSION >= 0x050000
+    QAbstractEventDispatcher::instance()->installNativeEventFilter(qtServiceAppEventFilter());
+#else
     QtServiceSysPrivate::nextFilter = app->setEventFilter(myEventFilter);
+#endif
 
     sys->controllerHandler = new QtServiceControllerHandler(sys);
 
@@ -832,15 +873,15 @@ bool QtServiceBasePrivate::install(const QString &account, const QString &passwo
         // Only set INTERACTIVE if act is LocalSystem. (and act should be 0 if it is LocalSystem).
         if (!act) dwServiceType |= SERVICE_INTERACTIVE_PROCESS;
 
-		QByteArray l_DependsOnServices;
+        QByteArray l_DependsOnServices;
         QByteArray l_DependsOnServiceGroups((char *)ServiceGroup.utf16(), (ServiceGroup.length() + 1) * 2);
 
         for(const QString &dependsOnService: dependsOnServices)
-		{
+        {
             l_DependsOnServices.append((char *)dependsOnService.utf16(), (dependsOnService.length() + 1) * 2);
-		}
-		l_DependsOnServices.append('\0');
-		l_DependsOnServices.append('\0');
+        }
+        l_DependsOnServices.append('\0');
+        l_DependsOnServices.append('\0');
 
         // Create the service
         SC_HANDLE hService = pCreateService(hSCM, (wchar_t *)controller.serviceName().utf16(),
@@ -848,9 +889,9 @@ bool QtServiceBasePrivate::install(const QString &account, const QString &passwo
                                             SERVICE_ALL_ACCESS,
                                             dwServiceType, // QObject::inherits ( const char * className ) for no inter active ????
                                             dwStartType, SERVICE_ERROR_NORMAL, (wchar_t *)filePath().utf16(),
-											(wchar_t *)l_DependsOnServiceGroups.constData(),
-											0,
-											(wchar_t *)l_DependsOnServices.constData(),
+                                            (wchar_t *)l_DependsOnServiceGroups.constData(),
+                                            0,
+                                            (wchar_t *)l_DependsOnServices.constData(),
                                             act, pwd);
         if (hService) {
             result = true;

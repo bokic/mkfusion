@@ -3,7 +3,7 @@ AppName=MKFusion
 AppVerName=MKFusion
 AppPublisher=BokiCSoft
 AppPublisherURL=http://mkfusion.bokicsoft.com/
-AppVersion=0.4.1
+AppVersion=0.4.2
 DefaultDirName={pf}\BokiCSoft\MKFusion
 DefaultGroupName=CFEditor
 UninstallDisplayIcon={app}\MKFusion.exe
@@ -12,8 +12,8 @@ Compression=lzma
 SolidCompression=yes
 OutputBaseFilename=MKFusion
 OutputDir=.
-VersionInfoVersion=0.4.1
-VersionInfoDescription=MKFusion is free, opensource, multiplatform ColdFusion application server(Qt 4.8.2)
+VersionInfoVersion=0.4.2
+VersionInfoDescription=MKFusion is free ColdFusion application server(Qt 5.1.0)
 
 [Dirs]
 Name: "{app}\bin";
@@ -27,13 +27,19 @@ Name: "{app}\templates";
 
 [Files]
 ; MinGW runtime
-Source: "c:\Qt\4.8.2\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.8.2\bin\mingwm10.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.1.0\mingw48_32\bin\libwinpthread-1.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.1.0\mingw48_32\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.1.0\mingw48_32\bin\libstdc++-6.dll"; DestDir: "{app}\bin";
 
-Source: "c:\Qt\4.8.2\bin\QtCore4.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.8.2\bin\QtNetwork4.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.8.2\bin\QtSql4.dll"; DestDir: "{app}\bin";
-Source: "c:\Qt\4.8.2\bin\QtXml4.dll"; DestDir: "{app}\bin";
+; ICU unicode/utf conversion tables
+Source: "C:\Qt\5.1.0\mingw48_32\bin\icudt51.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.1.0\mingw48_32\bin\icuin51.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.1.0\mingw48_32\bin\icuuc51.dll"; DestDir: "{app}\bin";
+
+Source: "C:\Qt\5.1.0\mingw48_32\bin\Qt5Core.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.1.0\mingw48_32\bin\Qt5Network.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.1.0\mingw48_32\bin\Qt5Sql.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.1.0\mingw48_32\bin\Qt5Xml.dll"; DestDir: "{app}\bin";
 Source: "..\..\bin\mkfusion.exe"; DestDir: "{app}\bin"; Flags: ignoreversion;
 Source: "..\..\bin\mod_mkfusion.dll"; DestDir: "{app}\bin"; Flags: ignoreversion;
 Source: "..\..\install\mkfusion.db"; DestDir: "{app}\bin"; Flags: onlyifdoesntexist;
@@ -42,10 +48,10 @@ Source: "uninstall.dll"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\..\bin\mingw\*"; DestDir: "{app}\bin\mingw"; Flags: recursesubdirs;
 Source: "..\..\bin\qt\*"; DestDir: "{app}\bin\qt"; Flags: recursesubdirs;
 
-Source: "c:\Qt\4.8.2\plugins\sqldrivers\qsqlite4.dll"; DestDir: "{app}\bin\sqldrivers";
-Source: "c:\Qt\4.8.2\plugins\sqldrivers\qsqlodbc4.dll"; DestDir: "{app}\bin\sqldrivers";
-;Source: "c:\Qt\4.8.2\plugins\sqldrivers\qsqlmysql4.dll"; DestDir: "{app}\bin\sqldrivers";
-;Source: "c:\Qt\4.8.2\plugins\sqldrivers\qsqlpsql4.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "C:\Qt\5.1.0\mingw48_32\plugins\sqldrivers\qsqlite.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "C:\Qt\5.1.0\mingw48_32\plugins\sqldrivers\qsqlodbc.dll"; DestDir: "{app}\bin\sqldrivers";
+;Source: "C:\Qt\5.1.0\mingw48_32\plugins\sqldrivers\qsqlmysql.dll"; DestDir: "{app}\bin\sqldrivers";
+;Source: "C:\Qt\5.1.0\mingw48_32\plugins\sqldrivers\qsqlpsql.dll"; DestDir: "{app}\bin\sqldrivers";
 
 ;Source: "..\runtime\comerr32.dll"; DestDir: "{app}\bin";
 ;Source: "runtime\gssapi32.dll"; DestDir: "{app}\bin";
@@ -147,10 +153,6 @@ function InitializeSetup(): Boolean;
 var
   tmpServiceFileName: PChar;
   ApacheDir: String;
-  QtDir: String;
-  MinGWDir: String;
-  Names: TArrayOfString;
-  i: Integer;
 begin
   if (IsWin64)Then
   begin
@@ -172,36 +174,6 @@ begin
 
   ApacheDir := ExtractFileDir(ApacheDir);
 
-  if RegGetSubkeyNames(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall', Names) then
-    begin
-    for I := 0 to GetArrayLength(Names)-1 do
-      begin
-      if (Copy(Names[I], 0, 6) = 'Qt SDK') then
-        begin
-        RegQueryStringValue(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\' + Names[I], 'QTSDK_INSTDIR', QtDir);
-        MinGWDir := QtDir + '\mingw';
-        end;
-      if (Copy(Names[I], 0, 14) = 'Qt OpenSource ') then
-        begin
-        RegQueryStringValue(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\' + Names[I], 'MINGW_INSTDIR', QtDir);// MINGW_INSTDIR = Qt Install bug.
-        RegQueryStringValue(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\' + Names[I], 'MinGWInstDir', MinGWDir);
-        end;
-      end;
-    end
-    else
-    begin
-    MsgBox('Failed to open registry.', mbError, MB_OK);
-    Result := False;
-    exit;
-    end;
-
-    if (QtDir = '') then
-      begin
-      MsgBox('Please install QtDevelopment(http://qt.nokia.com/downloads/windows-cpp) or QtSDK(http://qt.nokia.com/downloads/sdk-windows-cpp), and run this installer one more time.', mbError, MB_OK);
-      ShellExecute(0, 'open', 'http://qt.nokia.com/downloads/windows-cpp', '', '', SW_SHOWNOACTIVATE);
-      Result := False;
-      exit;
-      end;
   Result := True;
 end;
 
@@ -217,10 +189,14 @@ var
 begin
   if (CurStep=ssPostInstall)Then
   begin
-    ConfContent := 'LoadFile  "' + ExpandConstant('{app}\bin\mingwm10.dll') + '"' + Chr(13) + Chr(10) +
+    ConfContent := 'LoadFile  "' + ExpandConstant('{app}\bin\libwinpthread-1.dll') + '"' + Chr(13) + Chr(10) +
                    'LoadFile  "' + ExpandConstant('{app}\bin\libgcc_s_dw2-1.dll') + '"' + Chr(13) + Chr(10) +
-                   'LoadFile  "' + ExpandConstant('{app}\bin\QtCore4.dll') + '"' + Chr(13) + Chr(10) +
-                   'LoadFile  "' + ExpandConstant('{app}\bin\QtNetwork4.dll') + '"' + Chr(13) + Chr(10) +
+                   'LoadFile  "' + ExpandConstant('{app}\bin\libstdc++-6.dll') + '"' + Chr(13) + Chr(10) +
+                   'LoadFile  "' + ExpandConstant('{app}\bin\icudt51.dll') + '"' + Chr(13) + Chr(10) +
+                   'LoadFile  "' + ExpandConstant('{app}\bin\icuuc51.dll') + '"' + Chr(13) + Chr(10) +
+                   'LoadFile  "' + ExpandConstant('{app}\bin\icuin51.dll') + '"' + Chr(13) + Chr(10) +
+                   'LoadFile  "' + ExpandConstant('{app}\bin\Qt5Core.dll') + '"' + Chr(13) + Chr(10) +
+                   'LoadFile  "' + ExpandConstant('{app}\bin\Qt5Network.dll') + '"' + Chr(13) + Chr(10) +
                    'LoadModule mkfusion_module "' + ExpandConstant('{app}\bin\mod_mkfusion.dll') + '"' + Chr(13) + Chr(10) +
                    '#<IfModule mod_mkfusion.c>' + Chr(13) + Chr(10) +
                    '  AddType application/x-httpd-mkfusion .cfm' + Chr(13) + Chr(10) +
