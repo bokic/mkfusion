@@ -1,5 +1,6 @@
 #include <pi_orig.h>
 #include <pi_opt.h>
+#include <pi_opt2.h>
 
 #include <qcfrunningtemplate.h>
 #include <qcfparser.h>
@@ -14,11 +15,12 @@ class TestCases : public QObject
 {
 	Q_OBJECT
 private slots:
-    void origPI();
-    void optPI();
+    //void origPI();
+    //void optPI();
+    void optPI2();
 };
 
-void TestCases::origPI()
+/*void TestCases::origPI()
 {
     QBENCHMARK {
         QCFGeneratedTemplateOrig origTemplate;
@@ -35,6 +37,22 @@ void TestCases::optPI()
 {
     QBENCHMARK {
         QCFGeneratedTemplateOpt optTemplate;
+
+        QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
+
+        m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
+
+        optTemplate.run(m_TemplateInstance);
+
+        delete m_TemplateInstance;
+        m_TemplateInstance = NULL;
+    }
+}*/
+
+void TestCases::optPI2()
+{
+    QBENCHMARK {
+        QCFGeneratedTemplateOpt2 optTemplate;
 
         QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
 

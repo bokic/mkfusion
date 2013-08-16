@@ -383,11 +383,11 @@ void TestCases::BenchUnoptimisedCode()
 
 	QBENCHMARK
 	{
-		m_TemplateInstance->m_VARIABLES[L"A"] = QWDDX(1);
+        m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = QWDDX(1);
 
-		for (m_TemplateInstance->m_VARIABLES[L"C"] = QWDDX(1); m_TemplateInstance->m_VARIABLES[L"C"] <= QWDDX(1000000); m_TemplateInstance->m_VARIABLES[L"C"] = m_TemplateInstance->m_VARIABLES[L"C"] + QWDDX(1))
+        for (m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] = QWDDX(1); m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] <= QWDDX(1000000); m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] = m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] + QWDDX(1))
 		{
-			m_TemplateInstance->m_VARIABLES[L"A"] = m_TemplateInstance->m_VARIABLES[L"A"] + QWDDX(1);
+            m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] + QWDDX(1);
 		}
 	}
 
@@ -404,13 +404,13 @@ void TestCases::BenchOptimisedCode()
 	{
 		{
 			//QWDDX *opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES["A"]; *opt_m_VARIABLES_A = 1;
-			m_TemplateInstance->m_VARIABLES[L"A"] = 1;
+            m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = 1;
 
 			//QWDDX *opt_m_VARIABLES_A = NULL;
-			QWDDX *opt_m_VARIABLES_C = &m_TemplateInstance->m_VARIABLES[L"C"]; *opt_m_VARIABLES_C = 1;
+            QWDDX *opt_m_VARIABLES_C = &m_TemplateInstance->m_VARIABLES[QStringLiteral("C")]; *opt_m_VARIABLES_C = 1;
 			for(; ; )
 			{
-				//if (opt_m_VARIABLES_A == NULL) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[L"A"];
+                //if (opt_m_VARIABLES_A == NULL) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[QStringLiteral("A")];
 
 				// *opt_m_VARIABLES_A = *opt_m_VARIABLES_A + 1;
 
@@ -437,13 +437,13 @@ void TestCases::BenchOptimisedCode2()
 	{
 		{
 			//QWDDX *opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES["A"]; *opt_m_VARIABLES_A = 1;
-			m_TemplateInstance->m_VARIABLES[L"A"] = 1;
+            m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = 1;
 
 			QWDDX *opt_m_VARIABLES_A = NULL;
 			quint32 l_loopCounter = 1;
 			for(; ; )
 			{
-				if (opt_m_VARIABLES_A == NULL) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[L"A"];
+                if (opt_m_VARIABLES_A == NULL) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[QStringLiteral("A")];
 
 				// *opt_m_VARIABLES_A = *opt_m_VARIABLES_A + 1;
 
@@ -469,9 +469,9 @@ void TestCases::bench1_stl()
 	{
 		map<wstring, int> m_VARIABLES;
 
-		for(m_VARIABLES[L"C"] = 1; m_VARIABLES[L"C"] < 1000000; m_VARIABLES[L"C"] = m_VARIABLES[L"C"] + 1)
+        for(m_VARIABLES[QStringLiteral("C")] = 1; m_VARIABLES[QStringLiteral("C")] < 1000000; m_VARIABLES[QStringLiteral("C")] = m_VARIABLES[QStringLiteral("C")] + 1)
 		{
-			m_VARIABLES[L"A"] = m_VARIABLES[L"A"] + 1;
+            m_VARIABLES[QStringLiteral("A")] = m_VARIABLES[QStringLiteral("A")] + 1;
 		}
 	}
 }

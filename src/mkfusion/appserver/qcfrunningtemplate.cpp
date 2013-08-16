@@ -228,80 +228,80 @@ void QCFRunningTemplate::worker()
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
-					m_SERVER[L"COLDFUSION"][L"PRODUCTLEVEL"] = L"Free";
-					m_SERVER[L"COLDFUSION"][L"PRODUCTNAME"] = L"MKFusion Server";
-                    m_SERVER[L"COLDFUSION"][L"PRODUCTVERSION"] = L"0.4.2";
-					m_SERVER[L"COLDFUSION"][L"ROOTDIR"] = ((QCFServer*)m_CFServer)->m_MKFusionPath.left(-1);
-					m_SERVER[L"COLDFUSION"][L"SUPPORTEDLOCALES"] = L"English (US),en,en_US";
-					m_SERVER[L"OS"] = QWDDX(QWDDX::Struct);
+                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("PRODUCTLEVEL")] = QStringLiteral("Free");
+                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("PRODUCTNAME")] = QStringLiteral("MKFusion Server");
+                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("PRODUCTVERSION")] = QStringLiteral("0.4.2");
+                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("ROOTDIR")] = ((QCFServer*)m_CFServer)->m_MKFusionPath.left(-1);
+                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("SUPPORTEDLOCALES")] = QStringLiteral("English (US),en,en_US");
+                    m_SERVER[QStringLiteral("OS")] = QWDDX(QWDDX::Struct);
 #ifdef Q_OS_WIN
-					m_SERVER[L"OS"][L"ADDITIONALINFORMATION"] = L"Windows";
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ADDITIONALINFORMATION")] = QStringLiteral("Windows");
 #ifdef _WIN64
-                    m_SERVER[L"OS"][L"ARCH"] = L"amd64";
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ARCH")] = QStringLiteral("amd64");
 #else
-                    m_SERVER[L"OS"][L"ARCH"] = L"i386";
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ARCH")] = QStringLiteral("i386");
 #endif
-                    m_SERVER[L"OS"][L"BUILDNUMBER"] = L"";
-					m_SERVER[L"OS"][L"NAME"] = L"WINDOWS";
-					m_SERVER[L"OS"][L"VERSION"] = L"XP";
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("BUILDNUMBER")] = QStringLiteral("");
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("NAME")] = QStringLiteral("WINDOWS");
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("VERSION")] = QStringLiteral("XP");
 #elif defined Q_OS_LINUX
-					m_SERVER[L"OS"][L"ADDITIONALINFORMATION"] = L"Linux";
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ADDITIONALINFORMATION")] = QStringLiteral("Linux");
 #ifdef __amd64__
-                    m_SERVER[L"OS"][L"ARCH"] = L"amd64";
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ARCH")] = QStringLiteral("amd64");
 #else
-                    m_SERVER[L"OS"][L"ARCH"] = L"i386";
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ARCH")] = QStringLiteral("i386");
 #endif
-                    m_SERVER[L"OS"][L"BUILDNUMBER"] = L"";
-					m_SERVER[L"OS"][L"NAME"] = L"Linux";
-					m_SERVER[L"OS"][L"VERSION"] = L"(unknown distribution)";
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("BUILDNUMBER")] = QStringLiteral("");
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("NAME")] = QStringLiteral("Linux");
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("VERSION")] = QStringLiteral("(unknown distribution)"); // TODO: Use: lsb_release -d
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
 
-					m_CGI[L"AUTH_PASSWORD"] = L"";
-					m_CGI[L"AUTH_TYPE"] = m_Request.m_AuthType;
-					m_CGI[L"AUTH_USER"] = m_Request.m_User;
-					m_CGI[L"CERT_COOKIE"] = L"";
-					m_CGI[L"CERT_FLAGS"] = L"";
-					m_CGI[L"CERT_ISSUER"] = L"";
-					m_CGI[L"CERT_KEYSIZE"] = L"";
-					m_CGI[L"CERT_SECRETKEYSIZE"] = L"";
-					m_CGI[L"CERT_SERIALNUMBER"] = L"";
-					m_CGI[L"CERT_SERVER_ISSUER"] = L"";
-					m_CGI[L"CERT_SERVER_SUBJECT"] = L"";
-					m_CGI[L"CERT_SUBJECT"] = L"";
-					m_CGI[L"CF_TEMPLATE_PATH"] = m_Request.m_Filename;
-					m_CGI[L"CONTENT_LENGTH"] = L"";
-					m_CGI[L"CONTENT_TYPE"] = L"";
-					m_CGI[L"CONTEXT_PATH"] = L"";
-					m_CGI[L"GATEWAY_INTERFACE"] = L"CGI/1.1"; // TODO: Hardcoded.
-					m_CGI[L"HTTPS"] = L"";
-					m_CGI[L"HTTPS_KEYSIZE"] = L"";
-					m_CGI[L"HTTPS_SECRETKEYSIZE"] = L"";
-					m_CGI[L"HTTPS_SERVER_ISSUER"] = L"";
-					m_CGI[L"HTTPS_SERVER_SUBJECT"] = L"";
-					m_CGI[L"HTTP_ACCEPT"] = m_Request.m_Accept;
-					m_CGI[L"HTTP_ACCEPT_ENCODING"] = m_Request.m_AcceptEncoding;
-					m_CGI[L"HTTP_ACCEPT_LANGUAGE"] = m_Request.m_AcceptLanguage;
-					m_CGI[L"HTTP_CONNECTION"] = m_Request.m_Connection;
-					m_CGI[L"HTTP_COOKIE"] = L"";
-					m_CGI[L"HTTP_HOST"] = m_Request.m_Host;
-					m_CGI[L"HTTP_REFERER"] = m_Request.m_Referer;
-					m_CGI[L"HTTP_USER_AGENT"] = m_Request.m_UserAgent;
-					m_CGI[L"PATH_INFO"] = L"";
-					m_CGI[L"PATH_TRANSLATED"] = m_Request.m_Filename;
-					m_CGI[L"QUERY_STRING"] = m_Request.m_Args;
-					m_CGI[L"REMOTE_ADDR"] = m_Request.m_RemoteHost; // TODO: please check me.
-					m_CGI[L"REMOTE_HOST"] = m_Request.m_RemoteHost;
-					m_CGI[L"REMOTE_USER"] = L"";
-					m_CGI[L"REQUEST_METHOD"] = m_Request.m_Method;
-					m_CGI[L"SCRIPT_NAME"] = m_Request.m_URI;
-					m_CGI[L"SERVER_NAME"] = m_Request.m_Host;
-					m_CGI[L"SERVER_PORT"] = QString::number(80); // TODO: Hardcoded.
-					m_CGI[L"SERVER_PORT_SECURE"] = L"0";
-					m_CGI[L"SERVER_PROTOCOL"] = m_Request.m_Protocol;
-					m_CGI[L"SERVER_SOFTWARE"] = L"Todo";
-					m_CGI[L"WEB_SERVER_API"] = L"";
+                    m_CGI[QStringLiteral("AUTH_PASSWORD")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("AUTH_TYPE")] = m_Request.m_AuthType;
+                    m_CGI[QStringLiteral("AUTH_USER")] = m_Request.m_User;
+                    m_CGI[QStringLiteral("CERT_COOKIE")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("CERT_FLAGS")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("CERT_ISSUER")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("CERT_KEYSIZE")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("CERT_SECRETKEYSIZE")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("CERT_SERIALNUMBER")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("CERT_SERVER_ISSUER")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("CERT_SERVER_SUBJECT")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("CERT_SUBJECT")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("CF_TEMPLATE_PATH")] = m_Request.m_Filename;
+                    m_CGI[QStringLiteral("CONTENT_LENGTH")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("CONTENT_TYPE")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("CONTEXT_PATH")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("GATEWAY_INTERFACE")] = QStringLiteral("CGI/1.1"); // TODO: Hardcoded.
+                    m_CGI[QStringLiteral("HTTPS")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("HTTPS_KEYSIZE")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("HTTPS_SECRETKEYSIZE")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("HTTPS_SERVER_ISSUER")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("HTTPS_SERVER_SUBJECT")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("HTTP_ACCEPT")] = m_Request.m_Accept;
+                    m_CGI[QStringLiteral("HTTP_ACCEPT_ENCODING")] = m_Request.m_AcceptEncoding;
+                    m_CGI[QStringLiteral("HTTP_ACCEPT_LANGUAGE")] = m_Request.m_AcceptLanguage;
+                    m_CGI[QStringLiteral("HTTP_CONNECTION")] = m_Request.m_Connection;
+                    m_CGI[QStringLiteral("HTTP_COOKIE")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("HTTP_HOST")] = m_Request.m_Host;
+                    m_CGI[QStringLiteral("HTTP_REFERER")] = m_Request.m_Referer;
+                    m_CGI[QStringLiteral("HTTP_USER_AGENT")] = m_Request.m_UserAgent;
+                    m_CGI[QStringLiteral("PATH_INFO")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("PATH_TRANSLATED")] = m_Request.m_Filename;
+                    m_CGI[QStringLiteral("QUERY_STRING")] = m_Request.m_Args;
+                    m_CGI[QStringLiteral("REMOTE_ADDR")] = m_Request.m_RemoteHost; // TODO: please check me.
+                    m_CGI[QStringLiteral("REMOTE_HOST")] = m_Request.m_RemoteHost;
+                    m_CGI[QStringLiteral("REMOTE_USER")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("REQUEST_METHOD")] = m_Request.m_Method;
+                    m_CGI[QStringLiteral("SCRIPT_NAME")] = m_Request.m_URI;
+                    m_CGI[QStringLiteral("SERVER_NAME")] = m_Request.m_Host;
+                    m_CGI[QStringLiteral("SERVER_PORT")] = QString::number(80); // TODO: Hardcoded.
+                    m_CGI[QStringLiteral("SERVER_PORT_SECURE")] = QStringLiteral("0");
+                    m_CGI[QStringLiteral("SERVER_PROTOCOL")] = m_Request.m_Protocol;
+                    m_CGI[QStringLiteral("SERVER_SOFTWARE")] = QStringLiteral("Todo");
+                    m_CGI[QStringLiteral("WEB_SERVER_API")] = QStringLiteral("");
 					/*
 					
 					  public void fillKnownVariables()
