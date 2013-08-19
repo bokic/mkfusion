@@ -1296,9 +1296,6 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 {
 	QHash<QString, QCFFunction> ret;
 
-
-	// Page 1 a-b
-
 	ret.insert("abs", QCFFunction("Abs", QCFFunction::ReturnDouble));
 	ret["abs"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true));
 
@@ -1324,6 +1321,7 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	//ret.insert("ajaxonload", QCFFunction("AjaxOnLoad", QCFFunction::ReturnVoid));
 	//ret["ajaxonload"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
 
+    // ColdFusion 9
 	//ret.insert("applicationstop", QCFFunction("ApplicationStop", QCFFunction::ReturnVoid));
 
 	ret.insert("arrayappend", QCFFunction("ArrayAppend", QCFFunction::ReturnBool));
@@ -1336,34 +1334,83 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	ret.insert("arrayclear", QCFFunction("ArrayClear", QCFFunction::ReturnBool));
 	ret["arrayclear"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
-	ret.insert("arraycontains", QCFFunction("ArrayContains", QCFFunction::ReturnBool));
-	ret["arraycontains"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    // ColdFusion 9
+    //ret.insert("arraycontains", QCFFunction("ArrayContains", QCFFunction::ReturnBool));
+    //ret["arraycontains"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
-	ret.insert("arraydelete", QCFFunction("ArrayDeleteAt", QCFFunction::ReturnBool));
-	ret["arraydelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-	ret["arraydelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    // ColdFusion 9
+    //ret.insert("arraydelete", QCFFunction("ArrayDelete", QCFFunction::ReturnBool));
+    //ret["arraydelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    //ret["arraydelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
 	ret.insert("arraydeleteat", QCFFunction("ArrayDeleteAt", QCFFunction::ReturnBool));
 	ret["arraydeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 	ret["arraydeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
 
-	// ArrayFind;
+    // ColdFusion 9
+    //ret.insert("arrayfind", QCFFunction("ArrayFind", QCFFunction::ReturnInt));
+    //ret["arrayfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    //ret["arrayfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
+
+    // ColdFusion 9
 	// ArrayFindNoCase;
-	//ret.insert("ArrayInsertAt", QCFFunction("ArrayInsertAt"));
-	//ret.insert("ArrayIsDefined", QCFFunction("ArrayIsDefined"));
-	//ret.insert("ArrayIsEmpty", QCFFunction("ArrayIsEmpty"));
-	//ret.insert("ArrayLen", QCFFunction("ArrayLen"));
-	//ret.insert("ArrayMax", QCFFunction("ArrayMax"));
-	//ret.insert("ArrayMin", QCFFunction("ArrayMin"));
-	ret.insert("arraynew", QCFFunction("ArrayNew", QCFFunction::ReturnQWDDX));
-	ret["arraynew"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-	//ret.insert("ArrayPrepend", QCFFunction("ArrayPrepend"));
-	//ret.insert("ArrayResize", QCFFunction("ArrayResize"));
-	//ret.insert("ArraySet", QCFFunction("ArraySet"));
-	//ret.insert("ArraySort", QCFFunction("ArraySort"));
-	//ret.insert("ArraySum", QCFFunction("ArraySum"));
-	//ret.insert("ArraySwap", QCFFunction("ArraySwap"));
-	//ret.insert("ArrayToList", QCFFunction("ArrayToList"));
+
+    ret.insert("arrayinsertsat", QCFFunction("ArrayInsertAt", QCFFunction::ReturnBool));
+    ret["arrayinsertsat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["arrayinsertsat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["arrayinsertsat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("arrayisdefined", QCFFunction("ArrayIsDefined", QCFFunction::ReturnBool));
+    ret["arrayisdefined"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["arrayisdefined"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("arrayisempty", QCFFunction("ArrayIsEmpty", QCFFunction::ReturnBool));
+    ret["arrayisempty"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("arraylen", QCFFunction("ArrayLen", QCFFunction::ReturnBool));
+    ret["arraylen"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("arraymax", QCFFunction("ArrayMax", QCFFunction::ReturnDouble));
+    ret["arraymax"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("arraymin", QCFFunction("ArrayMin", QCFFunction::ReturnDouble));
+    ret["arraymin"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("arraynew", QCFFunction("ArrayNew", QCFFunction::ReturnQWDDX));
+    ret["arraynew"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("arrayprepend", QCFFunction("ArrayPrepend", QCFFunction::ReturnBool));
+    ret["arrayprepend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["arrayprepend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("arrayresize", QCFFunction("ArrayResize", QCFFunction::ReturnBool));
+    ret["arrayresize"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["arrayresize"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("arrayset", QCFFunction("ArraySet", QCFFunction::ReturnBool));
+    ret["arrayset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["arrayset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["arrayset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["arrayset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("arraysort", QCFFunction("ArraySort", QCFFunction::ReturnBool));
+    ret["arraysort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["arraysort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["arraysort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("arraysum", QCFFunction("ArraySum", QCFFunction::ReturnDouble));
+    ret["arraysum"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("arrayswap", QCFFunction("ArraySwap", QCFFunction::ReturnBool));
+    ret["arrayswap"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["arrayswap"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["arrayswap"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("arraytolist", QCFFunction("ArrayToList", QCFFunction::ReturnString));
+    ret["arraytolist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["arraytolist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+
 	//ret.insert("Asc", QCFFunction("Asc"));
 	//ret.insert("ASin", QCFFunction("ASin"));
 	//ret.insert("Atn", QCFFunction("Atn"));
@@ -1378,11 +1425,7 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	//ret.insert("BitSHLN", QCFFunction("BitSHLN"));
 	//ret.insert("BitSHRN", QCFFunction("BitSHRN"));
 	//ret.insert("BitXor", QCFFunction("BitXor"));
-
-	// Page 2 c-d
-
 	//ret.insert("Ceiling", QCFFunction("Ceiling"));
-
 	//ret.insert("CharsetDecode", QCFFunction("CharsetDecode"));
 	//ret.insert("CharsetEncode", QCFFunction("CharsetEncode"));
 	ret.insert("chr", QCFFunction("Chr", QCFFunction::ReturnString));
@@ -1403,6 +1446,10 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	ret.insert("fix", QCFFunction("Fix", QCFFunction::ReturnInt));
 	ret["fix"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
 
+    ret.insert("isarray", QCFFunction("IsArray", QCFFunction::ReturnBool));
+    ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
 	ret.insert("lcase", QCFFunction("LCase", QCFFunction::ReturnString));
 	ret["lcase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
@@ -1412,6 +1459,11 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 
 	ret.insert("len", QCFFunction("Len", QCFFunction::ReturnInt));
 	ret["len"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listtoarray", QCFFunction("ListToArray", QCFFunction::ReturnQWDDX));
+    ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
 
     ret.insert("structnew", QCFFunction("StructNew", QCFFunction::ReturnQWDDX));
 

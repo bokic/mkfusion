@@ -7,37 +7,37 @@
 
 #include <QString>
 
-// Page1
+
 Q_DECL_EXPORT double cf_Abs(double);
 Q_DECL_EXPORT int cf_Abs(int);
 Q_DECL_EXPORT QWDDX cf_Abs(const QWDDX&);
 Q_DECL_EXPORT double cf_ACos(double);
 Q_DECL_EXPORT QWDDX cf_ACos(const QWDDX&);
-Q_DECL_EXPORT void cf_AddSOAPRequestHeader(QWDDX*, const QString&, const QString&, const QWDDX&, bool);
+Q_DECL_EXPORT void cf_AddSOAPRequestHeader(QWDDX&, const QString&, const QString&, const QWDDX&, bool);
 Q_DECL_EXPORT void cf_AddSOAPResponseHeader(const QString&, const QString&, const QWDDX&, bool);
 Q_DECL_EXPORT QString cf_AjaxLink(const QString&);
 Q_DECL_EXPORT void cf_AjaxOnLoad(const QString&);
-Q_DECL_EXPORT void cf_ApplicationStop();
-Q_DECL_EXPORT bool cf_ArrayAppend(QWDDX*, const QWDDX&);
+//Q_DECL_EXPORT void cf_ApplicationStop(); // ColdFusion 9
+Q_DECL_EXPORT bool cf_ArrayAppend(QWDDX&, const QWDDX&);
 Q_DECL_EXPORT double cf_ArrayAvg(const QWDDX&);
-Q_DECL_EXPORT bool cf_ArrayClear(QWDDX*);
-Q_DECL_EXPORT bool cf_ArrayContains(const QWDDX&, const QWDDX&);
-Q_DECL_EXPORT bool cf_ArrayDelete(QWDDX*, const QWDDX&);
-Q_DECL_EXPORT bool cf_ArrayDeleteAt(QWDDX*, int);
-Q_DECL_EXPORT int cf_ArrayFind(const QWDDX&, const QWDDX&);
-Q_DECL_EXPORT int cf_ArrayFindNoCase(const QWDDX&, const QWDDX&);
-Q_DECL_EXPORT bool cf_ArrayInsertAt(QWDDX*, int, const QWDDX&);
+Q_DECL_EXPORT bool cf_ArrayClear(QWDDX&);
+//Q_DECL_EXPORT bool cf_ArrayContains(const QWDDX&, const QWDDX&); // ColdFusion 9
+//Q_DECL_EXPORT bool cf_ArrayDelete(QWDDX&, const QWDDX&); // ColdFusion 9
+Q_DECL_EXPORT bool cf_ArrayDeleteAt(QWDDX&, int);
+//Q_DECL_EXPORT int cf_ArrayFind(const QWDDX&, const QWDDX&); // ColdFusion 9
+//Q_DECL_EXPORT int cf_ArrayFindNoCase(const QWDDX&, const QWDDX&); // ColdFusion 9
+Q_DECL_EXPORT bool cf_ArrayInsertAt(QWDDX&, int, const QWDDX&);
 Q_DECL_EXPORT bool cf_ArrayIsEmpty(const QWDDX&);
 Q_DECL_EXPORT int cf_ArrayLen(const QWDDX&);
 Q_DECL_EXPORT double cf_ArrayMin(const QWDDX&);
 Q_DECL_EXPORT double cf_ArrayMax(const QWDDX&);
 Q_DECL_EXPORT QWDDX cf_ArrayNew(int);
-Q_DECL_EXPORT bool cf_ArrayPrepend(QWDDX*, const QWDDX&);
-Q_DECL_EXPORT bool cf_ArrayResize(QWDDX*, int);
-Q_DECL_EXPORT bool cf_ArraySet(QWDDX*, int, int, const QWDDX&);
-Q_DECL_EXPORT bool cf_ArraySort(QWDDX*, const QString&, const QString&);
+Q_DECL_EXPORT bool cf_ArrayPrepend(QWDDX&, const QWDDX&);
+Q_DECL_EXPORT bool cf_ArrayResize(QWDDX&, int);
+Q_DECL_EXPORT bool cf_ArraySet(QWDDX&, int, int, const QWDDX&);
+Q_DECL_EXPORT bool cf_ArraySort(QWDDX&, const QString&, const QString&);
 Q_DECL_EXPORT double cf_ArraySum(const QWDDX&);
-Q_DECL_EXPORT bool cf_ArraySwap(QWDDX*, int, int);
+Q_DECL_EXPORT bool cf_ArraySwap(QWDDX&, int, int);
 Q_DECL_EXPORT QString cf_ArrayToList(const QWDDX&, const QString&);
 Q_DECL_EXPORT int cf_Asc(const QString&);
 Q_DECL_EXPORT double cf_ASin(double);
@@ -55,8 +55,6 @@ Q_DECL_EXPORT int cf_BitOr(int, int);
 Q_DECL_EXPORT int cf_BitSHLN(int, int);
 Q_DECL_EXPORT int cf_BitSHRN(int, int);
 Q_DECL_EXPORT int cf_BitXor(int, int);
-
-// Page2
 Q_DECL_EXPORT QWDDX cf_CacheGet(const QString&);
 Q_DECL_EXPORT QWDDX cf_CacheGetAllIds();
 Q_DECL_EXPORT QWDDX cf_CacheGetMetadata(const QString&);
@@ -112,7 +110,6 @@ Q_DECL_EXPORT QString cf_DollarFormat(double);
 Q_DECL_EXPORT QWDDX cf_DotNetToCFType(const QWDDX&);
 Q_DECL_EXPORT QWDDX cf_Duplicate(const QWDDX&);
 
-// Page3
 //Encrypt
 //EncryptBinary
 //EntityDelete
@@ -196,7 +193,6 @@ GetToken
 GetUserRoles
 GetVFSMetaData
 GetWriteableImageFormats
-// Page4
 Hash
 HQL Methods
 Hour
@@ -253,13 +249,12 @@ ImageTranslateDrawingAxis
 ImageWrite
 ImageWriteBase64
 ImageXORDrawingMode
-// Page5
 IncrementValue
 InputBaseN
 Insert
-Int
-IsArray
-IsAuthenticated
+Int*/
+Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level = 0);
+/*IsAuthenticated
 IsAuthorized
 IsBinary
 IsBoolean
@@ -304,7 +299,6 @@ IsXmlNode
 IsXmlRoot
 JavaCast
 JSStringFormat
-// Page6
 */
 Q_DECL_EXPORT QString cf_LCase(const QString&);
 Q_DECL_EXPORT QString cf_Left(const QString&, int);
@@ -326,9 +320,9 @@ ListPrepend
 ListQualify
 ListRest
 ListSetAt
-ListSort
-ListToArray
-ListValueCount
+ListSort*/
+Q_DECL_EXPORT QWDDX cf_ListToArray(const QString &list, const QString &delimiters = ",", bool includeEmptyFields = false);
+/*ListValueCount
 ListValueCountNoCase
 LJustify
 Location
@@ -347,7 +341,6 @@ LSParseEuroCurrency
 LSParseNumber
 LSTimeFormat
 LTrim
-// Page7
 Max
 Mid
 Min
@@ -402,7 +395,6 @@ Right
 RJustify
 Round
 RTrim
-// Page8
 Second
 SendGatewayMessage
 SerializeJSON
@@ -471,7 +463,6 @@ StructKeyList*/
 Q_DECL_EXPORT QWDDX cf_StructNew();
 /*StructSort
 StructUpdate
-// Page9
 Tan
 ThreadJoin
 ThreadTerminate
@@ -506,7 +497,6 @@ XmlTransform
 XmlValidate
 Year
 YesNoFormat
-
 */
 
 QString WriteException(const QMKFusionException &, const QCFRunningTemplate_Request &);

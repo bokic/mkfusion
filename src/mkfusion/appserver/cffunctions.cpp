@@ -1,10 +1,11 @@
 #include "cffunctions.h"
 #include "qmkfusionexception.h"
+#include <QStringList>
 #include <QDateTime>
 
 #include <math.h>
 
-// Page1
+
 double cf_Abs(double val)
 {
 	return fabs(val);
@@ -44,7 +45,7 @@ QWDDX cf_ACos(const QWDDX &val)
     return QWDDX(acos(tmp));
 }
 
-void cf_AddSOAPRequestHeader(QWDDX *p_WebService, const QString &p_Namespace, const QString &p_Name, const QWDDX &p_Value, bool p_MustUnderstand)
+void cf_AddSOAPRequestHeader(QWDDX &p_WebService, const QString &p_Namespace, const QString &p_Name, const QWDDX &p_Value, bool p_MustUnderstand)
 {
     Q_UNUSED(p_WebService);
     Q_UNUSED(p_Namespace);
@@ -79,31 +80,32 @@ void cf_AjaxOnLoad(const QString &p_FunctionName)
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-void cf_ApplicationStop()
+// ColdFusion 9
+/*void cf_ApplicationStop()
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
-}
+}*/
 
-bool cf_ArrayAppend(QWDDX *p_Array, const QWDDX &p_Value)
+bool cf_ArrayAppend(QWDDX &p_Array, const QWDDX &p_Value)
 {
-    if (p_Array->type() != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if (p_Array->m_ArrayDimension > 1)
+    if (p_Array.m_ArrayDimension > 1)
 	{
         if (p_Value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
-		if (p_Array->m_ArrayDimension != p_Value.m_ArrayDimension + 1)
+        if (p_Array.m_ArrayDimension != p_Value.m_ArrayDimension + 1)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
 	}
 
-    p_Array->m_Array->append(p_Value);
+    p_Array.m_Array->append(p_Value);
 
 	return true;
 }
@@ -135,19 +137,20 @@ double cf_ArrayAvg(const QWDDX &p_Array)
     return sum / p_Array.m_Array->size();
 }
 
-bool cf_ArrayClear(QWDDX *p_Value)
+bool cf_ArrayClear(QWDDX &p_Value)
 {
-    if (p_Value->type() != QWDDX::Array)
+    if (p_Value.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    p_Value->m_Array->clear();
+    p_Value.m_Array->clear();
 
 	return true;
 }
 
-bool cf_ArrayContains(const QWDDX &p_Array, const QWDDX &p_Search)
+// ColdFusion 9
+/*bool cf_ArrayContains(const QWDDX &p_Array, const QWDDX &p_Search)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -166,9 +169,10 @@ bool cf_ArrayContains(const QWDDX &p_Array, const QWDDX &p_Search)
 	}
 
 	return false;
-}
+}*/
 
-bool cf_ArrayDelete(QWDDX *p_Array, const QWDDX &p_Value)
+// ColdFusion 9
+/*bool cf_ArrayDelete(QWDDX &p_Array, const QWDDX &p_Value)
 {
     if (p_Array->type() != QWDDX::Array)
 	{
@@ -187,26 +191,27 @@ bool cf_ArrayDelete(QWDDX *p_Array, const QWDDX &p_Value)
 	}
 
 	return false;
-}
+}*/
 
-bool cf_ArrayDeleteAt(QWDDX *p_Array, int p_Index)
+bool cf_ArrayDeleteAt(QWDDX &p_Array, int p_Index)
 {
-    if (p_Array->type() != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    if ((p_Index < 1)||(p_Index > p_Array->m_Array->size()))
+    if ((p_Index < 1)||(p_Index > p_Array.m_Array->size()))
 	{
-        throw QMKFusionInvalidArrayIndexException(p_Index, p_Array->m_Array->size());
+        throw QMKFusionInvalidArrayIndexException(p_Index, p_Array.m_Array->size());
 	}
 
-    p_Array->m_Array->remove(p_Index - 1);
+    p_Array.m_Array->remove(p_Index - 1);
 
 	return true;
 }
 
-int cf_ArrayFind(const QWDDX &p_Array, const QWDDX &p_Search)
+// ColdFusion 9
+/*int cf_ArrayFind(const QWDDX &p_Array, const QWDDX &p_Search)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -225,9 +230,10 @@ int cf_ArrayFind(const QWDDX &p_Array, const QWDDX &p_Search)
 	}
 
 	return 0;
-}
+}*/
 
-int cf_ArrayFindNoCase(const QWDDX &p_Array, const QWDDX &p_Search)
+// ColdFusion 9
+/*int cf_ArrayFindNoCase(const QWDDX &p_Array, const QWDDX &p_Search)
 {
     if (p_Array.type() != QWDDX::Array)
 	{
@@ -246,40 +252,35 @@ int cf_ArrayFindNoCase(const QWDDX &p_Array, const QWDDX &p_Search)
 	}
 
 	return 0;
-}
+}*/
 
-bool cf_ArrayInsertAt(QWDDX *p_Array, int p_Index, const QWDDX &p_Value)
+bool cf_ArrayInsertAt(QWDDX &p_Array, int p_Index, const QWDDX &p_Value)
 {
-    if (p_Array->type() != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    if (p_Array->type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
-
-	if (p_Array->m_ArrayDimension > 1)
+    if (p_Array.m_ArrayDimension > 1)
 	{
         if (p_Value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
-		if (p_Array->m_ArrayDimension != p_Value.m_ArrayDimension + 1)
+        if (p_Array.m_ArrayDimension != p_Value.m_ArrayDimension + 1)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
 	}
 
-    if ((p_Index < 1)||(p_Index > p_Array->m_Array->size()))
+    if ((p_Index < 1)||(p_Index > p_Array.m_Array->size()))
 	{
-        throw QMKFusionInvalidArrayIndexException(p_Index, p_Array->m_Array->size());
+        throw QMKFusionInvalidArrayIndexException(p_Index, p_Array.m_Array->size());
 	}
 
 	QWDDX temp = p_Value;
 
-    p_Array->m_Array->insert(p_Index - 1, temp);
+    p_Array.m_Array->insert(p_Index - 1, temp);
 
 	return true;
 }
@@ -412,20 +413,20 @@ QWDDX cf_ArrayNew(int p_Dimension)
 	return ret;
 }
 
-bool cf_ArrayPrepend(QWDDX *p_Array, const QWDDX &p_Value)
+bool cf_ArrayPrepend(QWDDX &p_Array, const QWDDX &p_Value)
 {
-    if (p_Array->type() != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if (p_Array->m_ArrayDimension > 1)
+    if (p_Array.m_ArrayDimension > 1)
 	{
         if (p_Value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
-		if (p_Array->m_ArrayDimension != p_Value.m_ArrayDimension + 1)
+        if (p_Array.m_ArrayDimension != p_Value.m_ArrayDimension + 1)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
@@ -433,30 +434,30 @@ bool cf_ArrayPrepend(QWDDX *p_Array, const QWDDX &p_Value)
 
 	QWDDX temp = p_Value;
 
-    p_Array->m_Array->insert(0, temp);
+    p_Array.m_Array->insert(0, temp);
 
 	return true;
 }
 
 
-bool cf_ArrayResize(QWDDX *p_Array, int p_MinSize)
+bool cf_ArrayResize(QWDDX &p_Array, int p_MinSize)
 {
-    if (p_Array->type() != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    if (p_Array->m_Array->size() < p_MinSize)
+    if (p_Array.m_Array->size() < p_MinSize)
 	{
-        p_Array->m_Array->reserve(p_MinSize);
+        p_Array.m_Array->reserve(p_MinSize); // TODO: Check if this is the correct implementation.
 	}
 
 	return true;
 }
 
-bool cf_ArraySet(QWDDX *p_Array, int p_Start, int p_End, const QWDDX &p_Value)
+bool cf_ArraySet(QWDDX &p_Array, int p_Start, int p_End, const QWDDX &p_Value)
 {
-    if (p_Array->type() != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -466,13 +467,13 @@ bool cf_ArraySet(QWDDX *p_Array, int p_Start, int p_End, const QWDDX &p_Value)
 		throw QMKFusionArraySetRangeException(p_Start, p_End);
 	}
 
-	if (p_Array->m_ArrayDimension > 1)
+    if (p_Array.m_ArrayDimension > 1)
 	{
         if (p_Value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
-		if (p_Array->m_ArrayDimension != p_Value.m_ArrayDimension + 1)
+        if (p_Array.m_ArrayDimension != p_Value.m_ArrayDimension + 1)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
@@ -482,19 +483,90 @@ bool cf_ArraySet(QWDDX *p_Array, int p_Start, int p_End, const QWDDX &p_Value)
 
 	for(int c = p_Start - 1; c < p_End; c++)
 	{
-        p_Array->m_Array->replace(c, temp);
+        p_Array.m_Array->replace(c, temp);
 	}
 
 	return true;
 }
 
-bool cf_ArraySort(QWDDX *p_Array, const QString &p_SortType, const QString &p_SortOrder)
+bool cf_ArraySort(QWDDX &p_Array, const QString &p_SortType, const QString &p_SortOrder)
 {
-    Q_UNUSED(p_Array);
-    Q_UNUSED(p_SortType);
-    Q_UNUSED(p_SortOrder);
+    if (p_Array.type() != QWDDX::Array)
+    {
+        throw QMKFusionException("Error Occurred While Processing Request", "Parameter should be array.");
+    }
 
-	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
+    if (p_Array.m_ArrayDimension != 1)
+    {
+        throw QMKFusionException("Error Occurred While Processing Request", "The array passed cannot contain more than one dimension.");
+    }
+
+    if ((p_SortType.compare("Text", Qt::CaseInsensitive) != 0)&&(p_SortType.compare("TextNoCase", Qt::CaseInsensitive) != 0)&&(p_SortType.compare("Numeric", Qt::CaseInsensitive) != 0))
+    {
+        throw QMKFusionException("Invalid sort type " + p_SortType + ".", "Valid sort type values are: Text, TextNoCase, and Numeric.");
+    }
+
+    if ((p_SortOrder.compare("Asc", Qt::CaseInsensitive) != 0)&&(p_SortOrder.compare("Desc", Qt::CaseInsensitive) != 0))
+    {
+        throw QMKFusionException("Invalid sort order " + p_SortOrder + ".", "Valid sort order values are: Asc and Desc.");
+    }
+
+    if ((p_SortType.compare("Numeric", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Asc", Qt::CaseInsensitive) == 0))
+    {
+        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        {
+            return s1.toNumber() < s2.toNumber();
+        });
+
+        return true;
+    }
+    else if ((p_SortType.compare("Numeric", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Desc", Qt::CaseInsensitive) == 0))
+    {
+        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        {
+            return s1.toNumber() > s2.toNumber();
+        });
+
+        return true;
+    }
+    else if ((p_SortType.compare("Text", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Asc", Qt::CaseInsensitive) == 0))
+    {
+        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        {
+            return s1.toString() < s2.toString();
+        });
+
+        return true;
+    }
+    else if ((p_SortType.compare("Text", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Desc", Qt::CaseInsensitive) == 0))
+    {
+        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        {
+            return s1.toString() > s2.toString();
+        });
+
+        return true;
+    }
+    else if ((p_SortType.compare("TextNoCase", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Asc", Qt::CaseInsensitive) == 0))
+    {
+        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        {
+            return s1.toString().compare(s2.toString(), Qt::CaseInsensitive) < 0;
+        });
+
+        return true;
+    }
+    else if ((p_SortType.compare("TextNoCase", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Desc", Qt::CaseInsensitive) == 0))
+    {
+        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        {
+            return s1.toString().compare(s2.toString(), Qt::CaseInsensitive) > 0;
+        });
+
+        return true;
+    }
+
+    return false;
 }
 
 double cf_ArraySum(const QWDDX &p_Array)
@@ -525,9 +597,9 @@ double cf_ArraySum(const QWDDX &p_Array)
 	return sum;
 }
 
-bool cf_ArraySwap(QWDDX *p_Array, int p_Pos1, int p_Pos2)
+bool cf_ArraySwap(QWDDX &p_Array, int p_Pos1, int p_Pos2)
 {
-    if (p_Array->type() != QWDDX::Array)
+    if (p_Array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -535,18 +607,18 @@ bool cf_ArraySwap(QWDDX *p_Array, int p_Pos1, int p_Pos2)
 	p_Pos1--;
 	p_Pos2--;
 
-    if((p_Pos1 < 0)||(p_Pos1 >= p_Array->m_Array->size()))
+    if((p_Pos1 < 0)||(p_Pos1 >= p_Array.m_Array->size()))
 	{
-        throw QMKFusionArraySwapRangeException(p_Pos1 + 1, p_Array->m_Array->size());
+        throw QMKFusionArraySwapRangeException(p_Pos1 + 1, p_Array.m_Array->size());
 	}
-    if((p_Pos2 < 0)||(p_Pos2 >= p_Array->m_Array->size()))
+    if((p_Pos2 < 0)||(p_Pos2 >= p_Array.m_Array->size()))
 	{
-        throw QMKFusionArraySwapRangeException(p_Pos2 + 1, p_Array->m_Array->size());
+        throw QMKFusionArraySwapRangeException(p_Pos2 + 1, p_Array.m_Array->size());
 	}
 
-    QWDDX temp = p_Array->m_Array->at(p_Pos1);
-	p_Array->m_Array[p_Pos1] = p_Array->m_Array[p_Pos2];
-    p_Array->m_Array->replace(p_Pos2, temp);
+    QWDDX temp = p_Array.m_Array->at(p_Pos1);
+    p_Array.m_Array[p_Pos1] = p_Array.m_Array[p_Pos2];
+    p_Array.m_Array->replace(p_Pos2, temp);
 
 	return true;
 }
@@ -1093,8 +1165,6 @@ QWDDX cf_Duplicate(const QWDDX&)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
-// Page3
-
 
 Q_DECL_EXPORT int cf_Fix(double value)
 {
@@ -1108,6 +1178,23 @@ Q_DECL_EXPORT int cf_Fix(double value)
 	}
 }
 
+Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level)
+{
+    if (var.type() != QWDDX::Array)
+    {
+        return false;
+    }
+
+    if (level > 0)
+    {
+        if (var.m_ArrayDimension != (quint32)level)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 Q_DECL_EXPORT QString cf_LCase(const QString &str)
 {
@@ -1122,6 +1209,54 @@ Q_DECL_EXPORT QString cf_Left(const QString &str, int count)
 Q_DECL_EXPORT int cf_Len(const QString &str)
 {
 	return str.length();
+}
+
+Q_DECL_EXPORT QWDDX cf_ListToArray(const QString &list, const QString &delimiters, bool includeEmptyFields)
+{
+    QWDDX ret;
+
+    ret.setType(QWDDX::Array);
+
+    if (delimiters.count() == 0)
+    {
+        ret.m_Array->append(list);
+    }
+    else
+    {
+        QVector<int> delimiter_indexes;
+
+        for (int c = 0; c < list.length(); c++)
+        {
+            for(int dc = 0; dc < delimiters.count(); dc++)
+            {
+                if (list.at(c) == delimiters.at(dc))
+                {
+                    delimiter_indexes.append(c);
+
+                    break;
+                }
+            }
+        }
+
+        int last_pos = 0;
+
+        for(int index : delimiter_indexes)
+        {
+            if ((index > last_pos)||(includeEmptyFields))
+            {
+                ret.m_Array->append(list.mid(last_pos, index - last_pos));
+            }
+
+            last_pos = index + 1;
+        }
+
+        if ((list.count() - 1 > last_pos)||(includeEmptyFields))
+        {
+            ret.m_Array->append(list.mid(last_pos, list.count() - 1 - last_pos));
+        }
+    }
+
+    return ret;
 }
 
 QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Request &r)
