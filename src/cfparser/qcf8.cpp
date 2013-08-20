@@ -1431,6 +1431,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	ret.insert("chr", QCFFunction("Chr", QCFFunction::ReturnString));
 	ret["chr"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
+    ret.insert("duplicate", QCFFunction("Duplicate", QCFFunction::ReturnQWDDX));
+    ret["duplicate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+
 	//ret.insert("CJustify", QCFFunction("CJustify"));
 	//ret.insert("Compare", QCFFunction("Compare"));
 	//ret.insert("CompareNoCase", QCFFunction("CompareNoCase"));
@@ -1450,6 +1453,10 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
     ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
 
+    ret.insert("isstruct", QCFFunction("IsStruct", QCFFunction::ReturnBool));
+    ret["isstruct"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+
 	ret.insert("lcase", QCFFunction("LCase", QCFFunction::ReturnString));
 	ret["lcase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
@@ -1465,7 +1472,74 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
     ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
 
+    ret.insert("structappend", QCFFunction("StructAppend", QCFFunction::ReturnBool));
+    ret["structappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["structappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["structappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("structclear", QCFFunction("StructClear", QCFFunction::ReturnBool));
+    ret["structappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("structcopy", QCFFunction("StructCopy", QCFFunction::ReturnQWDDX));
+    ret["structcopy"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("structcount", QCFFunction("StructCount", QCFFunction::ReturnInt));
+    ret["structcount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("structdelete", QCFFunction("StructDelete", QCFFunction::ReturnBool));
+    ret["structdelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["structdelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["structdelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("structfind", QCFFunction("StructFind", QCFFunction::ReturnQWDDX));
+    ret["structfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["structfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("structfindkey", QCFFunction("StructFindKey", QCFFunction::ReturnQWDDX));
+    ret["structfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["structfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["structfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("structfindvalue", QCFFunction("StructFindValue", QCFFunction::ReturnQWDDX));
+    ret["structfindvalue"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["structfindvalue"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["structfindvalue"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("structget", QCFFunction("StructGet", QCFFunction::ReturnQWDDX));
+    ret["structget"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("structinsert", QCFFunction("StructInsert", QCFFunction::ReturnBool));
+    ret["structinsert"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["structinsert"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["structinsert"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret["structdelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("structisempty", QCFFunction("StructIsEmpty", QCFFunction::ReturnBool));
+    ret["structisempty"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("structkeyarray", QCFFunction("StructKeyArray", QCFFunction::ReturnQWDDX));
+    ret["structkeyarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("structkeyexists", QCFFunction("StructKeyExists", QCFFunction::ReturnBool));
+    ret["structkeyexists"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["structkeyexists"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("structkeylist", QCFFunction("StructKeyList", QCFFunction::ReturnBool));
+    ret["structkeylist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["structkeylist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
     ret.insert("structnew", QCFFunction("StructNew", QCFFunction::ReturnQWDDX));
+
+    ret.insert("structsort", QCFFunction("StructSort", QCFFunction::ReturnQWDDX));
+    ret["structsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["structsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret["structsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret["structsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("structupdate", QCFFunction("StructUpdate", QCFFunction::ReturnBool));
+    ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
+    ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
     return ret;
 }
