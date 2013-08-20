@@ -316,7 +316,7 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable)
 
 	for(int c = 1; c < l_StrList.size(); c++)
 	{
-        ret += "[QStringLiteral(\""+l_StrList[c].toUpper()+"\")]";
+        ret += "[\""+l_StrList[c].toUpper()+"\"]";
 	}
 
 	return ret;
@@ -363,7 +363,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 			}
 			else
 			{
-                ret = "QStringLiteral(\"" + l_ElementName + "\")"; // TODO: Currently this line will always convert Utf8 to Unicode.
+                ret = "\"" + l_ElementName + "\""; // TODO: Currently this line will always convert Utf8 to Unicode.
 			}
 			break;
 		case Variable:
