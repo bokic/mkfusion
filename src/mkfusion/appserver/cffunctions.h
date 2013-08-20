@@ -284,9 +284,9 @@ IsQuery
 IsSimpleValue
 IsSOAPRequest
 IsSpreadsheetFile
-IsSpreadsheetObject
-IsStruct
-IsUserInAnyRole
+IsSpreadsheetObject*/
+Q_DECL_EXPORT bool cf_IsStruct(const QWDDX &variable);
+/*IsUserInAnyRole
 IsUserInRole
 IsUserLoggedIn
 IsValid
@@ -445,25 +445,25 @@ SpreadsheetShiftColumns
 SpreadsheetShiftRows
 SpreadsheetWrite
 Sqr
-StripCR
-StructAppend
-StructClear
-StructCopy
-StructCount
-StructDelete
-StructFind
-StructFindKey
-StructFindValue
-StructGet
-StructInsert
-StructIsEmpty
-StructKeyArray
-StructKeyExists
-StructKeyList*/
+StripCR*/
+Q_DECL_EXPORT bool cf_StructAppend(QWDDX &struct1, const QWDDX &struct2, bool overwriteFlag = true);
+Q_DECL_EXPORT bool cf_StructClear(QWDDX &structure);
+Q_DECL_EXPORT QWDDX cf_StructCopy(QWDDX &structure);
+Q_DECL_EXPORT int cf_StructCount(const QWDDX &structure);
+Q_DECL_EXPORT bool cf_StructDelete(QWDDX &structure, const QString &key, bool indicatenotexisting = false);
+Q_DECL_EXPORT QWDDX cf_StructFind(const QWDDX &structure, const QString &key);
+Q_DECL_EXPORT QWDDX cf_StructFindKey(const QWDDX &top, const QString &value, const QString &scope = "one");
+Q_DECL_EXPORT QWDDX cf_StructFindValue(const QWDDX &top, const QString &value, const QString &scope = "one");
+Q_DECL_EXPORT QWDDX cf_StructGet(const QString &pathDesired);
+Q_DECL_EXPORT bool cf_StructInsert(QWDDX &structure, const QString &key, const QWDDX &value, bool allowoverwrite = false);
+Q_DECL_EXPORT bool cf_StructIsEmpty(const QWDDX &structure);
+Q_DECL_EXPORT QWDDX cf_StructKeyArray(const QWDDX &structure);
+Q_DECL_EXPORT bool cf_StructKeyExists(const QWDDX &structure, const QString &key);
+Q_DECL_EXPORT QString cf_StructKeyList(const QWDDX &structure, const QString &delimiter = ",");
 Q_DECL_EXPORT QWDDX cf_StructNew();
-/*StructSort
-StructUpdate
-Tan
+Q_DECL_EXPORT QWDDX cf_StructSort(const QWDDX &base, const QString &sortType = "text", const QString &sortOrder = "asc", const QString &pathToSubElement = "");
+Q_DECL_EXPORT bool cf_StructUpdate(QWDDX &structure, const QString &key, const QWDDX &value);
+/*Tan
 ThreadJoin
 ThreadTerminate
 Throw

@@ -1196,6 +1196,16 @@ Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level)
     return true;
 }
 
+Q_DECL_EXPORT bool cf_IsStruct(const QWDDX &variable)
+{
+    if (variable.type() == QWDDX::Struct)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 Q_DECL_EXPORT QString cf_LCase(const QString &str)
 {
 	return str.toLower();
@@ -1213,9 +1223,7 @@ Q_DECL_EXPORT int cf_Len(const QString &str)
 
 Q_DECL_EXPORT QWDDX cf_ListToArray(const QString &list, const QString &delimiters, bool includeEmptyFields)
 {
-    QWDDX ret;
-
-    ret.setType(QWDDX::Array);
+    QWDDX ret(QWDDX::Array);
 
     if (delimiters.count() == 0)
     {
@@ -1337,7 +1345,216 @@ QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Re
 	return  ret;
 }
 
+Q_DECL_EXPORT bool cf_StructAppend(QWDDX &struct1, const QWDDX &struct2, bool overwriteFlag)
+{
+    if (struct1.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "struct1 is not a struct");
+    }
+
+    if (struct2.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "struct2 is not a struct");
+    }
+
+    for(const QString& item : struct2.m_Struct->keys())
+    {
+        if ((overwriteFlag == false)&&(struct1.m_Struct->contains(item)))
+        {
+            continue;
+        }
+
+        struct1.m_Struct->insert(item, struct2.m_Struct->value(item));
+    }
+
+    return true;
+}
+
+Q_DECL_EXPORT bool cf_StructClear(QWDDX &structure)
+{
+    if (structure.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "structure is not a struct");
+    }
+
+    structure.m_Struct->clear();
+
+    return true;
+}
+
+Q_DECL_EXPORT QWDDX cf_StructCopy(QWDDX &structure)
+{
+    if (structure.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "structure is not a struct");
+    }
+
+    return structure;
+}
+
+Q_DECL_EXPORT int cf_StructCount(const QWDDX &structure)
+{
+    if (structure.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "structure is not a struct");
+    }
+
+    return structure.m_Struct->count();
+}
+
+Q_DECL_EXPORT bool cf_StructDelete(QWDDX &structure, const QString &key, bool indicatenotexisting)
+{
+    bool ret = true;
+
+    if (structure.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "structure is not a struct");
+    }
+
+    if (indicatenotexisting)
+    {
+        ret = structure.m_Struct->contains(key);
+    }
+
+    structure.m_Struct->remove(key);
+
+    return ret;
+}
+
+Q_DECL_EXPORT QWDDX cf_StructFind(const QWDDX &structure, const QString &key)
+{
+    if (structure.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "structure is not a struct");
+    }
+
+    if (!structure.m_Struct->contains(key))
+    {
+        throw QMKFusionException("Struct error", "key does not exist");
+    }
+
+    return structure.m_Struct->value(key);
+}
+
+Q_DECL_EXPORT QWDDX cf_StructFindKey(const QWDDX &top, const QString &value, const QString &scope)
+{
+    Q_UNUSED(top);
+    Q_UNUSED(value);
+    Q_UNUSED(scope);
+
+    throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
+}
+
+Q_DECL_EXPORT QWDDX cf_StructFindValue(const QWDDX &top, const QString &value, const QString &scope)
+{
+    Q_UNUSED(top);
+    Q_UNUSED(value);
+    Q_UNUSED(scope);
+
+    throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
+}
+
+Q_DECL_EXPORT QWDDX cf_StructGet(const QString &pathDesired)
+{
+    Q_UNUSED(pathDesired);
+
+    throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
+}
+
+Q_DECL_EXPORT bool cf_StructInsert(QWDDX &structure, const QString &key, const QWDDX &value, bool allowoverwrite)
+{
+    if (structure.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "structure is not a struct");
+    }
+
+    if ((allowoverwrite == false)&&(structure.m_Struct->contains(key)))
+    {
+        return false;
+    }
+
+    structure.m_Struct->insert(key, value);
+
+    return false;
+}
+
+Q_DECL_EXPORT bool cf_StructIsEmpty(const QWDDX &structure)
+{
+    if (structure.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "structure is not a struct");
+    }
+
+    return structure.m_Struct->isEmpty();
+}
+
+Q_DECL_EXPORT QWDDX cf_StructKeyArray(const QWDDX &structure)
+{
+    QWDDX ret(QWDDX::Array);
+
+    if (structure.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "structure is not a struct");
+    }
+
+    for(const QString key : structure.m_Struct->keys())
+    {
+        ret.m_Array->append(key);
+    }
+
+    return ret;
+}
+
+Q_DECL_EXPORT bool cf_StructKeyExists(const QWDDX &structure, const QString &key)
+{
+    if (structure.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "structure is not a struct");
+    }
+
+    return structure.m_Struct->contains(key);
+}
+
+Q_DECL_EXPORT QString cf_StructKeyList(const QWDDX &structure, const QString &delimiter)
+{
+    QStringList ret;
+
+    if (structure.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "structure is not a struct");
+    }
+
+    for(const QString key : structure.m_Struct->keys())
+    {
+        ret.append(key);
+    }
+
+    return ret.join(delimiter);
+}
+
 Q_DECL_EXPORT QWDDX cf_StructNew()
 {
     return QWDDX(QWDDX::Struct);
+}
+
+Q_DECL_EXPORT QWDDX cf_StructSort(const QWDDX &base, const QString &sortType, const QString &sortOrder, const QString &pathToSubElement)
+{
+    Q_UNUSED(base);
+    Q_UNUSED(sortType);
+    Q_UNUSED(sortOrder);
+    Q_UNUSED(pathToSubElement);
+
+    throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
+}
+
+Q_DECL_EXPORT bool cf_StructUpdate(QWDDX &structure, const QString &key, const QWDDX &value)
+{
+    if (structure.type() != QWDDX::Struct)
+    {
+        throw QMKFusionException("Not Struct", "structure is not a struct");
+    }
+
+    structure.m_Struct->insert(key, value);
+
+    return true;
 }
