@@ -1411,7 +1411,10 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["arraytolist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
 
-	//ret.insert("Asc", QCFFunction("Asc"));
+    ret.insert("asc", QCFFunction("Asc", QCFFunction::ReturnInt));
+    ret["asc"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+
 	//ret.insert("ASin", QCFFunction("ASin"));
 	//ret.insert("Atn", QCFFunction("Atn"));
 	//ret.insert("BinaryDecode", QCFFunction("BinaryDecode"));
@@ -1434,11 +1437,56 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret.insert("duplicate", QCFFunction("Duplicate", QCFFunction::ReturnQWDDX));
     ret["duplicate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
 
-	//ret.insert("CJustify", QCFFunction("CJustify"));
-	//ret.insert("Compare", QCFFunction("Compare"));
-	//ret.insert("CompareNoCase", QCFFunction("CompareNoCase"));
+    ret.insert("cjustify", QCFFunction("CJustify", QCFFunction::ReturnString));
+    ret["cjustify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["cjustify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
-	//ret.insert("Cos", QCFFunction("Cos"));
+    ret.insert("compare", QCFFunction("Compare", QCFFunction::ReturnInt));
+    ret["compare"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["compare"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("comparenocase", QCFFunction("CompareNoCase", QCFFunction::ReturnInt));
+    ret["comparenocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["comparenocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("decrypt", QCFFunction("Decrypt", QCFFunction::ReturnString));
+    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, false, QCFFunctionArgument::TypeAny));
+    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("encrypt", QCFFunction("Encrypt", QCFFunction::ReturnString));
+    ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, false, QCFFunctionArgument::TypeAny));
+    ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("find", QCFFunction("Find", QCFFunction::ReturnInt));
+    ret["find"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["find"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["find"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("findnocase", QCFFunction("FindNoCase", QCFFunction::ReturnInt));
+    ret["findnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["findnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["findnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("findoneof", QCFFunction("FindOneOf", QCFFunction::ReturnInt));
+    ret["findoneof"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["findoneof"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["findoneof"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("formatbasen", QCFFunction("FormatBaseN", QCFFunction::ReturnInt));
+    ret["formatbasen"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
+    ret["formatbasen"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("getclientvariableslist", QCFFunction("GetClientVariablesList", QCFFunction::ReturnString));
+
+    //ret.insert("Cos", QCFFunction("Cos"));
 	//ret.insert("CreateDate", QCFFunction("CreateDate"));
 	//ret.insert("CreateDateTime", QCFFunction("CreateDateTime"));
 
@@ -1467,10 +1515,110 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	ret.insert("len", QCFFunction("Len", QCFFunction::ReturnInt));
 	ret["len"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
+    ret.insert("listappend", QCFFunction("ListAppend", QCFFunction::ReturnString));
+    ret["listappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret["listappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listchangedelims", QCFFunction("ListChangeDelims", QCFFunction::ReturnString));
+    ret["listchangedelims"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listchangedelims"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listchangedelims"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listcontains", QCFFunction("ListContains", QCFFunction::ReturnString));
+    ret["listcontains"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listcontains"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listcontains"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listcontainsnocase", QCFFunction("ListContainsNoCase", QCFFunction::ReturnString));
+    ret["listcontainsnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listcontainsnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listcontainsnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listdeleteat", QCFFunction("ListDeleteAt", QCFFunction::ReturnString));
+    ret["listdeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listdeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["listdeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listfind", QCFFunction("ListFind", QCFFunction::ReturnInt));
+    ret["listfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["listfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listfindnocase", QCFFunction("ListFindNoCase", QCFFunction::ReturnInt));
+    ret["listfindnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listfindnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["listfindnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listfirst", QCFFunction("ListFirst", QCFFunction::ReturnString));
+    ret["listfirst"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listfirst"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listgetat", QCFFunction("ListGetAt", QCFFunction::ReturnString));
+    ret["listgetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listgetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["listgetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listinsertat", QCFFunction("ListInsertAt", QCFFunction::ReturnString));
+    ret["listinsertat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listinsertat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["listinsertat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listinsertat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listlast", QCFFunction("ListLast", QCFFunction::ReturnString));
+    ret["listlast"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listlast"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listlen", QCFFunction("ListLen", QCFFunction::ReturnInt));
+    ret["listlen"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listlen"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listprepend", QCFFunction("ListPrepend", QCFFunction::ReturnString));
+    ret["listprepend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listprepend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listprepend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listqualify", QCFFunction("ListQualify", QCFFunction::ReturnString));
+    ret["listqualify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listqualify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listqualify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret["listqualify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listrest", QCFFunction("ListRest", QCFFunction::ReturnString));
+    ret["listrest"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listrest"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listsetat", QCFFunction("ListSetAt", QCFFunction::ReturnString));
+    ret["listsetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listsetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["listsetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret["listsetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listsort", QCFFunction("ListSort", QCFFunction::ReturnString));
+    ret["listsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret["listsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listvaluecount", QCFFunction("ListValueCount", QCFFunction::ReturnInt));
+    ret["listvaluecount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listvaluecount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listvaluecount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("listvaluecountnocount", QCFFunction("ListValueCountNoCase", QCFFunction::ReturnInt));
+    ret["listvaluecountnocount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listvaluecountnocount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["listvaluecountnocount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
     ret.insert("listtoarray", QCFFunction("ListToArray", QCFFunction::ReturnQWDDX));
     ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
     ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
     ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("replacelist", QCFFunction("ReplaceList", QCFFunction::ReturnString));
+    ret["replacelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["replacelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["replacelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
     ret.insert("structappend", QCFFunction("StructAppend", QCFFunction::ReturnBool));
     ret["structappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
@@ -1540,6 +1688,10 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
     ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
     ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("valuelist", QCFFunction("ValueList", QCFFunction::ReturnString));
+    ret["valuelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret["valuelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
     return ret;
 }
