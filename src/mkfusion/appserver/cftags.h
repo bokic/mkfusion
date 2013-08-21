@@ -162,7 +162,6 @@ cfsetting
 cfsharepoint
 cfslider
 cfsilent
-cfspreadsheet
 cfsprydataset
 cfstoredproc
 cfswitch

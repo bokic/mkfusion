@@ -9,28 +9,21 @@
 
 
 Q_DECL_EXPORT double cf_Abs(double);
-Q_DECL_EXPORT int cf_Abs(int);
-Q_DECL_EXPORT QWDDX cf_Abs(const QWDDX&);
 Q_DECL_EXPORT double cf_ACos(double);
-Q_DECL_EXPORT QWDDX cf_ACos(const QWDDX&);
 Q_DECL_EXPORT void cf_AddSOAPRequestHeader(QWDDX&, const QString&, const QString&, const QWDDX&, bool);
 Q_DECL_EXPORT void cf_AddSOAPResponseHeader(const QString&, const QString&, const QWDDX&, bool);
 Q_DECL_EXPORT QString cf_AjaxLink(const QString&);
 Q_DECL_EXPORT void cf_AjaxOnLoad(const QString&);
-//Q_DECL_EXPORT void cf_ApplicationStop(); // ColdFusion 9
 Q_DECL_EXPORT bool cf_ArrayAppend(QWDDX&, const QWDDX&);
 Q_DECL_EXPORT double cf_ArrayAvg(const QWDDX&);
 Q_DECL_EXPORT bool cf_ArrayClear(QWDDX&);
-//Q_DECL_EXPORT bool cf_ArrayContains(const QWDDX&, const QWDDX&); // ColdFusion 9
-//Q_DECL_EXPORT bool cf_ArrayDelete(QWDDX&, const QWDDX&); // ColdFusion 9
 Q_DECL_EXPORT bool cf_ArrayDeleteAt(QWDDX&, int);
-//Q_DECL_EXPORT int cf_ArrayFind(const QWDDX&, const QWDDX&); // ColdFusion 9
-//Q_DECL_EXPORT int cf_ArrayFindNoCase(const QWDDX&, const QWDDX&); // ColdFusion 9
 Q_DECL_EXPORT bool cf_ArrayInsertAt(QWDDX&, int, const QWDDX&);
+Q_DECL_EXPORT bool cf_ArrayIsDefined(const QWDDX &array, int elementIndex);
 Q_DECL_EXPORT bool cf_ArrayIsEmpty(const QWDDX&);
 Q_DECL_EXPORT int cf_ArrayLen(const QWDDX&);
-Q_DECL_EXPORT double cf_ArrayMin(const QWDDX&);
 Q_DECL_EXPORT double cf_ArrayMax(const QWDDX&);
+Q_DECL_EXPORT double cf_ArrayMin(const QWDDX&);
 Q_DECL_EXPORT QWDDX cf_ArrayNew(int);
 Q_DECL_EXPORT bool cf_ArrayPrepend(QWDDX&, const QWDDX&);
 Q_DECL_EXPORT bool cf_ArrayResize(QWDDX&, int);
@@ -42,8 +35,6 @@ Q_DECL_EXPORT QString cf_ArrayToList(const QWDDX&, const QString&);
 Q_DECL_EXPORT int cf_Asc(const QString&);
 Q_DECL_EXPORT double cf_ASin(double);
 Q_DECL_EXPORT double cf_Atn(double);
-// AuthenticatedContext
-// AuthenticatedUser
 Q_DECL_EXPORT QString cf_BinaryDecode(const QString&, const QString&);
 Q_DECL_EXPORT QString cf_BinaryEncode(const QString&, const QString&);
 Q_DECL_EXPORT int cf_BitAnd(int, int);
@@ -55,13 +46,6 @@ Q_DECL_EXPORT int cf_BitOr(int, int);
 Q_DECL_EXPORT int cf_BitSHLN(int, int);
 Q_DECL_EXPORT int cf_BitSHRN(int, int);
 Q_DECL_EXPORT int cf_BitXor(int, int);
-Q_DECL_EXPORT QWDDX cf_CacheGet(const QString&);
-Q_DECL_EXPORT QWDDX cf_CacheGetAllIds();
-Q_DECL_EXPORT QWDDX cf_CacheGetMetadata(const QString&);
-Q_DECL_EXPORT QWDDX cf_CacheGetProperties(const QString&);
-Q_DECL_EXPORT void cf_CachePut(const QString&, const QWDDX&, int, int);
-Q_DECL_EXPORT void cf_CacheRemove(const QString&, bool);
-Q_DECL_EXPORT void cf_CacheSetProperties(const QWDDX&);
 Q_DECL_EXPORT double cf_Ceiling(double);
 Q_DECL_EXPORT QString cf_CharsetDecode(const QString&, const QString&);
 Q_DECL_EXPORT QString cf_CharsetEncode(const QString&, const QString&);
@@ -72,19 +56,16 @@ Q_DECL_EXPORT int cf_CompareNoCase(const QString&, const QString&);
 Q_DECL_EXPORT double cf_Cos(double);
 Q_DECL_EXPORT QWDDX cf_CreateDate(int, int, int);
 Q_DECL_EXPORT QWDDX cf_CreateDateTime(int, int, int, int, int, int);
-Q_DECL_EXPORT QWDDX cf_CreateDotNETObject(const QString&, const QString&, const QString&, int, const QString&, bool);
-Q_DECL_EXPORT QWDDX cf_CreateCOMObject(const QString&, const QString&, const QString&);
-Q_DECL_EXPORT QWDDX cf_CreateComponentObject(const QString&);
-Q_DECL_EXPORT QWDDX cf_CreateCobraObject(const QString&, const QString&, const QString&);
-Q_DECL_EXPORT QWDDX cf_CreateJavaObject(const QString&);
-Q_DECL_EXPORT QWDDX cf_CreateWebServiceObject(const QString&, const QString&, const QString&, const QWDDX&);
+Q_DECL_EXPORT QWDDX cf_CreateObject(const QString&);
 Q_DECL_EXPORT QWDDX cf_CreateODBCDate(const QDateTime&);
 Q_DECL_EXPORT QWDDX cf_CreateODBCDateTime(const QDateTime&);
+//CreateODBCTime
 Q_DECL_EXPORT QWDDX cf_CreateTime(int, int, int);
 Q_DECL_EXPORT QWDDX cf_CreateTimeSpan(int, int, int, int);
 Q_DECL_EXPORT QString cf_CreateUUID();
 Q_DECL_EXPORT QWDDX cf_DateAdd(const QString&, int, const QDateTime&);
 Q_DECL_EXPORT int cf_DateCompare(const QWDDX&, const QWDDX&, const QString& = "s");
+//DateConvert
 Q_DECL_EXPORT int cf_DateDiff(const QString&, const QDateTime&, const QDateTime&);
 Q_DECL_EXPORT QString cf_DateFormat(const QDateTime&, const QString&);
 Q_DECL_EXPORT int cf_DatePart(const QString&, const QDateTime&);
@@ -101,29 +82,14 @@ Q_DECL_EXPORT QString cf_Decrypt(const QString&, const QString&, const QString& 
 Q_DECL_EXPORT QString cf_DecryptBinary(const QString&, const QString&, const QString& = "CFMX_COMPAT", const QString& = "UU", const QString& = "", int = 1);
 Q_DECL_EXPORT bool cf_DeleteClientVariable(const QString&);
 Q_DECL_EXPORT QString cf_DeserializeJSON(const QString&, bool = true);
-Q_DECL_EXPORT void cf_DirectoryCreate(const QString&);
-Q_DECL_EXPORT void cf_DirectoryDelete(const QString&, bool = false);
 Q_DECL_EXPORT bool cf_DirectoryExists(const QString&);
-Q_DECL_EXPORT QWDDX cf_DirectoryList(const QString&, bool, const QString&, const QString&, const QString&);
-Q_DECL_EXPORT void cf_DirectoryRename(const QString&, const QString&);
 Q_DECL_EXPORT QString cf_DollarFormat(double);
 Q_DECL_EXPORT QWDDX cf_DotNetToCFType(const QWDDX&);
 Q_DECL_EXPORT QWDDX cf_Duplicate(const QWDDX&);
-
 //Encrypt
 //EncryptBinary
-//EntityDelete
-//EntityLoad
-//EntityLoadByExample
-//EntityLoadByPK
-//EntityMerge
-//EntityNew
-//EntityReload
-//EntitySave
-//EntitytoQuery
 //Evaluate
-Q_DECL_EXPORT double cf_Exp(double);
-Q_DECL_EXPORT int cf_Exp(int);
+Q_DECL_EXPORT double cf_Exp(double number);
 //ExpandPath
 //FileClose
 //FileCopy
@@ -135,26 +101,23 @@ Q_DECL_EXPORT int cf_Exp(int);
 //FileRead
 //FileReadBinary
 //FileReadLine
-//FileSeek
 //FileSetAccessMode
 //FileSetAttribute
 //FileSetLastModified
-//FileSkipBytes
 //FileWrite
-//FileWriteLine
-Q_DECL_EXPORT int cf_Find(const QString&, const QString&, int = 1);
-Q_DECL_EXPORT int cf_FindNoCase(const QString&, const QString&, int = 1);
-Q_DECL_EXPORT int cf_FindOneOf(const QString&, const QString&, int = 1);
-Q_DECL_EXPORT int cf_FirstDayOfMonth(const QDateTime&);
+Q_DECL_EXPORT int cf_Find(const QString &substring, const QString &string, int start = 1);
+Q_DECL_EXPORT int cf_FindNoCase(const QString &substring, const QString &string, int start = 1);
+Q_DECL_EXPORT int cf_FindOneOf(const QString &set, const QString &string, int start = 1);
+Q_DECL_EXPORT int cf_FirstDayOfMonth(const QDateTime &date);
 Q_DECL_EXPORT int cf_Fix(double);
-Q_DECL_EXPORT int cf_FormatBaseN(int, int);
+Q_DECL_EXPORT QString cf_FormatBaseN(int number, int radix);
 /*GenerateSecretKey
 GetAuthUser
 GetBaseTagData
 GetBaseTagList
-GetBaseTemplatePath
-GetClientVariablesList
-GetComponentMetaData
+GetBaseTemplatePath*/
+Q_DECL_EXPORT QString cf_GetClientVariablesList();
+/*GetComponentMetaData
 GetContextRoot
 GetCurrentTemplatePath
 GetDirectoryFromPath
@@ -162,7 +125,6 @@ GetEncoding
 GetException
 GetFileFromPath
 GetFileInfo
-GetFunctionCalledName
 GetFunctionList
 GetGatewayHelper
 GetHttpRequestData
@@ -176,7 +138,6 @@ GetMetaData
 GetMetricData
 GetPageContext
 GetPrinterInfo
-GetPrinterList
 GetProfileSections
 GetProfileString
 GetReadableImageFormats
@@ -191,10 +152,8 @@ GetTickCount
 GetTimeZoneInfo
 GetToken
 GetUserRoles
-GetVFSMetaData
 GetWriteableImageFormats
 Hash
-HQL Methods
 Hour
 HTMLCodeFormat
 HTMLEditFormat
@@ -218,10 +177,8 @@ ImageDrawText
 ImageFlip
 ImageGetBlob
 ImageGetBufferedImage
-ImageGetEXIFMetadata
 ImageGetEXIFTag
 ImageGetHeight
-ImageGetIPTCMetadata
 ImageGetIPTCTag
 ImageGetWidth
 ImageGrayscale
@@ -254,9 +211,7 @@ InputBaseN
 Insert
 Int*/
 Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level = 0);
-/*IsAuthenticated
-IsAuthorized
-IsBinary
+/*IsBinary
 IsBoolean
 IsCustomFunction
 IsDate
@@ -266,25 +221,17 @@ IsDefined
 IsImage
 IsImageFile
 IsInstanceOf
-IsIPv6
 IsJSON
-IsK2ServerABroker
-IsK2ServerDocCountExceeded
-IsK2ServerOnline
 IsLeapYear
 IsLocalHost
-IsNull
 IsNumeric
 IsNumericDate
 IsObject
 IsPDFFile
 IsPDFObject
-IsProtected
 IsQuery
 IsSimpleValue
-IsSOAPRequest
-IsSpreadsheetFile
-IsSpreadsheetObject*/
+IsSOAPRequest*/
 Q_DECL_EXPORT bool cf_IsStruct(const QWDDX &variable);
 /*IsUserInAnyRole
 IsUserInRole
@@ -298,34 +245,31 @@ IsXmlElem
 IsXmlNode
 IsXmlRoot
 JavaCast
-JSStringFormat
-*/
-Q_DECL_EXPORT QString cf_LCase(const QString&);
-Q_DECL_EXPORT QString cf_Left(const QString&, int);
-Q_DECL_EXPORT int cf_Len(const QString&);
-/*
-ListAppend
-ListChangeDelims
-ListContains
-ListContainsNoCase
-ListDeleteAt
-ListFind
-ListFindNoCase
-ListFirst
-ListGetAt
-ListInsertAt
-ListLast
-ListLen
-ListPrepend
-ListQualify
-ListRest
-ListSetAt
-ListSort*/
+JSStringFormat*/
+Q_DECL_EXPORT QString cf_LCase(const QString &string);
+Q_DECL_EXPORT QString cf_Left(const QString &string, int count);
+Q_DECL_EXPORT int cf_Len(const QString &string);
+Q_DECL_EXPORT QString cf_ListAppend(QString &list, const QString &value, const QString &delimiters = ",");
+Q_DECL_EXPORT QString cf_ListChangeDelims(QString &list, const QString &new_delimiter, const QString &delimiters = ",");
+Q_DECL_EXPORT int cf_ListContains(const QString &list, const QString &substring, const QString &delimiters = ",");
+Q_DECL_EXPORT int cf_ListContainsNoCase(const QString &list, const QString &substring, const QString &delimiters = ",");
+Q_DECL_EXPORT QString cf_ListDeleteAt(QString &list, int position, const QString &delimiters = ",");
+Q_DECL_EXPORT int cf_ListFind(const QString &list, const QString &value, const QString &delimiters = ",");
+Q_DECL_EXPORT int cf_ListFindNoCase(const QString &list, const QString &value, const QString &delimiters = ",");
+Q_DECL_EXPORT QString cf_ListFirst(const QString &list, const QString &delimiters = ",");
+Q_DECL_EXPORT QString cf_ListGetAt(const QString &list, int position, const QString &delimiters = ",");
+Q_DECL_EXPORT QString cf_ListInsertAt(QString &list, int position, const QString value, const QString &delimiters = ",");
+Q_DECL_EXPORT QString cf_ListLast(const QString &list, const QString &delimiters = ",");
+Q_DECL_EXPORT int cf_ListLen(const QString &list, const QString &delimiters = ",");
+Q_DECL_EXPORT QString cf_ListPrepend(QString &list, const QString &value, const QString &delimiters = ",");
+Q_DECL_EXPORT QString cf_ListQualify(QString &list, const QString &quallifier, const QString &delimiters = ",", const QString elements = "all"); // TODO: Check if all is default. Missing from the docs.
+Q_DECL_EXPORT QString cf_ListRest(const QString &list, const QString &delimiters = ",");
+Q_DECL_EXPORT QString cf_ListSetAt(QString &list, int position, const QString value, const QString &delimiters = ",");
+Q_DECL_EXPORT QString cf_ListSort(QString &list, const QString sort_type, const QString sort_order = "asc", const QString &delimiters = ",");
 Q_DECL_EXPORT QWDDX cf_ListToArray(const QString &list, const QString &delimiters = ",", bool includeEmptyFields = false);
-/*ListValueCount
-ListValueCountNoCase
-LJustify
-Location
+Q_DECL_EXPORT int cf_ListValueCount(const QString &list, const QString value, const QString &delimiters = ",");
+Q_DECL_EXPORT int cf_ListValueCountNoCase(const QString &list, const QString value, const QString &delimiters = ",");
+/*LJustify
 Log
 Log10
 LSCurrencyFormat
@@ -349,21 +293,7 @@ Month
 MonthAsString
 Now
 NumberFormat
-ObjectEquals
-ObjectLoad
-ObjectSave
-ORMClearSession
-ORMCloseSession
-ORMEvictCollection
-ORMEvictEntity
-ORMEvictQueries
-ORMExecuteQuery
-ORMFlush
-ORMGetSession
-ORMGetSessionFactory
-ORMReload
 ParagraphFormat
-ParameterExists
 ParseDateTime
 Pi
 PrecisionEvaluate
@@ -380,14 +310,14 @@ Randomize
 RandRange
 REFind
 REFindNoCase
+ReleaseComObject
 REMatch
 REMatchNoCase
-ReleaseComObject
 RemoveChars
 RepeatString
-Replace
-ReplaceList
-ReplaceNoCase
+Replace*/
+Q_DECL_EXPORT QString cf_ReplaceList(QString &list, const QString &list1, const QString &list2);
+/*ReplaceNoCase
 REReplace
 REReplaceNoCase
 Reverse
@@ -407,43 +337,6 @@ Sin
 Sleep
 SpanExcluding
 SpanIncluding
-SpreadsheetAddColumn
-SpreadsheetAddImage
-SpreadsheetAddFreezePane
-SpreadsheetAddInfo
-SpreadsheetAddRow
-SpreadsheetAddRows
-SpreadsheetAddSplitPane
-SpreadsheetCreateSheet
-SpreadsheetDeleteColumn
-SpreadsheetDeleteColumns
-SpreadsheetDeleteRow
-SpreadsheetDeleteRows
-SpreadsheetFormatCell
-SpreadsheetFormatColumn
-SpreadsheetFormatColumns
-SpreadsheetFormatRow
-SpreadsheetFormatRows
-SpreadsheetGetCellComment
-SpreadsheetGetCellFormula
-SpreadsheetGetCellValue
-SpreadsheetInfo
-SpreadsheetMergeCells
-SpreadsheetNew
-SpreadsheetRead
-SpreadsheetReadBinary
-SpreadsheetSetActiveSheet
-SpreadsheetSetActiveSheetNumber
-SpreadsheetSetCellComment
-SpreadsheetSetCellFormula
-SpreadsheetSetCellValue
-SpreadsheetSetColumnWidth
-SpreadsheetSetFooter
-SpreadsheetSetHeader
-SpreadsheetSetRowHeight
-SpreadsheetShiftColumns
-SpreadsheetShiftRows
-SpreadsheetWrite
 Sqr
 StripCR*/
 Q_DECL_EXPORT bool cf_StructAppend(QWDDX &struct1, const QWDDX &struct2, bool overwriteFlag = true);
@@ -464,27 +357,21 @@ Q_DECL_EXPORT QWDDX cf_StructNew();
 Q_DECL_EXPORT QWDDX cf_StructSort(const QWDDX &base, const QString &sortType = "text", const QString &sortOrder = "asc", const QString &pathToSubElement = "");
 Q_DECL_EXPORT bool cf_StructUpdate(QWDDX &structure, const QString &key, const QWDDX &value);
 /*Tan
-ThreadJoin
-ThreadTerminate
-Throw
 TimeFormat
 ToBase64
 ToBinary
 ToScript
 ToString
-Trace
 Trim
 UCase
 URLDecode
 URLEncodedFormat
 URLSessionFormat
-Val
-ValueList
-VerifyClient
+Val*/
+Q_DECL_EXPORT QString cf_ValueList(const QWDDX &query_column, const QString delimiter = ",");
+/*VerifyClient
 Week
 Wrap
-Writedump
-Writelog
 WriteOutput
 XmlChildPos
 XmlElemNew
@@ -496,8 +383,7 @@ XmlSearch
 XmlTransform
 XmlValidate
 Year
-YesNoFormat
-*/
+YesNoFormat*/
 
 QString WriteException(const QMKFusionException &, const QCFRunningTemplate_Request &);
 
