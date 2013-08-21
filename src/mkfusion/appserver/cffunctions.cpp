@@ -167,19 +167,19 @@ Q_DECL_EXPORT bool cf_ArrayInsertAt(QWDDX &p_Array, int p_Index, const QWDDX &p_
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArrayIsDefined(const QWDDX &p_Array, int p_Index)
+Q_DECL_EXPORT bool cf_ArrayIsDefined(const QWDDX &array, int elementIndex)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    if ((p_Index < 1)||(p_Index > p_Array.m_Array->size()))
+    if ((elementIndex < 1)||(elementIndex > array.m_Array->size()))
 	{
-        throw QMKFusionInvalidArrayIndexException(p_Index, p_Array.m_Array->size());
+        throw QMKFusionInvalidArrayIndexException(elementIndex, array.m_Array->size());
 	}
 
-    if (p_Array.m_Array->at(p_Index - 1).type() == QWDDX::Null)
+    if (array.m_Array->at(elementIndex - 1).type() == QWDDX::Null)
 	{
 		return false;
 	}
@@ -187,14 +187,14 @@ Q_DECL_EXPORT bool cf_ArrayIsDefined(const QWDDX &p_Array, int p_Index)
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArrayIsEmpty(const QWDDX &p_Array)
+Q_DECL_EXPORT bool cf_ArrayIsEmpty(const QWDDX &array)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    if (p_Array.m_Array->size() == 0)
+    if (array.m_Array->size() == 0)
 	{
 		return true;
 	}
@@ -202,33 +202,34 @@ Q_DECL_EXPORT bool cf_ArrayIsEmpty(const QWDDX &p_Array)
 	return false;
 }
 
-Q_DECL_EXPORT int cf_ArrayLen(const QWDDX &p_Array)
+Q_DECL_EXPORT int cf_ArrayLen(const QWDDX &array)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    return p_Array.m_Array->size();
+    return array.m_Array->size();
 }
 
-Q_DECL_EXPORT double cf_ArrayMax(const QWDDX &p_Array)
+Q_DECL_EXPORT double cf_ArrayMax(const QWDDX &array)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if (p_Array.m_ArrayDimension != 1)
+    if (array.m_ArrayDimension != 1)
 	{
 		throw QMKFusionArrayNotOneDimensionException();
 	}
 
 	double ret = 0;
 
-    for(int c = 0; c < p_Array.m_Array->size(); c++)
+    // TODO: Optimize with c11 for container iterator.
+    for(int c = 0; c < array.m_Array->size(); c++)
 	{
-        QWDDX temp = p_Array.m_Array->at(c);
+        QWDDX temp = array.m_Array->at(c);
 
 		if (c == 0)
 		{
@@ -246,23 +247,24 @@ Q_DECL_EXPORT double cf_ArrayMax(const QWDDX &p_Array)
 	return ret;
 }
 
-Q_DECL_EXPORT double cf_ArrayMin(const QWDDX &p_Array)
+Q_DECL_EXPORT double cf_ArrayMin(const QWDDX &array)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if (p_Array.m_ArrayDimension != 1)
+    if (array.m_ArrayDimension != 1)
 	{
 		throw QMKFusionArrayNotOneDimensionException();
 	}
 
 	double ret = 0;
 
-    for(int c = 0; c < p_Array.m_Array->size(); c++)
+    // TODO: Optimize with c11 for container iterator.
+    for(int c = 0; c < array.m_Array->size(); c++)
 	{
-        QWDDX temp = p_Array.m_Array->at(c);
+        QWDDX temp = array.m_Array->at(c);
 
 		if (c == 0)
 		{
@@ -281,91 +283,91 @@ Q_DECL_EXPORT double cf_ArrayMin(const QWDDX &p_Array)
 }
 
 
-Q_DECL_EXPORT QWDDX cf_ArrayNew(int p_Dimension)
+Q_DECL_EXPORT QWDDX cf_ArrayNew(int dimension)
 {
-	if ((p_Dimension < 1)||(p_Dimension > 3))
+    if ((dimension < 1)||(dimension > 3))
 	{
-		throw QMKFusionBadArrayDimensionException(p_Dimension);
+        throw QMKFusionBadArrayDimensionException(dimension);
 	}
 
 	QWDDX ret(QWDDX::Array);
 
-	ret.m_ArrayDimension = p_Dimension;
+    ret.m_ArrayDimension = dimension;
 
 	return ret;
 }
 
-Q_DECL_EXPORT bool cf_ArrayPrepend(QWDDX &p_Array, const QWDDX &p_Value)
+Q_DECL_EXPORT bool cf_ArrayPrepend(QWDDX &array, const QWDDX &value)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    if (p_Array.m_ArrayDimension > 1)
+    if (array.m_ArrayDimension > 1)
 	{
-        if (p_Value.type() != QWDDX::Array)
+        if (value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
-        if (p_Array.m_ArrayDimension != p_Value.m_ArrayDimension + 1)
+        if (array.m_ArrayDimension != value.m_ArrayDimension + 1)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
 	}
 
-	QWDDX temp = p_Value;
+    QWDDX temp = value;
 
-    p_Array.m_Array->insert(0, temp);
+    array.m_Array->insert(0, temp);
 
 	return true;
 }
 
 
-Q_DECL_EXPORT bool cf_ArrayResize(QWDDX &p_Array, int p_MinSize)
+Q_DECL_EXPORT bool cf_ArrayResize(QWDDX &array, int minSize)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    if (p_Array.m_Array->size() < p_MinSize)
+    if (array.m_Array->size() < minSize)
 	{
-        p_Array.m_Array->reserve(p_MinSize); // TODO: Check if this is the correct implementation.
+        array.m_Array->resize(minSize);
 	}
 
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArraySet(QWDDX &p_Array, int p_Start, int p_End, const QWDDX &p_Value)
+Q_DECL_EXPORT bool cf_ArraySet(QWDDX &array, int start, int end, const QWDDX &value)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if((p_Start > p_End)||(p_Start <= 0))
+    if((start > end)||(start <= 0))
 	{
-		throw QMKFusionArraySetRangeException(p_Start, p_End);
+        throw QMKFusionArraySetRangeException(start, end);
 	}
 
-    if (p_Array.m_ArrayDimension > 1)
+    if (array.m_ArrayDimension > 1)
 	{
-        if (p_Value.type() != QWDDX::Array)
+        if (value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
-        if (p_Array.m_ArrayDimension != p_Value.m_ArrayDimension + 1)
+        if (array.m_ArrayDimension != value.m_ArrayDimension + 1)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
 	}
 
-	QWDDX temp = p_Value;
+    QWDDX temp = value;
 
-	for(int c = p_Start - 1; c < p_End; c++)
+    for(int c = start - 1; c < end; c++)
 	{
-        p_Array.m_Array->replace(c, temp);
+        array.m_Array->replace(c, temp);
 	}
 
 	return true;
