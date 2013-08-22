@@ -706,93 +706,89 @@ Q_DECL_EXPORT QString cf_CJustify(const QString &string, int length)
 	return ret;
 }
 
-Q_DECL_EXPORT int cf_Compare(const QString &p_Value1, const QString &p_Value2)
+Q_DECL_EXPORT int cf_Compare(const QString &string1, const QString &string2)
 {
-	QWDDX l_Value1 = p_Value1;
-	QWDDX l_Value2 = p_Value2;
-
-	return l_Value1.toString().compare(l_Value2.toString(), Qt::CaseSensitive);
+    return string1.compare(string2, Qt::CaseSensitive);
 }
 
-Q_DECL_EXPORT int cf_CompareNoCase(const QString &p_Value1, const QString &p_Value2)
+Q_DECL_EXPORT int cf_CompareNoCase(const QString &string1, const QString &string2)
 {
-	QWDDX l_Value1 = p_Value1;
-	QWDDX l_Value2 = p_Value2;
-
-	return l_Value1.toString().compare(l_Value2.toString(), Qt::CaseInsensitive);
+    return string1.compare(string2, Qt::CaseInsensitive);
 }
 
-Q_DECL_EXPORT double cf_Cos(double val)
+Q_DECL_EXPORT double cf_Cos(double number)
 {
-	return cos(val);
+	return cos(number);
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateDate(int p_Year, int p_Month, int p_Day)
+Q_DECL_EXPORT QWDDX cf_CreateDate(int year, int month, int day)
 {
-	if ((p_Month < 1)||(p_Month > 12))
+    if ((month < 1)||(month > 12))
 	{
-		throw QMKFusionInvalidArgumentException("CreateDate", 2, p_Month, 1, 12);
+        throw QMKFusionInvalidArgumentException("CreateDate", 2, month, 1, 12);
 	}
 
-	if ((p_Day < 1)||(p_Day > 31))
+    if ((day < 1)||(day > 31))
 	{
-		throw QMKFusionInvalidArgumentException("CreateDate", 3, p_Day, 1, 31);
+        throw QMKFusionInvalidArgumentException("CreateDate", 3, day, 1, 31);
 	}
 
-	return QDateTime(QDate(p_Year, p_Month, p_Day));
+    return QDateTime(QDate(year, month, day));
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateDateTime(int p_Year, int p_Month, int p_Day, int p_Hour, int p_Minute, int p_Second)
+Q_DECL_EXPORT QWDDX cf_CreateDateTime(int year, int month, int day, int hour, int minute, int second)
 {
-	return QDateTime(QDate(p_Year, p_Month, p_Day), QTime(p_Hour, p_Minute, p_Second));
+    return QDateTime(QDate(year, month, day), QTime(hour, minute, second));
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateObject(const QString&)
+Q_DECL_EXPORT QWDDX cf_CreateObject(const QString &type)
 {
+    Q_UNUSED(type);
+
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateODBCDate(const QDateTime &p_Date)
+Q_DECL_EXPORT QWDDX cf_CreateODBCDate(const QDateTime &date)
 {
-	return QDateTime(QDate(p_Date.date().year(), p_Date.date().month(), p_Date.date().day()));
+    return QDateTime(QDate(date.date().year(), date.date().month(), date.date().day()));
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateODBCDateTime(const QDateTime &p_Date)
+Q_DECL_EXPORT QWDDX cf_CreateODBCDateTime(const QDateTime &date)
 {
-	return p_Date;
+    return date;
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateODBCTime(const QDateTime &p_Date)
+Q_DECL_EXPORT QWDDX cf_CreateODBCTime(const QDateTime &date)
 {
-	return QDateTime(QDate(1899, 12, 30), QTime(p_Date.time().hour(), p_Date.time().minute(), p_Date.time().second()));
+    return QDateTime(QDate(1899, 12, 30), QTime(date.time().hour(), date.time().minute(), date.time().second()));
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateTime(int p_Hour, int p_Minute, int p_Second)
+Q_DECL_EXPORT QWDDX cf_CreateTime(int hour, int minute, int second)
 {
-	if ((p_Hour < 0)||(p_Hour > 23))
+    if ((hour < 0)||(hour > 23))
 	{
-		throw QMKFusionInvalidArgumentException("CreateTime", 1, p_Hour, 0, 23);
+        throw QMKFusionInvalidArgumentException("CreateTime", 1, hour, 0, 23);
 	}
 
-	if ((p_Minute < 0)||(p_Minute > 59))
+    if ((minute < 0)||(minute > 59))
 	{
-		throw QMKFusionInvalidArgumentException("CreateTime", 2, p_Minute, 0, 59);
+        throw QMKFusionInvalidArgumentException("CreateTime", 2, minute, 0, 59);
 	}
 
-	if ((p_Second < 0)||(p_Second > 59))
+    if ((second < 0)||(second > 59))
 	{
-		throw QMKFusionInvalidArgumentException("CreateTime", 3, p_Second, 0, 59);
+        throw QMKFusionInvalidArgumentException("CreateTime", 3, second, 0, 59);
 	}
 
-	return QDateTime(QDate(1899, 12, 30), QTime(p_Hour, p_Minute, p_Second));
+    return QDateTime(QDate(1899, 12, 30), QTime(hour, minute, second));
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateTimeSpan(int p_Days, int p_Hours, int p_Minutes, int p_Seconds)
+Q_DECL_EXPORT QWDDX cf_CreateTimeSpan(int days, int hours, int minutes, int seconds)
 {
 	QDateTime ret = QDateTime(QDate(1899, 12, 30));
 
-	ret.addDays(p_Days);
-	ret.addSecs((p_Hours * 60 * 60) + (p_Minutes * 60) + p_Seconds);
+    ret.addDays(days);
+    ret.addSecs((hours * 60 * 60) + (minutes * 60) + seconds);
 
 	return ret;
 }
@@ -802,54 +798,54 @@ Q_DECL_EXPORT QString cf_CreateUUID()
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QDateTime cf_DateAdd(const QString &p_DatePart, int p_Value, const QWDDX &p_Date)
+Q_DECL_EXPORT QDateTime cf_DateAdd(const QString &datepart, int number, QDateTime &date)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 
-	QWDDX temp = p_Date;
+    QWDDX temp = date;
 	QDateTime ret = temp.toDateTime();
 
-	if(p_DatePart.compare("yyyy", Qt::CaseInsensitive) == 0)
+    if(datepart.compare("yyyy", Qt::CaseInsensitive) == 0)
 	{
-		ret.addYears(p_Value);
+        ret.addYears(number);
 	}
-	else if(p_DatePart.compare("q", Qt::CaseInsensitive) == 0)
-	{
-
-	}
-	else if(p_DatePart.compare("m", Qt::CaseInsensitive) == 0)
+    else if(datepart.compare("q", Qt::CaseInsensitive) == 0)
 	{
 
 	}
-	else if(p_DatePart.compare("y", Qt::CaseInsensitive) == 0)
+    else if(datepart.compare("m", Qt::CaseInsensitive) == 0)
 	{
 
 	}
-	else if(p_DatePart.compare("d", Qt::CaseInsensitive) == 0)
+    else if(datepart.compare("y", Qt::CaseInsensitive) == 0)
 	{
 
 	}
-	else if(p_DatePart.compare("w", Qt::CaseInsensitive) == 0)
+    else if(datepart.compare("d", Qt::CaseInsensitive) == 0)
 	{
 
 	}
-	else if(p_DatePart.compare("ww", Qt::CaseInsensitive) == 0)
+    else if(datepart.compare("w", Qt::CaseInsensitive) == 0)
 	{
 
 	}
-	else if(p_DatePart.compare("h", Qt::CaseInsensitive) == 0)
+    else if(datepart.compare("ww", Qt::CaseInsensitive) == 0)
 	{
 
 	}
-	else if(p_DatePart.compare("n", Qt::CaseInsensitive) == 0)
+    else if(datepart.compare("h", Qt::CaseInsensitive) == 0)
 	{
 
 	}
-	else if(p_DatePart.compare("s", Qt::CaseInsensitive) == 0)
+    else if(datepart.compare("n", Qt::CaseInsensitive) == 0)
 	{
 
 	}
-	else if(p_DatePart.compare("l", Qt::CaseInsensitive) == 0)
+    else if(datepart.compare("s", Qt::CaseInsensitive) == 0)
+	{
+
+	}
+    else if(datepart.compare("l", Qt::CaseInsensitive) == 0)
 	{
 
 	}
@@ -861,106 +857,114 @@ Q_DECL_EXPORT QDateTime cf_DateAdd(const QString &p_DatePart, int p_Value, const
 	return ret;
 }
 
-Q_DECL_EXPORT int cf_DateCompare(const QWDDX &p_Date1, const QWDDX &p_Date2, const QString &p_DatePart)
+Q_DECL_EXPORT int cf_DateCompare(const QDateTime &date1, const QDateTime &date2, const QString &datePart)
 {
-    Q_UNUSED(p_Date1);
-    Q_UNUSED(p_Date2);
-    Q_UNUSED(p_DatePart);
+    Q_UNUSED(date1);
+    Q_UNUSED(date2);
+    Q_UNUSED(datePart);
 
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT int cf_DateDiff(const QString&, const QDateTime&, const QDateTime&)
+Q_DECL_EXPORT QString cf_DateConvert(const QString &conversion_type, const QDateTime &date)
+{
+    Q_UNUSED(conversion_type);
+    Q_UNUSED(date);
+
+	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
+}
+
+Q_DECL_EXPORT int cf_DateDiff(const QString &datepart, const QDateTime &date1, const QDateTime &date2)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_DateFormat(const QDateTime&, const QString&)
+Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT int cf_DatePart(const QString&, const QDateTime&)
+Q_DECL_EXPORT int cf_DatePart(const QString &datepart, const QDateTime &date)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT int cf_Day(const QDateTime&)
+Q_DECL_EXPORT int cf_Day(const QDateTime &date)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT int cf_DayOfWeek(const QDateTime&)
+Q_DECL_EXPORT int cf_DayOfWeek(const QDateTime &date)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_DayOfWeekAsString(int, const QString&)
+Q_DECL_EXPORT QString cf_DayOfWeekAsString(int day_of_week, const QString &locale)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT int cf_DayOfYear(const QDateTime&)
+Q_DECL_EXPORT int cf_DayOfYear(const QDateTime &date)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT int cf_DaysInMonth(const QDateTime&)
+Q_DECL_EXPORT int cf_DaysInMonth(const QDateTime &date)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT int cf_DaysInYear(const QDateTime&)
+Q_DECL_EXPORT int cf_DaysInYear(const QDateTime &date)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_DE(const QString&)
+Q_DECL_EXPORT QString cf_DE(const QString &string)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_DecimalFormat(double)
+Q_DECL_EXPORT QString cf_DecimalFormat(double number)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT double cf_DecrementValue(double)
+Q_DECL_EXPORT double cf_DecrementValue(double number)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_Decrypt(const QString&, const QString&, const QString&, const QString&, const QString&, int)
+Q_DECL_EXPORT QString cf_Decrypt(const QString &encrypted_string, const QString &key, const QString &algorithm, const QString &encoding, const QString &IVorSalt, int iterations)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_DecryptBinary(const QString&, const QString&, const QString&, const QString&, const QString&, int)
+Q_DECL_EXPORT QString cf_DecryptBinary(const QString &bytes, const QString &key, const QString &algorithm, const QString &IVorSalt, int iterations)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_DeleteClientVariable(const QString&)
+Q_DECL_EXPORT bool cf_DeleteClientVariable(const QString &name)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_DeserializeJSON(const QString&, bool)
+Q_DECL_EXPORT QString cf_DeserializeJSON(const QString &JSONVar, bool strictMapping)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_DirectoryExists(const QString&)
+Q_DECL_EXPORT bool cf_DirectoryExists(const QString &absolute_path)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_DollarFormat(double)
+Q_DECL_EXPORT QString cf_DollarFormat(double number)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_DotNetToCFType(const QWDDX&)
+Q_DECL_EXPORT QWDDX cf_DotNetToCFType(const QWDDX &variable_name)
 {
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
@@ -970,9 +974,89 @@ Q_DECL_EXPORT QWDDX cf_Duplicate(const QWDDX &variable_name)
     return variable_name;
 }
 
+Q_DECL_EXPORT QString cf_Encrypt(const QString &string, const QString &key, const QString &algorithm, const QString &encoding, const QString &IVorSalt, int iterations)
+{
+}
+
+Q_DECL_EXPORT QString cf_EncryptBinary(const QString &bytes, const QString &key, const QString &algorithm, const QString &IVorSalt, int iterations)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_Evaluate(const QStringList &string_expressions)
+{
+}
+
 Q_DECL_EXPORT double cf_Exp(double number)
 {
     return exp(number);
+}
+
+Q_DECL_EXPORT QString cf_ExpandPath(const QString &relative_path)
+{
+}
+
+Q_DECL_EXPORT void cf_FileClose(QWDDX &fileObj)
+{
+}
+
+Q_DECL_EXPORT void cf_FileCopy(const QString &source, const QString &destination)
+{
+}
+
+Q_DECL_EXPORT void cf_FileDelete(const QString &filepath)
+{
+}
+
+Q_DECL_EXPORT bool cf_FileExists(const QString &absolute_path)
+{
+}
+
+Q_DECL_EXPORT bool cf_FileIsEOF(QWDDX &fileObj)
+{
+}
+
+Q_DECL_EXPORT void cf_FileMove(const QString &source, const QString &destination)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_FileOpen(const QString &filepath, const QString mode, const QString charset)
+{
+}
+
+Q_DECL_EXPORT QString cf_FileRead(const QString &filepath, const QString charset)
+{
+}
+
+Q_DECL_EXPORT QString cf_FileRead(QWDDX &fileObj, int buffersize)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_FileReadBinary(const QString &filepath)
+{
+}
+
+Q_DECL_EXPORT QString cf_FileReadLine(QWDDX &fileObj)
+{
+}
+
+Q_DECL_EXPORT void cf_FileSetAccessMode(const QString &filepath, const QString mode) // TODO: Make this available only under Linux
+{
+}
+
+Q_DECL_EXPORT void cf_FileSetAttribute(const QString &filepath, const QString mode) // TODO: Make this available only under Windows
+{
+}
+
+Q_DECL_EXPORT void cf_FileSetLastModified(const QString &filepath, const QDateTime &date)
+{
+}
+
+Q_DECL_EXPORT void cf_FileWrite(const QString &filepath, const QString &data, const QString &charset)
+{
+}
+
+Q_DECL_EXPORT void cf_FileWrite(QWDDX &fileObj, const QString &data)
+{
 }
 
 Q_DECL_EXPORT int cf_Find(const QString &substring, const QString &string, int start)
@@ -1032,10 +1116,119 @@ Q_DECL_EXPORT QString cf_FormatBaseN(int number, int radix)
     throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
+Q_DECL_EXPORT QString cf_GenerateSecretKey(const QString &algorithm, int keysize)
+{
+}
+
+Q_DECL_EXPORT QString cf_GetAuthUser()
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetBaseTagData(const QString &tagname, int instancenumber)
+{
+}
+
+Q_DECL_EXPORT QString cf_GetBaseTagList()
+{
+}
+
+Q_DECL_EXPORT QString cf_GetBaseTemplatePath()
+{
+}
+
 Q_DECL_EXPORT QString cf_GetClientVariablesList()
 {
     throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
+
+Q_DECL_EXPORT QWDDX cf_GetComponentMetaData(const QString &path)
+{
+}
+
+Q_DECL_EXPORT QString cf_GetContextRoot()
+{
+}
+
+Q_DECL_EXPORT QString cf_GetCurrentTemplatePath()
+{
+}
+
+Q_DECL_EXPORT QString cf_GetDirectoryFromPath(const QString &path)
+{
+}
+
+Q_DECL_EXPORT QString cf_GetEncoding(const QString &scope_name)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetException(const QWDDX &object)
+{
+}
+
+Q_DECL_EXPORT QString cf_GetFileFromPath(const QString &path)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetFileInfo(const QString &path)
+{
+}
+
+Q_DECL_EXPORT QString cf_GetFunctionList()
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetGatewayHelper(const QString &gatewayID)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetHttpRequestData()
+{
+}
+
+Q_DECL_EXPORT QString cf_GetHttpTimeString(const QDateTime &date_time_object)
+{
+}
+
+Q_DECL_EXPORT int cf_GetK2ServerDocCount()
+{
+}
+
+Q_DECL_EXPORT int cf_GetK2ServerDocCountLimit()
+{
+}
+
+Q_DECL_EXPORT QString cf_GetLocale()
+{
+}
+
+Q_DECL_EXPORT QString cf_GetLocaleDisplayName(const QString &locale, const QString &inlocale)
+{
+}
+
+Q_DECL_EXPORT QString cf_GetLocalHostIP()
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetMetaData(const QWDDX &object)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetMetricData(const QString &mode)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetPageContext()
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetPrinterInfo(const QString &printer)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetProfileSections(const QString &iniFile)
+{
+}
+
 
 Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level)
 {

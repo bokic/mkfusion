@@ -66,7 +66,7 @@ Q_DECL_EXPORT QWDDX cf_CreateODBCTime(const QDateTime &date);
 Q_DECL_EXPORT QWDDX cf_CreateTime(int hour, int minute, int second);
 Q_DECL_EXPORT QWDDX cf_CreateTimeSpan(int days, int hours, int minutes, int seconds);
 Q_DECL_EXPORT QString cf_CreateUUID();
-Q_DECL_EXPORT QWDDX cf_DateAdd(const QString &datepart, int number, const QDateTime &date);
+Q_DECL_EXPORT QDateTime cf_DateAdd(const QString &datepart, int number, QDateTime &date);
 Q_DECL_EXPORT int cf_DateCompare(const QDateTime &date1, const QDateTime &date2, const QString &datePart = "s");
 Q_DECL_EXPORT QString cf_DateConvert(const QString &conversion_type, const QDateTime &date);
 Q_DECL_EXPORT int cf_DateDiff(const QString &datepart, const QDateTime &date1, const QDateTime &date2);
