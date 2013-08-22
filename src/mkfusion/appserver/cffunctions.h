@@ -163,58 +163,58 @@ Q_DECL_EXPORT int cf_Hour(const QDateTime &date);
 Q_DECL_EXPORT QString cf_HTMLCodeFormat(const QString &string, const QString &version);
 Q_DECL_EXPORT QString cf_HTMLEditFormat(const QString &string, const QString &version);
 Q_DECL_EXPORT bool cf_IIf(bool condition, const QString &string_expression1, const QString &string_expression2);
-/*ImageAddBorder
-ImageBlur
-ImageClearRect
-ImageCopy
-ImageCrop
-ImageDrawArc
-ImageDrawBeveledRect
-ImageDrawCubicCurve
-ImageDrawLine
-ImageDrawLines
-ImageDrawOval
-ImageDrawPoint
-ImageDrawQuadraticCurve
-ImageDrawRect
-ImageDrawRoundRect
-ImageDrawText
-ImageFlip
-ImageGetBlob
-ImageGetBufferedImage
-ImageGetEXIFTag
-ImageGetHeight
-ImageGetIPTCTag
-ImageGetWidth
-ImageGrayscale
-ImageInfo
-ImageNegative
-ImageNew
-ImageOverlay
-ImagePaste
-ImageRead
-ImageReadBase64
-ImageResize
-ImageRotate
-ImageRotateDrawingAxis
-ImageScaleToFit
-ImageSetAntialiasing
-ImageSetBackgroundColor
-ImageSetDrawingColor
-ImageSetDrawingStroke
-ImageSetDrawingTransparency
-ImageSharpen
-ImageShear
-ImageShearDrawingAxis
-ImageTranslate
-ImageTranslateDrawingAxis
-ImageWrite
-ImageWriteBase64
-ImageXORDrawingMode
-IncrementValue
-InputBaseN
-Insert
-Int*/
+Q_DECL_EXPORT void cf_ImageAddBorder(QWDDX &name, int thickness = 1, const QString &color = "", const QString &borderType = "constant");
+Q_DECL_EXPORT void cf_ImageBlur(QWDDX &name, int blurRadius = 3);
+Q_DECL_EXPORT void cf_ImageClearRect(QWDDX &name, int x, int y, int width, int height);
+Q_DECL_EXPORT QWDDX cf_ImageCopy(QWDDX &name, int x, int y, int width, int height, int dx = 0, int dy = 0);
+Q_DECL_EXPORT void cf_ImageCrop(QWDDX &name, int x, int y, int width, int height);
+Q_DECL_EXPORT void cf_ImageDrawArc(QWDDX &name, int x, int y, int width, int height, int startAngle, double arcAngle, bool filled = false);
+Q_DECL_EXPORT void cf_ImageDrawBeveledRect(QWDDX &name, int x, int y, int width, int height, bool raised = false, bool filled = false);
+Q_DECL_EXPORT void cf_ImageDrawCubicCurve(QWDDX &name, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int x1, int y1, int x2, int y2);
+Q_DECL_EXPORT void cf_ImageDrawLine(QWDDX &name, int x1, int y1, int x2, int y2);
+Q_DECL_EXPORT void cf_ImageDrawLines(QWDDX &name, const QWDDX &xcoords, const QWDDX &ycoords, bool isPolygon = false, bool filled = false);
+Q_DECL_EXPORT void cf_ImageDrawOval(QWDDX &name, int x, int y, int width, int height, bool filled = false);
+Q_DECL_EXPORT void cf_ImageDrawPoint(QWDDX &name, int x, int y);
+Q_DECL_EXPORT void cf_ImageDrawQuadraticCurve(QWDDX &name, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int x1, int y1, int x2, int y2);
+Q_DECL_EXPORT void cf_ImageDrawRect(QWDDX &name, int x, int y, int width, int height, bool filled = false);
+Q_DECL_EXPORT void cf_ImageDrawRoundRect(QWDDX &name, int x, int y, int width, int height, int arcWidth, int arcHeight, bool filled = false);
+Q_DECL_EXPORT void cf_ImageDrawText(QWDDX &name, const QString &str, int x, int y, const QWDDX &attributeCollection = QWDDX());
+Q_DECL_EXPORT void cf_ImageFlip(QWDDX &name, const QString &transpose = "vertical");
+Q_DECL_EXPORT QWDDX cf_ImageGetBlob(const QWDDX &source);
+Q_DECL_EXPORT QWDDX cf_ImageGetBufferedImage(const QWDDX &name);
+Q_DECL_EXPORT QString cf_ImageGetEXIFTag(const QWDDX &name, const QString &tagName);
+Q_DECL_EXPORT int cf_ImageGetHeight(const QWDDX &name);
+Q_DECL_EXPORT QString cf_ImageGetIPTCTag(const QWDDX &name, const QString &tagName);
+Q_DECL_EXPORT int cf_ImageGetWidth(const QWDDX &name);
+Q_DECL_EXPORT void cf_ImageGrayscale(QWDDX &name);
+Q_DECL_EXPORT QWDDX cf_ImageInfo(const QWDDX &name);
+Q_DECL_EXPORT void cf_ImageNegative(QWDDX &name);
+Q_DECL_EXPORT QWDDX cf_ImageNew(const QString &source, int width = 0, int height = 0, const QString &imageType = "", const QString canvasColor = "black");
+Q_DECL_EXPORT void cf_ImageOverlay(QWDDX &source1, const QWDDX &source2);
+Q_DECL_EXPORT QWDDX cf_ImagePaste(QWDDX &image1, const QWDDX &image2, int x, int y);
+Q_DECL_EXPORT QWDDX cf_ImageRead(const QString &path);
+Q_DECL_EXPORT QWDDX cf_ImageReadBase64(const QString &string);
+Q_DECL_EXPORT void cf_ImageResize(QWDDX &name, int width, int height, const QString &interpolation = "highestQuality", int blurFactor = 2); // TODO: Verify blurFactor default value. It's not it the docs
+Q_DECL_EXPORT void cf_ImageRotate(QWDDX &name, double angle, int x = 2, int y = 2, const QString &interpolation = "nearest");
+Q_DECL_EXPORT QWDDX cf_ImageRotateDrawingAxis(QWDDX &name, double angle, int x = 0, int y = 0);
+Q_DECL_EXPORT void cf_ImageScaleToFit(QWDDX &name, const QString &fitWidth, const QString &fitHeight, const QString &interpolation = "highestQuality", int blurFactor = 2); // TODO: Verify blurFactor default value. It's not it the docs
+Q_DECL_EXPORT void cf_ImageSetAntialiasing(QWDDX &name, bool antialias = true);
+Q_DECL_EXPORT void cf_ImageSetBackgroundColor(QWDDX &name, const QString &color);
+Q_DECL_EXPORT void cf_ImageSetDrawingColor(QWDDX &name, const QString &color);
+Q_DECL_EXPORT void cf_ImageSetDrawingStroke(QWDDX &name, const QWDDX &attributeCollection = QWDDX());
+Q_DECL_EXPORT void cf_ImageSetDrawingTransparency(QWDDX &name, double percent);
+Q_DECL_EXPORT void cf_ImageSharpen(QWDDX &name, double gain = 1.0);
+Q_DECL_EXPORT void cf_ImageShear(QWDDX &name, double shear, const QString &direction = "horizontal", const QString &interpolation = "nearest");
+Q_DECL_EXPORT void cf_ImageShearDrawingAxis(QWDDX &name, double shx, double shy);
+Q_DECL_EXPORT void cf_ImageTranslate(QWDDX &name, int xTrans, int yTrans, const QString &interpolation = "nearest");
+Q_DECL_EXPORT void cf_ImageTranslateDrawingAxis(QWDDX &name, int x, int y);
+Q_DECL_EXPORT void cf_ImageWrite(const QWDDX &name, const QString &destination = "", double quality = 0.75);
+Q_DECL_EXPORT QString cf_ImageWriteBase64(const QWDDX &name, const QString &destination, const QString &format, bool inHTMLFormat = false);
+Q_DECL_EXPORT void cf_ImageXORDrawingMode(QWDDX &name, const QString &c1);
+Q_DECL_EXPORT int cf_IncrementValue(int number);
+Q_DECL_EXPORT QString cf_InputBaseN(const QString &string, int radix);
+Q_DECL_EXPORT QString cf_Insert(const QString &substring, QString &string, int position);
+Q_DECL_EXPORT QString cf_Int(double number);
 Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level = 0);
 /*IsBinary
 IsBoolean
