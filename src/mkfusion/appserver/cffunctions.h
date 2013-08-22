@@ -276,53 +276,54 @@ Q_DECL_EXPORT QString cf_ListSort(QString &list, const QString sort_type, const 
 Q_DECL_EXPORT QWDDX cf_ListToArray(const QString &list, const QString &delimiters = ",", bool includeEmptyFields = false);
 Q_DECL_EXPORT int cf_ListValueCount(const QString &list, const QString value, const QString &delimiters = ",");
 Q_DECL_EXPORT int cf_ListValueCountNoCase(const QString &list, const QString value, const QString &delimiters = ",");
-/*LJustify
-Log
-Log10
-LSCurrencyFormat
-LSDateFormat
-LSEuroCurrencyFormat
-LSIsCurrency
-LSIsDate
-LSIsNumeric
-LSNumberFormat
-LSParseCurrency
-LSParseDateTime
-LSParseEuroCurrency
-LSParseNumber
-LSTimeFormat
-LTrim
-Max
-Mid
-Min
-Minute
-Month
-MonthAsString
-Now
-NumberFormat
-ParagraphFormat
-ParseDateTime
-Pi
-PrecisionEvaluate
-PreserveSingleQuotes
-Quarter
-QueryAddColumn
-QueryAddRow
-QueryConvertForGrid
-QueryNew
-QuerySetCell
-QuotedValueList
-Rand
-Randomize
-RandRange
-REFind
-REFindNoCase
-ReleaseComObject
-REMatch
-REMatchNoCase
-RemoveChars
-RepeatString
-Replace*/
+Q_DECL_EXPORT QString cf_LJustify(const QString &string, int length);
+Q_DECL_EXPORT double cf_Log(double number);
+Q_DECL_EXPORT double cf_Log10(double number);
+Q_DECL_EXPORT QString cf_LSCurrencyFormat(double number, const QString &type = "local", const QString locale = "");
+Q_DECL_EXPORT QString cf_LSDateFormat(const QDateTime &date, const QString &mask = "medium", const QString &locale = "");
+Q_DECL_EXPORT QString cf_LSEuroCurrencyFormat(double currency_number, const QString &locale = "", const QString &type = "local");
+Q_DECL_EXPORT bool cf_LSIsCurrency(const QString &string, const QString &locale = "");
+Q_DECL_EXPORT bool cf_LSIsDate(const QString &string, const QString &locale = "");
+Q_DECL_EXPORT bool cf_LSIsNumeric(const QString &string, const QString &locale = "");
+Q_DECL_EXPORT QString cf_LSNumberFormat(double number, const QString &mask = "medium", const QString &locale = "");
+Q_DECL_EXPORT QString cf_LSParseCurrency(const QString &string, const QString &locale = "");
+Q_DECL_EXPORT QDateTime cf_LSParseDateTime(const QString &string, const QString &locale = "");
+Q_DECL_EXPORT QString cf_LSParseEuroCurrency(const QString &currency_string, const QString &locale = "");
+Q_DECL_EXPORT QString cf_LSParseNumber(const QString &string, const QString &locale = "");
+Q_DECL_EXPORT QString cf_LSTimeFormat(const QDateTime &time, const QString &locale = "short");
+Q_DECL_EXPORT QString cf_LSTimeFormat(const QString &time, const QString &locale = "short");
+Q_DECL_EXPORT QString cf_LTrim(QString &string);
+Q_DECL_EXPORT double cf_Max(double number1, double number2);
+Q_DECL_EXPORT QString cf_Mid(const QString &string, int start, int count);
+Q_DECL_EXPORT double cf_Min(double number1, double number2);
+Q_DECL_EXPORT int cf_Minute(const QDateTime &date);
+Q_DECL_EXPORT int cf_Month(const QDateTime &date);
+Q_DECL_EXPORT QString cf_MonthAsString(const QDateTime &date, const QString &locale = "");
+Q_DECL_EXPORT QDateTime cf_Now();
+Q_DECL_EXPORT QString cf_NumberFormat(double number, const QString &mask = "");
+Q_DECL_EXPORT QString cf_ParagraphFormat(const QString &string);
+Q_DECL_EXPORT QDateTime cf_ParseDateTime(const QString &datetime_string, const QString &pop_conversion = "standard");
+Q_DECL_EXPORT double cf_Pi();
+Q_DECL_EXPORT QWDDX cf_PrecisionEvaluate(const QStringList &string_expressions);
+Q_DECL_EXPORT QString cf_PreserveSingleQuotes(const QString &variable);
+Q_DECL_EXPORT int cf_Quarter(const QDateTime &date);
+Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, const QString &datatype, const QString &array_name);
+Q_DECL_EXPORT int cf_QueryAddRow(QWDDX &query, int number = 1);
+Q_DECL_EXPORT QWDDX cf_QueryConvertForGrid(const QWDDX &query, int page, int pageSize);
+Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &columntypelist = "");
+Q_DECL_EXPORT bool cf_QuerySetCell(QWDDX &query, const QString &column_name, const QWDDX &value, int row_number = -1);
+Q_DECL_EXPORT QString cf_QuotedValueList(const QWDDX &query_column, const QString &delimiter = ",");
+Q_DECL_EXPORT double cf_Rand(const QString &algorithm = "CFMX_COMPAT");
+Q_DECL_EXPORT double cf_Randomize(int number, const QString &algorithm = "CFMX_COMPAT");
+Q_DECL_EXPORT int cf_RandRange(int number1, int number2, const QString &algorithm = "CFMX_COMPAT");
+Q_DECL_EXPORT QWDDX cf_REFind(const QString &reg_expression, const QString &string, int start = 1, bool returnsubexpressions = false);
+Q_DECL_EXPORT QWDDX cf_REFindNoCase(const QString &reg_expression, const QString &string, int start = 1, bool returnsubexpressions = false);
+Q_DECL_EXPORT void cf_ReleaseComObject(QWDDX &objectName);
+Q_DECL_EXPORT QWDDX cf_REMatch(const QString &reg_expression, const QString &string);
+Q_DECL_EXPORT QWDDX cf_REMatchNoCase(const QString &reg_expression, const QString &string);
+Q_DECL_EXPORT QString cf_RemoveChars(QString &string, int start, int count);
+Q_DECL_EXPORT QString cf_RepeatString(QString &string, int count);
+Q_DECL_EXPORT QString cf_Replace(QString &string, const QString &substring1, const QString &substring2, const QString &scope = "one");
 Q_DECL_EXPORT QString cf_ReplaceList(QString &list, const QString &list1, const QString &list2);
 /*ReplaceNoCase
 REReplace
