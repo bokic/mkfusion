@@ -132,38 +132,38 @@ Q_DECL_EXPORT QString cf_GetFileFromPath(const QString &path);
 Q_DECL_EXPORT QWDDX cf_GetFileInfo(const QString &path);
 Q_DECL_EXPORT QString cf_GetFunctionList();
 Q_DECL_EXPORT QWDDX cf_GetGatewayHelper(const QString &gatewayID);
-/*GetHttpRequestData
-GetHttpTimeString
-GetK2ServerDocCount
-GetK2ServerDocCountLimit
-GetLocale
-GetLocaleDisplayName
-GetLocalHostIP
-GetMetaData
-GetMetricData
-GetPageContext
-GetPrinterInfo
-GetProfileSections
-GetProfileString
-GetReadableImageFormats
-GetSOAPRequest
-GetSOAPRequestHeader
-GetSOAPResponse
-GetSOAPResponseHeader
-GetTempDirectory
-GetTempFile
-GetTemplatePath
-GetTickCount
-GetTimeZoneInfo
-GetToken
-GetUserRoles
-GetWriteableImageFormats
-Hash
-Hour
-HTMLCodeFormat
-HTMLEditFormat
-IIf
-ImageAddBorder
+Q_DECL_EXPORT QWDDX cf_GetHttpRequestData();
+Q_DECL_EXPORT QString cf_GetHttpTimeString(const QDateTime &date_time_object);
+Q_DECL_EXPORT int cf_GetK2ServerDocCount();
+Q_DECL_EXPORT int cf_GetK2ServerDocCountLimit();
+Q_DECL_EXPORT QString cf_GetLocale();
+Q_DECL_EXPORT QString cf_GetLocaleDisplayName(const QString &locale = "", const QString &inlocale = "");
+Q_DECL_EXPORT QString cf_GetLocalHostIP();
+Q_DECL_EXPORT QWDDX cf_GetMetaData(const QWDDX &object);
+Q_DECL_EXPORT QWDDX cf_GetMetricData(const QString &mode);
+Q_DECL_EXPORT QWDDX cf_GetPageContext();
+Q_DECL_EXPORT QWDDX cf_GetPrinterInfo(const QString &printer);
+Q_DECL_EXPORT QWDDX cf_GetProfileSections(const QString &iniFile);
+Q_DECL_EXPORT QWDDX cf_GetProfileString(const QString &iniFile, const QString &section, const QString &entry);
+Q_DECL_EXPORT QString cf_GetReadableImageFormats();
+Q_DECL_EXPORT QWDDX cf_GetSOAPRequest();
+Q_DECL_EXPORT QWDDX cf_GetSOAPRequestHeader(const QString &_namespace, const QString &name, bool asXML = false);
+Q_DECL_EXPORT QWDDX cf_GetSOAPResponse(QWDDX &webservice);
+Q_DECL_EXPORT QWDDX cf_GetSOAPResponseHeader(const QString &_namespace, const QString &name, bool asXML = false);
+Q_DECL_EXPORT QString cf_GetTempDirectory();
+Q_DECL_EXPORT QString cf_GetTempFile(const QString &dir, const QString &prefix);
+Q_DECL_EXPORT QString cf_GetTemplatePath();
+Q_DECL_EXPORT QString cf_GetTickCount();
+Q_DECL_EXPORT QWDDX cf_GetTimeZoneInfo();
+Q_DECL_EXPORT QString cf_GetToken(const QString &string, int index, const QString &delimiters = ",");
+Q_DECL_EXPORT QString cf_GetUserRoles();
+Q_DECL_EXPORT QString cf_GetWriteableImageFormats();
+Q_DECL_EXPORT QString cf_Hash(const QString &string, const QString &algorithm, const QString &encoding = "");
+Q_DECL_EXPORT int cf_Hour(const QDateTime &date);
+Q_DECL_EXPORT QString cf_HTMLCodeFormat(const QString &string, const QString &version);
+Q_DECL_EXPORT QString cf_HTMLEditFormat(const QString &string, const QString &version);
+Q_DECL_EXPORT bool cf_IIf(bool condition, const QString &string_expression1, const QString &string_expression2);
+/*ImageAddBorder
 ImageBlur
 ImageClearRect
 ImageCopy
