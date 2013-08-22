@@ -253,7 +253,7 @@ Q_DECL_EXPORT bool cf_IsXmlNode(const QWDDX &value);
 Q_DECL_EXPORT bool cf_IsXmlRoot(const QWDDX &value);
 Q_DECL_EXPORT QWDDX JavaCast(const QString &type, const QWDDX &value);
 Q_DECL_EXPORT QString JSStringFormat(const QString &string);
-Q_DECL_EXPORT QString cf_LCase(const QStriwidthng &string);
+Q_DECL_EXPORT QString cf_LCase(const QString &string);
 Q_DECL_EXPORT QString cf_Left(const QString &string, int count);
 Q_DECL_EXPORT int cf_Len(const QString &string);
 Q_DECL_EXPORT QString cf_ListAppend(QString &list, const QString &value, const QString &delimiters = ",");
