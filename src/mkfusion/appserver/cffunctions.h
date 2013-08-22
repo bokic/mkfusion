@@ -32,10 +32,10 @@ Q_DECL_EXPORT bool cf_ArrayPrepend(QWDDX &array, const QWDDX &value);
 Q_DECL_EXPORT bool cf_ArrayResize(QWDDX &array, int minSize);
 Q_DECL_EXPORT bool cf_ArraySet(QWDDX &array, int start, int end, const QWDDX &value);
 Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QString &sort_order);
-Q_DECL_EXPORT double cf_ArraySum(const QWDDX&);
-Q_DECL_EXPORT bool cf_ArraySwap(QWDDX&, int, int);
-Q_DECL_EXPORT QString cf_ArrayToList(const QWDDX&, const QString&);
-Q_DECL_EXPORT int cf_Asc(const QString &array);
+Q_DECL_EXPORT double cf_ArraySum(const QWDDX &array);
+Q_DECL_EXPORT bool cf_ArraySwap(QWDDX &array, int position1, int position2);
+Q_DECL_EXPORT QString cf_ArrayToList(const QWDDX &array, const QString &delimiter = ",");
+Q_DECL_EXPORT int cf_Asc(const QString &string);
 Q_DECL_EXPORT double cf_ASin(double number);
 Q_DECL_EXPORT double cf_Atn(double number);
 Q_DECL_EXPORT QString cf_BinaryDecode(const QString &string, const QString &binaryencoding);
@@ -396,6 +396,6 @@ Q_DECL_EXPORT QWDDX cf_XmlValidate(const QWDDX &xmlDoc, const QString &validator
 Q_DECL_EXPORT int cf_Year(const QDateTime &date);
 Q_DECL_EXPORT bool cf_YesNoFormat(const QWDDX &value);
 
-QString WriteException(const QMKFusionException &, const QCFRunningTemplate_Request &);
+QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Request &r);
 
 #endif // CFFUNCTIONS_H

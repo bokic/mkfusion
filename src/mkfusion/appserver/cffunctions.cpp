@@ -6,163 +6,161 @@
 #include <math.h>
 
 
-Q_DECL_EXPORT double cf_Abs(double val)
+Q_DECL_EXPORT double cf_Abs(double number)
 {
-	return fabs(val);
+    return fabs(number);
 }
 
-Q_DECL_EXPORT double cf_ACos(double val)
+Q_DECL_EXPORT double cf_ACos(double number)
 {
-	if ((val < -1)||(val > 1))
+    if ((number < -1)||(number > 1))
 	{
-		throw QMKFusionInvalidArgumentException("ACos", 1, val, -1, 1);
+        throw QMKFusionInvalidArgumentException("ACos", 1, number, -1, 1);
 	}
 
-	return acos(val);
+    return acos(number);
 }
 
-Q_DECL_EXPORT void cf_AddSOAPRequestHeader(QWDDX &p_WebService, const QString &p_Namespace, const QString &p_Name, const QWDDX &p_Value, bool p_MustUnderstand)
+Q_DECL_EXPORT void cf_AddSOAPRequestHeader(QWDDX &webservice, const QString &_namespace, const QString &name, const QWDDX &value, bool mustunderstand)
 {
-    Q_UNUSED(p_WebService);
-    Q_UNUSED(p_Namespace);
-    Q_UNUSED(p_Name);
-    Q_UNUSED(p_Value);
-    Q_UNUSED(p_MustUnderstand);
+    Q_UNUSED(webservice);
+    Q_UNUSED(_namespace);
+    Q_UNUSED(name);
+    Q_UNUSED(value);
+    Q_UNUSED(mustunderstand);
 
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_AddSOAPResponseHeader(const QString &p_Namespace, const QString &p_Name, const QWDDX &p_Value, bool p_MustUnderstand)
+Q_DECL_EXPORT void cf_AddSOAPResponseHeader(const QString &_namespace, const QString &name, const QWDDX &value, bool mustunderstand)
 {
-    Q_UNUSED(p_Namespace);
-    Q_UNUSED(p_Name);
-    Q_UNUSED(p_Value);
-    Q_UNUSED(p_MustUnderstand);
+    Q_UNUSED(_namespace);
+    Q_UNUSED(name);
+    Q_UNUSED(value);
+    Q_UNUSED(mustunderstand);
 
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_AjaxLink(const QString &p_URL)
+Q_DECL_EXPORT QString cf_AjaxLink(const QString &URL)
 {
-    Q_UNUSED(p_URL);
+    Q_UNUSED(URL);
 
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_AjaxOnLoad(const QString &p_FunctionName)
+Q_DECL_EXPORT void cf_AjaxOnLoad(const QString &functionName)
 {
-    Q_UNUSED(p_FunctionName);
+    Q_UNUSED(functionName);
 
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_ArrayAppend(QWDDX &p_Array, const QWDDX &p_Value)
+Q_DECL_EXPORT bool cf_ArrayAppend(QWDDX &array, const QWDDX &value)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    if (p_Array.m_ArrayDimension > 1)
+    if (array.m_ArrayDimension > 1)
 	{
-        if (p_Value.type() != QWDDX::Array)
+        if (value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
-        if (p_Array.m_ArrayDimension != p_Value.m_ArrayDimension + 1)
+        if (array.m_ArrayDimension != value.m_ArrayDimension + 1)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
 	}
 
-    p_Array.m_Array->append(p_Value);
+    array.m_Array->append(value);
 
 	return true;
 }
 
-Q_DECL_EXPORT double cf_ArrayAvg(const QWDDX &p_Array)
+Q_DECL_EXPORT double cf_ArrayAvg(const QWDDX &array)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if (p_Array.m_ArrayDimension != 1)
+    if (array.m_ArrayDimension != 1)
 	{
 		throw QMKFusionArrayNotOneDimensionException();
 	}
 
-    if (p_Array.m_Array->size() == 0)
+    if (array.m_Array->size() == 0)
 	{
 		return 0;
 	}
 
 	double sum = 0;
 
-    for (int c = 0; c < p_Array.m_Array->size(); c++)
+    for (const QWDDX &item : *array.m_Array)
 	{
-        sum += p_Array.m_Array->at(c).toNumber();
+        sum += item.toNumber();
 	}
 
-    return sum / p_Array.m_Array->size();
+    return sum / array.m_Array->size();
 }
 
-Q_DECL_EXPORT bool cf_ArrayClear(QWDDX &p_Value)
+Q_DECL_EXPORT bool cf_ArrayClear(QWDDX &array)
 {
-    if (p_Value.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    p_Value.m_Array->clear();
+    array.m_Array->clear();
 
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArrayDeleteAt(QWDDX &p_Array, int p_Index)
+Q_DECL_EXPORT bool cf_ArrayDeleteAt(QWDDX &array, int position)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    if ((p_Index < 1)||(p_Index > p_Array.m_Array->size()))
+    if ((position < 1)||(position > array.m_Array->size()))
 	{
-        throw QMKFusionInvalidArrayIndexException(p_Index, p_Array.m_Array->size());
+        throw QMKFusionInvalidArrayIndexException(position, array.m_Array->size());
 	}
 
-    p_Array.m_Array->remove(p_Index - 1);
+    array.m_Array->remove(position - 1);
 
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArrayInsertAt(QWDDX &p_Array, int p_Index, const QWDDX &p_Value)
+Q_DECL_EXPORT bool cf_ArrayInsertAt(QWDDX &array, int position, const QWDDX &value)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-    if (p_Array.m_ArrayDimension > 1)
+    if (array.m_ArrayDimension > 1)
 	{
-        if (p_Value.type() != QWDDX::Array)
+        if (value.type() != QWDDX::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
-        if (p_Array.m_ArrayDimension != p_Value.m_ArrayDimension + 1)
+        if (array.m_ArrayDimension != value.m_ArrayDimension + 1)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
 	}
 
-    if ((p_Index < 1)||(p_Index > p_Array.m_Array->size()))
+    if ((position < 1)||(position > array.m_Array->size()))
 	{
-        throw QMKFusionInvalidArrayIndexException(p_Index, p_Array.m_Array->size());
+        throw QMKFusionInvalidArrayIndexException(position, array.m_Array->size());
 	}
 
-	QWDDX temp = p_Value;
-
-    p_Array.m_Array->insert(p_Index - 1, temp);
+    array.m_Array->insert(position - 1, value);
 
 	return true;
 }
@@ -373,76 +371,76 @@ Q_DECL_EXPORT bool cf_ArraySet(QWDDX &array, int start, int end, const QWDDX &va
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArraySort(QWDDX &p_Array, const QString &p_SortType, const QString &p_SortOrder)
+Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QString &sort_order)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
     {
         throw QMKFusionException("Error Occurred While Processing Request", "Parameter should be array.");
     }
 
-    if (p_Array.m_ArrayDimension != 1)
+    if (array.m_ArrayDimension != 1)
     {
         throw QMKFusionException("Error Occurred While Processing Request", "The array passed cannot contain more than one dimension.");
     }
 
-    if ((p_SortType.compare("Text", Qt::CaseInsensitive) != 0)&&(p_SortType.compare("TextNoCase", Qt::CaseInsensitive) != 0)&&(p_SortType.compare("Numeric", Qt::CaseInsensitive) != 0))
+    if ((sort_type.compare("Text", Qt::CaseInsensitive) != 0)&&(sort_type.compare("TextNoCase", Qt::CaseInsensitive) != 0)&&(sort_type.compare("Numeric", Qt::CaseInsensitive) != 0))
     {
-        throw QMKFusionException("Invalid sort type " + p_SortType + ".", "Valid sort type values are: Text, TextNoCase, and Numeric.");
+        throw QMKFusionException("Invalid sort type " + sort_type + ".", "Valid sort type values are: Text, TextNoCase, and Numeric.");
     }
 
-    if ((p_SortOrder.compare("Asc", Qt::CaseInsensitive) != 0)&&(p_SortOrder.compare("Desc", Qt::CaseInsensitive) != 0))
+    if ((sort_order.compare("Asc", Qt::CaseInsensitive) != 0)&&(sort_order.compare("Desc", Qt::CaseInsensitive) != 0))
     {
-        throw QMKFusionException("Invalid sort order " + p_SortOrder + ".", "Valid sort order values are: Asc and Desc.");
+        throw QMKFusionException("Invalid sort order " + sort_order + ".", "Valid sort order values are: Asc and Desc.");
     }
 
-    if ((p_SortType.compare("Numeric", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Asc", Qt::CaseInsensitive) == 0))
+    if ((sort_type.compare("Numeric", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Asc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
         {
             return s1.toNumber() < s2.toNumber();
         });
 
         return true;
     }
-    else if ((p_SortType.compare("Numeric", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Desc", Qt::CaseInsensitive) == 0))
+    else if ((sort_type.compare("Numeric", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Desc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
         {
             return s1.toNumber() > s2.toNumber();
         });
 
         return true;
     }
-    else if ((p_SortType.compare("Text", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Asc", Qt::CaseInsensitive) == 0))
+    else if ((sort_type.compare("Text", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Asc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
         {
             return s1.toString() < s2.toString();
         });
 
         return true;
     }
-    else if ((p_SortType.compare("Text", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Desc", Qt::CaseInsensitive) == 0))
+    else if ((sort_type.compare("Text", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Desc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
         {
             return s1.toString() > s2.toString();
         });
 
         return true;
     }
-    else if ((p_SortType.compare("TextNoCase", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Asc", Qt::CaseInsensitive) == 0))
+    else if ((sort_type.compare("TextNoCase", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Asc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
         {
             return s1.toString().compare(s2.toString(), Qt::CaseInsensitive) < 0;
         });
 
         return true;
     }
-    else if ((p_SortType.compare("TextNoCase", Qt::CaseInsensitive) == 0)&&(p_SortOrder.compare("Desc", Qt::CaseInsensitive) == 0))
+    else if ((sort_type.compare("TextNoCase", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Desc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(p_Array.m_Array->begin(), p_Array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
         {
             return s1.toString().compare(s2.toString(), Qt::CaseInsensitive) > 0;
         });
@@ -453,249 +451,252 @@ Q_DECL_EXPORT bool cf_ArraySort(QWDDX &p_Array, const QString &p_SortType, const
     return false;
 }
 
-Q_DECL_EXPORT double cf_ArraySum(const QWDDX &p_Array)
+Q_DECL_EXPORT double cf_ArraySum(const QWDDX &array)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if (p_Array.m_ArrayDimension != 1)
+    if (array.m_ArrayDimension != 1)
 	{
 		throw QMKFusionArrayNotOneDimensionException();
 	}
 
-    if (p_Array.m_Array->size() == 0)
+    if (array.m_Array->size() == 0)
 	{
 		return 0;
 	}
 
 	double sum = 0;
-	QWDDX temp = p_Array;
 
-    for (int c = 0; c < temp.m_Array->size(); c++)
+    for (int c = 0; c < array.m_Array->size(); c++)
 	{
-        sum += temp.m_Array->at(c).toNumber();
+        sum += array.m_Array->at(c).toNumber();
 	}
 
 	return sum;
 }
 
-Q_DECL_EXPORT bool cf_ArraySwap(QWDDX &p_Array, int p_Pos1, int p_Pos2)
+Q_DECL_EXPORT bool cf_ArraySwap(QWDDX &array, int position1, int position2)
 {
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	p_Pos1--;
-	p_Pos2--;
+    position1--;
+    position2--;
 
-    if((p_Pos1 < 0)||(p_Pos1 >= p_Array.m_Array->size()))
+    if((position1 < 0)||(position1 >= array.m_Array->size()))
 	{
-        throw QMKFusionArraySwapRangeException(p_Pos1 + 1, p_Array.m_Array->size());
+        throw QMKFusionArraySwapRangeException(position1 + 1, array.m_Array->size());
 	}
-    if((p_Pos2 < 0)||(p_Pos2 >= p_Array.m_Array->size()))
+    if((position2 < 0)||(position2 >= array.m_Array->size()))
 	{
-        throw QMKFusionArraySwapRangeException(p_Pos2 + 1, p_Array.m_Array->size());
+        throw QMKFusionArraySwapRangeException(position2 + 1, array.m_Array->size());
 	}
 
-    QWDDX temp = p_Array.m_Array->at(p_Pos1);
-    p_Array.m_Array[p_Pos1] = p_Array.m_Array[p_Pos2];
-    p_Array.m_Array->replace(p_Pos2, temp);
+    QWDDX temp = array.m_Array->at(position1);
+    array.m_Array[position1] = array.m_Array[position2];
+    array.m_Array->replace(position2, temp);
 
 	return true;
 }
 
-Q_DECL_EXPORT QString cf_ArrayToList(const QWDDX &p_Array, const QString &p_Delimiter)
+Q_DECL_EXPORT QString cf_ArrayToList(const QWDDX &array, const QString &delimiter)
 {
 	QString ret;
 
-    if (p_Array.type() != QWDDX::Array)
+    if (array.type() != QWDDX::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
-	if (p_Array.m_ArrayDimension != 1)
+    if (array.m_ArrayDimension != 1)
 	{
 		throw QMKFusionArrayNotOneDimensionException();
 	}
 
-    for(int c = 0; c < p_Array.m_Array->size(); c++)
+    for(int c = 0; c < array.m_Array->size(); c++)
 	{
 		if (c > 0)
 		{
-			ret += p_Delimiter;
+            ret.append(delimiter);
 		}
 
-        QWDDX temp = p_Array.m_Array->at(c);
-
-		ret += temp.toString();
+        ret.append(array.m_Array->at(c).toString());
 	}
 
 	return ret;
 }
 
-Q_DECL_EXPORT int cf_Asc(const QString &p_String)
+Q_DECL_EXPORT int cf_Asc(const QString &string)
 {
-	if (p_String.isEmpty())
+    if (string.isEmpty())
 	{
 		return 0;
 	}
 
-	return p_String[0].unicode();
+    return string[0].unicode();
 }
 
-Q_DECL_EXPORT double cf_ASin(double val)
+Q_DECL_EXPORT double cf_ASin(double number)
 {
-	return asin(val);
+    return asin(number);
 }
 
-Q_DECL_EXPORT double cf_Atn(double val)
+Q_DECL_EXPORT double cf_Atn(double number)
 {
-	return atan(val);
+    return atan(number);
 }
 
-Q_DECL_EXPORT QString cf_BinaryDecode(const QString &p_String, const QString &p_Type)
+Q_DECL_EXPORT QString cf_BinaryDecode(const QString &string, const QString &binaryencoding)
 {
-    Q_UNUSED(p_String);
-    Q_UNUSED(p_Type);
+    Q_UNUSED(string);
+    Q_UNUSED(binaryencoding);
 
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_BinaryEncode(const QString &p_String, const QString &p_Type)
+Q_DECL_EXPORT QString cf_BinaryEncode(const QString &binarydata, const QString &encoding)
 {
-    Q_UNUSED(p_String);
-    Q_UNUSED(p_Type);
+    Q_UNUSED(binarydata);
+    Q_UNUSED(encoding);
 
     throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT int cf_BitAnd(int p_num1, int p_num2)
+Q_DECL_EXPORT int cf_BitAnd(int number1, int number2)
 {
-	return p_num1 & p_num2;
+    return number1 & number2;
 }
 
-Q_DECL_EXPORT int cf_BitMaskClear(int p_num, int p_start, int p_end)
+Q_DECL_EXPORT int cf_BitMaskClear(int number, int start, int length)
 {
-	if((p_start < 0)||(p_start > 31))
+    if((start < 0)||(start > 31))
 	{
-		throw QMKFusionInvalidArgumentException("BitMaskClear", 2, p_start, 0, 31);
+        throw QMKFusionInvalidArgumentException("BitMaskClear", 2, start, 0, 31);
 	}
 
-	if((p_end < 0)||(p_end > 31))
+    if((length < 0)||(length > 31))
 	{
-		throw QMKFusionInvalidArgumentException("BitMaskClear", 3, p_end, 0, 31);
+        throw QMKFusionInvalidArgumentException("BitMaskClear", 3, length, 0, 31);
 	}
 
-	return p_num & ~(((1 << p_end) - 1) << p_start);
+    return number & ~(((1 << length) - 1) << start);
 }
 
-Q_DECL_EXPORT int cf_BitMaskRead(int p_num, int p_start, int p_end)
+Q_DECL_EXPORT int cf_BitMaskRead(int number, int start, int length)
 {
 
-	if((p_start < 0)||(p_start > 31))
+    if((start < 0)||(start > 31))
 	{
-		throw QMKFusionInvalidArgumentException("BitMaskRead", 2, p_start, 0, 31);
+        throw QMKFusionInvalidArgumentException("BitMaskRead", 2, start, 0, 31);
 	}
 
-	if((p_end < 0)||(p_end > 31))
+    if((length < 0)||(length > 31))
 	{
-		throw QMKFusionInvalidArgumentException("BitMaskRead", 3, p_end, 0, 31);
+        throw QMKFusionInvalidArgumentException("BitMaskRead", 3, length, 0, 31);
 	}
 
-	return (p_num >> p_start) & ((1 << p_end) - 1);
+    return (number >> start) & ((1 << length) - 1);
 }
 
-Q_DECL_EXPORT int cf_BitMaskSet(int p_num, int p_mask, int p_start, int p_end)
+Q_DECL_EXPORT int cf_BitMaskSet(int number, int mask, int start, int length)
 {
-	if((p_start < 0)||(p_start > 31))
+    if((start < 0)||(start > 31))
 	{
-		throw QMKFusionInvalidArgumentException("BitMaskSet", 2, p_start, 0, 31);
+        throw QMKFusionInvalidArgumentException("BitMaskSet", 2, start, 0, 31);
 	}
 
-	if((p_end < 0)||(p_end > 31))
+    if((length < 0)||(length > 31))
 	{
-		throw QMKFusionInvalidArgumentException("BitMaskSet", 3, p_end, 0, 31);
+        throw QMKFusionInvalidArgumentException("BitMaskSet", 3, length, 0, 31);
 	}
 
-	p_mask &= (1 << p_end) - 1;
-	return p_num & ~((((1 << p_end) - 1) << p_start) | p_mask) << p_start;
+    mask &= (1 << length) - 1;
+    return number & ~((((1 << length) - 1) << start) | mask) << start;
 }
 
-Q_DECL_EXPORT int cf_BitNot(int p_number)
+Q_DECL_EXPORT int cf_BitNot(int number)
 {
-	return ~p_number;
+    return ~number;
 }
 
-Q_DECL_EXPORT int cf_BitOr(int p_number1, int p_number2)
+Q_DECL_EXPORT int cf_BitOr(int number1, int number2)
 {
-	return p_number1 | p_number2;
+    return number1 | number2;
 }
 
-Q_DECL_EXPORT int cf_BitSHLN(int p_number, int p_count)
+Q_DECL_EXPORT int cf_BitSHLN(int number, int count)
 {
-	if ((p_count < 0)||(p_count > 31))
+    if ((count < 0)||(count > 31))
 	{
-		throw QMKFusionInvalidArgumentException("BitSHLN", 2, p_count, 0, 31);
+        throw QMKFusionInvalidArgumentException("BitSHLN", 2, count, 0, 31);
 	}
 
-	return p_number << p_count;
+    return number << count;
 }
 
-Q_DECL_EXPORT int cf_BitSHRN(int p_number, int p_count)
+Q_DECL_EXPORT int cf_BitSHRN(int number, int count)
 {
-	if ((p_count < 0)||(p_count > 31))
+    if ((count < 0)||(count > 31))
 	{
-		throw QMKFusionInvalidArgumentException("BitSHRN", 2, p_count, 0, 31);
+        throw QMKFusionInvalidArgumentException("BitSHRN", 2, count, 0, 31);
 	}
 
-	return p_number >> p_count;
+    return number >> count;
 }
 
-Q_DECL_EXPORT int cf_BitXor(int p_number1, int p_number2)
+Q_DECL_EXPORT int cf_BitXor(int number1, int number2)
 {
-	return p_number1 ^ p_number2;
+    return number1 ^ number2;
 }
 
-Q_DECL_EXPORT double cf_Ceiling(double p_number)
+Q_DECL_EXPORT double cf_Ceiling(double number)
 {
-	return ceil(p_number);
+	return ceil(number);
 }
 
-Q_DECL_EXPORT QString cf_CharsetDecode(const QString&, const QString&)
+Q_DECL_EXPORT QString cf_CharsetDecode(const QString &string, const QString &encoding)
 {
+    Q_UNUSED(string);
+    Q_UNUSED(encoding);
+
 	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_CharsetEncode(const QString&, const QString&)
+Q_DECL_EXPORT QString cf_CharsetEncode(const QString &binaryobject, const QString &encoding)
 {
-	throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
+    Q_UNUSED(binaryobject);
+    Q_UNUSED(encoding);
+
+    throw QMKFusionException("Not Implemented", "Not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_Chr(int p_number)
+Q_DECL_EXPORT QString cf_Chr(int number)
 {
-	return QString(QChar(p_number));
+	return QString(QChar(number));
 }
 
-Q_DECL_EXPORT QString cf_CJustify(const QString &p_Value, int p_lenght)
+Q_DECL_EXPORT QString cf_CJustify(const QString &string, int length)
 {
 	QString ret;
 
-	if (p_lenght < 0)
+    if (length < 0)
 	{
-		throw QMKFusionInvalidArgumentException("CJustify", 2, p_lenght, "positive integer");
+        throw QMKFusionInvalidArgumentException("CJustify", 2, length, "positive integer");
 	}
 
-	if (p_lenght <= p_Value.length())
+    if (length <= string.length())
 	{
-		return p_Value;
+        return string;
 	}
 
-	ret = p_Value;
+    ret = string;
 
-	int start = (p_lenght - p_Value.length()) / 2;
+    int start = (length - string.length()) / 2;
 
 	for(int c = 0; c < start; c++)
 	{
@@ -1125,84 +1126,6 @@ Q_DECL_EXPORT QWDDX cf_ListToArray(const QString &list, const QString &delimiter
     return ret;
 }
 
-QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Request &r)
-{
-	QString ret;
-
-	ret  = "<font style=\"COLOR: black; FONT: 16pt/18pt verdana\">The web site you are accessing has experienced an unexpected error.<br>Please contact the website administrator.</font>\n";
-	ret += "<br>\n";
-	ret += "<br>\n";
-	ret += "<table border=\"1\" cellpadding=\"3\" bordercolor=\"#000808\" bgcolor=\"#e7e7e7\">\n";
-	ret += "\t<tr>\n";
-	ret += "\t\t<td bgcolor=\"#000066\">\n";
-	ret += "\t\t\t<font style=\"COLOR: white; FONT: 11pt/13pt verdana\" color=\"white\">The following information is meant for the website developer for debugging purposes.</font>\n";
-	ret += "\t\t</td>\n";
-	ret += "\t<tr>\n";
-	ret += "\t<tr>\n";
-	ret += "\t\t<td bgcolor=\"#4646EE\">\n";
-	ret += "\t\t\t<font style=\"COLOR: white; FONT: 11pt/13pt verdana\" color=\"white\">Error Occurred While Processing Request</font>\n";
-	ret += "\t\t</td>\n";
-	ret += "\t</tr>\n";
-	ret += "\t<tr>\n";
-	ret += "\t\t<td>\n";
-	ret += "\t\t\t<font style=\"COLOR: black; FONT: 8pt/11pt verdana\">\n";
-	ret += "\t\t\t\t<table width=\"500\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
-	ret += "\t\t\t\t\t<tr>\n";
-	ret += "\t\t\t\t\t\t<td id=\"tableProps2\" align=\"left\" valign=\"middle\" width=\"500\">\n";
-	ret += "\t\t\t\t\t\t\t<h1 id=\"textSection1\" style=\"COLOR: black; FONT: 13pt/15pt verdana\">" + *ex.m_message + "</h1>\n";
-	ret += "\t\t\t\t\t\t</td>\n";
-	ret += "\t\t\t\t\t</tr>\n";
-	ret += "\t\t\t\t\t<tr>\n";
-	ret += "\t\t\t\t\t\t<td id=\"tablePropsWidth\" width=\"400\" colspan=\"2\">\n";
-	ret += "\t\t\t\t\t\t\t<font style=\"COLOR: black; FONT: 8pt/11pt verdana\"></font>\n";
-	ret += "\t\t\t\t\t\t</td>\n";
-	ret += "\t\t\t\t\t</tr>\n";
-	ret += "\t\t\t\t\t<tr>\n";
-	ret += "\t\t\t\t\t\t<td height>&nbsp;</td>\n";
-	ret += "\t\t\t\t\t</tr>\n";
-	ret += "\t\t\t\t\t<tr>\n";
-	ret += "\t\t\t\t\t\t<td colspan=\"2\">\n";
-	ret += "\t\t\t\t\t\t\t<font style=\"COLOR: black; FONT: 8pt/11pt verdana\">\n";
-	ret += "\t\t\t\t\t\t\t\tResources:\n";
-	ret += "\t\t\t\t\t\t\t\t<ul>\n";
-	ret += "\t\t\t\t\t\t\t\t\t<li>Enable Robust Exception Information to provide greater detail about the source of errors.  In the Administrator, click Debugging & Logging > Debug Output Settings, and select the Robust Exception Information option.</li>\n";
-	ret += "\t\t\t\t\t\t\t\t\t<li>Check the <a href='http://www.bokicsoft.com/mkfusion/docs/' target=\"new\">ColdFusion documentation</a> to verify that you are using the correct syntax.</li>\n";
-	ret += "\t\t\t\t\t\t\t\t\t<li>Search the <a href='http://www.bokicsoft.com/mkfusion/kb/' target=\"new\">Knowledge Base</a> to find a solution to your problem.</li>\n";
-	ret += "\t\t\t\t\t\t\t\t</ul>\n";
-	ret += "\t\t\t\t\t\t\t</font>\n";
-	ret += "\t\t\t\t\t\t</td>\n";
-	ret += "\t\t\t\t\t</tr>\n";
-	ret += "\t\t\t\t\t<tr>\n";
-	ret += "\t\t\t\t\t\t<td colspan=\"2\">\n";
-	ret += "\t\t\t\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-	ret += "\t\t\t\t\t\t\t\t<tr>\n";
-	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Browser&nbsp;&nbsp;</td>\n";
-	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + r.m_UserAgent + "</td>\n";
-	ret += "\t\t\t\t\t\t\t\t</tr>\n";
-	ret += "\t\t\t\t\t\t\t\t<tr>\n";
-	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Remote Address&nbsp;&nbsp;</td>\n";
-	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + r.m_Host + "</td>\n";
-	ret += "\t\t\t\t\t\t\t\t</tr>\n";
-	ret += "\t\t\t\t\t\t\t\t<tr>\n";
-	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Referrer&nbsp;&nbsp;</td>\n";
-	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + r.m_Referer + "</td>\n";
-	ret += "\t\t\t\t\t\t\t\t</tr>\n";
-	ret += "\t\t\t\t\t\t\t\t<tr>\n";
-	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Date/Time&nbsp;&nbsp;</td>\n";
-	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + QDateTime::currentDateTime().toString("dd-MMM-yy hh:mm AP") + "</td>\n";
-	ret += "\t\t\t\t\t\t\t\t</tr>\n";
-	ret += "\t\t\t\t\t\t\t</table>\n";
-	ret += "\t\t\t\t\t\t</td>\n";
-	ret += "\t\t\t\t\t</tr>\n";
-	ret += "\t\t\t\t</table>\n";
-	ret += "\t\t\t</font>\n";
-	ret += "\t\t</td>\n";
-	ret += "\t</tr>\n";
-	ret += "</table>\n";
-
-	return  ret;
-}
-
 Q_DECL_EXPORT bool cf_StructAppend(QWDDX &struct1, const QWDDX &struct2, bool overwriteFlag)
 {
     if (struct1.type() != QWDDX::Struct)
@@ -1415,4 +1338,82 @@ Q_DECL_EXPORT bool cf_StructUpdate(QWDDX &structure, const QString &key, const Q
     structure.m_Struct->insert(key, value);
 
     return true;
+}
+
+QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Request &r)
+{
+	QString ret;
+
+	ret  = "<font style=\"COLOR: black; FONT: 16pt/18pt verdana\">The web site you are accessing has experienced an unexpected error.<br>Please contact the website administrator.</font>\n";
+	ret += "<br>\n";
+	ret += "<br>\n";
+	ret += "<table border=\"1\" cellpadding=\"3\" bordercolor=\"#000808\" bgcolor=\"#e7e7e7\">\n";
+	ret += "\t<tr>\n";
+	ret += "\t\t<td bgcolor=\"#000066\">\n";
+	ret += "\t\t\t<font style=\"COLOR: white; FONT: 11pt/13pt verdana\" color=\"white\">The following information is meant for the website developer for debugging purposes.</font>\n";
+	ret += "\t\t</td>\n";
+	ret += "\t<tr>\n";
+	ret += "\t<tr>\n";
+	ret += "\t\t<td bgcolor=\"#4646EE\">\n";
+	ret += "\t\t\t<font style=\"COLOR: white; FONT: 11pt/13pt verdana\" color=\"white\">Error Occurred While Processing Request</font>\n";
+	ret += "\t\t</td>\n";
+	ret += "\t</tr>\n";
+	ret += "\t<tr>\n";
+	ret += "\t\t<td>\n";
+	ret += "\t\t\t<font style=\"COLOR: black; FONT: 8pt/11pt verdana\">\n";
+	ret += "\t\t\t\t<table width=\"500\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
+	ret += "\t\t\t\t\t<tr>\n";
+	ret += "\t\t\t\t\t\t<td id=\"tableProps2\" align=\"left\" valign=\"middle\" width=\"500\">\n";
+	ret += "\t\t\t\t\t\t\t<h1 id=\"textSection1\" style=\"COLOR: black; FONT: 13pt/15pt verdana\">" + *ex.m_message + "</h1>\n";
+	ret += "\t\t\t\t\t\t</td>\n";
+	ret += "\t\t\t\t\t</tr>\n";
+	ret += "\t\t\t\t\t<tr>\n";
+	ret += "\t\t\t\t\t\t<td id=\"tablePropsWidth\" width=\"400\" colspan=\"2\">\n";
+	ret += "\t\t\t\t\t\t\t<font style=\"COLOR: black; FONT: 8pt/11pt verdana\"></font>\n";
+	ret += "\t\t\t\t\t\t</td>\n";
+	ret += "\t\t\t\t\t</tr>\n";
+	ret += "\t\t\t\t\t<tr>\n";
+	ret += "\t\t\t\t\t\t<td height>&nbsp;</td>\n";
+	ret += "\t\t\t\t\t</tr>\n";
+	ret += "\t\t\t\t\t<tr>\n";
+	ret += "\t\t\t\t\t\t<td colspan=\"2\">\n";
+	ret += "\t\t\t\t\t\t\t<font style=\"COLOR: black; FONT: 8pt/11pt verdana\">\n";
+	ret += "\t\t\t\t\t\t\t\tResources:\n";
+	ret += "\t\t\t\t\t\t\t\t<ul>\n";
+	ret += "\t\t\t\t\t\t\t\t\t<li>Enable Robust Exception Information to provide greater detail about the source of errors.  In the Administrator, click Debugging & Logging > Debug Output Settings, and select the Robust Exception Information option.</li>\n";
+	ret += "\t\t\t\t\t\t\t\t\t<li>Check the <a href='http://www.bokicsoft.com/mkfusion/docs/' target=\"new\">ColdFusion documentation</a> to verify that you are using the correct syntax.</li>\n";
+	ret += "\t\t\t\t\t\t\t\t\t<li>Search the <a href='http://www.bokicsoft.com/mkfusion/kb/' target=\"new\">Knowledge Base</a> to find a solution to your problem.</li>\n";
+	ret += "\t\t\t\t\t\t\t\t</ul>\n";
+	ret += "\t\t\t\t\t\t\t</font>\n";
+	ret += "\t\t\t\t\t\t</td>\n";
+	ret += "\t\t\t\t\t</tr>\n";
+	ret += "\t\t\t\t\t<tr>\n";
+	ret += "\t\t\t\t\t\t<td colspan=\"2\">\n";
+	ret += "\t\t\t\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+	ret += "\t\t\t\t\t\t\t\t<tr>\n";
+	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Browser&nbsp;&nbsp;</td>\n";
+	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + r.m_UserAgent + "</td>\n";
+	ret += "\t\t\t\t\t\t\t\t</tr>\n";
+	ret += "\t\t\t\t\t\t\t\t<tr>\n";
+	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Remote Address&nbsp;&nbsp;</td>\n";
+	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + r.m_Host + "</td>\n";
+	ret += "\t\t\t\t\t\t\t\t</tr>\n";
+	ret += "\t\t\t\t\t\t\t\t<tr>\n";
+	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Referrer&nbsp;&nbsp;</td>\n";
+	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + r.m_Referer + "</td>\n";
+	ret += "\t\t\t\t\t\t\t\t</tr>\n";
+	ret += "\t\t\t\t\t\t\t\t<tr>\n";
+	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Date/Time&nbsp;&nbsp;</td>\n";
+	ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + QDateTime::currentDateTime().toString("dd-MMM-yy hh:mm AP") + "</td>\n";
+	ret += "\t\t\t\t\t\t\t\t</tr>\n";
+	ret += "\t\t\t\t\t\t\t</table>\n";
+	ret += "\t\t\t\t\t\t</td>\n";
+	ret += "\t\t\t\t\t</tr>\n";
+	ret += "\t\t\t\t</table>\n";
+	ret += "\t\t\t</font>\n";
+	ret += "\t\t</td>\n";
+	ret += "\t</tr>\n";
+	ret += "</table>\n";
+
+	return  ret;
 }
