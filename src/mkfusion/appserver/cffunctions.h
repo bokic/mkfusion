@@ -325,28 +325,28 @@ Q_DECL_EXPORT QString cf_RemoveChars(QString &string, int start, int count);
 Q_DECL_EXPORT QString cf_RepeatString(QString &string, int count);
 Q_DECL_EXPORT QString cf_Replace(QString &string, const QString &substring1, const QString &substring2, const QString &scope = "one");
 Q_DECL_EXPORT QString cf_ReplaceList(QString &list, const QString &list1, const QString &list2);
-/*ReplaceNoCase
-REReplace
-REReplaceNoCase
-Reverse
-Right
-RJustify
-Round
-RTrim
-Second
-SendGatewayMessage
-SerializeJSON
-SetEncoding
-SetLocale
-SetProfileString
-SetVariable
-Sgn
-Sin
-Sleep
-SpanExcluding
-SpanIncluding
-Sqr
-StripCR*/
+Q_DECL_EXPORT QString cf_ReplaceNoCase(QString &string, const QString &substring1, const QString &substring2, const QString &scope = "one");
+Q_DECL_EXPORT QString cf_REReplace(const QString &string, const QString &reg_expression, const QString &substring, const QString &scope = "one");
+Q_DECL_EXPORT QString cf_REReplaceNoCase(const QString &string, const QString &reg_expression, const QString &substring, const QString &scope = "one");
+Q_DECL_EXPORT QString cf_Reverse(const QString &string);
+Q_DECL_EXPORT QString cf_Right(const QString &string, int count);
+Q_DECL_EXPORT QString cf_RJustify(QString &string, int length);
+Q_DECL_EXPORT int cf_Round(double number);
+Q_DECL_EXPORT QString cf_RTrim(QString &string);
+Q_DECL_EXPORT int cf_Second(const QDateTime &date);
+Q_DECL_EXPORT QString cf_SendGatewayMessage(const QString &gatewayID, const QWDDX &data);
+Q_DECL_EXPORT QString cf_SerializeJSON(const QWDDX &var, bool serializeQueryByColumns = false);
+Q_DECL_EXPORT void cf_SetEncoding(const QString &scope_name, const QString &charset);
+Q_DECL_EXPORT QString cf_SetLocale(const QString &new_locale);
+Q_DECL_EXPORT QString cf_SetProfileString(const QString &iniPath, const QString &section, const QString &entry, const QString &value);
+Q_DECL_EXPORT QWDDX cf_SetVariable(const QString &name, const QWDDX &value);
+Q_DECL_EXPORT int cf_Sgn(double number);
+Q_DECL_EXPORT double cf_Sin(double number);
+Q_DECL_EXPORT void cf_Sleep(int duration);
+Q_DECL_EXPORT QString cf_SpanExcluding(const QString &string, const QWDDX &set);
+Q_DECL_EXPORT QString cf_SpanIncluding(const QString &string, const QWDDX &set);
+Q_DECL_EXPORT double cf_Sqr(double number);
+Q_DECL_EXPORT QString cf_StripCR(QString &string);
 Q_DECL_EXPORT bool cf_StructAppend(QWDDX &struct1, const QWDDX &struct2, bool overwriteFlag = true);
 Q_DECL_EXPORT bool cf_StructClear(QWDDX &structure);
 Q_DECL_EXPORT QWDDX cf_StructCopy(QWDDX &structure);
@@ -364,34 +364,37 @@ Q_DECL_EXPORT QString cf_StructKeyList(const QWDDX &structure, const QString &de
 Q_DECL_EXPORT QWDDX cf_StructNew();
 Q_DECL_EXPORT QWDDX cf_StructSort(const QWDDX &base, const QString &sortType = "text", const QString &sortOrder = "asc", const QString &pathToSubElement = "");
 Q_DECL_EXPORT bool cf_StructUpdate(QWDDX &structure, const QString &key, const QWDDX &value);
-/*Tan
-TimeFormat
-ToBase64
-ToBinary
-ToScript
-ToString
-Trim
-UCase
-URLDecode
-URLEncodedFormat
-URLSessionFormat
-Val*/
+Q_DECL_EXPORT double cf_Tan(double number);
+Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask = "medium");
+Q_DECL_EXPORT QString cf_ToBase64(const QString &object, const QString &encoding = "");
+Q_DECL_EXPORT QString cf_ToBase64(const QByteArray &object, const QString &encoding = "");
+Q_DECL_EXPORT QWDDX cf_ToBinary(const QString &string);
+Q_DECL_EXPORT QWDDX cf_ToBinary(const QByteArray &string);
+Q_DECL_EXPORT QString cf_ToScript(const QString &cfvar, const QString &javascriptvar, bool outputformat = true, bool ASFormat = false);
+Q_DECL_EXPORT QString cf_ToString(const QWDDX &value, const QString &encoding = "");
+Q_DECL_EXPORT QString cf_Trim(QString &string);
+Q_DECL_EXPORT QString cf_UCase(QString &string);
+Q_DECL_EXPORT QString cf_URLDecode(QString &urlEncodedString, const QString &charset = "");
+Q_DECL_EXPORT QString cf_URLEncodedFormat(QString &string, const QString &charset = "");
+Q_DECL_EXPORT QString cf_URLSessionFormat(const QString &request_URL);
+Q_DECL_EXPORT double cf_Val(const QString &string);
 Q_DECL_EXPORT QString cf_ValueList(const QWDDX &query_column, const QString delimiter = ",");
-/*VerifyClient
-Week
-Wrap
-WriteOutput
-XmlChildPos
-XmlElemNew
-XmlFormat
-XmlGetNodeType
-XmlNew
-XmlParse
-XmlSearch
-XmlTransform
-XmlValidate
-Year
-YesNoFormat*/
+Q_DECL_EXPORT void cf_VerifyClient();
+Q_DECL_EXPORT int cf_Week(const QDateTime &date);
+Q_DECL_EXPORT QString cf_Wrap(const QString &string, int limit, bool strip = false);
+Q_DECL_EXPORT void cf_WriteOutput(const QString &string);
+Q_DECL_EXPORT bool cf_XmlChildPos(const QWDDX &elem, const QWDDX &childName, int N);
+Q_DECL_EXPORT QWDDX cf_XmlElemNew(QWDDX &xmlObj, const QString &childName);
+Q_DECL_EXPORT QWDDX cf_XmlElemNew(QWDDX &xmlObj, const QString &_namespace, const QString &childName);
+Q_DECL_EXPORT QString cf_XmlFormat(QString &string);
+Q_DECL_EXPORT QString cf_XmlGetNodeType(const QWDDX &xmlNode);
+Q_DECL_EXPORT QWDDX cf_XmlNew(bool caseSensitive = false);
+Q_DECL_EXPORT QWDDX cf_XmlParse(const QString &xmlText, bool caseSensitive = false, const QString &validator = "");
+Q_DECL_EXPORT QWDDX cf_XmlSearch(const QWDDX &xmlDoc, const QString &xPathString);
+Q_DECL_EXPORT QString cf_XmlTransform(QWDDX &xml, const QString &xsl, const QWDDX &parameters = QWDDX());
+Q_DECL_EXPORT QWDDX cf_XmlValidate(const QWDDX &xmlDoc, const QString &validator = "");
+Q_DECL_EXPORT int cf_Year(const QDateTime &date);
+Q_DECL_EXPORT bool cf_YesNoFormat(const QWDDX &value);
 
 QString WriteException(const QMKFusionException &, const QCFRunningTemplate_Request &);
 
