@@ -1229,6 +1229,290 @@ Q_DECL_EXPORT QWDDX cf_GetProfileSections(const QString &iniFile)
 {
 }
 
+Q_DECL_EXPORT QWDDX cf_GetProfileString(const QString &iniFile, const QString &section, const QString &entry)
+{
+}
+
+Q_DECL_EXPORT QString cf_GetReadableImageFormats()
+{
+}
+
+
+Q_DECL_EXPORT QWDDX cf_GetSOAPRequest()
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetSOAPRequestHeader(const QString &_namespace, const QString &name, bool asXML)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetSOAPResponse(QWDDX &webservice)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetSOAPResponseHeader(const QString &_namespace, const QString &name, bool asXML)
+{
+}
+
+Q_DECL_EXPORT QString cf_GetTempDirectory()
+{
+}
+
+Q_DECL_EXPORT QString cf_GetTempFile(const QString &dir, const QString &prefix)
+{
+}
+
+Q_DECL_EXPORT QString cf_GetTemplatePath()
+{
+}
+
+Q_DECL_EXPORT QString cf_GetTickCount()
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_GetTimeZoneInfo()
+{
+}
+
+Q_DECL_EXPORT QString cf_GetToken(const QString &string, int index, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_GetUserRoles()
+{
+}
+
+Q_DECL_EXPORT QString cf_GetWriteableImageFormats()
+{
+}
+
+Q_DECL_EXPORT QString cf_Hash(const QString &string, const QString &algorithm, const QString &encoding)
+{
+}
+
+Q_DECL_EXPORT int cf_Hour(const QDateTime &date)
+{
+}
+
+Q_DECL_EXPORT QString cf_HTMLCodeFormat(const QString &string, const QString &version)
+{
+}
+
+Q_DECL_EXPORT QString cf_HTMLEditFormat(const QString &string, const QString &version)
+{
+}
+
+Q_DECL_EXPORT bool cf_IIf(bool condition, const QString &string_expression1, const QString &string_expression2)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageAddBorder(QWDDX &name, int thickness, const QString &color, const QString &borderType)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageBlur(QWDDX &name, int blurRadius)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageClearRect(QWDDX &name, int x, int y, int width, int height)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_ImageCopy(QWDDX &name, int x, int y, int width, int height, int dx, int dy)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageCrop(QWDDX &name, int x, int y, int width, int height)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageDrawArc(QWDDX &name, int x, int y, int width, int height, int startAngle, double arcAngle, bool filled)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageDrawBeveledRect(QWDDX &name, int x, int y, int width, int height, bool raised, bool filled)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageDrawCubicCurve(QWDDX &name, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int x1, int y1, int x2, int y2)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageDrawLine(QWDDX &name, int x1, int y1, int x2, int y2)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageDrawLines(QWDDX &name, const QWDDX &xcoords, const QWDDX &ycoords, bool isPolygon, bool filled)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageDrawOval(QWDDX &name, int x, int y, int width, int height, bool filled)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageDrawPoint(QWDDX &name, int x, int y)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageDrawQuadraticCurve(QWDDX &name, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int x1, int y1, int x2, int y2)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageDrawRect(QWDDX &name, int x, int y, int width, int height, bool filled)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageDrawRoundRect(QWDDX &name, int x, int y, int width, int height, int arcWidth, int arcHeight, bool filled)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageDrawText(QWDDX &name, const QString &str, int x, int y, const QWDDX &attributeCollection)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageFlip(QWDDX &name, const QString &transpose)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_ImageGetBlob(const QWDDX &source)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_ImageGetBufferedImage(const QWDDX &name)
+{
+}
+
+Q_DECL_EXPORT QString cf_ImageGetEXIFTag(const QWDDX &name, const QString &tagName)
+{
+}
+
+Q_DECL_EXPORT int cf_ImageGetHeight(const QWDDX &name)
+{
+}
+
+Q_DECL_EXPORT QString cf_ImageGetIPTCTag(const QWDDX &name, const QString &tagName)
+{
+}
+
+Q_DECL_EXPORT int cf_ImageGetWidth(const QWDDX &name)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageGrayscale(QWDDX &name)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_ImageInfo(const QWDDX &name)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageNegative(QWDDX &name)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_ImageNew(const QString &source, int width, int height, const QString &imageType, const QString canvasColor)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageOverlay(QWDDX &source1, const QWDDX &source2)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_ImagePaste(QWDDX &image1, const QWDDX &image2, int x, int y)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_ImageRead(const QString &path)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_ImageReadBase64(const QString &string)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageResize(QWDDX &name, int width, int height, const QString &interpolation, int blurFactor)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageRotate(QWDDX &name, double angle, int x, int y, const QString &interpolation)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_ImageRotateDrawingAxis(QWDDX &name, double angle, int x, int y)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageScaleToFit(QWDDX &name, const QString &fitWidth, const QString &fitHeight, const QString &interpolation, int blurFactor)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageSetAntialiasing(QWDDX &name, bool antialias)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageSetBackgroundColor(QWDDX &name, const QString &color)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageSetDrawingColor(QWDDX &name, const QString &color)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageSetDrawingStroke(QWDDX &name, const QWDDX &attributeCollection)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageSetDrawingTransparency(QWDDX &name, double percent)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageSharpen(QWDDX &name, double gain)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageShear(QWDDX &name, double shear, const QString &direction, const QString &interpolation)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageShearDrawingAxis(QWDDX &name, double shx, double shy)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageTranslate(QWDDX &name, int xTrans, int yTrans, const QString &interpolation)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageTranslateDrawingAxis(QWDDX &name, int x, int y)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageWrite(const QWDDX &name, const QString &destination, double quality)
+{
+}
+
+Q_DECL_EXPORT QString cf_ImageWriteBase64(const QWDDX &name, const QString &destination, const QString &format, bool inHTMLFormat)
+{
+}
+
+Q_DECL_EXPORT void cf_ImageXORDrawingMode(QWDDX &name, const QString &c1)
+{
+}
+
+Q_DECL_EXPORT int cf_IncrementValue(int number)
+{
+}
+
+Q_DECL_EXPORT QString cf_InputBaseN(const QString &string, int radix)
+{
+}
+
+Q_DECL_EXPORT QString cf_Insert(const QString &substring, QString &string, int position)
+{
+}
+
+Q_DECL_EXPORT QString cf_Int(double number)
+{
+}
 
 Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level)
 {
@@ -1248,6 +1532,90 @@ Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level)
     return true;
 }
 
+Q_DECL_EXPORT bool cf_IsBinary(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsBoolean(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsCustomFunction(const QWDDX &name)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsDate(const QWDDX &string)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsDDX(const QString &path_or_string)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsDebugMode()
+{
+}
+
+Q_DECL_EXPORT bool cf_IsDefined(const QWDDX &variable_name)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsImage(const QWDDX &name)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsImageFile(const QWDDX &path)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsInstanceOf(const QWDDX &object, const QString &typeName)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsJSON(const QWDDX &var)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsLeapYear(int year)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsLocalHost(const QString &ipaddress)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsNumeric(const QString &string)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsNumericDate(double number)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsObject(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsPDFFile(const QString &path)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsPDFObject(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsQuery(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsSimpleValue(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsSOAPRequest()
+{
+}
+
 Q_DECL_EXPORT bool cf_IsStruct(const QWDDX &variable)
 {
     if (variable.type() == QWDDX::Struct)
@@ -1256,6 +1624,66 @@ Q_DECL_EXPORT bool cf_IsStruct(const QWDDX &variable)
     }
 
     return false;
+}
+
+Q_DECL_EXPORT bool cf_IsUserInAnyRole()
+{
+}
+
+Q_DECL_EXPORT bool cf_IsUserInRole(const QString &role_name)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsUserLoggedIn()
+{
+}
+
+Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QWDDX &value, int min, int max)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QWDDX &value, const QString &pattern)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsWDDX(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsXML(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsXmlAttribute(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsXmlDoc(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsXmlElem(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsXmlNode(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT bool cf_IsXmlRoot(const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT QWDDX JavaCast(const QString &type, const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT QString JSStringFormat(const QString &string)
+{
 }
 
 Q_DECL_EXPORT QString cf_LCase(const QString &string)
