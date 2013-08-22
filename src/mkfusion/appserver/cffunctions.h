@@ -216,42 +216,44 @@ Q_DECL_EXPORT QString cf_InputBaseN(const QString &string, int radix);
 Q_DECL_EXPORT QString cf_Insert(const QString &substring, QString &string, int position);
 Q_DECL_EXPORT QString cf_Int(double number);
 Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level = 0);
-/*IsBinary
-IsBoolean
-IsCustomFunction
-IsDate
-IsDDX
-IsDebugMode
-IsDefined
-IsImage
-IsImageFile
-IsInstanceOf
-IsJSON
-IsLeapYear
-IsLocalHost
-IsNumeric
-IsNumericDate
-IsObject
-IsPDFFile
-IsPDFObject
-IsQuery
-IsSimpleValue
-IsSOAPRequest*/
+Q_DECL_EXPORT bool cf_IsBinary(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsBoolean(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsCustomFunction(const QWDDX &name);
+Q_DECL_EXPORT bool cf_IsDate(const QWDDX &string);
+Q_DECL_EXPORT bool cf_IsDDX(const QString &path_or_string);
+Q_DECL_EXPORT bool cf_IsDebugMode();
+Q_DECL_EXPORT bool cf_IsDefined(const QWDDX &variable_name);
+Q_DECL_EXPORT bool cf_IsImage(const QWDDX &name);
+Q_DECL_EXPORT bool cf_IsImageFile(const QWDDX &path);
+Q_DECL_EXPORT bool cf_IsInstanceOf(const QWDDX &object, const QString &typeName);
+Q_DECL_EXPORT bool cf_IsJSON(const QWDDX &var);
+Q_DECL_EXPORT bool cf_IsLeapYear(int year);
+Q_DECL_EXPORT bool cf_IsLocalHost(const QString &ipaddress);
+Q_DECL_EXPORT bool cf_IsNumeric(const QString &string);
+Q_DECL_EXPORT bool cf_IsNumericDate(double number);
+Q_DECL_EXPORT bool cf_IsObject(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsPDFFile(const QString &path);
+Q_DECL_EXPORT bool cf_IsPDFObject(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsQuery(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsSimpleValue(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsSOAPRequest();
 Q_DECL_EXPORT bool cf_IsStruct(const QWDDX &variable);
-/*IsUserInAnyRole
-IsUserInRole
-IsUserLoggedIn
-IsValid
-IsWDDX
-IsXML
-IsXmlAttribute
-IsXmlDoc
-IsXmlElem
-IsXmlNode
-IsXmlRoot
-JavaCast
-JSStringFormat*/
-Q_DECL_EXPORT QString cf_LCase(const QString &string);
+Q_DECL_EXPORT bool cf_IsUserInAnyRole();
+Q_DECL_EXPORT bool cf_IsUserInRole(const QString &role_name);
+Q_DECL_EXPORT bool cf_IsUserLoggedIn();
+Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QWDDX &value, int min, int max);
+Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QWDDX &value, const QString &pattern);
+Q_DECL_EXPORT bool cf_IsWDDX(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsXML(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsXmlAttribute(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsXmlDoc(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsXmlElem(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsXmlNode(const QWDDX &value);
+Q_DECL_EXPORT bool cf_IsXmlRoot(const QWDDX &value);
+Q_DECL_EXPORT QWDDX JavaCast(const QString &type, const QWDDX &value);
+Q_DECL_EXPORT QString JSStringFormat(const QString &string);
+Q_DECL_EXPORT QString cf_LCase(const QStriwidthng &string);
 Q_DECL_EXPORT QString cf_Left(const QString &string, int count);
 Q_DECL_EXPORT int cf_Len(const QString &string);
 Q_DECL_EXPORT QString cf_ListAppend(QString &list, const QString &value, const QString &delimiters = ",");
