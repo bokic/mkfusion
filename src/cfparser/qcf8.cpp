@@ -1689,6 +1689,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
     ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
+    ret.insert("val", QCFFunction("Val", QCFFunction::ReturnDouble));
+    ret["val"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
     ret.insert("valuelist", QCFFunction("ValueList", QCFFunction::ReturnString));
     ret["valuelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
     ret["valuelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));

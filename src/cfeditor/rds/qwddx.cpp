@@ -10,7 +10,7 @@ QWDDX::QWDDX(QWDDXType p_Type)
 	m_Type = p_Type;
 }
 
-QWDDX &QWDDX::operator= (const QString &p_NewValue)
+QWDDX &QWDDX::operator=(const QString &p_NewValue)
 {
 	m_Type = QWDDX::String;
 	m_String = p_NewValue;
@@ -18,7 +18,7 @@ QWDDX &QWDDX::operator= (const QString &p_NewValue)
 	return *this;
 }
 
-QWDDX &QWDDX::operator= (const char *p_NewValue)
+QWDDX &QWDDX::operator=(const char *p_NewValue)
 {
 	m_Type = QWDDX::String;
 	m_String = p_NewValue;

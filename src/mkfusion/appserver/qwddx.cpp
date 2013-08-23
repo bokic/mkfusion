@@ -112,20 +112,6 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QDateTime &p_NewValue)
 {
 }
 
-Q_DECL_EXPORT QWDDX::QWDDX(const QWDDXType p_Type)
-    : m_Array(NULL)
-    , m_Struct(NULL)
-    , m_String(NULL)
-    , m_ByteArray(NULL)
-	, m_Number(0)
-	, m_Bool(false)
-    , m_DateTime(NULL)
-    , m_Type(Null)
-    , m_ArrayDimension(1)
-{
-    setType(p_Type);
-}
-
 Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
     : m_Array(NULL)
     , m_Struct(NULL)
@@ -173,6 +159,20 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
     case Error:
         break;
     }
+}
+
+Q_DECL_EXPORT QWDDX::QWDDX(const QWDDXType p_Type)
+    : m_Array(NULL)
+    , m_Struct(NULL)
+    , m_String(NULL)
+    , m_ByteArray(NULL)
+	, m_Number(0)
+	, m_Bool(false)
+    , m_DateTime(NULL)
+    , m_Type(Null)
+    , m_ArrayDimension(1)
+{
+    setType(p_Type);
 }
 
 #ifdef Q_COMPILER_RVALUE_REFS
@@ -531,7 +531,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QWDDX &key)
 	}
 }
 
-Q_DECL_EXPORT bool QWDDX::operator ==(bool p_Value)
+Q_DECL_EXPORT bool QWDDX::operator==(bool p_Value)
 {
     if ((m_Type == Boolean))
     {
@@ -541,7 +541,7 @@ Q_DECL_EXPORT bool QWDDX::operator ==(bool p_Value)
     throw QMKFusionExpressionException("Unsupported compare.");
 }
 
-Q_DECL_EXPORT bool QWDDX::operator ==(int p_Value)
+Q_DECL_EXPORT bool QWDDX::operator==(int p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -556,7 +556,7 @@ Q_DECL_EXPORT bool QWDDX::operator ==(int p_Value)
 	throw QMKFusionExpressionException("Unsupported compare.");
 }
 
-Q_DECL_EXPORT bool QWDDX::operator ==(double p_Value)
+Q_DECL_EXPORT bool QWDDX::operator==(double p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -571,7 +571,7 @@ Q_DECL_EXPORT bool QWDDX::operator ==(double p_Value)
 	throw QMKFusionExpressionException("Unsupported compare.");
 }
 
-Q_DECL_EXPORT bool QWDDX::operator ==(const QString &p_Value)
+Q_DECL_EXPORT bool QWDDX::operator==(const QString &p_Value)
 {
 	if ((m_Type == Number))
 	{
@@ -1016,6 +1016,14 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator=(const double p_newValue)
 	m_Number = p_newValue;
 
 	return *this;
+}
+
+Q_DECL_EXPORT QWDDX &QWDDX::operator=(const char *p_newValue)
+{
+    setType(String);
+    *m_String = QString::fromLatin1(p_newValue);
+
+    return *this;
 }
 
 Q_DECL_EXPORT QWDDX &QWDDX::operator=(const wchar_t *p_newValue)

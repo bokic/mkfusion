@@ -2545,9 +2545,9 @@ Q_DECL_EXPORT double cf_Val(const QString &string)
 
     tmp = string;
 
-    while (string.length() > 0)
+    while (tmp.length() > 0)
     {
-        ret = string.toDouble(&ok);
+        ret = tmp.toDouble(&ok);
 
         if (ok == true)
         {

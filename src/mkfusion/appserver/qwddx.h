@@ -146,7 +146,7 @@ public:
 
     bool operator==(bool);
     bool operator==(int);
-	bool operator==(double);
+    bool operator==(double);
     bool operator==(const QString &);
     bool operator==(const QWDDX &);
 
@@ -183,7 +183,7 @@ public:
     QWDDX &operator=(const bool);
     QWDDX &operator=(const int);
     QWDDX &operator=(const double);
-    QWDDX &operator=(const char *);
+    QWDDX &operator=(const char*);
     QWDDX &operator=(const wchar_t *);
     QWDDX &operator=(const QString &);
     QWDDX &operator=(const QDateTime &);
