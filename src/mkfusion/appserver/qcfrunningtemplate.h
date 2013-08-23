@@ -11,6 +11,8 @@ class QCFRunningTemplate : public QObject
 {
 	Q_OBJECT
 public:
+    enum OutputType {OutputTypeContent, OutputTypeQuery};
+
 	QCFRunningTemplate();
 
 	// Class members
@@ -22,6 +24,7 @@ public:
 	QWDDX m_FORM;
 	QWDDX m_VARIABLES;
 	QString m_Output;
+    QString m_QueryOutput;
 	qint32 m_CFOutput;
 	QString m_ContentType;
 	int m_Status;
@@ -30,6 +33,7 @@ public:
 	QLocalSocket *m_Socket;
 	QObject *m_CFServer;
 	QCFRunningTemplate_Request m_Request;
+    OutputType m_OutputType;
 
 signals:
 	void finished();

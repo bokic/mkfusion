@@ -18,6 +18,7 @@ QCFRunningTemplate::QCFRunningTemplate()
 	, m_HeadersSent(false)
 	, m_Socket(NULL)
 	, m_CFServer(NULL)
+    , m_OutputType(OutputTypeContent)
 {
 }
 

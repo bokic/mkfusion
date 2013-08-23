@@ -36,7 +36,7 @@ struct QCFParserTag
 	QCFParserTagType m_TagType;
 	QCFParserElement m_Arguments;
 	bool m_InlineClosedTag;
-	qint32 m_EndTag;
+    struct QCFParserTag *m_OtherTag;
 };
 
 quint32 GetLineNumberFromPosition(const QString &, const qint32);

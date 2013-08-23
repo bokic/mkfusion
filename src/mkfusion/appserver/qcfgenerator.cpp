@@ -605,7 +605,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 		return "f_WriteOutput(" + GenerateCFExpressionToCExpression(p_CFTag.m_Arguments) + ");";
 	}
 
-	if(!p_CFTag.m_Name.compare("cfabort", Qt::CaseInsensitive))
+    if(p_CFTag.m_Name.compare("cfabort", Qt::CaseInsensitive) == 0)
 	{
 		if (CFTagHasArgument(p_CFTag, "showError"))
 		{
@@ -616,11 +616,11 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return "throw QMKFusionCFAbortException();";
 		}
 	}
-	else if(!p_CFTag.m_Name.compare("cfbreak", Qt::CaseInsensitive))
+    else if(p_CFTag.m_Name.compare("cfbreak", Qt::CaseInsensitive) == 0)
 	{
 		return "break;";
 	}
-	else if(!p_CFTag.m_Name.compare("cfdump", Qt::CaseInsensitive))
+    else if(p_CFTag.m_Name.compare("cfdump", Qt::CaseInsensitive) == 0)
 	{
 		if (p_CFTag.m_Arguments.m_Type != CFTagArguments)
 		{
@@ -640,7 +640,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 		return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(OprimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]))+"));";
 		//return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2], "false")+"));";
 	}
-	else if(!p_CFTag.m_Name.compare("cfloop", Qt::CaseInsensitive))
+    else if(p_CFTag.m_Name.compare("cfloop", Qt::CaseInsensitive) == 0)
 	{
 		if (p_CFTag.m_TagType == CFTagType)
 		{
@@ -704,7 +704,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return "}";
 		}
 	}
-	else if(!p_CFTag.m_Name.compare("cfset", Qt::CaseInsensitive))
+    else if(p_CFTag.m_Name.compare("cfset", Qt::CaseInsensitive) == 0)
 	{
 		QCFParserElement l_OptimizedElements = OprimizeQCFParserElement(p_CFTag.m_Arguments);
 		//QCFParserElement l_OptimizedElements = p_CFTag.m_Arguments;
@@ -720,7 +720,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return GenerateCFExpressionToCExpression(l_OptimizedElements) + ";";
 		}
 	}
-	else if(!p_CFTag.m_Name.compare("cfoutput", Qt::CaseInsensitive))
+    else if(p_CFTag.m_Name.compare("cfoutput", Qt::CaseInsensitive) == 0)
 	{
 		if (p_CFTag.m_TagType == CFTagType)
 		{
@@ -732,7 +732,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return "p_TemplateInstance->m_CFOutput--;";
 		}
 	}
-	else if(!p_CFTag.m_Name.compare("cfif", Qt::CaseInsensitive))
+    else if(p_CFTag.m_Name.compare("cfif", Qt::CaseInsensitive) == 0)
 	{
 		if (p_CFTag.m_TagType == CFTagType)
 		{
@@ -744,14 +744,14 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return "}";
 		}
 	}
-	else if(!p_CFTag.m_Name.compare("cfelse", Qt::CaseInsensitive))
+    else if(p_CFTag.m_Name.compare("cfelse", Qt::CaseInsensitive) == 0)
 	{
 		if (p_CFTag.m_TagType == CFTagType)
 		{
 			return "} else {";
 		}
 	}
-	else if(!p_CFTag.m_Name.compare("cfelseif", Qt::CaseInsensitive))
+    else if(p_CFTag.m_Name.compare("cfelseif", Qt::CaseInsensitive) == 0)
 	{
 		if (p_CFTag.m_TagType == CFTagType)
 		{
@@ -759,7 +759,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return "} else if(" + GenerateCFExpressionToCExpression(p_CFTag.m_Arguments) + ") {";
 		}
 	}
-	else if(!p_CFTag.m_Name.compare("cfsetting", Qt::CaseInsensitive))
+    else if(p_CFTag.m_Name.compare("cfsetting", Qt::CaseInsensitive) == 0)
 	{
         QString l_enablecfoutputonly = CFTagGetArgumentPlain(p_CFTag, "enablecfoutputonly");
 		l_enablecfoutputonly = l_enablecfoutputonly.remove('\'');
@@ -774,6 +774,48 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			m_EnableCFOutputOnly = false;
 		}
 	}
+    else if(p_CFTag.m_Name.compare("cfquery", Qt::CaseInsensitive) == 0)
+    {
+        QString l_queryType;
+        QString l_queryName;
+        QString l_queryDataSource;
+
+        switch (p_CFTag.m_TagType)
+        {
+            case CFTagType:
+                l_queryType = CFTagGetArgumentPlain(p_CFTag, "type");
+                l_queryName = CFTagGetArgumentPlain(p_CFTag, "name");
+                l_queryDataSource = CFTagGetArgumentPlain(p_CFTag, "datasource");
+                break;
+            case EndCFTagType:
+                l_queryType = CFTagGetArgumentPlain(*p_CFTag.m_OtherTag, "type");
+                l_queryName = CFTagGetArgumentPlain(*p_CFTag.m_OtherTag, "name");
+                l_queryDataSource = CFTagGetArgumentPlain(*p_CFTag.m_OtherTag, "datasource");
+                break;
+            default:
+                break;
+        }
+
+        if (((l_queryType.isEmpty())||(l_queryType.compare("query", Qt::CaseInsensitive) == 0))&&(!l_queryName.isEmpty())&&(!l_queryDataSource.isEmpty()))
+        {
+            if (p_CFTag.m_TagType == CFTagType)
+            {
+                return "startQuery();";
+            }
+
+            if (p_CFTag.m_TagType == EndCFTagType)
+            {
+                return "m_TemplateInstance->m_VARIABLES[\"" + l_queryName + "\"] = endQuery(\"" + l_queryDataSource + "\");";
+            }
+        }
+    }
+    else if(p_CFTag.m_Name.compare("cfqueryparam", Qt::CaseInsensitive) == 0)
+    {
+        if (p_CFTag.m_TagType == CFTagType)
+        {
+            return "f_WriteOutput(QString::fromWCharArray(L\"?\", 1));";
+        }
+    }
 
 	return "";
 }

@@ -21,10 +21,12 @@ class Q_DECL_EXPORT QCFTemplate : public QObject
 public:
 	QCFTemplate();
 	virtual ~QCFTemplate();
-	virtual void run(QCFRunningTemplate*);
+    virtual void run(QCFRunningTemplate *p_TemplateInstance);
 
-	void f_WriteOutput(const QString &);
-	void f_WriteOutput(const QWDDX &);
+    void f_WriteOutput(const QString &p_Text);
+    void f_WriteOutput(const QWDDX &p_Wddx);
+    void startQuery();
+    QWDDX endQuery(const QString &p_DataSource);
 
 	QCFRunningTemplate *m_TemplateInstance;
 	QIsTemplateModified m_isModified;

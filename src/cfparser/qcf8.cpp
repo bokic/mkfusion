@@ -1012,11 +1012,11 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 
 	ret.insert("cfquery", QCFTag("cfquery", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithExpressionInside));
 	args.clear();
-	args.append(QCFTagArgument("name"));
+    args.append(QCFTagArgument("name", true));
 	args.append(QCFTagArgument("blockFactor"));
 	args.append(QCFTagArgument("cachedAfter"));
 	args.append(QCFTagArgument("cachedWithin"));
-	args.append(QCFTagArgument("dataSource"));
+    args.append(QCFTagArgument("dataSource"));
 	args.append(QCFTagArgument("dbtype"));
 	args.append(QCFTagArgument("debug"));
 	args.append(QCFTagArgument("maxRows"));
