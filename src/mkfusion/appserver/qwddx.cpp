@@ -152,7 +152,9 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
         m_ByteArray = new QByteArray();
         *m_ByteArray = *other.m_ByteArray;
         break;
-    case Recordset:
+    case Query:
+        m_Struct = new QMap<QString, QWDDX>();
+        *m_Struct = *other.m_Struct;
         break;
     case NotImplemented:
         break;
@@ -204,7 +206,8 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator=(QWDDX &&other)
     case Binary:
         qSwap(m_ByteArray, other.m_ByteArray);
         break;
-    case Recordset:
+    case Query:
+        qSwap(m_Struct, other.m_Struct);
         break;
     case NotImplemented:
         break;
@@ -247,7 +250,9 @@ Q_DECL_EXPORT void QWDDX::setType(QWDDXType type)
         delete m_ByteArray;
         m_ByteArray = NULL;
         break;
-    case Recordset:
+    case Query:
+        delete m_Struct;
+        m_Struct = NULL;
         break;
     case NotImplemented:
         break;
@@ -277,7 +282,8 @@ Q_DECL_EXPORT void QWDDX::setType(QWDDXType type)
     case Binary:
         m_ByteArray = new QByteArray;
         break;
-    case Recordset:
+    case Query:
+        m_Struct = new QMap<QString, QWDDX>();
         break;
     case NotImplemented:
         break;
@@ -338,7 +344,7 @@ Q_DECL_EXPORT int QWDDX::size()
 
 Q_DECL_EXPORT QWDDX &QWDDX::operator[](const double p_Index)
 {
-	if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array))
+    if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array)&&(m_Type != QWDDX::Query))
 	{
         throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members.");
 	}
@@ -370,12 +376,12 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const double p_Index)
 
 Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QString &key)
 {
-	if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array))
+    if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array)&&(m_Type != QWDDX::Query))
 	{
         throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class \'char *\' as a structure with members.");
 	}
 
-	if (m_Type == QWDDX::Struct)
+    if ((m_Type == QWDDX::Struct)||(m_Type == QWDDX::Query))
 	{
         if (m_Struct->contains(key) == false)
 		{
@@ -409,14 +415,14 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QString &key)
 
 Q_DECL_EXPORT QWDDX &QWDDX::operator[](const char *key)
 {
-	if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array))
+    if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array)&&(m_Type != QWDDX::Query))
 	{
 		throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class wchar_t* as a structure with members.");
 	}
 
     QString l_key = QString::fromLatin1(key);
 
-    if (m_Type == QWDDX::Struct)
+    if ((m_Type == QWDDX::Struct)||(m_Type == QWDDX::Query))
 	{
         if (m_Struct->contains(l_key) == false)
 		{
@@ -450,14 +456,14 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const char *key)
 
 Q_DECL_EXPORT QWDDX &QWDDX::operator[](const wchar_t *key)
 {
-	if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array))
+    if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array)&&(m_Type != QWDDX::Query))
 	{
 		throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class wchar_t* as a structure with members.");
 	}
 
     QString l_key = QString::fromStdWString(key);
 
-    if (m_Type == QWDDX::Struct)
+    if ((m_Type == QWDDX::Struct)||(m_Type == QWDDX::Query))
 	{
         if (m_Struct->contains(l_key) == false)
 		{
@@ -491,7 +497,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const wchar_t *key)
 
 Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QWDDX &key)
 {
-	if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array))
+    if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array)&&(m_Type != QWDDX::Query))
 	{
         throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members.");
 	}
@@ -1082,7 +1088,8 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator=(const QWDDX &p_newValue)
 		case Binary:
 			*m_ByteArray = *p_newValue.m_ByteArray;
 			break;
-		case Recordset:
+        case Query:
+            *m_Struct = *p_newValue.m_Struct;
 			break;
 		case NotImplemented:
 			break;
@@ -1547,6 +1554,8 @@ Q_DECL_EXPORT QString QWDDX::toString() const
 		else
 			return "false";
 		break;
+    case QWDDX::Null:
+            return "";
         default:
 			throw QMKFusionExpressionException("Complex object types cannot be converted to simple values.", "The expression has requested a variable or an intermediate expression result as a simple value, however, the result cannot be converted to a simple value. Simple values are strings, numbers, boolean values, and date/time values. Queries, arrays, and COM objects are examples of complex values. <p> The most likely cause of the error is that you are trying to use a complex value as a simple one. For example, you might be trying to use a query variable in a cfif tag.");
 		break;

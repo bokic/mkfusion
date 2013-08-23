@@ -1504,6 +1504,8 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret.insert("isstruct", QCFFunction("IsStruct", QCFFunction::ReturnBool));
     ret["isstruct"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
+    ret.insert("isquery", QCFFunction("IsQuery", QCFFunction::ReturnBool));
+    ret["isquery"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
 	ret.insert("lcase", QCFFunction("LCase", QCFFunction::ReturnString));
 	ret["lcase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
@@ -1614,6 +1616,39 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
     ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
     ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("queryaddrow", QCFFunction("QueryAddRow", QCFFunction::ReturnInt));
+    ret["queryaddrow"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret["queryaddrow"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("querynew", QCFFunction("QueryNew", QCFFunction::ReturnQWDDX));
+    ret["querynew"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["querynew"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("quotedvaluelist", QCFFunction("QuotedValueList", QCFFunction::ReturnString));
+    ret["quotedvaluelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret["quotedvaluelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("queryaddcolumn", QCFFunction("QueryAddColumn", QCFFunction::ReturnInt));
+    ret["queryaddcolumn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret["queryaddcolumn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["queryaddcolumn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret["queryaddcolumn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("queryconvertforgrid", QCFFunction("QueryConvertForGrid", QCFFunction::ReturnQWDDX));
+    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("querysetcell", QCFFunction("QuerySetCell", QCFFunction::ReturnBool));
+    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("quotedvalue", QCFFunction("QuotedValue", QCFFunction::ReturnString));
+    ret["quotedvalue"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret["quotedvalue"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
     ret.insert("replacelist", QCFFunction("ReplaceList", QCFFunction::ReturnString));
     ret["replacelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));

@@ -18,7 +18,7 @@ public:
 		Array,
 		Struct,
 		Binary,
-		Recordset,
+        Query,
 		NotImplemented,
 		Error
 	};
@@ -183,7 +183,7 @@ public:
     QWDDX &operator=(const bool);
     QWDDX &operator=(const int);
     QWDDX &operator=(const double);
-    QWDDX &operator=(const char*);
+    QWDDX &operator=(const char *);
     QWDDX &operator=(const wchar_t *);
     QWDDX &operator=(const QString &);
     QWDDX &operator=(const QDateTime &);

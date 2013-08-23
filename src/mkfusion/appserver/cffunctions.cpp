@@ -1735,6 +1735,7 @@ Q_DECL_EXPORT bool cf_IsPDFObject(const QWDDX &value)
 
 Q_DECL_EXPORT bool cf_IsQuery(const QWDDX &value)
 {
+    return value.type() == QWDDX::Query;
 }
 
 Q_DECL_EXPORT bool cf_IsSimpleValue(const QWDDX &value)
@@ -2104,26 +2105,142 @@ Q_DECL_EXPORT int cf_Quarter(const QDateTime &date)
 
 Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, const QString &datatype, const QString &array_name)
 {
+    if (query.type() != QWDDX::Query)
+    {
+        throw QMKFusionException("Parameter mismatch", "query parameter is not type Query.");
+    }
+
+    const QString &column_name_upper = column_name.toUpper();
+
+    if (query.m_Struct->keys().contains(column_name_upper))
+    {
+        throw QMKFusionException("Parameter mismatch", "column " + column_name + " already exists.");
+    }
+
+    int rows = 0;
+
+    if (query.m_Struct->count() > 0)
+    {
+        rows = query.m_Struct->values().at(0).m_Array->size();
+    }
+
+    QWDDX new_field = QWDDX(QWDDX::Array);
+
+    if (rows > 0)
+    {
+        new_field.m_Array->resize(rows);
+    }
+
+    query.m_Struct->insert(column_name_upper, new_field);
+
+    if (query.m_Struct->count() > 1)
+    {
+        query[column_name_upper].m_Array->resize(query.m_Struct->values().at(0).m_Array->size());
+    }
+
+    QStringList list = array_name.split(",");
+
+    for(int c = 0; c < list.count(); c++)
+    {
+        cf_QuerySetCell(query, column_name_upper, list.at(c), c + 1);
+    }
+
+    return query.m_Struct->count();
 }
 
 Q_DECL_EXPORT int cf_QueryAddRow(QWDDX &query, int number)
 {
+    if (query.type() != QWDDX::Query)
+    {
+        throw QMKFusionException("Parameter mismatch", "query parameter is not type Query.");
+    }
+
+    int columns = query.m_Struct->size();
+
+    if (columns < 1)
+    {
+        return 0;
+    }
+
+    int rows = query.m_Struct->values()[0].m_Array->size();
+    int new_rows = rows + number;
+
+    for(int column = 0; column < columns; column++)
+    {
+        (*query.m_Struct)[query.m_Struct->keys().at(column)].m_Array->resize(new_rows);
+    }
+
+    return new_rows;
 }
 
 Q_DECL_EXPORT QWDDX cf_QueryConvertForGrid(const QWDDX &query, int page, int pageSize)
 {
+    Q_UNUSED(query);
+    Q_UNUSED(page);
+    Q_UNUSED(pageSize);
+
+    throw QMKFusionException("Not Implemented", "cf_QueryConvertForGrid is not Implemented (yet:))");
 }
 
 Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &columntypelist)
 {
+    QWDDX ret;
+
+    const QStringList columns = columnlist.toUpper().split(",");
+    const QStringList column_types = columntypelist.split(",");
+
+    Q_UNUSED(column_types);
+
+    ret = QWDDX(QWDDX::Query);
+
+    for(int c = 0; c < columns.count(); c++)
+    {
+        ret.m_Struct->insert(columns.at(c), QWDDX(QWDDX::Array));
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT bool cf_QuerySetCell(QWDDX &query, const QString &column_name, const QWDDX &value, int row_number)
 {
+
+    if (query.type() != QWDDX::Query)
+    {
+        throw QMKFusionException("Parameter mismatch", "Parameter query is not type Query.");
+    }
+
+    const QString upperColumnName = column_name.toUpper();
+
+    if (!query.m_Struct->contains(upperColumnName))
+    {
+        throw QMKFusionException("Parameter mismatch", "query_column has invalid column name.");
+    }
+
+    if ((row_number < 1)||(row_number > query[upperColumnName].m_Array->size()))
+    {
+        throw QMKFusionException("Parameter mismatch", "row_number is out of range.");
+    }
+
+    query[upperColumnName].m_Array->replace(row_number - 1, value);
+
+    return true;
 }
 
 Q_DECL_EXPORT QString cf_QuotedValueList(const QWDDX &query_column, const QString &delimiter)
 {
+    if (query_column.type() != QWDDX::Array)
+    {
+        throw QMKFusionException("Parameter mismatch", "query_column is not column of a query.");
+    }
+
+    QStringList list;
+
+    for(const QWDDX &item : *query_column.m_Array)
+    {
+        list << "'" + item.toString() + "'";
+    }
+
+    return list.join(delimiter);
 }
 
 Q_DECL_EXPORT double cf_Rand(const QString &algorithm)
@@ -2562,6 +2679,19 @@ Q_DECL_EXPORT double cf_Val(const QString &string)
 
 Q_DECL_EXPORT QString cf_ValueList(const QWDDX &query_column, const QString delimiter)
 {
+    if (query_column.type() != QWDDX::Array)
+    {
+        throw QMKFusionException("Parameter mismatch", "query_column is not column of a query.");
+    }
+
+    QStringList list;
+
+    for(const QWDDX &item : *query_column.m_Array)
+    {
+        list << item.toString();
+    }
+
+    return list.join(delimiter);
 }
 
 Q_DECL_EXPORT void cf_VerifyClient()

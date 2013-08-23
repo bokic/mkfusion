@@ -22,6 +22,8 @@ QString cfdump_var(const QWDDX &p_Variable)
 {
 	QString ret;
 
+    int columns;
+
 	QWDDX l_temp = p_Variable;
     switch(l_temp.type())
 	{
@@ -51,6 +53,52 @@ QString cfdump_var(const QWDDX &p_Variable)
 
 			ret += "</table>\n";
 			break;
+        case QWDDX::Query:
+
+            columns = p_Variable.m_Struct->count();
+
+            ret = "<table class=\"cfdump_query\"><tr><th class=\"array\" colspan=\"" + QString::number(columns + 1) + "\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">query</th></tr>\n";
+
+            if (columns > 0)
+            {
+                ret += "<tr bgcolor=\"eeaaaa\">\n";
+
+                ret += "<td class=\"query\" style=\"cursor: pointer; font-style: normal;\" title=\"click to collapse\" onclick=\"cfdump_toggleRow_qry(this);\">&nbsp;</td>\n";
+
+                for(int c = 0; c < columns; c++)
+                {
+                    ret += "<td class=\"query\">" + p_Variable.m_Struct->keys().at(c) + "</td>\n";
+                }
+
+                ret += "</tr>";
+
+                int rows = p_Variable.m_Struct->values().at(0).m_Array->size();
+
+                for(int r = 0; r < rows; r++)
+                {
+                    ret += "<tr>\n";
+
+                    ret += "<td class=\"query\" style=\"cursor: pointer; font-style: normal;\" title=\"click to collapse\" onclick=\"cfdump_toggleRow_qry(this);\">" + QString::number(r + 1) + "</td>\n";
+
+                    for(int c = 0; c < columns; c++)
+                    {
+                        QString cell_text = p_Variable.m_Struct->values().at(c).m_Array->at(r).toString();
+
+                        if (cell_text.isEmpty())
+                        {
+                            cell_text = "[empty string]";
+                        }
+
+                        ret += "<td valign=\"top\">" + cell_text + "</td>\n";
+                    }
+
+
+                    ret += "</tr>";
+                }
+            }
+
+            ret += "</table>\n";
+            break;
 		default:
 			return "";
 	}
