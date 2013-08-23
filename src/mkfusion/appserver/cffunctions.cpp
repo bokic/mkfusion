@@ -1701,6 +1701,74 @@ Q_DECL_EXPORT int cf_Len(const QString &string)
     return string.length();
 }
 
+Q_DECL_EXPORT QString cf_ListAppend(QString &list, const QString &value, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_ListChangeDelims(QString &list, const QString &new_delimiter, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT int cf_ListContains(const QString &list, const QString &substring, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT int cf_ListContainsNoCase(const QString &list, const QString &substring, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_ListDeleteAt(QString &list, int position, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT int cf_ListFind(const QString &list, const QString &value, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT int cf_ListFindNoCase(const QString &list, const QString &value, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_ListFirst(const QString &list, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_ListGetAt(const QString &list, int position, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_ListInsertAt(QString &list, int position, const QString value, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_ListLast(const QString &list, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT int cf_ListLen(const QString &list, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_ListPrepend(QString &list, const QString &value, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_ListQualify(QString &list, const QString &quallifier, const QString &delimiters, const QString elements)
+{
+}
+
+Q_DECL_EXPORT QString cf_ListRest(const QString &list, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_ListSetAt(QString &list, int position, const QString value, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_ListSort(QString &list, const QString sort_type, const QString sort_order, const QString &delimiters)
+{
+}
+
 Q_DECL_EXPORT QWDDX cf_ListToArray(const QString &list, const QString &delimiters, bool includeEmptyFields)
 {
     QWDDX ret(QWDDX::Array);
@@ -1745,6 +1813,298 @@ Q_DECL_EXPORT QWDDX cf_ListToArray(const QString &list, const QString &delimiter
     }
 
     return ret;
+}
+
+Q_DECL_EXPORT int cf_ListValueCount(const QString &list, const QString value, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT int cf_ListValueCountNoCase(const QString &list, const QString value, const QString &delimiters)
+{
+}
+
+Q_DECL_EXPORT QString cf_LJustify(const QString &string, int length)
+{
+}
+
+Q_DECL_EXPORT double cf_Log(double number)
+{
+}
+
+Q_DECL_EXPORT double cf_Log10(double number)
+{
+}
+
+Q_DECL_EXPORT QString cf_LSCurrencyFormat(double number, const QString &type, const QString locale)
+{
+}
+
+Q_DECL_EXPORT QString cf_LSDateFormat(const QDateTime &date, const QString &mask, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT QString cf_LSEuroCurrencyFormat(double currency_number, const QString &locale, const QString &type)
+{
+}
+
+Q_DECL_EXPORT bool cf_LSIsCurrency(const QString &string, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT bool cf_LSIsDate(const QString &string, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT bool cf_LSIsNumeric(const QString &string, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT QString cf_LSNumberFormat(double number, const QString &mask, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT QString cf_LSParseCurrency(const QString &string, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT QDateTime cf_LSParseDateTime(const QString &string, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT QString cf_LSParseEuroCurrency(const QString &currency_string, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT QString cf_LSParseNumber(const QString &string, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT QString cf_LSTimeFormat(const QDateTime &time, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT QString cf_LSTimeFormat(const QString &time, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT QString cf_LTrim(QString &string)
+{
+}
+
+Q_DECL_EXPORT double cf_Max(double number1, double number2)
+{
+}
+
+Q_DECL_EXPORT QString cf_Mid(const QString &string, int start, int count)
+{
+}
+
+Q_DECL_EXPORT double cf_Min(double number1, double number2)
+{
+}
+
+Q_DECL_EXPORT int cf_Minute(const QDateTime &date)
+{
+}
+
+Q_DECL_EXPORT int cf_Month(const QDateTime &date)
+{
+}
+
+Q_DECL_EXPORT QString cf_MonthAsString(const QDateTime &date, const QString &locale)
+{
+}
+
+Q_DECL_EXPORT QDateTime cf_Now()
+{
+}
+
+Q_DECL_EXPORT QString cf_NumberFormat(double number, const QString &mask)
+{
+}
+
+Q_DECL_EXPORT QString cf_ParagraphFormat(const QString &string)
+{
+}
+
+Q_DECL_EXPORT QDateTime cf_ParseDateTime(const QString &datetime_string, const QString &pop_conversion)
+{
+}
+
+Q_DECL_EXPORT double cf_Pi()
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_PrecisionEvaluate(const QStringList &string_expressions)
+{
+}
+
+Q_DECL_EXPORT QString cf_PreserveSingleQuotes(const QString &variable)
+{
+}
+
+Q_DECL_EXPORT int cf_Quarter(const QDateTime &date)
+{
+}
+
+Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, const QString &datatype, const QString &array_name)
+{
+}
+
+Q_DECL_EXPORT int cf_QueryAddRow(QWDDX &query, int number)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_QueryConvertForGrid(const QWDDX &query, int page, int pageSize)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &columntypelist)
+{
+}
+
+Q_DECL_EXPORT bool cf_QuerySetCell(QWDDX &query, const QString &column_name, const QWDDX &value, int row_number)
+{
+}
+
+Q_DECL_EXPORT QString cf_QuotedValueList(const QWDDX &query_column, const QString &delimiter)
+{
+}
+
+Q_DECL_EXPORT double cf_Rand(const QString &algorithm)
+{
+}
+
+Q_DECL_EXPORT double cf_Randomize(int number, const QString &algorithm)
+{
+}
+
+Q_DECL_EXPORT int cf_RandRange(int number1, int number2, const QString &algorithm)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_REFind(const QString &reg_expression, const QString &string, int start, bool returnsubexpressions)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_REFindNoCase(const QString &reg_expression, const QString &string, int start, bool returnsubexpressions)
+{
+}
+
+Q_DECL_EXPORT void cf_ReleaseComObject(QWDDX &objectName)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_REMatch(const QString &reg_expression, const QString &string)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_REMatchNoCase(const QString &reg_expression, const QString &string)
+{
+}
+
+Q_DECL_EXPORT QString cf_RemoveChars(QString &string, int start, int count)
+{
+}
+
+Q_DECL_EXPORT QString cf_RepeatString(QString &string, int count)
+{
+}
+
+Q_DECL_EXPORT QString cf_Replace(QString &string, const QString &substring1, const QString &substring2, const QString &scope)
+{
+}
+
+Q_DECL_EXPORT QString cf_ReplaceList(QString &list, const QString &list1, const QString &list2)
+{
+}
+
+Q_DECL_EXPORT QString cf_ReplaceNoCase(QString &string, const QString &substring1, const QString &substring2, const QString &scope)
+{
+}
+
+Q_DECL_EXPORT QString cf_REReplace(const QString &string, const QString &reg_expression, const QString &substring, const QString &scope)
+{
+}
+
+Q_DECL_EXPORT QString cf_REReplaceNoCase(const QString &string, const QString &reg_expression, const QString &substring, const QString &scope)
+{
+}
+
+Q_DECL_EXPORT QString cf_Reverse(const QString &string)
+{
+}
+
+Q_DECL_EXPORT QString cf_Right(const QString &string, int count)
+{
+}
+
+Q_DECL_EXPORT QString cf_RJustify(QString &string, int length)
+{
+}
+
+Q_DECL_EXPORT int cf_Round(double number)
+{
+}
+
+Q_DECL_EXPORT QString cf_RTrim(QString &string)
+{
+}
+
+Q_DECL_EXPORT int cf_Second(const QDateTime &date)
+{
+}
+
+Q_DECL_EXPORT QString cf_SendGatewayMessage(const QString &gatewayID, const QWDDX &data)
+{
+}
+
+Q_DECL_EXPORT QString cf_SerializeJSON(const QWDDX &var, bool serializeQueryByColumns)
+{
+}
+
+Q_DECL_EXPORT void cf_SetEncoding(const QString &scope_name, const QString &charset)
+{
+}
+
+Q_DECL_EXPORT QString cf_SetLocale(const QString &new_locale)
+{
+}
+
+Q_DECL_EXPORT QString cf_SetProfileString(const QString &iniPath, const QString &section, const QString &entry, const QString &value)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_SetVariable(const QString &name, const QWDDX &value)
+{
+}
+
+Q_DECL_EXPORT int cf_Sgn(double number)
+{
+}
+
+Q_DECL_EXPORT double cf_Sin(double number)
+{
+}
+
+Q_DECL_EXPORT void cf_Sleep(int duration)
+{
+}
+
+Q_DECL_EXPORT QString cf_SpanExcluding(const QString &string, const QWDDX &set)
+{
+}
+
+Q_DECL_EXPORT QString cf_SpanIncluding(const QString &string, const QWDDX &set)
+{
+}
+
+Q_DECL_EXPORT double cf_Sqr(double number)
+{
+}
+
+Q_DECL_EXPORT QString cf_StripCR(QString &string)
+{
 }
 
 Q_DECL_EXPORT bool cf_StructAppend(QWDDX &struct1, const QWDDX &struct2, bool overwriteFlag)
@@ -1959,6 +2319,130 @@ Q_DECL_EXPORT bool cf_StructUpdate(QWDDX &structure, const QString &key, const Q
     structure.m_Struct->insert(key, value);
 
     return true;
+}
+
+Q_DECL_EXPORT double cf_Tan(double number)
+{
+}
+
+Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
+{
+}
+
+Q_DECL_EXPORT QString cf_ToBase64(const QString &object, const QString &encoding)
+{
+}
+
+Q_DECL_EXPORT QString cf_ToBase64(const QByteArray &object, const QString &encoding)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_ToBinary(const QString &string)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_ToBinary(const QByteArray &string)
+{
+}
+
+Q_DECL_EXPORT QString cf_ToScript(const QString &cfvar, const QString &javascriptvar, bool outputformat, bool ASFormat)
+{
+}
+
+Q_DECL_EXPORT QString cf_ToString(const QWDDX &value, const QString &encoding)
+{
+}
+
+Q_DECL_EXPORT QString cf_Trim(QString &string)
+{
+}
+
+Q_DECL_EXPORT QString cf_UCase(QString &string)
+{
+}
+
+Q_DECL_EXPORT QString cf_URLDecode(QString &urlEncodedString, const QString &charset)
+{
+}
+
+Q_DECL_EXPORT QString cf_URLEncodedFormat(QString &string, const QString &charset)
+{
+}
+
+Q_DECL_EXPORT QString cf_URLSessionFormat(const QString &request_URL)
+{
+}
+
+Q_DECL_EXPORT double cf_Val(const QString &string)
+{
+}
+
+Q_DECL_EXPORT QString cf_ValueList(const QWDDX &query_column, const QString delimiter)
+{
+}
+
+Q_DECL_EXPORT void cf_VerifyClient()
+{
+}
+
+Q_DECL_EXPORT int cf_Week(const QDateTime &date)
+{
+}
+
+Q_DECL_EXPORT QString cf_Wrap(const QString &string, int limit, bool strip)
+{
+}
+
+Q_DECL_EXPORT void cf_WriteOutput(const QString &string)
+{
+}
+
+Q_DECL_EXPORT bool cf_XmlChildPos(const QWDDX &elem, const QWDDX &childName, int N)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_XmlElemNew(QWDDX &xmlObj, const QString &childName)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_XmlElemNew(QWDDX &xmlObj, const QString &_namespace, const QString &childName)
+{
+}
+
+Q_DECL_EXPORT QString cf_XmlFormat(QString &string)
+{
+}
+
+Q_DECL_EXPORT QString cf_XmlGetNodeType(const QWDDX &xmlNode)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_XmlNew(bool caseSensitive)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_XmlParse(const QString &xmlText, bool caseSensitive, const QString &validator)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_XmlSearch(const QWDDX &xmlDoc, const QString &xPathString)
+{
+}
+
+Q_DECL_EXPORT QString cf_XmlTransform(QWDDX &xml, const QString &xsl, const QWDDX &parameters)
+{
+}
+
+Q_DECL_EXPORT QWDDX cf_XmlValidate(const QWDDX &xmlDoc, const QString &validator)
+{
+}
+
+Q_DECL_EXPORT int cf_Year(const QDateTime &date)
+{
+}
+
+Q_DECL_EXPORT bool cf_YesNoFormat(const QWDDX &value)
+{
 }
 
 QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Request &r)
