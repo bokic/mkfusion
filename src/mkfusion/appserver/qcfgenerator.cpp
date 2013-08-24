@@ -805,7 +805,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             if (p_CFTag.m_TagType == EndCFTagType)
             {
-                return "m_TemplateInstance->m_VARIABLES[\"" + l_queryName + "\"] = endQuery(\"" + l_queryDataSource + "\");";
+                return "m_TemplateInstance->m_VARIABLES[\"" + l_queryName.toUpper() + "\"] = endQuery(\"" + l_queryDataSource + "\");";
             }
         }
     }
