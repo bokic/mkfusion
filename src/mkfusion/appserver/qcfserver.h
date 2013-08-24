@@ -6,6 +6,7 @@
 
 #include <QReadWriteLock>
 #include <QLocalServer>
+#include <QSqlDatabase>
 #include <QThread>
 #include <QObject>
 #include <QList>
@@ -24,6 +25,7 @@ public:
 	virtual ~QCFServer();
 	void start();
 	void stop();
+    QSqlDatabase getDBConnection(const QString &datasource);
 protected:
 	virtual void timerEvent(QTimerEvent*);
 public:

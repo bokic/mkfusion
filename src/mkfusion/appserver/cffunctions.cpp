@@ -2138,11 +2138,14 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, co
         query[column_name_upper].m_Array->resize(query.m_Struct->values().at(0).m_Array->size());
     }
 
-    QStringList list = array_name.split(",");
-
-    for(int c = 0; c < list.count(); c++)
+    if (array_name.count() > 0)
     {
-        cf_QuerySetCell(query, column_name_upper, list.at(c), c + 1);
+        QStringList list = array_name.split(",");
+
+        for(int c = 0; c < list.count(); c++)
+        {
+            cf_QuerySetCell(query, column_name_upper, list.at(c), c + 1);
+        }
     }
 
     return query.m_Struct->count();
@@ -2203,22 +2206,21 @@ Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &column
 
 Q_DECL_EXPORT bool cf_QuerySetCell(QWDDX &query, const QString &column_name, const QWDDX &value, int row_number)
 {
-
     if (query.type() != QWDDX::Query)
     {
-        throw QMKFusionException("Parameter mismatch", "Parameter query is not type Query.");
+        throw QMKFusionException("Parameter mismatch, Parameter query is not type Query.");
     }
 
     const QString upperColumnName = column_name.toUpper();
 
     if (!query.m_Struct->contains(upperColumnName))
     {
-        throw QMKFusionException("Parameter mismatch", "query_column has invalid column name.");
+        throw QMKFusionException("Parameter mismatch, query_column has invalid column name.");
     }
 
     if ((row_number < 1)||(row_number > query[upperColumnName].m_Array->size()))
     {
-        throw QMKFusionException("Parameter mismatch", "row_number is out of range.");
+        throw QMKFusionException("Parameter mismatch, row_number is out of range.");
     }
 
     query[upperColumnName].m_Array->replace(row_number - 1, value);

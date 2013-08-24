@@ -307,7 +307,7 @@ Q_DECL_EXPORT double cf_Pi();
 Q_DECL_EXPORT QWDDX cf_PrecisionEvaluate(const QStringList &string_expressions);
 Q_DECL_EXPORT QString cf_PreserveSingleQuotes(const QString &variable);
 Q_DECL_EXPORT int cf_Quarter(const QDateTime &date);
-Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, const QString &datatype, const QString &array_name);
+Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, const QString &datatype = "", const QString &array_name = "");
 Q_DECL_EXPORT int cf_QueryAddRow(QWDDX &query, int number = 1);
 Q_DECL_EXPORT QWDDX cf_QueryConvertForGrid(const QWDDX &query, int page, int pageSize);
 Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &columntypelist = "");

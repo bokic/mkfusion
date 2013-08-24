@@ -249,6 +249,17 @@ void QCFServer::stop()
 	m_LocalServer.close();
 }
 
+QSqlDatabase QCFServer::getDBConnection(const QString &datasource)
+{
+    QSqlDatabase ret;
+
+    ret = QSqlDatabase::addDatabase("QSQLITE", datasource);
+
+    ret.setDatabaseName("test.db");
+
+    return ret;
+}
+
 QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_URI)
 {
 	if (m_CompiledTemplates.contains(p_Filename))

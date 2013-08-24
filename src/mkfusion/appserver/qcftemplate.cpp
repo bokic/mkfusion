@@ -1,4 +1,10 @@
 #include "qcftemplate.h"
+#include "cffunctions.h"
+#include "qcfserver.h"
+
+#include <QSqlDatabase>
+#include <QSqlRecord>
+#include <QSqlQuery>
 
 QCFTemplate::QCFTemplate()
 	: m_TemplateInstance(NULL)
@@ -64,14 +70,48 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
     QWDDX ret(QWDDX::Query);
 
     //Get dbconnection object
+    QSqlDatabase conn = ((QCFServer*)m_TemplateInstance->m_CFServer)->getDBConnection(p_DataSource);
+
+    if (conn.open() == false)
+    {
+        throw QMKFusionException("Database connection failed.");
+    }
 
     //Call prepare query
+    QSqlQuery query(conn);
+
+    if (query.prepare(m_TemplateInstance->m_QueryOutput) == false)
+    {
+        throw QMKFusionException("Invalid query syntax.");
+    }
 
     //Send query parameters(if any)
 
     //call query exec.
+    if (query.exec() == false)
+    {
+        throw QMKFusionException("query execute failed.");
+    }
 
     // copy
+    for(int f = 0; f < query.record().count(); f++)
+    {
+        cf_QueryAddColumn(ret, query.record().fieldName(f));
+    }
+
+    int row = 1;
+
+    while(query.next())
+    {
+        cf_QueryAddRow(ret);
+
+        for(int f = 0; f < query.record().count(); f++)
+        {
+            cf_QuerySetCell(ret, query.record().fieldName(f), query.record().value(f).toString(), row);
+        }
+
+        row++;
+    }
 
     m_TemplateInstance->m_QueryOutput.clear();
 
