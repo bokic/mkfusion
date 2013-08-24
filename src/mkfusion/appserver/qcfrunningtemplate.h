@@ -25,6 +25,7 @@ public:
 	QWDDX m_VARIABLES;
 	QString m_Output;
     QString m_QueryOutput;
+    QList<QWDDX> m_QueryParams;
 	qint32 m_CFOutput;
 	QString m_ContentType;
 	int m_Status;

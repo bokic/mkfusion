@@ -813,7 +813,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
     {
         if (p_CFTag.m_TagType == CFTagType)
         {
-            return "f_WriteOutput(QString::fromWCharArray(L\"?\", 1));";
+            return "m_TemplateInstance->m_QueryParams.append(" +  CFTagGetArgument(p_CFTag, "value") + "); f_WriteOutput(QString::fromWCharArray(L\"?\", 1));";
         }
     }
 

@@ -61,6 +61,7 @@ void QCFTemplate::f_WriteOutput(const QWDDX &p_Wddx)
 void QCFTemplate::startQuery()
 {
     m_TemplateInstance->m_QueryOutput.clear();
+    m_TemplateInstance->m_QueryParams.clear();
 
     m_TemplateInstance->m_OutputType = QCFRunningTemplate::OutputTypeQuery;
 }
@@ -86,6 +87,10 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
     }
 
     //Send query parameters(if any)
+    for(int c = 0; c < m_TemplateInstance->m_QueryParams.count(); c++)
+    {
+        query.bindValue(c, m_TemplateInstance->m_QueryParams.at(c).toString());
+    }
 
     //call query exec.
     if (query.exec() == false)
@@ -114,6 +119,7 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
     }
 
     m_TemplateInstance->m_QueryOutput.clear();
+    m_TemplateInstance->m_QueryParams.clear();
 
     m_TemplateInstance->m_OutputType = QCFRunningTemplate::OutputTypeContent;
 
