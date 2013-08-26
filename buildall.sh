@@ -55,7 +55,7 @@ cp install/ubuntu/mkfusion_mkfusion.load install/ubuntu/mkfusion/etc/apache2/mod
 chmod 0644 install/ubuntu/mkfusion/etc/apache2/mods-available/mkfusion.load
 cp install/ubuntu/mkfusion_init install/ubuntu/mkfusion/etc/init.d/mkfusion
 chmod 0744 install/ubuntu/mkfusion/etc/init.d/mkfusion
-fakeroot dpkg -b install/ubuntu/mkfusion mkfusion_0.4.1-0ubuntu0_i386.deb
+fakeroot dpkg -b install/ubuntu/mkfusion mkfusion_0.4.2-0ubuntu0_i386.deb
 rm -rf install/ubuntu/mkfusion
 
 mkdir install/ubuntu/cfeditor
@@ -68,5 +68,5 @@ cp install/ubuntu/cfeditor_postinst install/ubuntu/cfeditor/DEBIAN/postinst
 chmod 0755 install/ubuntu/cfeditor/DEBIAN/postinst
 cp bin/cfeditor install/ubuntu/cfeditor/usr/bin/cfeditor
 chmod 0755 install/ubuntu/cfeditor/usr/bin/cfeditor
-fakeroot dpkg -b install/ubuntu/cfeditor cfeditor_0.4.1-0ubuntu0_i386.deb
+fakeroot dpkg -b install/ubuntu/cfeditor cfeditor_0.4.2-0ubuntu0_i386.deb
 rm -rf install/ubuntu/cfeditor
