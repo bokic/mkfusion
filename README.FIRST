@@ -3,35 +3,21 @@ WINDOWS:
 files needed before compile:
 
 
-* qt-win-opensource-4.6.3-mingw.exe(or maybe newer)
-* Apache 2.2(with devel files)
+* Qt 5.1.0 for Windows 32-bit (MinGW 4.8, OpenGL, 666 MB) (or newer)
+* Apache 2.2(installed with devel files)
 * libssh-mingw4-xxxxxxxx-bin.tar.bz2
 * libssh-mingw4-xxxxxxxx-lib.tar.bz2
-* openssl-0.9.8k-2-bin.tar.bz2(or maybe newer)
-* zlib-1.2.3-2-bin.zip(or maybe newer)
+* openssl-0.9.8k-2-bin.tar.bz2(or newer)
+* zlib-1.2.3-2-bin.zip(or newer)
 
 
 Extract libssh(both), openssl, zlib into libs. All of them should be available
 at http://winkde.org/pub/kde/ports/win32/releases/nightly/latest/
-Extract QtService into libs(http://qt.nokia.com/products/appdev/add-on-products/catalog/4/Utilities/qtservice)
-
-
-Note: If Qt4.6.2(or older) is used, please patch qt with:
-http://qt.gitorious.org/qt/qt/commit/9e5e97f3b5eaa9cda471be44a5c59b51561393b6
-http://qt.gitorious.org/qt/qt/commit/c09ef77cd271c47cb3c2607553dab669d6cbcddc
-http://qt.gitorious.org/qt/qt/commit/1d307402d03dea32b6e95a1eec6a79448fbe892a
-http://qt.gitorious.org/qt/qt/commit/fd96a8180a5ccfeaea5b081c42137d18d640c25e
-
-Note: If Qt4.6.3(or older) is used, please patch qt with:
-http://qt.gitorious.org/qt/qt/commit/1d307402d03dea32b6e95a1eec6a79448fbe892a
-http://qt.gitorious.org/qt/qt/commit/fd96a8180a5ccfeaea5b081c42137d18d640c25e
+Extract QtService into libs(http://qt.gitorious.org/qt-solutions/qt-solutions/trees/master/qtservice)
 
 --------------------------------------------------------------------------------
-Ubuntu 10.04 LTS(Lucid Lynx), 10.10(Maverick Meerkat), Debian 6(Squeeze):
+Ubuntu 13.04 (Raring Ringtail):
 
-* sudo apt-get install g++ apache2-prefork-dev libssh-dev qt4-dev-tools make fakeroot
- or
-* sudo apt-get install g++ apache2-threaded-dev libssh-dev qt4-dev-tools make fakeroot
-
+* sudo apt-get install g++ apache2-prefork-dev libssh-dev qtbase5-dev make fakeroot
 * sh ./buildall.sh
-* sudo dpkg -i mkfusion_0.4.1-0ubuntu0_i386.deb
+* sudo dpkg -i mkfusion_0.4.2-0ubuntu0_i386.deb
