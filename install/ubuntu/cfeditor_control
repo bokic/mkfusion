@@ -1,10 +1,10 @@
 Package: cfeditor
 Source: cfeditor
-Version: 0.4.1
+Version: 0.4.2
 Architecture: i386
 Maintainer: Boris Barbulovski <bbarbulovski@gmail.com>
 Installed-Size: 560
-Depends: libssh-4(>= 0.4.2-1ubuntu1), libqtgui4(>= 4:4.6.2-0ubuntu5), libqt4-xml(>= 4:4.6.2-0ubuntu5), libqt4-network(>= 4:4.6.2-0ubuntu5), libqt4-webkit(>= 4:4.6.2-0ubuntu5)
+Depends: libc6(>= 2.17-0ubuntu5), libstdc++6(>= 4.7.3-1ubuntu1), libgcc1(>= 1:4.7.3-1ubuntu1), libssh-4(>= 0.5.3-1ubuntu1), libqt5core5(>= 5.0.1+dfsg-0ubuntu4), libqt5widgets5(>= 5.0.1+dfsg-0ubuntu4), libqt5gui5(>= 5.0.1+dfsg-0ubuntu4), libqt5network5(>= 5.0.1+dfsg-0ubuntu4), libqt5xml5(>= 5.0.1+dfsg-0ubuntu4), libqt5webkit5(>= 5.0.1-0ubuntu1)
 Section: devel
 Priority: optional
 Homepage: http://mkfusion.bokicsoft.com/
