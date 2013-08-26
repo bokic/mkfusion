@@ -396,6 +396,4 @@ Q_DECL_EXPORT QWDDX cf_XmlValidate(const QWDDX &xmlDoc, const QString &validator
 Q_DECL_EXPORT int cf_Year(const QDateTime &date);
 Q_DECL_EXPORT bool cf_YesNoFormat(const QWDDX &value);
 
-QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Request &r);
-
 #endif // CFFUNCTIONS_H

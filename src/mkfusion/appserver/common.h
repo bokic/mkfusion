@@ -1,8 +1,11 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <QString>
+#include "qmkfusionexception.h"
 #include "qwddx.h"
+
+#include <QString>
+
 
 struct QCFRunningTemplate_Request
 {
@@ -30,6 +33,7 @@ struct QCFRunningTemplate_Request
 #endif
 
 void log(const QString &p_filename, const QString& p_Line);
+QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Request &r);
 
 extern "C" MY_EXPORT QString mk_cfdump(const QWDDX&);
 

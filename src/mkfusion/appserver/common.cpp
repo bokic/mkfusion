@@ -18,6 +18,84 @@ void log(const QString &p_filename, const QString &p_Line)
 	l_Log.close();
 }
 
+QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Request &r)
+{
+    QString ret;
+
+    ret  = "<font style=\"COLOR: black; FONT: 16pt/18pt verdana\">The web site you are accessing has experienced an unexpected error.<br>Please contact the website administrator.</font>\n";
+    ret += "<br>\n";
+    ret += "<br>\n";
+    ret += "<table border=\"1\" cellpadding=\"3\" bordercolor=\"#000808\" bgcolor=\"#e7e7e7\">\n";
+    ret += "\t<tr>\n";
+    ret += "\t\t<td bgcolor=\"#000066\">\n";
+    ret += "\t\t\t<font style=\"COLOR: white; FONT: 11pt/13pt verdana\" color=\"white\">The following information is meant for the website developer for debugging purposes.</font>\n";
+    ret += "\t\t</td>\n";
+    ret += "\t<tr>\n";
+    ret += "\t<tr>\n";
+    ret += "\t\t<td bgcolor=\"#4646EE\">\n";
+    ret += "\t\t\t<font style=\"COLOR: white; FONT: 11pt/13pt verdana\" color=\"white\">Error Occurred While Processing Request</font>\n";
+    ret += "\t\t</td>\n";
+    ret += "\t</tr>\n";
+    ret += "\t<tr>\n";
+    ret += "\t\t<td>\n";
+    ret += "\t\t\t<font style=\"COLOR: black; FONT: 8pt/11pt verdana\">\n";
+    ret += "\t\t\t\t<table width=\"500\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
+    ret += "\t\t\t\t\t<tr>\n";
+    ret += "\t\t\t\t\t\t<td id=\"tableProps2\" align=\"left\" valign=\"middle\" width=\"500\">\n";
+    ret += "\t\t\t\t\t\t\t<h1 id=\"textSection1\" style=\"COLOR: black; FONT: 13pt/15pt verdana\">" + *ex.m_message + "</h1>\n";
+    ret += "\t\t\t\t\t\t</td>\n";
+    ret += "\t\t\t\t\t</tr>\n";
+    ret += "\t\t\t\t\t<tr>\n";
+    ret += "\t\t\t\t\t\t<td id=\"tablePropsWidth\" width=\"400\" colspan=\"2\">\n";
+    ret += "\t\t\t\t\t\t\t<font style=\"COLOR: black; FONT: 8pt/11pt verdana\"></font>\n";
+    ret += "\t\t\t\t\t\t</td>\n";
+    ret += "\t\t\t\t\t</tr>\n";
+    ret += "\t\t\t\t\t<tr>\n";
+    ret += "\t\t\t\t\t\t<td height>&nbsp;</td>\n";
+    ret += "\t\t\t\t\t</tr>\n";
+    ret += "\t\t\t\t\t<tr>\n";
+    ret += "\t\t\t\t\t\t<td colspan=\"2\">\n";
+    ret += "\t\t\t\t\t\t\t<font style=\"COLOR: black; FONT: 8pt/11pt verdana\">\n";
+    ret += "\t\t\t\t\t\t\t\tResources:\n";
+    ret += "\t\t\t\t\t\t\t\t<ul>\n";
+    ret += "\t\t\t\t\t\t\t\t\t<li>Enable Robust Exception Information to provide greater detail about the source of errors.  In the Administrator, click Debugging & Logging > Debug Output Settings, and select the Robust Exception Information option.</li>\n";
+    ret += "\t\t\t\t\t\t\t\t\t<li>Check the <a href='http://www.bokicsoft.com/mkfusion/docs/' target=\"new\">ColdFusion documentation</a> to verify that you are using the correct syntax.</li>\n";
+    ret += "\t\t\t\t\t\t\t\t\t<li>Search the <a href='http://www.bokicsoft.com/mkfusion/kb/' target=\"new\">Knowledge Base</a> to find a solution to your problem.</li>\n";
+    ret += "\t\t\t\t\t\t\t\t</ul>\n";
+    ret += "\t\t\t\t\t\t\t</font>\n";
+    ret += "\t\t\t\t\t\t</td>\n";
+    ret += "\t\t\t\t\t</tr>\n";
+    ret += "\t\t\t\t\t<tr>\n";
+    ret += "\t\t\t\t\t\t<td colspan=\"2\">\n";
+    ret += "\t\t\t\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+    ret += "\t\t\t\t\t\t\t\t<tr>\n";
+    ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Browser&nbsp;&nbsp;</td>\n";
+    ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + r.m_UserAgent + "</td>\n";
+    ret += "\t\t\t\t\t\t\t\t</tr>\n";
+    ret += "\t\t\t\t\t\t\t\t<tr>\n";
+    ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Remote Address&nbsp;&nbsp;</td>\n";
+    ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + r.m_Host + "</td>\n";
+    ret += "\t\t\t\t\t\t\t\t</tr>\n";
+    ret += "\t\t\t\t\t\t\t\t<tr>\n";
+    ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Referrer&nbsp;&nbsp;</td>\n";
+    ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + r.m_Referer + "</td>\n";
+    ret += "\t\t\t\t\t\t\t\t</tr>\n";
+    ret += "\t\t\t\t\t\t\t\t<tr>\n";
+    ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">Date/Time&nbsp;&nbsp;</td>\n";
+    ret += "\t\t\t\t\t\t\t\t\t<td><font style=\"COLOR: black; FONT: 8pt/11pt verdana\">" + QDateTime::currentDateTime().toString("dd-MMM-yy hh:mm AP") + "</td>\n";
+    ret += "\t\t\t\t\t\t\t\t</tr>\n";
+    ret += "\t\t\t\t\t\t\t</table>\n";
+    ret += "\t\t\t\t\t\t</td>\n";
+    ret += "\t\t\t\t\t</tr>\n";
+    ret += "\t\t\t\t</table>\n";
+    ret += "\t\t\t</font>\n";
+    ret += "\t\t</td>\n";
+    ret += "\t</tr>\n";
+    ret += "</table>\n";
+
+    return  ret;
+}
+
 QString cfdump_var(const QWDDX &p_Variable)
 {
 	QString ret;
