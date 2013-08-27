@@ -73,18 +73,17 @@ void CFTest1::parseDir(QString p_dir)
 				else
 				{
 					l_tags = parser.getTags();
-					for (int c = 0; c < l_tags.size(); c++)
+                    for(const QCFParserTag &l_tag : l_tags)
 					{
-						if (l_tags[c].m_TagType == CFTagType)
+                        if (l_tag.m_TagType == CFTagType)
 						{
-							m_hash[l_tags[c].m_Name.toLower()]++;
-						}
+                            m_hash[l_tag.m_Name.toLower()]++;
+                        }
 					}
 				}
 			}
 
 			ui.listWidget->addItem(lastItem);
-			//delete parser;
 		}
 	}
 }

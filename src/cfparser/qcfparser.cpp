@@ -491,7 +491,11 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 					{
 						ret.m_Type = Boolean;
                     }
-                    else if (ret.m_Text.compare("var", Qt::CaseInsensitive) == 0)
+                    else if (
+                            (ret.m_Text.compare("var", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("function", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("return", Qt::CaseInsensitive) == 0)
+                            )
                     {
                         ret.m_Type = Keyword;
                     }
@@ -787,7 +791,35 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 			ret.m_Size = child.m_Size + 2;
 			ret.m_ChildElements.append(child);
 			break;
-		case Expression:
+        case CodeBlock:
+        if (p_Text.at(l_Offset) != '{')
+            {
+                ret.m_Type = Error;
+                ret.m_Position = l_Offset;
+                ret.m_Text = tr("CodeBlock doesn't start with '{'.");
+                break;
+            }
+
+            do {
+                child = ParseCFCode(p_Text, l_Offset + 1, Expression, &ret);
+                if (child.m_Type == Error)
+                {
+                    ret = child;
+                    break;
+                }
+
+                if (child.m_Size > 0)
+                {
+                    ret.m_ChildElements.append(child);
+                }
+
+                l_Offset = child.m_Position + child.m_Size;
+
+            } while (p_Text.at(l_Offset) != '}');
+
+            ret.m_Size = (child.m_Position + child.m_Size) - ret.m_Position + 1;
+            break;
+        case Expression:
 			int c;
 			char nextch;
 
@@ -807,13 +839,6 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 				}
 
 				ch = p_Text.at(c).unicode();
-
-                if ((c == l_Offset)&&(ch == '{'))
-                {
-                    c++;
-
-                    continue;
-                }
 
 				if(c + 1 < p_Text.length())
 				{
@@ -839,32 +864,11 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 					ret.m_Size = c - p_Offset;
 					break;
                 }
-                else if (ch == '{')
-                {
-                    //if (m_InsideCFScript)
-                    //{
-                        child = ParseCFCode(p_Text, c, Expression, &ret);
-                        if (child.m_Type == Error)
-                        {
-                            return child;
-                        }
-                        ret.m_ChildElements.append(child);
-                        c = child.m_Position + child.m_Size;
-                    /*}
-                    else
-                    {
-                        ret.m_Type = Error;
-                        ret.m_Position = l_Offset;
-                        ret.m_Size = 1;
-                        ret.m_Text = tr("{ can be found only inside cfscript tag.");
-                        break;
-                    }*/
-                }
                 else if (ch == '}')
                 {
                     //if (m_InsideCFScript)
                     //{
-                        ret.m_Size = c - p_Offset + 1;
+                        ret.m_Size = c - p_Offset;
                         break;
                     /*}
                     else
@@ -895,6 +899,17 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 					}
 					ret.m_ChildElements.append(child);
 					c = child.m_Position + child.m_Size;
+                }
+                else if (ch == '{')
+                {
+                    child = ParseCFCode(p_Text, c, CodeBlock, &ret);
+                    if (child.m_Type == Error)
+                    {
+                        return child;
+                    }
+                    ret.m_ChildElements.append(child);
+                    ret.m_Size = (child.m_Position + child.m_Size) - ret.m_Position;
+                    break;
                 }
                 else if (ch == ';')
                 {
