@@ -119,6 +119,7 @@ void QDetail::addSubTrees(const QCFParserElement& p_ParserElement, QTreeWidgetIt
             break;
         case SharpExpression:
             name = "SharpExpression";
+            break;
         case CodeBlock:
             name = "CodeBlock";
             break;
