@@ -1489,9 +1489,10 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 
 					if ((m_CFTagsDef[openTag.m_Name].m_ArgumentsType == QCFTag::ArgumentsTypeExpression)&&(openTag.m_Arguments.m_ChildElements.size() == 1))
 					{
-						QCFParserElement temp = openTag.m_Arguments.m_ChildElements[0];
-						temp.m_Type = Expression;
-						openTag.m_Arguments = temp;
+                        //QCFParserElement temp = openTag.m_Arguments.m_ChildElements[0];
+                        //temp.m_Type = Expression;
+                        //openTag.m_Arguments = temp;
+                        openTag.m_Arguments.m_Type = Expression;
 					}
 				}
 			}
