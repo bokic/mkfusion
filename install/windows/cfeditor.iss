@@ -1,9 +1,9 @@
 [Setup]
 AppName=CFEditor
-AppVerName=CFEditor version 0.4.1
+AppVerName=CFEditor version 0.4.2
 AppPublisher=BokiCSoft
 AppPublisherURL=http://mkfusion.bokicsoft.com/
-AppVersion=0.4.1
+AppVersion=0.4.2
 DefaultDirName={pf}\BokiCSoft\CFEditor
 DefaultGroupName=CFEditor
 UninstallDisplayIcon={app}\cfeditor.exe
@@ -12,7 +12,7 @@ Compression=lzma
 SolidCompression=yes
 OutputBaseFilename=CFEditor
 OutputDir=.
-VersionInfoVersion=0.4.1
+VersionInfoVersion=0.4.2
 VersionInfoDescription=CFEditor is free, opensource, multiplatform ColdFusion Editor(Qt 4.7.2)
 
 [Files]
