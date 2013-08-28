@@ -620,7 +620,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 	{
 		return "break;";
 	}
-    else if(p_CFTag.m_Name.compare("cfdump", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfdump", Qt::CaseInsensitive) == 0) /* Only 'var' parameter is implemented. */
 	{
 		if (p_CFTag.m_Arguments.m_Type != CFTagArguments)
 		{
@@ -640,7 +640,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 		return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(OprimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]))+"));";
 		//return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2], "false")+"));";
 	}
-    else if(p_CFTag.m_Name.compare("cfloop", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfloop", Qt::CaseInsensitive) == 0) /* implemented: index, condition. missing: date or time, query, list or file or array, COM/DCOM collection or structure */
 	{
 		if (p_CFTag.m_TagType == CFTagType)
 		{
@@ -759,7 +759,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return "} else if(" + GenerateCFExpressionToCExpression(p_CFTag.m_Arguments) + ") {";
 		}
 	}
-    else if(p_CFTag.m_Name.compare("cfsetting", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfsetting", Qt::CaseInsensitive) == 0) /* implemented attributes: enablecfoutputonly. */
 	{
         QString l_enablecfoutputonly = CFTagGetArgumentPlain(p_CFTag, "enablecfoutputonly");
 		l_enablecfoutputonly = l_enablecfoutputonly.remove('\'');
@@ -774,7 +774,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			m_EnableCFOutputOnly = false;
 		}
 	}
-    else if(p_CFTag.m_Name.compare("cfquery", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfquery", Qt::CaseInsensitive) == 0) /* implemented attributes: name, datasource. */
     {
         QString l_queryType;
         QString l_queryName;
@@ -809,7 +809,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             }
         }
     }
-    else if(p_CFTag.m_Name.compare("cfqueryparam", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfqueryparam", Qt::CaseInsensitive) == 0) /* implemented attributes: value. */
     {
         if (p_CFTag.m_TagType == CFTagType)
         {
