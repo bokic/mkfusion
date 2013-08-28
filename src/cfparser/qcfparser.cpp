@@ -372,9 +372,9 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 					return ParseCFCode(p_Text, l_Offset, SharpExpression, &ret);
 				}
 
-				if (ch =='(')
+                if ((ch =='(')||(ch =='{'))
                 {
-                    str = p_Text.mid(p_Offset, c - p_Offset);
+                    str = p_Text.mid(p_Offset, c - p_Offset).trimmed();
 
                     if (
                             (str.compare("eq", Qt::CaseInsensitive) == 0)||
@@ -396,9 +396,47 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                         ret.m_Size = c - p_Offset;
 
                         return ret;
+                    } else if (
+                            (str.compare("true", Qt::CaseInsensitive) == 0)||
+                            (str.compare("false", Qt::CaseInsensitive) == 0)||
+                            (str.compare("yes", Qt::CaseInsensitive) == 0)||
+                            (str.compare("no", Qt::CaseInsensitive) == 0)
+                        )
+                    {
+                        ret.m_Type = Boolean;
+                        ret.m_Text = str;
+                        ret.m_Size = c - p_Offset;
+
+                        return ret;
+                    } else if (
+                            (str.compare("var", Qt::CaseInsensitive) == 0)||
+                            (str.compare("function", Qt::CaseInsensitive) == 0)||
+                            (str.compare("return", Qt::CaseInsensitive) == 0)||
+                            (str.compare("if", Qt::CaseInsensitive) == 0)||
+                            (str.compare("else", Qt::CaseInsensitive) == 0)||
+                            (str.compare("try", Qt::CaseInsensitive) == 0)||
+                            (str.compare("catch", Qt::CaseInsensitive) == 0)
+                            )
+                    {
+                        ret.m_Type = Keyword;
+                        ret.m_Text = str;
+                        ret.m_Size = c - p_Offset;
+
+                        return ret;
                     }
 
-					return ParseCFCode(p_Text, l_Offset, Function, &ret);
+                    if (ch =='(')
+                    {
+                        return ParseCFCode(p_Text, l_Offset, Function, &ret);
+                    }
+                    else
+                    {
+                        ret.m_Type = Variable;
+                        ret.m_Text = str;
+                        ret.m_Size = c - p_Offset;
+
+                        return ret;
+                    }
 				}
 
 				if (ch == '[')
@@ -452,7 +490,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 					}
 				}
 
-                if ((ch == ' ')||(ch == '\'')||(ch == '\"')||(ch == '=')||(ch == '&')||(ch == '#')||(ch == '>')||(ch == '/')||(ch == ')')||(ch == ']')||(ch == ',')||(ch == '+')||(ch == '-')||(ch == '*')||(ch == '<')||(ch == '>')||(ch == ';')) // TODO: Add other operators
+                if ((ch == ' ')||(ch == '\r')||(ch == '\n')||(ch == '\'')||(ch == '\"')||(ch == '=')||(ch == '&')||(ch == '#')||(ch == '>')||(ch == '/')||(ch == ')')||(ch == ']')||(ch == ',')||(ch == '+')||(ch == '-')||(ch == '*')||(ch == '<')||(ch == '>')||(ch == ';')) // TODO: Add other operators
 				{
 					if (c - l_Offset == 0)
 					{
@@ -464,7 +502,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 					}
 					ret.m_Position = l_Offset;
 					ret.m_Size = c - l_Offset;
-					ret.m_Text = p_Text.mid(l_Offset, c - l_Offset);
+                    ret.m_Text = p_Text.mid(l_Offset, c - l_Offset).trimmed();
 					if (
 							(ret.m_Text.compare("eq", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("is", Qt::CaseInsensitive) == 0)||
@@ -494,7 +532,9 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                     else if (
                             (ret.m_Text.compare("var", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("function", Qt::CaseInsensitive) == 0)||
-                            (ret.m_Text.compare("return", Qt::CaseInsensitive) == 0)
+                            (ret.m_Text.compare("return", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("if", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("else", Qt::CaseInsensitive) == 0)
                             )
                     {
                         ret.m_Type = Keyword;
@@ -1187,10 +1227,19 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 
             child = ParseCFCode(p_Text, l_Offset, Expression, &ret);
 
+            if (child.m_Size == 0)
+            {
+                child.m_Type = Error;
+                child.m_Text = tr("Expression size is 0.");
+            }
+
             ret.m_ChildElements.append(child);
 
             if (child.m_Type == Error)
             {
+                ret.m_Type = Error;
+                ret.m_Text = child.m_Text;
+
                 break;
             }
 
@@ -1500,6 +1549,13 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
             if (openTag.m_Name.compare("cfscript", Qt::CaseInsensitive) == 0)
 			{
                 openTag.m_Arguments = ParseCFCode(p_Text, openTag.m_Start + openTag.m_Length, CFScript);
+
+                if (openTag.m_Arguments.m_Type == Error)
+                {
+                    m_Error = openTag.m_Arguments.m_Text;
+                    m_ErrorPosition = openTag.m_Arguments.m_Position;
+                    return ParsingError;
+                }
 
                 pos = openTag.m_Arguments.m_Position + openTag.m_Arguments.m_Size;
             }
