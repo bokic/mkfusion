@@ -21,7 +21,20 @@ CFTest1::~CFTest1()
 
 }
 
-void CFTest1::parseDir(QString p_dir)
+void CFTest1::findFunctionsRecursive(const QCFParserElement &parserElement)
+{
+    if (parserElement.m_Type == Function)
+    {
+        m_functionsHash[parserElement.m_Text.toLower()]++;
+    }
+
+    for(const QCFParserElement &child : parserElement.m_ChildElements)
+    {
+        findFunctionsRecursive(child);
+    }
+}
+
+void CFTest1::parseDir(const QString &p_dir)
 {
 	QDir dir(p_dir);
 
@@ -77,7 +90,9 @@ void CFTest1::parseDir(QString p_dir)
 					{
                         if (l_tag.m_TagType == CFTagType)
 						{
-                            m_hash[l_tag.m_Name.toLower()]++;
+                            m_tagsHash[l_tag.m_Name.toLower()]++;
+
+                            findFunctionsRecursive(l_tag.m_Arguments);
                         }
 					}
 				}
@@ -91,30 +106,43 @@ void CFTest1::parseDir(QString p_dir)
 void CFTest1::on_pushButton_clicked()
 {
     QFileDialog dialog(this);
+    QStringList keys;
+
     dialog.setFileMode(QFileDialog::DirectoryOnly);
 
     if (dialog.exec() == QDialog::Accepted)
     {
         ui.listWidget->clear();
-        m_hash.clear();
+        m_tagsHash.clear();
+        m_functionsHash.clear();
 
         parseDir(dialog.directory().absolutePath());
 
         ui.listWidget->addItem(new QListWidgetItem("-------------------- CF Tags stats -------------------------"));
 
-        QStringList keys = m_hash.uniqueKeys();
+        keys = m_tagsHash.uniqueKeys();
         keys.sort();
 
         for (int c = 0; c < keys.size(); c++)
         {
-            ui.listWidget->addItem(new QListWidgetItem(keys[c] + " = " + QString::number(m_hash[keys[c]])));
+            ui.listWidget->addItem(new QListWidgetItem(keys[c] + " = " + QString::number(m_tagsHash[keys[c]])));
+        }
+
+        ui.listWidget->addItem(new QListWidgetItem("-------------------- CF Functions stats -------------------------"));
+
+        keys = m_functionsHash.uniqueKeys();
+        keys.sort();
+
+        for (int c = 0; c < keys.size(); c++)
+        {
+            ui.listWidget->addItem(new QListWidgetItem(keys[c] + " = " + QString::number(m_functionsHash[keys[c]])));
         }
 
         ui.listWidget->scrollToBottom();
     }
 }
 
-void CFTest1::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
+void CFTest1::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
     QString file = item->text();
 
