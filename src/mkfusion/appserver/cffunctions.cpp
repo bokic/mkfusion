@@ -2087,7 +2087,11 @@ Q_DECL_EXPORT QDateTime cf_ParseDateTime(const QString &datetime_string, const Q
 
 Q_DECL_EXPORT double cf_Pi()
 {
-    return M_PI;
+    double ret;
+
+    asm("fldpi" : "=t" (ret));
+
+    return ret;
 }
 
 Q_DECL_EXPORT QWDDX cf_PrecisionEvaluate(const QStringList &string_expressions)
