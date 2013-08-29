@@ -1754,7 +1754,7 @@ Q_DECL_EXPORT void cf_ImageXORDrawingMode(QWDDX &name, const QString &c1)
 {
 }
 
-Q_DECL_EXPORT int cf_IncrementValue(int number)
+Q_DECL_EXPORT double cf_IncrementValue(double number)
 {
     return number + 1;
 }
@@ -1769,6 +1769,7 @@ Q_DECL_EXPORT QString cf_Insert(const QString &substring, QString &string, int p
 
 Q_DECL_EXPORT QString cf_Int(double number)
 {
+    return QString::number(floor(number));
 }
 
 Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level)
@@ -1813,8 +1814,11 @@ Q_DECL_EXPORT bool cf_IsDebugMode()
 {
 }
 
-Q_DECL_EXPORT bool cf_IsDefined(const QWDDX &variable_name)
+Q_DECL_EXPORT bool cf_IsDefined(const QString &variable_name)
 {
+    Q_UNUSED(variable_name);
+
+    throw QMKFusionException("Not Implemented", "Dynamic IsDefined evaluation is not implemented yet.");
 }
 
 Q_DECL_EXPORT bool cf_IsImage(const QWDDX &name)
@@ -2439,6 +2443,19 @@ Q_DECL_EXPORT QString cf_REReplaceNoCase(const QString &string, const QString &r
 
 Q_DECL_EXPORT QString cf_Reverse(const QString &string)
 {
+    QString ret;
+    int len;
+
+    len = string.length();
+
+    ret.resize(len);
+
+    for(int c = 1; c <= len; c++)
+    {
+        ret[c] = string.at(len - c);
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT QString cf_Right(const QString &string, int count)
@@ -2767,6 +2784,9 @@ Q_DECL_EXPORT QString cf_ToString(const QWDDX &value, const QString &encoding)
 
 Q_DECL_EXPORT QString cf_Trim(QString &string)
 {
+    string = string.trimmed();
+
+    return string;
 }
 
 Q_DECL_EXPORT QString cf_UCase(QString &string)

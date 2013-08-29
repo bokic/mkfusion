@@ -9,7 +9,7 @@ class QCFFunctionArgument : public QObject
 {
 public:
 	enum QCFFunctionArgumentType {TypeConstant, TypeExpression, TypeVariable, TypeAny};
-	enum QCFFunctionArgumentDataType {ArgumentDataTypeBool, ArgumentDataTypeInt, ArgumentDataTypeDouble, ArgumentDataTypeString, ArgumentDataTypeDateTime, ArgumentDataTypeQWDDX, ArgumentDataTypeAny};
+    enum QCFFunctionArgumentDataType {ArgumentDataTypeBool, ArgumentDataTypeInt, ArgumentDataTypeDouble, ArgumentDataTypeString, ArgumentDataTypeBinary, ArgumentDataTypeDateTime, ArgumentDataTypeQWDDX, ArgumentDataTypeAny};
 
 	QCFFunctionArgument();
 	explicit QCFFunctionArgument(const QCFFunctionArgument &other);
@@ -25,7 +25,7 @@ public:
 class QCFFunction : public QObject
 {
 public:
-	enum QCFFunctionReturnType {ReturnVoid, ReturnBool, ReturnInt, ReturnDouble, ReturnString, ReturnDateTime, ReturnQWDDX};
+    enum QCFFunctionReturnType {ReturnVoid, ReturnBool, ReturnInt, ReturnDouble, ReturnBinary, ReturnString, ReturnDateTime, ReturnQWDDX};
 
 	QCFFunction();
 	explicit QCFFunction(const QCFFunction &other);

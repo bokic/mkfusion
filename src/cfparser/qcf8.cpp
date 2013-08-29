@@ -1302,24 +1302,24 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	ret.insert("acos", QCFFunction("ACos", QCFFunction::ReturnDouble));
 	ret["acos"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true));
 
-	//ret.insert("addsoaprequestheader", QCFFunction("AddSOAPRequestHeader", QCFFunction::ReturnVoid));
-	//ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
-	//ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
-	//ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
-	//ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
-	//ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false));
+    ret.insert("addsoaprequestheader", QCFFunction("AddSOAPRequestHeader", QCFFunction::ReturnVoid));
+    ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
+    ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
+    ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false));
 
-	//ret.insert("addsoapresponseheader", QCFFunction("AddSOAPResponseHeader", QCFFunction::ReturnVoid));
-	//ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
-	//ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
-	//ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
-	//ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false));
+    ret.insert("addsoapresponseheader", QCFFunction("AddSOAPResponseHeader", QCFFunction::ReturnVoid));
+    ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
+    ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false));
 
-	//ret.insert("ajaxlink", QCFFunction("AjaxLink", QCFFunction::ReturnString));
-	//ret["ajaxlink"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret.insert("ajaxlink", QCFFunction("AjaxLink", QCFFunction::ReturnString));
+    ret["ajaxlink"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
 
-	//ret.insert("ajaxonload", QCFFunction("AjaxOnLoad", QCFFunction::ReturnVoid));
-	//ret["ajaxonload"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret.insert("ajaxonload", QCFFunction("AjaxOnLoad", QCFFunction::ReturnVoid));
+    ret["ajaxonload"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
 
     // ColdFusion 9
 	//ret.insert("applicationstop", QCFFunction("ApplicationStop", QCFFunction::ReturnVoid));
@@ -1415,27 +1415,74 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["asc"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
 
-	//ret.insert("ASin", QCFFunction("ASin"));
-	//ret.insert("Atn", QCFFunction("Atn"));
-	//ret.insert("BinaryDecode", QCFFunction("BinaryDecode"));
-	//ret.insert("BinaryEncode", QCFFunction("BinaryEncode"));
-	//ret.insert("BitAnd", QCFFunction("BitAnd"));
-	//ret.insert("BitMaskClear", QCFFunction("BitMaskClear"));
-	//ret.insert("BitMaskRead", QCFFunction("BitMaskRead"));
-	//ret.insert("BitMaskSet", QCFFunction("BitMaskSet"));
-	//ret.insert("BitNot", QCFFunction("BitNot"));
-	//ret.insert("BitOr", QCFFunction("BitOr"));
-	//ret.insert("BitSHLN", QCFFunction("BitSHLN"));
-	//ret.insert("BitSHRN", QCFFunction("BitSHRN"));
-	//ret.insert("BitXor", QCFFunction("BitXor"));
-	//ret.insert("Ceiling", QCFFunction("Ceiling"));
-	//ret.insert("CharsetDecode", QCFFunction("CharsetDecode"));
-	//ret.insert("CharsetEncode", QCFFunction("CharsetEncode"));
+    ret.insert("asin", QCFFunction("ASin", QCFFunction::ReturnDouble));
+    ret["asin"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("atn", QCFFunction("Atn", QCFFunction::ReturnDouble));
+    ret["atn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
+
+    // AuthenticatedContext obsolete
+    // AuthenticatedUser obsolete
+
+    ret.insert("binarydecode", QCFFunction("BinaryDecode", QCFFunction::ReturnBinary));
+    ret["binarydecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["binarydecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("binaryencode", QCFFunction("BinaryEncode", QCFFunction::ReturnString));
+    ret["binaryencode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBinary, true, QCFFunctionArgument::TypeAny));
+    ret["binaryencode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("bitand", QCFFunction("BitAnd", QCFFunction::ReturnInt));
+    ret["bitand"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["bitand"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("bitmaskclear", QCFFunction("BitMaskClear", QCFFunction::ReturnInt));
+    ret["bitmaskclear"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["bitmaskclear"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["bitmaskclear"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("bitmaskread", QCFFunction("BitMaskRead", QCFFunction::ReturnInt));
+    ret["bitmaskread"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["bitmaskread"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["bitmaskread"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("bitmaskset", QCFFunction("BitMaskSet", QCFFunction::ReturnInt));
+    ret["bitmaskset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["bitmaskset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["bitmaskset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["bitmaskset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("bitnot", QCFFunction("BitNot", QCFFunction::ReturnInt));
+    ret["bitnot"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("bitor", QCFFunction("BitOr", QCFFunction::ReturnInt));
+    ret["bitor"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("bitshln", QCFFunction("BitSHLN", QCFFunction::ReturnInt));
+    ret["bitshln"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["bitshln"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("bitshrn", QCFFunction("BitSHRN", QCFFunction::ReturnInt));
+    ret["bitshrn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["bitshrn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("bitxor", QCFFunction("BitXor", QCFFunction::ReturnInt));
+    ret["bitxor"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["bitxor"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("ceiling", QCFFunction("Ceiling", QCFFunction::ReturnInt));
+    ret["ceiling"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("charsetdecode", QCFFunction("CharsetDecode", QCFFunction::ReturnBinary));
+    ret["charsetdecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["charsetdecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("charsetencode", QCFFunction("CharsetEncode", QCFFunction::ReturnString));
+    ret["charsetdecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBinary, true, QCFFunctionArgument::TypeAny));
+    ret["charsetdecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
 	ret.insert("chr", QCFFunction("Chr", QCFFunction::ReturnString));
 	ret["chr"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("duplicate", QCFFunction("Duplicate", QCFFunction::ReturnQWDDX));
-    ret["duplicate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
 
     ret.insert("cjustify", QCFFunction("CJustify", QCFFunction::ReturnString));
     ret["cjustify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
@@ -1449,6 +1496,26 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["comparenocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
     ret["comparenocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
+    ret.insert("cos", QCFFunction("Cos", QCFFunction::ReturnDouble));
+    ret["cos"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("createdate", QCFFunction("CreateDate", QCFFunction::ReturnDateTime));
+    ret["createdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["createdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["createdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("createdatetime", QCFFunction("CreateDateTime", QCFFunction::ReturnDateTime));
+    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    //ret.insert("createobject", QCFFunction("CreateObject"));
+
+
+
     ret.insert("decrypt", QCFFunction("Decrypt", QCFFunction::ReturnString));
     ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
     ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
@@ -1456,6 +1523,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
     ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, false, QCFFunctionArgument::TypeAny));
     ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("duplicate", QCFFunction("Duplicate", QCFFunction::ReturnQWDDX));
+    ret["duplicate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
 
     ret.insert("encrypt", QCFFunction("Encrypt", QCFFunction::ReturnString));
     ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
@@ -1485,14 +1555,6 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["formatbasen"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
     ret.insert("getclientvariableslist", QCFFunction("GetClientVariablesList", QCFFunction::ReturnString));
-
-    //ret.insert("Cos", QCFFunction("Cos"));
-	//ret.insert("CreateDate", QCFFunction("CreateDate"));
-	//ret.insert("CreateDateTime", QCFFunction("CreateDateTime"));
-
-	//ret.insert("CreateObject", QCFFunction("CreateObject"));
-	//ret.insert("BitNot", QCFFunction("BitNot"));
-	//ret.insert("BitNot", QCFFunction("BitNot"));
 
 	ret.insert("fix", QCFFunction("Fix", QCFFunction::ReturnInt));
 	ret["fix"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
