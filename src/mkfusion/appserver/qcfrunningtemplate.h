@@ -5,6 +5,7 @@
 #include "common.h"
 
 #include <QLocalSocket>
+#include <QLibrary>
 #include <QHash>
 
 class QCFRunningTemplate : public QObject
@@ -41,6 +42,9 @@ signals:
 
 public slots:
 	void worker();
+private:
+    void * compileAndLoadTemplate(const QString &filename, const QString &uri, QLibrary &templateLib);
+    void runApplicationTemplate();
 };
 
 #endif // QCFRUNNINGTEMPLATE_H

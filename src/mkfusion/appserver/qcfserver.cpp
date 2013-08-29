@@ -277,10 +277,17 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 	}
 
 	QFile file(p_Filename);
+
+    if (!file.exists())
+    {
+        throw QMKFusionTemplateException("File not found: " + p_URI);
+    }
+
 	if (!file.open(QIODevice::ReadOnly))
 	{
-		throw QMKFusionTemplateException("File not found: " + p_URI);
-	}
+        throw QMKFusionTemplateException("Can\'t open file: " + p_URI);
+    }
+
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QString l_FileContent = codec->toUnicode(file.readAll());
 	file.close();
