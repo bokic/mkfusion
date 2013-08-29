@@ -859,11 +859,138 @@ Q_DECL_EXPORT QDateTime cf_DateAdd(const QString &datepart, int number, QDateTim
 
 Q_DECL_EXPORT int cf_DateCompare(const QDateTime &date1, const QDateTime &date2, const QString &datePart)
 {
-    Q_UNUSED(date1);
-    Q_UNUSED(date2);
-    Q_UNUSED(datePart);
+    int val1, val2;
 
-    throw QMKFusionException("Not Implemented", "DateCompare is not Implemented (yet:))");
+    if (datePart.compare("yyyy", Qt::CaseInsensitive) == 0)
+    {
+        val1 = date1.date().year();
+        val2 = date2.date().year();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        return 0;
+    }
+    /*else if (datePart.compare("q", Qt::CaseInsensitive) == 0)
+    {
+        val1 = date1.date().year();
+        val2 = date2.date().year();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.date().month() / 4;
+        val2 = date2.date().month() / 4;
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        return 0;
+    }*/
+    else if (datePart.compare("m", Qt::CaseInsensitive) == 0)
+    {
+        val1 = date1.date().year();
+        val2 = date2.date().year();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.date().month();
+        val2 = date2.date().month();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        return 0;
+    }
+    else if (datePart.compare("d", Qt::CaseInsensitive) == 0)
+    {
+        val1 = date1.date().year();
+        val2 = date2.date().year();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.date().month();
+        val2 = date2.date().month();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.date().day();
+        val2 = date2.date().day();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        return 0;
+    }
+    /*else if (datePart.compare("w", Qt::CaseInsensitive) == 0)
+    {
+        throw QMKFusionException("Not Implemented", "DateConvert is not Implemented (yet:))");
+    }
+    else if (datePart.compare("ww", Qt::CaseInsensitive) == 0)
+    {
+        throw QMKFusionException("Not Implemented", "DateConvert is not Implemented (yet:))");
+    }*/
+    else if (datePart.compare("h", Qt::CaseInsensitive) == 0)
+    {
+        val1 = date1.date().year();
+        val2 = date2.date().year();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.date().month();
+        val2 = date2.date().month();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.date().day();
+        val2 = date2.date().day();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.time().hour();
+        val2 = date2.time().hour();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        return 0;
+    }
+    else if (datePart.compare("n", Qt::CaseInsensitive) == 0)
+    {
+        val1 = date1.date().year();
+        val2 = date2.date().year();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.date().month();
+        val2 = date2.date().month();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.date().day();
+        val2 = date2.date().day();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.time().hour();
+        val2 = date2.time().hour();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.time().minute();
+        val2 = date2.time().minute();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        return 0;
+    }
+    else if (datePart.compare("s", Qt::CaseInsensitive) == 0)
+    {
+        val1 = date1.date().year();
+        val2 = date2.date().year();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.date().month();
+        val2 = date2.date().month();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.date().day();
+        val2 = date2.date().day();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.time().hour();
+        val2 = date2.time().hour();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.time().minute();
+        val2 = date2.time().minute();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        val1 = date1.time().second();
+        val2 = date2.time().second();
+        if (val1 < val2) return -1;
+        if (val1 > val2) return 1;
+        return 0;
+    }
+
+    throw QMKFusionException(datePart + " is not a valid date/time format.", "The following list contains all valid datepart masks: yyyy, m, d, h, n, s");
 }
 
 Q_DECL_EXPORT QString cf_DateConvert(const QString &conversion_type, const QDateTime &date)
