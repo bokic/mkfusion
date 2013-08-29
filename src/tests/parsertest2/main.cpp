@@ -377,7 +377,7 @@ void TestCases::BenchUnoptimisedCode()
 	// MKFusion: 21ms ???, 100ms
 
 
-	QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
+    QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
 	m_TemplateInstance->m_VARIABLES.m_Type = QWDDX::Struct;
 
@@ -396,7 +396,7 @@ void TestCases::BenchUnoptimisedCode()
 
 void TestCases::BenchOptimisedCode()
 {
-	QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
+    QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
 	m_TemplateInstance->m_VARIABLES.m_Type = QWDDX::Struct;
 
@@ -429,7 +429,7 @@ void TestCases::BenchOptimisedCode()
 
 void TestCases::BenchOptimisedCode2()
 {
-	QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
+    QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
 	m_TemplateInstance->m_VARIABLES.m_Type = QWDDX::Struct;
 

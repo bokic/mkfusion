@@ -35,7 +35,7 @@ public:
 	{
 	}
 	
-	virtual void run(QCFRunningTemplate* p_TemplateInstance)
+    virtual void run(QCFRunningTemplate *p_TemplateInstance)
 	{
         QWDDX *c_VARIABLES_FINAL = 0;
         QWDDX *c_VARIABLES_TMP = 0;

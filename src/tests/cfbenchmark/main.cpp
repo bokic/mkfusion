@@ -25,7 +25,7 @@ private slots:
     QBENCHMARK {
         QCFGeneratedTemplateOrig origTemplate;
 
-        QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
+        QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
         m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
 
@@ -38,7 +38,7 @@ void TestCases::optPI()
     QBENCHMARK {
         QCFGeneratedTemplateOpt optTemplate;
 
-        QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
+        QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
         m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
 
@@ -54,7 +54,7 @@ void TestCases::optPI2()
     QBENCHMARK {
         QCFGeneratedTemplateOpt2 optTemplate;
 
-        QCFRunningTemplate* m_TemplateInstance = new QCFRunningTemplate();
+        QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
         m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
 

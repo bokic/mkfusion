@@ -1563,6 +1563,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
     ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
 
+    ret.insert("isdefined", QCFFunction("IsDefined", QCFFunction::ReturnBool));
+    ret["isdefined"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
     ret.insert("isstruct", QCFFunction("IsStruct", QCFFunction::ReturnBool));
     ret["isstruct"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 

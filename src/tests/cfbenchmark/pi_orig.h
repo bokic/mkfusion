@@ -24,7 +24,7 @@ public:
 	{
 	}
 	
-	virtual void run(QCFRunningTemplate* p_TemplateInstance)
+    virtual void run(QCFRunningTemplate *p_TemplateInstance)
 	{
 		QCFTemplate::run(p_TemplateInstance);
 

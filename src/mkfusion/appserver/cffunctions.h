@@ -222,7 +222,7 @@ Q_DECL_EXPORT bool cf_IsCustomFunction(const QWDDX &name);
 Q_DECL_EXPORT bool cf_IsDate(const QWDDX &string);
 Q_DECL_EXPORT bool cf_IsDDX(const QString &path_or_string);
 Q_DECL_EXPORT bool cf_IsDebugMode();
-Q_DECL_EXPORT bool cf_IsDefined(const QString &variable_name);
+Q_DECL_EXPORT bool cf_IsDefined(QCFRunningTemplate *templ, const QString &variable_name);
 Q_DECL_EXPORT bool cf_IsImage(const QWDDX &name);
 Q_DECL_EXPORT bool cf_IsImageFile(const QWDDX &path);
 Q_DECL_EXPORT bool cf_IsInstanceOf(const QWDDX &object, const QString &typeName);

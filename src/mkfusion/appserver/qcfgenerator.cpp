@@ -113,7 +113,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
     l_cppFile.write(QString("		m_isModified.m_Modified = " + QString::number(p_Parser.m_CFMModifyDateTime) + ";\n").toUtf8());
 	l_cppFile.write("	}\n");
 	l_cppFile.write("	\n");
-	l_cppFile.write("	virtual void run(QCFRunningTemplate* p_TemplateInstance)\n");
+    l_cppFile.write("	virtual void run(QCFRunningTemplate *p_TemplateInstance)\n");
 	l_cppFile.write("	{\n"); // mybase::myfunc() ;
 	l_cppFile.write("		QCFTemplate::run(p_TemplateInstance);\n");
 
@@ -380,16 +380,27 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 				}
 			break;
 		case Function:
-				ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
 
-				for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
-				{
-					if (c > 0)
-					{
-						ret += ", ";
-					}
-					ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c]);
-				}
+            if (l_ElementName.toLower() == "isdefined")
+                {
+                    ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(p_TemplateInstance";
+
+                    for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                    {
+                        ret += ", " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c]);
+                    }
+                } else {
+                    ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
+
+                    for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                    {
+                        if (c > 0)
+                        {
+                            ret += ", ";
+                        }
+                        ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c]);
+                    }
+                }
 
 				ret += ")";
 			break;

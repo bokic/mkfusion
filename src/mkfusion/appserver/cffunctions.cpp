@@ -1814,11 +1814,82 @@ Q_DECL_EXPORT bool cf_IsDebugMode()
 {
 }
 
-Q_DECL_EXPORT bool cf_IsDefined(const QString &variable_name)
+Q_DECL_EXPORT bool cf_IsDefined(QCFRunningTemplate *templ, const QString &variable_name)
 {
-    Q_UNUSED(variable_name);
+    QStringList parts;
 
-    throw QMKFusionException("Not Implemented", "Dynamic IsDefined evaluation is not implemented yet.");
+    if ((templ == nullptr)||(variable_name.length() == 0))
+    {
+        return false;
+    }
+
+    parts = variable_name.toUpper().split(".");
+
+    if (parts.count() == 1)
+    {
+        return templ->m_VARIABLES.m_Struct->contains(variable_name.toUpper());
+    }
+
+    if ((parts.first() != "CGI")&&(parts.first() != "SERVER")&&(parts.first() != "APPLICATION")&&(parts.first() != "SESSION")&&(parts.first() != "URL")&&(parts.first() != "FORM")&&(parts.first() != "VARIABLES"))
+    {
+        parts.prepend("VARIABLES");
+    }
+
+    const QString &first = parts.takeFirst();
+    QWDDX var;
+
+    if (first == "CGI")
+    {
+        var = templ->m_CGI;
+    }
+    else if (first == "SERVER")
+    {
+        var = templ->m_SERVER;
+    }
+    else if (first == "APPLICATION")
+    {
+        var = templ->m_APPLICATION;
+    }
+    else if (first == "SESSION")
+    {
+        var = templ->m_SESSION;
+    }
+    else if (first == "URL")
+    {
+        var = templ->m_URL;
+    }
+    else if (first == "FORM")
+    {
+        var = templ->m_FORM;
+    }
+    else if (first == "VARIABLES")
+    {
+        var = templ->m_VARIABLES;
+    }
+    else
+    {
+        qDebug() << "Unknown type(cf_IsDefined).";
+
+        return false;
+    }
+
+    for(const QString &item : parts)
+    {
+        if (var.m_Type != QWDDX::Struct)
+        {
+            return false;
+        }
+
+        if (!var.m_Struct->contains(item))
+        {
+            return false;
+        }
+
+
+        var = var.m_Struct->value(item);
+    }
+
+    return true;
 }
 
 Q_DECL_EXPORT bool cf_IsImage(const QWDDX &name)
