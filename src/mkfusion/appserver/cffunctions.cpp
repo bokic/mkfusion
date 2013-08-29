@@ -2,6 +2,7 @@
 #include "qmkfusionexception.h"
 #include <QStringList>
 #include <QDateTime>
+#include <QFile>
 
 #include <math.h>
 
@@ -1214,9 +1215,7 @@ Q_DECL_EXPORT void cf_FileDelete(const QString &filepath)
 
 Q_DECL_EXPORT bool cf_FileExists(const QString &absolute_path)
 {
-    Q_UNUSED(absolute_path);
-
-    throw QMKFusionException("Not Implemented", "FileExists is not Implemented (yet:))");
+    return QFile::exists(absolute_path);
 }
 
 Q_DECL_EXPORT bool cf_FileIsEOF(QWDDX &fileObj)
@@ -1365,10 +1364,12 @@ Q_DECL_EXPORT int cf_Fix(double value)
 
 Q_DECL_EXPORT QString cf_FormatBaseN(int number, int radix)
 {
-    Q_UNUSED(number);
-    Q_UNUSED(radix);
+    if ((radix < 2)||(radix > 36))
+    {
+        throw QMKFusionException("Invalid argument for the function FormatBaseN.", "Argument 2 of the FormatBaseN, which is now 1, must be an integer in the range of 2 to 36 inclusive.");
+    }
 
-    throw QMKFusionException("Not Implemented", "FormatBaseN is not Implemented (yet:))");
+    return QString::number(number, radix);
 }
 
 Q_DECL_EXPORT QString cf_GenerateSecretKey(const QString &algorithm, int keysize)
