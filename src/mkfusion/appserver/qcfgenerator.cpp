@@ -620,6 +620,14 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 	{
 		return "break;";
 	}
+    else if(p_CFTag.m_Name.compare("cfcatch", Qt::CaseInsensitive) == 0) /* type parameter is NOT implemented */
+    {
+        // TODO: implement try-catch type.
+        if (p_CFTag.m_TagType == CFTagType)
+        {
+            return "} catch(const QMKFusionException &ex) {";
+        }
+    }
     else if(p_CFTag.m_Name.compare("cfdump", Qt::CaseInsensitive) == 0) /* Only 'var' parameter is implemented. */
 	{
 		if (p_CFTag.m_Arguments.m_Type != CFTagArguments)
@@ -774,6 +782,17 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			m_EnableCFOutputOnly = false;
 		}
 	}
+    else if(p_CFTag.m_Name.compare("cftry", Qt::CaseInsensitive) == 0)
+    {
+        if (p_CFTag.m_TagType == CFTagType)
+        {
+            return "try {";
+        }
+        else
+        {
+            return "}";
+        }
+    }
     else if(p_CFTag.m_Name.compare("cfquery", Qt::CaseInsensitive) == 0) /* implemented attributes: name, datasource. */
     {
         QString l_queryType;

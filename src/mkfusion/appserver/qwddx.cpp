@@ -1545,7 +1545,7 @@ Q_DECL_EXPORT QString QWDDX::toString() const
 		break;
 
 	case QWDDX::DateTime:
-        return "{ts \'" + m_DateTime->toString("yyyy-MM-dd hh:mm:ss") + "\'}";
+        return m_DateTime->toString("MMMM, dd yyyy hh:mm:ss");
 		break;
 
 	case QWDDX::Boolean:

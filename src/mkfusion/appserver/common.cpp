@@ -116,7 +116,48 @@ QString cfdump_var(const QWDDX &p_Variable)
 
             for(const QString &l_key: l_temp.m_Struct->keys())
 			{
-                ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key + "</td><td>" + cfdump_var((*l_temp.m_Struct)[l_key]) + "</td></tr>\n";
+                QString l_keyType;
+
+                switch ((*l_temp.m_Struct)[l_key].m_Type) {
+                case QWDDX::Null:
+                    l_keyType = "[null]";
+                    break;
+                case QWDDX::Boolean:
+                    l_keyType = "[boolean]";
+                    break;
+                case QWDDX::Number:
+                    l_keyType = "[number]";
+                    break;
+                case QWDDX::String:
+                    l_keyType = "[string]";
+                    break;
+                case QWDDX::DateTime:
+                    l_keyType = "[datetime]";
+                    break;
+                case QWDDX::Array:
+                    l_keyType = "[array]";
+                    break;
+                case QWDDX::Struct:
+                    l_keyType = "[struct]";
+                    break;
+                case QWDDX::Binary:
+                    l_keyType = "[binary]";
+                    break;
+                case QWDDX::Query:
+                    l_keyType = "[query]";
+                    break;
+                case QWDDX::NotImplemented:
+                    l_keyType = "[not implemented]";
+                    break;
+                case QWDDX::Error:
+                    l_keyType = "[error]";
+                    break;
+                default:
+                    l_keyType = "[unknown]";
+                    break;
+                }
+
+                ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key + " " + l_keyType + "</td><td>" + cfdump_var((*l_temp.m_Struct)[l_key]) + "</td></tr>\n";
 			}
 
 			ret += "</table>\n";
@@ -126,7 +167,48 @@ QString cfdump_var(const QWDDX &p_Variable)
 
             for(int i = 0; i < p_Variable.m_Array->size(); i++)
 			{
-                ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i + 1) + "</td><td>" + cfdump_var(l_temp.m_Array->at(i)) + "</td></tr>\n";
+                QString l_keyType;
+
+                switch (l_temp.m_Array->at(i).m_Type) {
+                case QWDDX::Null:
+                    l_keyType = "[null]";
+                    break;
+                case QWDDX::Boolean:
+                    l_keyType = "[boolean]";
+                    break;
+                case QWDDX::Number:
+                    l_keyType = "[number]";
+                    break;
+                case QWDDX::String:
+                    l_keyType = "[string]";
+                    break;
+                case QWDDX::DateTime:
+                    l_keyType = "[datetime]";
+                    break;
+                case QWDDX::Array:
+                    l_keyType = "[array]";
+                    break;
+                case QWDDX::Struct:
+                    l_keyType = "[struct]";
+                    break;
+                case QWDDX::Binary:
+                    l_keyType = "[binary]";
+                    break;
+                case QWDDX::Query:
+                    l_keyType = "[query]";
+                    break;
+                case QWDDX::NotImplemented:
+                    l_keyType = "[not implemented]";
+                    break;
+                case QWDDX::Error:
+                    l_keyType = "[error]";
+                    break;
+                default:
+                    l_keyType = "[unknown]";
+                    break;
+                }
+
+                ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i) + " " + l_keyType + "</td><td>" + cfdump_var(l_temp.m_Array->at(i)) + "</td></tr>\n";
 			}
 
 			ret += "</table>\n";

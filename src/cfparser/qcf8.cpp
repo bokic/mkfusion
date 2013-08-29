@@ -1679,6 +1679,8 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
     ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
 
+    ret.insert("now", QCFFunction("Now", QCFFunction::ReturnDateTime));
+
     ret.insert("queryaddrow", QCFFunction("QueryAddRow", QCFFunction::ReturnInt));
     ret["queryaddrow"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
     ret["queryaddrow"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
