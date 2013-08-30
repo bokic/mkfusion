@@ -1,6 +1,6 @@
 #!/bin/sh
 
-chmod 0755 *.sh
+chmod 744 *.sh
 
 cd src
 qmake

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+chmod 744 *.sh
+
 DATE=`date +%Y%m%d%H%M%S`
 
 # TODO: please set zip command not to delete empty dirs(ex: bin)
