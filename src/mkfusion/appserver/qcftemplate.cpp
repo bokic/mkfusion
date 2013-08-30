@@ -92,7 +92,7 @@ void QCFTemplate::f_Include(const QString &p_template)
     }
     else
     {
-        throw QMKFusionException(tr("Can't load template %1").arg(p_template));
+        throw QMKFusionException(tr("Can't load template [%1]").arg(p_template));
     }
 }
 
