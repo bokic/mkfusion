@@ -748,7 +748,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return "p_TemplateInstance->m_CFOutput--;";
 		}
 	}
-    else if(p_CFTag.m_Name.compare("cfparam", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfparam", Qt::CaseInsensitive) == 0) /*cfparam "name type" is missing */
     {
         bool has_name = CFTagHasArgument(p_CFTag, "name");
         bool has_default = CFTagHasArgument(p_CFTag, "default");
