@@ -5,6 +5,8 @@
 #include <QSqlDatabase>
 #include <QSqlRecord>
 #include <QSqlQuery>
+#include <QDir>
+
 
 QCFTemplate::QCFTemplate()
 	: m_TemplateInstance(NULL)
@@ -56,6 +58,42 @@ void QCFTemplate::f_WriteOutput(const QWDDX &p_Wddx)
             break;
         }
 	}
+}
+
+void QCFTemplate::f_Include(const QString &p_template)
+{
+    createCFMTemplateDef createCFMTemplate = 0;
+    QLibrary l_TemplateLib;
+
+    if (p_template.isEmpty())
+    {
+        throw QMKFusionException(tr("Attribute validation error for CFINCLUDE."));
+    }
+
+    QFileInfo fi(this->m_isModified.m_Filename);
+    QDir dir = fi.dir();
+    QString target_file = QDir::toNativeSeparators(QDir::cleanPath(dir.filePath(p_template)));
+
+    if ((!QFile::exists(target_file))||(target_file == dir.absolutePath()))
+    {
+        throw QMKFusionException(tr("Could not find the included template [%1].").arg(p_template));
+    }
+
+    createCFMTemplate = (createCFMTemplateDef)this->m_TemplateInstance->compileAndLoadTemplate(target_file, "", l_TemplateLib);
+
+    if (createCFMTemplate)
+    {
+        QCFTemplate *l_page = nullptr;
+
+        l_page = createCFMTemplate();
+        l_page->run(this->m_TemplateInstance);
+        delete l_page;
+        l_page = 0;
+    }
+    else
+    {
+        throw QMKFusionException(tr("Can't load template %1").arg(p_template));
+    }
 }
 
 void QCFTemplate::f_Param(const QString &name)

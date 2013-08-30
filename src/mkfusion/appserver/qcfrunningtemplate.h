@@ -12,6 +12,8 @@ class QCFRunningTemplate : public QObject
 {
 	Q_OBJECT
 public:
+    friend class QCFTemplate;
+
     enum OutputType {OutputTypeContent, OutputTypeQuery};
 
 	QCFRunningTemplate();

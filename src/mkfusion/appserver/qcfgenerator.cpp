@@ -656,6 +656,10 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 		return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(OprimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]))+"));";
 		//return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2], "false")+"));";
 	}
+    else if(p_CFTag.m_Name.compare("cfinclude", Qt::CaseInsensitive) == 0)
+    {
+        return "f_Include(" + CFTagGetArgument(p_CFTag, "template") + ");";
+    }
     else if(p_CFTag.m_Name.compare("cfloop", Qt::CaseInsensitive) == 0) /* implemented: index, condition. missing: date or time, query, list or file or array, COM/DCOM collection or structure */
 	{
 		if (p_CFTag.m_TagType == CFTagType)
