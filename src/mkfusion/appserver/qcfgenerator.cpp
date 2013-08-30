@@ -13,61 +13,58 @@ QString toCPPEncodeStr(const QString &str)
 {
 	QString ret;
 
-	for(int c = 0; c < str.length(); c++)
+    for(const QChar &qch : str)
 	{
-
-		ushort ch = str[c].unicode();
+        ushort ch = qch.unicode();
 
 		switch(ch)
 		{
 		case '\0':
-			ret += "\\0";
+            ret.append("\\0");
 			continue;
 			break;
 		case '\\':
-			ret += "\\\\";
+            ret.append("\\\\");
 			continue;
 			break;
 		case '\'':
-			ret += "\\\'";
+            ret.append("\\\'");
 			continue;
 			break;
 		case '\"':
-			ret += "\\\"";
+            ret.append("\\\"");
 			continue;
 			break;
 		case '\n':
-			ret += "\\n";
+            ret.append("\\n");
 			continue;
 			break;
 		case '\r':
-			ret += "\\r";
+            ret.append("\\r");
 			continue;
 			break;
 		case '\t':
-			ret += "\\t";
+            ret.append("\\t");
 			continue;
 			break;
 		}
 
-		if ((str[c].unicode() >= 32)&&(str[c].unicode() <= 128))
+        if ((ch >= 32)&&(ch <= 128))
 		{
-			ret += str[c];
+            ret.append(QChar(ch));
 			continue;
 		}
 
-		QString tmp = QString::number(str[c].unicode(), 16);
+        QString tmp = QString::number(ch, 16);
 
-		for(; ; )
+        while(tmp.length() < 4)
 		{
-			if (tmp.length() >= 4)
-			{
-				break;
-			}
-
-			tmp = '0' + tmp;
+            tmp.prepend('0');
 		}
-		ret += "\\x" + tmp;
+
+        tmp.prepend("\\x");
+
+        ret.append(tmp);
 	}
 
 	return ret;
