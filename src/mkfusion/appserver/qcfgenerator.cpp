@@ -360,7 +360,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 			}
 			else
 			{
-                ret = "\"" + l_ElementName + "\""; // TODO: Currently this line will always convert Utf8 to Unicode.
+                ret = "QWDDX(L\"" + l_ElementName + "\")"; // TODO: Currently this line will always convert Utf8 to Unicode.
 			}
 			break;
 		case Variable:
@@ -748,6 +748,29 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return "p_TemplateInstance->m_CFOutput--;";
 		}
 	}
+    else if(p_CFTag.m_Name.compare("cfparam", Qt::CaseInsensitive) == 0)
+    {
+        bool has_name = CFTagHasArgument(p_CFTag, "name");
+        bool has_default = CFTagHasArgument(p_CFTag, "default");
+        bool has_type = CFTagHasArgument(p_CFTag, "type");
+
+        if ((has_name)&&(has_default))
+        {
+            return "f_Param(" + CFTagGetArgument(p_CFTag, "name") + ", " + CFTagGetArgument(p_CFTag, "default") + ");";
+        }
+        else if ((has_name)&&(!has_type))
+        {
+            return "f_Param(" + CFTagGetArgument(p_CFTag, "name") + ");";
+        }
+        else if ((has_name)&&(has_type))
+        {
+            return "unimplemented()";
+        }
+        else
+        {
+            return "parser error()";
+        }
+    }
     else if(p_CFTag.m_Name.compare("cfif", Qt::CaseInsensitive) == 0)
 	{
 		if (p_CFTag.m_TagType == CFTagType)

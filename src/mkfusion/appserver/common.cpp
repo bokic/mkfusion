@@ -138,7 +138,7 @@ QString cfdump_var(const QWDDX &p_Variable)
                     l_keyType = "[array]";
                     break;
                 case QWDDX::Struct:
-                    l_keyType = "[struct]";
+                    l_keyType = "[object]";
                     break;
                 case QWDDX::Binary:
                     l_keyType = "[binary]";
@@ -189,7 +189,7 @@ QString cfdump_var(const QWDDX &p_Variable)
                     l_keyType = "[array]";
                     break;
                 case QWDDX::Struct:
-                    l_keyType = "[struct]";
+                    l_keyType = "[object]";
                     break;
                 case QWDDX::Binary:
                     l_keyType = "[binary]";

@@ -25,6 +25,8 @@ public:
 
     void f_WriteOutput(const QString &p_Text);
     void f_WriteOutput(const QWDDX &p_Wddx);
+    void f_Param(const QString &name);
+    void f_Param(const QString &name, const QWDDX &p_default);
     void startQuery();
     QWDDX endQuery(const QString &p_DataSource);
 
