@@ -76,7 +76,7 @@ void QCFTemplate::f_Include(const QString &p_template)
 
     if ((!QFile::exists(target_file))||(target_file == dir.absolutePath()))
     {
-        throw QMKFusionException(tr("Could not find the included template [%1].").arg(p_template));
+        throw QMKFusionException(tr("Could not find the included template '%1'.").arg(p_template));
     }
 
     createCFMTemplate = (createCFMTemplateDef)this->m_TemplateInstance->compileAndLoadTemplate(target_file, "", l_TemplateLib);
@@ -92,7 +92,7 @@ void QCFTemplate::f_Include(const QString &p_template)
     }
     else
     {
-        throw QMKFusionException(tr("Can't load template [%1]").arg(p_template));
+        throw QMKFusionException(tr("Can't load template '%1'").arg(p_template));
     }
 }
 
@@ -110,8 +110,8 @@ void QCFTemplate::f_Param(const QString &name)
     if (!cf_IsDefined(m_TemplateInstance, name))
     {
         throw QMKFusionException(
-                    tr("The required parameter %1 was not provided.").arg(name),
-                    tr("This page uses the cfparam tag to declare the parameter %1 as required for this template."
+                    tr("The required parameter '%1' was not provided.").arg(name),
+                    tr("This page uses the cfparam tag to declare the parameter '%1' as required for this template."
                        "The parameter is not available. Ensure that you have passed or initialized the parameter correctly."
                        "To set a default value for the parameter, use the default attribute of the cfparam tag.").arg(name)
                     );
