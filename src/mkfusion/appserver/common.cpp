@@ -120,8 +120,8 @@ QString cfdump_var(const QWDDX &p_Variable)
 
                 switch ((*l_temp.m_Struct)[l_key].m_Type) {
                 case QWDDX::Null:
-                    l_keyType = "[null]";
-                    break;
+                    ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key + " [null]</td><td>null</td></tr>\n";
+                    continue;
                 case QWDDX::Boolean:
                     l_keyType = "[boolean]";
                     break;
@@ -171,8 +171,8 @@ QString cfdump_var(const QWDDX &p_Variable)
 
                 switch (l_temp.m_Array->at(i).m_Type) {
                 case QWDDX::Null:
-                    l_keyType = "[null]";
-                    break;
+                    ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i) + " [null]</td><td>null</td></tr>\n";
+                    continue;
                 case QWDDX::Boolean:
                     l_keyType = "[boolean]";
                     break;
