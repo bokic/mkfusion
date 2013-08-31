@@ -758,6 +758,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
 //		log("m_ChildElements.size() = " + QString::number(l_OptimizedElements.m_ChildElements.size()));
 
+        // FIXME: Same code in both branches.
 		if ((l_OptimizedElements.m_ChildElements.size() > 1)&&(l_OptimizedElements.m_ChildElements[0].m_Type == Variable)&&(l_OptimizedElements.m_ChildElements[1].m_Type == Operator)&&(l_OptimizedElements.m_ChildElements[1].m_Text == "="))
 		{
 			return GenerateCFExpressionToCExpression(l_OptimizedElements) + ";";
@@ -801,6 +802,12 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
         {
             return "parser error()";
         }
+    }
+    else if(p_CFTag.m_Name.compare("cfreturn", Qt::CaseInsensitive) == 0)
+    {
+        QCFParserElement l_OptimizedElements = OprimizeQCFParserElement(p_CFTag.m_Arguments);
+
+        return "return " + GenerateCFExpressionToCExpression(l_OptimizedElements) + ";";
     }
     else if(p_CFTag.m_Name.compare("cfif", Qt::CaseInsensitive) == 0)
 	{

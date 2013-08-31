@@ -1890,7 +1890,16 @@ QList<QCFParserElement> QCFParser::getScriptFunctions(QList<QCFParserTag> const 
 
     for(const QCFParserTag &tag : p_Tags)
     {
-
+        if (tag.m_Name == "cfscript")
+        {
+            for(const QCFParserElement &element : tag.m_Arguments.m_ChildElements)
+            {
+                if ((element.m_Type == Keyword)&&(element.m_Text == "function"))
+                {
+                    ret.append(element);
+                }
+            }
+        }
     }
 
     return ret;

@@ -228,7 +228,7 @@ Q_DECL_EXPORT double cf_ArrayMax(const QWDDX &array)
     // TODO: Optimize with c11 for container iterator.
     for(int c = 0; c < array.m_Array->size(); c++)
 	{
-        QWDDX temp = array.m_Array->at(c);
+        const QWDDX &temp = array.m_Array->at(c);
 
 		if (c == 0)
 		{
@@ -263,7 +263,7 @@ Q_DECL_EXPORT double cf_ArrayMin(const QWDDX &array)
     // TODO: Optimize with c11 for container iterator.
     for(int c = 0; c < array.m_Array->size(); c++)
 	{
-        QWDDX temp = array.m_Array->at(c);
+        const QWDDX &temp = array.m_Array->at(c);
 
 		if (c == 0)
 		{
