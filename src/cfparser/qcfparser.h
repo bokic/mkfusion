@@ -37,6 +37,23 @@ struct QCFParserTag
 	QCFParserElement m_Arguments;
 	bool m_InlineClosedTag;
     struct QCFParserTag *m_OtherTag;
+    bool operator==(const struct QCFParserTag &other)
+    {
+        if (
+                (m_Start == other.m_Start)&&
+                (m_Length == other.m_Length)&&
+                (m_Name == other.m_Name)&&
+                (m_TagType == other.m_TagType)&&
+                (&m_Arguments == &other.m_Arguments)&&
+                (m_InlineClosedTag == other.m_InlineClosedTag)&&
+                (m_OtherTag == other.m_OtherTag)
+           )
+        {
+            return true;
+        }
+
+        return false;
+    }
 };
 
 quint32 GetLineNumberFromPosition(const QString &, const qint32);
@@ -68,6 +85,8 @@ public:
 	QCFParserErrorType BuildTagTree();
 	QCFParserErrorType validate();
 	QList<QCFParserTag> getTags();
+    QList<QCFParserElement> getScriptFunctions(QList<QCFParserTag> const p_Tags);
+    QList<QCFParserTag> getTagFunctions(QList<QCFParserTag> const p_Tags);
 	QString m_FileName;
 	qint64 m_CFMFileSize;
 	uint m_CFMModifyDateTime;

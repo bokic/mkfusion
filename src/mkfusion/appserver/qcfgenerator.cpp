@@ -108,13 +108,26 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
     l_cppFile.write(QString("		m_isModified.m_Filename = QString::fromWCharArray(L\"" + toCPPEncodeStr(p_Parser.m_FileName) + "\");\n").toUtf8());
     l_cppFile.write(QString("		m_isModified.m_Size = " + QString::number(p_Parser.m_CFMFileSize) + ";\n").toUtf8());
     l_cppFile.write(QString("		m_isModified.m_Modified = " + QString::number(p_Parser.m_CFMModifyDateTime) + ";\n").toUtf8());
+    l_cppFile.write("\n");
+
+    QList<QCFParserTag> const l_Tags = p_Parser.getTags();
+
+    for(const QCFParserTag &function : p_Parser.getTagFunctions(l_Tags))
+    {
+
+    }
+
+    for(const QCFParserElement &function : p_Parser.getScriptFunctions(l_Tags))
+    {
+
+    }
+
 	l_cppFile.write("	}\n");
 	l_cppFile.write("	\n");
     l_cppFile.write("	virtual void run(QCFRunningTemplate *p_TemplateInstance)\n");
 	l_cppFile.write("	{\n"); // mybase::myfunc() ;
 	l_cppFile.write("		QCFTemplate::run(p_TemplateInstance);\n");
 
-	QList<QCFParserTag> const l_Tags = p_Parser.getTags();
 	QString l_Text = p_Parser.getText();
 	QString l_tmpStr;
 	QString line = "\t\t";
@@ -122,7 +135,21 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 	qint32 l_CFCodeInsideTags = 0;
 
 	for(int c = 0; c < l_Tags.size(); c++)
-	{		
+    {
+        // skip code generation from within cffunction and cfscript.
+        if ((l_Tags.at(c).m_TagType == CFTagType)&&((l_Tags.at(c).m_Name == "cffunction")||(l_Tags.at(c).m_Name == "cfscript")))
+        {
+            struct QCFParserTag *othertag = l_Tags.at(c).m_OtherTag;
+            int other = l_Tags.indexOf(*othertag);
+
+            if (other > c)
+            {
+                c = other;
+            }
+
+            continue;
+        }
+
 		if (c == 0)
 		{
 			if (l_Tags[0].m_Start > 0)

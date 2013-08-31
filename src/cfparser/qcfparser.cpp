@@ -1883,3 +1883,30 @@ QList<QCFParserTag> QCFParser::getTags()
 {
 	return m_Tags;
 }
+
+QList<QCFParserElement> QCFParser::getScriptFunctions(QList<QCFParserTag> const p_Tags)
+{
+    QList<QCFParserElement> ret;
+
+    for(const QCFParserTag &tag : p_Tags)
+    {
+
+    }
+
+    return ret;
+}
+
+QList<QCFParserTag> QCFParser::getTagFunctions(QList<QCFParserTag> const p_Tags)
+{
+    QList<QCFParserTag> ret;
+
+    for(const QCFParserTag &tag : p_Tags)
+    {
+        if (tag.m_Name == "cffunction")
+        {
+            ret.append(tag);
+        }
+    }
+
+    return ret;
+}
