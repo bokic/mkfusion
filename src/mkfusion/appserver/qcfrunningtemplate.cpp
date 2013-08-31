@@ -7,6 +7,7 @@
 #include <QDataStream>
 #include <QUrlQuery>
 #include <QLibrary>
+#include <QProcess>
 #include <QDebug>
 #include <QDir>
 #include <QUrl>
@@ -101,6 +102,7 @@ void QCFRunningTemplate::worker()
 	QByteArray l_RecievedBuffer;
 	bool l_FoundRecieveBufSize = false;
 	qint32 l_RecieveBufSize = 0;
+    QProcess process;
 
 	if ((!m_Socket)||(!m_CFServer))
 	{
@@ -308,9 +310,49 @@ void QCFRunningTemplate::worker()
 #else
                     m_SERVER[QStringLiteral("OS")][QStringLiteral("ARCH")] = QStringLiteral("i386");
 #endif
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("BUILDNUMBER")] = QStringLiteral("");
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("NAME")] = QStringLiteral("Linux");
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("VERSION")] = QStringLiteral("(unknown distribution)"); // TODO: Use: lsb_release -d
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("BUILDNUMBER")] = QStringLiteral("unknown");
+
+
+                    QString tmpStr;
+
+#ifdef Q_OS_WIN
+                    tmpStr = QStringLiteral("Windows");
+#elif defined Q_OS_LINUX
+                    process.start("lsb_release", QStringList() << "-d");
+
+                    process.waitForFinished();
+
+                    tmpStr = QString::fromUtf8(process.readAllStandardOutput());
+
+                    if(tmpStr.indexOf(":") > -1)
+                    {
+                        tmpStr = tmpStr.right(tmpStr.length() - tmpStr.lastIndexOf(":") - 1).trimmed();
+                    }
+#else
+                    tmpStr = QStringLiteral("Other");
+#endif
+
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("NAME")] = tmpStr;
+
+
+#ifdef Q_OS_WIN
+                    tmpStr = QStringLiteral("unknown");
+#elif defined Q_OS_LINUX
+                    process.start("lsb_release", QStringList() << "-c");
+
+                    process.waitForFinished();
+
+                    tmpStr = QString::fromUtf8(process.readAllStandardOutput());
+
+                    if(tmpStr.indexOf(":") > -1)
+                    {
+                        tmpStr = tmpStr.right(tmpStr.length() - tmpStr.lastIndexOf(":") - 1).trimmed();
+                    }
+#else
+                    tmpStr = QStringLiteral("unknown");
+#endif
+
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("VERSION")] = tmpStr;
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
