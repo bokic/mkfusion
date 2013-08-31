@@ -30,9 +30,13 @@ public:
     void f_Param(const QString &name, const QWDDX &p_default);
     void startQuery();
     QWDDX endQuery(const QString &p_DataSource);
+    void removeCustomFunctionsFromThisTemplate();
+    void addCustomFunction(const QString &functionName, std::function<QWDDX (const QWDDX &params)> function);
+    void callCustomFunction(const QString &functionName, QList<QWDDX> params);
 
 	QCFRunningTemplate *m_TemplateInstance;
 	QIsTemplateModified m_isModified;
+    QHash<QString, std::function<QWDDX (const QWDDX &params)>> m_TemplateCustomFunctions;
 };
 
 typedef QCFTemplate* (*createCFMTemplateDef)();

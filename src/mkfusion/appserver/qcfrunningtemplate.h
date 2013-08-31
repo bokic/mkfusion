@@ -38,6 +38,7 @@ public:
 	QObject *m_CFServer;
 	QCFRunningTemplate_Request m_Request;
     OutputType m_OutputType;
+    QHash<QString, QString> m_CustomFunctions;
 
 signals:
 	void finished();

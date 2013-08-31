@@ -5,6 +5,7 @@
 #include "common.h"
 
 #include <QDataStream>
+#include <QReadLocker>
 #include <QUrlQuery>
 #include <QLibrary>
 #include <QProcess>
@@ -28,7 +29,7 @@ void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const
 {
     void *ret = nullptr;
 
-    ((QCFServer*)m_CFServer)->m_runningTemplatesLock.lockForRead();
+    QReadLocker lock(&((QCFServer*)m_CFServer)->m_runningTemplatesLock);
 
     QString err = ((QCFServer*)m_CFServer)->compileTemplate(filename, uri);
     if (err.isEmpty())
@@ -456,7 +457,6 @@ void QCFRunningTemplate::worker()
 		catch (const QMKFusionTemplateException &ex)
 		{
 			m_Status = 500;
-			((QCFServer*)m_CFServer)->m_runningTemplatesLock.unlock();
 			m_Output += WriteException(ex, this->m_Request);
 		}
 		catch (const QMKFusionException &ex)

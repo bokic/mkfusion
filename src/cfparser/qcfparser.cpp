@@ -1894,9 +1894,16 @@ QList<QCFParserElement> QCFParser::getScriptFunctions(QList<QCFParserTag> const 
         {
             for(const QCFParserElement &element : tag.m_Arguments.m_ChildElements)
             {
-                if ((element.m_Type == Keyword)&&(element.m_Text == "function"))
+                if ((element.m_Type == Expression)&&(element.m_ChildElements.count() >= 3))
                 {
-                    ret.append(element);
+                    if (
+                        ((element.m_ChildElements.at(0).m_Type == Keyword)&&(element.m_ChildElements.at(0).m_Text == "function"))||
+                        ((element.m_ChildElements.at(1).m_Type == Keyword)&&(element.m_ChildElements.at(1).m_Text == "function"))||
+                        ((element.m_ChildElements.at(2).m_Type == Keyword)&&(element.m_ChildElements.at(2).m_Text == "function"))
+                       )
+                    {
+                        ret.append(element);
+                    }
                 }
             }
         }

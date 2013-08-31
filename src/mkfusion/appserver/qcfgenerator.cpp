@@ -109,6 +109,8 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
     l_cppFile.write(QString("		m_isModified.m_Size = " + QString::number(p_Parser.m_CFMFileSize) + ";\n").toUtf8());
     l_cppFile.write(QString("		m_isModified.m_Modified = " + QString::number(p_Parser.m_CFMModifyDateTime) + ";\n").toUtf8());
     l_cppFile.write("\n");
+    l_cppFile.write("   removeCustomFunctionsFromThisTemplate();\n");
+    l_cppFile.write("\n");
 
     QList<QCFParserTag> const l_Tags = p_Parser.getTags();
 
@@ -119,7 +121,113 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
     for(const QCFParserElement &function : p_Parser.getScriptFunctions(l_Tags))
     {
+        QString f_name;
+        QString f_returnType;
+        QString f_roles;
+        QString f_access = "public";
+        QString f_output;
+        QString f_displayName;
+        QString f_hint;
+        QString f_description;
 
+        QStringList f_paramName;
+        QStringList f_paramRequired;
+        QStringList f_paramType;
+        QStringList f_paramDefault;
+
+        int pos = 0;
+
+        if (function.m_ChildElements.last().m_Type != CodeBlock)
+        {
+            throw QMKFusionException("Missing function body.");
+        }
+
+        if (
+                (function.m_ChildElements.at(pos).m_Type == Variable)&&
+                (
+                (function.m_ChildElements.at(pos).m_Text.compare("public", Qt::CaseInsensitive) == 0)||
+                (function.m_ChildElements.at(pos).m_Text.compare("private", Qt::CaseInsensitive) == 0)||
+                (function.m_ChildElements.at(pos).m_Text.compare("package", Qt::CaseInsensitive) == 0)||
+                (function.m_ChildElements.at(pos).m_Text.compare("remote", Qt::CaseInsensitive) == 0)
+                )
+            )
+        {
+            f_access = function.m_ChildElements.at(pos).m_Text.toLower();
+
+            pos++;
+        }
+
+        if (function.m_ChildElements.at(pos).m_Type == Variable)
+        {
+            f_returnType = function.m_ChildElements.at(pos).m_Text;
+
+            pos++;
+        }
+
+        if ((function.m_ChildElements.at(pos).m_Type != Keyword)||(function.m_ChildElements.at(pos).m_Text.compare("function", Qt::CaseInsensitive) != 0))
+        {
+            // TODO: Warning. Validator should not pass this case.
+
+            continue;
+        }
+
+        pos++;
+
+        if (function.m_ChildElements.at(pos).m_Type != Function)
+        {
+            // TODO: Warning. Validator should not pass this case.
+
+            continue;
+        }
+
+        f_name = function.m_ChildElements.at(pos).m_Text;
+
+        // parameters.
+        if (function.m_ChildElements.at(pos).m_ChildElements.count() > 0)
+        {
+            const QCFParserElement &parameters = function.m_ChildElements.at(pos).m_ChildElements.at(0);
+            for(const QCFParserElement &parameter : parameters.m_ChildElements)
+            {
+                QString name;
+                QString required;
+                QString type;
+                QString def;
+
+                if (parameter.m_ChildElements.at(0).m_ChildElements.count() == 0)
+                {
+                    if (parameter.m_ChildElements.at(0).m_Type != Variable)
+                    {
+                        throw QMKFusionException("function parameter must be variable.");
+                    }
+
+                    name = parameter.m_ChildElements.at(0).m_Text;
+                }
+                else
+                {
+                    // TODO: Implement me.
+                    throw QMKFusionException("Not implemented.");
+                }
+
+
+                f_paramName.append(name);
+                f_paramRequired.append(required);
+                f_paramType.append(type);
+                f_paramDefault.append(def);
+            }
+        }
+
+        pos++;
+
+        // TODO: Implement this when possible(not urgent).
+
+        l_cppFile.write(QString("   addCustomFunction(\"" + toCPPEncodeStr(f_name) + "\", [](const QWDDX &params) -> QWDDX {\n").toUtf8());
+
+        // TODO: Temp code. Remove me after tests.
+        l_cppFile.write("        QWDDX ret = 1;\n");
+
+        l_cppFile.write("        return ret;\n");
+
+        l_cppFile.write("    });\n");
     }
 
 	l_cppFile.write("	}\n");

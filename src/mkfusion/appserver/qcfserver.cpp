@@ -7,6 +7,7 @@
 //#include <QCoreApplication>
 #include <QTextCodec>
 #include <QLocalSocket>
+#include <QWriteLocker>
 #include <QFileInfo>
 #include <QLibrary>
 #include <QDir>
@@ -80,6 +81,8 @@ void QCFServer::timerEvent(QTimerEvent *event)
 
 void QCFServer::on_newConnection()
 {
+    QWriteLocker lock(&m_runningTemplatesLock);
+
 	for (; ; )
 	{
 		QLocalSocket *l_LocalSocket = m_LocalServer.nextPendingConnection();
@@ -89,12 +92,8 @@ void QCFServer::on_newConnection()
 			break;
 		}
 
-		m_runningTemplatesLock.lockForWrite();
-
 		if (m_runningTemplates.count() >= m_MaxSimulRunningTemplates)
 		{
-			m_runningTemplatesLock.unlock();
-
 			l_LocalSocket->write("\x04\x00\x00\x00", 4);
 			l_LocalSocket->write("Maximum running templates.");
 			l_LocalSocket->waitForBytesWritten(30000);
@@ -107,7 +106,6 @@ void QCFServer::on_newConnection()
 
 		if (l_LocalSocket->waitForConnected(1000) == false)
 		{
-			m_runningTemplatesLock.unlock();
 			return;
 		}
 
@@ -128,8 +126,6 @@ void QCFServer::on_newConnection()
         connect(l_thread, &QThread::finished, this, &QCFServer::on_workerTerminated);
 
 		l_thread->start();
-
-		m_runningTemplatesLock.unlock();
 	}
 }
 

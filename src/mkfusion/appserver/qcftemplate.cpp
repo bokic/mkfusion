@@ -282,3 +282,50 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
 
     return ret;
 }
+
+void QCFTemplate::removeCustomFunctionsFromThisTemplate()
+{
+    const QString &templateFile = m_isModified.m_Filename;
+
+    if (m_TemplateInstance)
+    {
+        for(int c = m_TemplateInstance->m_CustomFunctions.count(); c >= 0; c--)
+        {
+            const QString &key = m_TemplateInstance->m_CustomFunctions.keys().at(c);
+            const QString &value = m_TemplateInstance->m_CustomFunctions.values().at(c);
+
+            if (value == templateFile)
+            {
+                m_TemplateInstance->m_CustomFunctions.remove(key);
+            }
+        }
+    }
+}
+
+void QCFTemplate::addCustomFunction(const QString &functionName, std::function<QWDDX (const QWDDX &params)> function)
+{
+    if (m_TemplateCustomFunctions.contains(functionName))
+    {
+        throw QMKFusionException(tr("Function [%1] is already defined in same template.").arg(functionName));
+    }
+
+    m_TemplateCustomFunctions.insert(functionName, function);
+
+    if (m_TemplateInstance)
+    {
+        if (m_TemplateInstance->m_CustomFunctions.contains(functionName))
+        {
+            throw QMKFusionException(tr("Function [%1] is already defined in other template.").arg(functionName));
+        }
+
+        m_TemplateInstance->m_CustomFunctions.insert(functionName, m_isModified.m_Filename);
+
+        //m_TemplateInstance->m_VARIABLES[functionName]
+    }
+}
+
+
+void QCFTemplate::callCustomFunction(const QString &functionName, QList<QWDDX> params)
+{
+
+}
