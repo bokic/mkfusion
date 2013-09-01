@@ -224,7 +224,21 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
         for(const QCFParserElement &expr : function.m_ChildElements.last().m_ChildElements)
         {
             l_cppFile.write("        QWDDX ARGUMENTS(QWDDX::Struct)\n");
+            l_cppFile.write("        QWDDX LOCAL(QWDDX::Struct)\n");
+            l_cppFile.write("	     \n");
 
+            // Parameters
+            for(int c = 0; c < f_paramName.count(); c++)
+            {
+
+                l_cppFile.write(QString("        if(arguments.count() > "+ QString::number(c) + " ) {\n").toUtf8());
+                l_cppFile.write(QString("            ARGUMENTS[\"" + f_paramName[c] + "\"] = arguments.at(" + QString::number(c) + ");\n").toUtf8());
+                l_cppFile.write(QString("        } else {;\n").toUtf8());
+                l_cppFile.write(QString("            ARGUMENTS[\"" + f_paramName[c] + "\"] = \"" + f_paramDefault[c] + "\";\n").toUtf8());
+                l_cppFile.write(QString("        };\n").toUtf8());
+            }
+
+            l_cppFile.write("	     \n");
             l_cppFile.write(QString("        " + GenerateCFExpressionToCExpression(expr) + ";\n").toUtf8());
         }
 
@@ -440,9 +454,9 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString 
 		&& (l_Variable.compare("VARIABLES", Qt::CaseInsensitive) != 0) \
 	   )
 	{
-        if ((functLocalVars.contains(l_Variable))&&(!l_Variable.startsWith("LOCALS.", Qt::CaseInsensitive))&&(l_Variable.compare("LOCALS", Qt::CaseInsensitive) != 0))
+        if ((functLocalVars.contains(l_Variable))&&(!l_Variable.startsWith("LOCAL.", Qt::CaseInsensitive))&&(l_Variable.compare("LOCAL", Qt::CaseInsensitive) != 0))
         {
-            l_Variable = "LOCALS." + l_Variable;
+            l_Variable = "LOCAL." + l_Variable;
         }
         else if ((functParams.contains(l_Variable))&&(!l_Variable.startsWith("ARGUMENTS.", Qt::CaseInsensitive))&&(l_Variable.compare("ARGUMENTS", Qt::CaseInsensitive) != 0))
         {
@@ -462,7 +476,7 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString 
 	}
 
     if (
-        ((functLocalVars.contains(l_Variable))&&(!l_Variable.startsWith("LOCALS.", Qt::CaseInsensitive))&&(l_Variable.compare("LOCALS", Qt::CaseInsensitive) != 0))
+        ((functLocalVars.contains(l_Variable))&&(!l_Variable.startsWith("LOCAL.", Qt::CaseInsensitive))&&(l_Variable.compare("LOCAL", Qt::CaseInsensitive) != 0))
         ||
         ((functParams.contains(l_Variable))&&(!l_Variable.startsWith("ARGUMENTS.", Qt::CaseInsensitive))&&(l_Variable.compare("ARGUMENTS", Qt::CaseInsensitive) != 0))
        )
