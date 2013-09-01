@@ -24,8 +24,8 @@ INCLUDEPATH += . ../../cfparser ../../mkfusion/appserver ../../../libs/qtservice
 
 win32:LIBS += -ladvapi32
 
-SOURCES = main.cpp ../../mkfusion/appserver/common.cpp ../../mkfusion/appserver/qwddx.cpp ../../mkfusion/appserver/qcfserver.cpp ../../mkfusion/appserver/qcftemplate.cpp ../../mkfusion/appserver/qcfrunningtemplate.cpp ../../mkfusion/appserver/qcfgenerator.cpp ../../mkfusion/appserver/cffunctions.cpp ../../cfparser/qcfparser.cpp ../../cfparser/qcf8.cpp ../../cfparser/qcftag.cpp ../../cfparser/qcffunction.cpp
-HEADERS =          ../../mkfusion/appserver/common.h   ../../mkfusion/appserver/qwddx.h   ../../mkfusion/appserver/qcfserver.h   ../../mkfusion/appserver/qcftemplate.h   ../../mkfusion/appserver/qcfrunningtemplate.h   ../../mkfusion/appserver/qcfgenerator.h   ../../mkfusion/appserver/cffunctions.h   ../../cfparser/qcfparser.h   ../../cfparser/qcf8.h   ../../cfparser/qcftag.h   ../../cfparser/qcffunction.h
+SOURCES = main.cpp ../../mkfusion/appserver/qcfapplication.cpp ../../mkfusion/appserver/common.cpp ../../mkfusion/appserver/qwddx.cpp ../../mkfusion/appserver/qcfserver.cpp ../../mkfusion/appserver/qcftemplate.cpp ../../mkfusion/appserver/qcfrunningtemplate.cpp ../../mkfusion/appserver/qcfgenerator.cpp ../../mkfusion/appserver/cffunctions.cpp ../../cfparser/qcfparser.cpp ../../cfparser/qcf8.cpp ../../cfparser/qcftag.cpp ../../cfparser/qcffunction.cpp
+HEADERS =          ../../mkfusion/appserver/qcfapplication.h   ../../mkfusion/appserver/common.h   ../../mkfusion/appserver/qwddx.h   ../../mkfusion/appserver/qcfserver.h   ../../mkfusion/appserver/qcftemplate.h   ../../mkfusion/appserver/qcfrunningtemplate.h   ../../mkfusion/appserver/qcfgenerator.h   ../../mkfusion/appserver/cffunctions.h   ../../cfparser/qcfparser.h   ../../cfparser/qcf8.h   ../../cfparser/qcftag.h   ../../cfparser/qcffunction.h
 
 # QtService
 SOURCES       += ../../../libs/qtservice/qtservice.cpp

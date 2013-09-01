@@ -2,6 +2,7 @@
 #define QCFSERVER_H
 
 #include "qcfrunningtemplate.h"
+#include "qcfapplication.h"
 #include "qcftemplate.h"
 
 #include <QReadWriteLock>
@@ -39,6 +40,7 @@ private slots:
 public:
     QHash<QString, QCFCompiledTemplateItem> m_CompiledTemplates;
     QHash<Qt::HANDLE, QCFTemplate *> m_TemplatesByThreadId;
+    QHash<QString, QCFApplication> m_Applications;
     QLocalServer m_LocalServer;
     QReadWriteLock m_runningTemplatesLock;
     QString m_MKFusionPath;
