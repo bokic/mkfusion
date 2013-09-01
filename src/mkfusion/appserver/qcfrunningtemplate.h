@@ -17,6 +17,7 @@ public:
     enum OutputType {OutputTypeContent, OutputTypeQuery};
 
 	QCFRunningTemplate();
+    virtual ~QCFRunningTemplate();
 
 	// Class members
 	QWDDX m_CGI;
@@ -39,6 +40,7 @@ public:
 	QCFRunningTemplate_Request m_Request;
     OutputType m_OutputType;
     QHash<QString, QString> m_CustomFunctions;
+    QHash<QString, QLibrary*> m_LoadedTemplates;
 
 signals:
 	void finished();
@@ -46,7 +48,7 @@ signals:
 public slots:
 	void worker();
 private:
-    void * compileAndLoadTemplate(const QString &filename, const QString &uri, QLibrary &templateLib);
+    void * compileAndLoadTemplate(const QString &filename, const QString &uri);
     void runApplicationTemplate();
 };
 

@@ -596,7 +596,8 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 				ret += ")";
 			break;
 		case Operator:
-			if (l_ElementName.compare(l_ElementName, "eq", Qt::CaseInsensitive) == 0)
+        if ((l_ElementName.compare(l_ElementName, "eq", Qt::CaseInsensitive) == 0)
+          ||(l_ElementName.compare(l_ElementName, "is", Qt::CaseInsensitive) == 0))
 			{
 				ret = " == ";
 			}
@@ -620,7 +621,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 			{
 				ret = " != ";
 			}
-			else if (l_ElementName.compare(l_ElementName, "AND", Qt::CaseInsensitive) == 0)
+            else if (l_ElementName.compare(l_ElementName, "and", Qt::CaseInsensitive) == 0)
 			{
 				ret = " && ";
 			}
@@ -628,7 +629,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 			{
 				ret = " || ";
 			}
-			else if (l_ElementName.compare(l_ElementName, "NOT", Qt::CaseInsensitive) == 0)
+            else if (l_ElementName.compare(l_ElementName, "not", Qt::CaseInsensitive) == 0)
 			{
 				ret = " !";
 			}
@@ -648,7 +649,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 			{
 				ret = "]";
 			}
-            else if (l_ElementName.compare("MOD", Qt::CaseInsensitive) == 0)
+            else if (l_ElementName.compare("mod", Qt::CaseInsensitive) == 0)
 			{
                 ret = " % ";
 			}

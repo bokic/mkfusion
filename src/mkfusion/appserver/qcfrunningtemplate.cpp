@@ -25,22 +25,56 @@ QCFRunningTemplate::QCFRunningTemplate()
 {
 }
 
-void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const QString &uri, QLibrary &templateLib)
+QCFRunningTemplate::~QCFRunningTemplate()
 {
-    void *ret = nullptr;
+    while(!m_LoadedTemplates.isEmpty())
+    {
+        QLibrary *lib = m_LoadedTemplates.take(m_LoadedTemplates.keys().first());
+
+        if (lib == nullptr)
+        {
+            qDebug() << "lib == nullptr";
+            continue;
+        }
+
+        lib->unload();
+        delete lib;
+    }
+}
+
+void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const QString &uri)
+{
+    if(m_LoadedTemplates.contains(filename))
+    {
+        if (m_LoadedTemplates[filename]->isLoaded() == false)
+        {
+            m_Status = 500;
+            m_Output = "template library was not loaded.";
+
+            return nullptr;
+        }
+
+        return (void *)m_LoadedTemplates[filename]->resolve("createCFMTemplate");
+    }
 
     QReadLocker lock(&((QCFServer*)m_CFServer)->m_runningTemplatesLock);
 
     QString err = ((QCFServer*)m_CFServer)->compileTemplate(filename, uri);
     if (err.isEmpty())
     {
-        templateLib.setFileName(((QCFServer*)m_CFServer)->m_MKFusionPath + "templates/" + ((QCFServer*)m_CFServer)->m_CompiledTemplates[filename].m_CompiledFileName);
-        if (templateLib.load() != false)
+        QLibrary *templateLib = new QLibrary();
+
+        templateLib->setFileName(((QCFServer*)m_CFServer)->m_MKFusionPath + "templates/" + ((QCFServer*)m_CFServer)->m_CompiledTemplates[filename].m_CompiledFileName);
+        if (templateLib->load() != false)
         {
-            ret = (void *)templateLib.resolve("createCFMTemplate");
+            m_LoadedTemplates.insert(filename, templateLib);
+
+            return (void *)templateLib->resolve("createCFMTemplate");
         }
         else
         {
+            delete templateLib;
+
             m_Status = 500;
             m_Output = "Can\'t load template library.";
         }
@@ -51,9 +85,7 @@ void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const
         m_Output = "Compiling error: " + err;
     }
 
-    ((QCFServer*)m_CFServer)->m_runningTemplatesLock.unlock();
-
-    return ret;
+    return nullptr;
 }
 
 void QCFRunningTemplate::runApplicationTemplate()
@@ -80,9 +112,8 @@ void QCFRunningTemplate::runApplicationTemplate()
         if (app_file.exists())
         {
             createCFMTemplateDef createCFMTemplate = 0;
-            QLibrary l_TemplateLib;
 
-            createCFMTemplate = (createCFMTemplateDef)compileAndLoadTemplate(app_file.fileName(), m_Request.m_URI, l_TemplateLib);
+            createCFMTemplate = (createCFMTemplateDef)compileAndLoadTemplate(app_file.fileName(), m_Request.m_URI);
 
             if (createCFMTemplate)
             {
@@ -256,13 +287,12 @@ void QCFRunningTemplate::worker()
         l_RecievedBuffer.clear();
         l_RecieveBufSize = 0;
 
-		QLibrary l_TemplateLib;
 		QCFTemplate *l_page = 0;
 		createCFMTemplateDef createCFMTemplate = 0;
 
 		try
 		{
-            createCFMTemplate = (createCFMTemplateDef)compileAndLoadTemplate(m_Request.m_Filename, m_Request.m_URI, l_TemplateLib);
+            createCFMTemplate = (createCFMTemplateDef)compileAndLoadTemplate(m_Request.m_Filename, m_Request.m_URI);
 
             if (createCFMTemplate)
 			{
@@ -470,14 +500,14 @@ void QCFRunningTemplate::worker()
 
 		createCFMTemplate = NULL;
 
-		if (l_TemplateLib.isLoaded())
+/*		if (l_TemplateLib.isLoaded())
 		{
 #ifdef Q_OS_WIN
             m_VARIABLES.m_Struct->clear(); // TODO: If this line is not here the app will crash. Check it when possible.
 #endif
 
             l_TemplateLib.unload();
-		}
+        }*/
 
 		if (m_HeadersSent == false)
 		{

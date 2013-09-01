@@ -79,7 +79,7 @@ void QCFTemplate::f_Include(const QString &p_template)
         throw QMKFusionException(tr("Could not find the included template '%1'.").arg(p_template));
     }
 
-    createCFMTemplate = (createCFMTemplateDef)this->m_TemplateInstance->compileAndLoadTemplate(target_file, "", l_TemplateLib);
+    createCFMTemplate = (createCFMTemplateDef)this->m_TemplateInstance->compileAndLoadTemplate(target_file, "");
 
     if (createCFMTemplate)
     {
