@@ -230,9 +230,9 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
         {
 
             l_cppFile.write(QString("            if(arguments.count() > "+ QString::number(c) + " ) {\n").toUtf8());
-            l_cppFile.write(QString("                ARGUMENTS[\"" + f_paramName[c] + "\"] = arguments.at(" + QString::number(c) + ");\n").toUtf8());
+            l_cppFile.write(QString("                ARGUMENTS[\"" + f_paramName[c].toUpper() + "\"] = arguments.at(" + QString::number(c) + ");\n").toUtf8());
             l_cppFile.write(QString("            } else {;\n").toUtf8());
-            l_cppFile.write(QString("                ARGUMENTS[\"" + f_paramName[c] + "\"] = \"" + f_paramDefault[c] + "\";\n").toUtf8());
+            l_cppFile.write(QString("                ARGUMENTS[\"" + f_paramName[c].toUpper() + "\"] = \"" + f_paramDefault[c] + "\";\n").toUtf8());
             l_cppFile.write(QString("            };\n").toUtf8());
             l_cppFile.write("\n");
         }
