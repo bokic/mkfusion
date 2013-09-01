@@ -219,7 +219,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
         // TODO: Implement this when possible(not urgent).
 
-        l_cppFile.write(QString("       addCustomFunction(\"" + toCPPEncodeStr(f_name) + "\", [](const QList<QWDDX> &arguments) -> QWDDX {\n").toUtf8());
+        l_cppFile.write(QString("       addCustomFunction(\"" + toCPPEncodeStr(f_name.toLower()) + "\", [](const QList<QWDDX> &arguments) -> QWDDX {\n").toUtf8());
 
         l_cppFile.write("            QWDDX ARGUMENTS(QWDDX::Struct);\n");
         l_cppFile.write("            QWDDX LOCAL(QWDDX::Struct);\n");

@@ -297,7 +297,7 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 	QCFParserErrorType l_parseError = l_parser.Parse(l_FileContent);
 	if (l_parseError != NoError)
 	{
-		return "Parsing error.";
+        return "Parsing error.\nError: " + l_parser.getError();
 	}
 
 	l_parseError = l_parser.BuildTagTree();

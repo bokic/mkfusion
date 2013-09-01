@@ -63,7 +63,6 @@ void QCFTemplate::f_WriteOutput(const QWDDX &p_Wddx)
 void QCFTemplate::f_Include(const QString &p_template)
 {
     createCFMTemplateDef createCFMTemplate = 0;
-    QLibrary l_TemplateLib;
 
     if (p_template.isEmpty())
     {
@@ -87,6 +86,12 @@ void QCFTemplate::f_Include(const QString &p_template)
 
         l_page = createCFMTemplate();
         l_page->run(this->m_TemplateInstance);
+
+        for(QString funcName : l_page->m_TemplateCustomFunctions.keys())
+        {
+            m_TemplateCustomFunctions[funcName] = l_page->m_TemplateCustomFunctions[funcName];
+        }
+
         delete l_page;
         l_page = 0;
     }
