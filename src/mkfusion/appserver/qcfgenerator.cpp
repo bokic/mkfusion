@@ -208,7 +208,6 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
                     throw QMKFusionException("Not implemented.");
                 }
 
-
                 f_paramName.append(name);
                 f_paramRequired.append(required);
                 f_paramType.append(type);
@@ -220,12 +219,16 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
         // TODO: Implement this when possible(not urgent).
 
-        l_cppFile.write(QString("   addCustomFunction(\"" + toCPPEncodeStr(f_name) + "\", [](const QList<QWDDX> &params) -> QWDDX {\n").toUtf8());
+        l_cppFile.write(QString("   addCustomFunction(\"" + toCPPEncodeStr(f_name) + "\", [](const QList<QWDDX> &arguments) -> QWDDX {\n").toUtf8());
 
-        // TODO: Temp code. Remove me after tests.
-        l_cppFile.write("        QWDDX ret = 1;\n");
+        for(const QCFParserElement &expr : function.m_ChildElements.last().m_ChildElements)
+        {
+            l_cppFile.write(QString("        QWDDX ARGUMENTS(QWDDX::Struct)\n"));
 
-        l_cppFile.write("        return ret;\n");
+            l_cppFile.write(QString("        " + GenerateCFExpressionToCExpression(expr) + ";\n").toUtf8());
+        }
+
+        l_cppFile.write("        return QWDDX();\n"); // just in case custom function do not return.
 
         l_cppFile.write("    });\n");
     }
@@ -649,6 +652,17 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 			}
 
 			ret += ")";
+            break;
+        case Keyword:
+            if (p_CFExpression.m_Text.compare("var", Qt::CaseInsensitive) == 0)
+            {
+                ret += "QWDDX ";
+            }
+            else
+            {
+                ret += p_CFExpression.m_Text + " ";
+            }
+            break;
 		default:;
 			break;
 	}

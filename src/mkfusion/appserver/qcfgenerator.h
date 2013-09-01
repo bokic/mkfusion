@@ -11,13 +11,13 @@ class QCFGenerator
 {
 public:
 	QCFGenerator();
-	QString compile(QCFParser&, const QString&, const QString&);
-	QString GenerateVariable(const QString&);
-	QString GenerateCFExpressionToCExpression(const QCFParserElement&);
-	QCFParserElement OprimizeQCFParserElement(QCFParserElement);
-    QString CFTagGetArgumentPlain(const QCFParserTag&, const QString&);
-	QString CFTagGetArgument(const QCFParserTag&, const QString&);
-	QString GenerateCCodeFromCFTag(const QCFParserTag&);
+    QString compile(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath);
+    QString GenerateVariable(const QString &p_Variable);
+    QString GenerateCFExpressionToCExpression(const QCFParserElement &p_CFExpression, const QString &funct_params, const QString &funct_local_vars);
+    QCFParserElement OprimizeQCFParserElement(QCFParserElement p_CFExpression);
+    QString CFTagGetArgumentPlain(const QCFParserTag &p_CFTag, const QString &p_Argument);
+    QString CFTagGetArgument(const QCFParserTag &p_CFTag, const QString &p_Argument);
+    QString GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag);
 private:
 	QHash<QString, QCFTag> m_CFTagsDef;
 	QHash<QString, QCFFunction> m_CFFunctionsDef;
