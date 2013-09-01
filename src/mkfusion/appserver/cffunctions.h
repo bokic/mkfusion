@@ -218,7 +218,7 @@ Q_DECL_EXPORT QString cf_Int(double number);
 Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level = 0);
 Q_DECL_EXPORT bool cf_IsBinary(const QWDDX &value);
 Q_DECL_EXPORT bool cf_IsBoolean(const QWDDX &value);
-Q_DECL_EXPORT bool cf_IsCustomFunction(const QWDDX &name);
+Q_DECL_EXPORT bool cf_IsCustomFunction(const QString &name);
 Q_DECL_EXPORT bool cf_IsDate(const QWDDX &string);
 Q_DECL_EXPORT bool cf_IsDDX(const QString &path_or_string);
 Q_DECL_EXPORT bool cf_IsDebugMode();

@@ -220,7 +220,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
         // TODO: Implement this when possible(not urgent).
 
-        l_cppFile.write(QString("   addCustomFunction(\"" + toCPPEncodeStr(f_name) + "\", [](const QWDDX &params) -> QWDDX {\n").toUtf8());
+        l_cppFile.write(QString("   addCustomFunction(\"" + toCPPEncodeStr(f_name) + "\", [](const QList<QWDDX> &params) -> QWDDX {\n").toUtf8());
 
         // TODO: Temp code. Remove me after tests.
         l_cppFile.write("        QWDDX ret = 1;\n");
@@ -522,15 +522,27 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                         ret += ", " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c]);
                     }
                 } else {
-                    ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
-
-                    for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                    if (m_CFFunctionsDef.contains(l_ElementName.toLower()))
                     {
-                        if (c > 0)
+                        ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
+
+                        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                         {
-                            ret += ", ";
+                            if (c > 0)
+                            {
+                                ret += ", ";
+                            }
+                            ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c]);
                         }
-                        ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c]);
+                    }
+                    else
+                    {
+                        ret = "callCustomFunction(\"" + toCPPEncodeStr(l_ElementName.toLower()) + "\", QList<QWDDX>()";
+
+                        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                        {
+                            ret += " << " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c]);
+                        }
                     }
                 }
 

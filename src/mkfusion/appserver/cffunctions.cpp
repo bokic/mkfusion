@@ -1798,7 +1798,7 @@ Q_DECL_EXPORT bool cf_IsBoolean(const QWDDX &value)
 {
 }
 
-Q_DECL_EXPORT bool cf_IsCustomFunction(const QWDDX &name)
+Q_DECL_EXPORT bool cf_IsCustomFunction(const QString &name)
 {
 }
 

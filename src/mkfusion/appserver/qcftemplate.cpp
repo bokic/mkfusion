@@ -302,7 +302,7 @@ void QCFTemplate::removeCustomFunctionsFromThisTemplate()
     }
 }
 
-void QCFTemplate::addCustomFunction(const QString &functionName, std::function<QWDDX (const QWDDX &params)> function)
+void QCFTemplate::addCustomFunction(const QString &functionName, std::function<QWDDX (const QList<QWDDX> &params)> function)
 {
     if (m_TemplateCustomFunctions.contains(functionName))
     {
@@ -325,7 +325,12 @@ void QCFTemplate::addCustomFunction(const QString &functionName, std::function<Q
 }
 
 
-void QCFTemplate::callCustomFunction(const QString &functionName, QList<QWDDX> params)
+QWDDX QCFTemplate::callCustomFunction(const QString &functionName, const QList<QWDDX> &params)
 {
+    if (!m_TemplateCustomFunctions.contains(functionName))
+    {
+        throw QMKFusionException(tr("Function [%1] is undefined.").arg(functionName));
+    }
 
+    return m_TemplateCustomFunctions[functionName](params);
 }
