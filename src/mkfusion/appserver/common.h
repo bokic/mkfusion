@@ -36,5 +36,6 @@ void log(const QString &p_filename, const QString& p_Line);
 QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Request &r);
 
 extern "C" MY_EXPORT QString mk_cfdump(const QWDDX&);
+extern "C" MY_EXPORT QWDDX callCustomFunction(const QString &functionName, const QList<QWDDX> &arguments);
 
 #endif // COMMON_H

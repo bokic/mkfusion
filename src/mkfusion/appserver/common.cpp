@@ -1,6 +1,8 @@
+#include "qmkfusionservice.h"
 #include "common.h"
 #include "qwddx.h"
 #include <QString>
+#include <QThread>
 #include <QFile>
 
 
@@ -563,4 +565,25 @@ QString mk_cfdump(const QWDDX &p_Variable)
 		  "	 </script>\n";
 
 	return ret + cfdump_var(p_Variable);
+}
+
+QWDDX callCustomFunction(const QString &functionName, const QList<QWDDX> &arguments)
+{
+    Qt::HANDLE threadID = QThread::currentThreadId();
+
+    QMKFusionService *service = (QMKFusionService *)QtServiceBase::instance();
+
+    QCFTemplate *cfTemplate = service->m_CFServer.getTemplateByThreadId(threadID);
+
+    if (!cfTemplate)
+    {
+        throw QMKFusionException(QString("Loaded template [%1] not found.").arg(functionName));
+    }
+
+    if (!cfTemplate->m_TemplateCustomFunctions.contains(functionName))
+    {
+        throw QMKFusionException(QString("Function [%1] is undefined.").arg(functionName));
+    }
+
+    return cfTemplate->m_TemplateCustomFunctions[functionName](cfTemplate->m_TemplateInstance, arguments);
 }

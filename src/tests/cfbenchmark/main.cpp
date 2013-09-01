@@ -73,7 +73,7 @@ void TestCases::optPI2()
 
             LOCAL["HEXSTRING"] = QWDDX(L"");
             if (cf_IsArray(ARGUMENTS["GUIDBYTEARRAY"]) && cf_ArrayLen(ARGUMENTS["GUIDBYTEARRAY"]) >= QWDDX(16)) {
-                LOCAL["HEXSTRING"] = LOCAL["HEXSTRING"] & QCFTemplate::callCustomFunction("guidbytetohex", QList<QWDDX>() << ARGUMENTS["GUIDBYTEARRAY"][QWDDX(4)]) ;
+                LOCAL["HEXSTRING"] = LOCAL["HEXSTRING"] & callCustomFunction("guidbytetohex", QList<QWDDX>() << ARGUMENTS["GUIDBYTEARRAY"][QWDDX(4)]) ;
             }
 
             return 0;

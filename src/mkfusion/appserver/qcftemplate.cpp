@@ -330,24 +330,3 @@ void QCFTemplate::addCustomFunction(const QString &functionName, std::function<Q
         //m_TemplateInstance->m_VARIABLES[functionName]
     }
 }
-
-QWDDX QCFTemplate::callCustomFunction(const QString &functionName, const QList<QWDDX> &arguments)
-{
-    Qt::HANDLE threadID = QThread::currentThreadId();
-
-    QMKFusionService *service = (QMKFusionService *)QtServiceBase::instance();
-
-    QCFTemplate *cfTemplate = service->m_CFServer.getTemplateByThreadId(threadID);
-
-    if (!cfTemplate)
-    {
-        throw QMKFusionException(tr("Loaded template [%1] not found.").arg(functionName));
-    }
-
-    if (!cfTemplate->m_TemplateCustomFunctions.contains(functionName))
-    {
-        throw QMKFusionException(tr("Function [%1] is undefined.").arg(functionName));
-    }
-
-    return cfTemplate->m_TemplateCustomFunctions[functionName](cfTemplate->m_TemplateInstance, arguments);
-}

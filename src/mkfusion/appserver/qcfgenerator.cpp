@@ -597,7 +597,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                 }
                 else
                 {
-                    ret = "QCFTemplate::callCustomFunction(\"" + toCPPEncodeStr(l_ElementName.toLower()) + "\", QList<QWDDX>()";
+                    ret = "callCustomFunction(\"" + toCPPEncodeStr(l_ElementName.toLower()) + "\", QList<QWDDX>()";
 
                     for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                     {
