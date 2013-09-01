@@ -19,8 +19,14 @@ release {
 	UI_DIR      = ../../../obj/tests/cfbenchmark/release
 }
 
-DEPENDPATH  += . ../../cfparser ../../mkfusion/appserver
-INCLUDEPATH += . ../../cfparser ../../mkfusion/appserver
+DEPENDPATH  += . ../../cfparser ../../mkfusion/appserver ../../../libs/qtservice
+INCLUDEPATH += . ../../cfparser ../../mkfusion/appserver ../../../libs/qtservice
 
 SOURCES = main.cpp                     ../../mkfusion/appserver/common.cpp ../../mkfusion/appserver/qwddx.cpp ../../mkfusion/appserver/qcfserver.cpp ../../mkfusion/appserver/qcftemplate.cpp ../../mkfusion/appserver/qcfrunningtemplate.cpp ../../mkfusion/appserver/qcfgenerator.cpp ../../mkfusion/appserver/cffunctions.cpp ../../cfparser/qcfparser.cpp ../../cfparser/qcf8.cpp ../../cfparser/qcftag.cpp ../../cfparser/qcffunction.cpp
 HEADERS =          pi_orig.h  pi_opt.h ../../mkfusion/appserver/common.h   ../../mkfusion/appserver/qwddx.h   ../../mkfusion/appserver/qcfserver.h   ../../mkfusion/appserver/qcftemplate.h   ../../mkfusion/appserver/qcfrunningtemplate.h   ../../mkfusion/appserver/qcfgenerator.h   ../../mkfusion/appserver/cffunctions.h   ../../cfparser/qcfparser.h   ../../cfparser/qcf8.h   ../../cfparser/qcftag.h   ../../cfparser/qcffunction.h
+
+# QtService
+SOURCES       += ../../../libs/qtservice/qtservice.cpp
+win32:SOURCES += ../../../libs/qtservice/qtservice_win.cpp
+unix:SOURCES  += ../../../libs/qtservice/qtservice_unix.cpp ../../../libs/qtservice/qtunixsocket.cpp ../../../libs/qtservice/qtunixserversocket.cpp
+unix:HEADERS +=                                             ../../../libs/qtservice/qtunixsocket.h   ../../../libs/qtservice/qtunixserversocket.h

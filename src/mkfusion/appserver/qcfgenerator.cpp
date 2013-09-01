@@ -114,10 +114,10 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
     QList<QCFParserTag> const l_Tags = p_Parser.getTags();
 
-    for(const QCFParserTag &function : p_Parser.getTagFunctions(l_Tags))
+    /*for(const QCFParserTag &function : p_Parser.getTagFunctions(l_Tags))
     {
 
-    }
+    }*/
 
     for(const QCFParserElement &function : p_Parser.getScriptFunctions(l_Tags))
     {
@@ -219,7 +219,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
         // TODO: Implement this when possible(not urgent).
 
-        l_cppFile.write(QString("       addCustomFunction(\"" + toCPPEncodeStr(f_name.toLower()) + "\", [](const QList<QWDDX> &arguments) -> QWDDX {\n").toUtf8());
+        l_cppFile.write(QString("       addCustomFunction(\"" + toCPPEncodeStr(f_name.toLower()) + "\", [](QCFRunningTemplate *m_TemplateInstance, const QList<QWDDX> &arguments) -> QWDDX {\n").toUtf8());
 
         l_cppFile.write("            QWDDX ARGUMENTS(QWDDX::Struct);\n");
         l_cppFile.write("            QWDDX LOCAL(QWDDX::Struct);\n");
@@ -240,7 +240,17 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
         QString l_localVars;
         for(const QCFParserElement &expr : function.m_ChildElements.last().m_ChildElements)
         {
-            l_cppFile.write(QString("            " + GenerateCFExpressionToCExpression(expr, f_paramName.join(","), &l_localVars) + ";\n").toUtf8());
+            l_cppFile.write(QString("            " + GenerateCFExpressionToCExpression(expr, f_paramName.join(","), &l_localVars)).toUtf8());
+
+            if ((expr.m_Type == Expression)&&(expr.m_ChildElements.count() > 0))
+            {
+                if (expr.m_ChildElements.last().m_Type != CodeBlock)
+                {
+                    l_cppFile.write(";");
+                }
+            }
+
+            l_cppFile.write("\n");
         }
 
         l_cppFile.write("            return QWDDX();\n"); // just in case custom function do not return.
@@ -387,9 +397,9 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 #endif // #ifdef QT_NO_DEBUG
 #elif defined Q_OS_LINUX
 #ifdef QT_NO_DEBUG
-    process.start("g++ -c -pipe -O2 -std=c++0x -Wall -W -D_REENTRANT -fPIE -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt5/mkspecs/linux-g++ -I. -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5 -I\""+p_MKFusionPath+"include\" -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".cpp\"");
+    process.start("g++ -c -m64 -pipe -O2 -std=c++0x -Wall -W -D_REENTRANT -fPIE -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt5/mkspecs/linux-g++-64 -I. -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5 -I\""+p_MKFusionPath+"include\" -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".cpp\"");
 #else
-    process.start("g++ -c -pipe -g -std=c++0x -Wall -W -D_REENTRANT -fPIE -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt5/mkspecs/linux-g++ -I. -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5 -I\""+p_MKFusionPath+"include\" -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".cpp\"");
+    process.start("g++ -c -m64 -pipe -g -std=c++0x -Wall -W -D_REENTRANT -fPIE -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt5/mkspecs/linux-g++-64 -I. -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5 -I\""+p_MKFusionPath+"include\" -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".cpp\"");
 #endif // #ifdef QT_NO_DEBUG
 #else
 #error Windows and Linux OSs are currently supported.
@@ -415,9 +425,9 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 #endif
 #elif defined Q_OS_LINUX
 #ifdef QT_NO_DEBUG
-    process.start("g++ -Wl,-O1 -shared -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".so\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" -L/usr/lib/x86_64-linux-gnu -lQt5Concurrent -lrt -lQt5Core -lpthread");
+    process.start("g++ -m64 -Wl,-O1 -shared -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".so\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" -L/usr/lib/x86_64-linux-gnu -lQt5Concurrent -lrt -lQt5Core -lpthread");
 #else
-    process.start("g++ -shared -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".so\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" -L/usr/lib/x86_64-linux-gnu -lQt5Concurrent -lrt -lQt5Core -lpthread");
+    process.start("g++ -m64 -shared -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".so\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" -L/usr/lib/x86_64-linux-gnu -lQt5Concurrent -lrt -lQt5Core -lpthread");
 #endif
 #else
 #error Windows and Linux OSs are currently supported.
@@ -495,237 +505,263 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString 
 
 QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &p_CFExpression, const QString &funct_params, QString *funct_local_vars)
 {
+    QString l_ElementName;
+    QStringList strList;
 	QString ret;
-	QString l_ElementName = p_CFExpression.m_Text;
+
+    l_ElementName = p_CFExpression.m_Text;
 
 	switch(p_CFExpression.m_Type)
 	{
-		case Boolean:
-			ret = "QWDDX(" + l_ElementName.toLower() + ")";
-			break;
-		case Number:
-			ret = "QWDDX(" + l_ElementName + ")";
-			break;
-		case String:
-			if (p_CFExpression.m_ChildElements.size() == 1)
-			{
-                ret = GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[0], funct_params, funct_local_vars);
-			}
-			else if (p_CFExpression.m_ChildElements.size() > 0)
-			{
-				for(int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
-				{
-					if (c == 0)
-					{
-                        ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-					}
-					else
-					{
-                        if (p_CFExpression.m_Type == String)
-                        {
-                            ret += " & " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-                        }
-                        else
-                        {
-                            ret += " + " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-                        }
-					}
-				}
-			}
-			else
-			{
-                ret = "QWDDX(L\"" + l_ElementName + "\")"; // TODO: Currently this line will always convert Utf8 to Unicode.
-			}
-			break;
-		case Variable:
-            if (funct_local_vars)
+    case Boolean:
+        ret = "QWDDX(" + l_ElementName.toLower() + ")";
+        break;
+    case Number:
+        ret = "QWDDX(" + l_ElementName + ")";
+        break;
+    case String:
+        if (p_CFExpression.m_ChildElements.size() == 1)
+        {
+            ret = GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[0], funct_params, funct_local_vars);
+        }
+        else if (p_CFExpression.m_ChildElements.size() > 0)
+        {
+            for(int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
             {
-                ret = GenerateVariable(l_ElementName, funct_params, *funct_local_vars);
-            }
-            else
-            {
-                ret = GenerateVariable(l_ElementName, funct_params);
-            }
-
-            for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
-			{
-                ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-			}
-			break;
-		case VariableIndex:
-				if (p_CFExpression.m_ChildElements.count() > 0)
-				{
-                    ret = "[" + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[0], funct_params, funct_local_vars) + "]";
-				}
-			break;
-		case Function:
-
-            if (l_ElementName.toLower() == "isdefined")
+                if (c == 0)
                 {
-                    ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(p_TemplateInstance";
-
-                    for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                    ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+                }
+                else
+                {
+                    if (p_CFExpression.m_Type == String)
                     {
-                        ret += ", " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-                    }
-                } else {
-                    if (m_CFFunctionsDef.contains(l_ElementName.toLower()))
-                    {
-                        ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
-
-                        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
-                        {
-                            if (c > 0)
-                            {
-                                ret += ", ";
-                            }
-                            ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-                        }
+                        ret += " & " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
                     }
                     else
                     {
-                        ret = "callCustomFunction(\"" + toCPPEncodeStr(l_ElementName.toLower()) + "\", QList<QWDDX>()";
-
-                        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
-                        {
-                            ret += " << " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-                        }
+                        ret += " + " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
                     }
                 }
-
-				ret += ")";
-			break;
-		case Operator:
-        if ((l_ElementName.compare(l_ElementName, "eq", Qt::CaseInsensitive) == 0)
-          ||(l_ElementName.compare(l_ElementName, "is", Qt::CaseInsensitive) == 0))
-			{
-				ret = " == ";
-			}
-			else if (l_ElementName.compare(l_ElementName, "gt", Qt::CaseInsensitive) == 0)
-			{
-				ret = " > ";
-			}
-			else if (l_ElementName.compare(l_ElementName, "gte", Qt::CaseInsensitive) == 0)
-			{
-				ret = " >= ";
-			}
-			else if (l_ElementName.compare(l_ElementName, "lt", Qt::CaseInsensitive) == 0)
-			{
-				ret = " < ";
-			}
-			else if (l_ElementName.compare(l_ElementName, "lte", Qt::CaseInsensitive) == 0)
-			{
-				ret = " <= ";
-			}
-			else if (l_ElementName.compare(l_ElementName, "neq", Qt::CaseInsensitive) == 0)
-			{
-				ret = " != ";
-			}
-            else if (l_ElementName.compare(l_ElementName, "and", Qt::CaseInsensitive) == 0)
-			{
-				ret = " && ";
-			}
-			else if (l_ElementName.compare(l_ElementName, "OR", Qt::CaseInsensitive) == 0)
-			{
-				ret = " || ";
-			}
-            else if (l_ElementName.compare(l_ElementName, "not", Qt::CaseInsensitive) == 0)
-			{
-				ret = " !";
-			}
-			else if (l_ElementName == "(")
-			{
-				ret = "(";
-			}
-			else if (l_ElementName == ")")
-			{
-				ret = ")";
-			}
-			else if (l_ElementName == "[")
-			{
-				ret = "]";
-			}
-			else if (l_ElementName == "[")
-			{
-				ret = "]";
-			}
-            else if (l_ElementName.compare("mod", Qt::CaseInsensitive) == 0)
-			{
-                ret = " % ";
-			}
-			else
-			{
-				ret = " " + l_ElementName + " ";
-			}
-			break;
-		case Parameter:
-			for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
-			{
-                ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-			}
-			break;
-		case Parameters:
-			for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
-			{
-				if (c == 0)
-				{
-                    ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-				}
-				else
-				{
-                    ret += ", " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-				}
-			}
-
-			break;
-		case SharpExpression:
-            ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[0], funct_params, funct_local_vars);
-        break;
-		case Expression:
-			for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
-			{
-                if (c > 0)
-                {
-                    const QCFParserElement &prevElement = p_CFExpression.m_ChildElements.at(c - 1);
-
-                    if ((prevElement.m_Type == Keyword)&&(prevElement.m_Text.compare("var", Qt::CaseInsensitive) == 0)&&(p_CFExpression.m_ChildElements.at(c).m_Type == Variable))
-                    {
-                        if (funct_local_vars)
-                        {
-                            if (funct_local_vars->isEmpty())
-                            {
-                                *funct_local_vars = p_CFExpression.m_ChildElements.at(c).m_Text;
-                            }
-                            else
-                            {
-                                *funct_local_vars += "," + p_CFExpression.m_ChildElements.at(c).m_Text;
-                            }
-                        }
-                    }
-                }
-
-                ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-			}
-
-			break;
-		case SubExpression:
-			ret += "( ";
-
-			for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
-			{
-                ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars) + " ";
-			}
-
-			ret += ")";
-            break;
-        case Keyword:
-            if (p_CFExpression.m_Text.compare("var", Qt::CaseInsensitive) != 0)
-            {
-                ret += p_CFExpression.m_Text + " ";
             }
-            break;
-		default:;
-			break;
+        }
+        else
+        {
+            ret = "QWDDX(L\"" + l_ElementName + "\")"; // TODO: Currently this line will always convert Utf8 to Unicode.
+        }
+        break;
+    case Variable:
+        if (funct_local_vars)
+        {
+            ret = GenerateVariable(l_ElementName, funct_params, *funct_local_vars);
+        }
+        else
+        {
+            ret = GenerateVariable(l_ElementName, funct_params);
+        }
+
+        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+        {
+            ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+        }
+        break;
+    case VariableIndex:
+            if (p_CFExpression.m_ChildElements.count() > 0)
+            {
+                ret = "[" + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[0], funct_params, funct_local_vars) + "]";
+            }
+        break;
+    case Function:
+
+        if (l_ElementName.toLower() == "isdefined")
+            {
+                ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(p_TemplateInstance";
+
+                for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                {
+                    ret += ", " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+                }
+            } else {
+                if (m_CFFunctionsDef.contains(l_ElementName.toLower()))
+                {
+                    ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
+
+                    for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                    {
+                        if (c > 0)
+                        {
+                            ret += ", ";
+                        }
+                        ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+                    }
+                }
+                else
+                {
+                    ret = "QCFTemplate::callCustomFunction(\"" + toCPPEncodeStr(l_ElementName.toLower()) + "\", QList<QWDDX>()";
+
+                    for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                    {
+                        ret += " << " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+                    }
+                }
+            }
+
+            ret += ")";
+        break;
+    case Operator:
+    if ((l_ElementName.compare(l_ElementName, "eq", Qt::CaseInsensitive) == 0)
+      ||(l_ElementName.compare(l_ElementName, "is", Qt::CaseInsensitive) == 0))
+        {
+            ret = " == ";
+        }
+        else if (l_ElementName.compare(l_ElementName, "gt", Qt::CaseInsensitive) == 0)
+        {
+            ret = " > ";
+        }
+        else if (l_ElementName.compare(l_ElementName, "gte", Qt::CaseInsensitive) == 0)
+        {
+            ret = " >= ";
+        }
+        else if (l_ElementName.compare(l_ElementName, "lt", Qt::CaseInsensitive) == 0)
+        {
+            ret = " < ";
+        }
+        else if (l_ElementName.compare(l_ElementName, "lte", Qt::CaseInsensitive) == 0)
+        {
+            ret = " <= ";
+        }
+        else if (l_ElementName.compare(l_ElementName, "neq", Qt::CaseInsensitive) == 0)
+        {
+            ret = " != ";
+        }
+        else if (l_ElementName.compare(l_ElementName, "and", Qt::CaseInsensitive) == 0)
+        {
+            ret = " && ";
+        }
+        else if (l_ElementName.compare(l_ElementName, "OR", Qt::CaseInsensitive) == 0)
+        {
+            ret = " || ";
+        }
+        else if (l_ElementName.compare(l_ElementName, "not", Qt::CaseInsensitive) == 0)
+        {
+            ret = " !";
+        }
+        else if (l_ElementName == "(")
+        {
+            ret = "(";
+        }
+        else if (l_ElementName == ")")
+        {
+            ret = ")";
+        }
+        else if (l_ElementName == "[")
+        {
+            ret = "]";
+        }
+        else if (l_ElementName == "[")
+        {
+            ret = "]";
+        }
+        else if (l_ElementName.compare("mod", Qt::CaseInsensitive) == 0)
+        {
+            ret = " % ";
+        }
+        else
+        {
+            ret = " " + l_ElementName + " ";
+        }
+        break;
+    case Parameter:
+        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+        {
+            ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+        }
+        break;
+    case Parameters:
+        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+        {
+            if (c == 0)
+            {
+                ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+            }
+            else
+            {
+                ret += ", " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+            }
+        }
+
+        break;
+    case SharpExpression:
+        ret = GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[0], funct_params, funct_local_vars);
+        break;
+    case Expression:
+        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+        {
+            if (c > 0)
+            {
+                const QCFParserElement &prevElement = p_CFExpression.m_ChildElements.at(c - 1);
+
+                if ((prevElement.m_Type == Keyword)&&(prevElement.m_Text.compare("var", Qt::CaseInsensitive) == 0)&&(p_CFExpression.m_ChildElements.at(c).m_Type == Variable))
+                {
+                    if (funct_local_vars)
+                    {
+                        if (funct_local_vars->isEmpty())
+                        {
+                            *funct_local_vars = p_CFExpression.m_ChildElements.at(c).m_Text;
+                        }
+                        else
+                        {
+                            *funct_local_vars += "," + p_CFExpression.m_ChildElements.at(c).m_Text;
+                        }
+                    }
+                }
+            }
+
+            ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+        }
+        break;
+    case SubExpression:
+
+        for (const QCFParserElement &expr : p_CFExpression.m_ChildElements)
+        {
+            strList << GenerateCFExpressionToCExpression(expr, funct_params, funct_local_vars);
+        }
+
+        ret.append("(" + strList.join(" ") + ")");
+        break;
+
+    case CodeBlock:
+
+        ret += " {\n";
+
+        for (const QCFParserElement &expr : p_CFExpression.m_ChildElements)
+        {
+            ret += GenerateCFExpressionToCExpression(expr, funct_params, funct_local_vars) + " ";
+
+            if ((expr.m_Type == Expression)&&(expr.m_ChildElements.count() > 0))
+            {
+                if (expr.m_ChildElements.last().m_Type != CodeBlock)
+                {
+                    ret += ";";
+                }
+            }
+
+            ret += "\n";
+        }
+
+        ret += "}\n";
+        break;
+
+    case Keyword:
+
+        if (p_CFExpression.m_Text.compare("var", Qt::CaseInsensitive) != 0)
+        {
+            ret += p_CFExpression.m_Text + " ";
+        }
+
+        break;
+    default:
+        break;
 	}
 
 	return ret;

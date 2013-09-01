@@ -92,7 +92,7 @@ void QCFServer::on_newConnection()
 			break;
 		}
 
-		if (m_runningTemplates.count() >= m_MaxSimulRunningTemplates)
+        if (m_TemplatesByThreadId.count() >= m_MaxSimulRunningTemplates)
 		{
 			l_LocalSocket->write("\x04\x00\x00\x00", 4);
 			l_LocalSocket->write("Maximum running templates.");
@@ -110,8 +110,6 @@ void QCFServer::on_newConnection()
 		}
 
 		QThread *l_thread = new QThread(this);
-
-		m_runningTemplates.append(l_thread);
 
 		QCFRunningTemplate *l_runningTemplate = new QCFRunningTemplate();
 
@@ -133,9 +131,8 @@ void QCFServer::on_workerTerminated()
 {
 	QThread *l_sender = (QThread*)sender();
 
-	m_runningTemplates.removeOne(l_sender);
-
 	l_sender->deleteLater();
+    l_sender = nullptr;
 
 	//qApp->quit();
 }
@@ -329,4 +326,14 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 	}
 
 	return ret;
+}
+
+QCFTemplate * QCFServer::getTemplateByThreadId(Qt::HANDLE threadId)
+{
+    if (m_TemplatesByThreadId.contains(threadId))
+    {
+        return m_TemplatesByThreadId[threadId];
+    }
+
+    return nullptr;
 }

@@ -53,12 +53,31 @@ void TestCases::optPI2()
 {
     QBENCHMARK {
         QCFGeneratedTemplateOpt2 optTemplate;
+        QCFTemplate stdTemplate;
 
         QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
         m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
 
         optTemplate.run(m_TemplateInstance);
+
+        stdTemplate.addCustomFunction("guidtostring", [](QCFRunningTemplate *m_TemplateInstance, const QList<QWDDX> &arguments) -> QWDDX {
+            QWDDX ARGUMENTS(QWDDX::Struct);
+            QWDDX LOCAL(QWDDX::Struct);
+
+            if(arguments.count() > 0 ) {
+                ARGUMENTS["GUIDBYTEARRAY"] = arguments.at(0);
+            } else {;
+                ARGUMENTS["GUIDBYTEARRAY"] = "";
+            };
+
+            LOCAL["HEXSTRING"] = QWDDX(L"");
+            if (cf_IsArray(ARGUMENTS["GUIDBYTEARRAY"]) && cf_ArrayLen(ARGUMENTS["GUIDBYTEARRAY"]) >= QWDDX(16)) {
+                LOCAL["HEXSTRING"] = LOCAL["HEXSTRING"] & QCFTemplate::callCustomFunction("guidbytetohex", QList<QWDDX>() << ARGUMENTS["GUIDBYTEARRAY"][QWDDX(4)]) ;
+            }
+
+            return 0;
+        });
 
         delete m_TemplateInstance;
         m_TemplateInstance = NULL;

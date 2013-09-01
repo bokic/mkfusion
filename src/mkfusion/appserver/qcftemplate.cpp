@@ -1,4 +1,6 @@
 #include "qcftemplate.h"
+#include "qmkfusionservice.h"
+#include "qtservice.h"
 #include "cffunctions.h"
 #include "qcfserver.h"
 
@@ -307,7 +309,7 @@ void QCFTemplate::removeCustomFunctionsFromThisTemplate()
     }
 }
 
-void QCFTemplate::addCustomFunction(const QString &functionName, std::function<QWDDX (const QList<QWDDX> &arguments)> function)
+void QCFTemplate::addCustomFunction(const QString &functionName, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &)> function)
 {
     if (m_TemplateCustomFunctions.contains(functionName))
     {
@@ -329,13 +331,23 @@ void QCFTemplate::addCustomFunction(const QString &functionName, std::function<Q
     }
 }
 
-
 QWDDX QCFTemplate::callCustomFunction(const QString &functionName, const QList<QWDDX> &arguments)
 {
-    if (!m_TemplateCustomFunctions.contains(functionName))
+    Qt::HANDLE threadID = QThread::currentThreadId();
+
+    QMKFusionService *service = (QMKFusionService *)QtServiceBase::instance();
+
+    QCFTemplate *cfTemplate = service->m_CFServer.getTemplateByThreadId(threadID);
+
+    if (!cfTemplate)
+    {
+        throw QMKFusionException(tr("Loaded template [%1] not found.").arg(functionName));
+    }
+
+    if (!cfTemplate->m_TemplateCustomFunctions.contains(functionName))
     {
         throw QMKFusionException(tr("Function [%1] is undefined.").arg(functionName));
     }
 
-    return m_TemplateCustomFunctions[functionName](arguments);
+    return cfTemplate->m_TemplateCustomFunctions[functionName](cfTemplate->m_TemplateInstance, arguments);
 }

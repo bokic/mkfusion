@@ -26,20 +26,24 @@ public:
 	void start();
 	void stop();
     QSqlDatabase getDBConnection(const QString &datasource);
+    QString compileTemplate(const QString&, const QString&);
+    QCFTemplate * getTemplateByThreadId(Qt::HANDLE threadId);
+
 protected:
-	virtual void timerEvent(QTimerEvent*);
-public:
-	QHash<QString, QCFCompiledTemplateItem> m_CompiledTemplates;
-	QLocalServer m_LocalServer;
-	QReadWriteLock m_runningTemplatesLock;
-	QList<QThread*> m_runningTemplates;
-	QString compileTemplate(const QString&, const QString&);
-	QString m_MKFusionPath;
-	int m_mainTimer;
-	int m_MaxSimulRunningTemplates;
+    virtual void timerEvent(QTimerEvent*);
+
 private slots:
 	void on_newConnection();
 	void on_workerTerminated();
+
+public:
+    QHash<QString, QCFCompiledTemplateItem> m_CompiledTemplates;
+    QHash<Qt::HANDLE, QCFTemplate *> m_TemplatesByThreadId;
+    QLocalServer m_LocalServer;
+    QReadWriteLock m_runningTemplatesLock;
+    QString m_MKFusionPath;
+    int m_mainTimer;
+    int m_MaxSimulRunningTemplates;
 };
 
 #endif // QCFSERVER_H

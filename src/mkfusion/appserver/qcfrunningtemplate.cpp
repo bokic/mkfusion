@@ -299,6 +299,8 @@ void QCFRunningTemplate::worker()
 				l_page = createCFMTemplate();
                 if (l_page)
 				{
+                    ((QCFServer*)m_CFServer)->m_TemplatesByThreadId.insert(QThread::currentThreadId(), l_page);
+
                     m_APPLICATION.setType(QWDDX::Error);
                     m_SESSION.setType(QWDDX::Error);
                     m_SERVER.setType(QWDDX::Struct);
@@ -494,6 +496,11 @@ void QCFRunningTemplate::worker()
 			m_Status = 500;
 			m_Output += WriteException(ex, this->m_Request);
 		}
+
+        if (((QCFServer*)m_CFServer)->m_TemplatesByThreadId.contains(QThread::currentThreadId()))
+        {
+            ((QCFServer*)m_CFServer)->m_TemplatesByThreadId.remove(QThread::currentThreadId());
+        }
 
 		delete l_page;
         l_page = 0;

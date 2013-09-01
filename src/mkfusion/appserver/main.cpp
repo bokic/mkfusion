@@ -1,40 +1,5 @@
-#include <QCoreApplication>
-#include <QStringList>
-#include "qtservice.h"
+#include "qmkfusionservice.h"
 
-#include <qcfserver.h>
-
-
-class QMKFusionService : public QtService<QCoreApplication>
-{
-public:
-	QMKFusionService(int argc, char **argv): QtService<QCoreApplication>(argc, argv, "MKFusion")
-	{
-		setStartupType(QtServiceController::AutoStartup);
-		setServiceDescription("MKFusion application server.");
-#ifdef Q_OS_WIN
-		setDependsOnServices(QStringList() << "Tcpip");
-#elif defined Q_OS_LINUX
-#else
-#error Windows and Linux OSs are currently supported.
-#endif
-	}
-    virtual ~QMKFusionService() {}
-
-protected:
-	virtual void start()
-	{
-		m_CFServer.start();
-	}
-
-	virtual void stop()
-	{
-		m_CFServer.stop();
-	}
-
-private:
-	QCFServer m_CFServer;
-};
 
 int main(int argc, char **argv)
 {

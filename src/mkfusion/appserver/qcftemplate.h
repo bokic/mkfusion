@@ -31,12 +31,12 @@ public:
     void startQuery();
     QWDDX endQuery(const QString &p_DataSource);
     void removeCustomFunctionsFromThisTemplate();
-    void addCustomFunction(const QString &functionName, std::function<QWDDX (const QList<QWDDX> &arguments)> function);
-    QWDDX callCustomFunction(const QString &functionName, const QList<QWDDX> &arguments);
+    void addCustomFunction(const QString &functionName, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)> function);
+    static QWDDX callCustomFunction(const QString &functionName, const QList<QWDDX> &arguments);
 
 	QCFRunningTemplate *m_TemplateInstance;
 	QIsTemplateModified m_isModified;
-    QHash<QString, std::function<QWDDX (const QList<QWDDX> &arguments)>> m_TemplateCustomFunctions;
+    QHash<QString, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)>> m_TemplateCustomFunctions;
 };
 
 typedef QCFTemplate* (*createCFMTemplateDef)();
