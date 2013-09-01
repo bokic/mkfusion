@@ -197,6 +197,7 @@ public:
     QString toString() const;
     QByteArray toBinary() const;
     double toNumber() const;
+    int toInt() const;
     bool canConvertToNumber();
     QDateTime toDateTime() const;
     bool toBool() const;
@@ -213,6 +214,30 @@ public:
 	QWDDXType m_Type;
     quint32 m_ArrayDimension;
 };
+
+Q_DECL_EXPORT bool operator!=(int, const QWDDX &);
+Q_DECL_EXPORT bool operator!=(double, const QWDDX &);
+Q_DECL_EXPORT bool operator!=(const QString &, const QWDDX &);
+
+Q_DECL_EXPORT bool operator<=(int, const QWDDX &);
+Q_DECL_EXPORT bool operator<=(double, const QWDDX &);
+Q_DECL_EXPORT bool operator<=(const QString &, const QWDDX &);
+
+Q_DECL_EXPORT bool operator>=(int, const QWDDX &);
+Q_DECL_EXPORT bool operator>=(double, const QWDDX &);
+Q_DECL_EXPORT bool operator>=(const QString &, const QWDDX &);
+
+Q_DECL_EXPORT bool operator<(int, const QWDDX &);
+Q_DECL_EXPORT bool operator<(double, const QWDDX &);
+Q_DECL_EXPORT bool operator<(const QString &, const QWDDX &);
+
+Q_DECL_EXPORT bool operator>(int, const QWDDX &);
+Q_DECL_EXPORT bool operator>(double, const QWDDX &);
+Q_DECL_EXPORT bool operator>(const QString &, const QWDDX &);
+
+Q_DECL_EXPORT bool operator==(int, const QWDDX &);
+//Q_DECL_EXPORT bool operator==(const QString &, int);
+//Q_DECL_EXPORT bool operator==(const QString &, double);
 
 Q_DECL_EXPORT QWDDX operator/(int, const QWDDX &);
 Q_DECL_EXPORT QWDDX operator/(double, const QWDDX &);
