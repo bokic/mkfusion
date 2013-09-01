@@ -2860,11 +2860,9 @@ Q_DECL_EXPORT QString cf_Trim(QString &string)
     return string;
 }
 
-Q_DECL_EXPORT QString cf_UCase(QString &string)
+Q_DECL_EXPORT QString cf_UCase(const QString &string)
 {
-    string = string.toUpper();
-
-    return string;
+    return string.toUpper();
 }
 
 Q_DECL_EXPORT QString cf_URLDecode(QString &urlEncodedString, const QString &charset)

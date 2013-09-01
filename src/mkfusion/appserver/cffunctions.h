@@ -373,7 +373,7 @@ Q_DECL_EXPORT QWDDX cf_ToBinary(const QByteArray &string);
 Q_DECL_EXPORT QString cf_ToScript(const QString &cfvar, const QString &javascriptvar, bool outputformat = true, bool ASFormat = false);
 Q_DECL_EXPORT QString cf_ToString(const QWDDX &value, const QString &encoding = "");
 Q_DECL_EXPORT QString cf_Trim(QString &string);
-Q_DECL_EXPORT QString cf_UCase(QString &string);
+Q_DECL_EXPORT QString cf_UCase(const QString & string);
 Q_DECL_EXPORT QString cf_URLDecode(QString &urlEncodedString, const QString &charset = "");
 Q_DECL_EXPORT QString cf_URLEncodedFormat(QString &string, const QString &charset = "");
 Q_DECL_EXPORT QString cf_URLSessionFormat(const QString &request_URL);
