@@ -73,7 +73,9 @@ static int mkfusion_handler(request_rec *r)
 		l_IOStream << apr_table_get(r->headers_in, "Host");
 		l_IOStream << apr_table_get(r->headers_in, "Referer");
 		l_IOStream << apr_table_get(r->headers_in, "User-Agent");
+        l_IOStream << apr_table_get(r->headers_in, "Cookie");
 		//l_IOStream << apr_table_get(r->headers_in, "Host"); // New localhost
+
 		l_IOStream << r->args;
 		l_IOStream << r->method;
 		l_IOStream << r->protocol;

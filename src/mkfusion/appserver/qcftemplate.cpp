@@ -232,8 +232,10 @@ void QCFTemplate::f_Param(const QString &name, const QWDDX &p_default)
     }
 }
 
-void QCFTemplate::f_Application(const QString &name, bool sessionManagement, bool setClientCookies)
+void QCFTemplate::f_Application(QString name, bool sessionManagement, bool setClientCookies)
 {
+    name = name.toUpper();
+
     if(!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications.contains(name))
     {
         ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications.insert(name, QCFApplication());
@@ -251,12 +253,14 @@ void QCFTemplate::f_Application(const QString &name, bool sessionManagement, boo
             QString CFID = m_TemplateInstance->m_COOKIE["CFID"];
             QString CFTOKEN = m_TemplateInstance->m_COOKIE["CFTOKEN"];
 
-            if (!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN))
+            if (!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN.toUpper()))
             {
-                throw QMKFusionTemplateException(QString("Invalid session ID."));
+                ((QCFServer*)m_TemplateInstance->m_CFServer)->createSessonStrings(CFID, CFTOKEN);
+                ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
+                qDebug() << "New session created.";
             }
 
-            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN];
+            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()];
 
             (*m_TemplateInstance->m_SESSION)["CFID"] = CFID;
             (*m_TemplateInstance->m_SESSION)["CFTOKEN"] = CFTOKEN;
@@ -268,12 +272,14 @@ void QCFTemplate::f_Application(const QString &name, bool sessionManagement, boo
             QString CFID = m_TemplateInstance->m_URL["CFID"];
             QString CFTOKEN = m_TemplateInstance->m_URL["CFTOKEN"];
 
-            if (!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN))
+            if (!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN.toUpper()))
             {
-                throw QMKFusionTemplateException(QString("Invalid session ID."));
+                ((QCFServer*)m_TemplateInstance->m_CFServer)->createSessonStrings(CFID, CFTOKEN);
+                ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
+                qDebug() << "New session created.";
             }
 
-            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN];
+            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()];
 
             (*m_TemplateInstance->m_SESSION)["CFID"] = CFID;
             (*m_TemplateInstance->m_SESSION)["CFTOKEN"] = CFTOKEN;
@@ -287,8 +293,8 @@ void QCFTemplate::f_Application(const QString &name, bool sessionManagement, boo
 
             ((QCFServer*)m_TemplateInstance->m_CFServer)->createSessonStrings(CFID, CFTOKEN);
 
-            ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN] = QWDDX(QWDDX::Struct);
-            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN];
+            ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
+            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()];
 
             if (setClientCookies)
             {

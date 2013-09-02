@@ -351,6 +351,7 @@ void QCFServer::createSessonStrings(QString &cfid, QString &cftoken)
     global_cfid++;
 
     cfid = QString::number(global_cfid);
+    cftoken.clear();
 
     for(int c = 0; c < 24; c++)
     {

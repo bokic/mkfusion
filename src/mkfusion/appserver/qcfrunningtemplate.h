@@ -5,6 +5,7 @@
 #include "common.h"
 
 #include <QLocalSocket>
+#include <QMultiHash>
 #include <QLibrary>
 #include <QHash>
 
@@ -34,7 +35,7 @@ public:
 	qint32 m_CFOutput;
 	QString m_ContentType;
 	int m_Status;
-	QHash<QString, QString> m_Header;
+    QMultiHash<QString, QString> m_Header;
 	bool m_HeadersSent;
 	QLocalSocket *m_Socket;
 	QObject *m_CFServer;

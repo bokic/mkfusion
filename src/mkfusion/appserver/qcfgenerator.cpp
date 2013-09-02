@@ -459,6 +459,8 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString 
         && (l_Variable.compare("APPLICATION") != 0) \
         && (!l_Variable.startsWith("SESSION.")) \
         && (l_Variable.compare("SESSION") != 0) \
+        && (!l_Variable.startsWith("COOKIE.")) \
+        && (l_Variable.compare("COOKIE") != 0) \
         && (!l_Variable.startsWith("URL.")) \
         && (l_Variable.compare("URL") != 0) \
         && (!l_Variable.startsWith("POST.")) \

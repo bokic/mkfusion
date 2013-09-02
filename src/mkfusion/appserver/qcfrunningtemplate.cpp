@@ -180,6 +180,7 @@ void QCFRunningTemplate::worker()
 		}
 
 		QDataStream l_ds(&l_RecievedBuffer, QIODevice::ReadOnly);
+        QStringList cookies;
 		char *tempstr;
         QByteArray tempba;
 
@@ -254,7 +255,14 @@ void QCFRunningTemplate::worker()
 			delete[] tempstr;
 		}
 
-		l_ds >> tempstr;
+        l_ds >> tempstr;
+        if (tempstr)
+        {
+            cookies = QString::fromUtf8(tempstr).split(';');
+            delete[] tempstr;
+        }
+
+        l_ds >> tempstr;
 		if (tempstr)
 		{
 			m_Request.m_Args = QString::fromUtf8(tempstr);
@@ -312,6 +320,20 @@ void QCFRunningTemplate::worker()
                     m_FORM.setType(QWDDX::Struct);
                     m_VARIABLES.setType(QWDDX::Struct);
                     m_URL.setType(QWDDX::Struct);
+
+                    for(const QString &cookie : cookies)
+                    {
+                        QStringList pair = cookie.split('=');
+
+                        if (pair.count() == 2)
+                        {
+                            m_COOKIE[pair[0].trimmed().toUpper()] = pair[1].trimmed();
+                        }
+                        else
+                        {
+                            qDebug() << "Invalid cookie.";
+                        }
+                    }
 
 					// Run compiled template(dll/so).
                     m_SERVER[QStringLiteral("COLDFUSION")] = QWDDX(QWDDX::Struct);
@@ -540,11 +562,16 @@ void QCFRunningTemplate::worker()
 
 			l_headerDataStream << m_Status;
 
-			l_headerDataStream << (qint32) m_Header.size();
-            for(const QString &l_key: m_Header)
+            for(const QString &key : m_COOKIE.m_Struct->keys())
+            { // TODO: Unhardcode Max-Age.
+                m_Header.insert("Set-Cookie", key + "=" + m_COOKIE[key].toString()+  "; Max-Age=3600; Path=/; HttpOnly");
+            }
+
+            l_headerDataStream << (qint32) m_Header.size();
+            for(int c = 0; c < m_Header.count(); c++)
 			{
-				l_headerDataStream << l_key;
-				l_headerDataStream << m_Header[l_key];
+                l_headerDataStream << m_Header.keys().at(c);
+                l_headerDataStream << m_Header.values().at(c);
 			}
 
 			l_headerDataStream.device()->seek(0);
