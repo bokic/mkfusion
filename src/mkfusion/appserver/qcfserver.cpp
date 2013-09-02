@@ -84,12 +84,14 @@ void QCFServer::on_newConnection()
 {
     QWriteLocker lock(&m_runningTemplatesLock);
 
-	for (; ; )
+    while(m_LocalServer.hasPendingConnections())
 	{
 		QLocalSocket *l_LocalSocket = m_LocalServer.nextPendingConnection();
 
 		if (l_LocalSocket == NULL)
 		{
+            qDebug() << "Got NULL local connection.";
+
 			break;
 		}
 
@@ -97,16 +99,19 @@ void QCFServer::on_newConnection()
 		{
 			l_LocalSocket->write("\x04\x00\x00\x00", 4);
 			l_LocalSocket->write("Maximum running templates.");
-			l_LocalSocket->waitForBytesWritten(30000);
+            l_LocalSocket->waitForBytesWritten();
 
 			l_LocalSocket->disconnectFromServer();
-			l_LocalSocket->waitForDisconnected(30000);
+            l_LocalSocket->waitForDisconnected();
 			l_LocalSocket->deleteLater();
+
 			return;
 		}
 
 		if (l_LocalSocket->waitForConnected(1000) == false)
 		{
+            qDebug() << "failed to connect with local socket.";
+
 			return;
 		}
 
