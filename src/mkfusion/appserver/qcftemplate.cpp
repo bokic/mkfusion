@@ -86,8 +86,6 @@ void QCFTemplate::f_Include(const QString &p_template)
     {
         QCFTemplate *l_page = nullptr;
 
-        qDebug() << "QCFTemplate::f_Include(const QString &p_template) `this->m_TemplateInstance` is " << this->m_TemplateInstance;
-
         l_page = createCFMTemplate();
         l_page->run(this->m_TemplateInstance);
 

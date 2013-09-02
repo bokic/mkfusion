@@ -575,8 +575,6 @@ QWDDX callCustomFunction(const QString &functionName, const QList<QWDDX> &argume
 
     QCFRunningTemplate *cfRunningTemplate = service->m_CFServer.getRunningTemplateByThreadId(threadID);
 
-    qDebug() << "callCustomFunction QCFRunningTemplate is " << cfRunningTemplate;
-
     if (!cfRunningTemplate)
     {
         throw QMKFusionException(QString("Loaded template [%1] not found.").arg(functionName));

@@ -306,8 +306,6 @@ void QCFRunningTemplate::worker()
 				{
                     ((QCFServer*)m_CFServer)->m_RunnuingTemplatesByThreadId.insert(QThread::currentThreadId(), this);
 
-                    qDebug() << "QCFRunningTemplate::worker() QCFTemplate is " << l_page;
-
                     m_SERVER.setType(QWDDX::Struct);
                     m_COOKIE.setType(QWDDX::Struct);
                     m_CGI.setType(QWDDX::Struct);

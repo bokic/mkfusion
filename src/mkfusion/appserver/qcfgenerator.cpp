@@ -198,7 +198,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
                         throw QMKFusionException("function parameter must be variable.");
                     }
 
-                    name = parameter.m_ChildElements.at(0).m_Text;
+                    name = parameter.m_ChildElements.at(0).m_Text.toUpper();
                 }
                 else
                 {
@@ -716,11 +716,11 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                     {
                         if (funct_local_vars->isEmpty())
                         {
-                            *funct_local_vars = p_CFExpression.m_ChildElements.at(c).m_Text;
+                            *funct_local_vars = p_CFExpression.m_ChildElements.at(c).m_Text.toUpper();
                         }
                         else
                         {
-                            *funct_local_vars += "," + p_CFExpression.m_ChildElements.at(c).m_Text;
+                            *funct_local_vars += "," + p_CFExpression.m_ChildElements.at(c).m_Text.toUpper();
                         }
                     }
                 }
