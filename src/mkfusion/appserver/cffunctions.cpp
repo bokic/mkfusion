@@ -1848,11 +1848,21 @@ Q_DECL_EXPORT bool cf_IsDefined(QCFRunningTemplate *templ, const QString &variab
     }
     else if (first == "APPLICATION")
     {
-        var = templ->m_APPLICATION;
+        if (templ->m_APPLICATION == nullptr)
+        {
+            throw QMKFusionException("Appication scope not enabled.");
+        }
+
+        var = *templ->m_APPLICATION;
     }
     else if (first == "SESSION")
     {
-        var = templ->m_SESSION;
+        if (templ->m_SESSION == nullptr)
+        {
+            throw QMKFusionException("Session scope not enabled.");
+        }
+
+        var = *templ->m_SESSION;
     }
     else if (first == "URL")
     {

@@ -12,6 +12,12 @@ class QCFApplication : public QObject
     Q_OBJECT
 public:
     explicit QCFApplication(QObject *parent = 0);
+    QCFApplication(const QCFApplication &other);
+#ifdef Q_COMPILER_RVALUE_REFS
+    QCFApplication &operator=(QCFApplication &&other);
+#endif
+    QCFApplication &operator=(const QCFApplication &other);
+
     ~QCFApplication();
 
     double ApplicationTimeout;

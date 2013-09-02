@@ -170,11 +170,21 @@ void QCFTemplate::f_Param(const QString &name, const QWDDX &p_default)
     }
     else if (first == "APPLICATION")
     {
-        var = &m_TemplateInstance->m_APPLICATION;
+        if (m_TemplateInstance->m_APPLICATION == nullptr)
+        {
+            throw QMKFusionException(tr("Appication scope not enabled."));
+        }
+
+        var = m_TemplateInstance->m_APPLICATION;
     }
     else if (first == "SESSION")
     {
-        var = &m_TemplateInstance->m_SESSION;
+        if (m_TemplateInstance->m_SESSION == nullptr)
+        {
+            throw QMKFusionException(tr("Session scope not enabled."));
+        }
+
+        var = m_TemplateInstance->m_SESSION;
     }
     else if (first == "URL")
     {
@@ -220,6 +230,19 @@ void QCFTemplate::f_Param(const QString &name, const QWDDX &p_default)
     {
         *var = p_default;
     }
+}
+
+void QCFTemplate::f_Application(const QString &name, bool sessionManagement, bool setClientCookies)
+{
+    if(!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications.contains(name))
+    {
+        ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications.insert(name, QCFApplication());
+    }
+
+    ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications[name].SessionManagement = sessionManagement;
+    ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications[name].SetClientCookies = setClientCookies;
+
+    m_TemplateInstance->m_APPLICATION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications[name].data;
 }
 
 void QCFTemplate::startQuery()

@@ -13,8 +13,11 @@
 #include <QDir>
 #include <QUrl>
 
+
 QCFRunningTemplate::QCFRunningTemplate()
 	: QObject()
+    , m_APPLICATION(nullptr)
+    , m_SESSION(nullptr)
 	, m_CFOutput(0)
 	, m_ContentType("text/html; charset=utf-8")
 	, m_Status(200)
@@ -301,8 +304,6 @@ void QCFRunningTemplate::worker()
 				{
                     ((QCFServer*)m_CFServer)->m_TemplatesByThreadId.insert(QThread::currentThreadId(), l_page);
 
-                    m_APPLICATION.setType(QWDDX::Error);
-                    m_SESSION.setType(QWDDX::Error);
                     m_SERVER.setType(QWDDX::Struct);
                     m_CGI.setType(QWDDX::Struct);
                     m_FORM.setType(QWDDX::Struct);

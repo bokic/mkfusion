@@ -447,29 +447,33 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString &p_Funct_params, const QString &p_Funct_local_vars)
 {
 	QString ret;
-	QString l_Variable = p_Variable;
+    QString l_Variable = p_Variable.toUpper();
 
     QStringList functParams = p_Funct_params.split(",");
     QStringList functLocalVars = p_Funct_local_vars.split(",");
 
 	if (
-           (!l_Variable.startsWith("CGI.", Qt::CaseInsensitive)) \
-		&& (l_Variable.compare("CGI", Qt::CaseInsensitive) != 0) \
-        && (!l_Variable.startsWith("SERVER.", Qt::CaseInsensitive)) \
-		&& (l_Variable.compare("SERVER", Qt::CaseInsensitive) != 0) \
-        && (!l_Variable.startsWith("URL.", Qt::CaseInsensitive)) \
-		&& (l_Variable.compare("URL", Qt::CaseInsensitive) != 0) \
-        && (!l_Variable.startsWith("POST.", Qt::CaseInsensitive)) \
-		&& (l_Variable.compare("POST", Qt::CaseInsensitive) != 0) \
-        && (!l_Variable.startsWith("VARIABLES.", Qt::CaseInsensitive)) \
-		&& (l_Variable.compare("VARIABLES", Qt::CaseInsensitive) != 0) \
+           (!l_Variable.startsWith("CGI.")) \
+        && (l_Variable.compare("CGI") != 0) \
+        && (!l_Variable.startsWith("SERVER.")) \
+        && (l_Variable.compare("SERVER") != 0) \
+        && (!l_Variable.startsWith("APPLICATION.")) \
+        && (l_Variable.compare("APPLICATION") != 0) \
+        && (!l_Variable.startsWith("SESSION.")) \
+        && (l_Variable.compare("SESSION") != 0) \
+        && (!l_Variable.startsWith("URL.")) \
+        && (l_Variable.compare("URL") != 0) \
+        && (!l_Variable.startsWith("POST.")) \
+        && (l_Variable.compare("POST") != 0) \
+        && (!l_Variable.startsWith("VARIABLES.")) \
+        && (l_Variable.compare("VARIABLES") != 0) \
 	   )
 	{
-        if ((functLocalVars.contains(l_Variable))&&(!l_Variable.startsWith("LOCAL.", Qt::CaseInsensitive))&&(l_Variable.compare("LOCAL", Qt::CaseInsensitive) != 0))
+        if ((functLocalVars.contains(l_Variable))&&(!l_Variable.startsWith("LOCAL."))&&(l_Variable.compare("LOCAL") != 0))
         {
             l_Variable = "LOCAL." + l_Variable;
         }
-        else if ((functParams.contains(l_Variable))&&(!l_Variable.startsWith("ARGUMENTS.", Qt::CaseInsensitive))&&(l_Variable.compare("ARGUMENTS", Qt::CaseInsensitive) != 0))
+        else if ((functParams.contains(l_Variable))&&(!l_Variable.startsWith("ARGUMENTS."))&&(l_Variable.compare("ARGUMENTS") != 0))
         {
             l_Variable = "ARGUMENTS." + l_Variable;
         }
@@ -488,16 +492,23 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString 
 
     if ((l_StrList.first() == "LOCAL")||(l_StrList.first() == "ARGUMENTS"))
     {
-        ret = l_StrList[0].toUpper();
+        ret = l_StrList.first();
     }
     else
     {
-        ret = "m_TemplateInstance->m_" + l_StrList[0].toUpper();
+        if ((l_StrList.first() == "SESSION")|(l_StrList.first() == "APPLICATION"))
+        {
+            ret = "(*m_TemplateInstance->m_" + l_StrList.first() + ")";
+        }
+        else
+        {
+            ret = "m_TemplateInstance->m_" + l_StrList.first();
+        }
     }
 
 	for(int c = 1; c < l_StrList.size(); c++)
 	{
-        ret += "[\"" + l_StrList[c].toUpper() + "\"]";
+        ret += "[\"" + l_StrList[c] + "\"]";
 	}
 
 	return ret;
@@ -863,6 +874,67 @@ QString QCFGenerator::CFTagGetArgument(const QCFParserTag &p_CFTag, const QStrin
 	return "";
 }
 
+QString QCFGenerator::CFTagGetArgumentAsString(const QCFParserTag &p_CFTag, const QString &p_Argument)
+{
+    for(const QCFParserElement &l_Argument: p_CFTag.m_Arguments.m_ChildElements)
+    {
+        if ((l_Argument.m_Type != CFTagArgument)||(l_Argument.m_ChildElements.size() < 1))
+        {
+            continue;
+        }
+
+        if (l_Argument.m_ChildElements[0].m_Text.compare(p_Argument, Qt::CaseInsensitive) == 0)
+        {
+            if (l_Argument.m_ChildElements.size() == 3)
+            {
+                if (l_Argument.m_ChildElements.at(2).m_Type == String)
+                {
+                    return GenerateCFExpressionToCExpression(l_Argument.m_ChildElements.at(2));
+                }
+            }
+
+            break;
+        }
+    }
+
+    throw QMKFusionTemplateException("Value is not string.");
+}
+
+QString QCFGenerator::CFTagGetArgumentAsBool(const QCFParserTag &p_CFTag, const QString &p_Argument)
+{
+    for(const QCFParserElement &l_Argument: p_CFTag.m_Arguments.m_ChildElements)
+    {
+        if ((l_Argument.m_Type != CFTagArgument)||(l_Argument.m_ChildElements.size() < 1))
+        {
+            continue;
+        }
+
+        if (l_Argument.m_ChildElements[0].m_Text.compare(p_Argument, Qt::CaseInsensitive) == 0)
+        {
+            if (l_Argument.m_ChildElements.size() == 3)
+            {
+                if (l_Argument.m_ChildElements.at(2).m_Type == String)
+                {
+                    const QString value = l_Argument.m_ChildElements.at(2).m_Text.trimmed();
+
+                    if ((value.compare("true", Qt::CaseInsensitive) == 0)||(value.compare("yes", Qt::CaseInsensitive) == 0))
+                    {
+                        return "true";
+                    }
+                    if ((value.compare("false", Qt::CaseInsensitive) == 0)||(value.compare("no", Qt::CaseInsensitive) == 0))
+                    {
+                        return "false";
+                    }
+                }
+            }
+
+            break;
+        }
+    }
+
+    throw QMKFusionTemplateException("Value is not boolean.");
+}
+
 QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 {
 	if (p_CFTag.m_TagType == ExpressionTagType)
@@ -882,6 +954,19 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return "throw QMKFusionCFAbortException();";
 		}
 	}
+    else if(p_CFTag.m_Name.compare("cfapplication", Qt::CaseInsensitive) == 0)
+    {
+        bool has_name = CFTagHasArgument(p_CFTag, "name");
+
+        if (has_name)
+        {
+            return "f_Application(" + CFTagGetArgumentAsString(p_CFTag, "name") + ", " + CFTagGetArgumentAsBool(p_CFTag, "sessionmanagement") + ", " + CFTagGetArgumentAsBool(p_CFTag, "setclientcookies") + ");";
+        }
+        else
+        {
+            throw QMKFusionTemplateException(QString("cfapplication tag must have name attribute."));
+        }
+    }
     else if(p_CFTag.m_Name.compare("cfbreak", Qt::CaseInsensitive) == 0)
 	{
 		return "break;";

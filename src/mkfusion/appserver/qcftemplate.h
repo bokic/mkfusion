@@ -28,6 +28,7 @@ public:
     void f_Include(const QString &p_template);
     void f_Param(const QString &name);
     void f_Param(const QString &name, const QWDDX &p_default);
+    void f_Application(const QString &name, bool sessionManagement, bool setClientCookies);
     void startQuery();
     QWDDX endQuery(const QString &p_DataSource);
     void removeCustomFunctionsFromThisTemplate();
