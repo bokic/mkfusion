@@ -28,7 +28,8 @@ public:
 	void stop();
     QSqlDatabase getDBConnection(const QString &datasource);
     QString compileTemplate(const QString&, const QString&);
-    QCFTemplate * getTemplateByThreadId(Qt::HANDLE threadId);
+    QCFRunningTemplate * getRunningTemplateByThreadId(Qt::HANDLE threadId);
+    void createSessonStrings(QString &cfid, QString &cftoken);
 
 protected:
     virtual void timerEvent(QTimerEvent*);
@@ -39,8 +40,9 @@ private slots:
 
 public:
     QHash<QString, QCFCompiledTemplateItem> m_CompiledTemplates;
-    QHash<Qt::HANDLE, QCFTemplate *> m_TemplatesByThreadId;
+    QHash<Qt::HANDLE, QCFRunningTemplate *> m_RunnuingTemplatesByThreadId;
     QHash<QString, QCFApplication> m_Applications;
+    QHash<QString, QWDDX> m_Sessions;
     QLocalServer m_LocalServer;
     QReadWriteLock m_runningTemplatesLock;
     QString m_MKFusionPath;

@@ -22,6 +22,7 @@ public:
 	// Class members
 	QWDDX m_CGI;
 	QWDDX m_SERVER;
+    QWDDX m_COOKIE;
     QWDDX *m_APPLICATION;
     QWDDX *m_SESSION;
 	QWDDX m_URL;
@@ -39,7 +40,7 @@ public:
 	QObject *m_CFServer;
 	QCFRunningTemplate_Request m_Request;
     OutputType m_OutputType;
-    QHash<QString, QString> m_CustomFunctions;
+    QHash<QString, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)>> m_CustomFunctions;
     QHash<QString, QLibrary*> m_LoadedTemplates;
 
 signals:

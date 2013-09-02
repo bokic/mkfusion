@@ -573,17 +573,19 @@ QWDDX callCustomFunction(const QString &functionName, const QList<QWDDX> &argume
 
     QMKFusionService *service = (QMKFusionService *)QtServiceBase::instance();
 
-    QCFTemplate *cfTemplate = service->m_CFServer.getTemplateByThreadId(threadID);
+    QCFRunningTemplate *cfRunningTemplate = service->m_CFServer.getRunningTemplateByThreadId(threadID);
 
-    if (!cfTemplate)
+    qDebug() << "callCustomFunction QCFRunningTemplate is " << cfRunningTemplate;
+
+    if (!cfRunningTemplate)
     {
         throw QMKFusionException(QString("Loaded template [%1] not found.").arg(functionName));
     }
 
-    if (!cfTemplate->m_TemplateCustomFunctions.contains(functionName))
+    if (!cfRunningTemplate->m_CustomFunctions.contains(functionName))
     {
         throw QMKFusionException(QString("Function [%1] is undefined.").arg(functionName));
     }
 
-    return cfTemplate->m_TemplateCustomFunctions[functionName](cfTemplate->m_TemplateInstance, arguments);
+    return cfRunningTemplate->m_CustomFunctions[functionName](cfRunningTemplate, arguments);
 }

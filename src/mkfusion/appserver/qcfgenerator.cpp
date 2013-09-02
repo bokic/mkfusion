@@ -109,8 +109,6 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
     l_cppFile.write(QString("		m_isModified.m_Size = " + QString::number(p_Parser.m_CFMFileSize) + ";\n").toUtf8());
     l_cppFile.write(QString("		m_isModified.m_Modified = " + QString::number(p_Parser.m_CFMModifyDateTime) + ";\n").toUtf8());
     l_cppFile.write("\n");
-    l_cppFile.write("       removeCustomFunctionsFromThisTemplate();\n");
-    l_cppFile.write("\n");
 
     QList<QCFParserTag> const l_Tags = p_Parser.getTags();
 

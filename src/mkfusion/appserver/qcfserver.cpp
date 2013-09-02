@@ -1,6 +1,7 @@
 #include "qcfserver.h"
 #include "qmkfusionexception.h"
 #include "qcfgenerator.h"
+#include "qcfrunningtemplate.h"
 #include "qcftemplate.h"
 #include "qcfparser.h"
 
@@ -92,7 +93,7 @@ void QCFServer::on_newConnection()
 			break;
 		}
 
-        if (m_TemplatesByThreadId.count() >= m_MaxSimulRunningTemplates)
+        if (m_RunnuingTemplatesByThreadId.count() >= m_MaxSimulRunningTemplates)
 		{
 			l_LocalSocket->write("\x04\x00\x00\x00", 4);
 			l_LocalSocket->write("Maximum running templates.");
@@ -328,12 +329,42 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 	return ret;
 }
 
-QCFTemplate * QCFServer::getTemplateByThreadId(Qt::HANDLE threadId)
+QCFRunningTemplate * QCFServer::getRunningTemplateByThreadId(Qt::HANDLE threadId)
 {
-    if (m_TemplatesByThreadId.contains(threadId))
+    if (m_RunnuingTemplatesByThreadId.contains(threadId))
     {
-        return m_TemplatesByThreadId[threadId];
+        return m_RunnuingTemplatesByThreadId[threadId];
     }
 
     return nullptr;
+}
+
+void QCFServer::createSessonStrings(QString &cfid, QString &cftoken)
+{
+    static int global_cfid = 1000;
+
+    global_cfid++;
+
+    cfid = QString::number(global_cfid);
+
+    for(int c = 0; c < 24; c++)
+    {
+        QString byte = QString::number(rand() % 256, 16);
+        while(byte.length() < 2)
+        {
+            byte.prepend('0');
+        }
+
+        if (c >= 8)
+        {
+            byte = byte.toUpper();
+        }
+
+        if ((c == 8)||(c == 12)||(c == 14)||(c == 16))
+        {
+            cftoken.append('-');
+        }
+
+        cftoken.append(byte);
+    }
 }

@@ -30,6 +30,8 @@ QCFRunningTemplate::QCFRunningTemplate()
 
 QCFRunningTemplate::~QCFRunningTemplate()
 {
+    m_CustomFunctions.clear();
+
     while(!m_LoadedTemplates.isEmpty())
     {
         QLibrary *lib = m_LoadedTemplates.take(m_LoadedTemplates.keys().first());
@@ -302,9 +304,12 @@ void QCFRunningTemplate::worker()
 				l_page = createCFMTemplate();
                 if (l_page)
 				{
-                    ((QCFServer*)m_CFServer)->m_TemplatesByThreadId.insert(QThread::currentThreadId(), l_page);
+                    ((QCFServer*)m_CFServer)->m_RunnuingTemplatesByThreadId.insert(QThread::currentThreadId(), this);
+
+                    qDebug() << "QCFRunningTemplate::worker() QCFTemplate is " << l_page;
 
                     m_SERVER.setType(QWDDX::Struct);
+                    m_COOKIE.setType(QWDDX::Struct);
                     m_CGI.setType(QWDDX::Struct);
                     m_FORM.setType(QWDDX::Struct);
                     m_VARIABLES.setType(QWDDX::Struct);
@@ -505,9 +510,9 @@ void QCFRunningTemplate::worker()
         }
 #endif
 
-        if (((QCFServer*)m_CFServer)->m_TemplatesByThreadId.contains(QThread::currentThreadId()))
+        if (((QCFServer*)m_CFServer)->m_RunnuingTemplatesByThreadId.contains(QThread::currentThreadId()))
         {
-            ((QCFServer*)m_CFServer)->m_TemplatesByThreadId.remove(QThread::currentThreadId());
+            ((QCFServer*)m_CFServer)->m_RunnuingTemplatesByThreadId.remove(QThread::currentThreadId());
         }
 
 		delete l_page;

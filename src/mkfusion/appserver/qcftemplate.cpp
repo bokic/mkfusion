@@ -86,6 +86,8 @@ void QCFTemplate::f_Include(const QString &p_template)
     {
         QCFTemplate *l_page = nullptr;
 
+        qDebug() << "QCFTemplate::f_Include(const QString &p_template) `this->m_TemplateInstance` is " << this->m_TemplateInstance;
+
         l_page = createCFMTemplate();
         l_page->run(this->m_TemplateInstance);
 
@@ -243,6 +245,65 @@ void QCFTemplate::f_Application(const QString &name, bool sessionManagement, boo
     ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications[name].SetClientCookies = setClientCookies;
 
     m_TemplateInstance->m_APPLICATION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications[name].data;
+
+    if (sessionManagement)
+    {
+        if ((setClientCookies == true)&&(m_TemplateInstance->m_COOKIE.m_Struct->contains("CFID"))&&(m_TemplateInstance->m_COOKIE.m_Struct->contains("CFTOKEN")))
+        {
+            QString CFID = m_TemplateInstance->m_COOKIE["CFID"];
+            QString CFTOKEN = m_TemplateInstance->m_COOKIE["CFTOKEN"];
+
+            if (!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN))
+            {
+                throw QMKFusionTemplateException(QString("Invalid session ID."));
+            }
+
+            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN];
+
+            (*m_TemplateInstance->m_SESSION)["CFID"] = CFID;
+            (*m_TemplateInstance->m_SESSION)["CFTOKEN"] = CFTOKEN;
+            (*m_TemplateInstance->m_SESSION)["SESSIONID"] = name + "_" + CFID + "_" + CFTOKEN;
+            (*m_TemplateInstance->m_SESSION)["URLTOKEN"] = "CFID=" + CFID + "&CFTOKEN=" + CFTOKEN;
+        }
+        else if ((setClientCookies == false)&&(m_TemplateInstance->m_URL.m_Struct->contains("CFID"))&&(m_TemplateInstance->m_URL.m_Struct->contains("CFTOKEN")))
+        {
+            QString CFID = m_TemplateInstance->m_URL["CFID"];
+            QString CFTOKEN = m_TemplateInstance->m_URL["CFTOKEN"];
+
+            if (!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN))
+            {
+                throw QMKFusionTemplateException(QString("Invalid session ID."));
+            }
+
+            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN];
+
+            (*m_TemplateInstance->m_SESSION)["CFID"] = CFID;
+            (*m_TemplateInstance->m_SESSION)["CFTOKEN"] = CFTOKEN;
+            (*m_TemplateInstance->m_SESSION)["SESSIONID"] = name + "_" + CFID + "_" + CFTOKEN;
+            (*m_TemplateInstance->m_SESSION)["URLTOKEN"] = "CFID=" + CFID + "&CFTOKEN=" + CFTOKEN;
+        }
+        else
+        {
+            QString CFID;
+            QString CFTOKEN;
+
+            ((QCFServer*)m_TemplateInstance->m_CFServer)->createSessonStrings(CFID, CFTOKEN);
+
+            ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN] = QWDDX(QWDDX::Struct);
+            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN];
+
+            if (setClientCookies)
+            {
+                m_TemplateInstance->m_COOKIE["CFID"] = CFID;
+                m_TemplateInstance->m_COOKIE["CFTOKEN"] = CFTOKEN;
+            }
+
+            (*m_TemplateInstance->m_SESSION)["CFID"] = CFID;
+            (*m_TemplateInstance->m_SESSION)["CFTOKEN"] = CFTOKEN;
+            (*m_TemplateInstance->m_SESSION)["SESSIONID"] = name + "_" + CFID + "_" + CFTOKEN;
+            (*m_TemplateInstance->m_SESSION)["URLTOKEN"] = "CFID=" + CFID + "&CFTOKEN=" + CFTOKEN;
+        }
+    }
 }
 
 void QCFTemplate::startQuery()
@@ -313,27 +374,10 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
     return ret;
 }
 
-void QCFTemplate::removeCustomFunctionsFromThisTemplate()
-{
-    const QString &templateFile = m_isModified.m_Filename;
-
-    if (m_TemplateInstance)
-    {
-        for(int c = m_TemplateInstance->m_CustomFunctions.count(); c >= 0; c--)
-        {
-            const QString &key = m_TemplateInstance->m_CustomFunctions.keys().at(c);
-            const QString &value = m_TemplateInstance->m_CustomFunctions.values().at(c);
-
-            if (value == templateFile)
-            {
-                m_TemplateInstance->m_CustomFunctions.remove(key);
-            }
-        }
-    }
-}
-
 void QCFTemplate::addCustomFunction(const QString &functionName, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &)> function)
 {
+    QCFRunningTemplate *templateInstance;
+
     if (m_TemplateCustomFunctions.contains(functionName))
     {
         throw QMKFusionException(tr("Function [%1] is already defined in same template.").arg(functionName));
@@ -343,13 +387,26 @@ void QCFTemplate::addCustomFunction(const QString &functionName, std::function<Q
 
     if (m_TemplateInstance)
     {
-        if (m_TemplateInstance->m_CustomFunctions.contains(functionName))
-        {
-            throw QMKFusionException(tr("Function [%1] is already defined in other template.").arg(functionName));
-        }
-
-        m_TemplateInstance->m_CustomFunctions.insert(functionName, m_isModified.m_Filename);
-
-        //m_TemplateInstance->m_VARIABLES[functionName]
+        templateInstance = m_TemplateInstance;
     }
+    else
+    {
+        Qt::HANDLE threadID = QThread::currentThreadId();
+
+        QMKFusionService *service = (QMKFusionService *)QtServiceBase::instance();
+
+        templateInstance = service->m_CFServer.getRunningTemplateByThreadId(threadID);
+
+        if (templateInstance == nullptr)
+        {
+            return;
+        }
+    }
+
+    if (templateInstance->m_CustomFunctions.contains(functionName))
+    {
+        throw QMKFusionException(tr("Function [%1] is already defined in other template.").arg(functionName));
+    }
+
+    templateInstance->m_CustomFunctions.insert(functionName, function);
 }
