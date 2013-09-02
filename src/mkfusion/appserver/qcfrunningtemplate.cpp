@@ -496,6 +496,13 @@ void QCFRunningTemplate::worker()
 			m_Status = 500;
 			m_Output += WriteException(ex, this->m_Request);
 		}
+#ifndef QT_DEBUG
+        catch(...)
+        {
+            m_Status = 500;
+            m_Output += WriteException(QMKFusionException("Internal error."), this->m_Request);
+        }
+#endif
 
         if (((QCFServer*)m_CFServer)->m_TemplatesByThreadId.contains(QThread::currentThreadId()))
         {
