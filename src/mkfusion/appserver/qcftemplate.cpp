@@ -256,6 +256,8 @@ void QCFTemplate::f_Application(QString name, bool sessionManagement, bool setCl
             if (!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN.toUpper()))
             {
                 ((QCFServer*)m_TemplateInstance->m_CFServer)->createSessonStrings(CFID, CFTOKEN);
+                m_TemplateInstance->m_COOKIE["CFID"] = CFID;
+                m_TemplateInstance->m_COOKIE["CFTOKEN"] = CFTOKEN;
                 ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
                 qDebug() << "New session created.";
             }
@@ -274,6 +276,8 @@ void QCFTemplate::f_Application(QString name, bool sessionManagement, bool setCl
 
             if (!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN.toUpper()))
             {
+                m_TemplateInstance->m_COOKIE["CFID"] = CFID;
+                m_TemplateInstance->m_COOKIE["CFTOKEN"] = CFTOKEN;
                 ((QCFServer*)m_TemplateInstance->m_CFServer)->createSessonStrings(CFID, CFTOKEN);
                 ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
                 qDebug() << "New session created.";
