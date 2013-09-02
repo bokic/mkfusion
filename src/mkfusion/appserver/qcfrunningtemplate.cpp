@@ -349,47 +349,49 @@ void QCFRunningTemplate::worker()
 #endif
                     m_SERVER[QStringLiteral("OS")][QStringLiteral("BUILDNUMBER")] = QStringLiteral("unknown");
 
-
-                    QString tmpStr;
-
-#ifdef Q_OS_WIN
-                    tmpStr = QStringLiteral("Windows");
-#elif defined Q_OS_LINUX
-                    process.start("lsb_release", QStringList() << "-d");
-
-                    process.waitForFinished();
-
-                    tmpStr = QString::fromUtf8(process.readAllStandardOutput());
-
-                    if(tmpStr.indexOf(":") > -1)
+                    static QString osName;
+                    if (osName.isEmpty())
                     {
-                        tmpStr = tmpStr.right(tmpStr.length() - tmpStr.lastIndexOf(":") - 1).trimmed();
-                    }
-#else
-                    tmpStr = QStringLiteral("Other");
-#endif
-
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("NAME")] = tmpStr;
-
-
 #ifdef Q_OS_WIN
-                    tmpStr = QStringLiteral("unknown");
+                        osName = QStringLiteral("Windows");
 #elif defined Q_OS_LINUX
-                    process.start("lsb_release", QStringList() << "-c");
+                        process.start("lsb_release", QStringList() << "-d");
 
-                    process.waitForFinished();
+                        process.waitForFinished();
 
-                    tmpStr = QString::fromUtf8(process.readAllStandardOutput());
+                        osName = QString::fromUtf8(process.readAllStandardOutput());
 
-                    if(tmpStr.indexOf(":") > -1)
-                    {
-                        tmpStr = tmpStr.right(tmpStr.length() - tmpStr.lastIndexOf(":") - 1).trimmed();
-                    }
+                        if(osName.indexOf(":") > -1)
+                        {
+                            osName = osName.right(osName.length() - osName.lastIndexOf(":") - 1).trimmed();
+                        }
 #else
-                    tmpStr = QStringLiteral("unknown");
+                        osName = QStringLiteral("Other");
 #endif
+                    }
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("NAME")] = osName;
 
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("VERSION")] = tmpStr;
+                    static QString osVersion;
+                    if(osVersion.isEmpty())
+                    {
+#ifdef Q_OS_WIN
+                        osVersion = QStringLiteral("unknown");
+#elif defined Q_OS_LINUX
+                        process.start("lsb_release", QStringList() << "-c");
+
+                        process.waitForFinished();
+
+                        osVersion = QString::fromUtf8(process.readAllStandardOutput());
+
+                        if(osVersion.indexOf(":") > -1)
+                        {
+                        osVersion = osVersion.right(osVersion.length() - osVersion.lastIndexOf(":") - 1).trimmed();
+                        }
+#else
+                        osVersion = QStringLiteral("unknown");
+#endif
+                    }
+                    m_SERVER[QStringLiteral("OS")][QStringLiteral("VERSION")] = osVersion;
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
