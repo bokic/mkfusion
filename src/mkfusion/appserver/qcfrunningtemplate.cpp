@@ -529,7 +529,7 @@ void QCFRunningTemplate::worker()
 #ifndef QT_DEBUG
         catch(...)
         {
-            m_Status = 500;
+            m_StatusCode = 500;
             m_Output += WriteException(QMKFusionException("Internal error."), this->m_Request);
         }
 #endif
