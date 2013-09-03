@@ -2684,10 +2684,10 @@ Q_DECL_EXPORT bool cf_StructDelete(QWDDX &structure, const QString &key, bool in
 
     if (indicatenotexisting)
     {
-        ret = structure.m_Struct->contains(key);
+        ret = structure.m_Struct->contains(key.toUpper());
     }
 
-    structure.m_Struct->remove(key);
+    structure.m_Struct->remove(key.toUpper());
 
     return ret;
 }
@@ -2699,12 +2699,12 @@ Q_DECL_EXPORT QWDDX cf_StructFind(const QWDDX &structure, const QString &key)
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
 
-    if (!structure.m_Struct->contains(key))
+    if (!structure.m_Struct->contains(key.toUpper()))
     {
         throw QMKFusionException("Struct error", "key does not exist");
     }
 
-    return structure.m_Struct->value(key);
+    return structure.m_Struct->value(key.toUpper());
 }
 
 Q_DECL_EXPORT QWDDX cf_StructFindKey(const QWDDX &top, const QString &value, const QString &scope)
@@ -2739,12 +2739,12 @@ Q_DECL_EXPORT bool cf_StructInsert(QWDDX &structure, const QString &key, const Q
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
 
-    if ((allowoverwrite == false)&&(structure.m_Struct->contains(key)))
+    if ((allowoverwrite == false)&&(structure.m_Struct->contains(key.toUpper())))
     {
         return false;
     }
 
-    structure.m_Struct->insert(key, value);
+    structure.m_Struct->insert(key.toUpper(), value);
 
     return false;
 }
