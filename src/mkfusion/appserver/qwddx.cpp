@@ -307,6 +307,8 @@ Q_DECL_EXPORT QWDDX::operator bool()
         return m_Bool;
     case Number:
         return m_Number != 0;
+    case String:
+        return toNumber() != 0;
     default:
         throw QMKFusionExpressionException("Unsupported compare.");
     }
