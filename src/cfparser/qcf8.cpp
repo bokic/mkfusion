@@ -1722,6 +1722,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["replacelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
     ret["replacelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
+    ret.insert("reverse", QCFFunction("Reverse", QCFFunction::ReturnString));
+    ret["reverse"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
     ret.insert("right", QCFFunction("Right", QCFFunction::ReturnString));
     ret["right"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
     ret["right"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
