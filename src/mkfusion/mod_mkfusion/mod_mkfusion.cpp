@@ -37,7 +37,7 @@ static int mkfusion_handler(request_rec *r)
 	}
 
 #ifdef QT_DEBUG
-	apr_table_do(iterate_func, r, r->headers_in, NULL);
+    apr_table_do(iterate_func, r, r->headers_in, nullptr);
 
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
@@ -179,7 +179,7 @@ static void mkfusion_register_hooks(apr_pool_t *p)
     ap_log_perror(__FILE__, __LINE__, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
 #endif
 
-	ap_hook_handler(mkfusion_handler, NULL, NULL, APR_HOOK_MIDDLE);
+    ap_hook_handler(mkfusion_handler, nullptr, nullptr, APR_HOOK_MIDDLE);
 #ifdef Q_OS_WIN
     ap_add_version_component(p, "MKFusion/0.4.5 (Windows)");
 #elif defined Q_OS_LINUX
@@ -191,10 +191,10 @@ static void mkfusion_register_hooks(apr_pool_t *p)
 
 module AP_MODULE_DECLARE_DATA mkfusion_module = {
 	STANDARD20_MODULE_STUFF,
-	NULL,                    /* create per-dir    config structures */
-	NULL,                    /* merge  per-dir    config structures */
-	NULL,                    /* create per-server config structures */
-	NULL,                    /* merge  per-server config structures */
-	NULL,                    /* table of config file commands       */
+    nullptr,                 /* create per-dir    config structures */
+    nullptr,                 /* merge  per-dir    config structures */
+    nullptr,                 /* create per-server config structures */
+    nullptr,                 /* merge  per-server config structures */
+    nullptr,                 /* table of config file commands       */
 	mkfusion_register_hooks  /* register hooks                      */
 };

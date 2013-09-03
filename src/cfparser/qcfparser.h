@@ -81,7 +81,7 @@ public:
 	QString getError();
     const QString &getText() const;
 	quint32 getErrorPosition();
-    QCFParserErrorType Parse(const QString &p_Text, bool *p_Terminate = NULL);
+    QCFParserErrorType Parse(const QString &p_Text, bool *p_Terminate = nullptr);
 	QCFParserErrorType BuildTagTree();
 	QCFParserErrorType validate();
 	QList<QCFParserTag> getTags();

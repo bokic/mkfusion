@@ -22,8 +22,8 @@ QCFRunningTemplate::QCFRunningTemplate()
 	, m_ContentType("text/html; charset=utf-8")
 	, m_Status(200)
 	, m_HeadersSent(false)
-	, m_Socket(NULL)
-	, m_CFServer(NULL)
+    , m_Socket(nullptr)
+    , m_CFServer(nullptr)
     , m_OutputType(OutputTypeContent)
 {
 }
@@ -499,7 +499,7 @@ void QCFRunningTemplate::worker()
 				else
 				{
 					m_Status = 500;
-					m_Output = "QCFTemplate == NULL";
+                    m_Output = "QCFTemplate == nullptr";
 				}
 			}
 			else
@@ -507,7 +507,7 @@ void QCFRunningTemplate::worker()
 				if (m_Status == 200)
 				{
 					m_Status = 500;
-					m_Output = "createCFMTemplate() == NULL";
+                    m_Output = "createCFMTemplate() == nullptr";
 				}
 			}
 		}
@@ -540,7 +540,7 @@ void QCFRunningTemplate::worker()
 		delete l_page;
         l_page = 0;
 
-		createCFMTemplate = NULL;
+        createCFMTemplate = nullptr;
 
 /*		if (l_TemplateLib.isLoaded())
 		{

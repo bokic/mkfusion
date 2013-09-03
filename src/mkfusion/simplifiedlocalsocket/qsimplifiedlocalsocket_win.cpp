@@ -25,10 +25,10 @@ void QSimplifiedLocalSocket::connectToServer(QString p_Name, int msecs)
 		m_Handle = CreateFile((const wchar_t *)l_Name.utf16(),   // pipe name
 								 GENERIC_READ | GENERIC_WRITE,
 								 0,              // no sharing
-								 NULL,           // default security attributes
+                                 nullptr,           // default security attributes
 								 OPEN_EXISTING,  // opens existing pipe
 								 FILE_FLAG_OVERLAPPED,
-								 NULL);          // no template file
+                                 nullptr);          // no template file
 
 		if (m_Handle != INVALID_HANDLE_VALUE)
 		{
@@ -62,7 +62,7 @@ int QSimplifiedLocalSocket::write(QByteArray p_Data)
 {
 	DWORD ret;
 
-	if (!WriteFile(m_Handle, p_Data.constData(), p_Data.size(), &ret, NULL))
+    if (!WriteFile(m_Handle, p_Data.constData(), p_Data.size(), &ret, nullptr))
 		return -1;
 
 	return ret;
@@ -73,7 +73,7 @@ bool QSimplifiedLocalSocket::isValid()
 	if (m_Handle == INVALID_HANDLE_VALUE)
 		return false;
 
-	if (PeekNamedPipe(m_Handle, NULL, 0, NULL, NULL, NULL))
+    if (PeekNamedPipe(m_Handle, nullptr, 0, nullptr, nullptr, nullptr))
 		return true;
 
 	return false;
@@ -85,7 +85,7 @@ bool QSimplifiedLocalSocket::waitForReadyRead()
 
 	if (m_Handle != INVALID_HANDLE_VALUE)
 	{
-		PeekNamedPipe(m_Handle, NULL, 0, NULL, &l_TotalBytesAvail, NULL);
+        PeekNamedPipe(m_Handle, nullptr, 0, nullptr, &l_TotalBytesAvail, nullptr);
 	}
 
 	return l_TotalBytesAvail > 0;
@@ -98,12 +98,12 @@ QByteArray QSimplifiedLocalSocket::readAll()
 	if (m_Handle != INVALID_HANDLE_VALUE)
 	{
 		DWORD l_TotalBytesAvail;
-		PeekNamedPipe(m_Handle, NULL, 0, NULL, &l_TotalBytesAvail , NULL);
+        PeekNamedPipe(m_Handle, nullptr, 0, nullptr, &l_TotalBytesAvail , nullptr);
 
 		ret.resize(l_TotalBytesAvail);
 
 		DWORD l_Readed;
-		ReadFile(m_Handle, ret.data(), ret.size(), &l_Readed, NULL);
+        ReadFile(m_Handle, ret.data(), ret.size(), &l_Readed, nullptr);
 		ret.resize(l_Readed);
 	}
 

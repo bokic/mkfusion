@@ -1467,7 +1467,7 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 			//openTag.m_StartLine = linesCount;
 			//openTag.m_StartColumn = cf_pos - currentLineIndex;
 			openTag.m_Name = p_Text.mid(cf_pos + 1, endName - cf_pos - 1).toLower();
-            openTag.m_OtherTag = NULL;
+            openTag.m_OtherTag = nullptr;
 			if ((m_CFTagsDef.contains(openTag.m_Name))&&(m_CFTagsDef[openTag.m_Name].m_ArgumentsType == QCFTag::ArgumentsTypeExpression))
 			{
 				openTag.m_Arguments = ParseCFCode(p_Text, endName, CFTagExpression);
@@ -1603,7 +1603,7 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 			closeTag.m_Name = p_Text.mid(cf_epos + 2, cf_endtag - cf_epos - 2).toLower();
 			closeTag.m_Arguments = ParseCFCode(p_Text, cf_endtag, CFTagArguments);
 			closeTag.m_InlineClosedTag = false;
-            closeTag.m_OtherTag = NULL;
+            closeTag.m_OtherTag = nullptr;
 
 			m_Tags.append(closeTag);
 
@@ -1647,7 +1647,7 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 			commentTag.m_Arguments.m_Text = "";
 			commentTag.m_Arguments.m_Type = Error;
 			commentTag.m_InlineClosedTag = false;
-            commentTag.m_OtherTag = NULL;
+            commentTag.m_OtherTag = nullptr;
 
 			m_Tags.append(commentTag);
 

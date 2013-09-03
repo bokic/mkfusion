@@ -11,7 +11,7 @@
 #endif
 
 #define QCHECK_QWDDX_VAR_CACHE(VAR, STR) \
-    if (VAR == NULL) \
+    if (VAR == nullptr) \
     { \
         if (!m_TemplateInstance->m_VARIABLES.m_Struct->contains(STR)) \
         { \

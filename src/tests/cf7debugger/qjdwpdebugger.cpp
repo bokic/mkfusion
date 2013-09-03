@@ -68,7 +68,7 @@ void QJDWPDebugger::on_m_JDWP_gotPacket(quint32 p_Id, quint8 p_Flags, quint16 p_
 		}
 	}
 
-	if (l_Command == NULL)
+    if (l_Command == nullptr)
 	{
 		qDebug("Unknown command ID arrived.");
 		return;

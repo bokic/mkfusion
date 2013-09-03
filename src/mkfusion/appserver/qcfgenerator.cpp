@@ -797,7 +797,7 @@ QString QCFGenerator::GenerateCodeFromString(const QString str)
 {
     QCFParser parser;
 
-    QCFParserElement l_newConditionElement = parser.ParseCFCode(str, (qint32)0, Expression, NULL);
+    QCFParserElement l_newConditionElement = parser.ParseCFCode(str, (qint32)0, Expression, nullptr);
 
     return GenerateCFExpressionToCExpression(OptimizeQCFParserElement(l_newConditionElement));
 }
@@ -1062,7 +1062,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                     const QString &l_conditionStr = l_conditionElement.m_ChildElements.at(2).m_Text;
 
-                    QCFParserElement l_newConditionElement = parser.ParseCFCode(l_conditionStr, (qint32)0, Expression, NULL);
+                    QCFParserElement l_newConditionElement = parser.ParseCFCode(l_conditionStr, (qint32)0, Expression, nullptr);
 
                     return "while(" + GenerateCFExpressionToCExpression(OptimizeQCFParserElement(l_newConditionElement)) + ") {";
                 }

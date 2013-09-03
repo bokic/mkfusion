@@ -69,7 +69,7 @@ QByteArray QSFTPProject::ReadFile(const QString &p_File)
 {
 	QByteArray ret;
 
-	if (m_SFTPSession == NULL)
+    if (m_SFTPSession == nullptr)
 	{
 		return "";
 	}
@@ -77,16 +77,16 @@ QByteArray QSFTPProject::ReadFile(const QString &p_File)
 	QString l_File = m_Path + p_File;
 
 	sftp_file l_file = sftp_open(m_SFTPSession, l_File.toUtf8(), O_RDONLY, 0);
-	if (l_file == NULL)
+    if (l_file == nullptr)
 	{
-		return NULL;
+        return nullptr;
 	}
 
 	sftp_attributes attr = sftp_fstat(l_file);
-	if (attr == NULL)
+    if (attr == nullptr)
 	{
 		sftp_close(l_file);
-		return NULL;
+        return nullptr;
 	}
 
 	ret.resize(attr->size);
@@ -104,7 +104,7 @@ QByteArray QSFTPProject::ReadFile(const QString &p_File)
 
 void QSFTPProject::WriteFile(const QString &p_File, const QByteArray &p_FileContent)
 {
-	if (m_SFTPSession == NULL)
+    if (m_SFTPSession == nullptr)
 	{
 		return;
 	}
@@ -122,7 +122,7 @@ void QSFTPProject::WriteFile(const QString &p_File, const QByteArray &p_FileCont
 	// 0x0080 = ow_writ
 	// 0x0100 = ow_read
 
-	if (l_file == NULL)
+    if (l_file == nullptr)
 	{
 		return;
 	}
@@ -134,7 +134,7 @@ void QSFTPProject::WriteFile(const QString &p_File, const QByteArray &p_FileCont
 
 void QSFTPProject::DeleteFile(const QString &p_File)
 {
-	if (m_SFTPSession == NULL)
+    if (m_SFTPSession == nullptr)
 	{
 		return;
 	}
@@ -144,7 +144,7 @@ void QSFTPProject::DeleteFile(const QString &p_File)
 
 void QSFTPProject::RenameFile(const QString &p_FromFile, const QString &p_ToFile)
 {
-	if (m_SFTPSession == NULL)
+    if (m_SFTPSession == nullptr)
 	{
 		return;
 	}
@@ -156,7 +156,7 @@ QList<QProjectFile> QSFTPProject::getFolderItems(const QString &p_Folder)
 {
 	QList<QProjectFile> ret;
 
-	if (m_SFTPSession == NULL)
+    if (m_SFTPSession == nullptr)
 	{
 		return ret;
 	}
@@ -200,7 +200,7 @@ QList<QProjectFile> QSFTPProject::getFolderItems(const QString &p_Folder)
 
 void QSFTPProject::CreateDir(const QString &p_Folder)
 {
-	if (m_SFTPSession == NULL)
+    if (m_SFTPSession == nullptr)
 	{
 		return;
 	}
@@ -212,7 +212,7 @@ void QSFTPProject::DeleteDir(const QString &p_Folder, bool p_Recursive)
 {
     Q_UNUSED(p_Recursive); // TODO: Recursive
 
-	if (m_SFTPSession == NULL)
+    if (m_SFTPSession == nullptr)
 	{
 		return;
 	}
@@ -222,7 +222,7 @@ void QSFTPProject::DeleteDir(const QString &p_Folder, bool p_Recursive)
 
 void QSFTPProject::RenameDir(const QString &p_FromFolder, const QString &p_ToFolder)
 {
-	if (m_SFTPSession == NULL)
+    if (m_SFTPSession == nullptr)
 	{
 		return;
 	}

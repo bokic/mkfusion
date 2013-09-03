@@ -4,14 +4,14 @@
 
 bool IsServiceInstalled(char *ServiceName)
 {
-	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
-	if (l_SCMHandle == NULL)
+    SC_HANDLE l_SCMHandle = OpenSCManagerA(nullptr, "ServicesActive", SC_MANAGER_ALL_ACCESS);
+    if (l_SCMHandle == nullptr)
 	{
 		return false;
 	}
 
 	SC_HANDLE l_Handle = OpenServiceA(l_SCMHandle, ServiceName, SC_MANAGER_CONNECT);
-	if (l_Handle == NULL)
+    if (l_Handle == nullptr)
 	{
 		CloseHandle(l_SCMHandle);
 		return false;
@@ -25,14 +25,14 @@ bool IsServiceInstalled(char *ServiceName)
 
 bool IsServiceStatus(char *ServiceName, DWORD ServiceStatus) // SERVICE_RUNNING or SERVICE_STOPPED
 {
-	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
-	if (l_SCMHandle == NULL)
+    SC_HANDLE l_SCMHandle = OpenSCManagerA(nullptr, "ServicesActive", SC_MANAGER_ALL_ACCESS);
+    if (l_SCMHandle == nullptr)
 	{
 		return false;
 	}
 
 	SC_HANDLE l_Handle = OpenServiceA(l_SCMHandle, ServiceName, SC_MANAGER_ENUMERATE_SERVICE);
-	if (l_Handle == NULL)
+    if (l_Handle == nullptr)
 	{
 		CloseHandle(l_SCMHandle);
 		return false;
@@ -59,20 +59,20 @@ bool IsServiceStatus(char *ServiceName, DWORD ServiceStatus) // SERVICE_RUNNING 
 
 bool StartWinService(char *ServiceName)
 {
-	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
-	if (l_SCMHandle == NULL)
+    SC_HANDLE l_SCMHandle = OpenSCManagerA(nullptr, "ServicesActive", SC_MANAGER_ALL_ACCESS);
+    if (l_SCMHandle == nullptr)
 	{
 		return false;
 	}
 
 	SC_HANDLE l_Handle = OpenServiceA(l_SCMHandle, ServiceName, SC_MANAGER_QUERY_LOCK_STATUS);
-	if (l_Handle == NULL)
+    if (l_Handle == nullptr)
 	{
 		CloseHandle(l_SCMHandle);
 		return false;
 	}
 
-	if (StartService(l_Handle, 0, NULL) == 0)
+    if (StartService(l_Handle, 0, nullptr) == 0)
 	{
 		CloseHandle(l_Handle);
 		CloseHandle(l_SCMHandle);
@@ -87,14 +87,14 @@ bool StartWinService(char *ServiceName)
 
 bool StopWinService(char *ServiceName)
 {
-	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
-	if (l_SCMHandle == NULL)
+    SC_HANDLE l_SCMHandle = OpenSCManagerA(nullptr, "ServicesActive", SC_MANAGER_ALL_ACCESS);
+    if (l_SCMHandle == nullptr)
 	{
 		return false;
 	}
 
 	SC_HANDLE l_Handle = OpenServiceA(l_SCMHandle, ServiceName, SC_MANAGER_MODIFY_BOOT_CONFIG);
-	if (l_Handle == NULL)
+    if (l_Handle == nullptr)
 	{
 		CloseHandle(l_SCMHandle);
 		return false;
@@ -116,34 +116,34 @@ bool StopWinService(char *ServiceName)
 
 char *GetServiceExeFilename(char *ServiceName)
 {
-	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
-	if (l_SCMHandle == NULL)
+    SC_HANDLE l_SCMHandle = OpenSCManagerA(nullptr, "ServicesActive", SC_MANAGER_ALL_ACCESS);
+    if (l_SCMHandle == nullptr)
 	{
-		return NULL;
+        return nullptr;
 	}
 
 	SC_HANDLE l_Handle = OpenServiceA(l_SCMHandle, ServiceName, SERVICE_QUERY_CONFIG);
-	if (l_Handle == NULL)
+    if (l_Handle == nullptr)
 	{
 		CloseHandle(l_SCMHandle);
-		return NULL;
+        return nullptr;
 	}
 
 	DWORD l_BytesNeeded = 0;
-	QueryServiceConfigA(l_Handle, NULL, 0, &l_BytesNeeded);
+    QueryServiceConfigA(l_Handle, nullptr, 0, &l_BytesNeeded);
 	if (l_BytesNeeded == 0)
 	{
 		CloseHandle(l_Handle);
 		CloseHandle(l_SCMHandle);
-		return NULL;
+        return nullptr;
 	}
 
 	LPQUERY_SERVICE_CONFIGA l_QueryServiceConfig = (LPQUERY_SERVICE_CONFIGA)LocalAlloc(LPTR, l_BytesNeeded);
-	if (l_QueryServiceConfig == NULL)
+    if (l_QueryServiceConfig == nullptr)
 	{
 		CloseHandle(l_Handle);
 		CloseHandle(l_SCMHandle);
-		return NULL;
+        return nullptr;
 	}
 
 	if (QueryServiceConfigA(l_Handle, l_QueryServiceConfig, l_BytesNeeded, &l_BytesNeeded) == 0)
@@ -151,19 +151,19 @@ char *GetServiceExeFilename(char *ServiceName)
 		LocalFree(l_QueryServiceConfig);
 		CloseHandle(l_Handle);
 		CloseHandle(l_SCMHandle);
-		return NULL;
+        return nullptr;
 	}
 
 	CloseHandle(l_Handle);
 	CloseHandle(l_SCMHandle);
 
 	char *ret = (char *)LocalAlloc(LPTR, strlen(l_QueryServiceConfig->lpBinaryPathName) + 1);
-	if (ret == NULL)
+    if (ret == nullptr)
 	{
 		LocalFree(l_QueryServiceConfig);
 		CloseHandle(l_Handle);
 		CloseHandle(l_SCMHandle);
-		return NULL;
+        return nullptr;
 	}
 
 	strcpy(ret, l_QueryServiceConfig->lpBinaryPathName);
@@ -175,10 +175,10 @@ char *GetServiceExeFilename(char *ServiceName)
 	{
 		quote1++;
 		char *quote2 = strchr(quote1, '"');
-		if (quote2 == NULL)
+        if (quote2 == nullptr)
 		{
 			LocalFree(ret);
-			return NULL;
+            return nullptr;
 		}
 
 		memmove(ret, quote1, quote2 - quote1);
@@ -197,22 +197,22 @@ bool AddMKFusionToApacheConfig(char *FileName, char *MKFusionPath)
 	int    l_BufWritten;
 	DWORD  l_Written;
 
-	l_File = CreateFileA(FileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    l_File = CreateFileA(FileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (l_File == INVALID_HANDLE_VALUE)
 	{
 		return false;
 	}
 
-	l_FileSize = GetFileSize(l_File, NULL);
+    l_FileSize = GetFileSize(l_File, nullptr);
 
     l_FileContent = (char *)LocalAlloc(LPTR, l_FileSize + 1024);
-	if(l_FileContent == NULL)
+    if(l_FileContent == nullptr)
 	{
 		CloseHandle(l_File);
 		return false;
 	}
 
-	if (ReadFile(l_File, l_FileContent, l_FileSize, &l_Readed, NULL) == 0)
+    if (ReadFile(l_File, l_FileContent, l_FileSize, &l_Readed, nullptr) == 0)
 	{
 		LocalFree(l_FileContent);
 		CloseHandle(l_File);
@@ -232,14 +232,14 @@ bool AddMKFusionToApacheConfig(char *FileName, char *MKFusionPath)
 		return false;
 	}
 
-	if (SetFilePointer(l_File, 0, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
+    if (SetFilePointer(l_File, 0, nullptr, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
 	{
 		LocalFree(l_FileContent);
 		CloseHandle(l_File);
 		return false;
 	}
 
-	if (WriteFile(l_File, l_FileContent, l_FileSize + l_BufWritten, &l_Written, NULL) == 0)
+    if (WriteFile(l_File, l_FileContent, l_FileSize + l_BufWritten, &l_Written, nullptr) == 0)
 	{
 		LocalFree(l_FileContent);
 		CloseHandle(l_File);
@@ -258,17 +258,17 @@ bool RemoveMKFusionFromApacheConfig(char *FileName)
 	DWORD  l_Readed;
 	DWORD  l_Written;
 
-	l_File = CreateFileA(FileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    l_File = CreateFileA(FileName, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (l_File == INVALID_HANDLE_VALUE)
 	{
 		return false;
 	}
 
-	l_FileSize = GetFileSize(l_File, NULL);
+    l_FileSize = GetFileSize(l_File, nullptr);
 
     l_FileContent = (char *)LocalAlloc(LMEM_FIXED, l_FileSize + 1);
 
-	if (ReadFile(l_File, l_FileContent, l_FileSize, &l_Readed, NULL) == 0)
+    if (ReadFile(l_File, l_FileContent, l_FileSize, &l_Readed, nullptr) == 0)
 	{
 		LocalFree(l_FileContent);
 		CloseHandle(l_File);
@@ -277,7 +277,7 @@ bool RemoveMKFusionFromApacheConfig(char *FileName)
 	l_FileContent[l_FileSize] = 0;
 
     char *from = strstr(l_FileContent, "\r\n### MkFusion from here\r\n");
-	if (from == NULL)
+    if (from == nullptr)
 	{
 		LocalFree(l_FileContent);
 		CloseHandle(l_File);
@@ -285,7 +285,7 @@ bool RemoveMKFusionFromApacheConfig(char *FileName)
 	}
 
     char *to = strstr(from, "\r\n### MkFusion to here\r\n");
-	if (to == NULL)
+    if (to == nullptr)
 	{
 		LocalFree(l_FileContent);
 		CloseHandle(l_File);
@@ -297,21 +297,21 @@ bool RemoveMKFusionFromApacheConfig(char *FileName)
 		memmove(from, to + strlen("\r\n### MkFusion to here\r\n") - 2, strlen(to) - strlen("\r\n### MkFusion to here\r\n") + 3);
 	}
 
-	if (SetFilePointer(l_File, 0, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
+    if (SetFilePointer(l_File, 0, nullptr, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
 	{
 		LocalFree(l_FileContent);
 		CloseHandle(l_File);
 		return false;
 	}
 
-	if (WriteFile(l_File, l_FileContent, strlen(l_FileContent), &l_Written, NULL) == 0)
+    if (WriteFile(l_File, l_FileContent, strlen(l_FileContent), &l_Written, nullptr) == 0)
 	{
 		LocalFree(l_FileContent);
 		CloseHandle(l_File);
 		return false;
 	}
 
-	if (SetFilePointer(l_File, l_FileSize - (to - from + strlen("\r\n### MkFusion to here\r\n")), NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
+    if (SetFilePointer(l_File, l_FileSize - (to - from + strlen("\r\n### MkFusion to here\r\n")), nullptr, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
 	{
 		LocalFree(l_FileContent);
 		CloseHandle(l_File);

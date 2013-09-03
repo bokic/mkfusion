@@ -20,7 +20,7 @@ QProject* QProject::LoadProjectFromFile(const QString &p_File)
 {
 	QFile file(p_File);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-		return NULL;
+        return nullptr;
 
 	QProject *ret = LoadProjectFromText(file.readAll());
 	ret->m_ProjectFileSaved = true;
@@ -78,7 +78,7 @@ QProject* QProject::LoadProjectFromText(const QString &p_Text)
 		return ret;
 	}
 	else
-		return NULL;
+        return nullptr;
 }
 
 const QString& QProject::getUrl()

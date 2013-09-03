@@ -45,7 +45,7 @@ void TestCases::optPI()
         optTemplate.run(m_TemplateInstance);
 
         delete m_TemplateInstance;
-        m_TemplateInstance = NULL;
+        m_TemplateInstance = nullptr;
     }
 }*/
 
@@ -80,7 +80,7 @@ void TestCases::optPI2()
         });
 
         delete m_TemplateInstance;
-        m_TemplateInstance = NULL;
+        m_TemplateInstance = nullptr;
     }
 }
 

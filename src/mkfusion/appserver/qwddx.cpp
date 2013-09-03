@@ -3,13 +3,13 @@
 #include <math.h>
 
 Q_DECL_EXPORT QWDDX::QWDDX()
-    : m_Array(NULL)
-    , m_Struct(NULL)
-    , m_String(NULL)
-    , m_ByteArray(NULL)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
+    , m_String(nullptr)
+    , m_ByteArray(nullptr)
     , m_Number(0)
 	, m_Bool(false)
-    , m_DateTime(NULL)
+    , m_DateTime(nullptr)
 	, m_Type(Null)
     , m_ArrayDimension(1)
 {
@@ -21,78 +21,78 @@ Q_DECL_EXPORT QWDDX::~QWDDX()
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(bool p_NewValue)
-    : m_Array(NULL)
-    , m_Struct(NULL)
-    , m_String(NULL)
-    , m_ByteArray(NULL)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
+    , m_String(nullptr)
+    , m_ByteArray(nullptr)
     , m_Number(0)
 	, m_Bool(p_NewValue)
-    , m_DateTime(NULL)
+    , m_DateTime(nullptr)
 	, m_Type(Boolean)
     , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(int p_NewValue)
-    : m_Array(NULL)
-    , m_Struct(NULL)
-    , m_String(NULL)
-    , m_ByteArray(NULL)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
+    , m_String(nullptr)
+    , m_ByteArray(nullptr)
 	, m_Number(p_NewValue)
 	, m_Bool(false)
-    , m_DateTime(NULL)
+    , m_DateTime(nullptr)
 	, m_Type(Number)
     , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(double p_NewValue)
-    : m_Array(NULL)
-    , m_Struct(NULL)
-    , m_String(NULL)
-    , m_ByteArray(NULL)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
+    , m_String(nullptr)
+    , m_ByteArray(nullptr)
 	, m_Number(p_NewValue)
 	, m_Bool(false)
-    , m_DateTime(NULL)
+    , m_DateTime(nullptr)
 	, m_Type(Number)
     , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const char *p_NewValue)
-    : m_Array(NULL)
-    , m_Struct(NULL)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
     , m_String(new QString(p_NewValue))
-    , m_ByteArray(NULL)
+    , m_ByteArray(nullptr)
 	, m_Number(0)
 	, m_Bool(false)
-    , m_DateTime(NULL)
+    , m_DateTime(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const wchar_t *p_NewValue)
-    : m_Array(NULL)
-    , m_Struct(NULL)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
     , m_String(new QString(QString::fromWCharArray(p_NewValue)))
-    , m_ByteArray(NULL)
+    , m_ByteArray(nullptr)
 	, m_Number(0)
 	, m_Bool(false)
-    , m_DateTime(NULL)
+    , m_DateTime(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
 {
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const QString &p_NewValue)
-    : m_Array(NULL)
-    , m_Struct(NULL)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
     , m_String(new QString(p_NewValue))
-    , m_ByteArray(NULL)
+    , m_ByteArray(nullptr)
 	, m_Number(0)
 	, m_Bool(false)
-    , m_DateTime(NULL)
+    , m_DateTime(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
 {
@@ -100,10 +100,10 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QString &p_NewValue)
 
 Q_DECL_EXPORT QWDDX::QWDDX(const QDateTime &p_NewValue)
 
-    : m_Array(NULL)
-    , m_Struct(NULL)
-    , m_String(NULL)
-    , m_ByteArray(NULL)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
+    , m_String(nullptr)
+    , m_ByteArray(nullptr)
 	, m_Number(0)
 	, m_Bool(false)
     , m_DateTime(new QDateTime(p_NewValue))
@@ -113,13 +113,13 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QDateTime &p_NewValue)
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
-    : m_Array(NULL)
-    , m_Struct(NULL)
-    , m_String(NULL)
-    , m_ByteArray(NULL)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
+    , m_String(nullptr)
+    , m_ByteArray(nullptr)
     , m_Number(0)
     , m_Bool(false)
-    , m_DateTime(NULL)
+    , m_DateTime(nullptr)
     , m_Type(other.m_Type)
     , m_ArrayDimension(1)
 {
@@ -164,13 +164,13 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const QWDDXType p_Type)
-    : m_Array(NULL)
-    , m_Struct(NULL)
-    , m_String(NULL)
-    , m_ByteArray(NULL)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
+    , m_String(nullptr)
+    , m_ByteArray(nullptr)
 	, m_Number(0)
 	, m_Bool(false)
-    , m_DateTime(NULL)
+    , m_DateTime(nullptr)
     , m_Type(Null)
     , m_ArrayDimension(1)
 {
@@ -232,27 +232,27 @@ Q_DECL_EXPORT void QWDDX::setType(QWDDXType type)
     {
     case String:
         delete m_String;
-        m_String = NULL;
+        m_String = nullptr;
         break;
     case DateTime:
         delete m_DateTime;
-        m_DateTime = NULL;
+        m_DateTime = nullptr;
         break;
     case Array:
         delete m_Array;
-        m_Array = NULL;
+        m_Array = nullptr;
         break;
     case Struct:
         delete m_Struct;
-        m_Struct = NULL;
+        m_Struct = nullptr;
         break;
     case Binary:
         delete m_ByteArray;
-        m_ByteArray = NULL;
+        m_ByteArray = nullptr;
         break;
     case Query:
         delete m_Struct;
-        m_Struct = NULL;
+        m_Struct = nullptr;
         break;
     case NotImplemented:
         break;
@@ -301,12 +301,15 @@ Q_DECL_EXPORT QWDDX::QWDDXType QWDDX::type() const
 
 Q_DECL_EXPORT QWDDX::operator bool()
 {
-    if (m_Type != Boolean)
+    switch(m_Type)
     {
+    case Boolean:
+        return m_Bool;
+    case Number:
+        return m_Number != 0;
+    default:
         throw QMKFusionExpressionException("Unsupported compare.");
     }
-
-    return m_Bool;
 }
 
 Q_DECL_EXPORT QWDDX::operator int()
@@ -606,7 +609,7 @@ Q_DECL_EXPORT bool QWDDX::operator==(const QWDDX &p_Value)
 
 	if ((m_Type == String)&&(p_Value.m_Type == String))
 	{
-		return m_String == p_Value.m_String;
+        return *m_String == *p_Value.m_String;
 	}
 
 	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
@@ -699,7 +702,7 @@ Q_DECL_EXPORT bool QWDDX::operator!=(const QString &p_Value)
 
 	if ((m_Type == String))
 	{
-		return m_String != p_Value;
+        return *m_String != p_Value;
 	}
 
     throw QMKFusionExpressionException("Unsupported compare.");
@@ -714,7 +717,7 @@ Q_DECL_EXPORT bool QWDDX::operator!=(const QWDDX &p_Value)
 
 	if ((m_Type == String)&&(p_Value.m_Type == String))
 	{
-		return m_String != p_Value.m_String;
+        return *m_String != *p_Value.m_String;
 	}
 
 	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
@@ -797,7 +800,7 @@ Q_DECL_EXPORT bool QWDDX::operator<=(const QWDDX &p_Value)
 
 	if ((m_Type == String)&&(p_Value.m_Type == String))
 	{
-		return m_String <= p_Value.m_String;
+        return *m_String <= *p_Value.m_String;
 	}
 
 	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
@@ -880,7 +883,7 @@ Q_DECL_EXPORT bool QWDDX::operator>=(const QWDDX &p_Value)
 
 	if ((m_Type == String)&&(p_Value.m_Type == String))
 	{
-		return m_String >= p_Value.m_String;
+        return *m_String >= *p_Value.m_String;
 	}
 
 	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
@@ -963,7 +966,7 @@ Q_DECL_EXPORT bool QWDDX::operator<(const QWDDX &p_Value)
 
 	if ((m_Type == String)&&(p_Value.m_Type == String))
 	{
-		return m_String < p_Value.m_String;
+        return *m_String < *p_Value.m_String;
 	}
 
 	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
@@ -1046,7 +1049,7 @@ Q_DECL_EXPORT bool QWDDX::operator>(const QWDDX &p_Value)
 
 	if ((m_Type == String)&&(p_Value.m_Type == String))
 	{
-		return m_String > p_Value.m_String;
+        return *m_String > *p_Value.m_String;
 	}
 
 	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))

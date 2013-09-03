@@ -61,7 +61,7 @@ private slots:
 
 private:
 	void LoadProject(const QString&);
-	void UpdateProjectFileList(const QString& = "", QTreeWidgetItem* = NULL);
+    void UpdateProjectFileList(const QString& = "", QTreeWidgetItem* = nullptr);
 	void recolor();
 //	void colorElement(const QCFParserElement &);
 	Ui::QAppMainWindow *ui;

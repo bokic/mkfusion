@@ -3,20 +3,20 @@
 
 bool StartWinService(char *ServiceName)
 {
-	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
-	if (l_SCMHandle == NULL)
+    SC_HANDLE l_SCMHandle = OpenSCManagerA(nullptr, "ServicesActive", SC_MANAGER_ALL_ACCESS);
+    if (l_SCMHandle == nullptr)
 	{
 		return false;
 	}
 
 	SC_HANDLE l_Handle = OpenServiceA(l_SCMHandle, ServiceName, SC_MANAGER_QUERY_LOCK_STATUS);
-	if (l_Handle == NULL)
+    if (l_Handle == nullptr)
 	{
 		CloseHandle(l_SCMHandle);
 		return false;
 	}
 
-	if (StartService(l_Handle, 0, NULL) == 0)
+    if (StartService(l_Handle, 0, nullptr) == 0)
 	{
 		CloseHandle(l_Handle);
 		CloseHandle(l_SCMHandle);
@@ -31,14 +31,14 @@ bool StartWinService(char *ServiceName)
 
 bool StopWinService(char *ServiceName)
 {
-	SC_HANDLE l_SCMHandle = OpenSCManagerA(NULL, "ServicesActive", SC_MANAGER_ALL_ACCESS);
-	if (l_SCMHandle == NULL)
+    SC_HANDLE l_SCMHandle = OpenSCManagerA(nullptr, "ServicesActive", SC_MANAGER_ALL_ACCESS);
+    if (l_SCMHandle == nullptr)
 	{
 		return false;
 	}
 
 	SC_HANDLE l_Handle = OpenServiceA(l_SCMHandle, ServiceName, SC_MANAGER_MODIFY_BOOT_CONFIG | SC_MANAGER_ENUMERATE_SERVICE);
-	if (l_Handle == NULL)
+    if (l_Handle == nullptr)
 	{
 		CloseHandle(l_SCMHandle);
 		return false;

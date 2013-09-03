@@ -41,6 +41,7 @@ private slots:
     void verificator_improove_test();*/
     void parseBigFile();
     void benchPI();
+    void compareIssue();
 };
 
 /*void TestCases::initTestCase()
@@ -406,11 +407,11 @@ void TestCases::BenchOptimisedCode()
 			//QWDDX *opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES["A"]; *opt_m_VARIABLES_A = 1;
             m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = 1;
 
-			//QWDDX *opt_m_VARIABLES_A = NULL;
+            //QWDDX *opt_m_VARIABLES_A = nullptr;
             QWDDX *opt_m_VARIABLES_C = &m_TemplateInstance->m_VARIABLES[QStringLiteral("C")]; *opt_m_VARIABLES_C = 1;
 			for(; ; )
 			{
-                //if (opt_m_VARIABLES_A == NULL) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[QStringLiteral("A")];
+                //if (opt_m_VARIABLES_A == nullptr) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[QStringLiteral("A")];
 
 				// *opt_m_VARIABLES_A = *opt_m_VARIABLES_A + 1;
 
@@ -439,11 +440,11 @@ void TestCases::BenchOptimisedCode2()
 			//QWDDX *opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES["A"]; *opt_m_VARIABLES_A = 1;
             m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = 1;
 
-			QWDDX *opt_m_VARIABLES_A = NULL;
+            QWDDX *opt_m_VARIABLES_A = nullptr;
 			quint32 l_loopCounter = 1;
 			for(; ; )
 			{
-                if (opt_m_VARIABLES_A == NULL) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[QStringLiteral("A")];
+                if (opt_m_VARIABLES_A == nullptr) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[QStringLiteral("A")];
 
 				// *opt_m_VARIABLES_A = *opt_m_VARIABLES_A + 1;
 
@@ -559,6 +560,20 @@ void TestCases::benchPI()
 
     }
 }
+
+void TestCases::compareIssue()
+{
+    QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
+
+    m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
+
+    m_TemplateInstance->m_VARIABLES[L"SETTING"] = QString("Style");
+
+    QVERIFY(m_TemplateInstance->m_VARIABLES[L"SETTING"] == QWDDX(L"Style"));
+
+    delete m_TemplateInstance;
+}
+
 
 QTEST_MAIN(TestCases)
 #include "main.moc"

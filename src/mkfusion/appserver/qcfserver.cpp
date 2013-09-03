@@ -88,9 +88,9 @@ void QCFServer::on_newConnection()
 	{
 		QLocalSocket *l_LocalSocket = m_LocalServer.nextPendingConnection();
 
-		if (l_LocalSocket == NULL)
+        if (l_LocalSocket == nullptr)
 		{
-            qDebug() << "Got NULL local connection.";
+            qDebug() << "Got nullptr local connection.";
 
 			break;
 		}
@@ -122,7 +122,7 @@ void QCFServer::on_newConnection()
 		l_runningTemplate->m_CFServer = this;
 		l_runningTemplate->moveToThread(l_thread);
 		l_runningTemplate->m_Socket = l_LocalSocket;
-		l_LocalSocket->setParent(NULL);
+        l_LocalSocket->setParent(nullptr);
 		l_LocalSocket->moveToThread(l_thread);
 
         connect(l_thread, &QThread::started, l_runningTemplate, &QCFRunningTemplate::worker);
@@ -216,7 +216,7 @@ void QCFServer::start()
                     }
 
 					delete l_page;
-                    l_page = NULL;
+                    l_page = nullptr;
 				}
 			}
 

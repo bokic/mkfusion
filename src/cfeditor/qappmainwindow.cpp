@@ -13,7 +13,7 @@
 QAppMainWindow::QAppMainWindow(QWidget *parent)
     : QMainWindow(parent)
 	, ui(new Ui::QAppMainWindow)
-	, m_Project(NULL)
+    , m_Project(nullptr)
 	, m_ProjectFileName()
 {
     ui->setupUi(this);
@@ -306,7 +306,7 @@ void QAppMainWindow::LoadProject(const QString &p_File)
 	if (m_Project)
 	{
 		delete m_Project;
-		m_Project = NULL;
+        m_Project = nullptr;
 	}
 
 	m_Project = QProject::LoadProjectFromFile(p_File);
@@ -332,7 +332,7 @@ void QAppMainWindow::UpdateProjectFileList(const QString &level, QTreeWidgetItem
 
 	QList<QProjectFile> l_files = m_Project->getFolderItems(level);
 
-	if (parentItem == NULL)
+    if (parentItem == nullptr)
 	{
         for(const QProjectFile &l_file: l_files)
 		{
