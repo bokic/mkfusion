@@ -7,6 +7,7 @@
 #include <QSqlDatabase>
 #include <QSqlRecord>
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QDir>
 
 
@@ -365,7 +366,7 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
 
     if (conn.open() == false)
     {
-        throw QMKFusionException("Database connection failed.");
+        throw QMKFusionException("Database connection failed.<br />\nDatabase error string: " + conn.lastError().text());
     }
 
     //Call prepare query
@@ -373,7 +374,7 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
 
     if (query.prepare(m_TemplateInstance->m_QueryOutput) == false)
     {
-        throw QMKFusionException("Invalid query syntax.");
+        throw QMKFusionException("Invalid query syntax.", "Database error string: " + query.lastError().text() + "<br />\n Query: " + m_TemplateInstance->m_QueryOutput);
     }
 
     //Send query parameters(if any)
@@ -385,7 +386,7 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
     //call query exec.
     if (query.exec() == false)
     {
-        throw QMKFusionException("query execute failed.");
+        throw QMKFusionException("query execute failed.<br />\nDatabase error string: " + query.lastError().text());
     }
 
     // copy

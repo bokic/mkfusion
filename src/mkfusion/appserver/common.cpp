@@ -45,6 +45,7 @@ QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Re
     ret += "\t\t\t\t\t<tr>\n";
     ret += "\t\t\t\t\t\t<td id=\"tableProps2\" align=\"left\" valign=\"middle\" width=\"500\">\n";
     ret += "\t\t\t\t\t\t\t<h1 id=\"textSection1\" style=\"COLOR: black; FONT: 13pt/15pt verdana\">" + *ex.m_message + "</h1>\n";
+    ret += "\t\t\t\t\t\t\t" + *ex.m_Detail + "\n";
     ret += "\t\t\t\t\t\t</td>\n";
     ret += "\t\t\t\t\t</tr>\n";
     ret += "\t\t\t\t\t<tr>\n";

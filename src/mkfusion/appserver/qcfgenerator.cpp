@@ -1248,12 +1248,12 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             case CFTagType:
                 l_queryType = CFTagGetArgumentPlain(p_CFTag, "type");
                 l_queryName = CFTagGetArgumentPlain(p_CFTag, "name");
-                l_queryDataSource = CFTagGetArgumentPlain(p_CFTag, "datasource");
+                l_queryDataSource = CFTagGetArgument(p_CFTag, "datasource");
                 break;
             case EndCFTagType:
                 l_queryType = CFTagGetArgumentPlain(*p_CFTag.m_OtherTag, "type");
                 l_queryName = CFTagGetArgumentPlain(*p_CFTag.m_OtherTag, "name");
-                l_queryDataSource = CFTagGetArgumentPlain(*p_CFTag.m_OtherTag, "datasource");
+                l_queryDataSource = CFTagGetArgument(*p_CFTag.m_OtherTag, "datasource");
                 break;
             default:
                 break;
@@ -1268,7 +1268,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             if (p_CFTag.m_TagType == EndCFTagType)
             {
-                return "m_TemplateInstance->m_VARIABLES[\"" + l_queryName.toUpper() + "\"] = endQuery(\"" + l_queryDataSource + "\");";
+                return "m_TemplateInstance->m_VARIABLES[\"" + l_queryName.toUpper() + "\"] = endQuery(" + l_queryDataSource + ");";
             }
         }
     }
