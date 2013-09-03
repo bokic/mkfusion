@@ -1128,14 +1128,31 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 	}
     else if(p_CFTag.m_Name.compare("cfoutput", Qt::CaseInsensitive) == 0)
 	{
+        QString ret;
+
 		if (p_CFTag.m_TagType == CFTagType)
 		{
-			return "p_TemplateInstance->m_CFOutput++;";
+            ret += "p_TemplateInstance->m_CFOutput++;\n";
+
+            if (CFTagHasArgument(p_CFTag, "query"))
+            {
+                ret += "for(int i = 1; ; i++) {\n";
+                ret += "if (f_FetchQueryRow(" + GenerateCodeFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
+            }
+
+            return ret;
 		}
 
 		if (p_CFTag.m_TagType == EndCFTagType)
 		{
-			return "p_TemplateInstance->m_CFOutput--;";
+            if (CFTagHasArgument(*p_CFTag.m_OtherTag, "query"))
+            {
+                ret += "}\n";
+            }
+
+            ret += "p_TemplateInstance->m_CFOutput--;\n";
+
+            return ret;
 		}
 	}
     else if(p_CFTag.m_Name.compare("cfparam", Qt::CaseInsensitive) == 0) /*cfparam "name type" is missing */
