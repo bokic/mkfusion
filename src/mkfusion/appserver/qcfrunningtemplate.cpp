@@ -20,7 +20,7 @@ QCFRunningTemplate::QCFRunningTemplate()
     , m_SESSION(nullptr)
 	, m_CFOutput(0)
 	, m_ContentType("text/html; charset=utf-8")
-	, m_Status(200)
+    , m_StatusCode(200)
 	, m_HeadersSent(false)
     , m_Socket(nullptr)
     , m_CFServer(nullptr)
@@ -53,7 +53,7 @@ void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const
     {
         if (m_LoadedTemplates[filename]->isLoaded() == false)
         {
-            m_Status = 500;
+            m_StatusCode = 500;
             m_Output = "template library was not loaded.";
 
             return nullptr;
@@ -80,13 +80,13 @@ void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const
         {
             delete templateLib;
 
-            m_Status = 500;
+            m_StatusCode = 500;
             m_Output = "Can\'t load template library.";
         }
     }
     else
     {
-        m_Status = 500;
+        m_StatusCode = 500;
         m_Output = "Compiling error: " + err;
     }
 
@@ -323,11 +323,13 @@ void QCFRunningTemplate::worker()
 
                     for(const QString &cookie : cookies)
                     {
-                        QStringList pair = cookie.split('=');
+                        int separator = cookie.indexOf('=');
 
-                        if (pair.count() == 2)
+                        if (separator > 0)
                         {
-                            m_COOKIE[pair[0].trimmed().toUpper()] = pair[1].trimmed();
+                            QString key = cookie.left(separator).trimmed().toUpper();
+                            QString value = cookie.right(cookie.length() - separator - 1);
+                            m_COOKIE[key] = value;
                         }
                         else
                         {
@@ -498,15 +500,15 @@ void QCFRunningTemplate::worker()
 				}
 				else
 				{
-					m_Status = 500;
+                    m_StatusCode = 500;
                     m_Output = "QCFTemplate == nullptr";
 				}
 			}
 			else
 			{
-				if (m_Status == 200)
+                if (m_StatusCode == 200)
 				{
-					m_Status = 500;
+                    m_StatusCode = 500;
                     m_Output = "createCFMTemplate() == nullptr";
 				}
 			}
@@ -516,12 +518,12 @@ void QCFRunningTemplate::worker()
 		}
 		catch (const QMKFusionTemplateException &ex)
 		{
-			m_Status = 500;
+            m_StatusCode = 500;
 			m_Output += WriteException(ex, this->m_Request);
 		}
 		catch (const QMKFusionException &ex)
 		{
-			m_Status = 500;
+            m_StatusCode = 500;
 			m_Output += WriteException(ex, this->m_Request);
 		}
 #ifndef QT_DEBUG
@@ -560,7 +562,7 @@ void QCFRunningTemplate::worker()
 			l_headerDataStream << (qint32) 0;
 			l_headerDataStream << m_ContentType;
 
-			l_headerDataStream << m_Status;
+            l_headerDataStream << m_StatusCode;
 
             if (m_COOKIE.m_Type == QWDDX::Struct)
             {

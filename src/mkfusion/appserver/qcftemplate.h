@@ -25,6 +25,8 @@ public:
 
     void f_WriteOutput(const QString &p_Text);
     void f_WriteOutput(const QWDDX &p_Wddx);
+    void f_Location(const QString &p_URL, int p_StatusCode = 302);
+    void f_Location(const QString &p_URL, bool p_AddToken, int p_StatusCode = 302);
     void f_Include(const QString &p_template);
     void f_Param(const QString &name);
     void f_Param(const QString &name, const QWDDX &p_default);

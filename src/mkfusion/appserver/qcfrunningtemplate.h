@@ -34,7 +34,7 @@ public:
     QList<QWDDX> m_QueryParams;
 	qint32 m_CFOutput;
 	QString m_ContentType;
-	int m_Status;
+    int m_StatusCode;
     QMultiHash<QString, QString> m_Header;
 	bool m_HeadersSent;
 	QLocalSocket *m_Socket;

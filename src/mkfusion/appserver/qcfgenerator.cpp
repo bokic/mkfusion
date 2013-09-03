@@ -1211,6 +1211,30 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return "} else if(" + GenerateCFExpressionToCExpression(p_CFTag.m_Arguments) + ") {";
 		}
 	}
+    else if(p_CFTag.m_Name.compare("cflocation", Qt::CaseInsensitive) == 0)
+    {
+        if (!CFTagHasArgument(p_CFTag, "url"))
+        {
+            throw QMKFusionTemplateException("cflocation tag must have url attribute.");
+        }
+
+        if ((!CFTagHasArgument(p_CFTag, "addToken"))&&(!CFTagHasArgument(p_CFTag, "statusCode")))
+        {
+            return "f_Location(" + CFTagGetArgument(p_CFTag, "url") + ");\n";
+        }
+        else if ((CFTagHasArgument(p_CFTag, "addToken"))&&(!CFTagHasArgument(p_CFTag, "statusCode")))
+        {
+            throw QMKFusionTemplateException("cflocation url addToken is NOT implemented.");
+        }
+        else if ((!CFTagHasArgument(p_CFTag, "addToken"))&&(CFTagHasArgument(p_CFTag, "statusCode")))
+        {
+            throw QMKFusionTemplateException("cflocation url, statusCode is NOT implemented.");
+        }
+        else
+        {
+            throw QMKFusionTemplateException("cflocation url, addToken, statusCode is NOT implemented.");
+        }
+    }
     else if(p_CFTag.m_Name.compare("cfsetting", Qt::CaseInsensitive) == 0) /* implemented attributes: enablecfoutputonly. */
 	{
         QString l_enablecfoutputonly = CFTagGetArgumentPlain(p_CFTag, "enablecfoutputonly");

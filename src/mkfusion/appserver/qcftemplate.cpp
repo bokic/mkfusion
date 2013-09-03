@@ -63,6 +63,28 @@ void QCFTemplate::f_WriteOutput(const QWDDX &p_Wddx)
 	}
 }
 
+void QCFTemplate::f_Location(const QString &p_URL, int p_StatusCode)
+{
+    if ((p_StatusCode < 300)||(p_StatusCode > 307))
+    {
+        throw QMKFusionInvalidArgumentException("f_Location", 2, p_StatusCode, 300, 307);
+    }
+
+    m_TemplateInstance->m_StatusCode = p_StatusCode;
+
+    m_TemplateInstance->m_Header.insert("location", p_URL);
+
+    m_TemplateInstance->m_Output.clear();
+
+    // TODO: Add url redirect
+    throw QMKFusionCFAbortException();
+}
+
+void QCFTemplate::f_Location(const QString &p_URL, bool p_AddToken, int p_StatusCode)
+{
+
+}
+
 void QCFTemplate::f_Include(const QString &p_template)
 {
     createCFMTemplateDef createCFMTemplate = 0;
