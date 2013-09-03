@@ -13,36 +13,44 @@ SolidCompression=yes
 OutputBaseFilename=CFEditor
 OutputDir=.
 VersionInfoVersion={#PACKAGE_VERSION}
-VersionInfoDescription=CFEditor is free, ColdFusion IDE(Qt 4.7.2)
+VersionInfoDescription=CFEditor is free, ColdFusion IDE(Qt 5.1.1)
+
+[Dirs]
+Name: "{app}";
+Name: "{app}\imageformats";
+Name: "{app}\iconengines";
 
 [Files]
-
-; MSVC9 runtime
-; Source: "runtime\vcredist_x86.exe"; DestDir: "{tmp}";
-
 ; MinGW runtime
-Source: "c:\Qt\4.7.2\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.7.2\bin\mingwm10.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\libwinpthread-1.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\libstdc++-6.dll"; DestDir: "{app}";
 
-; QT library
-Source: "c:\Qt\4.7.2\bin\QtCore4.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.7.2\bin\QtGui4.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.7.2\bin\QtNetwork4.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.7.2\bin\QtXml4.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.7.2\bin\QtWebKit4.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.7.2\bin\phonon4.dll"; DestDir: "{app}";
-Source: "c:\Qt\4.7.2\bin\QtSvg4.dll"; DestDir: "{app}";
+; ICU unicode/utf conversion tables
+Source: "C:\Qt\5.1.1\mingw48_32\bin\icudt51.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\icuin51.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\icuuc51.dll"; DestDir: "{app}";
+
+; Qt library
+Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Core.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Gui.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Widgets.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Network.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Xml.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5WebKit.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5WebKitWidgets.dll"; DestDir: "{app}";
+Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Svg.dll"; DestDir: "{app}";
 
 ; Qt image icon engines
-Source: "c:\Qt\4.7.2\plugins\iconengines\qsvgicon4.dll"; DestDir: "{app}\iconengines\qsvgicon4.dll";
+Source: "cC:\Qt\5.1.1\mingw48_32\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines";
 
 ; Qt image formats
-Source: "c:\Qt\4.7.2\plugins\imageformats\qgif4.dll"; DestDir: "{app}\imageformats\qgif4.dll";
-Source: "c:\Qt\4.7.2\plugins\imageformats\qico4.dll"; DestDir: "{app}\imageformats\qico4.dll";
-Source: "c:\Qt\4.7.2\plugins\imageformats\qjpeg4.dll"; DestDir: "{app}\imageformats\qjpeg4.dll";
-Source: "c:\Qt\4.7.2\plugins\imageformats\qmng4.dll"; DestDir: "{app}\imageformats\qmng4.dll";
-Source: "c:\Qt\4.7.2\plugins\imageformats\qsvg4.dll"; DestDir: "{app}\imageformats\qsvg4.dll";
-Source: "c:\Qt\4.7.2\plugins\imageformats\qtiff4.dll"; DestDir: "{app}\imageformats\qtiff4.dll";
+Source: "C:\Qt\5.1.1\mingw48_32\plugins\imageformats\qgif.dll"; DestDir: "{app}\imageformats";
+Source: "C:\Qt\5.1.1\mingw48_32\plugins\imageformats\qico.dll"; DestDir: "{app}\imageformats";
+Source: "C:\Qt\5.1.1\mingw48_32\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats";
+Source: "C:\Qt\5.1.1\mingw48_32\plugins\imageformats\qmng.dll"; DestDir: "{app}\imageformats";
+Source: "C:\Qt\5.1.1\mingw48_32\plugins\imageformats\qsvg.dll"; DestDir: "{app}\imageformats";
+Source: "C:\Qt\5.1.1\mingw48_32\plugins\imageformats\qtiff.dll"; DestDir: "{app}\imageformats";
 
 ; libssh library
 Source: "..\..\libs\libssh\bin\libeay32.dll"; DestDir: "{app}";
@@ -66,11 +74,3 @@ Root: HKCR; Subkey: "CFEditor\DefaultIcon"; ValueType: "string"; ValueData :"{ap
 Root: HKCR; Subkey: "CFEditor\shell"; ValueType: "string"; ValueData :"open"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "CFEditor\shell\open\command"; ValueType: "string"; ValueData : "{app}\cfeditor.exe ""%1"""; Flags: uninsdeletekey
 
-[Code]
-//procedure InstallRTL();
-//var
-//  ResultCode: Integer;
-//begin
-//  Exec(ExpandConstant('{tmp}') + '\vcredist_x86.exe', '/q', ExpandConstant('{tmp}'), SW_SHOW, ewWaitUntilTerminated, ResultCode);
-//end;
-end.

@@ -36,36 +36,43 @@ Source: "C:\Qt\5.1.1\mingw48_32\bin\icudt51.dll"; DestDir: "{app}\bin";
 Source: "C:\Qt\5.1.1\mingw48_32\bin\icuin51.dll"; DestDir: "{app}\bin";
 Source: "C:\Qt\5.1.1\mingw48_32\bin\icuuc51.dll"; DestDir: "{app}\bin";
 
+; Qt library
 Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Core.dll"; DestDir: "{app}\bin";
 Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Network.dll"; DestDir: "{app}\bin";
 Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Sql.dll"; DestDir: "{app}\bin";
 Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Xml.dll"; DestDir: "{app}\bin";
+
+; MKFusion service app
 Source: "..\..\bin\mkfusion.exe"; DestDir: "{app}\bin"; Flags: ignoreversion;
+
+; MKFusion Apache 2.2 module
 Source: "..\..\bin\mod_mkfusion.dll"; DestDir: "{app}\bin"; Flags: ignoreversion;
+
+; MKFusion config database
 Source: "..\..\install\mkfusion.db"; DestDir: "{app}\bin"; Flags: onlyifdoesntexist;
+
+; MKFusion uninstall dll
 Source: "uninstall.dll"; DestDir: "{app}"; Flags: ignoreversion;
 
+; MinGW 4.8
 Source: "..\..\bin\mingw\*"; DestDir: "{app}\bin\mingw"; Flags: recursesubdirs;
+
+; Qt 5.1.1 include and lib files
 Source: "..\..\bin\qt\*"; DestDir: "{app}\bin\qt"; Flags: recursesubdirs;
 
+; Qt Database modules
 Source: "C:\Qt\5.1.1\mingw48_32\plugins\sqldrivers\qsqlite.dll"; DestDir: "{app}\bin\sqldrivers";
 Source: "C:\Qt\5.1.1\mingw48_32\plugins\sqldrivers\qsqlodbc.dll"; DestDir: "{app}\bin\sqldrivers";
 ;Source: "C:\Qt\5.1.1\mingw48_32\plugins\sqldrivers\qsqlmysql.dll"; DestDir: "{app}\bin\sqldrivers";
 ;Source: "C:\Qt\5.1.1\mingw48_32\plugins\sqldrivers\qsqlpsql.dll"; DestDir: "{app}\bin\sqldrivers";
 
-;Source: "..\runtime\comerr32.dll"; DestDir: "{app}\bin";
-;Source: "runtime\gssapi32.dll"; DestDir: "{app}\bin";
-;Source: "runtime\k5sprt32.dll"; DestDir: "{app}\bin";
-;Source: "runtime\krb5_32.dll"; DestDir: "{app}\bin";
-;Source: "..\libs\libssh\bin\libeay32.dll"; DestDir: "{app}\bin";
-;Source: "runtime\libiconv-2.dll"; DestDir: "{app}\bin";
-;Source: "runtime\libintl-8.dll"; DestDir: "{app}\bin";
-;Source: "runtime\ssleay32.dll"; DestDir: "{app}\bin";
-
+; MKFusion uninstall dll(forgot why is here)
 Source: "uninstall.dll"; Flags: dontcopy;
 
+; MKFusion support library for template compiling
 Source: "..\..\lib\mkfusion.a"; DestDir: "{app}\lib"; Flags: ignoreversion;
 
+; MKFusion support headers for template compiling
 Source: "..\..\src\mkfusion\appserver\cffunctions.h"; DestDir: "{app}\include"; Flags: ignoreversion;
 Source: "..\..\src\mkfusion\appserver\common.h"; DestDir: "{app}\include"; Flags: ignoreversion;
 Source: "..\..\src\mkfusion\appserver\qcfrunningtemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
