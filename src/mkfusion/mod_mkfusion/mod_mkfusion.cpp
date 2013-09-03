@@ -181,9 +181,9 @@ static void mkfusion_register_hooks(apr_pool_t *p)
 
 	ap_hook_handler(mkfusion_handler, NULL, NULL, APR_HOOK_MIDDLE);
 #ifdef Q_OS_WIN
-    ap_add_version_component(p, "MKFusion/0.4.2 (Windows)");
+    ap_add_version_component(p, "MKFusion/0.4.5 (Windows)");
 #elif defined Q_OS_LINUX
-	ap_add_version_component(p, "MKFusion/0.4.2 (Linux)");
+	ap_add_version_component(p, "MKFusion/0.4.5 (Linux)");
 #else
 #error Windows and Linux OSs are currently supported.
 #endif

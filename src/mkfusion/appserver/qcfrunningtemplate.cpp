@@ -348,7 +348,7 @@ void QCFRunningTemplate::worker()
 #endif
                     m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("PRODUCTLEVEL")] = QStringLiteral("Free");
                     m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("PRODUCTNAME")] = QStringLiteral("MKFusion Server");
-                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("PRODUCTVERSION")] = QStringLiteral("0.4.2");
+                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("PRODUCTVERSION")] = QStringLiteral("0.4.5");
                     m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("ROOTDIR")] = ((QCFServer*)m_CFServer)->m_MKFusionPath.left(-1);
                     m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("SUPPORTEDLOCALES")] = QStringLiteral("English (US),en,en_US");
                     m_SERVER[QStringLiteral("OS")] = QWDDX(QWDDX::Struct);
