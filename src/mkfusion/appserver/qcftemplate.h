@@ -28,6 +28,7 @@ public:
     void f_Include(const QString &p_template);
     void f_Param(const QString &name);
     void f_Param(const QString &name, const QWDDX &p_default);
+    bool f_FetchQueryRow(const QWDDX &query, int row);
     void f_Application(QString name, bool sessionManagement, bool setClientCookies);
     void startQuery();
     QWDDX endQuery(const QString &p_DataSource);

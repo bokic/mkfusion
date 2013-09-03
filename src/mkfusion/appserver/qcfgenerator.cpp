@@ -778,11 +778,11 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 	return ret;
 }
 
-QCFParserElement QCFGenerator::OprimizeQCFParserElement(QCFParserElement p_CFExpression)
+QCFParserElement QCFGenerator::OptimizeQCFParserElement(QCFParserElement p_CFExpression)
 {
 	for(int c = 0; c < p_CFExpression.m_ChildElements.count(); c++)
 	{
-		p_CFExpression.m_ChildElements[c] = OprimizeQCFParserElement(p_CFExpression.m_ChildElements[c]);
+        p_CFExpression.m_ChildElements[c] = OptimizeQCFParserElement(p_CFExpression.m_ChildElements[c]);
 	}
 
 	if ((p_CFExpression.m_ChildElements.length() == 1)&&((p_CFExpression.m_Type == Expression)||(p_CFExpression.m_Type == SharpExpression)||(p_CFExpression.m_Type == Parameters)||(p_CFExpression.m_Type == Parameter)))// TODO: Maybe add another types
@@ -791,6 +791,15 @@ QCFParserElement QCFGenerator::OprimizeQCFParserElement(QCFParserElement p_CFExp
 	}
 
 	return p_CFExpression;
+}
+
+QString QCFGenerator::GenerateCodeFromString(const QString str)
+{
+    QCFParser parser;
+
+    QCFParserElement l_newConditionElement = parser.ParseCFCode(str, (qint32)0, Expression, NULL);
+
+    return GenerateCFExpressionToCExpression(OptimizeQCFParserElement(l_newConditionElement));
 }
 
 bool CFTagHasArgument(const QCFParserTag &p_CFTag, const QString &p_Argument)
@@ -996,7 +1005,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return ""; //TODO: Generate Error.
 		}
 
-		return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(OprimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]))+"));";
+        return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(OptimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]))+"));";
 		//return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2], "false")+"));";
 	}
     else if(p_CFTag.m_Name.compare("cfinclude", Qt::CaseInsensitive) == 0)
@@ -1055,12 +1064,45 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                     QCFParserElement l_newConditionElement = parser.ParseCFCode(l_conditionStr, (qint32)0, Expression, NULL);
 
-                    return "while(" + GenerateCFExpressionToCExpression(OprimizeQCFParserElement(l_newConditionElement)) + ") {";
+                    return "while(" + GenerateCFExpressionToCExpression(OptimizeQCFParserElement(l_newConditionElement)) + ") {";
                 }
 
                 // TODO: Generate Error.
 			}
-		}
+            else if (CFTagHasArgument(p_CFTag, "query"))
+            {
+                QString ret;
+                QString start;
+                QString end;
+
+                if (CFTagHasArgument(p_CFTag, "startRow"))
+                {
+                    start = CFTagGetArgument(p_CFTag, "startRow");
+                }
+                else
+                {
+                    start = "1";
+                }
+
+                if (CFTagHasArgument(p_CFTag, "endRow"))
+                {
+                    end = CFTagGetArgument(p_CFTag, "endRow");
+                }
+
+                if (!end.isEmpty())
+                {
+                    ret  = "for(int i = " + start + "; i <= " + end + "; i++) {\n";
+                }
+                else
+                {
+                    ret  = "for(int i = " + start + ";; i++) {\n";
+                }
+
+                ret += "if (f_FetchQueryRow(" + GenerateCodeFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
+
+                return ret;
+            }
+        }
 
 		if (p_CFTag.m_TagType == EndCFTagType)
 		{
@@ -1069,7 +1111,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 	}
     else if(p_CFTag.m_Name.compare("cfset", Qt::CaseInsensitive) == 0)
 	{
-		QCFParserElement l_OptimizedElements = OprimizeQCFParserElement(p_CFTag.m_Arguments);
+        QCFParserElement l_OptimizedElements = OptimizeQCFParserElement(p_CFTag.m_Arguments);
 		//QCFParserElement l_OptimizedElements = p_CFTag.m_Arguments;
 
 //		log("m_ChildElements.size() = " + QString::number(l_OptimizedElements.m_ChildElements.size()));
@@ -1121,7 +1163,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
     }
     else if(p_CFTag.m_Name.compare("cfreturn", Qt::CaseInsensitive) == 0)
     {
-        QCFParserElement l_OptimizedElements = OprimizeQCFParserElement(p_CFTag.m_Arguments);
+        QCFParserElement l_OptimizedElements = OptimizeQCFParserElement(p_CFTag.m_Arguments);
 
         return "return " + GenerateCFExpressionToCExpression(l_OptimizedElements) + ";";
     }

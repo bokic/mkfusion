@@ -562,9 +562,12 @@ void QCFRunningTemplate::worker()
 
 			l_headerDataStream << m_Status;
 
-            for(const QString &key : m_COOKIE.m_Struct->keys())
-            { // TODO: Unhardcode Max-Age.
-                m_Header.insert("Set-Cookie", key + "=" + m_COOKIE[key].toString()+  "; Max-Age=3600; Path=/; HttpOnly");
+            if (m_COOKIE.m_Type == QWDDX::Struct)
+            {
+                for(const QString &key : m_COOKIE.m_Struct->keys())
+                { // TODO: Unhardcode Max-Age.
+                    m_Header.insert("Set-Cookie", key + "=" + m_COOKIE[key].toString()+  "; Max-Age=3600; Path=/; HttpOnly");
+                }
             }
 
             l_headerDataStream << (qint32) m_Header.size();

@@ -252,6 +252,11 @@ QSqlDatabase QCFServer::getDBConnection(const QString &datasource)
 {
     QSqlDatabase ret;
 
+    if (QSqlDatabase::contains(datasource))
+    {
+        QSqlDatabase::removeDatabase(datasource);
+    }
+
     ret = QSqlDatabase::addDatabase("QSQLITE", datasource);
 
     ret.setDatabaseName("test.db");

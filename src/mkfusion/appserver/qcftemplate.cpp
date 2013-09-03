@@ -232,6 +232,40 @@ void QCFTemplate::f_Param(const QString &name, const QWDDX &p_default)
     }
 }
 
+bool QCFTemplate::f_FetchQueryRow(const QWDDX &query, int row)
+{
+    if (query.m_Type != QWDDX::Query)
+    {
+        throw QMKFusionException("Variable is not query.");
+    }
+
+    if (row < 1)
+    {
+        return false;
+    }
+
+    if (query.m_Struct->count() > 0)
+    {
+        for(int i = 0; i < query.m_Struct->count(); i++)
+        {
+            QString columnName = query.m_Struct->keys().at(i);
+
+            QWDDX columnData = query.m_Struct->values().at(i);
+
+            if (columnData.m_Array->count() < row)
+            {
+                return false;
+            }
+
+            m_TemplateInstance->m_VARIABLES[columnName] = columnData.m_Array->at(row - 1);
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
 void QCFTemplate::f_Application(QString name, bool sessionManagement, bool setClientCookies)
 {
     name = name.toUpper();

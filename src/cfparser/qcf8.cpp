@@ -859,8 +859,8 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	ret["cfloop"].m_ArgumentVariants.append(args);
 	args.clear();
 	args.append(QCFTagArgument("query", true, QCFTagArgument::TypeVariable));
-	args.append(QCFTagArgument("startRow", false, QCFTagArgument::TypeExpression));
-	args.append(QCFTagArgument("endRow", false, QCFTagArgument::TypeExpression));
+    args.append(QCFTagArgument("startRow", false, QCFTagArgument::TypeAny));
+    args.append(QCFTagArgument("endRow", false, QCFTagArgument::TypeAny));
 	ret["cfloop"].m_ArgumentVariants.append(args);
 	args.clear();
 	args.append(QCFTagArgument("index", true, QCFTagArgument::TypeVariable));
