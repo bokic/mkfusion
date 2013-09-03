@@ -115,7 +115,7 @@ void QCFTemplate::f_Param(const QString &name)
                     );
     }
 
-    if (!cf_IsDefined(m_TemplateInstance, name()))
+    if (!cf_IsDefined(m_TemplateInstance, name))
     {
         throw QMKFusionException(
                     tr("The required parameter '%1' was not provided.").arg(name.toUpper()),
