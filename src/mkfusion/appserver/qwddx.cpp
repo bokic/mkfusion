@@ -1,5 +1,6 @@
 #include "qwddx.h"
 #include "qmkfusionexception.h"
+#include <QDebug>
 #include <math.h>
 
 Q_DECL_EXPORT QWDDX::QWDDX()
@@ -12,12 +13,14 @@ Q_DECL_EXPORT QWDDX::QWDDX()
     , m_DateTime(nullptr)
 	, m_Type(Null)
     , m_ArrayDimension(1)
+    , m_HiddenScope(nullptr)
 {
 }
 
 Q_DECL_EXPORT QWDDX::~QWDDX()
 {
     setType(Null);
+    m_HiddenScope = nullptr;
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(bool p_NewValue)
@@ -30,6 +33,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(bool p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(Boolean)
     , m_ArrayDimension(1)
+    , m_HiddenScope(nullptr)
 {
 }
 
@@ -43,6 +47,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(int p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(Number)
     , m_ArrayDimension(1)
+    , m_HiddenScope(nullptr)
 {
 }
 
@@ -56,6 +61,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(double p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(Number)
     , m_ArrayDimension(1)
+    , m_HiddenScope(nullptr)
 {
 }
 
@@ -69,7 +75,9 @@ Q_DECL_EXPORT QWDDX::QWDDX(const char *p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
+    , m_HiddenScope(nullptr)
 {
+    qDebug() << "QWDDX::QWDDX(const char *p_NewValue) called. to be deleted soon.";
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(const wchar_t *p_NewValue)
@@ -82,6 +90,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(const wchar_t *p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
+    , m_HiddenScope(nullptr)
 {
 }
 
@@ -95,6 +104,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QString &p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
+    , m_HiddenScope(nullptr)
 {
 }
 
@@ -109,6 +119,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QDateTime &p_NewValue)
     , m_DateTime(new QDateTime(p_NewValue))
 	, m_Type(DateTime)
     , m_ArrayDimension(1)
+    , m_HiddenScope(nullptr)
 {
 }
 
@@ -122,6 +133,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
     , m_DateTime(nullptr)
     , m_Type(other.m_Type)
     , m_ArrayDimension(1)
+    , m_HiddenScope(nullptr)
 {
     switch(other.m_Type)
     {
@@ -173,6 +185,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDXType p_Type)
     , m_DateTime(nullptr)
     , m_Type(Null)
     , m_ArrayDimension(1)
+    , m_HiddenScope(nullptr)
 {
     setType(p_Type);
 }
@@ -370,12 +383,22 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const double p_Index)
 	}
 	else
 	{
-        if (m_Struct->contains(QString::number(p_Index)) == false)
+        QString key = QString::number(p_Index);
+
+        if (m_Struct->contains(key) == false)
 		{
-            m_Struct->insert(QString::number(p_Index), QWDDX(QWDDX::Null));
+            if (m_HiddenScope)
+            {
+                if (m_HiddenScope->m_Struct->contains(key))
+                {
+                    return (*m_HiddenScope->m_Struct)[key];
+                }
+            }
+
+            m_Struct->insert(key, QWDDX(QWDDX::Null));
 		}
 
-        return (*m_Struct)[QString::number(p_Index)];
+        return (*m_Struct)[key];
 	}
 }
 
@@ -383,13 +406,21 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QString &key)
 {
     if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array)&&(m_Type != QWDDX::Query))
 	{
-        throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class \'char *\' as a structure with members.");
+        throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class \'QString\' as a structure with members.");
 	}
 
     if ((m_Type == QWDDX::Struct)||(m_Type == QWDDX::Query))
 	{
         if (m_Struct->contains(key) == false)
 		{
+            if (m_HiddenScope)
+            {
+                if (m_HiddenScope->m_Struct->contains(key))
+                {
+                    return (*m_HiddenScope->m_Struct)[key];
+                }
+            }
+
             m_Struct->insert(key, QWDDX(QWDDX::Null));
 		}
 
@@ -420,6 +451,8 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QString &key)
 
 Q_DECL_EXPORT QWDDX &QWDDX::operator[](const char *key)
 {
+    qDebug() << "QWDDX::operator[](const char *key) called. to be deleted soon.";
+
     if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array)&&(m_Type != QWDDX::Query))
 	{
 		throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class wchar_t* as a structure with members.");
@@ -431,6 +464,14 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const char *key)
 	{
         if (m_Struct->contains(l_key) == false)
 		{
+            if (m_HiddenScope)
+            {
+                if (m_HiddenScope->m_Struct->contains(key))
+                {
+                    return (*m_HiddenScope->m_Struct)[key];
+                }
+            }
+
             m_Struct->insert(l_key, QWDDX(QWDDX::Null));
 		}
 
@@ -472,6 +513,14 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const wchar_t *key)
 	{
         if (m_Struct->contains(l_key) == false)
 		{
+            if (m_HiddenScope)
+            {
+                if (m_HiddenScope->m_Struct->contains(l_key))
+                {
+                    return (*m_HiddenScope->m_Struct)[l_key];
+                }
+            }
+
             m_Struct->insert(l_key, QWDDX(QWDDX::Null));
 		}
 
@@ -507,10 +556,10 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QWDDX &key)
         throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members.");
 	}
 
-    int l_key = (int)key.toNumber();
-
 	if (m_Type == QWDDX::Array)
 	{
+        int l_key = (int)key.toNumber();
+
         if (l_key < 1)
 		{
             throw QMKFusionExpressionException("The element at position " + QString::number(l_key) + " of array variable \"xxx\" cannot be found.");
@@ -531,14 +580,22 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QWDDX &key)
 	}
 	else
 	{
-        const QString &keyStr = QString::number(l_key);
+        const QString &l_key = key.toString();
 
-        if (m_Struct->contains(keyStr) == false)
+        if (m_Struct->contains(l_key) == false)
 		{
-            m_Struct->insert(keyStr, QWDDX(QWDDX::Null));
+            if (m_HiddenScope)
+            {
+                if (m_HiddenScope->m_Struct->contains(l_key))
+                {
+                    return (*m_HiddenScope->m_Struct)[l_key];
+                }
+            }
+
+            m_Struct->insert(l_key, QWDDX(QWDDX::Null));
 		}
 
-        return (*m_Struct)[keyStr];
+        return (*m_Struct)[l_key];
 	}
 }
 
@@ -1139,6 +1196,8 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator=(const double p_newValue)
 
 Q_DECL_EXPORT QWDDX &QWDDX::operator=(const char *p_newValue)
 {
+    qDebug() << "QWDDX::operator=(const char *p_newValue) called. to be deleted soon.";
+
     setType(String);
     *m_String = QString::fromLatin1(p_newValue);
 

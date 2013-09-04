@@ -213,6 +213,7 @@ public:
     QDateTime *m_DateTime;
 	QWDDXType m_Type;
     quint32 m_ArrayDimension;
+    QWDDX *m_HiddenScope;
 };
 
 Q_DECL_EXPORT bool operator!=(int, const QWDDX &);

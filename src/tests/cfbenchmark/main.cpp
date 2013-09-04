@@ -66,14 +66,14 @@ void TestCases::optPI2()
             QWDDX LOCAL(QWDDX::Struct);
 
             if(arguments.count() > 0 ) {
-                ARGUMENTS["GUIDBYTEARRAY"] = arguments.at(0);
+                ARGUMENTS[L"GUIDBYTEARRAY"] = arguments.at(0);
             } else {;
-                ARGUMENTS["GUIDBYTEARRAY"] = "";
+                ARGUMENTS[L"GUIDBYTEARRAY"] = "";
             };
 
-            LOCAL["HEXSTRING"] = QWDDX(L"");
-            if (cf_IsArray(ARGUMENTS["GUIDBYTEARRAY"]) && cf_ArrayLen(ARGUMENTS["GUIDBYTEARRAY"]) >= QWDDX(16)) {
-                LOCAL["HEXSTRING"] = LOCAL["HEXSTRING"] & callCustomFunction("guidbytetohex", QList<QWDDX>() << ARGUMENTS["GUIDBYTEARRAY"][QWDDX(4)]) ;
+            LOCAL[L"HEXSTRING"] = QWDDX(L"");
+            if (cf_IsArray(ARGUMENTS[L"GUIDBYTEARRAY"]) && cf_ArrayLen(ARGUMENTS[L"GUIDBYTEARRAY"]) >= QWDDX(16)) {
+                LOCAL[L"HEXSTRING"] = LOCAL[L"HEXSTRING"] & callCustomFunction("guidbytetohex", QList<QWDDX>() << ARGUMENTS[L"GUIDBYTEARRAY"][QWDDX(4)]) ;
             }
 
             return 0;

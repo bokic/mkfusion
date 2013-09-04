@@ -321,6 +321,20 @@ void QCFRunningTemplate::worker()
                     m_VARIABLES.setType(QWDDX::Struct);
                     m_URL.setType(QWDDX::Struct);
 
+                    if (m_Request.m_Method == "GET")
+                    {
+                        m_FORM.setType(QWDDX::Error);
+                        m_VARIABLES.m_HiddenScope = &m_URL;
+                    }
+                    else if (m_Request.m_Method == "POST")
+                    {
+                        m_VARIABLES.m_HiddenScope = &m_FORM;
+                    }
+                    else
+                    {
+                        throw QMKFusionException("Unknown HTTP Method.");
+                    }
+
                     for(const QString &cookie : cookies)
                     {
                         int separator = cookie.indexOf('=');
