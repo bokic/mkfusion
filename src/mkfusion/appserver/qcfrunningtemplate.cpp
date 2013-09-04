@@ -182,6 +182,7 @@ void QCFRunningTemplate::worker()
 		QDataStream l_ds(&l_RecievedBuffer, QIODevice::ReadOnly);
         QStringList cookies;
 		char *tempstr;
+        int tempint;
         QByteArray tempba;
 
 		l_ds >> l_RecieveBufSize;
@@ -258,8 +259,51 @@ void QCFRunningTemplate::worker()
         l_ds >> tempstr;
         if (tempstr)
         {
-            cookies = QString::fromUtf8(tempstr).split(';');
+            m_Request.m_Cookie = QString::fromUtf8(tempstr);
+            cookies = m_Request.m_Cookie.split(';');
             delete[] tempstr;
+        }
+
+        l_ds >> tempint;
+        if (tempint > 0)
+        {
+            QByteArray postData;
+            l_ds >> postData;
+
+            qDebug() << "Post data:" << postData;
+
+            m_FORM.setType(QWDDX::Struct);
+
+            for(const QByteArray &item : postData.split('&'))
+            {
+                if (item.isEmpty())
+                {
+                    continue;
+                }
+
+                QList<QPair<QString, QString>> pairs = QUrlQuery(item).queryItems();
+
+                if (pairs.length() != 1)
+                {
+                    throw QMKFusionException("Invalid POST item.");
+                }
+
+                QPair<QString, QString> pair = pairs.takeFirst();
+
+                QString key = pair.first;
+                QString value = pair.second;
+
+                if (pair.first.isEmpty())
+                {
+                    throw QMKFusionException("Invalid POST item name.");
+                }
+
+                m_FORM[key.toUpper()] = value;
+            }
+        }
+        else if (tempint < 0)
+        {
+            throw QMKFusionException("Invalid POST data size.");
         }
 
         l_ds >> tempstr;
@@ -317,7 +361,6 @@ void QCFRunningTemplate::worker()
                     m_SERVER.setType(QWDDX::Struct);
                     m_COOKIE.setType(QWDDX::Struct);
                     m_CGI.setType(QWDDX::Struct);
-                    m_FORM.setType(QWDDX::Struct);
                     m_VARIABLES.setType(QWDDX::Struct);
                     m_URL.setType(QWDDX::Struct);
 
@@ -460,7 +503,7 @@ void QCFRunningTemplate::worker()
                     m_CGI[QStringLiteral("HTTP_ACCEPT_ENCODING")] = m_Request.m_AcceptEncoding;
                     m_CGI[QStringLiteral("HTTP_ACCEPT_LANGUAGE")] = m_Request.m_AcceptLanguage;
                     m_CGI[QStringLiteral("HTTP_CONNECTION")] = m_Request.m_Connection;
-                    m_CGI[QStringLiteral("HTTP_COOKIE")] = QStringLiteral("");
+                    m_CGI[QStringLiteral("HTTP_COOKIE")] = m_Request.m_Cookie;
                     m_CGI[QStringLiteral("HTTP_HOST")] = m_Request.m_Host;
                     m_CGI[QStringLiteral("HTTP_REFERER")] = m_Request.m_Referer;
                     m_CGI[QStringLiteral("HTTP_USER_AGENT")] = m_Request.m_UserAgent;
@@ -473,10 +516,10 @@ void QCFRunningTemplate::worker()
                     m_CGI[QStringLiteral("REQUEST_METHOD")] = m_Request.m_Method;
                     m_CGI[QStringLiteral("SCRIPT_NAME")] = m_Request.m_URI;
                     m_CGI[QStringLiteral("SERVER_NAME")] = m_Request.m_Host;
-                    m_CGI[QStringLiteral("SERVER_PORT")] = QString::number(80); // TODO: Hardcoded.
-                    m_CGI[QStringLiteral("SERVER_PORT_SECURE")] = QStringLiteral("0");
+                    m_CGI[QStringLiteral("SERVER_PORT")] = 80; // TODO: Hardcoded.
+                    m_CGI[QStringLiteral("SERVER_PORT_SECURE")] = 0; // TODO: Hardcoded.
                     m_CGI[QStringLiteral("SERVER_PROTOCOL")] = m_Request.m_Protocol;
-                    m_CGI[QStringLiteral("SERVER_SOFTWARE")] = QStringLiteral("Todo");
+                    m_CGI[QStringLiteral("SERVER_SOFTWARE")] = QStringLiteral("");
                     m_CGI[QStringLiteral("WEB_SERVER_API")] = QStringLiteral("");
 					/*
 					

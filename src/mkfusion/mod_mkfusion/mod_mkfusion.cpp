@@ -74,7 +74,49 @@ static int mkfusion_handler(request_rec *r)
 		l_IOStream << apr_table_get(r->headers_in, "Referer");
 		l_IOStream << apr_table_get(r->headers_in, "User-Agent");
         l_IOStream << apr_table_get(r->headers_in, "Cookie");
-		//l_IOStream << apr_table_get(r->headers_in, "Host"); // New localhost
+
+        // Transfer POST data.
+        ap_setup_client_block(r, REQUEST_CHUNKED_DECHUNK);
+        if (ap_should_client_block(r))
+        {
+            QByteArray buf, chunk;
+            chunk.resize(4096);
+
+            while(1)
+            {
+                long len = ap_get_client_block(r, chunk.data(), 4096);
+
+                if (len < 0)
+                {
+                    writeError(r, "Error fetching POST data.");
+                    return OK;
+                }
+                else if (len == 0)
+                {
+                    break;
+                }
+
+                buf.append(chunk.left(len));
+            }
+
+            l_IOStream << (int)buf.length();
+            l_IOStream << buf;
+        }
+        else
+        {
+            l_IOStream << (int)0;
+        }
+
+//        ap_setup_client_block(r, REQUEST_CHUNKED_DECHUNK);
+//        writeError(r, QString("ap_should_client_block(r): %1.<br />").arg(ap_should_client_block(r)).toLatin1());
+//        char buf[1024];
+//        memset(buf, 0, sizeof(buf));
+//        long len = ap_get_client_block(r, buf, sizeof(buf));
+//        if( len > 0)
+//        {
+//            writeError(r, QString("POST: %1.<br />").arg(buf).toLatin1());
+//        }
+//        return OK;
 
 		l_IOStream << r->args;
 		l_IOStream << r->method;

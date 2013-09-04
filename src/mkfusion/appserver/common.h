@@ -19,6 +19,7 @@ struct QCFRunningTemplate_Request
 	QString m_RemoteHost;
 	QString m_Referer;
 	QString m_UserAgent;
+    QString m_Cookie;
 	QString m_Args;
 	QString m_Method;
 	QString m_Protocol;

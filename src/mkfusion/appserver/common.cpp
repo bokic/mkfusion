@@ -111,8 +111,17 @@ QString cfdump_var(const QWDDX &p_Variable)
 		case QWDDX::Boolean:
 		case QWDDX::DateTime:
 		case QWDDX::Number:
-		case QWDDX::String:
-			ret = l_temp.toString();
+            ret = l_temp.toString();
+            break;
+        case QWDDX::String:
+            if (!l_temp.m_String->isEmpty())
+            {
+                ret = *l_temp.m_String;
+            }
+            else
+            {
+                ret = "[empty string]";
+            }
 			break;
 		case QWDDX::Struct:
 			ret = "<table class=\"cfdump_struct\"><tr><th class=\"struct\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">struct</th></tr>\n";

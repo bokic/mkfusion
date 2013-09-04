@@ -463,8 +463,8 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString 
         && (l_Variable.compare("COOKIE") != 0) \
         && (!l_Variable.startsWith("URL.")) \
         && (l_Variable.compare("URL") != 0) \
-        && (!l_Variable.startsWith("POST.")) \
-        && (l_Variable.compare("POST") != 0) \
+        && (!l_Variable.startsWith("FORM.")) \
+        && (l_Variable.compare("FORM") != 0) \
         && (!l_Variable.startsWith("VARIABLES.")) \
         && (l_Variable.compare("VARIABLES") != 0) \
 	   )
@@ -508,7 +508,7 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString 
 
 	for(int c = 1; c < l_StrList.size(); c++)
 	{
-        ret += "[\"" + l_StrList[c] + "\"]";
+        ret += "[L\"" + l_StrList[c] + "\"]";
 	}
 
 	return ret;
@@ -558,7 +558,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
         }
         else
         {
-            ret = "QWDDX(L\"" + l_ElementName + "\")"; // TODO: Currently this line will always convert Utf8 to Unicode.
+            ret = "QWDDX(L\"" + l_ElementName + "\")";
         }
         break;
     case Variable:
