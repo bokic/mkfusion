@@ -168,6 +168,13 @@ void QCFTemplate::f_Param(const QString &name, const QWDDX &p_default)
     {
         if(!m_TemplateInstance->m_VARIABLES.m_Struct->contains(parts.at(0)))
         {
+            if (m_TemplateInstance->m_VARIABLES.m_HiddenScope)
+            {
+                if (m_TemplateInstance->m_VARIABLES.m_HiddenScope->m_Struct->contains(parts.at(0)))
+                {
+                    return;
+                }
+            }
             m_TemplateInstance->m_VARIABLES.m_Struct->insert(parts.at(0), p_default);
         }
 
@@ -241,6 +248,18 @@ void QCFTemplate::f_Param(const QString &name, const QWDDX &p_default)
 
         if (!var->m_Struct->contains(item))
         {
+            if (var->m_HiddenScope)
+            {
+                var = var->m_HiddenScope;
+
+                if (var->m_Struct->contains(item))
+                {
+                    var = &(*var)[item];
+
+                    continue;
+                }
+            }
+
             var->m_Struct->insert(item, QWDDX(QWDDX::Null));
 
             inserted = true;

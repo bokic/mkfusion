@@ -1295,6 +1295,18 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
                 return "m_TemplateInstance->m_VARIABLES[L\"" + l_queryName.toUpper() + "\"] = endQuery(" + l_queryDataSource + ");";
             }
         }
+        else if (((l_queryType.isEmpty())||(l_queryType.compare("query", Qt::CaseInsensitive) == 0))&&(l_queryName.isEmpty())&&(!l_queryDataSource.isEmpty()))
+        {
+            if (p_CFTag.m_TagType == CFTagType)
+            {
+                return "startQuery();";
+            }
+
+            if (p_CFTag.m_TagType == EndCFTagType)
+            {
+                return "endQuery(" + l_queryDataSource + ");";
+            }
+        }
     }
     else if(p_CFTag.m_Name.compare("cfqueryparam", Qt::CaseInsensitive) == 0) /* implemented attributes: value. */
     {

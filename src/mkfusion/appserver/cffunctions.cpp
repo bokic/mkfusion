@@ -1892,9 +1892,20 @@ Q_DECL_EXPORT bool cf_IsDefined(QCFRunningTemplate *templ, const QString &variab
 
         if (!var.m_Struct->contains(item))
         {
-            return false;
-        }
+            if (var.m_HiddenScope)
+            {
+                var = *var.m_HiddenScope;
 
+                if (!var.m_Struct->contains(item))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         var = var.m_Struct->value(item);
     }
@@ -2344,7 +2355,15 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, co
         new_field.m_Array->resize(rows);
     }
 
-    query.m_Struct->insertMulti(column_name_upper, new_field);
+    //query.m_Struct->insertMulti(column_name_upper, new_field);
+    if (query.m_Struct->contains(column_name_upper))
+    {
+        query.m_Struct->remove(column_name_upper);
+
+        qDebug() << "Warning: Database field" << column_name_upper << "already exists.";
+    }
+
+    query.m_Struct->insert(column_name_upper, new_field);
 
     if (query.m_Struct->count() > 1)
     {
