@@ -2329,10 +2329,6 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, co
 
     const QString &column_name_upper = column_name.toUpper();
 
-    if (query.m_Struct->keys().contains(column_name_upper))
-    {
-        throw QMKFusionException("Parameter mismatch", "column " + column_name + " already exists.");
-    }
 
     int rows = 0;
 
@@ -2348,7 +2344,7 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, co
         new_field.m_Array->resize(rows);
     }
 
-    query.m_Struct->insert(column_name_upper, new_field);
+    query.m_Struct->insertMulti(column_name_upper, new_field);
 
     if (query.m_Struct->count() > 1)
     {
