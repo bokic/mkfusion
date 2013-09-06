@@ -46,18 +46,27 @@ public:
 {
 public:
 	QMKFusionApplictionException(QString p_Detail = "", QString p_errorCode = "", QString p_extendedInfo = "", QString p_message = "", QString p_object = ""):QMKFusionException(p_Detail, p_Detail, p_extendedInfo, p_message, p_object) { m_Type = new QString("application");}
-};
+};*/
 
 class QMKFusionDatabaseException : public QMKFusionException
 {
 public:
-	QMKFusionDatabaseException(QString p_Detail = "", QString p_errorCode = "", QString p_extendedInfo = "", QString p_message = "", QString p_object = ""):QMKFusionException(p_Detail, p_Detail, p_extendedInfo, p_message, p_object) { m_Type = new QString("database");}
-};*/
+    QMKFusionDatabaseException(QString p_Detail = "", QString p_errorCode = "", QString p_extendedInfo = "", QString p_message = "", QString p_object = "")
+        :QMKFusionException(p_message, p_Detail)
+    {
+        Q_UNUSED(p_errorCode);
+        Q_UNUSED(p_extendedInfo);
+        Q_UNUSED(p_object);
+
+        m_Type = new QString("database");
+    }
+};
 
 class QMKFusionIllegalNumRangeException : public QMKFusionException
 {
 public:
-	QMKFusionIllegalNumRangeException(double p_Value, double p_MinValue, double p_MaxValue):QMKFusionException("", "")
+    QMKFusionIllegalNumRangeException(double p_Value, double p_MinValue, double p_MaxValue)
+        :QMKFusionException("", "")
 	{
         Q_UNUSED(p_Value);
         Q_UNUSED(p_MinValue);

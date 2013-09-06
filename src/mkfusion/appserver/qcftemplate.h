@@ -34,6 +34,7 @@ public:
     void f_Application(QString name, bool sessionManagement, bool setClientCookies);
     void startQuery();
     QWDDX endQuery(const QString &p_DataSource);
+    void endQueryNoReturn(const QString &p_DataSource);
     void addCustomFunction(const QString &functionName, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)> function);
 
 	QCFRunningTemplate *m_TemplateInstance;

@@ -26,6 +26,8 @@ private:
 	QHash<QString, QCFFunction> m_CFFunctionsDef;
 	bool m_EnableCFOutputOnly;
 	quint32 m_Tabs;
+    QList<const QCFParserTag *> m_SwitchTags;
+    QList<int> m_SwitchCaseCount;
 };
 
 #endif // QCFGENERATOR_H

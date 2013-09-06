@@ -407,7 +407,7 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
 
     if (conn.open() == false)
     {
-        throw QMKFusionException("Database connection failed.<br />\nDatabase error string: " + conn.lastError().text());
+        throw QMKFusionDatabaseException("Database connection failed.<br />\nDatabase error string: " + conn.lastError().text());
     }
 
     //Call prepare query
@@ -415,7 +415,7 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
 
     if (query.prepare(m_TemplateInstance->m_QueryOutput) == false)
     {
-        throw QMKFusionException("Invalid query syntax.", "Database error string: " + query.lastError().text() + "<br />\n Query: " + m_TemplateInstance->m_QueryOutput);
+        throw QMKFusionDatabaseException("Invalid query syntax.", "Database error string: " + query.lastError().text() + "<br />\n Query: " + m_TemplateInstance->m_QueryOutput);
     }
 
     //Send query parameters(if any)
@@ -427,7 +427,7 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
     //call query exec.
     if (query.exec() == false)
     {
-        throw QMKFusionException("query execute failed.<br />\nDatabase error string: " + query.lastError().text());
+        throw QMKFusionDatabaseException("query execute failed.<br />\nDatabase error string: " + query.lastError().text());
     }
 
     // copy
@@ -456,6 +456,37 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
     m_TemplateInstance->m_OutputType = QCFRunningTemplate::OutputTypeContent;
 
     return ret;
+}
+
+void QCFTemplate::endQueryNoReturn(const QString &p_DataSource)
+{
+    //Get dbconnection object
+    QSqlDatabase conn = ((QCFServer*)m_TemplateInstance->m_CFServer)->getDBConnection(p_DataSource);
+
+    if (conn.open() == false)
+    {
+        throw QMKFusionDatabaseException("Database connection failed.<br />\nDatabase error string: " + conn.lastError().text());
+    }
+
+    //Call prepare query
+    QSqlQuery query(conn);
+
+    if (query.prepare(m_TemplateInstance->m_QueryOutput) == false)
+    {
+        throw QMKFusionDatabaseException("Invalid query syntax.", "Database error string: " + query.lastError().text() + "<br />\n Query: " + m_TemplateInstance->m_QueryOutput);
+    }
+
+    //Send query parameters(if any)
+    for(int c = 0; c < m_TemplateInstance->m_QueryParams.count(); c++)
+    {
+        query.bindValue(c, m_TemplateInstance->m_QueryParams.at(c).toString());
+    }
+
+    //call query exec.
+    if (query.exec() == false)
+    {
+        throw QMKFusionDatabaseException("query execute failed.<br />\nDatabase error string: " + query.lastError().text());
+    }
 }
 
 void QCFTemplate::addCustomFunction(const QString &functionName, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &)> function)
