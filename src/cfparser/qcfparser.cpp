@@ -357,7 +357,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 					return ParseCFCode(p_Text, l_Offset, Number, &ret);
 				}
 
-				if ((l_Offset == c)&&((ch == '*')||(ch == '/')||(ch == '&')||(ch == '=')))
+                if ((l_Offset == c)&&((ch == '*')||(ch == '/')||(ch == '\\')||(ch == '^')||(ch == '&')||(ch == '=')))
 				{
 					return ParseCFCode(p_Text, l_Offset, Operator, &ret);
 				}
@@ -381,13 +381,19 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                             (str.compare("is", Qt::CaseInsensitive) == 0)||
                             (str.compare("neq", Qt::CaseInsensitive) == 0)||
                             (str.compare("gt", Qt::CaseInsensitive) == 0)||
+                            (str.compare("ge", Qt::CaseInsensitive) == 0)||
                             (str.compare("gte", Qt::CaseInsensitive) == 0)||
                             (str.compare("lt", Qt::CaseInsensitive) == 0)||
+                            (str.compare("le", Qt::CaseInsensitive) == 0)||
                             (str.compare("lte", Qt::CaseInsensitive) == 0)||
                             (str.compare("not", Qt::CaseInsensitive) == 0)||
                             (str.compare("and", Qt::CaseInsensitive) == 0)||
                             (str.compare("or", Qt::CaseInsensitive) == 0)||
+                            (str.compare("xor", Qt::CaseInsensitive) == 0)||
+                            (str.compare("eqv", Qt::CaseInsensitive) == 0)||
+                            (str.compare("imp", Qt::CaseInsensitive) == 0)||
                             (str.compare("mod", Qt::CaseInsensitive) == 0)||
+                            (str.compare("equal", Qt::CaseInsensitive) == 0)||
                             (str.compare("contains", Qt::CaseInsensitive) == 0)
                         )
                     {
@@ -508,13 +514,19 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                             (ret.m_Text.compare("is", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("neq", Qt::CaseInsensitive) == 0)||
 							(ret.m_Text.compare("gt", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("ge", Qt::CaseInsensitive) == 0)||
 							(ret.m_Text.compare("gte", Qt::CaseInsensitive) == 0)||
 							(ret.m_Text.compare("lt", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("le", Qt::CaseInsensitive) == 0)||
 							(ret.m_Text.compare("lte", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("not", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("and", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("or", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("xor", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("eqv", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("imp", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("mod", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("equal", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("contains", Qt::CaseInsensitive) == 0)
                         )
 					{
@@ -554,13 +566,19 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                     (ret.m_Text.compare("is", Qt::CaseInsensitive) == 0)||
                     (ret.m_Text.compare("neq", Qt::CaseInsensitive) == 0)||
                     (ret.m_Text.compare("gt", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("ge", Qt::CaseInsensitive) == 0)||
                     (ret.m_Text.compare("gte", Qt::CaseInsensitive) == 0)||
                     (ret.m_Text.compare("lt", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("le", Qt::CaseInsensitive) == 0)||
                     (ret.m_Text.compare("lte", Qt::CaseInsensitive) == 0)||
                     (ret.m_Text.compare("not", Qt::CaseInsensitive) == 0)||
                     (ret.m_Text.compare("and", Qt::CaseInsensitive) == 0)||
                     (ret.m_Text.compare("or", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("xor", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("eqv", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("imp", Qt::CaseInsensitive) == 0)||
                     (ret.m_Text.compare("mod", Qt::CaseInsensitive) == 0)||
+                    (ret.m_Text.compare("equal", Qt::CaseInsensitive) == 0)||
                     (ret.m_Text.compare("contains", Qt::CaseInsensitive) == 0)
                 )
             {
@@ -738,7 +756,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 		case Operator:
 			ch = p_Text.at(l_Offset).unicode();
 
-			if ((ch == '=')||(ch == '&')||(ch == '*')||(ch == '/')||(ch == '+')||(ch == '-')||(ch == '.')) // TODO: Add more operator strings.
+            if ((ch == '=')||(ch == '&')||(ch == '*')||(ch == '/')||(ch == '\\')||(ch == '^')||(ch == '+')||(ch == '-')||(ch == '.'))
 			{
 				ret.m_Position = l_Offset;
 				ret.m_Size = 1;
@@ -769,12 +787,43 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 				ret.m_Text = p_Text.mid(l_Offset, 3).toUpper();
 				break;
 			}
+            if ((p_Text.mid(l_Offset, 3).compare("mod", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 4)))
+            {
+                ret.m_Position = l_Offset;
+                ret.m_Size = 3;
+                ret.m_Text = p_Text.mid(l_Offset, 3).toUpper();
+                break;
+            }
 
             if ((p_Text.mid(l_Offset, 2).compare("or", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 3)))
 			{
 				ret.m_Position = l_Offset;
 				ret.m_Size = 2;
 				ret.m_Text = p_Text.mid(l_Offset, 2).toUpper();
+				break;
+			}
+
+            if ((p_Text.mid(l_Offset, 3).compare("xor", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 4)))
+            {
+                ret.m_Position = l_Offset;
+                ret.m_Size = 3;
+                ret.m_Text = p_Text.mid(l_Offset, 3).toUpper();
+                break;
+            }
+
+            if ((p_Text.mid(l_Offset, 3).compare("eqv", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 4)))
+            {
+                ret.m_Position = l_Offset;
+                ret.m_Size = 3;
+                ret.m_Text = p_Text.mid(l_Offset, 3).toUpper();
+                break;
+            }
+
+            if ((p_Text.mid(l_Offset, 3).compare("imp", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 4)))
+            {
+                ret.m_Position = l_Offset;
+                ret.m_Size = 3;
+                ret.m_Text = p_Text.mid(l_Offset, 3).toUpper();
 				break;
 			}
 
@@ -786,11 +835,19 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 				break;
 			}
 
-            if ((p_Text.mid(l_Offset, 6).compare("is not", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 7)))
+            if ((p_Text.mid(l_Offset, 5).compare("equal", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 6)))
+            {
+                ret.m_Position = l_Offset;
+                ret.m_Size = 5;
+                ret.m_Text = p_Text.mid(l_Offset, 5).toUpper();
+                break;
+            }
+
+            if ((p_Text.mid(l_Offset, 3).compare("not", Qt::CaseInsensitive) == 0)&&(!isValidVarChar(p_Text, l_Offset  + 4)))
 			{
 				ret.m_Position = l_Offset;
-				ret.m_Size = 6;
-				ret.m_Text = p_Text.mid(l_Offset, 6).toUpper();
+                ret.m_Size = 3;
+                ret.m_Text = p_Text.mid(l_Offset, 3).toUpper();
 				break;
 			}
 
@@ -993,10 +1050,64 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 					} else {
 						child = ParseCFCode(p_Text, c, Variable, &ret);
 
-                        if ((child.m_Type == Variable)&&(child.m_Text.compare("contain", Qt::CaseInsensitive) == 0)&&(ret.m_ChildElements.count() >= 2))
+                        if ((child.m_Type == Operator)&&(child.m_Text.compare("not", Qt::CaseInsensitive) == 0)&&(ret.m_ChildElements.count() >= 1)) // is not
                         {
-                            QCFParserElement l_DoesElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 2);
-                            QCFParserElement l_NotElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 1);
+                            const QCFParserElement &l_IsElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 1);
+
+                            if ((l_IsElement.m_Type == Operator)&&(l_IsElement.m_Text.compare("is", Qt::CaseInsensitive) == 0))
+                            {
+                                ret.m_ChildElements.takeLast();
+
+                                child.m_Type = Operator;
+                                child.m_Size = child.m_Position + child.m_Size - l_IsElement.m_Position;
+                                child.m_Position = l_IsElement.m_Position;
+                                child.m_Text = "is not";
+                            }
+                        }
+                        else if ((child.m_Type == Operator)&&(child.m_Text.compare("equal", Qt::CaseInsensitive) == 0)&&(ret.m_ChildElements.count() >= 1)) // not equal
+                        {
+                            const QCFParserElement &l_IsElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 1);
+
+                            if ((l_IsElement.m_Type == Operator)&&(l_IsElement.m_Text.compare("not", Qt::CaseInsensitive) == 0))
+                            {
+                                ret.m_ChildElements.takeLast();
+
+                                child.m_Type = Operator;
+                                child.m_Size = child.m_Position + child.m_Size - l_IsElement.m_Position;
+                                child.m_Position = l_IsElement.m_Position;
+                                child.m_Text = "not equal";
+                            }
+                        }
+                        else if ((child.m_Type == Variable)&&(child.m_Text.compare("than", Qt::CaseInsensitive) == 0)&&(ret.m_ChildElements.count() >= 1)) // [greater than] and [less than]
+                        {
+                            const QCFParserElement &l_IsElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 1);
+
+                            if (l_IsElement.m_Type == Variable)
+                            {
+                                if (l_IsElement.m_Text.compare("greater", Qt::CaseInsensitive) == 0)
+                                {
+                                    ret.m_ChildElements.takeLast();
+
+                                    child.m_Type = Operator;
+                                    child.m_Size = child.m_Position + child.m_Size - l_IsElement.m_Position;
+                                    child.m_Position = l_IsElement.m_Position;
+                                    child.m_Text = "greater than";
+                                }
+                                else if (l_IsElement.m_Text.compare("less", Qt::CaseInsensitive) == 0)
+                                {
+                                    ret.m_ChildElements.takeLast();
+
+                                    child.m_Type = Operator;
+                                    child.m_Size = child.m_Position + child.m_Size - l_IsElement.m_Position;
+                                    child.m_Position = l_IsElement.m_Position;
+                                    child.m_Text = "less than";
+                                }
+                            }
+                        }
+                        else if ((child.m_Type == Variable)&&(child.m_Text.compare("contain", Qt::CaseInsensitive) == 0)&&(ret.m_ChildElements.count() >= 2)) // does not contain
+                        {
+                            const QCFParserElement &l_DoesElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 2);
+                            const QCFParserElement &l_NotElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 1);
 
                             if ((l_DoesElement.m_Type == Variable)&&(l_DoesElement.m_Text.compare("does", Qt::CaseInsensitive) == 0)&&(l_NotElement.m_Type == Operator)&&(l_NotElement.m_Text.compare("not", Qt::CaseInsensitive) == 0))
                             {
@@ -1007,6 +1118,38 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                                 child.m_Size = child.m_Position + child.m_Size - l_DoesElement.m_Position;
                                 child.m_Position = l_DoesElement.m_Position;
                                 child.m_Text = "does not contain";
+                            }
+                        }
+                        else if ((child.m_Type == Variable)&&(child.m_Text.compare("to", Qt::CaseInsensitive) == 0)&&(ret.m_ChildElements.count() >= 3)) // [greater than or equal to], and [less than or equal to]
+                        {
+                            const QCFParserElement &l_CompareElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 3);
+                            const QCFParserElement &l_OrElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 2);
+                            const QCFParserElement &l_EqualElement = ret.m_ChildElements.at(ret.m_ChildElements.count() - 1);
+
+                            if ((l_OrElement.m_Type == Operator)&&(l_OrElement.m_Text.compare("or", Qt::CaseInsensitive) == 0)&&(l_EqualElement.m_Type == Operator)&&(l_EqualElement.m_Text.compare("equal", Qt::CaseInsensitive) == 0)&&(l_CompareElement.m_Type == Operator))
+                            {
+                                if (l_CompareElement.m_Text.compare("greater than", Qt::CaseInsensitive) == 0)
+                                {
+                                    ret.m_ChildElements.takeLast();
+                                    ret.m_ChildElements.takeLast();
+                                    ret.m_ChildElements.takeLast();
+
+                                    child.m_Type = Operator;
+                                    child.m_Size = child.m_Position + child.m_Size - l_CompareElement.m_Position;
+                                    child.m_Position = l_CompareElement.m_Position;
+                                    child.m_Text = "greater than or equal to";
+                                }
+                                else if (l_CompareElement.m_Text.compare("less than", Qt::CaseInsensitive) == 0)
+                                {
+                                    ret.m_ChildElements.takeLast();
+                                    ret.m_ChildElements.takeLast();
+                                    ret.m_ChildElements.takeLast();
+
+                                    child.m_Type = Operator;
+                                    child.m_Size = child.m_Position + child.m_Size - l_CompareElement.m_Position;
+                                    child.m_Position = l_CompareElement.m_Position;
+                                    child.m_Text = "less than or equal to";
+                                }
                             }
                         }
 					}
