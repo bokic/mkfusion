@@ -38,7 +38,10 @@ void QDetail::setFileForParsing(const QString& p_File)
 
 	ui->textEdit->setPlainText(fileContent);
 
-    m_Parser.Parse(fileContent);
+    if (m_Parser.Parse(fileContent) == NoError)
+    {
+        m_Parser.prioritizeOperators();
+    }
 
     ui->label->setText(m_Parser.getError());
 
@@ -54,10 +57,10 @@ void QDetail::setFileForParsing(const QString& p_File)
             name = "UnknownCFTag";
             break;
         case CFTagType:
-            name = "BeginCFTag";
+            name = "BeginCFTag(" + tag.m_Name + ")";
             break;
         case EndCFTagType:
-            name = "EndCFTag";
+            name = "EndCFTag(" + tag.m_Name + ")";
             break;
         case CommentTagType:
             name = "CFComment";
@@ -100,22 +103,22 @@ void QDetail::addSubTrees(const QCFParserElement& p_ParserElement, QTreeWidgetIt
         switch(element.m_Type)
         {
         case Boolean:
-            name = "Boolean";
+            name = "Boolean(" + element.m_Text + ")";
             break;
         case Number:
-            name = "Number";
+            name = "Number(" + element.m_Text + ")";
             break;
         case String:
-            name = "String";
+            name = "String(" + element.m_Text + ")";
             break;
         case Variable:
-            name = "Variable";
+            name = "Variable(" + element.m_Text + ")";
             break;
         case Function:
-            name = "Function";
+            name = "Function(" + element.m_Text + ")";
             break;
         case Operator:
-            name = "Operator";
+            name = "Operator(" + element.m_Text + ")";
             break;
         case SharpExpression:
             name = "SharpExpression";
@@ -151,19 +154,19 @@ void QDetail::addSubTrees(const QCFParserElement& p_ParserElement, QTreeWidgetIt
             name = "CFTagArgument";
             break;
         case ObjectFunction:
-            name = "ObjectFunction";
+            name = "ObjectFunction(" + element.m_Text + ")";
             break;
         case VariableIndex:
             name = "VariableIndex";
             break;
         case Keyword:
-            name = "Keyword";
+            name = "Keyword(" + element.m_Text + ")";
             break;
         case Error:
-            name = "Error";
+            name = "Error(" + element.m_Text + ")";
             break;
         default:
-            name = "[Unknown]";
+            name = "[Unknown](" + element.m_Text + ")";
             break;
         }
 

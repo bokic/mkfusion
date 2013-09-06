@@ -2069,3 +2069,114 @@ QList<QCFParserTag> QCFParser::getTagFunctions(QList<QCFParserTag> const p_Tags)
 
     return ret;
 }
+
+QCFParserErrorType QCFParser::prioritizeOperatorsRecursive(QCFParserElement &element, const QList<QStringList> &priorities)
+{
+    if (element.m_ChildElements.count() > 0)
+    {
+        if (element.m_Type == Expression)
+        {
+            if (element.m_ChildElements.count() == 1)
+            {
+                return prioritizeOperatorsRecursive(element.m_ChildElements.first(), priorities);
+            }
+            else
+            {
+                for(const QStringList &prority : priorities)
+                {
+                    for (int c = 0; c < element.m_ChildElements.count(); c++)
+                    {
+                        const QCFParserElement &item = element.m_ChildElements.at(c);
+
+                        if (((item).m_Type == Operator)&&(prority.contains(item.m_Text)))
+                        {
+                            if (item.m_Text.compare("not", Qt::CaseInsensitive) == 0)
+                            {
+                                if (c >= element.m_ChildElements.count() - 1)
+                                {
+                                    m_Error = tr("NOT operator can\'t be last.");
+                                    m_ErrorPosition = item.m_Position;
+
+                                    return ParsingError;
+                                }
+
+                                QCFParserElement newItem;
+                                newItem.m_Type = SubExpression;
+                                newItem.m_ChildElements.append(element.m_ChildElements.takeAt(c));
+                                newItem.m_ChildElements.append(element.m_ChildElements.takeAt(c));
+                                newItem.m_Position = newItem.m_ChildElements.first().m_Position;
+                                newItem.m_Size = newItem.m_ChildElements.last().m_Position + newItem.m_ChildElements.last().m_Size - newItem.m_ChildElements.first().m_Position;
+
+                                element.m_ChildElements.insert(c, newItem);
+                            }
+                            else
+                            {
+                                if (c == 0)
+                                {
+                                    m_Error = tr("%1 operator can\'t be first.").arg(item.m_Text.toUpper());
+                                    m_ErrorPosition = item.m_Position;
+
+                                    return ParsingError;
+                                }
+
+                                if (c >= element.m_ChildElements.count() - 1)
+                                {
+                                    m_Error = tr("%1 operator can\'t be last.").arg(item.m_Text.toUpper());
+                                    m_ErrorPosition = item.m_Position;
+
+                                    return ParsingError;
+                                }
+
+                                QCFParserElement newItem;
+                                newItem.m_Type = SubExpression;
+                                newItem.m_ChildElements.append(element.m_ChildElements.takeAt(c - 1));
+                                newItem.m_ChildElements.append(element.m_ChildElements.takeAt(c - 1));
+                                newItem.m_ChildElements.append(element.m_ChildElements.takeAt(c - 1));
+                                newItem.m_Position = newItem.m_ChildElements.first().m_Position;
+                                newItem.m_Size = newItem.m_ChildElements.last().m_Position + newItem.m_ChildElements.last().m_Size - newItem.m_ChildElements.first().m_Position;
+
+                                element.m_ChildElements.insert(c, newItem);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (QCFParserElement child : element.m_ChildElements)
+            {
+                prioritizeOperatorsRecursive(child, priorities);
+            }
+        }
+    }
+
+    return NoError;
+}
+
+QCFParserErrorType QCFParser::prioritizeOperators()
+{
+    QList<QStringList> l_ExceptionPriorities;
+
+    l_ExceptionPriorities.append(QStringList() << "^");
+    l_ExceptionPriorities.append(QStringList() << "*"); // for incrased precision move multiply before divide
+    l_ExceptionPriorities.append(QStringList() << "/" << "\\" << "mod");
+    l_ExceptionPriorities.append(QStringList() << "+" << "-");
+    l_ExceptionPriorities.append(QStringList() << "not");
+    l_ExceptionPriorities.append(QStringList() << "&");
+
+    for(QCFParserTag &tag : m_Tags)
+    {
+        if (tag.m_TagType == CFTagType)
+        {
+            QCFParserErrorType err =  prioritizeOperatorsRecursive(tag.m_Arguments, l_ExceptionPriorities);
+
+            if (err != NoError)
+            {
+                return err;
+            }
+        }
+    }
+
+    return NoError;
+}

@@ -9,8 +9,9 @@ class QCFParser;
 #include "qcffunction.h"
 #include "qcftag.h"
 
-#include <QObject>
+#include <QStringList>
 #include <QString>
+#include <QObject>
 #include <QList>
 #include <QHash>
 
@@ -75,6 +76,8 @@ private:
     bool isValidVarChar(const QString &p_Text, int index);
     QCFParserElement ParseCFCode(const QString &p_Text, const qint32 p_Offset, const QCFParserElementType p_ElementType, QCFParserElement *parent);
     quint32 FindCFCommentSize(const QString &p_Text, quint32 p_Position);
+    QCFParserErrorType prioritizeOperatorsRecursive(QCFParserElement &element, const QList<QStringList> &priorities);
+
 public:
 	QCFParser();
 	explicit QCFParser(QCFParserMode mode);
@@ -84,6 +87,7 @@ public:
     QCFParserErrorType Parse(const QString &p_Text, bool *p_Terminate = nullptr);
 	QCFParserErrorType BuildTagTree();
 	QCFParserErrorType validate();
+    QCFParserErrorType prioritizeOperators();
 	QList<QCFParserTag> getTags();
     QList<QCFParserElement> getScriptFunctions(QList<QCFParserTag> const p_Tags);
     QList<QCFParserTag> getTagFunctions(QList<QCFParserTag> const p_Tags);
