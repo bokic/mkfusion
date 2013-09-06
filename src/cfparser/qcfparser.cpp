@@ -2088,7 +2088,7 @@ QCFParserErrorType QCFParser::prioritizeOperatorsRecursive(QCFParserElement &ele
                     {
                         const QCFParserElement &item = element.m_ChildElements.at(c);
 
-                        if (((item).m_Type == Operator)&&(prority.contains(item.m_Text)))
+                        if (((item).m_Type == Operator)&&(prority.contains(item.m_Text.toLower())))
                         {
                             if (item.m_Text.compare("not", Qt::CaseInsensitive) == 0)
                             {
@@ -2135,7 +2135,8 @@ QCFParserErrorType QCFParser::prioritizeOperatorsRecursive(QCFParserElement &ele
                                 newItem.m_Position = newItem.m_ChildElements.first().m_Position;
                                 newItem.m_Size = newItem.m_ChildElements.last().m_Position + newItem.m_ChildElements.last().m_Size - newItem.m_ChildElements.first().m_Position;
 
-                                element.m_ChildElements.insert(c, newItem);
+                                element.m_ChildElements.insert(c - 1, newItem);
+                                c--;
                             }
                         }
                     }
@@ -2162,6 +2163,10 @@ QCFParserErrorType QCFParser::prioritizeOperators()
     l_ExceptionPriorities.append(QStringList() << "*"); // for incrased precision move multiply before divide
     l_ExceptionPriorities.append(QStringList() << "/" << "\\" << "mod");
     l_ExceptionPriorities.append(QStringList() << "+" << "-");
+    l_ExceptionPriorities.append(QStringList() << "is" << "eq" << "equal" << "is not" << "neq" << "not equal"
+                                               << "greater than" << "gt" << "less than" << "lt" << "greater than or equal to"
+                                               << "gte" << "ge" << "less than or equal to" << "lte" << "le" << "contains"
+                                               << "does not contain");
     l_ExceptionPriorities.append(QStringList() << "not");
     l_ExceptionPriorities.append(QStringList() << "&");
 
