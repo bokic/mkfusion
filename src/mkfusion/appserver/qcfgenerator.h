@@ -27,6 +27,7 @@ private:
 	bool m_EnableCFOutputOnly;
 	quint32 m_Tabs;
     QList<const QCFParserTag *> m_SwitchTags;
+    QList<const QCFParserTag *> m_NestedTags;
     QList<int> m_SwitchCaseCount;
 };
 

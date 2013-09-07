@@ -266,6 +266,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 	QString line = "\t\t";
 
 	qint32 l_CFCodeInsideTags = 0;
+    bool output_text = true;
 
 	for(int c = 0; c < l_Tags.size(); c++)
     {
@@ -283,49 +284,62 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
             continue;
         }
 
-		if (c == 0)
-		{
-			if (l_Tags[0].m_Start > 0)
-			{
-				l_tmpStr = l_Text.left(l_Tags[0].m_Start);
+        if (output_text)
+        {
+            if (c == 0)
+            {
+                if (l_Tags[0].m_Start > 0)
+                {
+                    l_tmpStr = l_Text.left(l_Tags[0].m_Start);
 
-				if (l_CFCodeInsideTags > 0)
-				{
-					l_tmpStr.replace("##", "#");
-				}
+                    if (l_CFCodeInsideTags > 0)
+                    {
+                        l_tmpStr.replace("##", "#");
+                    }
 
-				if (!m_EnableCFOutputOnly)
-				{
-                    l_cppFile.write(QString(line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
-				}
-			}
-		}
-		else
-		{
-			if (l_Tags[c].m_Start - (l_Tags[c - 1].m_Start + l_Tags[c - 1].m_Length) > 0)
-			{
-				l_tmpStr = l_Text.mid(l_Tags[c - 1].m_Start + l_Tags[c - 1].m_Length, l_Tags[c].m_Start - l_Tags[c - 1].m_Start - l_Tags[c - 1].m_Length);
+                    if (!m_EnableCFOutputOnly)
+                    {
+                        l_cppFile.write(QString(line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
+                    }
+                }
+            }
+            else
+            {
+                if (l_Tags[c].m_Start - (l_Tags[c - 1].m_Start + l_Tags[c - 1].m_Length) > 0)
+                {
+                    l_tmpStr = l_Text.mid(l_Tags[c - 1].m_Start + l_Tags[c - 1].m_Length, l_Tags[c].m_Start - l_Tags[c - 1].m_Start - l_Tags[c - 1].m_Length);
 
-				if (l_CFCodeInsideTags > 0)
-				{
-					l_tmpStr.replace("##", "#");
-				}
+                    if (l_CFCodeInsideTags > 0)
+                    {
+                        l_tmpStr.replace("##", "#");
+                    }
 
-				if (!m_EnableCFOutputOnly)
-				{
-                    l_cppFile.write(QString(line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
-				}
-			}
-		}
+                    if (!m_EnableCFOutputOnly)
+                    {
+                        l_cppFile.write(QString(line + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
+                    }
+                }
+            }
+        }
 
 		QString l_CFromCFTag = GenerateCCodeFromCFTag(l_Tags[c]);
 		if (!l_CFromCFTag.isEmpty())
 		{
             l_cppFile.write(QString("\n// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
             l_cppFile.write(QString(line + l_CFromCFTag + "\n").toUtf8());
-		}
+        }
 
-		if ((l_cf8tags.contains(l_Tags[c].m_Name))&&(l_cf8tags[l_Tags[c].m_Name].m_ExpressionInside == QCFTag::WithExpressionInside))
+        output_text = true;
+
+        if (m_NestedTags.count() > 0)
+        {
+            if (m_NestedTags.last()->m_Name.compare("cfswitch", Qt::CaseInsensitive) == 0)
+            {
+                output_text = false;
+            }
+        }
+
+        if ((output_text)&&(l_cf8tags.contains(l_Tags[c].m_Name))&&(l_cf8tags[l_Tags[c].m_Name].m_ExpressionInside == QCFTag::WithExpressionInside))
 		{
 			if ((l_Tags[c].m_TagType == CFTagType)&&(l_Tags[c].m_InlineClosedTag == false))
 			{
@@ -947,9 +961,21 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 {
 	if (p_CFTag.m_TagType == ExpressionTagType)
 	{
-		//return "f_WriteOutput(" + GenerateCFExpressionToCExpression(OprimizeQCFParserElement(p_CFTag.m_Arguments)) + ");";
+        //return "f_WriteOutput(" + GenerateCFExpressionToCExpression(OprimizeQCFParserElement(p_CFTag.m_Arguments)) + ");";
 		return "f_WriteOutput(" + GenerateCFExpressionToCExpression(p_CFTag.m_Arguments) + ");";
 	}
+
+    if (p_CFTag.m_OtherTag)
+    {
+        if (p_CFTag.m_TagType == CFTagType)
+        {
+            m_NestedTags.append(&p_CFTag);
+        }
+        else
+        {
+            m_NestedTags.takeLast();
+        }
+    }
 
     if(p_CFTag.m_Name.compare("cfabort", Qt::CaseInsensitive) == 0)
 	{
@@ -985,7 +1011,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
         if (p_CFTag.m_TagType == CFTagType)
         {
-            if(!m_SwitchCaseCount.last() > 0)
+            if(m_SwitchCaseCount.last() > 0)
             {
                 ret = "else " ;
             }
@@ -999,7 +1025,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             return ret;
         }
-        else if (p_CFTag.m_TagType == CFTagType)
+        else if (p_CFTag.m_TagType == EndCFTagType)
         {
             return "}\n";
         }
