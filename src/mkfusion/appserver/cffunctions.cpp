@@ -1825,12 +1825,7 @@ Q_DECL_EXPORT bool cf_IsDefined(QCFRunningTemplate *templ, const QString &variab
 
     parts = variable_name.toUpper().split(".");
 
-    if (parts.count() == 1)
-    {
-        return templ->m_VARIABLES.m_Struct->contains(variable_name.toUpper());
-    }
-
-    if ((parts.first() != "CGI")&&(parts.first() != "SERVER")&&(parts.first() != "APPLICATION")&&(parts.first() != "SESSION")&&(parts.first() != "URL")&&(parts.first() != "FORM")&&(parts.first() != "VARIABLES"))
+    if ((parts.count() == 1)||((parts.first() != "CGI")&&(parts.first() != "SERVER")&&(parts.first() != "APPLICATION")&&(parts.first() != "SESSION")&&(parts.first() != "URL")&&(parts.first() != "FORM")&&(parts.first() != "VARIABLES")))
     {
         parts.prepend("VARIABLES");
     }

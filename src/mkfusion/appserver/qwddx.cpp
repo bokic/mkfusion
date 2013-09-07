@@ -159,6 +159,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
     case Struct:
         m_Struct = new QMap<QString, QWDDX>();
         *m_Struct = *other.m_Struct;
+        m_HiddenScope = other.m_HiddenScope;
         break;
     case Binary:
         m_ByteArray = new QByteArray();
@@ -215,6 +216,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator=(QWDDX &&other)
         break;
     case Struct:
         qSwap(m_Struct, other.m_Struct);
+        qSwap(m_HiddenScope, other.m_HiddenScope);
         break;
     case Binary:
         qSwap(m_ByteArray, other.m_ByteArray);
@@ -258,6 +260,7 @@ Q_DECL_EXPORT void QWDDX::setType(QWDDXType type)
     case Struct:
         delete m_Struct;
         m_Struct = nullptr;
+        m_HiddenScope = nullptr;
         break;
     case Binary:
         delete m_ByteArray;
@@ -1256,6 +1259,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator=(const QWDDX &p_newValue)
 			break;
 		case Struct:
 			*m_Struct = *p_newValue.m_Struct;
+            m_HiddenScope  = p_newValue.m_HiddenScope;
 			break;
 		case Binary:
 			*m_ByteArray = *p_newValue.m_ByteArray;
