@@ -308,6 +308,12 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
         return "Parsing error.\nError: " + l_parser.getError();
 	}
 
+    l_parseError = l_parser.prioritizeOperators();
+    if (l_parseError != NoError)
+    {
+        return "Parsing error.\nError: " + l_parser.getError();
+    }
+
 	l_parseError = l_parser.BuildTagTree();
 	if (l_parseError != NoError)
 	{
