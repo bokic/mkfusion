@@ -424,7 +424,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QString &key)
                 }
             }
 
-            m_Struct->insert(key, QWDDX(QWDDX::Null));
+            throw QMKFusionException(QString("Variable %1 is undefined.").arg(key));
 		}
 
         return (*m_Struct)[key];
@@ -475,7 +475,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const char *key)
                 }
             }
 
-            m_Struct->insert(l_key, QWDDX(QWDDX::Null));
+            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_key));
 		}
 
         return (*m_Struct)[l_key];
@@ -524,7 +524,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const wchar_t *key)
                 }
             }
 
-            m_Struct->insert(l_key, QWDDX(QWDDX::Null));
+            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_key));
 		}
 
         return (*m_Struct)[l_key];
@@ -595,7 +595,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QWDDX &key)
                 }
             }
 
-            m_Struct->insert(l_key, QWDDX(QWDDX::Null));
+            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_key));
 		}
 
         return (*m_Struct)[l_key];

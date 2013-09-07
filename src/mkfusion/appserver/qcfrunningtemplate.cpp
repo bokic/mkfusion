@@ -395,40 +395,40 @@ void QCFRunningTemplate::worker()
                     }
 
 					// Run compiled template(dll/so).
-                    m_SERVER[QStringLiteral("COLDFUSION")] = QWDDX(QWDDX::Struct);
-                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("APPSERVER")] = QStringLiteral("mkfusion");
-                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("EXPIRATION")] = QDateTime::currentDateTime();
+                    cf_StructUpdate(m_SERVER, QStringLiteral("COLDFUSION"), QWDDX(QWDDX::Struct));
+                    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("APPSERVER"), QStringLiteral("mkfusion"));
+                    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("EXPIRATION"), QDateTime::currentDateTime());
 #ifdef Q_OS_WIN
-                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("INSTALLKIT")] = QStringLiteral("Windows");
+                    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("INSTALLKIT"), QStringLiteral("Windows"));
 #elif defined Q_OS_LINUX
-                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("INSTALLKIT")] = QStringLiteral("Linux");
+                    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("INSTALLKIT"), QStringLiteral("Linux"));
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
-                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("PRODUCTLEVEL")] = QStringLiteral("Free");
-                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("PRODUCTNAME")] = QStringLiteral("MKFusion Server");
-                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("PRODUCTVERSION")] = QStringLiteral("0.4.5");
-                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("ROOTDIR")] = ((QCFServer*)m_CFServer)->m_MKFusionPath.left(-1);
-                    m_SERVER[QStringLiteral("COLDFUSION")][QStringLiteral("SUPPORTEDLOCALES")] = QStringLiteral("English (US),en,en_US");
-                    m_SERVER[QStringLiteral("OS")] = QWDDX(QWDDX::Struct);
+                    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("PRODUCTLEVEL"), QStringLiteral("Free"));
+                    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("PRODUCTNAME"), QStringLiteral("MKFusion Server"));
+                    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("PRODUCTVERSION"), QStringLiteral("0.4.5"));
+                    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("ROOTDIR"), ((QCFServer*)m_CFServer)->m_MKFusionPath.left(-1));
+                    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("SUPPORTEDLOCALES"), QStringLiteral("English (US),en,en_US"));
+                    cf_StructUpdate(m_SERVER, QStringLiteral("OS"), QWDDX(QWDDX::Struct));
 #ifdef Q_OS_WIN
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ADDITIONALINFORMATION")] = QStringLiteral("Windows");
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ADDITIONALINFORMATION"), QStringLiteral("Windows"));
 #ifdef _WIN64
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ARCH")] = QStringLiteral("amd64");
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ARCH"), QStringLiteral("amd64"));
 #else
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ARCH")] = QStringLiteral("i386");
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ARCH"), QStringLiteral("i386"));
 #endif
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("BUILDNUMBER")] = QStringLiteral("");
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("NAME")] = QStringLiteral("WINDOWS");
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("VERSION")] = QStringLiteral("XP");
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("BUILDNUMBER"), QStringLiteral(""));
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("NAME"), QStringLiteral("WINDOWS"));
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("VERSION"), QStringLiteral("XP"));
 #elif defined Q_OS_LINUX
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ADDITIONALINFORMATION")] = QStringLiteral("Linux");
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ADDITIONALINFORMATION"), QStringLiteral("Linux"));
 #ifdef __amd64__
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ARCH")] = QStringLiteral("amd64");
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ARCH"), QStringLiteral("amd64"));
 #else
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("ARCH")] = QStringLiteral("i386");
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ARCH"), QStringLiteral("i386"));
 #endif
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("BUILDNUMBER")] = QStringLiteral("unknown");
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("BUILDNUMBER"), QStringLiteral("unknown"));
 
                     static QString osName;
                     if (osName.isEmpty())
@@ -450,7 +450,7 @@ void QCFRunningTemplate::worker()
                         osName = QStringLiteral("Other");
 #endif
                     }
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("NAME")] = osName;
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("NAME"), osName);
 
                     static QString osVersion;
                     if(osVersion.isEmpty())
@@ -472,55 +472,55 @@ void QCFRunningTemplate::worker()
                         osVersion = QStringLiteral("unknown");
 #endif
                     }
-                    m_SERVER[QStringLiteral("OS")][QStringLiteral("VERSION")] = osVersion;
+                    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("VERSION"), osVersion);
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
 
-                    m_CGI[QStringLiteral("AUTH_PASSWORD")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("AUTH_TYPE")] = m_Request.m_AuthType;
-                    m_CGI[QStringLiteral("AUTH_USER")] = m_Request.m_User;
-                    m_CGI[QStringLiteral("CERT_COOKIE")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("CERT_FLAGS")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("CERT_ISSUER")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("CERT_KEYSIZE")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("CERT_SECRETKEYSIZE")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("CERT_SERIALNUMBER")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("CERT_SERVER_ISSUER")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("CERT_SERVER_SUBJECT")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("CERT_SUBJECT")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("CF_TEMPLATE_PATH")] = m_Request.m_Filename;
-                    m_CGI[QStringLiteral("CONTENT_LENGTH")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("CONTENT_TYPE")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("CONTEXT_PATH")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("GATEWAY_INTERFACE")] = QStringLiteral("CGI/1.1"); // TODO: Hardcoded.
-                    m_CGI[QStringLiteral("HTTPS")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("HTTPS_KEYSIZE")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("HTTPS_SECRETKEYSIZE")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("HTTPS_SERVER_ISSUER")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("HTTPS_SERVER_SUBJECT")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("HTTP_ACCEPT")] = m_Request.m_Accept;
-                    m_CGI[QStringLiteral("HTTP_ACCEPT_ENCODING")] = m_Request.m_AcceptEncoding;
-                    m_CGI[QStringLiteral("HTTP_ACCEPT_LANGUAGE")] = m_Request.m_AcceptLanguage;
-                    m_CGI[QStringLiteral("HTTP_CONNECTION")] = m_Request.m_Connection;
-                    m_CGI[QStringLiteral("HTTP_COOKIE")] = m_Request.m_Cookie;
-                    m_CGI[QStringLiteral("HTTP_HOST")] = m_Request.m_Host;
-                    m_CGI[QStringLiteral("HTTP_REFERER")] = m_Request.m_Referer;
-                    m_CGI[QStringLiteral("HTTP_USER_AGENT")] = m_Request.m_UserAgent;
-                    m_CGI[QStringLiteral("PATH_INFO")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("PATH_TRANSLATED")] = m_Request.m_Filename;
-                    m_CGI[QStringLiteral("QUERY_STRING")] = m_Request.m_Args;
-                    m_CGI[QStringLiteral("REMOTE_ADDR")] = m_Request.m_RemoteHost; // TODO: please check me.
-                    m_CGI[QStringLiteral("REMOTE_HOST")] = m_Request.m_RemoteHost;
-                    m_CGI[QStringLiteral("REMOTE_USER")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("REQUEST_METHOD")] = m_Request.m_Method;
-                    m_CGI[QStringLiteral("SCRIPT_NAME")] = m_Request.m_URI;
-                    m_CGI[QStringLiteral("SERVER_NAME")] = m_Request.m_Host;
-                    m_CGI[QStringLiteral("SERVER_PORT")] = 80; // TODO: Hardcoded.
-                    m_CGI[QStringLiteral("SERVER_PORT_SECURE")] = 0; // TODO: Hardcoded.
-                    m_CGI[QStringLiteral("SERVER_PROTOCOL")] = m_Request.m_Protocol;
-                    m_CGI[QStringLiteral("SERVER_SOFTWARE")] = QStringLiteral("");
-                    m_CGI[QStringLiteral("WEB_SERVER_API")] = QStringLiteral("");
+                    cf_StructUpdate(m_CGI, QStringLiteral("AUTH_PASSWORD"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("AUTH_TYPE"), m_Request.m_AuthType);
+                    cf_StructUpdate(m_CGI, QStringLiteral("AUTH_USER"), m_Request.m_User);
+                    cf_StructUpdate(m_CGI, QStringLiteral("CERT_COOKIE"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CERT_FLAGS"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CERT_ISSUER"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CERT_KEYSIZE"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CERT_SECRETKEYSIZE"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CERT_SERIALNUMBER"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CERT_SERVER_ISSUER"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CERT_SERVER_SUBJECT"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CERT_SUBJECT"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CF_TEMPLATE_PATH"), m_Request.m_Filename);
+                    cf_StructUpdate(m_CGI, QStringLiteral("CONTENT_LENGTH"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CONTENT_TYPE"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CONTEXT_PATH"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("GATEWAY_INTERFACE"), QStringLiteral("CGI/1.1")); // TODO: Hardcoded.
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTPS"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTPS_KEYSIZE"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTPS_SECRETKEYSIZE"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTPS_SERVER_ISSUER"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTPS_SERVER_SUBJECT"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_ACCEPT"), m_Request.m_Accept);
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_ACCEPT_ENCODING"), m_Request.m_AcceptEncoding);
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_ACCEPT_LANGUAGE"), m_Request.m_AcceptLanguage);
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_CONNECTION"), m_Request.m_Connection);
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_COOKIE"), m_Request.m_Cookie);
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_HOST"), m_Request.m_Host);
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_REFERER"), m_Request.m_Referer);
+                    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_USER_AGENT"), m_Request.m_UserAgent);
+                    cf_StructUpdate(m_CGI, QStringLiteral("PATH_INFO"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("PATH_TRANSLATED"), m_Request.m_Filename);
+                    cf_StructUpdate(m_CGI, QStringLiteral("QUERY_STRING"), m_Request.m_Args);
+                    cf_StructUpdate(m_CGI, QStringLiteral("REMOTE_ADDR"), m_Request.m_RemoteHost); // TODO: please check me.
+                    cf_StructUpdate(m_CGI, QStringLiteral("REMOTE_HOST"), m_Request.m_RemoteHost);
+                    cf_StructUpdate(m_CGI, QStringLiteral("REMOTE_USER"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("REQUEST_METHOD"), m_Request.m_Method);
+                    cf_StructUpdate(m_CGI, QStringLiteral("SCRIPT_NAME"), m_Request.m_URI);
+                    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_NAME"), m_Request.m_Host);
+                    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PORT"), 80); // TODO: Hardcoded.
+                    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PORT_SECURE"), 0); // TODO: Hardcoded.
+                    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PROTOCOL"), m_Request.m_Protocol);
+                    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_SOFTWARE"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("WEB_SERVER_API"), QStringLiteral(""));
 					/*
 					
 					  public void fillKnownVariables()
@@ -548,7 +548,7 @@ void QCFRunningTemplate::worker()
 					{
 						QString key = l_Argument.first;
 						QString value = l_Argument.second;
-						m_URL[key.toUpper()] = value;
+						cf_StructUpdate(m_URL, key.toUpper(), value);
 					}
 
                     runApplicationTemplate();
