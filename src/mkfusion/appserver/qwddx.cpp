@@ -323,7 +323,7 @@ Q_DECL_EXPORT QWDDX::operator bool()
     case String:
         return toNumber() != 0;
     default:
-        throw QMKFusionExpressionException("Unsupported compare.");
+        throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
     }
 }
 
@@ -606,7 +606,7 @@ Q_DECL_EXPORT bool QWDDX::operator==(bool p_Value)
         return m_Bool == p_Value;
     }
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator==(int p_Value)
@@ -621,7 +621,7 @@ Q_DECL_EXPORT bool QWDDX::operator==(int p_Value)
 		return toNumber() == (double)p_Value;
 	}
 
-	throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator==(double p_Value)
@@ -636,7 +636,7 @@ Q_DECL_EXPORT bool QWDDX::operator==(double p_Value)
 		return toNumber() == p_Value;
 	}
 
-	throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator==(const QString &p_Value)
@@ -651,7 +651,7 @@ Q_DECL_EXPORT bool QWDDX::operator==(const QString &p_Value)
 		return m_String == p_Value;
 	}
 
-	throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator==(const QWDDX &p_Value)
@@ -679,7 +679,7 @@ Q_DECL_EXPORT bool QWDDX::operator==(const QWDDX &p_Value)
 		return l_temp1.toString() == l_temp2.toString();
 	}
 
-	throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 /*Q_DECL_EXPORT bool operator!()
@@ -689,7 +689,7 @@ Q_DECL_EXPORT bool QWDDX::operator==(const QWDDX &p_Value)
         return QWDDX(!m_Bool);
     }
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }*/
 
 Q_DECL_EXPORT QWDDX QWDDX::operator!()
@@ -699,7 +699,7 @@ Q_DECL_EXPORT QWDDX QWDDX::operator!()
         return QWDDX(!m_Bool);
     }
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 /*Q_DECL_EXPORT bool operator!(const QWDDX &operand)
@@ -709,7 +709,7 @@ Q_DECL_EXPORT QWDDX QWDDX::operator!()
         return !operand.m_Bool;
     }
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }*/
 
 Q_DECL_EXPORT QWDDX operator!(const QWDDX &operand)
@@ -719,7 +719,7 @@ Q_DECL_EXPORT QWDDX operator!(const QWDDX &operand)
         return QWDDX(!operand.m_Bool);
     }
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator!=(int p_Value)
@@ -734,7 +734,7 @@ Q_DECL_EXPORT bool QWDDX::operator!=(int p_Value)
 		return toNumber() != (double)p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator!=(double p_Value)
@@ -749,7 +749,7 @@ Q_DECL_EXPORT bool QWDDX::operator!=(double p_Value)
         return toNumber() != p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator!=(const QString &p_Value)
@@ -764,7 +764,7 @@ Q_DECL_EXPORT bool QWDDX::operator!=(const QString &p_Value)
         return *m_String != p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator!=(const QWDDX &p_Value)
@@ -787,7 +787,7 @@ Q_DECL_EXPORT bool QWDDX::operator!=(const QWDDX &p_Value)
 		return l_temp1.toString() != l_temp2.toString();
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool operator!=(int p_Value1, const QWDDX &p_Value2)
@@ -817,7 +817,7 @@ Q_DECL_EXPORT bool QWDDX::operator<=(int p_Value)
 		return toNumber() <=(double)p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator<=(double p_Value)
@@ -832,7 +832,7 @@ Q_DECL_EXPORT bool QWDDX::operator<=(double p_Value)
 		return toNumber() <= p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator<=(const QString &p_Value)
@@ -847,7 +847,7 @@ Q_DECL_EXPORT bool QWDDX::operator<=(const QString &p_Value)
         return *m_String <= p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator<=(const QWDDX &p_Value)
@@ -870,7 +870,7 @@ Q_DECL_EXPORT bool QWDDX::operator<=(const QWDDX &p_Value)
 		return l_temp1.toString() <= l_temp2.toString();
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool operator<=(int p_Value1, const QWDDX &p_Value2)
@@ -900,7 +900,7 @@ Q_DECL_EXPORT bool QWDDX::operator>=(int p_Value)
 		return toNumber() >= (double)p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator>=(double p_Value)
@@ -915,7 +915,7 @@ Q_DECL_EXPORT bool QWDDX::operator>=(double p_Value)
 		return toNumber() >= p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator>=(const QString &p_Value)
@@ -930,7 +930,7 @@ Q_DECL_EXPORT bool QWDDX::operator>=(const QString &p_Value)
         return *m_String >= p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator>=(const QWDDX &p_Value)
@@ -953,7 +953,7 @@ Q_DECL_EXPORT bool QWDDX::operator>=(const QWDDX &p_Value)
 		return l_temp1.toString() >= l_temp2.toString();
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool operator>=(int p_Value1, const QWDDX &p_Value2)
@@ -983,7 +983,7 @@ Q_DECL_EXPORT bool QWDDX::operator<(int p_Value)
 		return toNumber() < (double)p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator<(double p_Value)
@@ -998,7 +998,7 @@ Q_DECL_EXPORT bool QWDDX::operator<(double p_Value)
 		return toNumber() < p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator<(const QString &p_Value)
@@ -1013,7 +1013,7 @@ Q_DECL_EXPORT bool QWDDX::operator<(const QString &p_Value)
         return *m_String < p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator<(const QWDDX &p_Value)
@@ -1036,7 +1036,7 @@ Q_DECL_EXPORT bool QWDDX::operator<(const QWDDX &p_Value)
 		return l_temp1.toString() < l_temp2.toString();
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool operator<(int p_Value1, const QWDDX &p_Value2)
@@ -1066,7 +1066,7 @@ Q_DECL_EXPORT bool QWDDX::operator>(int p_Value)
 		return toNumber() > (double)p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator>(double p_Value)
@@ -1081,7 +1081,7 @@ Q_DECL_EXPORT bool QWDDX::operator>(double p_Value)
 		return toNumber() > p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator>(const QString &p_Value)
@@ -1096,7 +1096,7 @@ Q_DECL_EXPORT bool QWDDX::operator>(const QString &p_Value)
         return *m_String > p_Value;
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QWDDX::operator>(const QWDDX &p_Value)
@@ -1119,7 +1119,7 @@ Q_DECL_EXPORT bool QWDDX::operator>(const QWDDX &p_Value)
 		return l_temp1.toString() > l_temp2.toString();
 	}
 
-    throw QMKFusionExpressionException("Unsupported compare.");
+    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool operator>(int p_Value1, const QWDDX &p_Value2)
