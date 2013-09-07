@@ -7,131 +7,230 @@
 #include <QDateTime>
 #include <QString>
 
-class Q_DECL_EXPORT QMKFusionException : public QException
-{
-public:
-    QMKFusionException(QString p_message, QString p_Detail = "") : QException()
-	{ // TODO: Please find a smarter way to keep and destroy QStrings inside exception class;
-		m_Type = new QString("Any");
-		m_message = new QString(p_message);
-		m_Detail = new QString(p_Detail);
-	}
-	void raise() const { throw *this; }
-    QException *clone() const { return new QMKFusionException(*this); }
-    /*QWDDX GenerateCFCatch()
-	{
-		QWDDX ret(QWDDX::Struct);
 
-        ret[QStringLiteral("Type")] = *m_Type;
-        ret[QStringLiteral("Message")] = *m_message;
-        ret[QStringLiteral("Detail")] = *m_Detail;
-        ret[QStringLiteral("StackTrace")] = QStringLiteral("Todo, schedule for v1.1");
-        ret[QStringLiteral("TagContext")] = QStringLiteral("Todo, schedule for v1.1");
-
-		return ret;
-    }*/
-
-	QString *m_Type;
-	QString *m_message;
-	QString *m_Detail;
-};
-
-class QMKFusionCFAbortException : public QException
+class Q_DECL_EXPORT QMKFusionCFAbortException : public QException
 {
 public:
     QMKFusionCFAbortException() : QException() {}
 };
 
-/*class QMKFusionApplictionException : public QMKFusionException
+class Q_DECL_EXPORT QMKFusionException : public QException
 {
 public:
-	QMKFusionApplictionException(QString p_Detail = "", QString p_errorCode = "", QString p_extendedInfo = "", QString p_message = "", QString p_object = ""):QMKFusionException(p_Detail, p_Detail, p_extendedInfo, p_message, p_object) { m_Type = new QString("application");}
-};*/
-
-class QMKFusionDatabaseException : public QMKFusionException
-{
-public:
-    QMKFusionDatabaseException(QString p_Detail = "", QString p_errorCode = "", QString p_extendedInfo = "", QString p_message = "", QString p_object = "")
-        :QMKFusionException(p_message, p_Detail)
+    QMKFusionException(const QMKFusionException &other)
+        : QException()
+        , m_Message(other.m_Message)
+        , m_Detail(other.m_Detail)
     {
-        Q_UNUSED(p_errorCode);
-        Q_UNUSED(p_extendedInfo);
-        Q_UNUSED(p_object);
+    }
 
-        m_Type = new QString("database");
+    QMKFusionException(const QString &message, const QString &detail = "")
+        : QException()
+        , m_Message(message)
+        , m_Detail(detail)
+    {
+	}
+
+    ~QMKFusionException() throw() {}
+
+	void raise() const { throw *this; }
+    QException *clone() const { return new QMKFusionException(*this); }
+    /*virtual QWDDX GenerateCFCatch() // TODO: This funct. member needs to be moved to QCFRunningTemplate class
+	{
+		QWDDX ret(QWDDX::Struct);
+
+        // TODO: Do dynamic cast switch here.
+        //ret["Type"] = m_Type;
+        ret["Message"] = m_message;
+        ret["Detail"] = m_Detail;
+        ret["StackTrace"] = "Todo, schedule for v1.1";
+        ret["TagContext"] = "Todo, schedule for v1.1";
+
+		return ret;
+    }*/
+
+    QString m_Message;
+    QString m_Detail;
+};
+
+class Q_DECL_EXPORT QMKFusionApplictionException : public QMKFusionException
+{
+public:
+    QMKFusionApplictionException(QString message, QString detail = "")
+        : QMKFusionException(message, detail)
+    {
     }
 };
 
-class QMKFusionIllegalNumRangeException : public QMKFusionException
+class Q_DECL_EXPORT QMKFusionDatabaseException : public QMKFusionException
 {
 public:
-    QMKFusionIllegalNumRangeException(double p_Value, double p_MinValue, double p_MaxValue)
+    QMKFusionDatabaseException(QString message, QString detail = "")
+        : QMKFusionException(message, detail)
+    {
+    }
+};
+
+class Q_DECL_EXPORT QMKFusionSecurityException : public QMKFusionException
+{
+public:
+    QMKFusionSecurityException(QString message, QString detail = "")
+        : QMKFusionException(message, detail)
+    {
+    }
+};
+
+class Q_DECL_EXPORT QMKFusionObjectException : public QMKFusionException
+{
+public:
+    QMKFusionObjectException(QString message, QString detail = "")
+        : QMKFusionException(message, detail)
+    {
+    }
+};
+
+class Q_DECL_EXPORT QMKFusionMissingIncludeException : public QMKFusionException
+{
+public:
+    QMKFusionMissingIncludeException(QString message, QString detail = "")
+        : QMKFusionException(message, detail)
+    {
+    }
+};
+
+class Q_DECL_EXPORT QMKFusionTemplateException : public QMKFusionException
+{
+public:
+    QMKFusionTemplateException(QString message, QString detail = "")
+        : QMKFusionException(message, detail)
+    {
+    }
+};
+
+class Q_DECL_EXPORT QMKFusionExpressionException : public QMKFusionException
+{
+public:
+    QMKFusionExpressionException(QString message = "", QString detail = "", qint32 errorNumber = 0)
+        : QMKFusionException(message, detail)
+    {
+        m_ErrorNumber = errorNumber;
+    }
+
+    qint32 m_ErrorNumber;
+};
+
+class Q_DECL_EXPORT QMKFusionLockException : public QMKFusionException
+{
+public:
+    QMKFusionLockException(QString message = "", QString detail = "")
+        : QMKFusionException(message, detail)
+    {
+    }
+};
+
+class Q_DECL_EXPORT QMKFusionSearchEngineException : public QMKFusionException
+{
+public:
+    QMKFusionSearchEngineException(QString message = "", QString detail = "")
+        : QMKFusionException(message, detail)
+    {
+    }
+};
+
+class Q_DECL_EXPORT QMKFusionIllegalNumRangeException : public QMKFusionException
+{
+public:
+    QMKFusionIllegalNumRangeException(double value, double minValue, double maxValue)
         :QMKFusionException("", "")
-	{
-        Q_UNUSED(p_Value);
-        Q_UNUSED(p_MinValue);
-        Q_UNUSED(p_MaxValue);
-
-		m_Type = new QString("template");
+    {
+        m_Value = value;
+        m_minValue = minValue;
+        m_maxValue = maxValue;
 	}
+
+    double m_Value;
+    double m_minValue;
+    double m_maxValue;
 };
 
-
-class QMKFusionArrayGenericMultiDimException : public QMKFusionException
+class Q_DECL_EXPORT QMKFusionArrayGenericMultiDimException : public QMKFusionException
 {
 public:
-	QMKFusionArrayGenericMultiDimException():QMKFusionException("", ""){}
-};
-
-class QMKFusionArrayNotOneDimensionException : public QMKFusionException
-{
-public:
-	QMKFusionArrayNotOneDimensionException():QMKFusionException("", ""){}
-};
-
-class QMKFusionInvalidArrayIndexException : public QMKFusionException
-{
-public:
-	QMKFusionInvalidArrayIndexException(int p_Size, int p_Index):QMKFusionException("", "")
-	{
-        Q_UNUSED(p_Size);
-        Q_UNUSED(p_Index);
-	}
-};
-
-class QMKFusionBadArrayDimensionException : public QMKFusionException
-{
-public:
-	explicit QMKFusionBadArrayDimensionException(int p_Dimension): QMKFusionException("", "")
-	{
-        Q_UNUSED(p_Dimension);
-	}
-};
-
-class QMKFusionArraySetRangeException : public QMKFusionException
-{
-public:
-	QMKFusionArraySetRangeException(int p_Start, int p_End):QMKFusionException("", "")
-	{
-        Q_UNUSED(p_Start);
-        Q_UNUSED(p_End);
-	}
-};
-
-class QMKFusionArraySwapRangeException : public QMKFusionException
-{
-public:
-	QMKFusionArraySwapRangeException(int p_Start, int p_End):QMKFusionException("", "")
-	{
-        Q_UNUSED(p_Start);
-        Q_UNUSED(p_End);
+    QMKFusionArrayGenericMultiDimException()
+        : QMKFusionException("", "")
+    {
     }
 };
 
-class QMKFusionInvalidArgumentException : public QMKFusionException
+class Q_DECL_EXPORT QMKFusionArrayNotOneDimensionException : public QMKFusionException
 {
 public:
-	QMKFusionInvalidArgumentException(QString p_Function, int p_argument, double p_argumentValue, double p_minValue, double p_maxValue):QMKFusionException("", "")
+    QMKFusionArrayNotOneDimensionException()
+        : QMKFusionException("", "")
+    {
+
+    }
+};
+
+class Q_DECL_EXPORT QMKFusionInvalidArrayIndexException : public QMKFusionException
+{
+public:
+    QMKFusionInvalidArrayIndexException(int size, int index)
+        : QMKFusionException("", "")
+    {
+        m_Size = size;
+        m_Index = index;
+	}
+
+    int m_Size;
+    int m_Index;
+};
+
+class Q_DECL_EXPORT QMKFusionBadArrayDimensionException : public QMKFusionException
+{
+public:
+    explicit QMKFusionBadArrayDimensionException(int dimension)
+        : QMKFusionException("", "")
+	{
+        m_Dimension = dimension;
+	}
+
+    int m_Dimension;
+};
+
+class Q_DECL_EXPORT QMKFusionArraySetRangeException : public QMKFusionException
+{
+public:
+    QMKFusionArraySetRangeException(int start, int end)
+        : QMKFusionException("", "")
+    {
+        m_Start = start;
+        m_End = end;
+	}
+
+    int m_Start;
+    int m_End;
+};
+
+class Q_DECL_EXPORT QMKFusionArraySwapRangeException : public QMKFusionException
+{
+public:
+    QMKFusionArraySwapRangeException(int start, int end)
+        : QMKFusionException("", "")
+    {
+        m_Start = start;
+        m_End = end;
+    }
+
+    int m_Start;
+    int m_End;
+};
+
+class Q_DECL_EXPORT QMKFusionInvalidArgumentException : public QMKFusionException
+{
+public:
+    QMKFusionInvalidArgumentException(QString p_Function, int p_argument, double p_argumentValue, double p_minValue, double p_maxValue)
+        : QMKFusionException("", "")
 	{
         Q_UNUSED(p_Function);
         Q_UNUSED(p_argument);
@@ -139,7 +238,8 @@ public:
         Q_UNUSED(p_minValue);
         Q_UNUSED(p_maxValue);
 	}
-	QMKFusionInvalidArgumentException(QString p_Function, int p_argument, double p_argumentValue, QString p_Error):QMKFusionException("", "")
+    QMKFusionInvalidArgumentException(QString p_Function, int p_argument, double p_argumentValue, QString p_Error)
+        : QMKFusionException("", "")
 	{
         Q_UNUSED(p_Function);
         Q_UNUSED(p_argument);
@@ -148,60 +248,13 @@ public:
 	}
 };
 
-class QMKFusionTemplateException : public QMKFusionException
+class Q_DECL_EXPORT QMKFusionCustomException : public QMKFusionException
 {
 public:
-	QMKFusionTemplateException(QString p_message = "", QString p_Detail = ""):QMKFusionException(p_message, p_Detail)
-	{
-		m_Type = new QString("template");
-	}
+    QMKFusionCustomException(QString message, QString detail = "")
+        : QMKFusionException(message, detail)
+    {
+    }
 };
-
-/*class QMKFusionSecurityException : public QMKFusionException
-{
-public:
-	QMKFusionSecurityException(QString p_Detail = "", QString p_errorCode = "", QString p_extendedInfo = "", QString p_message = "", QString p_object = ""):QMKFusionException(p_Detail, p_Detail, p_extendedInfo, p_message, p_object) { m_Type = new QString("security");}
-};
-
-class QMKFusionObjectException : public QMKFusionException
-{
-public:
-	QMKFusionObjectException(QString p_Detail = "", QString p_errorCode = "", QString p_extendedInfo = "", QString p_message = "", QString p_object = ""):QMKFusionException(p_Detail, p_Detail, p_extendedInfo, p_message, p_object) { m_Type = new QString("object");}
-};
-
-class QMKFusionMissingIncludeException : public QMKFusionException
-{
-public:
-	QMKFusionMissingIncludeException(QString p_Detail = "", QString p_errorCode = "", QString p_extendedInfo = "", QString p_message = "", QString p_object = ""):QMKFusionException(p_Detail, p_Detail, p_extendedInfo, p_message, p_object) { m_Type = new QString("missingInclude");}
-};*/
-
-class QMKFusionExpressionException : public QMKFusionException
-{
-	qint32 m_errorNumber;
-public:
-    QMKFusionExpressionException(QString p_message, QString p_Detail = QString(), qint32 p_errorNumber = 0): QMKFusionException(p_message, p_Detail)
-	{
-		*m_Type = "expression";
-		m_errorNumber = p_errorNumber;
-	}
-};
-
-/*class QMKFusionLockException : public QMKFusionException
-{
-public:
-	QMKFusionLockException(QString p_Detail = "", QString p_errorCode = "", QString p_extendedInfo = "", QString p_message = "", QString p_object = ""):QMKFusionException(p_Detail, p_Detail, p_extendedInfo, p_message, p_object) { m_Type = new QString("lock");}
-};
-
-class QMKFusionCustomException : public QMKFusionException
-{
-public:
-	QMKFusionCustomException(QString p_Detail = "", QString p_errorCode = "", QString p_extendedInfo = "", QString p_message = "", QString p_object = ""):QMKFusionException(p_Detail, p_Detail, p_extendedInfo, p_message, p_object) { m_Type = new QString("custom_type");}
-};
-
-class QMKFusionSearchEngineException : public QMKFusionException
-{
-public:
-	QMKFusionSearchEngineException(QString p_Detail = "", QString p_errorCode = "", QString p_extendedInfo = "", QString p_message = "", QString p_object = ""):QMKFusionException(p_Detail, p_Detail, p_extendedInfo, p_message, p_object) { m_Type = new QString("searchgengine");}
-};*/
 
 #endif // QMKFUSIONEXCEPTION_H

@@ -1013,14 +1013,50 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             {
                 const QString &type = CFTagGetArgumentAsString(p_CFTag, "type").toLower();
 
-                if(type == "database")
+                if (type == "application")
+                {
+                    return "} catch(const QMKFusionApplicationException &ex) {";
+                }
+                else if(type == "database")
                 {
                     return "} catch(const QMKFusionDatabaseException &ex) {";
                 }
-                //else if()
-                //{
-                //
-                //}
+                else if(type == "security")
+                {
+                    return "} catch(const QMKFusionSecurityException &ex) {";
+                }
+                else if(type == "object")
+                {
+                    return "} catch(const QMKFusionObjectException &ex) {";
+                }
+                else if(type == "missinginclude")
+                {
+                    return "} catch(const QMKFusionMissingIncludeException &ex) {";
+                }
+                else if(type == "template")
+                {
+                    return "} catch(const QMKFusionTemplateException &ex) {";
+                }
+                else if(type == "expression")
+                {
+                    return "} catch(const QMKFusionExpressionException &ex) {";
+                }
+                else if(type == "lock")
+                {
+                    return "} catch(const QMKFusionLockException &ex) {";
+                }
+                else if(type == "searchengine")
+                {
+                    return "} catch(const QMKFusionSearchEngineException &ex) {";
+                }
+                else if(type == "any")
+                {
+                    return "} catch(const QMKFusionException &ex) {";
+                }
+                else
+                {
+                    throw QMKFusionException(QString("Invalid cfcatch type[%1]").arg(type));
+                }
             }
 
             return "} catch(const QMKFusionException &ex) {";
