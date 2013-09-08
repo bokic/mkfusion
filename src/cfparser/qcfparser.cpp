@@ -445,14 +445,24 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                     }
 				}
 
-				if (ch == '[')
+                if ((ch == '[')||(ch == '.'))
 				{
                     ret.m_Text = p_Text.mid(l_Offset, c - l_Offset).trimmed();
                     //c = ret.m_Position + 1;
 
-					do
+                    if (parent)
+                    {
+                        if (parent->m_Type == VariableMember)
+                        {
+                            ret.m_Size = c - ret.m_Position;
+
+                            return ret;
+                        }
+                    }
+
+                    do
 					{
-						child = ParseCFCode(p_Text, c, VariableIndex, &ret);
+                        child = ParseCFCode(p_Text, c, VariableMember, &ret);
 
 						if (child.m_Type == Error)
 						{
@@ -472,14 +482,14 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 							ch = 0;
 						}
 
-					} while(ch == '[');
+                    } while((ch == '[')||(ch == '.'));
 
                     ret.m_Size = c - ret.m_Position;
 
 					return ret;
-				}
+                }
 
-				if (ch == ' ')
+                if (ch == ' ')
 				{
 					int start_bracket = p_Text.indexOf("(", c);
 
@@ -1309,35 +1319,53 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
             break;
         }
 		ret.m_ChildElements.append(child);
-		break;
-	case VariableIndex:
-		ch = p_Text.at(l_Offset).unicode();
-		if (ch != '[')
-		{
-			ret.m_Size = 1;
-			ret.m_Text = tr("Element not variableIndex(Does\'t begin with '[').");
-			ret.m_Type = Error;
-			return ret;
-		}
+        break;
+    case VariableMember:
+        ch = p_Text.at(l_Offset).unicode();
+        if ((ch != '.')&&(ch != '['))
+        {
+            ret.m_Size = 1;
+            ret.m_Text = tr("Element not variableMember(Does\'t begin with '.' nor '[').");
+            ret.m_Type = Error;
+            return ret;
+        }
 
-		child = ParseCFCode(p_Text, l_Offset + 1, Expression, &ret);
-		if (child.m_Type == Error)
-		{
-			return child;
-		}
+        if (ch == '.')
+        {
+            ret.m_Text = ".";
 
-		if (p_Text.at(child.m_Position + child.m_Size) != ']') // TODO: Check for end.
-		{
-			ret.m_Position = child.m_Position + child.m_Size;
-			ret.m_Size = 1;
-			ret.m_Text = tr("Element not variableIndex(Doesn\'t end with ']').");
-			ret.m_Type = Error;
-			return ret;
-		}
+            child = ParseCFCode(p_Text, l_Offset + 1, Variable, &ret);
+            if (child.m_Type == Error)
+            {
+                return child;
+            }
 
-		ret.m_ChildElements.append(child);
-		ret.m_Size = child.m_Size + 2;
-		break;
+            ret.m_ChildElements.append(child);
+            ret.m_Size = child.m_Size + 1;
+        }
+        else
+        {
+            ret.m_Text = "[]";
+
+            child = ParseCFCode(p_Text, l_Offset + 1, Expression, &ret);
+            if (child.m_Type == Error)
+            {
+                return child;
+            }
+
+            if (p_Text.at(child.m_Position + child.m_Size) != ']') // TODO: Check for end.
+            {
+                ret.m_Position = child.m_Position + child.m_Size;
+                ret.m_Size = 1;
+                ret.m_Text = tr("Element not variableMember(Doesn\'t end with ']').");
+                ret.m_Type = Error;
+                return ret;
+            }
+
+            ret.m_ChildElements.append(child);
+            ret.m_Size = child.m_Size + 2;
+        }
+        break;
 	case CFComment:
 		ret.m_Size = FindCFCommentSize(p_Text, l_Offset);
 		if (ret.m_Size <= 0)

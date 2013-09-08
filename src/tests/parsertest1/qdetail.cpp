@@ -98,7 +98,7 @@ void QDetail::addSubTrees(const QCFParserElement& p_ParserElement, QTreeWidgetIt
         QString name;
 
         //enum QCFParserElementType {Boolean, Number, String, Variable, Function, Operator, SharpExpression
-        //Expression, SubExpression, Parameters, Parameter, CFScript, CFComment, CFTagExpression, CFTagArguments, CFTagArgument, ObjectFunction, VariableIndex, Error};
+        //Expression, SubExpression, Parameters, Parameter, CFScript, CFComment, CFTagExpression, CFTagArguments, CFTagArgument, ObjectFunction, VariableMember, Error};
 
         switch(element.m_Type)
         {
@@ -156,8 +156,8 @@ void QDetail::addSubTrees(const QCFParserElement& p_ParserElement, QTreeWidgetIt
         case ObjectFunction:
             name = "ObjectFunction(" + element.m_Text + ")";
             break;
-        case VariableIndex:
-            name = "VariableIndex";
+        case VariableMember:
+            name = "VariableMember(" + element.m_Text + ")";
             break;
         case Keyword:
             name = "Keyword(" + element.m_Text + ")";

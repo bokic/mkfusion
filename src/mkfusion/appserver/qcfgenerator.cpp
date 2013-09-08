@@ -532,6 +532,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
     QString l_ElementName;
     QStringList strList;
 	QString ret;
+    int c;
 
     l_ElementName = p_CFExpression.m_Text;
 
@@ -550,7 +551,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
         }
         else if (p_CFExpression.m_ChildElements.size() > 0)
         {
-            for(int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+            for(c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
             {
                 if (c == 0)
                 {
@@ -584,12 +585,12 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
             ret = GenerateVariable(l_ElementName, funct_params);
         }
 
-        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+        for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
         {
             ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
         }
         break;
-    case VariableIndex:
+    case VariableMember:
             if (p_CFExpression.m_ChildElements.count() > 0)
             {
                 ret = "[" + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[0], funct_params, funct_local_vars) + "]";
@@ -601,7 +602,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
             {
                 ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(p_TemplateInstance";
 
-                for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                 {
                     ret += ", " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
                 }
@@ -610,7 +611,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                 {
                     ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
 
-                    for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                    for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                     {
                         if (c > 0)
                         {
@@ -623,7 +624,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                 {
                     ret = "callCustomFunction(\"" + toCPPEncodeStr(l_ElementName.toLower()) + "\", QList<QWDDX>()";
 
-                    for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                    for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                     {
                         ret += " << " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
                     }
@@ -696,13 +697,13 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
         }
         break;
     case Parameter:
-        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+        for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
         {
             ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
         }
         break;
     case Parameters:
-        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+        for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
         {
             if (c == 0)
             {
@@ -713,13 +714,26 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                 ret += ", " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
             }
         }
-
         break;
     case SharpExpression:
         ret = GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[0], funct_params, funct_local_vars);
         break;
     case Expression:
-        for (int c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+        c = 0;
+
+        if (p_CFExpression.m_ChildElements.size() >= 3)
+        {
+            const QCFParserElement &op = p_CFExpression.m_ChildElements.at(1);
+
+            if ((op.m_Type == Operator)&&(op.m_Text == "="))
+            {
+                ret += "f_Param();\n";
+
+                c = 2;
+            }
+        }
+
+        for (; c < p_CFExpression.m_ChildElements.size(); c++)
         {
             if (c > 0)
             {
