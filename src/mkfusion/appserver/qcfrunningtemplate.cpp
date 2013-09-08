@@ -87,7 +87,7 @@ void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const
     else
     {
         m_StatusCode = 500;
-        m_Output = "Compiling error: " + err;
+        m_Output = "<div><code>" + err.toHtmlEscaped() + "</code></div><br /><br />";
     }
 
     return nullptr;

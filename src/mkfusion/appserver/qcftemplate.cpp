@@ -292,6 +292,8 @@ bool QCFTemplate::f_FetchQueryRow(const QWDDX &query, int row)
         {
             QString columnName = query.m_Struct->keys().at(i);
 
+            if (columnName == "RECORDCOUNT") continue; // TODO: Temporary, rewrite it.
+
             QWDDX columnData = query.m_Struct->values().at(i);
 
             if (columnData.m_Array->count() < row)
@@ -449,6 +451,8 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
 
         row++;
     }
+
+    ret.m_Struct->insert("RECORDCOUNT", row - 1); // TODO: Rewrite it when possible.
 
     m_TemplateInstance->m_QueryOutput.clear();
     m_TemplateInstance->m_QueryParams.clear();

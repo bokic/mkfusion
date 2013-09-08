@@ -1822,6 +1822,10 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
     ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
+    ret.insert("timeformat", QCFFunction("TimeFormat", QCFFunction::ReturnString));
+    ret["timeformat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
+    ret["timeformat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
     ret.insert("trim", QCFFunction("Trim", QCFFunction::ReturnString));
     ret["trim"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 

@@ -1013,10 +1013,174 @@ Q_DECL_EXPORT int cf_DateDiff(const QString &datepart, const QDateTime &date1, c
 
 Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
 {
-    Q_UNUSED(date);
-    Q_UNUSED(mask);
+    QMultiHash<QString, int> segments;
+    QString ret = mask;
+    int pos;
 
-    throw QMKFusionException("Not Implemented", "DateFormat is not Implemented (yet:))");
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("full", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 4, "dddd, mmmm d, yyyy");
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("long", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 4, "mmmm d, yyyy");
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("medium", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 6, "mmm d, yyyy");
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("short", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 5, "m/d/y");
+        pos = i + 1;
+    }
+
+    /*pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("gg", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 2, "__");
+        segments.insert("gg", i);
+        pos = i + 1;
+    }*/
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("yyyy", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 4, "____");
+        segments.insert("yyyy", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("yy", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 2, "__");
+        segments.insert("yy", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("mmmm", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 4, "____");
+        segments.insert("mmmm", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("mmm", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 3, "___");
+        segments.insert("mmm", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("mm", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 2, "__");
+        segments.insert("mm", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("m", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 1, "_");
+        segments.insert("m", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("dddd", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 4, "____");
+        segments.insert("dddd", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("ddd", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 3, "___");
+        segments.insert("ddd", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("dd", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 2, "__");
+        segments.insert("dd", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("d", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 1, "_");
+        segments.insert("d", i);
+        pos = i + 1;
+    }
+
+    for(int c = 0; c < segments.count(); c++)
+    {
+        const QString type = segments.keys().at(c);
+        int pos = segments.values().at(c);
+
+        if (type == "yyyy") ret.replace(pos, 4, date.toString("yyyy"));
+        if (type == "yy") ret.replace(pos, 2, date.toString("yy"));
+        if (type == "mmmm") ret.replace(pos, 4, date.toString("MMMM"));
+        if (type == "mmm") ret.replace(pos, 3, date.toString("MMM"));
+        if (type == "mm") ret.replace(pos, 2, date.toString("MM"));
+        if (type == "m") ret.replace(pos, 1, date.toString("M"));
+        if (type == "dddd") ret.replace(pos, 4, date.toString("dddd"));
+        if (type == "ddd") ret.replace(pos, 3, date.toString("ddd"));
+        if (type == "dd") ret.replace(pos, 2, date.toString("dd"));
+        if (type == "d") ret.replace(pos, 1, date.toString("d"));
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT int cf_DatePart(const QString &datepart, const QDateTime &date)
@@ -1763,7 +1927,7 @@ Q_DECL_EXPORT QString cf_InputBaseN(const QString &string, int radix)
 {
 }
 
-Q_DECL_EXPORT QString cf_Insert(const QString &substring, QString &string, int position)
+Q_DECL_EXPORT QString cf_Insert(const QString &substring, const QString &string, int position)
 {
 }
 
@@ -2035,11 +2199,9 @@ Q_DECL_EXPORT QString JSStringFormat(const QString &string)
 {
 }
 
-Q_DECL_EXPORT QString cf_LCase(QString &string)
+Q_DECL_EXPORT QString cf_LCase(const QString &string)
 {
-    string = string.toLower();
-
-    return string;
+    return string.toLower();
 }
 
 Q_DECL_EXPORT QString cf_Left(const QString &string, int count)
@@ -2240,7 +2402,7 @@ Q_DECL_EXPORT QString cf_LSTimeFormat(const QString &time, const QString &locale
 {
 }
 
-Q_DECL_EXPORT QString cf_LTrim(QString &string)
+Q_DECL_EXPORT QString cf_LTrim(const QString &string)
 {
 }
 
@@ -2504,23 +2666,44 @@ Q_DECL_EXPORT QWDDX cf_REMatchNoCase(const QString &reg_expression, const QStrin
 {
 }
 
-Q_DECL_EXPORT QString cf_RemoveChars(QString &string, int start, int count)
+Q_DECL_EXPORT QString cf_RemoveChars(const QString &string, int start, int count)
 {
 }
 
-Q_DECL_EXPORT QString cf_RepeatString(QString &string, int count)
+Q_DECL_EXPORT QString cf_RepeatString(const QString &string, int count)
 {
 }
 
-Q_DECL_EXPORT QString cf_Replace(QString &string, const QString &substring1, const QString &substring2, const QString &scope)
+Q_DECL_EXPORT QString cf_Replace(const QString &string, const QString &substring1, const QString &substring2, const QString &scope)
 {
+    QString ret = string;
+
+    if (scope.compare("one", Qt::CaseInsensitive) == 0)
+    {
+        int index = string.indexOf(substring1);
+
+        if (index >= 0)
+        {
+            return ret.replace(index, substring1.length(), substring2);
+        }
+
+        return ret;
+    }
+    else if (scope.compare("all", Qt::CaseInsensitive) == 0)
+    {
+        return ret.replace(substring1, substring2);
+    }
+    else
+    {
+        throw QMKFusionException(QString("Replace unknown scope [%1]. Vaild values are: one, all").arg(scope));
+    }
 }
 
 Q_DECL_EXPORT QString cf_ReplaceList(QString &list, const QString &list1, const QString &list2)
 {
 }
 
-Q_DECL_EXPORT QString cf_ReplaceNoCase(QString &string, const QString &substring1, const QString &substring2, const QString &scope)
+Q_DECL_EXPORT QString cf_ReplaceNoCase(const QString &string, const QString &substring1, const QString &substring2, const QString &scope)
 {
 }
 
@@ -2554,7 +2737,7 @@ Q_DECL_EXPORT QString cf_Right(const QString &string, int count)
     return string.right(count);
 }
 
-Q_DECL_EXPORT QString cf_RJustify(QString &string, int length)
+Q_DECL_EXPORT QString cf_RJustify(const QString &string, int length)
 {
 }
 
@@ -2563,7 +2746,7 @@ Q_DECL_EXPORT int cf_Round(double number)
     return round(number);
 }
 
-Q_DECL_EXPORT QString cf_RTrim(QString &string)
+Q_DECL_EXPORT QString cf_RTrim(const QString &string)
 {
 }
 
@@ -2622,7 +2805,7 @@ Q_DECL_EXPORT double cf_Sqr(double number)
     return sqrt(number);
 }
 
-Q_DECL_EXPORT QString cf_StripCR(QString &string)
+Q_DECL_EXPORT QString cf_StripCR(const QString &string)
 {
 }
 
@@ -2847,6 +3030,186 @@ Q_DECL_EXPORT double cf_Tan(double number)
 
 Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
 {
+    QMultiHash<QString, int> segments;
+    QString ret = "b" + mask;
+    int pos;
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("full", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 4, "h:mm:ss tt");
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("long", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 4, "h:mm:ss tt");
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("medium", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 6, "h:mm:ss tt");
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("short", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 5, "h:mm tt");
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("tt", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 2, "__");
+        segments.insert("tt", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("t", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 1, "_");
+        segments.insert("t", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("i", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 1, "_");
+        segments.insert("i", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("l", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 1, "_");
+        segments.insert("l", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("ss", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 2, "__");
+        segments.insert("ss", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("s", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 1, "_");
+        segments.insert("s", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("mm", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 2, "__");
+        segments.insert("mm", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("m", pos, Qt::CaseInsensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 1, "_");
+        segments.insert("m", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("HH", pos, Qt::CaseSensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 2, "__");
+        segments.insert("HH", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("H", pos, Qt::CaseSensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 1, "_");
+        segments.insert("H", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("hh", pos, Qt::CaseSensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 2, "__");
+        segments.insert("hh", i);
+        pos = i + 1;
+    }
+
+    pos = 0;
+    while(1)
+    {
+        int i = ret.indexOf("h", pos, Qt::CaseSensitive);
+        if (i < 0) break;
+        ret = ret.replace(i, 1, "_");
+        segments.insert("h", i);
+        pos = i + 1;
+    }
+
+    for(int c = 0; c < segments.count(); c++)
+    {
+        const QString type = segments.keys().at(c);
+        int pos = segments.values().at(c);
+
+        if (type == "tt") ret.replace(pos, 2, time.toString("AP"));
+        if (type == "t") ret.replace(pos, 1, time.toString("AP").left(1));
+        if (type == "i") ret.replace(pos, 1, time.toString("z"));
+        if (type == "l") ret.replace(pos, 1, time.toString("z"));
+        if (type == "ss") ret.replace(pos, 2, time.toString("ss"));
+        if (type == "s") ret.replace(pos, 1, time.toString("s"));
+        if (type == "mm") ret.replace(pos, 2, time.toString("mm"));
+        if (type == "m") ret.replace(pos, 1, time.toString("m"));
+        if (type == "HH") ret.replace(pos, 2, time.toString("hh"));
+        if (type == "H") ret.replace(pos, 1, time.toString("h"));
+        if (type == "hh") ret.replace(pos, 2, time.toString("hh")); // TODO: 12h format is not implemented.
+        if (type == "h") ret.replace(pos, 1, time.toString("h")); // TODO: 12h format is not implemented.
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT QString cf_ToBase64(const QString &object, const QString &encoding)
@@ -2873,11 +3236,9 @@ Q_DECL_EXPORT QString cf_ToString(const QWDDX &value, const QString &encoding)
 {
 }
 
-Q_DECL_EXPORT QString cf_Trim(QString &string)
+Q_DECL_EXPORT QString cf_Trim(const QString &string)
 {
-    string = string.trimmed();
-
-    return string;
+    return string.trimmed();
 }
 
 Q_DECL_EXPORT QString cf_UCase(const QString &string)
@@ -2889,7 +3250,7 @@ Q_DECL_EXPORT QString cf_URLDecode(QString &urlEncodedString, const QString &cha
 {
 }
 
-Q_DECL_EXPORT QString cf_URLEncodedFormat(QString &string, const QString &charset)
+Q_DECL_EXPORT QString cf_URLEncodedFormat(const QString &string, const QString &charset)
 {
 }
 
@@ -2966,7 +3327,7 @@ Q_DECL_EXPORT QWDDX cf_XmlElemNew(QWDDX &xmlObj, const QString &_namespace, cons
 {
 }
 
-Q_DECL_EXPORT QString cf_XmlFormat(QString &string)
+Q_DECL_EXPORT QString cf_XmlFormat(const QString &string)
 {
 }
 

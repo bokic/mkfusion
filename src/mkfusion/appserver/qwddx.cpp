@@ -324,7 +324,7 @@ Q_DECL_EXPORT QWDDX::operator bool()
     case Number:
         return m_Number != 0;
     case String:
-        return toNumber() != 0;
+        return toBool();
     default:
         throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
     }
@@ -510,7 +510,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const wchar_t *key)
 		throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class wchar_t* as a structure with members.");
 	}
 
-    QString l_key = QString::fromStdWString(key);
+    QString l_key = QString::fromStdWString(key).toUpper();
 
     if ((m_Type == QWDDX::Struct)||(m_Type == QWDDX::Query))
 	{
@@ -623,6 +623,14 @@ Q_DECL_EXPORT bool QWDDX::operator==(int p_Value)
 	{
 		return toNumber() == (double)p_Value;
 	}
+
+    if ((m_Type == Array))
+    {
+        if (m_Array->count() > 0)
+        {
+            return m_Array->first().toInt() == p_Value;
+        }
+    }
 
     throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
@@ -1730,6 +1738,9 @@ Q_DECL_EXPORT QString QWDDX::toString() const
 		else
 			return "false";
 		break;
+    case QWDDX::Array:
+        return m_Array->first().toString();
+        break;
     case QWDDX::Null:
             return "";
         default:
@@ -1834,12 +1845,22 @@ Q_DECL_EXPORT bool QWDDX::canConvertToNumber()
 
 Q_DECL_EXPORT QDateTime QWDDX::toDateTime() const
 {
-    if (m_Type != QWDDX::DateTime)
+    if (m_Type == QWDDX::DateTime)
     {
-        throw QMKFusionExpressionException("The value cannot be converted to a datetime.");
+        return *m_DateTime;
     }
 
-    return *m_DateTime;
+    if (m_Type == QWDDX::String)
+    {
+        QDateTime dateTime = QDateTime::fromString(*m_String, Qt::ISODate);
+
+        if (dateTime.isValid())
+        {
+            return dateTime;
+        }
+    }
+
+    throw QMKFusionExpressionException("The value cannot be converted to a datetime.");
 }
 
 Q_DECL_EXPORT bool QWDDX::toBool() const
@@ -1859,7 +1880,7 @@ Q_DECL_EXPORT bool QWDDX::toBool() const
 			}
 			else
 			{
-				break;
+                return toInt() != 0;
 			}
 
 			break;
