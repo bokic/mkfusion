@@ -597,3 +597,52 @@ QWDDX callCustomFunction(const QString &functionName, const QList<QWDDX> &argume
 
     return cfRunningTemplate->m_CustomFunctions[functionName](cfRunningTemplate, arguments);
 }
+
+void updateVariableInt(QWDDX &dest, int key, const QWDDX &value)
+{
+    if (dest.m_Type != QWDDX::Array)
+    {
+        throw QMKFusionException("Destination variable is not array.");
+    }
+
+    if (key <= 0)
+    {
+        throw QMKFusionException(QString("Array index is %1 less than 1.").arg(key));
+    }
+
+    if (dest.m_Array->size() < key)
+    {
+        dest.m_Array->resize(key);
+    }
+
+    (*dest.m_Array)[key - 1] = value;
+}
+
+void updateVariableStr(QWDDX &dest, const char *key, const QWDDX &value)
+{
+    if (dest.m_Type != QWDDX::Struct)
+    {
+        throw QMKFusionException("Destination variable is not struct.");
+    }
+
+    (*dest.m_Struct)[QString(key).toUpper()] = value;
+}
+void updateVariableQStr(QWDDX &dest, const QString &key, const QWDDX &value)
+{
+    if (dest.m_Type != QWDDX::Struct)
+    {
+        throw QMKFusionException("Destination variable is not struct.");
+    }
+
+    (*dest.m_Struct)[key.toUpper()] = value;
+}
+
+void updateVariable(QWDDX &dest, const QWDDX &key, const QWDDX &value)
+{
+    if (dest.m_Type != QWDDX::Struct)
+    {
+        throw QMKFusionException("Destination variable is not struct.");
+    }
+
+    (*dest.m_Struct)[key.toString().toUpper()] = value;
+}

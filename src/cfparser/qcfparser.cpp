@@ -733,26 +733,6 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 								}
 							}
 
-							if (ret.m_Text != "")
-							{
-								bool l_bool;
-								ret.m_Text.toDouble(&l_bool);
-								if (l_bool)
-								{
-									if (m_Mode == FullParseMode)
-									{
-										child = QCFParserElement();
-										child.m_Position = ret.m_Position + 1;
-										child.m_Size = ret.m_Size - 2;
-										child.m_Type = Number;
-										child.m_Text = ret.m_Text;
-										ret.m_ChildElements.append(child);
-                                    } else {
-										ret.m_Type = Number;
-									}
-								}
-							}
-
 							return ret;
 						}
 						str.append(QChar(ch));

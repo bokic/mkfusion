@@ -4,6 +4,7 @@
 
 #include <qcfrunningtemplate.h>
 #include <qcfparser.h>
+#include <qcfserver.h>
 #include <qwddx.h>
 #include <QTest>
 #include <QFile>
@@ -55,7 +56,12 @@ void TestCases::optPI2()
         QCFGeneratedTemplateOpt2 optTemplate;
         QCFTemplate stdTemplate;
 
+        QCFServer m_Server;
         QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
+
+        m_TemplateInstance->m_CFServer = &m_Server;
+
+        m_Server.m_RunnuingTemplatesByThreadId.insert(QThread::currentThreadId(), m_TemplateInstance);
 
         m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
 
@@ -66,9 +72,9 @@ void TestCases::optPI2()
             QWDDX LOCAL(QWDDX::Struct);
 
             if(arguments.count() > 0 ) {
-                ARGUMENTS[L"GUIDBYTEARRAY"] = arguments.at(0);
-            } else {;
-                ARGUMENTS[L"GUIDBYTEARRAY"] = "";
+                updateVariable(ARGUMENTS, "GUIDBYTEARRAY", arguments.at(0));
+            } else {
+                updateVariable(ARGUMENTS, "GUIDBYTEARRAY", "");
             };
 
             LOCAL[L"HEXSTRING"] = QWDDX(L"");

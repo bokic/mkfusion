@@ -386,7 +386,7 @@ void QCFRunningTemplate::worker()
                         {
                             QString key = cookie.left(separator).trimmed().toUpper();
                             QString value = cookie.right(cookie.length() - separator - 1);
-                            m_COOKIE[key] = value;
+                            updateVariable(m_COOKIE, key, value);
                         }
                         else
                         {

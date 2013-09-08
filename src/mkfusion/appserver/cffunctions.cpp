@@ -2835,7 +2835,7 @@ Q_DECL_EXPORT bool cf_StructUpdate(QWDDX &structure, const QString &key, const Q
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
 
-    structure.m_Struct->insert(key, value);
+    structure.m_Struct->insert(key.toUpper(), value);
 
     return true;
 }
