@@ -1514,7 +1514,13 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 
     //ret.insert("createobject", QCFFunction("CreateObject"));
 
+    ret.insert("createodbcdatetime", QCFFunction("CreateODBCDateTime", QCFFunction::ReturnDateTime));
+    ret["createodbcdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
 
+    ret.insert("datecompare", QCFFunction("DateCompare", QCFFunction::ReturnInt));
+    ret["datecompare"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
+    ret["datecompare"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
+    ret["datecompare"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
     ret.insert("decrypt", QCFFunction("Decrypt", QCFFunction::ReturnString));
     ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
@@ -1534,6 +1540,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
     ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, false, QCFFunctionArgument::TypeAny));
     ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("fileexists", QCFFunction("FileExists", QCFFunction::ReturnBool));
+    ret["fileexists"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
     ret.insert("find", QCFFunction("Find", QCFFunction::ReturnInt));
     ret["find"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
@@ -1800,6 +1809,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
     ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
     ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert("trim", QCFFunction("Trim", QCFFunction::ReturnString));
+    ret["trim"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
     ret.insert("ucase", QCFFunction("UCase", QCFFunction::ReturnString));
     ret["ucase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
