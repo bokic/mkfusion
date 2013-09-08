@@ -565,6 +565,8 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
         }
         else if (p_CFExpression.m_ChildElements.size() > 0)
         {
+            ret += '(';
+
             for(c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
             {
                 if (c == 0)
@@ -583,10 +585,12 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                     }
                 }
             }
+
+            ret += ')';
         }
         else
         {
-            ret = "QString(\"" + l_ElementName + "\")";
+            ret = "QString(\"" + toCPPEncodeStr(l_ElementName) + "\")";
         }
         break;
     case Variable:
