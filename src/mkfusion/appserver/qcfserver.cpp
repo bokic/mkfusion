@@ -9,6 +9,7 @@
 #include <QTextCodec>
 #include <QLocalSocket>
 #include <QWriteLocker>
+#include <QSettings>
 #include <QFileInfo>
 #include <QLibrary>
 #include <QDir>
@@ -176,6 +177,8 @@ void QCFServer::start()
 
 	m_mainTimer = startTimer(1000);
 
+    readConfig();
+
 	QFileInfo fi(getCurrentExecutableFileName());
 	QDir fi_dir = fi.absoluteDir();
 	fi_dir.cdUp();
@@ -248,20 +251,35 @@ void QCFServer::stop()
 	m_LocalServer.close();
 }
 
+void QCFServer::readConfig()
+{
+    QSettings iniFile("mkfusion.ini", QSettings::IniFormat);
+
+    iniFile.beginGroup("Database");
+    for(const QString &group : iniFile.childKeys())
+    {
+        int sep = group.lastIndexOf('_');
+
+        if (sep < 1)
+        {
+            qDebug() << "Invalid database connection.";
+
+            continue;
+        }
+
+        const QString &connectionName = group.left(sep);
+        const QString &connectionDriver = group.right(group.length() - sep - 1);
+        const QString &connectionString = iniFile.value(group).toString();
+
+        QSqlDatabase db = QSqlDatabase::addDatabase(connectionDriver, connectionName.toUpper());
+
+        db.setDatabaseName(connectionString);
+    }
+}
+
 QSqlDatabase QCFServer::getDBConnection(const QString &datasource)
 {
-    QSqlDatabase ret;
-
-    if (QSqlDatabase::contains(datasource))
-    {
-        QSqlDatabase::removeDatabase(datasource);
-    }
-
-    ret = QSqlDatabase::addDatabase("QSQLITE", datasource);
-
-    ret.setDatabaseName("test.db");
-
-    return ret;
+    return QSqlDatabase::database(datasource.toUpper());
 }
 
 QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_URI)

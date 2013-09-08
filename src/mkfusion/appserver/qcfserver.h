@@ -26,6 +26,7 @@ public:
 	virtual ~QCFServer();
 	void start();
 	void stop();
+    void readConfig();
     QSqlDatabase getDBConnection(const QString &datasource);
     QString compileTemplate(const QString&, const QString&);
     QCFRunningTemplate * getRunningTemplateByThreadId(Qt::HANDLE threadId);
