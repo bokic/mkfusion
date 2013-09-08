@@ -600,49 +600,130 @@ QWDDX callCustomFunction(const QString &functionName, const QList<QWDDX> &argume
 
 void updateVariableInt(QWDDX &dest, int key, const QWDDX &value)
 {
-    if (dest.m_Type != QWDDX::Array)
-    {
-        throw QMKFusionException("Destination variable is not array.");
-    }
+    int index;
 
-    if (key <= 0)
+    switch(dest.m_Type)
     {
-        throw QMKFusionException(QString("Array index is %1 less than 1.").arg(key));
-    }
+    case QWDDX::Array:
+        index = key;
 
-    if (dest.m_Array->size() < key)
-    {
-        dest.m_Array->resize(key);
-    }
+        if (index < 1)
+        {
+            throw QMKFusionException("Key index must be more than 0.");
+        }
 
-    (*dest.m_Array)[key - 1] = value;
+        if (index > dest.m_Array->size())
+        {
+            dest.m_Array->resize(index);
+        }
+
+        (*dest.m_Array)[index - 1] = value;
+        break;
+    default:
+        throw QMKFusionException("Destination variable is not Struct nor Array.");
+    }
 }
 
 void updateVariableStr(QWDDX &dest, const char *key, const QWDDX &value)
 {
-    if (dest.m_Type != QWDDX::Struct)
-    {
-        throw QMKFusionException("Destination variable is not struct.");
-    }
+    int index;
+    bool ok;
 
-    (*dest.m_Struct)[QString(key).toUpper()] = value;
+    switch(dest.m_Type)
+    {
+    case QWDDX::Struct:
+        (*dest.m_Struct)[QString(key).toUpper()] = value;
+        break;
+    case QWDDX::Array:
+        index = QString(key).toInt(&ok);
+
+        if (!ok)
+        {
+            throw QMKFusionException("index is not number.");
+        }
+
+        if (index < 1)
+        {
+            throw QMKFusionException("Key index must be more than 0.");
+        }
+
+        if (index > dest.m_Array->size())
+        {
+            dest.m_Array->resize(index);
+        }
+
+        (*dest.m_Array)[index - 1] = value;
+        break;
+    default:
+        throw QMKFusionException("Destination variable is not Struct nor Array.");
+    }
 }
 void updateVariableQStr(QWDDX &dest, const QString &key, const QWDDX &value)
 {
-    if (dest.m_Type != QWDDX::Struct)
-    {
-        throw QMKFusionException("Destination variable is not struct.");
-    }
+    int index;
+    bool ok;
 
-    (*dest.m_Struct)[key.toUpper()] = value;
+    switch(dest.m_Type)
+    {
+    case QWDDX::Struct:
+        (*dest.m_Struct)[key.toUpper()] = value;
+        break;
+    case QWDDX::Array:
+        index = key.toInt(&ok);
+
+        if (!ok)
+        {
+            throw QMKFusionException("index is not number.");
+        }
+
+        if (index < 1)
+        {
+            throw QMKFusionException("Key index must be more than 0.");
+        }
+
+        if (index > dest.m_Array->size())
+        {
+            dest.m_Array->resize(index);
+        }
+
+        (*dest.m_Array)[index - 1] = value;
+        break;
+    default:
+        throw QMKFusionException("Destination variable is not Struct nor Array.");
+    }
 }
 
 void updateVariable(QWDDX &dest, const QWDDX &key, const QWDDX &value)
 {
-    if (dest.m_Type != QWDDX::Struct)
-    {
-        throw QMKFusionException("Destination variable is not struct.");
-    }
+    int index;
+    bool ok;
 
-    (*dest.m_Struct)[key.toString().toUpper()] = value;
+    switch(dest.m_Type)
+    {
+    case QWDDX::Struct:
+        (*dest.m_Struct)[key.toString().toUpper()] = value;
+        break;
+    case QWDDX::Array:
+        index = key.toString().toInt(&ok);
+
+        if (!ok)
+        {
+            throw QMKFusionException("index is not number.");
+        }
+
+        if (index < 1)
+        {
+            throw QMKFusionException("Key index must be more than 0.");
+        }
+
+        if (index > dest.m_Array->size())
+        {
+            dest.m_Array->resize(index);
+        }
+
+        (*dest.m_Array)[index - 1] = value;
+        break;
+    default:
+        throw QMKFusionException("Destination variable is not Struct nor Array.");
+    }
 }
