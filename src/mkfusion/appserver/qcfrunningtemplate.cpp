@@ -298,7 +298,7 @@ void QCFRunningTemplate::worker()
                     throw QMKFusionException("Invalid POST item name.");
                 }
 
-                m_FORM[key.toUpper()] = value;
+                updateVariableQStr(m_FORM, key, value);
             }
         }
         else if (tempint < 0)
