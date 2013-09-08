@@ -1559,6 +1559,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	ret.insert("fix", QCFFunction("Fix", QCFFunction::ReturnInt));
 	ret["fix"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
 
+    ret.insert("int", QCFFunction("Int", QCFFunction::ReturnString));
+    ret["int"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
+
     ret.insert("isarray", QCFFunction("IsArray", QCFFunction::ReturnBool));
     ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
     ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
