@@ -229,7 +229,7 @@ QString cfdump_var(const QWDDX &p_Variable)
 
             columns = p_Variable.m_Struct->count();
 
-            ret = "<table class=\"cfdump_query\"><tr><th class=\"array\" colspan=\"" + QString::number(columns + 1) + "\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">query</th></tr>\n";
+            ret = "<table class=\"cfdump_query\"><tr><th class=\"array\" colspan=\"" + QString::number(columns) + "\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">query</th></tr>\n";
 
             if (columns > 0)
             {
@@ -239,12 +239,14 @@ QString cfdump_var(const QWDDX &p_Variable)
 
                 for(int c = 0; c < columns; c++)
                 {
+                    if (p_Variable.m_Struct->keys().at(c) == "RECORDCOUNT") continue; // TODO: Temporary, rewrite it.
+
                     ret += "<td class=\"query\">" + p_Variable.m_Struct->keys().at(c) + "</td>\n";
                 }
 
                 ret += "</tr>";
 
-                int rows = p_Variable.m_Struct->values().at(0).m_Array->size();
+                int rows = p_Variable.m_Struct->value(QString::fromWCharArray(L"RECORDCOUNT")).toInt(); // TODO: Temporary, rewrite it.
 
                 for(int r = 0; r < rows; r++)
                 {
@@ -254,6 +256,8 @@ QString cfdump_var(const QWDDX &p_Variable)
 
                     for(int c = 0; c < columns; c++)
                     {
+                        if (p_Variable.m_Struct->keys().at(c) == "RECORDCOUNT") continue; // TODO: Temporary, rewrite it.
+
                         QString cell_text = p_Variable.m_Struct->values().at(c).m_Array->at(r).toString();
 
                         if (cell_text.isEmpty())
@@ -263,7 +267,6 @@ QString cfdump_var(const QWDDX &p_Variable)
 
                         ret += "<td valign=\"top\">" + cell_text + "</td>\n";
                     }
-
 
                     ret += "</tr>";
                 }

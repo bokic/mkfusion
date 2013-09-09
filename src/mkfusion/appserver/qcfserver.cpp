@@ -271,9 +271,60 @@ void QCFServer::readConfig()
         const QString &connectionDriver = group.right(group.length() - sep - 1);
         const QString &connectionString = iniFile.value(group).toString();
 
-        QSqlDatabase db = QSqlDatabase::addDatabase(connectionDriver, connectionName.toUpper());
+        if (connectionDriver == "QSQLITE")
+        {
+            QSqlDatabase db = QSqlDatabase::addDatabase(connectionDriver, connectionName.toUpper());
 
-        db.setDatabaseName(connectionString);
+            db.setDatabaseName(connectionString);
+        }
+        else if (connectionDriver == "QOBDC")
+        {
+            QSqlDatabase db = QSqlDatabase::addDatabase(connectionDriver, connectionName.toUpper());
+
+            db.setDatabaseName(connectionString);
+        }
+        else if (connectionDriver == "QMYSQL")
+        {
+            QSqlDatabase db = QSqlDatabase::addDatabase(connectionDriver, connectionName.toUpper());
+
+            for(const QString item : connectionString.split(';'))
+            {
+                QStringList key_value = item.split(':');
+
+                if (key_value.count() != 2)
+                {
+                    continue;
+                }
+
+                QString key = key_value.first();
+                QString value = QByteArray::fromBase64(key_value.last().toLatin1());
+
+                if (key.compare("hostname", Qt::CaseInsensitive) == 0)
+                {
+                    db.setHostName(value);
+                }
+                else if (key.compare("databasename", Qt::CaseInsensitive) == 0)
+                {
+                    db.setDatabaseName(value);
+                }
+                else if (key.compare("username", Qt::CaseInsensitive) == 0)
+                {
+                    db.setUserName(value);
+                }
+                else if (key.compare("password", Qt::CaseInsensitive) == 0)
+                {
+                    db.setPassword(value);
+                }
+                else if (key.compare("port", Qt::CaseInsensitive) == 0)
+                {
+                    db.setPort(value.toInt());
+                }
+            }
+        }
+        else
+        {
+            qDebug() << "Unsupported database connection(" << connectionDriver << ")";
+        }
     }
 }
 
