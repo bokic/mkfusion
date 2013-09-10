@@ -271,13 +271,7 @@ void QCFServer::readConfig()
         const QString &connectionDriver = group.right(group.length() - sep - 1);
         const QString &connectionString = iniFile.value(group).toString();
 
-        if (connectionDriver == "QSQLITE")
-        {
-            QSqlDatabase db = QSqlDatabase::addDatabase(connectionDriver, connectionName.toUpper());
-
-            db.setDatabaseName(connectionString);
-        }
-        else if (connectionDriver == "QODBC")
+        if ((connectionDriver == "QSQLITE")||(connectionDriver == "QODBC"))
         {
             QSqlDatabase db = QSqlDatabase::addDatabase(connectionDriver, connectionName.toUpper());
 
