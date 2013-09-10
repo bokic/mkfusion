@@ -1721,9 +1721,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["queryaddcolumn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
     ret.insert("queryconvertforgrid", QCFFunction("QueryConvertForGrid", QCFFunction::ReturnQWDDX));
-    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["queryconvertforgrid"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret["queryconvertforgrid"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret["queryconvertforgrid"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
     ret.insert("querysetcell", QCFFunction("QuerySetCell", QCFFunction::ReturnBool));
     ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));

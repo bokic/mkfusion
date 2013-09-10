@@ -2684,12 +2684,9 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, co
         new_field.m_Array->resize(rows);
     }
 
-    //query.m_Struct->insertMulti(column_name_upper, new_field);
     if (query.m_Struct->contains(column_name_upper))
     {
-        query.m_Struct->remove(column_name_upper);
-
-        qDebug() << "Warning: Database field" << column_name_upper << "already exists.";
+        throw QMKFusionDatabaseException(QString("The column name (%1) that you specified already exists in this query.").arg(column_name_upper), "Column names must be unique.");
     }
 
     query.m_Struct->insert(column_name_upper, new_field);
