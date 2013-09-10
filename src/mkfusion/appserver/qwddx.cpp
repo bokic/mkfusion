@@ -705,12 +705,7 @@ Q_DECL_EXPORT bool QWDDX::operator==(const QWDDX &p_Value)
 
 Q_DECL_EXPORT QWDDX QWDDX::operator!()
 {
-    if ((m_Type == Boolean))
-    {
-        return QWDDX(!m_Bool);
-    }
-
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    return QWDDX(!toBool());
 }
 
 /*Q_DECL_EXPORT bool operator!(const QWDDX &operand)

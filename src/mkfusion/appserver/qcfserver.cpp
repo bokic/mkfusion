@@ -277,7 +277,7 @@ void QCFServer::readConfig()
 
             db.setDatabaseName(connectionString);
         }
-        else if (connectionDriver == "QOBDC")
+        else if (connectionDriver == "QODBC")
         {
             QSqlDatabase db = QSqlDatabase::addDatabase(connectionDriver, connectionName.toUpper());
 
