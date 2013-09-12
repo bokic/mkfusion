@@ -7,7 +7,7 @@ CONFIG  += debug_and_release c++11
 TARGET   = mkfusion
 DESTDIR  = ../../../bin
 
-QMAKE_CXXFLAGS += -Wno-unused-parameter
+debug.QMAKE_CXXFLAGS += -Wno-unused-parameter
 
 
 debug {

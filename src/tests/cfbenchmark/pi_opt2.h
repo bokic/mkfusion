@@ -10,8 +10,9 @@
 #define MY_EXPORT
 #endif
 
+#ifndef QCHECK_QWDDX_VAR_CACHE
 #define QCHECK_QWDDX_VAR_CACHE(VAR, STR) \
-    if (VAR == NULL) \
+    if (VAR == nullptr) \
     { \
         if (!m_TemplateInstance->m_VARIABLES.m_Struct->contains(STR)) \
         { \
@@ -19,6 +20,7 @@
         } \
         VAR = &(*m_TemplateInstance->m_VARIABLES.m_Struct)[STR]; \
     }
+#endif
 
 
 class QCFGeneratedTemplateOpt2 : public QCFTemplate

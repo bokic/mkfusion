@@ -7,18 +7,19 @@ QCFApplication::QCFApplication(QObject *parent)
 }
 
 QCFApplication::QCFApplication(const QCFApplication &other)
+    : QObject(other.parent())
+    , ApplicationTimeout(other.ApplicationTimeout)
+    , ClientManagement(other.ClientManagement)
+    , ClientStorage(other.ClientStorage)
+    , LoginStorage(other.LoginStorage)
+    , ScriptProtect(other.ScriptProtect)
+    , SessionManagement(other.SessionManagement)
+    , SessionTimeout(other.SessionTimeout)
+    , SetClientCookies(other.SetClientCookies)
+    , SetDomainCookies(other.SetDomainCookies)
+    //, lock(other.lock)
+    , data(other.data)
 {
-    ApplicationTimeout = other.ApplicationTimeout;
-    ClientManagement = other.ClientManagement;
-    ClientStorage = other.ClientStorage;
-    LoginStorage = other.LoginStorage;
-    ScriptProtect = other.ScriptProtect;
-    SessionManagement = other.SessionManagement;
-    SessionTimeout = other.SessionTimeout;
-    SetClientCookies = other.SetClientCookies;
-    SetDomainCookies = other.SetDomainCookies;
-    //lock = other.lock;
-    data = other.data;
 }
 
 #ifdef Q_COMPILER_RVALUE_REFS
@@ -38,8 +39,8 @@ QCFApplication &QCFApplication::operator=(QCFApplication &&other)
 
     return *this;
 }
-
 #endif
+
 QCFApplication &QCFApplication::operator=(const QCFApplication &other)
 {
     ApplicationTimeout = other.ApplicationTimeout;

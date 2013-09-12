@@ -6,7 +6,7 @@ QT       = core network sql concurrent testlib
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../../bin
 
-QMAKE_CXXFLAGS += -Wno-unused-parameter
+debug.QMAKE_CXXFLAGS += -Wno-unused-parameter
 
 debug {
 	OBJECTS_DIR = ../../../obj/tests/parsertest2/debug
