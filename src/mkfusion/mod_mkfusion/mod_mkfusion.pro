@@ -8,19 +8,6 @@ CONFIG   += debug_and_release c++11
 TARGET    = mod_mkfusion
 DESTDIR   = ../../../bin
 
-debug {
-	OBJECTS_DIR = ../../../obj/mkfusion/mod_mkfusion/debug
-	MOC_DIR     = ../../../obj/mkfusion/mod_mkfusion/debug
-	RCC_DIR     = ../../../obj/mkfusion/mod_mkfusion/debug
-	UI_DIR      = ../../../obj/mkfusion/mod_mkfusion/debug
-}
-release {
-	OBJECTS_DIR = ../../../obj/mkfusion/mod_mkfusion/release
-	MOC_DIR     = ../../../obj/mkfusion/mod_mkfusion/release
-	RCC_DIR     = ../../../obj/mkfusion/mod_mkfusion/release
-	UI_DIR      = ../../../obj/mkfusion/mod_mkfusion/release
-}
-
 DEPENDPATH  += . ../simplifiedlocalsocket
 INCLUDEPATH += . ../simplifiedlocalsocket
 

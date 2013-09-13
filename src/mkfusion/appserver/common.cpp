@@ -227,7 +227,7 @@ QString cfdump_var(const QWDDX &p_Variable)
 			break;
         case QWDDX::Query:
 
-            columns = p_Variable.m_Struct->count();
+            columns = p_Variable.m_Struct->value("RESULTSET").m_Struct->count();
 
             ret = "<table class=\"cfdump_query\"><tr><th class=\"array\" colspan=\"" + QString::number(columns) + "\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">query</th></tr>\n";
 
@@ -239,14 +239,12 @@ QString cfdump_var(const QWDDX &p_Variable)
 
                 for(int c = 0; c < columns; c++)
                 {
-                    if (p_Variable.m_Struct->keys().at(c) == "RECORDCOUNT") continue; // TODO: Temporary, rewrite it.
-
-                    ret += "<td class=\"query\">" + p_Variable.m_Struct->keys().at(c) + "</td>\n";
+                    ret += "<td class=\"query\">" + p_Variable.m_Struct->value("RESULTSET").m_Struct->keys().at(c) + "</td>\n";
                 }
 
                 ret += "</tr>";
 
-                int rows = p_Variable.m_Struct->value(QString::fromWCharArray(L"RECORDCOUNT")).toInt(); // TODO: Temporary, rewrite it.
+                int rows = p_Variable.m_Struct->value("RECORDCOUNT").toInt();
 
                 for(int r = 0; r < rows; r++)
                 {
@@ -256,9 +254,7 @@ QString cfdump_var(const QWDDX &p_Variable)
 
                     for(int c = 0; c < columns; c++)
                     {
-                        if (p_Variable.m_Struct->keys().at(c) == "RECORDCOUNT") continue; // TODO: Temporary, rewrite it.
-
-                        QString cell_text = p_Variable.m_Struct->values().at(c).m_Array->at(r).toString();
+                        QString cell_text = p_Variable.m_Struct->value("RESULTSET").m_Struct->values().at(c).m_Array->at(r).toString();
 
                         if (cell_text.isEmpty())
                         {

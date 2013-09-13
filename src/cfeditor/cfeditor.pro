@@ -7,19 +7,6 @@ QT       = core gui network xml widgets webkit webkitwidgets
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../bin
 
-debug {
-	OBJECTS_DIR = ../../obj/cfeditor/debug
-	MOC_DIR     = ../../obj/cfeditor/debug
-	RCC_DIR     = ../../obj/cfeditor/debug
-	UI_DIR      = ../../obj/cfeditor/debug
-}
-release {
-	OBJECTS_DIR = ../../obj/cfeditor/release
-	MOC_DIR     = ../../obj/cfeditor/release
-	RCC_DIR     = ../../obj/cfeditor/release
-	UI_DIR      = ../../obj/cfeditor/release
-}
-
 win32 {
     DEPENDPATH  += . codeeditwidget/ rds/ ../textparser/ ../../libs/libssh/include/
     INCLUDEPATH += . codeeditwidget/ rds/ ../textparser/ ../../libs/libssh/include/

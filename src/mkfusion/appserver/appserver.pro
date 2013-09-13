@@ -7,22 +7,6 @@ CONFIG  += debug_and_release c++11
 TARGET   = mkfusion
 DESTDIR  = ../../../bin
 
-debug.QMAKE_CXXFLAGS += -Wno-unused-parameter
-
-
-debug {
-	OBJECTS_DIR = ../../../obj/mkfusion/appserver/debug
-	MOC_DIR     = ../../../obj/mkfusion/appserver/debug
-	RCC_DIR     = ../../../obj/mkfusion/appserver/debug
-	UI_DIR      = ../../../obj/mkfusion/appserver/debug
-}
-release {
-	OBJECTS_DIR = ../../../obj/mkfusion/appserver/release
-	MOC_DIR     = ../../../obj/mkfusion/appserver/release
-	RCC_DIR     = ../../../obj/mkfusion/appserver/release
-	UI_DIR      = ../../../obj/mkfusion/appserver/release
-}
-
 DEPENDPATH  += . ../../../libs/qtservice ../../cfparser
 INCLUDEPATH += . ../../../libs/qtservice ../../cfparser
 

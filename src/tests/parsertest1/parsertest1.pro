@@ -7,19 +7,6 @@ QT       = core gui widgets
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../../bin
 
-debug {
-	OBJECTS_DIR = ../../../obj/tests/parsertest1/debug
-	MOC_DIR     = ../../../obj/tests/parsertest1/debug
-	RCC_DIR     = ../../../obj/tests/parsertest1/debug
-	UI_DIR      = ../../../obj/tests/parsertest1/debug
-}
-release {
-	OBJECTS_DIR = ../../../obj/tests/parsertest1/release
-	MOC_DIR     = ../../../obj/tests/parsertest1/release
-	RCC_DIR     = ../../../obj/tests/parsertest1/release
-	UI_DIR      = ../../../obj/tests/parsertest1/release
-}
-
 DEPENDPATH  += . ../../cfparser ../../mkfusion/appserver
 INCLUDEPATH += . ../../cfparser ../../mkfusion/appserver
 

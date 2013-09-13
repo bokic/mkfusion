@@ -7,19 +7,6 @@ QT       =
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../../install/windows
 
-debug {
-	OBJECTS_DIR = ../../../obj/mkfusion/uninstall/debug
-	MOC_DIR     = ../../../obj/mkfusion/uninstall/debug
-	RCC_DIR     = ../../../obj/mkfusion/uninstall/debug
-	UI_DIR      = ../../../obj/mkfusion/uninstall/debug
-}
-release {
-        OBJECTS_DIR = ../../../obj/mkfusion/uninstall/release
-        MOC_DIR     = ../../../obj/mkfusion/uninstall/release
-        RCC_DIR     = ../../../obj/mkfusion/uninstall/release
-        UI_DIR      = ../../../obj/mkfusion/uninstall/release
-}
-
 DEPENDPATH  += .
 INCLUDEPATH += .
 

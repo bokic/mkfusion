@@ -6,19 +6,6 @@ QT       = core
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../../bin
 
-debug {
-	OBJECTS_DIR = ../../../obj/tests/sftptest/debug
-	MOC_DIR     = ../../../obj/tests/sftptest/debug
-	RCC_DIR     = ../../../obj/tests/sftptest/debug
-	UI_DIR      = ../../../obj/tests/sftptest/debug
-}
-release {
-	OBJECTS_DIR = ../../../obj/tests/sftptest/release
-	MOC_DIR     = ../../../obj/tests/sftptest/release
-	RCC_DIR     = ../../../obj/tests/sftptest/release
-	UI_DIR      = ../../../obj/tests/sftptest/release
-}
-
 DEPENDPATH  += . ../../../libs/libssh/include
 INCLUDEPATH += . ../../../libs/libssh/include
 

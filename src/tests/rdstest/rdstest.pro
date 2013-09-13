@@ -6,19 +6,6 @@ QT       = core network xml testlib
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../../bin
 
-debug {
-	OBJECTS_DIR = ../../../obj/tests/rdstest/debug
-	MOC_DIR     = ../../../obj/tests/rdstest/debug
-	RCC_DIR     = ../../../obj/tests/rdstest/debug
-	UI_DIR      = ../../../obj/tests/rdstest/debug
-}
-release {
-	OBJECTS_DIR = ../../../obj/tests/rdstest/release
-	MOC_DIR     = ../../../obj/tests/rdstest/release
-	RCC_DIR     = ../../../obj/tests/rdstest/release
-	UI_DIR      = ../../../obj/tests/rdstest/release
-}
-
 DEPENDPATH  += . ../../cfeditor/rds/
 INCLUDEPATH += . ../../cfeditor/rds/
 

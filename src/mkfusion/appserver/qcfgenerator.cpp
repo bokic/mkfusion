@@ -1227,6 +1227,10 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return "} catch(const QMKFusionException &ex) {";
         }
     }
+    else if(p_CFTag.m_Name.compare("cfcookie", Qt::CaseInsensitive) == 0)
+    {
+
+    }
     else if(p_CFTag.m_Name.compare("cfdump", Qt::CaseInsensitive) == 0) /* Only 'var' parameter is implemented. */
 	{
 		if (p_CFTag.m_Arguments.m_Type != CFTagArguments)

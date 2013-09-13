@@ -2323,7 +2323,7 @@ Q_DECL_EXPORT bool cf_IsXmlRoot(const QWDDX &value)
 
 Q_DECL_EXPORT QWDDX cf_JavaCast(const QString &type, const QWDDX &value)
 {
-    throw QMKFusionException("Not Implemented", "cf_JavaCast is not Implemented (yet:))");
+    throw QMKFusionException("Not Implemented", "JavaCast is not Implemented (yet:))");
 }
 
 Q_DECL_EXPORT QString cf_JSStringFormat(const QString &string)
@@ -2662,6 +2662,8 @@ Q_DECL_EXPORT int cf_Quarter(const QDateTime &date)
 
 Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, const QString &datatype, const QString &array_name)
 {
+    Q_UNUSED(datatype);
+
     if (query.type() != QWDDX::Query)
     {
         throw QMKFusionException("Parameter mismatch", "query parameter is not type Query.");
@@ -2670,12 +2672,7 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, co
     const QString &column_name_upper = column_name.toUpper();
 
 
-    int rows = 0;
-
-    if (query.m_Struct->count() > 0)
-    {
-        rows = query.m_Struct->values().at(0).m_Array->size();
-    }
+    int rows = query["RECORDCOUNT"];
 
     QWDDX new_field = QWDDX(QWDDX::Array);
 
@@ -2684,12 +2681,12 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, co
         new_field.m_Array->resize(rows);
     }
 
-    if (query.m_Struct->contains(column_name_upper))
+    if (query["RESULTSET"].m_Struct->contains(column_name_upper))
     {
         throw QMKFusionDatabaseException(QString("The column name (%1) that you specified already exists in this query.").arg(column_name_upper), "Column names must be unique.");
     }
 
-    query.m_Struct->insert(column_name_upper, new_field);
+    query["RESULTSET"].m_Struct->insert(column_name_upper, new_field);
 
     if (query.m_Struct->count() > 1)
     {
@@ -2713,23 +2710,32 @@ Q_DECL_EXPORT int cf_QueryAddRow(QWDDX &query, int number)
 {
     if (query.type() != QWDDX::Query)
     {
-        throw QMKFusionException("Parameter mismatch", "query parameter is not type Query.");
+        throw QMKFusionInvalidArgumentException("QueryAddRow", 1, 0, "query parameter is not type Query.");
     }
 
-    int columns = query.m_Struct->size();
+    if (number < 0)
+    {
+        throw QMKFusionInvalidArgumentException("QueryAddRow", 2, number, "number parameter value should be at least 1.");
+    }
+
+    int columns = query[L"RESULTSET"].m_Struct->count();
 
     if (columns < 1)
     {
         return 0;
     }
 
-    int rows = query.m_Struct->values()[0].m_Array->size();
+    QWDDX &queryData = query[L"RESULTSET"];
+    int rows = query[L"RECORDCOUNT"];
     int new_rows = rows + number;
 
     for(int column = 0; column < columns; column++)
     {
-        (*query.m_Struct)[query.m_Struct->keys().at(column)].m_Array->resize(new_rows);
+        QString colName = query[L"RESULTSET"].m_Struct->keys().at(column);
+        queryData[colName].m_Array->resize(new_rows);
     }
+
+    query[L"RECORDCOUNT"] = new_rows;
 
     return new_rows;
 }
@@ -2740,7 +2746,7 @@ Q_DECL_EXPORT QWDDX cf_QueryConvertForGrid(const QWDDX &query, int page, int pag
     Q_UNUSED(page);
     Q_UNUSED(pageSize);
 
-    throw QMKFusionException("Not Implemented", "cf_QueryConvertForGrid is not Implemented (yet:))");
+    throw QMKFusionException("Not Implemented", "QueryConvertForGrid is not Implemented (yet:))");
 }
 
 Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &columntypelist)
@@ -2749,17 +2755,20 @@ Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &column
 
     Q_UNUSED(columntypelist);
 
-    const QStringList columns = columnlist.toUpper().split(",");
+    const QString &columnlistUpper = columnlist.toUpper();
+
+    const QStringList columns = columnlistUpper.split(",");
     //const QStringList column_types = columntypelist.split(",");
 
     ret = QWDDX(QWDDX::Query);
 
-    ret.m_Struct->insert("COLUMNS", QWDDX(QWDDX::Array));
-    ret.m_Struct->insert("DATA", QWDDX(QWDDX::Array));
+    ret.m_Struct->insert("COLUMNS", columnlistUpper);
+    ret.m_Struct->insert("RESULTSET", QWDDX(QWDDX::Struct));
+    ret.m_Struct->insert("RECORDCOUNT", 0);
 
     for(const QString &columnName : columns)
     {
-        ret.m_Struct->insert(columnName.trimmed(), QWDDX(QWDDX::Array));
+        ret[L"RESULTSET"].m_Struct->insert(columnName.trimmed(), QWDDX(QWDDX::Array));
     }
 
     return ret;
@@ -2774,17 +2783,17 @@ Q_DECL_EXPORT bool cf_QuerySetCell(QWDDX &query, const QString &column_name, con
 
     const QString upperColumnName = column_name.toUpper();
 
-    if (!query.m_Struct->contains(upperColumnName))
+    if (!query["RESULTSET"].m_Struct->contains(upperColumnName))
     {
         throw QMKFusionException("Parameter mismatch, query_column has invalid column name.");
     }
 
-    if ((row_number < 1)||(row_number > query[upperColumnName].m_Array->size()))
+    if ((row_number < 1)||(row_number > query[L"RECORDCOUNT"].toInt()))
     {
         throw QMKFusionException("Parameter mismatch, row_number is out of range.");
     }
 
-    query[upperColumnName].m_Array->replace(row_number - 1, value);
+    query["RESULTSET"][upperColumnName].m_Array->replace(row_number - 1, value);
 
     return true;
 }

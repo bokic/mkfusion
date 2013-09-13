@@ -3,23 +3,9 @@ lessThan(QT_MAJOR_VERSION, 5) {
 }
 
 QT       = core network sql concurrent testlib
+
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../../bin
-
-debug.QMAKE_CXXFLAGS += -Wno-unused-parameter
-
-debug {
-	OBJECTS_DIR = ../../../obj/tests/parsertest2/debug
-	MOC_DIR     = ../../../obj/tests/parsertest2/debug
-	RCC_DIR     = ../../../obj/tests/parsertest2/debug
-	UI_DIR      = ../../../obj/tests/parsertest2/debug
-}
-release {
-	OBJECTS_DIR = ../../../obj/tests/parsertest2/release
-	MOC_DIR     = ../../../obj/tests/parsertest2/release
-	RCC_DIR     = ../../../obj/tests/parsertest2/release
-	UI_DIR      = ../../../obj/tests/parsertest2/release
-}
 
 DEPENDPATH  += . ../../cfparser ../../mkfusion/appserver ../../../libs/qtservice
 INCLUDEPATH += . ../../cfparser ../../mkfusion/appserver ../../../libs/qtservice
