@@ -250,7 +250,7 @@ void QCFRunningTemplate::worker()
 	qint32 l_RecieveBufSize = 0;
     QCFTemplate *l_page = 0;
 
-#if Q_OS_LINUX
+#ifdef Q_OS_LINUX
     QProcess process;
 #endif
 
