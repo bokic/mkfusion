@@ -27,9 +27,9 @@ public:
 	void start();
 	void stop();
     void readConfig();
-    QSqlDatabase getDBConnection(const QString &datasource);
+    QSqlDatabase *getDBConnection(const QString &datasource);
     QString compileTemplate(const QString&, const QString&);
-    QCFRunningTemplate * getRunningTemplateByThreadId(Qt::HANDLE threadId);
+    QCFRunningTemplate *getRunningTemplateByThreadId(Qt::HANDLE threadId);
     void createSessonStrings(QString &cfid, QString &cftoken);
 
 protected:
@@ -44,6 +44,7 @@ public:
     QHash<Qt::HANDLE, QCFRunningTemplate *> m_RunnuingTemplatesByThreadId;
     QHash<QString, QCFApplication> m_Applications;
     QHash<QString, QWDDX> m_Sessions;
+    QHash<QString, QSqlDatabase> m_DatabasePool;
     QLocalServer m_LocalServer;
     QReadWriteLock m_runningTemplatesLock;
     QString m_MKFusionPath;

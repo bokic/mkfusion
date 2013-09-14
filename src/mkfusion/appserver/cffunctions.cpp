@@ -2671,8 +2671,7 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, co
 
     const QString &column_name_upper = column_name.toUpper();
 
-
-    int rows = query["RECORDCOUNT"];
+    int rows = query[L"RECORDCOUNT"];
 
     QWDDX new_field = QWDDX(QWDDX::Array);
 
@@ -2681,17 +2680,21 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, co
         new_field.m_Array->resize(rows);
     }
 
-    if (query["RESULTSET"].m_Struct->contains(column_name_upper))
+    if (query[L"RESULTSET"].m_Struct->contains(column_name_upper))
     {
         throw QMKFusionDatabaseException(QString("The column name (%1) that you specified already exists in this query.").arg(column_name_upper), "Column names must be unique.");
     }
 
-    query["RESULTSET"].m_Struct->insert(column_name_upper, new_field);
-
-    if (query.m_Struct->count() > 1)
+    if (query[L"COLUMNS"].toString().length() > 0)
     {
-        query[column_name_upper].m_Array->resize(query.m_Struct->values().at(0).m_Array->size());
+        query[L"COLUMNS"] = query[L"COLUMNS"].toString() + "," + column_name_upper;
     }
+    else
+    {
+        query[L"COLUMNS"] = column_name_upper;
+    }
+
+    query[L"RESULTSET"].m_Struct->insert(column_name_upper, new_field);
 
     if (array_name.count() > 0)
     {
@@ -2757,7 +2760,12 @@ Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &column
 
     const QString &columnlistUpper = columnlist.toUpper();
 
-    const QStringList columns = columnlistUpper.split(",");
+    QStringList columns;
+    if (columnlistUpper.count() > 0)
+    {
+        columns = columnlistUpper.split(",");
+    }
+
     //const QStringList column_types = columntypelist.split(",");
 
     ret = QWDDX(QWDDX::Query);
@@ -2765,6 +2773,7 @@ Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &column
     ret.m_Struct->insert("COLUMNS", columnlistUpper);
     ret.m_Struct->insert("RESULTSET", QWDDX(QWDDX::Struct));
     ret.m_Struct->insert("RECORDCOUNT", 0);
+    ret.m_Struct->insert("CURRENTROW", 0);
 
     for(const QString &columnName : columns)
     {
@@ -2783,7 +2792,7 @@ Q_DECL_EXPORT bool cf_QuerySetCell(QWDDX &query, const QString &column_name, con
 
     const QString upperColumnName = column_name.toUpper();
 
-    if (!query["RESULTSET"].m_Struct->contains(upperColumnName))
+    if (!query[L"RESULTSET"].m_Struct->contains(upperColumnName))
     {
         throw QMKFusionException("Parameter mismatch, query_column has invalid column name.");
     }
@@ -2793,7 +2802,7 @@ Q_DECL_EXPORT bool cf_QuerySetCell(QWDDX &query, const QString &column_name, con
         throw QMKFusionException("Parameter mismatch, row_number is out of range.");
     }
 
-    query["RESULTSET"][upperColumnName].m_Array->replace(row_number - 1, value);
+    query[L"RESULTSET"][upperColumnName].m_Array->replace(row_number - 1, value);
 
     return true;
 }

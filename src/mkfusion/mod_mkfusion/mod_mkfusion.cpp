@@ -70,6 +70,7 @@ static int mkfusion_handler(request_rec *r)
 		l_IOStream << apr_table_get(r->headers_in, "Accept-Language");
 		//l_IOStream << apr_table_get(r->headers_in, "Accept-Charset"); // New ISO-8859-1,utf-8;q=0.7,*;q=0.3
 		l_IOStream << apr_table_get(r->headers_in, "Connection");
+        l_IOStream << apr_table_get(r->headers_in, "Content-Type");
 		l_IOStream << apr_table_get(r->headers_in, "Host");
 		l_IOStream << apr_table_get(r->headers_in, "Referer");
 		l_IOStream << apr_table_get(r->headers_in, "User-Agent");

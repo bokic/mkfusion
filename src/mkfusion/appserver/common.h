@@ -16,6 +16,7 @@ struct QCFRunningTemplate_Request
 	QString m_AcceptEncoding;
 	QString m_AcceptLanguage;
 	QString m_Connection;
+    QString m_ContentType;
 	QString m_RemoteHost;
 	QString m_Referer;
 	QString m_UserAgent;

@@ -52,6 +52,7 @@ public slots:
 private:
     void * compileAndLoadTemplate(const QString &filename, const QString &uri);
     void runApplicationTemplate();
+    void processPostData(QByteArray post);
 };
 
 #endif // QCFRUNNINGTEMPLATE_H

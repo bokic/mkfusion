@@ -271,7 +271,13 @@ void QCFServer::readConfig()
         const QString &connectionDriver = group.right(group.length() - sep - 1);
         const QString &connectionString = iniFile.value(group).toString();
 
-        if ((connectionDriver == "QSQLITE")||(connectionDriver == "QODBC"))
+        if (connectionDriver == "QSQLITE")
+        {
+            QSqlDatabase db = QSqlDatabase::addDatabase(connectionDriver, connectionName.toUpper());
+
+            db.setDatabaseName(connectionString);
+        }
+        else if (connectionDriver == "QODBC")
         {
             QSqlDatabase db = QSqlDatabase::addDatabase(connectionDriver, connectionName.toUpper());
 
@@ -322,9 +328,14 @@ void QCFServer::readConfig()
     }
 }
 
-QSqlDatabase QCFServer::getDBConnection(const QString &datasource)
+QSqlDatabase *QCFServer::getDBConnection(const QString &datasource)
 {
-    return QSqlDatabase::database(datasource.toUpper());
+    if (!m_DatabasePool.contains(datasource))
+    {
+        m_DatabasePool[datasource] = QSqlDatabase::database(datasource.toUpper());
+    }
+
+    return &(m_DatabasePool[datasource]);
 }
 
 QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_URI)
@@ -408,7 +419,7 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 	return ret;
 }
 
-QCFRunningTemplate * QCFServer::getRunningTemplateByThreadId(Qt::HANDLE threadId)
+QCFRunningTemplate *QCFServer::getRunningTemplateByThreadId(Qt::HANDLE threadId)
 {
     if (m_RunnuingTemplatesByThreadId.contains(threadId))
     {

@@ -412,7 +412,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QString &key)
         throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class \'QString\' as a structure with members.");
 	}
 
-    if ((m_Type == QWDDX::Struct)||(m_Type == QWDDX::Query))
+    if (m_Type == QWDDX::Struct)
 	{
         if (m_Struct->contains(key) == false)
 		{
@@ -429,6 +429,21 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QString &key)
 
         return (*m_Struct)[key];
 	}
+    else if (m_Type == QWDDX::Query)
+    {
+        if (!m_Struct->contains(key))
+        {
+            if ((*this)[L"RESULTSET"].m_Struct->contains(key))
+            {
+                (*this)[L"RESULTSET"][key].m_Number = (*this)[L"CURRENTROW"];
+                return (*this)[L"RESULTSET"][key];
+            }
+
+            throw QMKFusionException(QString("Variable %1 is undefined.").arg(key));
+        }
+
+        return (*m_Struct)[key];
+    }
 	else
 	{
 		bool ok;
@@ -463,7 +478,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const char *key)
 
     QString l_key = QString::fromLatin1(key);
 
-    if ((m_Type == QWDDX::Struct)||(m_Type == QWDDX::Query))
+    if (m_Type == QWDDX::Struct)
 	{
         if (m_Struct->contains(l_key) == false)
 		{
@@ -480,6 +495,21 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const char *key)
 
         return (*m_Struct)[l_key];
 	}
+    else if (m_Type == QWDDX::Query)
+    {
+        if (!m_Struct->contains(l_key))
+        {
+            if ((*this)[L"RESULTSET"].m_Struct->contains(l_key))
+            {
+                (*this)[L"RESULTSET"][l_key].m_Number = (*this)[L"CURRENTROW"];
+                return (*this)[L"RESULTSET"][l_key];
+            }
+
+            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_key));
+        }
+
+        return (*m_Struct)[l_key];
+    }
 	else
 	{
 		bool ok;
@@ -505,17 +535,17 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const char *key)
 
 Q_DECL_EXPORT QWDDX &QWDDX::operator[](const wchar_t *key)
 {
-    if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array)&&(m_Type != QWDDX::Query))
-	{
-		throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class wchar_t* as a structure with members.");
-	}
+    QString l_key;
+    qint32 val;
+    bool ok;
 
-    QString l_key = QString::fromStdWString(key).toUpper();
+    switch(m_Type)
+    {
+    case QWDDX::Struct:
+        l_key = QString::fromStdWString(key).toUpper();
 
-    if ((m_Type == QWDDX::Struct)||(m_Type == QWDDX::Query))
-	{
         if (m_Struct->contains(l_key) == false)
-		{
+        {
             if (m_HiddenScope)
             {
                 if (m_HiddenScope->m_Struct->contains(l_key))
@@ -525,81 +555,119 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const wchar_t *key)
             }
 
             throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_key));
-		}
+        }
 
         return (*m_Struct)[l_key];
-	}
-	else
-	{
-		bool ok;
-		qint32 val = (qint32)l_key.toDouble(&ok);
-		if (ok == false)
-		{
-			throw QMKFusionExpressionException("The value " + l_key + " cannot be converted to a number.");
-		}
+        break;
+    case QWDDX::Query:
+        l_key = QString::fromStdWString(key).toUpper();
 
-		if (val < 1)
-		{
-			throw QMKFusionExpressionException("The element at position " + QString::number(val) + " of array variable xxx cannot be found.");
-		}
+        if (!m_Struct->contains(l_key))
+        {
+            if ((*this)[L"RESULTSET"].m_Struct->contains(l_key))
+            {
+                (*this)[L"RESULTSET"][l_key].m_Number = (*this)[L"CURRENTROW"];
+                return (*this)[L"RESULTSET"][l_key];
+            }
+
+            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_key));
+        }
+
+        return (*m_Struct)[l_key];
+        break;
+    case QWDDX::Array:
+        l_key = QString::fromStdWString(key).toUpper();
+
+        val = (qint32)l_key.toDouble(&ok);
+        if (ok == false)
+        {
+            throw QMKFusionExpressionException("The value " + l_key + " cannot be converted to a number.");
+        }
+
+        if (val < 1)
+        {
+            throw QMKFusionExpressionException("The element at position " + QString::number(val) + " of array variable xxx cannot be found.");
+        }
 
         if (m_Array->size() > val)
-		{
+        {
             m_Array->resize(val);
-		}
+        }
 
         return (*m_Array)[val - 1];
-	}
+        break;
+    default:
+        throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class wchar_t* as a structure with members.");
+        break;
+    }
 }
 
 Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QWDDX &key)
 {
-    if ((m_Type != QWDDX::Struct)&&(m_Type != QWDDX::Array)&&(m_Type != QWDDX::Query))
-	{
-        throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members.");
-	}
+    QString l_keyStr;
+    int l_keyInt;
 
-	if (m_Type == QWDDX::Array)
-	{
-        int l_key = (int)key.toNumber();
+    switch(m_Type)
+    {
+    case QWDDX::Struct:
+        l_keyStr = key.toString();
 
-        if (l_key < 1)
-		{
-            throw QMKFusionExpressionException("The element at position " + QString::number(l_key) + " of array variable \"xxx\" cannot be found.");
-		}
-
-        if (m_Array->size() < l_key)
-		{
-            m_Array->resize(l_key);
-		}
-
-        if (((*m_Array)[l_key - 1].m_Type != QWDDX::Array)&&(m_ArrayDimension > 1))
+        if (m_Struct->contains(l_keyStr) == false)
         {
-            (*m_Array)[l_key - 1] = QWDDX(QWDDX::Array);
-            (*m_Array)[l_key - 1].m_ArrayDimension = m_ArrayDimension - 1;
-        }
-
-        return (*m_Array)[l_key - 1];
-	}
-	else
-	{
-        const QString &l_key = key.toString();
-
-        if (m_Struct->contains(l_key) == false)
-		{
             if (m_HiddenScope)
             {
-                if (m_HiddenScope->m_Struct->contains(l_key))
+                if (m_HiddenScope->m_Struct->contains(l_keyStr))
                 {
-                    return (*m_HiddenScope->m_Struct)[l_key];
+                    return (*m_HiddenScope->m_Struct)[l_keyStr];
                 }
             }
 
-            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_key));
-		}
+            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_keyStr));
+        }
 
-        return (*m_Struct)[l_key];
-	}
+        return (*m_Struct)[l_keyStr];
+        break;
+    case QWDDX::Query:
+        l_keyStr = key.toString();
+
+        if (!m_Struct->contains(l_keyStr))
+        {
+            if ((*this)[L"RESULTSET"].m_Struct->contains(l_keyStr))
+            {
+                (*this)[L"RESULTSET"][l_keyStr].m_Number = (*this)[L"CURRENTROW"];
+                return (*this)[L"RESULTSET"][l_keyStr];
+            }
+
+            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_keyStr));
+        }
+
+        return (*m_Struct)[l_keyStr];
+        break;
+    case QWDDX::Array:
+        l_keyInt = (int)key.toNumber();
+
+        if (l_keyInt < 1)
+        {
+            throw QMKFusionExpressionException("The element at position " + QString::number(l_keyInt) + " of array variable \"xxx\" cannot be found.");
+        }
+
+        if (m_Array->size() < l_keyInt)
+        {
+            m_Array->resize(l_keyInt);
+        }
+
+        if (((*m_Array)[l_keyInt - 1].m_Type != QWDDX::Array)&&(m_ArrayDimension > 1))
+        {
+            (*m_Array)[l_keyInt - 1] = QWDDX(QWDDX::Array);
+            (*m_Array)[l_keyInt - 1].m_ArrayDimension = m_ArrayDimension - 1;
+        }
+
+        return (*m_Array)[l_keyInt - 1];
+        break;
+    default:
+        throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members.");
+        break;
+    }
 }
 
 Q_DECL_EXPORT bool QWDDX::operator==(bool p_Value)

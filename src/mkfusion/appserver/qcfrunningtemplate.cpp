@@ -1,6 +1,7 @@
 #include "qcfrunningtemplate.h"
 #include "qmkfusionexception.h"
 #include "cffunctions.h"
+#include "qhttpcodec.h"
 #include "qcfserver.h"
 #include "common.h"
 
@@ -134,12 +135,124 @@ void QCFRunningTemplate::runApplicationTemplate()
     } while (dir.cdUp());
 }
 
+void QCFRunningTemplate::processPostData(QByteArray post)
+{
+    qDebug() << "Post data:" << post;
+
+    m_FORM.setType(QWDDX::Struct);
+
+    if (!m_Request.m_ContentType.isEmpty())
+    {
+        if (m_Request.m_ContentType.startsWith("application/x-www-form-urlencoded"))
+        {
+            for(const QByteArray &item : post.split('&'))
+            {
+                if (item.isEmpty())
+                {
+                    continue;
+                }
+
+                QList<QPair<QString, QString>> pairs = QUrlQuery(item).queryItems();
+
+                if (pairs.length() != 1)
+                {
+                    throw QMKFusionException("Invalid application/x-www-form-urlencoded POST item.");
+                }
+
+                QPair<QString, QString> pair = pairs.takeFirst();
+
+                QString key = pair.first;
+                QString value = pair.second;
+
+                if (pair.first.isEmpty())
+                {
+                    throw QMKFusionException("Invalid application/x-www-form-urlencoded POST item name.");
+                }
+
+                updateVariableQStr(m_FORM, key, value);
+            }
+
+        }
+        else if (m_Request.m_ContentType.startsWith("multipart/form-data"))
+        {
+            int tmp1 = post.indexOf("\r\n");
+
+            if (tmp1 <= 0)
+            {
+                throw QMKFusionException("Invalid boundary line in POST method.");
+            }
+
+            QByteArray boundary = post.left(tmp1);
+            QByteArray stWith = post.left(tmp1 + 2);
+            QByteArray separator = "\r\n" + post.left(tmp1 + 2);
+            QByteArray enWith = "\r\n" + post.right(tmp1 + 4);
+
+            if ((!post.startsWith(stWith))||(!post.endsWith(enWith))||(stWith != boundary + "\r\n")||(enWith != "\r\n" + boundary + "--\r\n"))
+            {
+                throw QMKFusionException("Corrupted POST method.");
+            }
+
+            post = post.mid(stWith.length(), post.length() - stWith.length() - enWith.length());
+
+            QList<QByteArray> formFields;
+
+            int index;
+
+            while ((index = post.indexOf(separator)) >= 0)
+            {
+                formFields.push_back(post.left(index));
+                post.remove(0, index + separator.length());
+            }
+
+            formFields.push_back(post);
+
+            for(QByteArray formField : formFields)
+            {
+                QHttpCodec codec = QHttpCodec::decodeFromByteArray(formField);
+
+                if (!codec.isValid())
+                {
+                    throw QMKFusionException("Corrupted POST method(Form field NOT valid).");
+                }
+
+                if (!codec.contansHeaderKey("Content-Disposition"))
+                {
+                    throw QMKFusionException("Corrupted POST method(Content-Disposition is missing).");
+                }
+
+                const QHttpCodecValue *headerKeyValue = codec.getHeaderKey("Content-Disposition")->getValue("form-data");
+
+                if (headerKeyValue->hasParameter("Content-Type"))
+                {
+                    // file upload.
+                }
+                else
+                {
+                    QString key = headerKeyValue->getParameterValue("name").toUpper();
+                    QString value = codec.getBody();
+
+                    m_FORM.m_Struct->insert(key, value);
+                }
+            }
+        }
+        else
+        {
+            throw QMKFusionException("Unsupported Content-Type in POST method.");
+        }
+    }
+}
+
 void QCFRunningTemplate::worker()
 {
+    createCFMTemplateDef createCFMTemplate = 0;
+    bool l_FoundRecieveBufSize = false;
 	QByteArray l_RecievedBuffer;
-	bool l_FoundRecieveBufSize = false;
 	qint32 l_RecieveBufSize = 0;
+    QCFTemplate *l_page = 0;
+
+#if Q_OS_LINUX
     QProcess process;
+#endif
 
 	if ((!m_Socket)||(!m_CFServer))
 	{
@@ -154,6 +267,12 @@ void QCFRunningTemplate::worker()
 			{
 				m_Socket->waitForReadyRead(100);
 			}
+
+            if(!m_Socket->isOpen())
+            {
+                break;
+            }
+
 			l_RecievedBuffer += m_Socket->readAll();
 			if ((l_FoundRecieveBufSize == false)&&(l_RecievedBuffer.size() >= 4))
 			{
@@ -179,176 +298,151 @@ void QCFRunningTemplate::worker()
 			break;
 		}
 
-		QDataStream l_ds(&l_RecievedBuffer, QIODevice::ReadOnly);
-        QStringList cookies;
-		char *tempstr;
-        int tempint;
-        QByteArray tempba;
-
-		l_ds >> l_RecieveBufSize;
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_AuthType = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
-
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_User = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
-
-        l_ds >> tempba;
-        if (!tempba.isEmpty())
-		{
-            m_Request.m_Filename = QString::fromUtf8(tempba.constData());
-            tempba.clear();
-		}
-
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_Accept = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
-
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_AcceptEncoding = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
-
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_AcceptLanguage = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
-
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_Connection = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
-
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_RemoteHost = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
-
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_Referer = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
-
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_UserAgent = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
-
-        l_ds >> tempstr;
-        if (tempstr)
+        try
         {
-            m_Request.m_Cookie = QString::fromUtf8(tempstr);
-            cookies = m_Request.m_Cookie.split(';');
-            delete[] tempstr;
-        }
+            QDataStream l_ds(&l_RecievedBuffer, QIODevice::ReadOnly);
+            QStringList cookies;
+            char *tempstr;
+            int tempint;
+            QByteArray tempba;
 
-        l_ds >> tempint;
-        if (tempint > 0)
-        {
-            QByteArray postData;
-            l_ds >> postData;
-
-            qDebug() << "Post data:" << postData;
-
-            m_FORM.setType(QWDDX::Struct);
-
-            for(const QByteArray &item : postData.split('&'))
+            l_ds >> l_RecieveBufSize;
+            l_ds >> tempstr;
+            if (tempstr)
             {
-                if (item.isEmpty())
-                {
-                    continue;
-                }
-
-                QList<QPair<QString, QString>> pairs = QUrlQuery(item).queryItems();
-
-                if (pairs.length() != 1)
-                {
-                    throw QMKFusionException("Invalid POST item.");
-                }
-
-                QPair<QString, QString> pair = pairs.takeFirst();
-
-                QString key = pair.first;
-                QString value = pair.second;
-
-                if (pair.first.isEmpty())
-                {
-                    throw QMKFusionException("Invalid POST item name.");
-                }
-
-                updateVariableQStr(m_FORM, key, value);
+                m_Request.m_AuthType = QString::fromUtf8(tempstr);
+                delete[] tempstr;
             }
-        }
-        else if (tempint < 0)
-        {
-            throw QMKFusionException("Invalid POST data size.");
-        }
 
-        l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_Args = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_User = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
 
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_Method = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
+            l_ds >> tempba;
+            if (!tempba.isEmpty())
+            {
+                m_Request.m_Filename = QString::fromUtf8(tempba.constData());
+                tempba.clear();
+            }
 
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_Protocol = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_Accept = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
 
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_Host = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_AcceptEncoding = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
 
-		l_ds >> tempstr;
-		if (tempstr)
-		{
-			m_Request.m_URI = QString::fromUtf8(tempstr);
-			delete[] tempstr;
-		}
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_AcceptLanguage = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
 
-        l_RecievedBuffer.clear();
-        l_RecieveBufSize = 0;
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_Connection = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
 
-		QCFTemplate *l_page = 0;
-		createCFMTemplateDef createCFMTemplate = 0;
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_ContentType = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
 
-		try
-		{
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_RemoteHost = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
+
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_Referer = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
+
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_UserAgent = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
+
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_Cookie = QString::fromUtf8(tempstr);
+                cookies = m_Request.m_Cookie.split(';');
+                delete[] tempstr;
+            }
+
+            l_ds >> tempint;
+            if (tempint > 0)
+            {
+                QByteArray postData;
+                l_ds >> postData;
+
+                processPostData(postData);
+            }
+            else if (tempint < 0)
+            {
+                throw QMKFusionException("Invalid POST data size.");
+            }
+
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_Args = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
+
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_Method = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
+
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_Protocol = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
+
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_Host = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
+
+            l_ds >> tempstr;
+            if (tempstr)
+            {
+                m_Request.m_URI = QString::fromUtf8(tempstr);
+                delete[] tempstr;
+            }
+
+            l_RecievedBuffer.clear();
+            l_RecieveBufSize = 0;
+
             createCFMTemplate = (createCFMTemplateDef)compileAndLoadTemplate(m_Request.m_Filename, m_Request.m_URI);
 
             if (createCFMTemplate)
@@ -491,7 +585,7 @@ void QCFRunningTemplate::worker()
                     cf_StructUpdate(m_CGI, QStringLiteral("CERT_SUBJECT"), QStringLiteral(""));
                     cf_StructUpdate(m_CGI, QStringLiteral("CF_TEMPLATE_PATH"), m_Request.m_Filename);
                     cf_StructUpdate(m_CGI, QStringLiteral("CONTENT_LENGTH"), QStringLiteral(""));
-                    cf_StructUpdate(m_CGI, QStringLiteral("CONTENT_TYPE"), QStringLiteral(""));
+                    cf_StructUpdate(m_CGI, QStringLiteral("CONTENT_TYPE"), m_Request.m_ContentType);
                     cf_StructUpdate(m_CGI, QStringLiteral("CONTEXT_PATH"), QStringLiteral(""));
                     cf_StructUpdate(m_CGI, QStringLiteral("GATEWAY_INTERFACE"), QStringLiteral("CGI/1.1")); // TODO: Hardcoded.
                     cf_StructUpdate(m_CGI, QStringLiteral("HTTPS"), QStringLiteral(""));

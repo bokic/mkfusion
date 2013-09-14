@@ -274,40 +274,30 @@ void QCFTemplate::f_Param(const QString &name, const QWDDX &p_default)
     }
 }
 
-bool QCFTemplate::f_FetchQueryRow(const QWDDX &query, int row)
+bool QCFTemplate::f_FetchQueryRow(QWDDX &query, int row)
 {
     if (query.m_Type != QWDDX::Query)
     {
         throw QMKFusionException("Variable is not query.");
     }
 
-    if (row < 1)
+    if ((row < 1)||(row > query.m_Struct->value("RECORDCOUNT"))||(query.m_Struct->value("COLUMNS").toString().isEmpty()))
     {
         return false;
     }
 
-    if (query.m_Struct->count() > 0)
+    query[L"CURRENTROW"] = row;
+
+    for(int i = 0; i < query.m_Struct->value("RESULTSET").m_Struct->count(); i++)
     {
-        for(int i = 0; i < query.m_Struct->count(); i++)
-        {
-            QString columnName = query.m_Struct->keys().at(i);
+        QString columnName = query.m_Struct->value("RESULTSET").m_Struct->keys().at(i);
 
-            if (columnName == "RECORDCOUNT") continue; // TODO: Temporary, rewrite it.
+        QWDDX columnData = query.m_Struct->value("RESULTSET").m_Struct->values().at(i).m_Array->at(row - 1);
 
-            QWDDX columnData = query.m_Struct->values().at(i);
-
-            if (columnData.m_Array->count() < row)
-            {
-                return false;
-            }
-
-            updateVariable(m_TemplateInstance->m_VARIABLES, columnName, columnData.m_Array->at(row - 1));
-        }
-
-        return true;
+        updateVariable(m_TemplateInstance->m_VARIABLES, columnName, columnData);
     }
 
-    return false;
+    return true;
 }
 
 void QCFTemplate::f_Application(QString name, bool sessionManagement, bool setClientCookies)
@@ -402,18 +392,21 @@ void QCFTemplate::startQuery()
 
 QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
 {
-    QWDDX ret(QWDDX::Query);
+    QWDDX ret = cf_QueryNew("");
 
     //Get dbconnection object
-    QSqlDatabase conn = ((QCFServer*)m_TemplateInstance->m_CFServer)->getDBConnection(p_DataSource);
+    QSqlDatabase *conn = ((QCFServer*)m_TemplateInstance->m_CFServer)->getDBConnection(p_DataSource);
 
-    if (conn.open() == false)
+    if (!conn->isOpen())
     {
-        throw QMKFusionDatabaseException("Database connection failed.<br />\nDatabase error string: " + conn.lastError().text());
+        if (conn->open() == false)
+        {
+            throw QMKFusionDatabaseException("Database connection failed.<br />\nDatabase error string: " + conn->lastError().text());
+        }
     }
 
     //Call prepare query
-    QSqlQuery query(conn);
+    QSqlQuery query(*conn);
 
     if (query.prepare(m_TemplateInstance->m_QueryOutput) == false)
     {
@@ -435,7 +428,8 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
     // copy
     for(int f = 0; f < query.record().count(); f++)
     {
-        cf_QueryAddColumn(ret, query.record().fieldName(f));
+        QString fieldName = query.record().fieldName(f);
+        cf_QueryAddColumn(ret, fieldName);
     }
 
     int row = 1;
@@ -465,15 +459,15 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
 void QCFTemplate::endQueryNoReturn(const QString &p_DataSource)
 {
     //Get dbconnection object
-    QSqlDatabase conn = ((QCFServer*)m_TemplateInstance->m_CFServer)->getDBConnection(p_DataSource);
+    QSqlDatabase *conn = ((QCFServer*)m_TemplateInstance->m_CFServer)->getDBConnection(p_DataSource);
 
-    if (conn.open() == false)
+    if (conn->open() == false)
     {
-        throw QMKFusionDatabaseException("Database connection failed.<br />\nDatabase error string: " + conn.lastError().text());
+        throw QMKFusionDatabaseException("Database connection failed.<br />\nDatabase error string: " + conn->lastError().text());
     }
 
     //Call prepare query
-    QSqlQuery query(conn);
+    QSqlQuery query(*conn);
 
     if (query.prepare(m_TemplateInstance->m_QueryOutput) == false)
     {
