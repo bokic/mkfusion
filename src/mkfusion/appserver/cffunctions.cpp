@@ -2155,9 +2155,9 @@ Q_DECL_EXPORT bool cf_IsDefined(QCFRunningTemplate *templ, const QString &variab
 
         if (!var.m_Struct->contains(item))
         {
-            if (var.m_HiddenScope)
+            if (var.m_HiddenScopeLast)
             {
-                var = *var.m_HiddenScope;
+                var = *var.m_HiddenScopeLast;
 
                 if (!var.m_Struct->contains(item))
                 {

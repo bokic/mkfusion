@@ -30,7 +30,6 @@ private:
     QList<const QCFParserTag *> m_SwitchTags;
     QList<const QCFParserTag *> m_NestedTags;
     QList<int> m_SwitchCaseCount;
-    int m_OutputQuery;
 };
 
 #endif // QCFGENERATOR_H

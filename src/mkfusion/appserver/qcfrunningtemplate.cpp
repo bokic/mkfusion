@@ -459,11 +459,11 @@ void QCFRunningTemplate::worker()
                     if (m_Request.m_Method == "GET")
                     {
                         m_FORM.setType(QWDDX::Error);
-                        m_VARIABLES.m_HiddenScope = &m_URL;
+                        m_VARIABLES.m_HiddenScopeLast = &m_URL;
                     }
                     else if (m_Request.m_Method == "POST")
                     {
-                        m_VARIABLES.m_HiddenScope = &m_FORM;
+                        m_VARIABLES.m_HiddenScopeLast = &m_FORM;
                     }
                     else
                     {

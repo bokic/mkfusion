@@ -13,14 +13,16 @@ Q_DECL_EXPORT QWDDX::QWDDX()
     , m_DateTime(nullptr)
 	, m_Type(Null)
     , m_ArrayDimension(1)
-    , m_HiddenScope(nullptr)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast(nullptr)
 {
 }
 
 Q_DECL_EXPORT QWDDX::~QWDDX()
 {
     setType(Null);
-    m_HiddenScope = nullptr;
+    m_HiddenScopeFirst = nullptr;
+    m_HiddenScopeLast = nullptr;
 }
 
 Q_DECL_EXPORT QWDDX::QWDDX(bool p_NewValue)
@@ -33,7 +35,8 @@ Q_DECL_EXPORT QWDDX::QWDDX(bool p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(Boolean)
     , m_ArrayDimension(1)
-    , m_HiddenScope(nullptr)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast(nullptr)
 {
 }
 
@@ -47,7 +50,8 @@ Q_DECL_EXPORT QWDDX::QWDDX(int p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(Number)
     , m_ArrayDimension(1)
-    , m_HiddenScope(nullptr)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast(nullptr)
 {
 }
 
@@ -61,7 +65,8 @@ Q_DECL_EXPORT QWDDX::QWDDX(double p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(Number)
     , m_ArrayDimension(1)
-    , m_HiddenScope(nullptr)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast(nullptr)
 {
 }
 
@@ -75,7 +80,8 @@ Q_DECL_EXPORT QWDDX::QWDDX(const char *p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
-    , m_HiddenScope(nullptr)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast(nullptr)
 {
     qDebug() << "QWDDX::QWDDX(const char *p_NewValue) called. to be deleted soon.";
 }
@@ -90,7 +96,8 @@ Q_DECL_EXPORT QWDDX::QWDDX(const wchar_t *p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
-    , m_HiddenScope(nullptr)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast(nullptr)
 {
 }
 
@@ -104,7 +111,8 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QString &p_NewValue)
     , m_DateTime(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
-    , m_HiddenScope(nullptr)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast(nullptr)
 {
 }
 
@@ -119,7 +127,8 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QDateTime &p_NewValue)
     , m_DateTime(new QDateTime(p_NewValue))
 	, m_Type(DateTime)
     , m_ArrayDimension(1)
-    , m_HiddenScope(nullptr)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast(nullptr)
 {
 }
 
@@ -133,7 +142,8 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
     , m_DateTime(nullptr)
     , m_Type(other.m_Type)
     , m_ArrayDimension(1)
-    , m_HiddenScope(nullptr)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast(nullptr)
 {
     switch(other.m_Type)
     {
@@ -160,7 +170,8 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
     case Struct:
         m_Struct = new QMap<QString, QWDDX>();
         *m_Struct = *other.m_Struct;
-        m_HiddenScope = other.m_HiddenScope;
+        m_HiddenScopeFirst = other.m_HiddenScopeFirst;
+        m_HiddenScopeLast = other.m_HiddenScopeLast;
         break;
     case Binary:
         m_ByteArray = new QByteArray();
@@ -187,7 +198,8 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDXType p_Type)
     , m_DateTime(nullptr)
     , m_Type(Null)
     , m_ArrayDimension(1)
-    , m_HiddenScope(nullptr)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast(nullptr)
 {
     setType(p_Type);
 }
@@ -218,7 +230,8 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator=(QWDDX &&other)
         break;
     case Struct:
         qSwap(m_Struct, other.m_Struct);
-        qSwap(m_HiddenScope, other.m_HiddenScope);
+        qSwap(m_HiddenScopeLast, other.m_HiddenScopeLast);
+        qSwap(m_HiddenScopeFirst, other.m_HiddenScopeFirst);
         break;
     case Binary:
         qSwap(m_ByteArray, other.m_ByteArray);
@@ -262,7 +275,8 @@ Q_DECL_EXPORT void QWDDX::setType(QWDDXType type)
     case Struct:
         delete m_Struct;
         m_Struct = nullptr;
-        m_HiddenScope = nullptr;
+        m_HiddenScopeFirst = nullptr;
+        m_HiddenScopeLast = nullptr;
         break;
     case Binary:
         delete m_ByteArray;
@@ -390,13 +404,21 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const double p_Index)
 	{
         QString key = QString::number(p_Index);
 
+        if (m_HiddenScopeFirst)
+        {
+            if (m_HiddenScopeFirst->m_Struct->contains(key))
+            {
+                return (*m_HiddenScopeFirst->m_Struct)[key];
+            }
+        }
+
         if (m_Struct->contains(key) == false)
 		{
-            if (m_HiddenScope)
+            if (m_HiddenScopeLast)
             {
-                if (m_HiddenScope->m_Struct->contains(key))
+                if (m_HiddenScopeLast->m_Struct->contains(key))
                 {
-                    return (*m_HiddenScope->m_Struct)[key];
+                    return (*m_HiddenScopeLast->m_Struct)[key];
                 }
             }
 
@@ -416,13 +438,21 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QString &key)
 
     if (m_Type == QWDDX::Struct)
 	{
+        if (m_HiddenScopeFirst)
+        {
+            if (m_HiddenScopeFirst->m_Struct->contains(key))
+            {
+                return (*m_HiddenScopeFirst->m_Struct)[key];
+            }
+        }
+
         if (m_Struct->contains(key) == false)
 		{
-            if (m_HiddenScope)
+            if (m_HiddenScopeLast)
             {
-                if (m_HiddenScope->m_Struct->contains(key))
+                if (m_HiddenScopeLast->m_Struct->contains(key))
                 {
-                    return (*m_HiddenScope->m_Struct)[key];
+                    return (*m_HiddenScopeLast->m_Struct)[key];
                 }
             }
 
@@ -482,13 +512,21 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const char *key)
 
     if (m_Type == QWDDX::Struct)
 	{
+        if (m_HiddenScopeFirst)
+        {
+            if (m_HiddenScopeFirst->m_Struct->contains(key))
+            {
+                return (*m_HiddenScopeFirst->m_Struct)[key];
+            }
+        }
+
         if (m_Struct->contains(l_key) == false)
 		{
-            if (m_HiddenScope)
+            if (m_HiddenScopeLast)
             {
-                if (m_HiddenScope->m_Struct->contains(key))
+                if (m_HiddenScopeLast->m_Struct->contains(key))
                 {
-                    return (*m_HiddenScope->m_Struct)[key];
+                    return (*m_HiddenScopeLast->m_Struct)[key];
                 }
             }
 
@@ -546,13 +584,21 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const wchar_t *key)
     case QWDDX::Struct:
         l_key = QString::fromStdWString(key).toUpper();
 
+        if (m_HiddenScopeFirst)
+        {
+            if (m_HiddenScopeFirst->m_Struct->contains(l_key))
+            {
+                return (*m_HiddenScopeFirst->m_Struct)[l_key];
+            }
+        }
+
         if (m_Struct->contains(l_key) == false)
         {
-            if (m_HiddenScope)
+            if (m_HiddenScopeLast)
             {
-                if (m_HiddenScope->m_Struct->contains(l_key))
+                if (m_HiddenScopeLast->m_Struct->contains(l_key))
                 {
-                    return (*m_HiddenScope->m_Struct)[l_key];
+                    return (*m_HiddenScopeLast->m_Struct)[l_key];
                 }
             }
 
@@ -614,13 +660,21 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const QWDDX &key)
     case QWDDX::Struct:
         l_keyStr = key.toString();
 
+        if (m_HiddenScopeFirst)
+        {
+            if (m_HiddenScopeFirst->m_Struct->contains(l_keyStr))
+            {
+                return (*m_HiddenScopeFirst->m_Struct)[l_keyStr];
+            }
+        }
+
         if (m_Struct->contains(l_keyStr) == false)
         {
-            if (m_HiddenScope)
+            if (m_HiddenScopeLast)
             {
-                if (m_HiddenScope->m_Struct->contains(l_keyStr))
+                if (m_HiddenScopeLast->m_Struct->contains(l_keyStr))
                 {
-                    return (*m_HiddenScope->m_Struct)[l_keyStr];
+                    return (*m_HiddenScopeLast->m_Struct)[l_keyStr];
                 }
             }
 
@@ -1333,7 +1387,8 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator=(const QWDDX &p_newValue)
 			break;
 		case Struct:
 			*m_Struct = *p_newValue.m_Struct;
-            m_HiddenScope  = p_newValue.m_HiddenScope;
+            m_HiddenScopeFirst = p_newValue.m_HiddenScopeFirst;
+            m_HiddenScopeLast = p_newValue.m_HiddenScopeLast;
 			break;
 		case Binary:
 			*m_ByteArray = *p_newValue.m_ByteArray;

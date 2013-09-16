@@ -14,7 +14,6 @@ QCFGenerator::QCFGenerator()
     , m_CFFunctionsDef(QCF8::generateCFFunctions())
     , m_EnableCFOutputOnly(false)
     , m_Tabs("\t\t")
-    , m_OutputQuery(0)
 {
 }
 
@@ -482,11 +481,7 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString 
         && (l_Variable.compare("VARIABLES") != 0) \
 	   )
 	{
-        if (m_OutputQuery > 0)
-        {
-            l_Variable = "l_Query." + l_Variable;
-        }
-        else if ((functLocalVars.contains(l_Variable))&&(!l_Variable.startsWith("LOCAL."))&&(l_Variable.compare("LOCAL") != 0))
+        if ((functLocalVars.contains(l_Variable))&&(!l_Variable.startsWith("LOCAL."))&&(l_Variable.compare("LOCAL") != 0))
         {
             l_Variable = "LOCAL." + l_Variable;
         }
@@ -507,7 +502,7 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString 
 		return "";
 	}
 
-    if ((l_StrList.first() == "LOCAL")||(l_StrList.first() == "ARGUMENTS")||(l_StrList.first() == "l_Query"))
+    if ((l_StrList.first() == "LOCAL")||(l_StrList.first() == "ARGUMENTS"))
     {
         ret = l_StrList.first();
     }
@@ -1378,10 +1373,9 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
                 m_Tabs.append('\t');
 
                 ret += m_Tabs + "QWDDX l_Query(QWDDX::Struct);\n";
-                ret += m_Tabs + "l_Query.m_HiddenScope = &m_TemplateInstance->m_VARIABLES;\n";
                 ret += m_Tabs + "if (f_FetchQueryRow(l_Query, " + GenerateCodeFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
-
-                m_OutputQuery++;
+                ret += m_Tabs + "l_Query.m_HiddenScopeLast = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
+                ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
 
                 return ret;
             }
@@ -1391,14 +1385,14 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 		{
             if (CFTagHasArgument(*p_CFTag.m_OtherTag, "query"))
             {
-                m_OutputQuery--;
-
-                Q_ASSERT(m_OutputQuery >= 0);
+                ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = l_Query.m_HiddenScopeLast;\n";
             }
 
             m_Tabs = m_Tabs.left(m_Tabs.length() - 1);
 
-            return m_Tabs + "}";
+            ret += m_Tabs + "}";
+
+            return ret;
 		}
 	}
     else if(p_CFTag.m_Name.compare("cfset", Qt::CaseInsensitive) == 0)
@@ -1434,10 +1428,9 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
                 m_Tabs.append('\t');
 
                 ret += m_Tabs + "QWDDX l_Query(QWDDX::Struct);\n";
-                ret += m_Tabs + "l_Query.m_HiddenScope = &m_TemplateInstance->m_VARIABLES;\n";
                 ret += m_Tabs + "if (f_FetchQueryRow(l_Query, " + GenerateCodeFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
-
-                m_OutputQuery++;
+                ret += m_Tabs + "l_Query.m_HiddenScopeLast = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
+                ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
             }
 
             return ret;
@@ -1447,13 +1440,11 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 		{
             if (CFTagHasArgument(*p_CFTag.m_OtherTag, "query"))
             {
+                ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = l_Query.m_HiddenScopeLast;\n";
+
                 m_Tabs = m_Tabs.left(m_Tabs.length() - 1);
 
                 ret += m_Tabs + "}\n";
-
-                m_OutputQuery--;
-
-                Q_ASSERT(m_OutputQuery >= 0);
             }
 
             ret += m_Tabs + "p_TemplateInstance->m_CFOutput--;\n";

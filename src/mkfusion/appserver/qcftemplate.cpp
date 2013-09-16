@@ -168,9 +168,9 @@ void QCFTemplate::f_Param(const QString &name, const QWDDX &p_default)
     {
         if(!m_TemplateInstance->m_VARIABLES.m_Struct->contains(parts.at(0)))
         {
-            if (m_TemplateInstance->m_VARIABLES.m_HiddenScope)
+            if (m_TemplateInstance->m_VARIABLES.m_HiddenScopeLast)
             {
-                if (m_TemplateInstance->m_VARIABLES.m_HiddenScope->m_Struct->contains(parts.at(0)))
+                if (m_TemplateInstance->m_VARIABLES.m_HiddenScopeLast->m_Struct->contains(parts.at(0)))
                 {
                     return;
                 }
@@ -248,9 +248,9 @@ void QCFTemplate::f_Param(const QString &name, const QWDDX &p_default)
 
         if (!var->m_Struct->contains(item))
         {
-            if (var->m_HiddenScope)
+            if (var->m_HiddenScopeLast)
             {
-                var = var->m_HiddenScope;
+                var = var->m_HiddenScopeLast;
 
                 if (var->m_Struct->contains(item))
                 {
