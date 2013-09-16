@@ -459,11 +459,14 @@ void QCFRunningTemplate::worker()
                     if (m_Request.m_Method == "GET")
                     {
                         m_FORM.setType(QWDDX::Error);
-                        m_VARIABLES.m_HiddenScopeLast = &m_URL;
+                        m_VARIABLES.m_HiddenScopeLast1 = &m_URL;
+                        m_VARIABLES.m_HiddenScopeLast2 = &m_COOKIE;
+
                     }
                     else if (m_Request.m_Method == "POST")
                     {
-                        m_VARIABLES.m_HiddenScopeLast = &m_FORM;
+                        m_VARIABLES.m_HiddenScopeLast1 = &m_FORM;
+                        m_VARIABLES.m_HiddenScopeLast2 = &m_COOKIE;
                     }
                     else
                     {
@@ -476,8 +479,8 @@ void QCFRunningTemplate::worker()
 
                         if (separator > 0)
                         {
-                            QString key = cookie.left(separator).trimmed().toUpper();
-                            QString value = cookie.right(cookie.length() - separator - 1);
+                            QString key = QUrl::fromPercentEncoding(cookie.left(separator).trimmed().toLatin1()).toUpper();
+                            QString value = QUrl::fromPercentEncoding(cookie.right(cookie.length() - separator - 1).toLatin1());
                             updateVariable(m_COOKIE, key, value);
                         }
                         else

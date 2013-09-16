@@ -214,7 +214,8 @@ public:
 	QWDDXType m_Type;
     quint32 m_ArrayDimension;
     QWDDX *m_HiddenScopeFirst;
-    QWDDX *m_HiddenScopeLast;
+    QWDDX *m_HiddenScopeLast1;
+    QWDDX *m_HiddenScopeLast2;
 };
 
 Q_DECL_EXPORT bool operator!=(int, const QWDDX &);

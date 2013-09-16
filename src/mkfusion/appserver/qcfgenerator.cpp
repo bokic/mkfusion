@@ -1374,7 +1374,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                 ret += m_Tabs + "QWDDX l_Query(QWDDX::Struct);\n";
                 ret += m_Tabs + "if (f_FetchQueryRow(l_Query, " + GenerateCodeFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
-                ret += m_Tabs + "l_Query.m_HiddenScopeLast = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
+                ret += m_Tabs + "l_Query.m_HiddenScopeLast1 = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
                 ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
 
                 return ret;
@@ -1385,7 +1385,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 		{
             if (CFTagHasArgument(*p_CFTag.m_OtherTag, "query"))
             {
-                ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = l_Query.m_HiddenScopeLast;\n";
+                ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = l_Query.m_HiddenScopeLast1;\n";
             }
 
             m_Tabs = m_Tabs.left(m_Tabs.length() - 1);
@@ -1429,7 +1429,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                 ret += m_Tabs + "QWDDX l_Query(QWDDX::Struct);\n";
                 ret += m_Tabs + "if (f_FetchQueryRow(l_Query, " + GenerateCodeFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
-                ret += m_Tabs + "l_Query.m_HiddenScopeLast = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
+                ret += m_Tabs + "l_Query.m_HiddenScopeLast1 = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
                 ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
             }
 
@@ -1440,7 +1440,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 		{
             if (CFTagHasArgument(*p_CFTag.m_OtherTag, "query"))
             {
-                ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = l_Query.m_HiddenScopeLast;\n";
+                ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = l_Query.m_HiddenScopeLast1;\n";
 
                 m_Tabs = m_Tabs.left(m_Tabs.length() - 1);
 
