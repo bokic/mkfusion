@@ -4,6 +4,7 @@
 #include "cffunctions.h"
 #include "qcfserver.h"
 
+#include <QElapsedTimer>
 #include <QSqlDatabase>
 #include <QSqlRecord>
 #include <QSqlQuery>
@@ -392,7 +393,10 @@ void QCFTemplate::startQuery()
 
 QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
 {
+    QElapsedTimer timer;
     QWDDX ret = cf_QueryNew("");
+
+    timer.start();
 
     //Get dbconnection object
     QSqlDatabase *conn = ((QCFServer*)m_TemplateInstance->m_CFServer)->getDBConnection(p_DataSource);
@@ -453,11 +457,16 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
 
     m_TemplateInstance->m_OutputType = QCFRunningTemplate::OutputTypeContent;
 
+    this->m_TemplateInstance->m_VARIABLES.m_Struct->insert("CFQUERY.EXECUTIONTIME", (int)timer.elapsed());
+
     return ret;
 }
 
 void QCFTemplate::endQueryNoReturn(const QString &p_DataSource)
 {
+    QElapsedTimer timer;
+    timer.start();
+
     //Get dbconnection object
     QSqlDatabase *conn = ((QCFServer*)m_TemplateInstance->m_CFServer)->getDBConnection(p_DataSource);
 
@@ -485,6 +494,8 @@ void QCFTemplate::endQueryNoReturn(const QString &p_DataSource)
     {
         throw QMKFusionDatabaseException("query execute failed.<br />\nDatabase error string: " + query.lastError().text());
     }
+
+    this->m_TemplateInstance->m_VARIABLES.m_Struct->insert("CFQUERY.EXECUTIONTIME", (int)timer.elapsed());
 }
 
 void QCFTemplate::addCustomFunction(const QString &functionName, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &)> function)
