@@ -697,6 +697,11 @@ void updateVariable(QWDDX &dest, const QWDDX &key, const QWDDX &value)
     int index;
     bool ok;
 
+    if (&dest == nullptr)
+    {
+        throw QMKFusionException("Variable is null.");
+    }
+
     switch(dest.m_Type)
     {
     case QWDDX::Struct:

@@ -155,6 +155,7 @@ Q_DECL_EXPORT QWDDX::QWDDX(const QWDDX &other)
         m_Array = new QVector<QWDDX>();
         *m_Array = *other.m_Array;
         m_ArrayDimension = other.m_ArrayDimension;
+        m_Number = other.m_Number;
         break;
     case Struct:
         m_Struct = new QMap<QString, QWDDX>();
@@ -213,6 +214,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator=(QWDDX &&other)
     case Array:
         qSwap(m_Array, other.m_Array);
         qSwap(m_ArrayDimension, other.m_ArrayDimension);
+        qSwap(m_Number, other.m_Number);
         break;
     case Struct:
         qSwap(m_Struct, other.m_Struct);
@@ -370,19 +372,19 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator[](const double p_Index)
         throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members.");
 	}
 
-	if (m_Type != QWDDX::Array)
+    if (m_Type == QWDDX::Array)
 	{
 		if ((int)p_Index < 1)
 		{
             throw QMKFusionExpressionException("The element at position " + QString::number((int)p_Index) + " of array variable \"xxx\" cannot be found.");
 		}
 
-        if (m_Array->size() <= (int)p_Index)
+        if (m_Array->size() < (int)p_Index)
 		{
-            m_Array->resize((int)p_Index + 1);
+            m_Array->resize((int)p_Index);
 		}
 
-        return (*m_Array)[(int)p_Index];
+        return (*m_Array)[(int)p_Index - 1];
 	}
 	else
 	{
@@ -1327,6 +1329,7 @@ Q_DECL_EXPORT QWDDX &QWDDX::operator=(const QWDDX &p_newValue)
 		case Array:
 			*m_Array = *p_newValue.m_Array;
 			m_ArrayDimension = p_newValue.m_ArrayDimension;
+            m_Number = p_newValue.m_Number;
 			break;
 		case Struct:
 			*m_Struct = *p_newValue.m_Struct;
@@ -1738,7 +1741,9 @@ Q_DECL_EXPORT QString QWDDX::toString() const
 {
 	switch(m_Type)
 	{
-	case QWDDX::String:
+    case QWDDX::Null:
+            return "";
+    case QWDDX::String:
 		break;
 
 	case QWDDX::Number:
@@ -1802,10 +1807,10 @@ Q_DECL_EXPORT QString QWDDX::toString() const
 			return "false";
 		break;
     case QWDDX::Array:
-        return m_Array->first().toString();
-        break;
-    case QWDDX::Null:
-            return "";
+        if (m_Number > 0)
+        {
+            return m_Array->at(m_Number - 1).toString();
+        }
         default:
 			throw QMKFusionExpressionException("Complex object types cannot be converted to simple values.", "The expression has requested a variable or an intermediate expression result as a simple value, however, the result cannot be converted to a simple value. Simple values are strings, numbers, boolean values, and date/time values. Queries, arrays, and COM objects are examples of complex values. <p> The most likely cause of the error is that you are trying to use a complex value as a simple one. For example, you might be trying to use a query variable in a cfif tag.");
 		break;
@@ -1849,6 +1854,11 @@ Q_DECL_EXPORT double QWDDX::toNumber() const
         diff = QDateTime(QDate(1899, 12, 29), QTime(0, 0)).secsTo(*m_DateTime);
         return diff / (60 * 60 * 24);
         break;
+    case QWDDX::Array:
+        if (m_Number > 0)
+        {
+            return m_Array->at(m_Number - 1).toNumber();
+        }
 	default:
 		throw QMKFusionExpressionException("The value cannot be converted to a number.");
 	}
@@ -1878,6 +1888,11 @@ Q_DECL_EXPORT int QWDDX::toInt() const
         diff = QDateTime(QDate(1899, 12, 29), QTime(0, 0)).secsTo(*m_DateTime);
         return diff / (60 * 60 * 24);
         break;
+    case QWDDX::Array:
+        if (m_Number > 0)
+        {
+            return m_Array->at(m_Number - 1).toInt();
+        }
     default:
         throw QMKFusionExpressionException("The value cannot be converted to a int.");
     }

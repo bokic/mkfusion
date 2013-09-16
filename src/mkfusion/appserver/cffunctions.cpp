@@ -2773,7 +2773,7 @@ Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &column
     ret.m_Struct->insert("COLUMNS", columnlistUpper);
     ret.m_Struct->insert("RESULTSET", QWDDX(QWDDX::Struct));
     ret.m_Struct->insert("RECORDCOUNT", 0);
-    ret.m_Struct->insert("CURRENTROW", 0);
+    ret.m_Struct->insert("CURRENTROW", 1);
 
     for(const QString &columnName : columns)
     {

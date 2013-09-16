@@ -137,8 +137,6 @@ void QCFRunningTemplate::runApplicationTemplate()
 
 void QCFRunningTemplate::processPostData(QByteArray post)
 {
-    qDebug() << "Post data:" << post;
-
     m_FORM.setType(QWDDX::Struct);
 
     if (!m_Request.m_ContentType.isEmpty())
@@ -647,7 +645,10 @@ void QCFRunningTemplate::worker()
 
                     runApplicationTemplate();
 
-					l_page->run(this);
+                    if (m_StatusCode == 200)
+                    {
+                        l_page->run(this);
+                    }
 				}
 				else
 				{

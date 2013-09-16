@@ -274,7 +274,7 @@ void QCFTemplate::f_Param(const QString &name, const QWDDX &p_default)
     }
 }
 
-bool QCFTemplate::f_FetchQueryRow(QWDDX &query, int row)
+bool QCFTemplate::f_FetchQueryRow(QWDDX &destination, QWDDX &query, int row)
 {
     if (query.m_Type != QWDDX::Query)
     {
@@ -294,7 +294,7 @@ bool QCFTemplate::f_FetchQueryRow(QWDDX &query, int row)
 
         QWDDX columnData = query.m_Struct->value("RESULTSET").m_Struct->values().at(i).m_Array->at(row - 1);
 
-        updateVariable(m_TemplateInstance->m_VARIABLES, columnName, columnData);
+        updateVariable(destination, columnName, columnData);
     }
 
     return true;
