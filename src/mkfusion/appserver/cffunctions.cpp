@@ -3248,7 +3248,7 @@ Q_DECL_EXPORT double cf_Tan(double number)
 Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
 {
     QMultiHash<QString, int> segments;
-    QString ret = "b" + mask;
+    QString ret = mask;
     int pos;
 
     pos = 0;

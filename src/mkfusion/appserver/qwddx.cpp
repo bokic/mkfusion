@@ -811,7 +811,7 @@ Q_DECL_EXPORT bool QWDDX::operator==(const QWDDX &p_Value)
         QWDDX l_temp1 = *this;
         QWDDX l_temp2 = p_Value;
 
-		return l_temp1.toString() == l_temp2.toString();
+        return l_temp1.toNumber() == l_temp2.toNumber();
 	}
 
     throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
@@ -914,7 +914,7 @@ Q_DECL_EXPORT bool QWDDX::operator!=(const QWDDX &p_Value)
         QWDDX l_temp1 = *this;
         QWDDX l_temp2 = p_Value;
 
-		return l_temp1.toString() != l_temp2.toString();
+        return l_temp1.toNumber() != l_temp2.toNumber();
 	}
 
     throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
@@ -997,7 +997,7 @@ Q_DECL_EXPORT bool QWDDX::operator<=(const QWDDX &p_Value)
         QWDDX l_temp1 = *this;
         QWDDX l_temp2 = p_Value;
 
-		return l_temp1.toString() <= l_temp2.toString();
+        return l_temp1.toNumber() <= l_temp2.toNumber();
 	}
 
     throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
@@ -1080,7 +1080,7 @@ Q_DECL_EXPORT bool QWDDX::operator>=(const QWDDX &p_Value)
         QWDDX l_temp1 = *this;
         QWDDX l_temp2 = p_Value;
 
-		return l_temp1.toString() >= l_temp2.toString();
+        return l_temp1.toNumber() >= l_temp2.toNumber();
 	}
 
     throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
@@ -1163,7 +1163,7 @@ Q_DECL_EXPORT bool QWDDX::operator<(const QWDDX &p_Value)
         QWDDX l_temp1 = *this;
         QWDDX l_temp2 = p_Value;
 
-		return l_temp1.toString() < l_temp2.toString();
+        return l_temp1.toNumber() < l_temp2.toNumber();
 	}
 
     throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
@@ -1246,7 +1246,7 @@ Q_DECL_EXPORT bool QWDDX::operator>(const QWDDX &p_Value)
         QWDDX l_temp1 = *this;
         QWDDX l_temp2 = p_Value;
 
-		return l_temp1.toString() > l_temp2.toString();
+        return l_temp1.toNumber() > l_temp2.toNumber();
 	}
 
     throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
