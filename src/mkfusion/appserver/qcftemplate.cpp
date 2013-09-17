@@ -534,3 +534,27 @@ void QCFTemplate::addCustomFunction(const QString &functionName, std::function<Q
 
     templateInstance->m_CustomFunctions.insert(functionName, function);
 }
+
+void QCFTemplate::f_SetCookie(const QString &name, const QString &value, const QString &expires)
+{
+    QWDDX val(QWDDX::Struct);
+
+    val.m_Struct->insert("value", value);
+
+    if (expires.compare("never", Qt::CaseInsensitive) == 0)
+    {
+        val.m_Struct->insert("expires", QLocale("en").toString(QDateTime::currentDateTime().addYears(30), "ddd, dd-MMM-yyyy hh:mm:ss").append(" GMT"));
+    }
+    else if (expires.compare("now", Qt::CaseInsensitive) == 0)
+    {
+        val.m_Struct->insert("expires", 0);
+    }
+    else
+    {
+        val.m_Struct->insert("expires", expires);
+    }
+
+    m_TemplateInstance->m_COOKIE.m_Struct->insert(name.toUpper(), value);
+
+    m_TemplateInstance->m_SetCookies.m_Struct->insert(name.toUpper(), val);
+}

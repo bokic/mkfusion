@@ -41,6 +41,7 @@ public:
 	QObject *m_CFServer;
 	QCFRunningTemplate_Request m_Request;
     OutputType m_OutputType;
+    QWDDX m_SetCookies;
     QHash<QString, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)>> m_CustomFunctions;
     QHash<QString, QLibrary*> m_LoadedTemplates;
 

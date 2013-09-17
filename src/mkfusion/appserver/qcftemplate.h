@@ -36,6 +36,7 @@ public:
     QWDDX endQuery(const QString &p_DataSource);
     void endQueryNoReturn(const QString &p_DataSource);
     void addCustomFunction(const QString &functionName, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)> function);
+    void f_SetCookie(const QString &name, const QString &value, const QString &expires);
 
 	QCFRunningTemplate *m_TemplateInstance;
 	QIsTemplateModified m_isModified;

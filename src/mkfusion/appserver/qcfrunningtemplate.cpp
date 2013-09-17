@@ -455,6 +455,7 @@ void QCFRunningTemplate::worker()
                     m_CGI.setType(QWDDX::Struct);
                     m_VARIABLES.setType(QWDDX::Struct);
                     m_URL.setType(QWDDX::Struct);
+                    m_SetCookies.setType(QWDDX::Struct);
 
                     if (m_Request.m_Method == "GET")
                     {
@@ -719,11 +720,33 @@ void QCFRunningTemplate::worker()
 
             l_headerDataStream << m_StatusCode;
 
+            if (m_SetCookies.m_Type == QWDDX::Struct)
+            {
+                for(const QString &key : m_SetCookies.m_Struct->keys())
+                {
+                    if (m_COOKIE.m_Struct->contains(key))
+                    {
+                        m_COOKIE.m_Struct->remove(key);
+                    }
+
+                    const QWDDX cookieData = m_SetCookies.m_Struct->value(key);
+
+                    if (cookieData.m_Struct->value("expires").m_Type == QWDDX::Number)
+                    {
+                        m_Header.insert("Set-Cookie", QUrl::toPercentEncoding(key) + "=" + QUrl::toPercentEncoding(cookieData.m_Struct->value("value").toString()) +  ";Max-Age=" + cookieData.m_Struct->value("expires").toString() + ";path=/");
+                    }
+                    else
+                    {
+                        m_Header.insert("Set-Cookie", QUrl::toPercentEncoding(key) + "=" + QUrl::toPercentEncoding(cookieData.m_Struct->value("value").toString()) +  ";expires=" + cookieData.m_Struct->value("expires").toString() + ";path=/");
+                    }
+                }
+            }
+
             if (m_COOKIE.m_Type == QWDDX::Struct)
             {
                 for(const QString &key : m_COOKIE.m_Struct->keys())
                 { // TODO: Unhardcode Max-Age.
-                    m_Header.insert("Set-Cookie", key + "=" + m_COOKIE[key].toString()+  "; Max-Age=3600; Path=/; HttpOnly");
+                    m_Header.insert("Set-Cookie", QUrl::toPercentEncoding(key) + "=" + QUrl::toPercentEncoding(m_COOKIE[key].toString()) + "; Max-Age=3600; Path=/; HttpOnly");
                 }
             }
 

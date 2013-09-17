@@ -64,9 +64,8 @@ QString getCurrentExecutableFileName()
 }
 
 QCFServer::QCFServer()
+    : m_mainTimer(0)
 {
-	m_mainTimer = 0;
-
     connect(&m_LocalServer, &QLocalServer::newConnection, this, &QCFServer::on_newConnection);
 }
 

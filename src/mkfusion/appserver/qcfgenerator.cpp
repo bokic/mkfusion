@@ -1245,7 +1245,29 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
     }
     else if(p_CFTag.m_Name.compare("cfcookie", Qt::CaseInsensitive) == 0)
     {
+        QString name = CFTagGetArgumentAsString(p_CFTag, "name");
+        QString value;
+        QString expires;
 
+        if (CFTagHasArgument(p_CFTag, "value"))
+        {
+            value = CFTagGetArgumentAsString(p_CFTag, "value");
+        }
+        else
+        {
+            value = "\"\"";
+        }
+
+        if (CFTagHasArgument(p_CFTag, "expires"))
+        {
+            expires = CFTagGetArgumentAsString(p_CFTag, "expires");
+        }
+        else
+        {
+            value = "\"\"";
+        }
+
+        return m_Tabs + "f_SetCookie(" + name + ", " + value + ", " + expires + ");\n";
     }
     else if(p_CFTag.m_Name.compare("cfdump", Qt::CaseInsensitive) == 0) /* Only 'var' parameter is implemented. */
 	{
