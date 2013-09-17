@@ -470,9 +470,12 @@ void QCFTemplate::endQueryNoReturn(const QString &p_DataSource)
     //Get dbconnection object
     QSqlDatabase *conn = ((QCFServer*)m_TemplateInstance->m_CFServer)->getDBConnection(p_DataSource);
 
-    if (conn->open() == false)
+    if (!conn->isOpen())
     {
-        throw QMKFusionDatabaseException("Database connection failed.<br />\nDatabase error string: " + conn->lastError().text());
+        if (conn->open() == false)
+        {
+            throw QMKFusionDatabaseException("Database connection failed.<br />\nDatabase error string: " + conn->lastError().text());
+        }
     }
 
     //Call prepare query
@@ -494,6 +497,11 @@ void QCFTemplate::endQueryNoReturn(const QString &p_DataSource)
     {
         throw QMKFusionDatabaseException("query execute failed.<br />\nDatabase error string: " + query.lastError().text());
     }
+
+    m_TemplateInstance->m_QueryOutput.clear();
+    m_TemplateInstance->m_QueryParams.clear();
+
+    m_TemplateInstance->m_OutputType = QCFRunningTemplate::OutputTypeContent;
 
     this->m_TemplateInstance->m_VARIABLES.m_Struct->insert("CFQUERY.EXECUTIONTIME", (int)timer.elapsed());
 }
