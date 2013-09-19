@@ -44,6 +44,7 @@ public:
     QWDDX m_SetCookies;
     QHash<QString, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)>> m_CustomFunctions;
     QHash<QString, QLibrary*> m_LoadedTemplates;
+    QHash<QString, QCFFileUpload> m_FileUpload;
 
 signals:
 	void finished();

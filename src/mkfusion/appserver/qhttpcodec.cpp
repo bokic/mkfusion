@@ -24,7 +24,7 @@ QHttpCodec QHttpCodec::decodeFromByteArray(const QByteArray &source)
     }
 
     QString header = QString::fromUtf8(source.left(sep1));
-    ret.m_Body = QString::fromUtf8(source.right(source.length() - sep1 - 4));
+    ret.m_Body = source.right(source.length() - sep1 - 4);
 
     for(QString line : header.split("\r\n"))
     {
@@ -150,7 +150,7 @@ bool QHttpCodec::isValid()
     return m_Valid;
 }
 
-QString QHttpCodec::getBody()
+QByteArray QHttpCodec::getBody()
 {
     return m_Body;
 }

@@ -71,6 +71,8 @@ void TestCases::optPI2()
             QWDDX ARGUMENTS(QWDDX::Struct);
             QWDDX LOCAL(QWDDX::Struct);
 
+            Q_UNUSED(m_TemplateInstance);
+
             if(arguments.count() > 0 ) {
                 updateVariable(ARGUMENTS, "GUIDBYTEARRAY", arguments.at(0));
             } else {

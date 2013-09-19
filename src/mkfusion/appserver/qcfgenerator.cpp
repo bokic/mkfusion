@@ -1286,9 +1286,88 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			return ""; //TODO: Generate Error.
 		}
 
-        return m_Tabs + "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(OptimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]))+"));";
-		//return "f_WriteOutput(mk_cfdump("+GenerateCFExpressionToCExpression(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2], "false")+"));";
+        return m_Tabs + "m_TemplateInstance->m_Output += mk_cfdump("+GenerateCFExpressionToCExpression(OptimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]))+");";
 	}
+    else if(p_CFTag.m_Name.compare("cffile", Qt::CaseInsensitive) == 0)
+    {
+        const QString &action = CFTagGetArgumentPlain(p_CFTag, "action").toLower();
+
+        if (action == "delete")
+        {
+            const QString &file = CFTagGetArgument(p_CFTag, "file");
+
+            return m_Tabs + "cf_FileDelete(\"" + toCPPEncodeStr(file) + "\");\n";
+        }
+        else if (action == "upload")
+        {
+            QString destination;
+            QString fileField;
+            QString accept;
+            QString attributes;
+            QString mode;
+            QString nameConflict;
+            QString result;
+
+            if (!CFTagHasArgument(p_CFTag, "destination"))
+            {
+                throw QMKFusionException("At <cffile action=\"upload\" ... > destination parameter is empty or missing.");
+            }
+            destination = CFTagGetArgumentAsString(p_CFTag, "destination");
+
+            if (!CFTagHasArgument(p_CFTag, "fileField"))
+            {
+                throw QMKFusionException("At <cffile action=\"upload\" ... > fileField parameter is empty or missing.");
+            }
+            fileField = CFTagGetArgumentAsString(p_CFTag, "fileField");
+
+            if (CFTagHasArgument(p_CFTag, "accept"))
+            {
+                accept = CFTagGetArgumentAsString(p_CFTag, "destination");
+            }
+            else
+            {
+                accept = "QString()";
+            }
+
+            if (CFTagHasArgument(p_CFTag, "attributes"))
+            {
+                attributes = CFTagGetArgumentAsString(p_CFTag, "attributes");
+            }
+            else
+            {
+                attributes = "QString()";
+            }
+
+            if (CFTagHasArgument(p_CFTag, "mode"))
+            {
+                mode = CFTagGetArgumentAsString(p_CFTag, "mode");
+            }
+            else
+            {
+                mode = "QString()";
+            }
+
+            if (CFTagHasArgument(p_CFTag, "nameConflict"))
+            {
+                nameConflict = CFTagGetArgumentAsString(p_CFTag, "nameConflict");
+            }
+            else
+            {
+                nameConflict = "\"Error\"";
+            }
+
+            if (CFTagHasArgument(p_CFTag, "result"))
+            {
+                result = CFTagGetArgumentAsString(p_CFTag, "result");
+            }
+            else
+            {
+                result = "QString(\"cffile\")";
+            }
+
+            return m_Tabs + "f_FileUploadMove(" + destination + ", "  + fileField + ", " + accept + ", " + attributes + ", "  + mode + ", " + nameConflict + ", " + result + ");\n";
+        }
+    }
     else if(p_CFTag.m_Name.compare("cfinclude", Qt::CaseInsensitive) == 0)
     {
         return m_Tabs + "f_Include(" + CFTagGetArgument(p_CFTag, "template") + ");";

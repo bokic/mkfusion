@@ -4,8 +4,34 @@
 #include "qmkfusionexception.h"
 #include "qwddx.h"
 
+#include <QTemporaryFile>
 #include <QString>
 
+struct QCFFileUpload
+{
+    QCFFileUpload()
+        : m_File(nullptr)
+    {
+    }
+
+    ~QCFFileUpload()
+    {
+        if (m_File)
+        {
+            delete m_File;
+            m_File = nullptr;
+        }
+    }
+
+    void createTmpFile()
+    {
+        m_File = new QTemporaryFile();
+    }
+
+    QTemporaryFile *m_File;
+    QString m_ContentType;
+    QString m_Filename;
+};
 
 struct QCFRunningTemplate_Request
 {

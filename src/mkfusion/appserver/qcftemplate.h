@@ -32,6 +32,7 @@ public:
     void f_Param(const QString &name, const QWDDX &p_default);
     bool f_FetchQueryRow(QWDDX &destination, QWDDX &query, int row);
     void f_Application(QString name, bool sessionManagement, bool setClientCookies);
+    void f_FileUploadMove(const QString &destination, const QString &fileField, const QString &accept, const QString &attributes, const QString &mode, const QString &nameConflict, const QString &result);
     void startQuery();
     QWDDX endQuery(const QString &p_DataSource);
     void endQueryNoReturn(const QString &p_DataSource);

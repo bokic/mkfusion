@@ -5,12 +5,14 @@
 #include "qcfserver.h"
 #include "common.h"
 
+#include <QTemporaryFile>
 #include <QDataStream>
 #include <QReadLocker>
 #include <QUrlQuery>
 #include <QLibrary>
 #include <QProcess>
 #include <QDebug>
+#include <QFile>
 #include <QDir>
 #include <QUrl>
 
@@ -220,14 +222,37 @@ void QCFRunningTemplate::processPostData(QByteArray post)
 
                 const QHttpCodecValue *headerKeyValue = codec.getHeaderKey("Content-Disposition")->getValue("form-data");
 
-                if (headerKeyValue->hasParameter("Content-Type"))
+                if (codec.contansHeaderKey("Content-Type"))
                 {
                     // file upload.
+                    QString key = headerKeyValue->getParameterValue("name").toUpper();
+
+                    m_FileUpload[key] = QCFFileUpload();
+                    QCFFileUpload *item = &m_FileUpload[key];
+
+                    item->createTmpFile();
+
+                    if (item->m_File->open() == false)
+                    {
+                        throw QMKFusionException("Can\'t create temponary file.");
+                    }
+
+                    if (item->m_File->write(codec.getBody()) != codec.getBody().length())
+                    {
+                        throw QMKFusionException("Temponary file didn\'t write all data.");
+                    }
+
+                    item->m_File->close();
+
+                    item->m_ContentType = codec.getHeaderKey("Content-Type")->values.at(0).value;
+                    item->m_Filename = headerKeyValue->getParameterValue("filename");
+
+                    m_FORM.m_Struct->insert(key, QDir::toNativeSeparators(item->m_File->fileName()));
                 }
                 else
                 {
                     QString key = headerKeyValue->getParameterValue("name").toUpper();
-                    QString value = codec.getBody();
+                    QString value = QString::fromUtf8(codec.getBody());
 
                     m_FORM.m_Struct->insert(key, value);
                 }

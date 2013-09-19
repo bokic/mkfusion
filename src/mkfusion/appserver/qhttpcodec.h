@@ -80,12 +80,12 @@ public:
     bool contansHeaderKey(const QString &keyName);
     const QHttpCodecKey * getHeaderKey(const QString &keyName);
     bool isValid();
-    QString getBody();
+    QByteArray getBody();
 
 private:
     QHash<QString, QHttpCodecKey> m_HeaderKeys;
     QString m_Error;
-    QString m_Body;
+    QByteArray m_Body;
     bool m_Valid;
 };
 
