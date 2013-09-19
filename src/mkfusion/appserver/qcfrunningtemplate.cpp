@@ -227,27 +227,34 @@ void QCFRunningTemplate::processPostData(QByteArray post)
                     // file upload.
                     QString key = headerKeyValue->getParameterValue("name").toUpper();
 
-                    m_FileUpload[key] = QCFFileUpload();
-                    QCFFileUpload *item = &m_FileUpload[key];
-
-                    item->createTmpFile();
-
-                    if (item->m_File->open() == false)
+                    if (!headerKeyValue->getParameterValue("filename").isEmpty())
                     {
-                        throw QMKFusionException("Can\'t create temponary file.");
-                    }
+                        m_FileUpload[key] = QCFFileUpload();
+                        QCFFileUpload *item = &m_FileUpload[key];
 
-                    if (item->m_File->write(codec.getBody()) != codec.getBody().length())
+                        item->createTmpFile();
+
+                        if (item->m_File->open() == false)
+                        {
+                            throw QMKFusionException("Can\'t create temponary file.");
+                        }
+
+                        if (item->m_File->write(codec.getBody()) != codec.getBody().length())
+                        {
+                            throw QMKFusionException("Temponary file didn\'t write all data.");
+                        }
+
+                        item->m_File->close();
+
+                        item->m_ContentType = codec.getHeaderKey("Content-Type")->values.at(0).value;
+                        item->m_Filename = headerKeyValue->getParameterValue("filename");
+
+                        m_FORM.m_Struct->insert(key, QDir::toNativeSeparators(item->m_File->fileName()));
+                    }
+                    else
                     {
-                        throw QMKFusionException("Temponary file didn\'t write all data.");
+                        m_FORM.m_Struct->insert(key, L"");
                     }
-
-                    item->m_File->close();
-
-                    item->m_ContentType = codec.getHeaderKey("Content-Type")->values.at(0).value;
-                    item->m_Filename = headerKeyValue->getParameterValue("filename");
-
-                    m_FORM.m_Struct->insert(key, QDir::toNativeSeparators(item->m_File->fileName()));
                 }
                 else
                 {
