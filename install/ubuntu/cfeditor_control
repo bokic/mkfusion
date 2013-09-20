@@ -1,6 +1,6 @@
 Package: cfeditor
 Source: cfeditor
-Version: 0.4.5
+Version: __VERSION__
 Architecture: __ARCH__
 Maintainer: Boris Barbulovski <bbarbulovski@gmail.com>
 Installed-Size: 560
