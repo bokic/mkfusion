@@ -27,7 +27,7 @@ mkdir install/ubuntu/mkfusion/etc
 mkdir install/ubuntu/mkfusion/etc/apache2
 mkdir install/ubuntu/mkfusion/etc/apache2/mods-available
 mkdir install/ubuntu/mkfusion/etc/init.d
-sed 's/__ARCH__/'$(arch)'/g' install/ubuntu/mkfusion_control > install/ubuntu/mkfusion/DEBIAN/control
+sed 's/__ARCH__/'$(dpkg --print-architecture)'/g' install/ubuntu/mkfusion_control > install/ubuntu/mkfusion/DEBIAN/control
 chmod 0755 install/ubuntu/mkfusion/DEBIAN/control
 cp install/ubuntu/mkfusion_postinst install/ubuntu/mkfusion/DEBIAN/postinst
 chmod 0755 install/ubuntu/mkfusion/DEBIAN/postinst
@@ -55,18 +55,18 @@ cp install/ubuntu/mkfusion_mkfusion.load install/ubuntu/mkfusion/etc/apache2/mod
 chmod 0644 install/ubuntu/mkfusion/etc/apache2/mods-available/mkfusion.load
 cp install/ubuntu/mkfusion_init install/ubuntu/mkfusion/etc/init.d/mkfusion
 chmod 0744 install/ubuntu/mkfusion/etc/init.d/mkfusion
-fakeroot dpkg -b install/ubuntu/mkfusion mkfusion_0.4.5_$(arch).deb
+fakeroot dpkg -b install/ubuntu/mkfusion mkfusion_0.4.5_$(dpkg --print-architecture).deb
 rm -rf install/ubuntu/mkfusion
 
 mkdir install/ubuntu/cfeditor
 mkdir install/ubuntu/cfeditor/DEBIAN
 mkdir install/ubuntu/cfeditor/usr
 mkdir install/ubuntu/cfeditor/usr/bin
-sed 's/__ARCH__/'$(arch)'/g' install/ubuntu/cfeditor_control > install/ubuntu/cfeditor/DEBIAN/control
+sed 's/__ARCH__/'$(dpkg --print-architecture)'/g' install/ubuntu/cfeditor_control > install/ubuntu/cfeditor/DEBIAN/control
 chmod 0755 install/ubuntu/cfeditor/DEBIAN/control
 cp install/ubuntu/cfeditor_postinst install/ubuntu/cfeditor/DEBIAN/postinst
 chmod 0755 install/ubuntu/cfeditor/DEBIAN/postinst
 cp bin/cfeditor install/ubuntu/cfeditor/usr/bin/cfeditor
 chmod 0755 install/ubuntu/cfeditor/usr/bin/cfeditor
-fakeroot dpkg -b install/ubuntu/cfeditor cfeditor_0.4.5_$(arch).deb
+fakeroot dpkg -b install/ubuntu/cfeditor cfeditor_0.4.5_$(dpkg --print-architecture).deb
 rm -rf install/ubuntu/cfeditor
