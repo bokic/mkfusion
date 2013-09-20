@@ -52,10 +52,12 @@ Source: "C:\Qt\5.1.1\mingw48_32\plugins\imageformats\qmng.dll"; DestDir: "{app}\
 Source: "C:\Qt\5.1.1\mingw48_32\plugins\imageformats\qsvg.dll"; DestDir: "{app}\imageformats";
 Source: "C:\Qt\5.1.1\mingw48_32\plugins\imageformats\qtiff.dll"; DestDir: "{app}\imageformats";
 
-; libssh library
+; openssl libraries
 Source: "..\..\libs\libssh\bin\libeay32.dll"; DestDir: "{app}";
-Source: "..\..\libs\libssh\bin\libssh.dll"; DestDir: "{app}";
 Source: "..\..\libs\libssh\bin\ssleay32.dll"; DestDir: "{app}";
+
+; libssh library
+Source: "..\..\libs\libssh\bin\libssh.dll"; DestDir: "{app}";
 
 ; main program
 Source: "..\..\bin\cfeditor.exe"; DestDir: "{app}";
