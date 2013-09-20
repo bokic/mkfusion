@@ -12,8 +12,7 @@ files needed before compile:
 
 
 Extract libssh(both), openssl, zlib into libs. All of them should be available
-at http://winkde.org/pub/kde/ports/win32/releases/nightly/latest/
-Extract QtService into libs(http://qt.gitorious.org/qt-solutions/qt-solutions/trees/master/qtservice)
+at https://sourceforge.net/projects/kde-windows/files/
 
 --------------------------------------------------------------------------------
 Ubuntu 13.04 (Raring Ringtail):
