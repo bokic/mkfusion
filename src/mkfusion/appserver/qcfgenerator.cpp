@@ -1296,7 +1296,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
         {
             const QString &file = CFTagGetArgument(p_CFTag, "file");
 
-            return m_Tabs + "cf_FileDelete(\"" + toCPPEncodeStr(file) + "\");\n";
+            return m_Tabs + "cf_FileDelete(" + file + ");\n";
         }
         else if (action == "upload")
         {

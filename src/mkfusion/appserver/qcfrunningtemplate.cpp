@@ -310,7 +310,7 @@ void QCFRunningTemplate::worker()
 				l_ds.setVersion(QDataStream::Qt_4_4);
 
 				l_ds >> l_RecieveBufSize;
-				if (l_RecieveBufSize > 8196)
+				if (l_RecieveBufSize > 10485760) // 10MB
 				{
 					break;
 				}

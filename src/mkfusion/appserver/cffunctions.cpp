@@ -1372,9 +1372,15 @@ Q_DECL_EXPORT void cf_FileCopy(const QString &source, const QString &destination
 
 Q_DECL_EXPORT void cf_FileDelete(const QString &filepath)
 {
-    Q_UNUSED(filepath);
+    if (!QFile::exists(filepath))
+    {
+        throw QMKFusionException("File delete failed.", QString("Specified file[%1] does not exists.").arg(filepath));
+    }
 
-    throw QMKFusionException("Not Implemented", "FileDelete is not Implemented (yet:))");
+    if (QFile::remove(filepath) == false)
+    {
+        throw QMKFusionException("File delete failed.", QString("Error while deleting file[%1].").arg(filepath));
+    }
 }
 
 Q_DECL_EXPORT bool cf_FileExists(const QString &absolute_path)
