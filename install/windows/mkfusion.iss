@@ -142,18 +142,18 @@ function CloseHandle (hHandle: THandle): Boolean; external 'CloseHandle@kernel32
 function LocalFree(data: PChar): Integer; external 'LocalFree@Kernel32.dll stdcall';
 function ShellExecute(hwnd: HWND; Operation: PChar; File: PChar; Parameters: PChar; Directory: PChar; ShowCmd: Integer): Integer; external 'ShellExecuteA@shell32.dll stdcall';
 
-function IsServiceInstalled(ServiceName: PChar): Boolean; external 'IsServiceInstalled@files:uninstall.dll cdecl';
-function IsServiceStatus(ServiceName: PChar; Status: DWORD): Boolean; external 'IsServiceStatus@files:uninstall.dll cdecl';
+function IsWinServiceInstalled(ServiceName: PChar): Boolean; external 'IsWinServiceInstalled@files:uninstall.dll cdecl';
+function GetWinServiceStatus(ServiceName: PChar; Status: DWORD): Boolean; external 'GetWinServiceStatus@files:uninstall.dll cdecl';
 function StartWinService(ServiceName: PChar): Boolean; external 'StartWinService@files:uninstall.dll cdecl';
 function StopWinService(ServiceName: PChar): Boolean; external 'StopWinService@files:uninstall.dll cdecl';
-function GetServiceExeFilename(ServiceName: PChar): PChar; external 'GetServiceExeFilename@files:uninstall.dll cdecl';
+function GetWinServiceExeFilename(ServiceName: PChar): PChar; external 'GetWinServiceExeFilename@files:uninstall.dll cdecl';
 function AddMKFusionToApacheConfig(FileName: PChar; MKFusionPath: String): Boolean; external 'AddMKFusionToApacheConfig@files:uninstall.dll cdecl';
 function RemoveMKFusionFromApacheConfig(FileName: PChar): Boolean; external 'RemoveMKFusionFromApacheConfig@files:uninstall.dll cdecl';
-function UnIsServiceInstalled(ServiceName: PChar): Boolean; external 'IsServiceInstalled@{app}\uninstall.dll cdecl uninstallonly';
-function UnIsServiceStatus(ServiceName: PChar; Status: DWORD): Boolean; external 'IsServiceStatus@{app}\uninstall.dll cdecl uninstallonly';
+function UnIsWinServiceInstalled(ServiceName: PChar): Boolean; external 'IsWinServiceInstalled@{app}\uninstall.dll cdecl uninstallonly';
+function UnGetWinServiceStatus(ServiceName: PChar; Status: DWORD): Boolean; external 'GetWinServiceStatus@{app}\uninstall.dll cdecl uninstallonly';
 function UnStartWinService(ServiceName: PChar): Boolean; external 'StartWinService@{app}\uninstall.dll cdecl uninstallonly';
 function UnStopWinService(ServiceName: PChar): Boolean; external 'StopWinService@{app}\uninstall.dll cdecl uninstallonly';
-function UnGetServiceExeFilename(ServiceName: PChar): PChar; external 'GetServiceExeFilename@{app}\uninstall.dll cdecl uninstallonly';
+function UnGetWinServiceExeFilename(ServiceName: PChar): PChar; external 'GetWinServiceExeFilename@{app}\uninstall.dll cdecl uninstallonly';
 function UnRemoveMKFusionFromApacheConfig(FileName: PChar): Boolean; external 'RemoveMKFusionFromApacheConfig@{app}\uninstall.dll cdecl uninstallonly';
 
 function InitializeSetup(): Boolean;
@@ -166,7 +166,7 @@ begin
     MsgBox('Please use 32bit version of Apache.', mbinformation, MB_OK)
   end;
 
-  if (IsServiceInstalled('Apache2.2') = False)Then
+  if (IsWinServiceInstalled('Apache2.2') = False)Then
   begin
     MsgBox('Please install Apache2.2(http://httpd.apache.org/download.cgi).', mbError, MB_OK);
     ShellExecute(0, 'open', 'http://httpd.apache.org/download.cgi', '', '', SW_SHOWNOACTIVATE);
@@ -174,7 +174,7 @@ begin
     exit;
   end;
 
-  tmpServiceFileName := GetServiceExeFilename('Apache2.2');
+  tmpServiceFileName := GetWinServiceExeFilename('Apache2.2');
   ApacheDir := tmpServiceFileName;
   if (tmpServiceFileName <> nil) Then
     LocalFree(tmpServiceFileName);
@@ -212,7 +212,7 @@ begin
     WriteFile(FileHdl, PChar(ConfContent), Length(ConfContent), written, 0);
     CloseHandle(FileHdl);
 
-    ApacheExec := GetServiceExeFilename('Apache2.2');
+    ApacheExec := GetWinServiceExeFilename('Apache2.2');
     ApacheDir := ApacheExec;
     if (ApacheExec <> nil) Then
       LocalFree(ApacheExec);
@@ -229,14 +229,14 @@ begin
 
     DelTree(ExpandConstant('{app}\templates\*'), False, True, True);
 
-    if (IsServiceStatus('Apache2.2', SERVICE_RUNNING) = True)Then
+    if (GetWinServiceStatus('Apache2.2', SERVICE_RUNNING) = True)Then
     begin
       if (StopWinService('Apache2.2') = False)Then
         exit;
 
       repeat
       Sleep(100);
-      until (IsServiceStatus('Apache2.2', SERVICE_STOPPED) = True)
+      until (GetWinServiceStatus('Apache2.2', SERVICE_STOPPED) = True)
 
       StartWinService('Apache2.2')
     end;
@@ -258,21 +258,21 @@ var
 begin
   if (CurUninstallStep = usUninstall)Then
   begin
-    if (UnIsServiceInstalled('mkfusion') = False)Then
+    if (UnIsWinServiceInstalled('mkfusion') = False)Then
     begin
       MsgBox('mkfusion service not found.', mbError, MB_OK);
       UnloadDLL(ExpandConstant('{app}\uninstall.dll'));
       exit;
     end;
 
-    if (UnIsServiceInstalled('Apache2.2') = False)Then
+    if (UnIsWinServiceInstalled('Apache2.2') = False)Then
     begin
       MsgBox('Apache2.2 service not found.', mbError, MB_OK);
       UnloadDLL(ExpandConstant('{app}\uninstall.dll'));
       exit;
     end;
 
-    WasMKFusionRunning := UnIsServiceStatus('mkfusion', SERVICE_RUNNING);
+    WasMKFusionRunning := UnGetWinServiceStatus('mkfusion', SERVICE_RUNNING);
 
     if (WasMKFusionRunning = True)Then
     begin
@@ -280,11 +280,11 @@ begin
     end;
     repeat
       Sleep(100);
-    until (UnIsServiceStatus('mkfusion', SERVICE_STOPPED) = True)
+    until (UnGetWinServiceStatus('mkfusion', SERVICE_STOPPED) = True)
     
     Exec(ExpandConstant('{app}\bin\mkfusion.exe'), '-u', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
 
-    WasApacheRunning := UnIsServiceStatus('Apache2.2', SERVICE_RUNNING);
+    WasApacheRunning := UnGetWinServiceStatus('Apache2.2', SERVICE_RUNNING);
 
     if (WasApacheRunning = True)Then
     begin
@@ -292,9 +292,9 @@ begin
     end;
     repeat
       Sleep(100);
-    until (UnIsServiceStatus('Apache2.2', SERVICE_STOPPED) = True)
+    until (UnGetWinServiceStatus('Apache2.2', SERVICE_STOPPED) = True)
 
-    ApacheExec := UnGetServiceExeFilename('Apache2.2');
+    ApacheExec := UnGetWinServiceExeFilename('Apache2.2');
     ApacheDir := ApacheExec;
     if (ApacheExec <> nil) Then
       LocalFree(ApacheExec);

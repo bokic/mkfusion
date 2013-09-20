@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
-bool IsServiceInstalled(char *ServiceName)
+bool IsWinServiceInstalled(char *ServiceName)
 {
     SC_HANDLE l_SCMHandle = OpenSCManagerA(nullptr, "ServicesActive", SC_MANAGER_ALL_ACCESS);
     if (l_SCMHandle == nullptr)
@@ -23,7 +23,7 @@ bool IsServiceInstalled(char *ServiceName)
 	return true;
 }
 
-bool IsServiceStatus(char *ServiceName, DWORD ServiceStatus) // SERVICE_RUNNING or SERVICE_STOPPED
+bool GetWinServiceStatus(char *ServiceName, DWORD ServiceStatus) // SERVICE_RUNNING or SERVICE_STOPPED
 {
     SC_HANDLE l_SCMHandle = OpenSCManagerA(nullptr, "ServicesActive", SC_MANAGER_ALL_ACCESS);
     if (l_SCMHandle == nullptr)
@@ -114,7 +114,7 @@ bool StopWinService(char *ServiceName)
 	return true;
 }
 
-char *GetServiceExeFilename(char *ServiceName)
+char *GetWinServiceExeFilename(char *ServiceName)
 {
     SC_HANDLE l_SCMHandle = OpenSCManagerA(nullptr, "ServicesActive", SC_MANAGER_ALL_ACCESS);
     if (l_SCMHandle == nullptr)
@@ -329,11 +329,11 @@ bool RemoveMKFusionFromApacheConfig(char *FileName)
 {
 	bool ret;
 
-	//bool ret = IsServiceInstalled("apache2.2");
-	//ret = IsServiceStatus("apache2.2", SERVICE_RUNNING); // SERVICE_RUNNING, SERVICE_STOPPED
+    //bool ret = IsWinServiceInstalled("apache2.2");
+    //ret = GetWinServiceStatus("apache2.2", SERVICE_RUNNING); // SERVICE_RUNNING, SERVICE_STOPPED
 	//ret = StartWinService("apache2.2");
 	//ret = StopWinService("apache2.2");
-    //char *name = GetServiceExeFilename("apache2.2");
+    //char *name = GetWinServiceExeFilename("apache2.2");
     //if (name)
 	//{
 	//	LocalFree(name);
