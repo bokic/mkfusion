@@ -42,7 +42,7 @@ Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5WebKitWidgets.dll"; DestDir: "{app}";
 Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Svg.dll"; DestDir: "{app}";
 
 ; Qt image icon engines
-Source: "cC:\Qt\5.1.1\mingw48_32\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines";
+Source: "C:\Qt\5.1.1\mingw48_32\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines";
 
 ; Qt image formats
 Source: "C:\Qt\5.1.1\mingw48_32\plugins\imageformats\qgif.dll"; DestDir: "{app}\imageformats";
