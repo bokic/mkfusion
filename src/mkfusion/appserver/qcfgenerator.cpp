@@ -461,26 +461,26 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 #endif
 
 #ifdef Q_OS_WIN
-        << ("-I\"" + l_MingwPath + "include\"")
-        << ("-I\"" + l_QtPath + "include\\QtCore\"")
-        << ("-I\"" + l_QtPath + "include\\QtNetwork\"")
-        << ("-I\"" + l_QtPath + "include\\QtConcurrent\"")
-        << ("-I\"" + l_QtPath + "include\"")
-        << ("-I\"" + p_MKFusionPath + "include\"")
+        << "-I" << (l_MingwPath + "include")
+        << "-I" << (l_QtPath + "include" + QDir::separator() + "QtCore")
+        << "-I" << (l_QtPath + "include" + QDir::separator() + "QtNetwork")
+        << "-I" << (l_QtPath + "include" + QDir::separator() + "QtConcurrent")
+        << "-I" << (l_QtPath + "include")
+        << "-I" << (p_MKFusionPath + "include")
 #elif defined Q_OS_LINUX
     #ifdef __x86_64__
-        << ("-I/usr/share/qt5/mkspecs/linux-g++-64")
-        << ("-I/usr/lib/qt/mkspecs/linux-g++-64") // Arch linux uses this path
+        << "-I" << "/usr/share/qt5/mkspecs/linux-g++-64"
+        << "-I" << "/usr/lib/qt/mkspecs/linux-g++-64" // Arch linux uses this path
     #else
-        << ("-I/usr/share/qt5/mkspecs/linux-g++")
-        << ("-I/usr/lib/qt/mkspecs/linux-g++") // Arch linux uses this path
+        << "-I" << "/usr/share/qt5/mkspecs/linux-g++"
+        << "-I" << "/usr/lib/qt/mkspecs/linux-g++" // Arch linux uses this path
     #endif
-        << ("-I.")
-        << ("-I/usr/include/qt5/QtCore")
-        << ("-I/usr/include/qt5/QtNetwork")
-        << ("-I/usr/include/qt5/QtConcurrent")
-        << ("-I/usr/include/qt5")
-        << ("-I\"" + p_MKFusionPath + "include\"")
+        << "-I" << "."
+        << "-I" << "/usr/include/qt5/QtCore"
+        << "-I" << "/usr/include/qt5/QtNetwork"
+        << "-I" << "/usr/include/qt5/QtConcurrent"
+        << "-I" << "/usr/include/qt5"
+        << "-I" << (p_MKFusionPath + "include")
 #endif
 
         << "-o" << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".o")
@@ -548,25 +548,24 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
         << "-shared"
 
-        << "-o"
 #ifdef Q_OS_WIN
-        << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
+        << "-o" << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
 #else
-        << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".so")
+        << "-o" << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".so")
 #endif
 
         << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".o")
 
 #ifdef Q_OS_WIN
-        << ("-L\"" + l_QtPath + "lib\"") << (p_MKFusionPath + "lib\\mkfusion.a")
+        << "-L" << (l_QtPath + "lib") << (p_MKFusionPath + "lib\\mkfusion.a")
 #else
         << "-L/usr/lib/x86_64-linux-gnu" << "-lrt" << "-lpthread"
 #endif
 
-#ifdef QT_NO_DEBUG
-        << "-lQt5Concurrent" << "-lQt5Core"
-#else
+#if defined Q_OS_WIN && !defined QT_NO_DEBUG
         << "-lQt5Concurrentd" << "-lQt5Cored"
+#else
+        << "-lQt5Concurrent" << "-lQt5Core"
 #endif
     );
 /*#ifdef Q_OS_WIN
