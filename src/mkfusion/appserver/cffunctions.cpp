@@ -2644,7 +2644,7 @@ Q_DECL_EXPORT QDateTime cf_ParseDateTime(const QString &datetime_string, const Q
 
 Q_DECL_EXPORT double cf_Pi()
 {
-#ifdef __ARM__
+#ifdef __arm__
     return 3.14159265358979323846;
 #else
     double ret;
