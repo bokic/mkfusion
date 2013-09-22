@@ -12,7 +12,13 @@ DEPENDPATH  += . ../simplifiedlocalsocket
 INCLUDEPATH += . ../simplifiedlocalsocket
 
 win32:INCLUDEPATH += ../../../libs/apache2/include
-unix:INCLUDEPATH  += /usr/include/apache2 /usr/include/apr-1.0
+unix {
+    system(lsb_release -d | grep -e "Arch Linux") {
+        INCLUDEPATH  += /usr/include/httpd /usr/include/apr-1
+    } else {
+        INCLUDEPATH  += /usr/include/apache2 /usr/include/apr-1.0
+    }
+}
 
 win32:LIBS += "-L../../../libs/apache2/lib" -llibhttpd -llibapr-1 libpsapi
 unix:LIBS += -L/usr/lib/

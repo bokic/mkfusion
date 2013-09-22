@@ -21,3 +21,11 @@ Ubuntu 13.04 (Raring Ringtail):
 * chmod 744 buildall.sh
 * sh ./buildall.sh
 * sudo dpkg -i mkfusion_0.4.5-0ubuntu0_i386.deb
+
+--------------------------------------------------------------------------------
+Arch Linux (raspberry pi too) WIP.
+
+pacman -S subversion gcc apache libssh qt5-tools make fakeroot lsb-release
+cd src
+qmake
+make
