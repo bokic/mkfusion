@@ -480,6 +480,10 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
         << "-I" << "/usr/include/qt5/QtNetwork"
         << "-I" << "/usr/include/qt5/QtConcurrent"
         << "-I" << "/usr/include/qt5"
+        << "-I" << "/usr/include/qt/QtCore" // Arch linux uses this path
+        << "-I" << "/usr/include/qt/QtNetwork" // Arch linux uses this path
+        << "-I" << "/usr/include/qt/QtConcurrent" // Arch linux uses this path
+        << "-I" << "/usr/include/qt" // Arch linux uses this path
         << "-I" << (p_MKFusionPath + "include")
 #endif
 
