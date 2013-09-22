@@ -13,9 +13,14 @@ INCLUDEPATH += . ../simplifiedlocalsocket
 
 win32:INCLUDEPATH += ../../../libs/apache2/include
 unix {
-    system(lsb_release -d | grep -e "Arch Linux") {
+    LSB_RELEASE = $$system(lsb_release -d)
+
+    message( LSB_RELEASE: ($$LSB_RELEASE))
+
+    contains(LSB_RELEASE, Arch Linux) {
         INCLUDEPATH  += /usr/include/httpd /usr/include/apr-1
-    } else {
+    }
+    !contains(LSB_RELEASE, Arch Linux) {
         INCLUDEPATH  += /usr/include/apache2 /usr/include/apr-1.0
     }
 }

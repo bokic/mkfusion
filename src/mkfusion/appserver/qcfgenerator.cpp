@@ -399,21 +399,114 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 #ifdef Q_OS_WIN
     QString l_QtPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\qt\\";
     QString l_MingwPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\mingw\\";
+    process.start(l_MingwPath + "bin\\g++.exe", QStringList()
+#elif defined Q_OS_LINUX
+    process.start("g++", QStringList()
+#else
+#error Windows and Linux OSs are currently supported.
+#endif
+
+        << "-c"
+
+#ifdef __x86_64__
+        << "-m64"
+#endif
+
+#ifdef Q_OS_LINUX
+        << "-pipe"
+#endif
+
+#ifdef __arm__
+        << "-march=armv6" << "-mfloat-abi=hard" << "-mfpu=vfp"
+#endif
 
 #ifdef QT_NO_DEBUG
-    process.start("\"" + l_MingwPath+"bin\\g++.exe\" -c -O2 -std=c++0x -frtti -fexceptions -mthreads -Wall -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I\""+l_MingwPath+"include\" -I\""+l_QtPath+"include\\QtCore\" -I\""+l_QtPath+"include\\QtNetwork\" -I\""+l_QtPath+"include\\QtConcurrent\" -I\""+l_QtPath+"include\" -I\""+p_MKFusionPath+"include\" -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".cpp\"");
+        << "-O2"
 #else
-    process.start("\"" + l_MingwPath+"bin\\g++.exe\" -c -g -std=c++0x -frtti -fexceptions -mthreads -Wall -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I\""+l_MingwPath+"include\" -I\""+l_QtPath+"include\\QtCore\" -I\""+l_QtPath+"include\\QtNetwork\" -I\""+l_QtPath+"include\\QtConcurrent\" -I\""+l_QtPath+"include\" -I\""+p_MKFusionPath+"include\" -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".cpp\"");
+    << "-g"
+#endif
+
+#ifdef __arm__
+        << "-pipe" << "-fstack-protector" << "--param=ssp-buffer-size=4"
+#endif
+
+        << "-std=c++0x"
+
+#ifdef Q_OS_WIN
+        << "-frtti" << "-fexceptions" << "-mthreads"
+#endif
+
+        << "-Wall"
+
+#ifdef Q_OS_LINUX
+        << "-Wall" << "-W" << "-D_REENTRANT" << "-fPIE"
+#endif
+
+#ifdef Q_OS_WIN
+        << "-DQT_LARGEFILE_SUPPORT" << "-DQT_DLL"
+#endif
+
+#ifdef QT_NO_DEBUG
+    << "-DQT_NO_DEBUG"
+#endif
+
+    << "-DQT_CORE_LIB"
+
+#ifdef Q_OS_LINUX
+        << "-DQT_SHARED"
+#endif
+
+#ifdef Q_OS_WIN
+        << "-DQT_THREAD_SUPPORT"
+#endif
+
+#ifdef Q_OS_WIN
+        << ("-I\"" + l_MingwPath + "include\"")
+        << ("-I\"" + l_QtPath + "include\\QtCore\"")
+        << ("-I\"" + l_QtPath + "include\\QtNetwork\"")
+        << ("-I\"" + l_QtPath + "include\\QtConcurrent\"")
+        << ("-I\"" + l_QtPath + "include\"")
+        << ("-I\"" + p_MKFusionPath + "include\"")
+#elif defined Q_OS_LINUX
+    #ifdef __x86_64__
+        << ("-I/usr/share/qt5/mkspecs/linux-g++-64")
+        << ("-I/usr/lib/qt/mkspecs/linux-g++-64") // Arch linux uses this path
+    #else
+        << ("-I/usr/share/qt5/mkspecs/linux-g++")
+        << ("-I/usr/lib/qt/mkspecs/linux-g++") // Arch linux uses this path
+    #endif
+        << ("-I.")
+        << ("-I/usr/include/qt5/QtCore")
+        << ("-I/usr/include/qt5/QtNetwork")
+        << ("-I/usr/include/qt5/QtConcurrent")
+        << ("-I/usr/include/qt5")
+        << ("-I\"" + p_MKFusionPath + "include\"")
+#endif
+
+        << "-o" << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".o")
+        << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".cpp")
+    );
+
+/*#ifdef Q_OS_WIN
+    QString l_QtPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\qt\\";
+    QString l_MingwPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\mingw\\";
+
+#ifdef QT_NO_DEBUG
+    process.start("\"" + l_MingwPath+"bin\\g++.exe\" -c                                                    -O2                                                       -std=c++0x -frtti -fexceptions -mthreads -Wall -DUNICODE                       -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_CORE_LIB             -DQT_THREAD_SUPPORT -I\""+l_MingwPath+"include\" -I\""+l_QtPath+"include\\QtCore\" -I\""+l_QtPath+"include\\QtNetwork\" -I\""+l_QtPath+"include\\QtConcurrent\" -I\""+l_QtPath+"include\" -I\""+p_MKFusionPath+"include\" -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".cpp\"");
+#else
+    process.start("\"" + l_MingwPath+"bin\\g++.exe\" -c                                                        -g                                                    -std=c++0x -frtti -fexceptions -mthreads -Wall -DUNICODE                       -DQT_LARGEFILE_SUPPORT -DQT_DLL               -DQT_CORE_LIB             -DQT_THREAD_SUPPORT -I\""+l_MingwPath+"include\" -I\""+l_QtPath+"include\\QtCore\" -I\""+l_QtPath+"include\\QtNetwork\" -I\""+l_QtPath+"include\\QtConcurrent\" -I\""+l_QtPath+"include\" -I\""+p_MKFusionPath+"include\" -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".cpp\"");
 #endif // #ifdef QT_NO_DEBUG
 #elif defined Q_OS_LINUX
 #ifdef QT_NO_DEBUG
-    process.start("g++ -c -m64 -pipe -O2 -std=c++0x -Wall -W -D_REENTRANT -fPIE -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt5/mkspecs/linux-g++-64 -I. -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5 -I\""+p_MKFusionPath+"include\" -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".cpp\"");
+    process.start("g++                               -c -m64 -pipe                                         -O2                                                       -std=c++0x                               -Wall           -W -D_REENTRANT -fPIE                                 -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_SHARED                     -I/usr/share/qt5/mkspecs/linux-g++-64 -I. -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5 -I\""+p_MKFusionPath+"include\"                   -o\""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".cpp\"");
+    ARM(rpi) ->    g++                               -c      -pipe -march=armv6 -mfloat-abi=hard -mfpu=vfp -O2     -pipe -fstack-protector --param=ssp-buffer-size=4 -std=c++0x                               -Wall           -W -D_REENTRANT -fPIE                                 -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_SHARED                     -I/usr/lib/qt/mkspecs/linux-g++ -I.   -I. -I../../textparser -I/usr/include/qt -I/usr/include/qt/QtXml -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -Irelease -o release/main.o main.cpp
+
 #else
-    process.start("g++ -c -m64 -pipe -g -std=c++0x -Wall -W -D_REENTRANT -fPIE -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt5/mkspecs/linux-g++-64 -I. -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5 -I\""+p_MKFusionPath+"include\" -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".cpp\"");
+    process.start("g++                               -c -m64 -pipe                                             -g                                                    -std=c++0x                               -Wall           -W -D_REENTRANT -fPIE                                               -DQT_CORE_LIB -DQT_SHARED                     -I/usr/share/qt5/mkspecs/linux-g++-64 -I. -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5 -I\""+p_MKFusionPath+"include\" -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".cpp\"");
 #endif // #ifdef QT_NO_DEBUG
 #else
 #error Windows and Linux OSs are currently supported.
-#endif // #ifdef Q_OS_WIN
+#endif // #ifdef Q_OS_WIN*/
 
     bool finished = process.waitForFinished(-1);
 
@@ -428,20 +521,71 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
 	// Link
 #ifdef Q_OS_WIN
-#ifdef QT_NO_DEBUG
-    process.start("\"" + l_MingwPath+"bin\\g++.exe\" -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -mthreads -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQt5Core");
-#else
-    process.start("\"" + l_MingwPath+"bin\\g++.exe\" -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -mthreads -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQt5Cored");
-#endif
+    QString l_QtPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\qt\\";
+    QString l_MingwPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\mingw\\";
+    process.start(l_MingwPath + "bin\\g++.exe", QStringList()
 #elif defined Q_OS_LINUX
-#ifdef QT_NO_DEBUG
-    process.start("g++ -m64 -Wl,-O1 -shared -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".so\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" -L/usr/lib/x86_64-linux-gnu -lQt5Concurrent -lrt -lQt5Core -lpthread");
-#else
-    process.start("g++ -m64 -shared -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".so\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" -L/usr/lib/x86_64-linux-gnu -lQt5Concurrent -lrt -lQt5Core -lpthread");
-#endif
+    process.start("g++", QStringList()
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
+
+#ifdef __x86_64__
+        << "-m64"
+#endif
+
+#if defined Q_OS_LINUX && defined QT_NO_DEBUG
+        << "-Wl,-O1"
+#endif
+
+#ifdef Q_OS_WIN
+        << "-Wl,-enable-stdcall-fixup" << "-Wl,-enable-auto-import" << "-Wl,-enable-runtime-pseudo-reloc"
+    #ifdef QT_NO_DEBUG
+        << "-Wl,-s"
+    #endif
+        << "-mthreads"
+#endif
+
+        << "-shared"
+
+        << "-o"
+#ifdef Q_OS_WIN
+        << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
+#else
+        << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".so")
+#endif
+
+        << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".o")
+
+#ifdef Q_OS_WIN
+        << ("-L\"" + l_QtPath + "lib\"") << (p_MKFusionPath + "lib\\mkfusion.a")
+#else
+        << "-L/usr/lib/x86_64-linux-gnu" << "-lrt" << "-lpthread"
+#endif
+
+#ifdef QT_NO_DEBUG
+        << "-lQt5Concurrent" << "-lQt5Core"
+#else
+        << "-lQt5Concurrentd" << "-lQt5Cored"
+#endif
+    );
+/*#ifdef Q_OS_WIN
+#ifdef QT_NO_DEBUG
+    process.start("\"" + l_MingwPath+"bin\\g++.exe\"              -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -mthreads -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQt5Core");
+#else
+    process.start("\"" + l_MingwPath+"bin\\g++.exe\"              -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc        -mthreads -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQt5Cored");
+#endif
+#elif defined Q_OS_LINUX
+#ifdef QT_NO_DEBUG
+    process.start("g++                               -m64 -Wl,-O1                                                                                                     -shared -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".so\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" -L/usr/lib/x86_64-linux-gnu -lQt5Concurrent -lrt -lQt5Core -lpthread");
+    ARM(rpi) ->    g++                                    -Wl,-O1                                                                                                     -shared -o ../../../bin/textparser                            release/main.o release/qtextparser.o                                          -lQt5Concurrent -lrt -lQt5Core -lpthread
+#else
+    process.start("g++                               -m64                                                                                                             -shared -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".so\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" -L/usr/lib/x86_64-linux-gnu -lQt5Concurrent -lrt -lQt5Core -lpthread");
+#endif
+#else
+#error Windows and Linux OSs are currently supported.
+#endif*/
+
     finished = process.waitForFinished(-1);
 
 	QFile::remove(p_MKFusionPath+"templates/"+l_NewTarget+".o");
