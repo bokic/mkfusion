@@ -525,8 +525,6 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
 	// Link
 #ifdef Q_OS_WIN
-    QString l_QtPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\qt\\";
-    QString l_MingwPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\mingw\\";
     process.start(l_MingwPath + "bin\\g++.exe", QStringList()
 #elif defined Q_OS_LINUX
     process.start("g++", QStringList()
