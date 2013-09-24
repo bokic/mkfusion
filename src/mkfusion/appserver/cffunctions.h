@@ -154,7 +154,7 @@ Q_DECL_EXPORT QWDDX cf_GetSOAPResponseHeader(const QString &_namespace, const QS
 Q_DECL_EXPORT QString cf_GetTempDirectory();
 Q_DECL_EXPORT QString cf_GetTempFile(const QString &dir, const QString &prefix);
 Q_DECL_EXPORT QString cf_GetTemplatePath();
-Q_DECL_EXPORT QString cf_GetTickCount();
+Q_DECL_EXPORT int cf_GetTickCount();
 Q_DECL_EXPORT QWDDX cf_GetTimeZoneInfo();
 Q_DECL_EXPORT QString cf_GetToken(const QString &string, int index, const QString &delimiters = ",");
 Q_DECL_EXPORT QString cf_GetUserRoles();
@@ -213,7 +213,7 @@ Q_DECL_EXPORT void cf_ImageWrite(const QWDDX &name, const QString &destination =
 Q_DECL_EXPORT QString cf_ImageWriteBase64(const QWDDX &name, const QString &destination, const QString &format, bool inHTMLFormat = false);
 Q_DECL_EXPORT void cf_ImageXORDrawingMode(QWDDX &name, const QString &c1);
 Q_DECL_EXPORT double cf_IncrementValue(double number);
-Q_DECL_EXPORT QString cf_InputBaseN(const QString &string, int radix);
+Q_DECL_EXPORT int cf_InputBaseN(const QString &string, int radix);
 Q_DECL_EXPORT QString cf_Insert(const QString &substring, const QString &string, int position);
 Q_DECL_EXPORT QString cf_Int(double number);
 Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level = 0);
@@ -383,7 +383,7 @@ Q_DECL_EXPORT QString cf_ValueList(const QWDDX &query_column, const QString deli
 Q_DECL_EXPORT void cf_VerifyClient();
 Q_DECL_EXPORT int cf_Week(const QDateTime &date);
 Q_DECL_EXPORT QString cf_Wrap(const QString &string, int limit, bool strip = false);
-Q_DECL_EXPORT void cf_WriteOutput(const QString &string);
+//Q_DECL_EXPORT void cf_WriteOutput(const QString &string); // Implemented as QCFRunningTemplate function member.
 Q_DECL_EXPORT bool cf_XmlChildPos(const QWDDX &elem, const QWDDX &childName, int N);
 Q_DECL_EXPORT QWDDX cf_XmlElemNew(QWDDX &xmlObj, const QString &childName);
 Q_DECL_EXPORT QWDDX cf_XmlElemNew(QWDDX &xmlObj, const QString &_namespace, const QString &childName);

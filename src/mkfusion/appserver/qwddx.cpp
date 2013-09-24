@@ -2031,6 +2031,11 @@ Q_DECL_EXPORT bool QWDDX::canConvertToNumber()
 	return false;
 }
 
+Q_DECL_EXPORT bool QWDDX::canConvertToDate()
+{
+    // TODO: Implement QWDDX::canConvertToDate()
+}
+
 Q_DECL_EXPORT QDateTime QWDDX::toDateTime() const
 {
     if (m_Type == QWDDX::DateTime)

@@ -1095,7 +1095,7 @@ QCFParserElement QCFGenerator::OptimizeQCFParserElement(QCFParserElement p_CFExp
 	return p_CFExpression;
 }
 
-QString QCFGenerator::GenerateCodeFromString(const QString str)
+QString QCFGenerator::ParseAndGenerateCppExpressionFromString(const QString str)
 {
     QCFParser parser;
 
@@ -1266,7 +1266,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
         }
     }
 
-    if(p_CFTag.m_Name.compare("cfabort", Qt::CaseInsensitive) == 0)
+    if(p_CFTag.m_Name.compare("cfabort", Qt::CaseInsensitive) == 0) // Done
 	{
 		if (CFTagHasArgument(p_CFTag, "showError"))
 		{
@@ -1277,7 +1277,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return m_Tabs + "throw QMKFusionCFAbortException();";
 		}
 	}
-    else if(p_CFTag.m_Name.compare("cfapplication", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfapplication", Qt::CaseInsensitive) == 0) // TODO: cfapplication - Implemented attributes: name, sessionmanagement, setclientcookies
     {
         bool has_name = CFTagHasArgument(p_CFTag, "name");
 
@@ -1290,11 +1290,11 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             throw QMKFusionTemplateException(QString("cfapplication tag must have name attribute."));
         }
     }
-    else if(p_CFTag.m_Name.compare("cfbreak", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfbreak", Qt::CaseInsensitive) == 0) // Done
 	{
         return m_Tabs + "break;";
 	}
-    else if(p_CFTag.m_Name.compare("cfcase", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfcase", Qt::CaseInsensitive) == 0) // TODO: cfcase - Unimplemented attribute: delimiters
     {
         QString ret;
 
@@ -1332,7 +1332,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return m_Tabs + "}\n";
         }
     }
-    else if(p_CFTag.m_Name.compare("cfcatch", Qt::CaseInsensitive) == 0) /* NOT all types are implemented */
+    else if(p_CFTag.m_Name.compare("cfcatch", Qt::CaseInsensitive) == 0) // TODO: cfcatch - attribute: "type", value: "custom_type" are not implemented
     {
         // TODO: NOT all cfcatch types are implemented.
         if (p_CFTag.m_TagType == CFTagType)
@@ -1390,7 +1390,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return m_Tabs.left(m_Tabs.length() - 1) + "} catch(const QMKFusionException &ex) {";
         }
     }
-    else if(p_CFTag.m_Name.compare("cfcookie", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfcookie", Qt::CaseInsensitive) == 0) // TODO: cfcookie - Unimplemented attribute: domain, path, secure
     {
         QString name = CFTagGetArgumentAsString(p_CFTag, "name");
         QString value;
@@ -1416,26 +1416,12 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
         return m_Tabs + "f_SetCookie(" + name + ", " + value + ", " + expires + ");\n";
     }
-    else if(p_CFTag.m_Name.compare("cfdump", Qt::CaseInsensitive) == 0) /* Only 'var' parameter is implemented. */
+    else if(p_CFTag.m_Name.compare("cfdump", Qt::CaseInsensitive) == 0) // TODO: cfdump - Only 'var' parameter is implemented
 	{
-		if (p_CFTag.m_Arguments.m_Type != CFTagArguments)
-		{
-			return ""; //TODO: Generate Error.
-		}
-
-		if (p_CFTag.m_Arguments.m_ChildElements.size() != 1) // only var
-		{
-			return ""; //TODO: Generate Error.
-		}
-
-		if (p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements.size() != 3) // only var = "something"
-		{
-			return ""; //TODO: Generate Error.
-		}
-
-        return m_Tabs + "m_TemplateInstance->m_Output += mk_cfdump("+GenerateCFExpressionToCExpression(OptimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]))+");";
+        //return m_Tabs + "m_TemplateInstance->m_Output += mk_cfdump("+GenerateCFExpressionToCExpression(OptimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]))+");";
+        return m_Tabs + "m_TemplateInstance->m_Output += mk_cfdump(" + GenerateCFExpressionToCExpression(OptimizeQCFParserElement(CFTagGetArgumentObject(p_CFTag, "var"))) + ");";
 	}
-    else if(p_CFTag.m_Name.compare("cffile", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cffile", Qt::CaseInsensitive) == 0) // TODO: cffile - Implemented 'action': delete, upload
     {
         const QString &action = CFTagGetArgumentPlain(p_CFTag, "action").toLower();
 
@@ -1515,11 +1501,11 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return m_Tabs + "f_FileUploadMove(" + destination + ", "  + fileField + ", " + accept + ", " + attributes + ", "  + mode + ", " + nameConflict + ", " + result + ");\n";
         }
     }
-    else if(p_CFTag.m_Name.compare("cfinclude", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfinclude", Qt::CaseInsensitive) == 0) // Done
     {
         return m_Tabs + "f_Include(" + CFTagGetArgument(p_CFTag, "template") + ");";
     }
-    else if(p_CFTag.m_Name.compare("cfloop", Qt::CaseInsensitive) == 0) /* implemented: index, condition. missing: date or time, query, list or file or array, COM/DCOM collection or structure */
+    else if(p_CFTag.m_Name.compare("cfloop", Qt::CaseInsensitive) == 0) // TODO: cfloop - Unimplemented: date or time, query, list or file or array, COM/DCOM collection or structure
 	{
         QString ret;
 
@@ -1621,7 +1607,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
                 m_Tabs.append('\t');
 
                 ret += m_Tabs + "QWDDX l_Query(QWDDX::Struct);\n";
-                ret += m_Tabs + "if (f_FetchQueryRow(l_Query, " + GenerateCodeFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
+                ret += m_Tabs + "if (f_FetchQueryRow(l_Query, " + ParseAndGenerateCppExpressionFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
                 ret += m_Tabs + "l_Query.m_HiddenScopeLast1 = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
                 ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
 
@@ -1643,24 +1629,11 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return ret;
 		}
 	}
-    else if(p_CFTag.m_Name.compare("cfset", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfset", Qt::CaseInsensitive) == 0) // Done
 	{
-        QCFParserElement l_OptimizedElements = OptimizeQCFParserElement(p_CFTag.m_Arguments);
-		//QCFParserElement l_OptimizedElements = p_CFTag.m_Arguments;
-
-//		log("m_ChildElements.size() = " + QString::number(l_OptimizedElements.m_ChildElements.size()));
-
-        // FIXME: Same code in both branches.
-		if ((l_OptimizedElements.m_ChildElements.size() > 1)&&(l_OptimizedElements.m_ChildElements[0].m_Type == Variable)&&(l_OptimizedElements.m_ChildElements[1].m_Type == Operator)&&(l_OptimizedElements.m_ChildElements[1].m_Text == "="))
-		{
-            return m_Tabs + GenerateCFExpressionToCExpression(l_OptimizedElements) + ";";
-		}
-		else
-		{
-            return m_Tabs + GenerateCFExpressionToCExpression(l_OptimizedElements) + ";";
-		}
-	}
-    else if(p_CFTag.m_Name.compare("cfoutput", Qt::CaseInsensitive) == 0)
+        return m_Tabs + GenerateCFExpressionToCExpression(OptimizeQCFParserElement(p_CFTag.m_Arguments)) + ";\n";
+    }
+    else if(p_CFTag.m_Name.compare("cfoutput", Qt::CaseInsensitive) == 0) // TODO: cfoutput - Unimplemented attributes: group, groupCaseSensitive
 	{
         QString ret;
 
@@ -1670,13 +1643,38 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             if (CFTagHasArgument(p_CFTag, "query"))
             {
-                ret += m_Tabs + "for(int i = 1; ; i++)\n";
+                QString startRow;
+
+                if (CFTagHasArgument(p_CFTag, "startRow"))
+                {
+                    startRow = CFTagGetArgumentAsString(p_CFTag, "startRow");
+                }
+                else
+                {
+                    startRow = "1";
+                }
+
+                if (CFTagHasArgument(p_CFTag, "maxRows"))
+                {
+                    QString maxRowsExpression, maxRows;
+
+                    maxRows = CFTagGetArgumentAsString(p_CFTag, "maxRows");
+
+                    maxRowsExpression = "(" + maxRows + ")";
+
+                    ret += m_Tabs + "for(int i = " + startRow + "; i < (" + maxRowsExpression + " + " + startRow + "); i++)\n";
+                }
+                else
+                {
+                    ret += m_Tabs + "for(int i = " + startRow + "; ; i++)\n";
+                }
+
                 ret += m_Tabs + "{\n";
 
                 m_Tabs.append('\t');
 
                 ret += m_Tabs + "QWDDX l_Query(QWDDX::Struct);\n";
-                ret += m_Tabs + "if (f_FetchQueryRow(l_Query, " + GenerateCodeFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
+                ret += m_Tabs + "if (f_FetchQueryRow(l_Query, " + ParseAndGenerateCppExpressionFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
                 ret += m_Tabs + "l_Query.m_HiddenScopeLast1 = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
                 ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
             }
@@ -1700,7 +1698,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return ret;
 		}
 	}
-    else if(p_CFTag.m_Name.compare("cfparam", Qt::CaseInsensitive) == 0) /*cfparam "name type" is missing */
+    else if(p_CFTag.m_Name.compare("cfparam", Qt::CaseInsensitive) == 0) // TODO: cfparam - "name type" variant unimplemented, unimplemented attributes: max, min, pattern
     {
         bool has_name = CFTagHasArgument(p_CFTag, "name");
         bool has_default = CFTagHasArgument(p_CFTag, "default");
@@ -1723,13 +1721,13 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return m_Tabs + "parser error()";
         }
     }
-    else if(p_CFTag.m_Name.compare("cfreturn", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfreturn", Qt::CaseInsensitive) == 0) // Done
     {
         QCFParserElement l_OptimizedElements = OptimizeQCFParserElement(p_CFTag.m_Arguments);
 
         return m_Tabs + "return " + GenerateCFExpressionToCExpression(l_OptimizedElements) + ";";
     }
-    else if(p_CFTag.m_Name.compare("cfif", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfif", Qt::CaseInsensitive) == 0) // Done
 	{
 		if (p_CFTag.m_TagType == CFTagType)
 		{
@@ -1750,14 +1748,14 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return m_Tabs + "}";
 		}
 	}
-    else if(p_CFTag.m_Name.compare("cfelse", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfelse", Qt::CaseInsensitive) == 0) // Done
 	{
 		if (p_CFTag.m_TagType == CFTagType)
 		{
             return m_Tabs.left(m_Tabs.length() - 1) + "} else {";
 		}
 	}
-    else if(p_CFTag.m_Name.compare("cfelseif", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfelseif", Qt::CaseInsensitive) == 0) // Done
 	{
 		if (p_CFTag.m_TagType == CFTagType)
 		{
@@ -1765,7 +1763,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return m_Tabs.left(m_Tabs.length() - 1) + "} else if(" + GenerateCFExpressionToCExpression(p_CFTag.m_Arguments) + ") {";
 		}
 	}
-    else if(p_CFTag.m_Name.compare("cflocation", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cflocation", Qt::CaseInsensitive) == 0) // TODO: cflocation - "url addToken", "url, statusCode", "url, addToken, statusCode" variants are unimplemented
     {
         if (!CFTagHasArgument(p_CFTag, "url"))
         {
@@ -1789,7 +1787,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             throw QMKFusionTemplateException("cflocation url, addToken, statusCode is NOT implemented.");
         }
     }
-    else if(p_CFTag.m_Name.compare("cfsetting", Qt::CaseInsensitive) == 0) /* implemented attributes: enablecfoutputonly. */
+    else if(p_CFTag.m_Name.compare("cfsetting", Qt::CaseInsensitive) == 0) // TODO: cfsetting - Unimplemented attributes: requestTimeOut, showDebugOutput
 	{
         QString l_enablecfoutputonly = CFTagGetArgumentPlain(p_CFTag, "enablecfoutputonly");
 		l_enablecfoutputonly = l_enablecfoutputonly.remove('\'');
@@ -1804,7 +1802,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 			m_EnableCFOutputOnly = false;
 		}
 	}
-    else if(p_CFTag.m_Name.compare("cfswitch", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cfswitch", Qt::CaseInsensitive) == 0) // Done
     {
         if (p_CFTag.m_TagType == CFTagType)
         {
@@ -1817,7 +1815,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             m_SwitchTags.takeLast();
         }
     }
-    else if(p_CFTag.m_Name.compare("cftry", Qt::CaseInsensitive) == 0)
+    else if(p_CFTag.m_Name.compare("cftry", Qt::CaseInsensitive) == 0) // Done
     {
         QString ret;
 
@@ -1836,7 +1834,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return m_Tabs + "}";
         }
     }
-    else if(p_CFTag.m_Name.compare("cfquery", Qt::CaseInsensitive) == 0) /* implemented attributes: name, datasource. */
+    else if(p_CFTag.m_Name.compare("cfquery", Qt::CaseInsensitive) == 0) // TODO: cfquery - Implemented attributes: name, datasource
     {
         QString l_queryType;
         QString l_queryName;
@@ -1884,7 +1882,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             }
         }
     }
-    else if(p_CFTag.m_Name.compare("cfqueryparam", Qt::CaseInsensitive) == 0) /* implemented attributes: value. */
+    else if(p_CFTag.m_Name.compare("cfqueryparam", Qt::CaseInsensitive) == 0) // TODO: cfqueryparam - implemented attributes: value
     {
         if (p_CFTag.m_TagType == CFTagType)
         {

@@ -16,7 +16,7 @@ public:
     QString GenerateVariable(const QString &p_Variable, const QString &p_Funct_params = "", const QString &p_Funct_local_vars = "");
     QString GenerateCFExpressionToCExpression(const QCFParserElement &p_CFExpression, const QString &funct_params = "", QString *funct_local_vars = nullptr);
     QCFParserElement OptimizeQCFParserElement(QCFParserElement p_CFExpression);
-    QString GenerateCodeFromString(const QString str);
+    QString ParseAndGenerateCppExpressionFromString(const QString str);
     QString CFTagGetArgumentPlain(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString CFTagGetArgument(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString CFTagGetArgumentAsString(const QCFParserTag &p_CFTag, const QString &p_Argument);

@@ -19,6 +19,7 @@ public:
 
 	QCFRunningTemplate();
     virtual ~QCFRunningTemplate();
+    void cf_WriteOutput(const QString &string);
 
 	// Class members
 	QWDDX m_CGI;

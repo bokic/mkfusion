@@ -199,6 +199,7 @@ public:
     double toNumber() const;
     int toInt() const;
     bool canConvertToNumber();
+    bool canConvertToDate();
     QDateTime toDateTime() const;
     bool toBool() const;
 

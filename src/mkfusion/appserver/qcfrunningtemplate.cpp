@@ -50,6 +50,11 @@ QCFRunningTemplate::~QCFRunningTemplate()
     }
 }
 
+void QCFRunningTemplate::cf_WriteOutput(const QString &string)
+{
+    m_Output.append(string);
+}
+
 void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const QString &uri)
 {
     if(m_LoadedTemplates.contains(filename))

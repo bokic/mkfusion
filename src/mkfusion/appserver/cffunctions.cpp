@@ -2,9 +2,20 @@
 #include "qmkfusionexception.h"
 #include <QStringList>
 #include <QDateTime>
+#include <QDate>
 #include <QFile>
+#include <QDir>
 
 #include <math.h>
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#elif defined Q_OS_LINUX
+#include <unistd.h>
+#include <time.h>
+#else
+#error Windows and Linux OSs are currently supported.
+#endif
 
 
 Q_DECL_EXPORT double cf_Abs(double number)
@@ -281,7 +292,6 @@ Q_DECL_EXPORT double cf_ArrayMin(const QWDDX &array)
 	return ret;
 }
 
-
 Q_DECL_EXPORT QWDDX cf_ArrayNew(int dimension)
 {
     if ((dimension < 1)||(dimension > 3))
@@ -321,7 +331,6 @@ Q_DECL_EXPORT bool cf_ArrayPrepend(QWDDX &array, const QWDDX &value)
 
 	return true;
 }
-
 
 Q_DECL_EXPORT bool cf_ArrayResize(QWDDX &array, int minSize)
 {
@@ -1185,10 +1194,52 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
 
 Q_DECL_EXPORT int cf_DatePart(const QString &datepart, const QDateTime &date)
 {
-    Q_UNUSED(datepart);
-    Q_UNUSED(date);
+    if (datepart.compare("yyyy", Qt::CaseInsensitive) == 0)
+    {
+        return date.date().year();
+    }
+    else if (datepart.compare("q", Qt::CaseInsensitive) == 0)
+    {
+        return (date.date().month() / 4) + 1;
+    }
+    else if (datepart.compare("m", Qt::CaseInsensitive) == 0)
+    {
+        return date.date().month();
+    }
+    else if (datepart.compare("y", Qt::CaseInsensitive) == 0)
+    {
+        return date.date().dayOfYear();
+    }
+    else if (datepart.compare("d", Qt::CaseInsensitive) == 0)
+    {
+        return date.date().day();
+    }
+    else if (datepart.compare("w", Qt::CaseInsensitive) == 0)
+    {
+        return date.date().dayOfWeek();
+    }
+    else if (datepart.compare("ww", Qt::CaseInsensitive) == 0)
+    {
+        return date.date().weekNumber();
+    }
+    else if (datepart.compare("h", Qt::CaseInsensitive) == 0)
+    {
+        return date.time().hour();
+    }
+    else if (datepart.compare("n", Qt::CaseInsensitive) == 0)
+    {
+        return date.time().minute();
+    }
+    else if (datepart.compare("s", Qt::CaseInsensitive) == 0)
+    {
+        return date.time().second();
+    }
+    else if (datepart.compare("l", Qt::CaseInsensitive) == 0)
+    {
+        return date.time().msec();
+    }
 
-    throw QMKFusionException("Not Implemented", "DatePart is not Implemented (yet:))");
+    throw QMKFusionException("DatePart called with invalid 'part' parameter.");
 }
 
 Q_DECL_EXPORT int cf_Day(const QDateTime &date)
@@ -1211,23 +1262,17 @@ Q_DECL_EXPORT QString cf_DayOfWeekAsString(int day_of_week, const QString &local
 
 Q_DECL_EXPORT int cf_DayOfYear(const QDateTime &date)
 {
-    Q_UNUSED(date);
-
-    throw QMKFusionException("Not Implemented", "DayOfYear is not Implemented (yet:))");
+    return date.date().dayOfYear();
 }
 
 Q_DECL_EXPORT int cf_DaysInMonth(const QDateTime &date)
 {
-    Q_UNUSED(date);
-
-    throw QMKFusionException("Not Implemented", "DaysInMonth is not Implemented (yet:))");
+    return date.date().daysInMonth();
 }
 
 Q_DECL_EXPORT int cf_DaysInYear(const QDateTime &date)
 {
-    Q_UNUSED(date);
-
-    throw QMKFusionException("Not Implemented", "DaysInYear is not Implemented (yet:))");
+    return date.date().daysInYear();
 }
 
 Q_DECL_EXPORT QString cf_DE(const QString &string)
@@ -1289,9 +1334,7 @@ Q_DECL_EXPORT QString cf_DeserializeJSON(const QString &JSONVar, bool strictMapp
 
 Q_DECL_EXPORT bool cf_DirectoryExists(const QString &absolute_path)
 {
-    Q_UNUSED(absolute_path);
-
-    throw QMKFusionException("Not Implemented", "DirectoryExists is not Implemented (yet:))");
+    return QDir(absolute_path).exists();
 }
 
 Q_DECL_EXPORT QString cf_DollarFormat(double number)
@@ -1514,11 +1557,8 @@ Q_DECL_EXPORT int cf_FindOneOf(const QString &set, const QString &string, int st
 
 Q_DECL_EXPORT int cf_FirstDayOfMonth(const QDateTime &date)
 {
-    Q_UNUSED(date);
-
-    throw QMKFusionException("Not Implemented", "FirstDayOfMonth is not Implemented (yet:))");
+    return QDate(date.date().year(), date.date().month(), 1).dayOfYear();
 }
-
 
 Q_DECL_EXPORT int cf_Fix(double value)
 {
@@ -1717,7 +1757,7 @@ Q_DECL_EXPORT QWDDX cf_GetSOAPResponseHeader(const QString &_namespace, const QS
 
 Q_DECL_EXPORT QString cf_GetTempDirectory()
 {
-    throw QMKFusionException("Not Implemented", "GetTempDirectory is not Implemented (yet:))");
+    return QDir::tempPath();
 }
 
 Q_DECL_EXPORT QString cf_GetTempFile(const QString &dir, const QString &prefix)
@@ -1730,9 +1770,21 @@ Q_DECL_EXPORT QString cf_GetTemplatePath()
     throw QMKFusionException("Not Implemented", "GetTemplatePath is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_GetTickCount()
+Q_DECL_EXPORT int cf_GetTickCount()
 {
-    throw QMKFusionException("Not Implemented", "GetTickCount is not Implemented (yet:))");
+#ifdef Q_OS_WIN
+    return (int)GetTickCount();
+#elif defined Q_OS_LINUX
+    struct timespec ts;
+    if(clock_gettime(CLOCK_MONOTONIC,&ts) != 0)
+    {
+        return 0;
+    }
+
+    return (ts.tv_sec * 1000) + (ts.tv_nsec / 1000000);
+#else
+#error Windows and Linux OSs are currently supported.
+#endif
 }
 
 Q_DECL_EXPORT QWDDX cf_GetTimeZoneInfo()
@@ -2025,9 +2077,14 @@ Q_DECL_EXPORT double cf_IncrementValue(double number)
     return number + 1;
 }
 
-Q_DECL_EXPORT QString cf_InputBaseN(const QString &string, int radix)
+Q_DECL_EXPORT int cf_InputBaseN(const QString &string, int radix)
 {
-    throw QMKFusionException("Not Implemented", "InputBaseN is not Implemented (yet:))");
+    if ((radix < 2)||(radix > 36))
+    {
+        throw QMKFusionException("Invalid argument for the function FormatBaseN.", "Argument 2 of the FormatBaseN, which is now 1, must be an integer in the range of 2 to 36 inclusive.");
+    }
+
+    return string.toInt(nullptr, radix);
 }
 
 Q_DECL_EXPORT QString cf_Insert(const QString &substring, const QString &string, int position)
@@ -2073,9 +2130,9 @@ Q_DECL_EXPORT bool cf_IsCustomFunction(const QString &name)
     throw QMKFusionException("Not Implemented", "IsCustomFunction is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsDate(const QWDDX &string)
+Q_DECL_EXPORT bool cf_IsDate(const QString &string)
 {
-    throw QMKFusionException("Not Implemented", "IsDate is not Implemented (yet:))");
+    return QWDDX(string).canConvertToDate();
 }
 
 Q_DECL_EXPORT bool cf_IsDDX(const QString &path_or_string)
@@ -2204,7 +2261,7 @@ Q_DECL_EXPORT bool cf_IsJSON(const QWDDX &var)
 
 Q_DECL_EXPORT bool cf_IsLeapYear(int year)
 {
-    throw QMKFusionException("Not Implemented", "IsLeapYear is not Implemented (yet:))");
+    return QDate::isLeapYear(year);
 }
 
 Q_DECL_EXPORT bool cf_IsLocalHost(const QString &ipaddress)
@@ -2244,7 +2301,14 @@ Q_DECL_EXPORT bool cf_IsQuery(const QWDDX &value)
 
 Q_DECL_EXPORT bool cf_IsSimpleValue(const QWDDX &value)
 {
-    throw QMKFusionException("Not Implemented", "IsSimpleValue is not Implemented (yet:))");
+    QWDDX::QWDDXType type = value.type();
+
+    if ((type == QWDDX::String)||(type == QWDDX::Number)||(type == QWDDX::Boolean)||(type == QWDDX::DateTime))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 Q_DECL_EXPORT bool cf_IsSOAPRequest()
@@ -3003,7 +3067,16 @@ Q_DECL_EXPORT QWDDX cf_SetVariable(const QString &name, const QWDDX &value)
 
 Q_DECL_EXPORT int cf_Sgn(double number)
 {
-    throw QMKFusionException("Not Implemented", "Sgn is not Implemented (yet:))");
+    if (number > 0)
+    {
+        return 1;
+    }
+    else if (number < 0)
+    {
+        return -1;
+    }
+
+    return 0;
 }
 
 Q_DECL_EXPORT double cf_Sin(double number)
@@ -3013,7 +3086,13 @@ Q_DECL_EXPORT double cf_Sin(double number)
 
 Q_DECL_EXPORT void cf_Sleep(int duration)
 {
-    throw QMKFusionException("Not Implemented", "Sleep is not Implemented (yet:))");
+#ifdef Q_OS_WIN
+#elif defined Q_OS_LINUX
+    usleep(duration * 1000);
+#else
+    Sleep(duration);
+#error Windows and Linux OSs are currently supported.
+#endif
 }
 
 Q_DECL_EXPORT QString cf_SpanExcluding(const QString &string, const QWDDX &set)
@@ -3541,17 +3620,12 @@ Q_DECL_EXPORT void cf_VerifyClient()
 
 Q_DECL_EXPORT int cf_Week(const QDateTime &date)
 {
-    throw QMKFusionException("Not Implemented", "Week is not Implemented (yet:))");
+    return date.date().weekNumber();
 }
 
 Q_DECL_EXPORT QString cf_Wrap(const QString &string, int limit, bool strip)
 {
     throw QMKFusionException("Not Implemented", "Wrap is not Implemented (yet:))");
-}
-
-Q_DECL_EXPORT void cf_WriteOutput(const QString &string)
-{
-    throw QMKFusionException("Not Implemented", "WriteOutput is not Implemented (yet:))");
 }
 
 Q_DECL_EXPORT bool cf_XmlChildPos(const QWDDX &elem, const QWDDX &childName, int N)
