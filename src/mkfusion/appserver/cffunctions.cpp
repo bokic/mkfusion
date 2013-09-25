@@ -1817,14 +1817,23 @@ Q_DECL_EXPORT int cf_Hour(const QDateTime &date)
     return date.time().hour();
 }
 
-Q_DECL_EXPORT QString cf_HTMLCodeFormat(const QString &string, const QString &version)
+Q_DECL_EXPORT QString cf_HTMLCodeFormat(const QString &string, double version)
 {
-    throw QMKFusionException("Not Implemented", "HTMLCodeFormat is not Implemented (yet:))");
+    return "<pre>" + cf_HTMLEditFormat(string, version) + "</pre>";
 }
 
-Q_DECL_EXPORT QString cf_HTMLEditFormat(const QString &string, const QString &version)
+Q_DECL_EXPORT QString cf_HTMLEditFormat(const QString &string, double version)
 {
-    throw QMKFusionException("Not Implemented", "HTMLEditFormat is not Implemented (yet:))");
+    Q_UNUSED(version);
+
+    QString ret = string;
+
+    ret = ret.replace("&", "&amp;");
+    ret = ret.replace("<", "&lt;");
+    ret = ret.replace(">", "&gt;");
+    ret = ret.replace("\"", "&quot;");
+
+    return ret;
 }
 
 Q_DECL_EXPORT bool cf_IIf(bool condition, const QString &string_expression1, const QString &string_expression2)
@@ -2418,82 +2427,377 @@ Q_DECL_EXPORT int cf_Len(const QString &string)
 
 Q_DECL_EXPORT QString cf_ListAppend(QString &list, const QString &value, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListAppend is not Implemented (yet:))");
+    if ((delimiters.isEmpty())||(list.isEmpty()))
+    {
+        return value;
+    }
+
+    return list + delimiters.at(0) + value;
 }
 
 Q_DECL_EXPORT QString cf_ListChangeDelims(QString &list, const QString &new_delimiter, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListChangeDelims is not Implemented (yet:))");
+    QString ret;
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+    for(int c = 0; c < tmp.m_Array->count(); c++)
+    {
+        if (c > 0)
+        {
+            ret.append(new_delimiter);
+        }
+
+        ret.append(tmp.m_Array->at(c).toString());
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT int cf_ListContains(const QString &list, const QString &substring, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListContains is not Implemented (yet:))");
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+    for(int c = 0; c < tmp.m_Array->count(); c++)
+    {
+        if (tmp.m_Array->at(c).toString().contains(substring, Qt::CaseSensitive) == 0)
+        {
+            return c + 1;
+        }
+    }
+
+    return 0;
 }
 
 Q_DECL_EXPORT int cf_ListContainsNoCase(const QString &list, const QString &substring, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListContainsNoCase is not Implemented (yet:))");
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+    for(int c = 0; c < tmp.m_Array->count(); c++)
+    {
+        if (tmp.m_Array->at(c).toString().contains(substring, Qt::CaseInsensitive) == 0)
+        {
+            return c + 1;
+        }
+    }
+
+    return 0;
 }
 
 Q_DECL_EXPORT QString cf_ListDeleteAt(QString &list, int position, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListDeleteAt is not Implemented (yet:))");
+    QString ret;
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+    if (position < 1)
+    {
+        throw QMKFusionException(QString("Invalid list index %1.").arg(position));
+    }
+
+    if (position > tmp.m_Array->count())
+    {
+        throw QMKFusionException(QString("Invalid list index %1. The list has %2 elements").arg(position).arg(tmp.m_Array->count()));
+    }
+
+    int index = 0;
+    for(int c = 0; c < tmp.m_Array->count(); c++)
+    {
+        if (!tmp.m_Array->at(c).toString().isEmpty())
+        {
+            index++;
+
+            if (index == position)
+            {
+                tmp.m_Array->remove(c);
+                c--;
+            }
+        }
+        else
+        {
+            if (index == position)
+            {
+                tmp.m_Array->remove(c);
+                c--;
+            }
+        }
+    }
+
+    // Trim empty tail.
+    while(tmp.m_Array->count() > 0)
+    {
+        if (!tmp.m_Array->last().toString().isEmpty())
+        {
+            break;
+        }
+
+        tmp.m_Array->pop_back();
+    }
+
+    for(int c = 0; c < tmp.m_Array->count(); c++)
+    {
+        if (c > 0)
+        {
+            ret.append(delimiters);
+        }
+
+        ret.append(tmp.m_Array->at(c).toString());
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT int cf_ListFind(const QString &list, const QString &value, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListFind is not Implemented (yet:))");
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+    for(int c = 0; c < tmp.m_Array->count(); c++)
+    {
+        if (tmp.m_Array->at(c).toString().compare(value, Qt::CaseSensitive) == 0)
+        {
+            return c + 1;
+        }
+    }
+
+    return 0;
 }
 
 Q_DECL_EXPORT int cf_ListFindNoCase(const QString &list, const QString &value, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListFindNoCase is not Implemented (yet:))");
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+    for(int c = 0; c < tmp.m_Array->count(); c++)
+    {
+        if (tmp.m_Array->at(c).toString().compare(value, Qt::CaseInsensitive) == 0)
+        {
+            return c + 1;
+        }
+    }
+
+    return 0;
 }
 
 Q_DECL_EXPORT QString cf_ListFirst(const QString &list, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListFirst is not Implemented (yet:))");
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+    if (tmp.m_Array->count() < 1)
+    {
+        return "";
+    }
+
+    return tmp.m_Array->first().toString();
 }
 
 Q_DECL_EXPORT QString cf_ListGetAt(const QString &list, int position, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListGetAt is not Implemented (yet:))");
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+    if (position < 1)
+    {
+        throw QMKFusionException(QString("Invalid list index %1.").arg(position));
+    }
+
+    if (position > tmp.m_Array->count())
+    {
+        throw QMKFusionException(QString("Invalid list index %1. The list has %2 elements").arg(position).arg(tmp.m_Array->count()));
+    }
+
+    return tmp.m_Array->at(position - 1).toString();
 }
 
 Q_DECL_EXPORT QString cf_ListInsertAt(QString &list, int position, const QString value, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListInsertAt is not Implemented (yet:))");
+    QString ret;
+    QWDDX tmp = cf_ListToArray(list, delimiters, true);
+
+    if (position < 1)
+    {
+        throw QMKFusionException(QString("Invalid list index %1.").arg(position));
+    }
+
+    if (position > tmp.m_Array->count() + 1)
+    {
+        throw QMKFusionException(QString("Invalid list index %1. The list has %2 elements").arg(position).arg(tmp.m_Array->count()));
+    }
+
+    tmp.m_Array->insert(position - 1, value);
+
+    for(int c = 0; c < tmp.m_Array->count(); c++)
+    {
+        if (c > 0)
+        {
+            ret.append(delimiters);
+        }
+
+        ret.append(tmp.m_Array->at(c).toString());
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT QString cf_ListLast(const QString &list, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListLast is not Implemented (yet:))");
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+    if (tmp.m_Array->count() < 1)
+    {
+        return "";
+    }
+
+    return tmp.m_Array->last().toString();
 }
 
 Q_DECL_EXPORT int cf_ListLen(const QString &list, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListLen is not Implemented (yet:))");
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+    return tmp.m_Array->count();
 }
 
 Q_DECL_EXPORT QString cf_ListPrepend(QString &list, const QString &value, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListPrepend is not Implemented (yet:))");
+    if ((delimiters.isEmpty())||(list.isEmpty()))
+    {
+        return value;
+    }
+
+    return value + delimiters.at(0) + list;
 }
 
 Q_DECL_EXPORT QString cf_ListQualify(QString &list, const QString &quallifier, const QString &delimiters, const QString elements)
 {
-    throw QMKFusionException("Not Implemented", "ListQualify is not Implemented (yet:))");
+    QString ret;
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+    bool all;
+
+    if (elements.compare("all", Qt::CaseInsensitive) == 0)
+    {
+        all = true;
+    }
+    else if (elements.compare("char", Qt::CaseInsensitive) == 0)
+    {
+        all = false;
+    }
+    else
+    {
+        throw QMKFusionException(QString("ListQualify elements parameter should be ether all or char. Value passed was %1").arg(elements));
+    }
+
+    for(int c = 0; c < tmp.m_Array->count(); c++)
+    {
+        if (c > 0)
+        {
+            ret.append(delimiters);
+        }
+
+        if (all)
+        {
+            ret.append(quallifier + tmp.m_Array->at(c).toString() + quallifier);
+        }
+        else
+        {
+            bool is_all_aphas = true;
+            const QString &str = tmp.m_Array->at(c).toString();
+
+            for(QChar ch : str)
+            {
+                if (!ch.isLetter())
+                {
+                    is_all_aphas = false;
+                    break;
+                }
+            }
+
+            if (is_all_aphas)
+            {
+                ret.append(str);
+            }
+            else
+            {
+                ret.append(quallifier + str + quallifier);
+            }
+        }
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT QString cf_ListRest(const QString &list, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListRest is not Implemented (yet:))");
+    QString ret;
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+
+    // Trim empty head.
+    while(tmp.m_Array->count() > 0)
+    {
+        if (!tmp.m_Array->first().toString().isEmpty())
+        {
+            break;
+        }
+
+        tmp.m_Array->pop_front();
+    }
+
+    // Remove first item.
+    if (tmp.m_Array->count() > 0)
+    {
+        tmp.m_Array->pop_front();
+    }
+
+    // Trim empty head.
+    while(tmp.m_Array->count() > 0)
+    {
+        if (!tmp.m_Array->first().toString().isEmpty())
+        {
+            break;
+        }
+
+        tmp.m_Array->pop_front();
+    }
+
+    // Reconstruct list.
+    for(int c = 0; c < tmp.m_Array->count(); c++)
+    {
+        if (c > 0)
+        {
+            ret.append(delimiters);
+        }
+
+        ret.append(tmp.m_Array->at(c).toString());
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT QString cf_ListSetAt(QString &list, int position, const QString value, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListSetAt is not Implemented (yet:))");
+    QString ret;
+    QWDDX tmp = cf_ListToArray(list, delimiters);
+
+    if (position < 1)
+    {
+        throw QMKFusionException(QString("Invalid list index %1.").arg(position));
+    }
+
+    if (position > tmp.m_Array->count())
+    {
+        throw QMKFusionException(QString("Invalid list index %1. The list has %2 elements").arg(position).arg(tmp.m_Array->count()));
+    }
+
+    tmp.m_Array->replace(position - 1, value);
+
+    // Reconstruct list.
+    for(int c = 0; c < tmp.m_Array->count(); c++)
+    {
+        if (c > 0)
+        {
+            ret.append(delimiters);
+        }
+
+        ret.append(tmp.m_Array->at(c).toString());
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT QString cf_ListSort(QString &list, const QString sort_type, const QString sort_order, const QString &delimiters)
@@ -2549,17 +2853,44 @@ Q_DECL_EXPORT QWDDX cf_ListToArray(const QString &list, const QString &delimiter
 
 Q_DECL_EXPORT int cf_ListValueCount(const QString &list, const QString value, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListValueCount is not Implemented (yet:))");
+    int ret = 0;
+
+    for(const QWDDX &item : *(cf_ListToArray(list, delimiters).m_Array))
+    {
+        if (item.toString().compare(value, Qt::CaseSensitive) == 0)
+        {
+            ret++;
+        }
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT int cf_ListValueCountNoCase(const QString &list, const QString value, const QString &delimiters)
 {
-    throw QMKFusionException("Not Implemented", "ListValueCountNoCase is not Implemented (yet:))");
+    int ret = 0;
+
+    for(const QWDDX &item : *(cf_ListToArray(list, delimiters).m_Array))
+    {
+        if (item.toString().compare(value, Qt::CaseInsensitive) == 0)
+        {
+            ret++;
+        }
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT QString cf_LJustify(const QString &string, int length)
 {
-    throw QMKFusionException("Not Implemented", "LJustify is not Implemented (yet:))");
+    QString ret = string;
+
+    while(ret.length() < length)
+    {
+        ret = ret.append(' ');
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT double cf_Log(double number)
@@ -3017,7 +3348,14 @@ Q_DECL_EXPORT QString cf_Right(const QString &string, int count)
 
 Q_DECL_EXPORT QString cf_RJustify(const QString &string, int length)
 {
-    throw QMKFusionException("Not Implemented", "RJustify is not Implemented (yet:))");
+    QString ret = string;
+
+    while(ret.length() < length)
+    {
+        ret = ret.prepend(' ');
+    }
+
+    return ret;
 }
 
 Q_DECL_EXPORT int cf_Round(double number)
@@ -3112,7 +3450,11 @@ Q_DECL_EXPORT double cf_Sqr(double number)
 
 Q_DECL_EXPORT QString cf_StripCR(const QString &string)
 {
-    throw QMKFusionException("Not Implemented", "StripCR is not Implemented (yet:))");
+    QString ret = string;
+
+    ret = ret.remove('\r');
+
+    return ret;
 }
 
 Q_DECL_EXPORT bool cf_StructAppend(QWDDX &struct1, const QWDDX &struct2, bool overwriteFlag)
