@@ -23,7 +23,11 @@ static void writeError(request_rec *r, const char *error)
 #ifdef QT_DEBUG
 int iterate_func(void *req, const char *key, const char *value)
 {
+#if AP_SERVER_MINORVERSION_NUMBER > 2
+    ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, (request_rec *)req, "New Key/Value pair:[%s], [%s]", key, value);
+#else
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, (request_rec *)req, "New Key/Value pair:[%s], [%s]", key, value);
+#endif
 
 	return 1;
 }
@@ -39,23 +43,41 @@ static int mkfusion_handler(request_rec *r)
 #ifdef QT_DEBUG
     apr_table_do(iterate_func, r, r->headers_in, nullptr);
 
+ #if AP_SERVER_MINORVERSION_NUMBER > 2
+    ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
+    ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
+    ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
+ #else
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
+ #endif
 #endif
 	QSimplifiedLocalSocket l_localSocket;
 #ifdef QT_DEBUG
+ #if AP_SERVER_MINORVERSION_NUMBER > 2
+    ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
+ #else
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
+ #endif
 #endif
 	l_localSocket.connectToServer("mkfusion", TIMEOUT);
 #ifdef QT_DEBUG
+ #if AP_SERVER_MINORVERSION_NUMBER > 2
+    ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
+ #else
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
+ #endif
 #endif
 
 	if (l_localSocket.waitForConnected())
 	{
 #ifdef QT_DEBUG
+ #if AP_SERVER_MINORVERSION_NUMBER > 2
+        ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnected() == true.");
+ #else
         ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnected() == true.");
+ #endif
 #endif
 		QByteArray l_Send;
 		QDataStream l_IOStream(&l_Send, QIODevice::WriteOnly);
@@ -156,7 +178,11 @@ static int mkfusion_handler(request_rec *r)
 							l_HeadersDataStream >> l_HeaderSize;
 							if ((l_HeaderSize <= 0)||(l_HeaderSize > 0x01000000))
 							{
+#if AP_SERVER_MINORVERSION_NUMBER > 2
+                                ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_ERR, 0, r, "mod_mkfusion: Invalid header length.");
+#else
                                 ap_log_rerror(__FILE__, __LINE__, APLOG_ERR, 0, r, "mod_mkfusion: Invalid header length.");
+#endif
 								writeError(r, "Invalid header length.");
 								return OK;
 							}
@@ -209,7 +235,11 @@ static int mkfusion_handler(request_rec *r)
 	}
 	else
 	{
+#if AP_SERVER_MINORVERSION_NUMBER > 2
+        ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_ERR, 0, r, "mod_mkfusion: Can\'t connect to mkfusion. Make sure mkfusion server is running.");
+#else
         ap_log_rerror(__FILE__, __LINE__, APLOG_ERR, 0, r, "mod_mkfusion: Can\'t connect to mkfusion. Make sure mkfusion server is running.");
+#endif
 		writeError(r, "Can\'t connect to mkfusion.<br />\nMake sure mkfusion server is running.");
 	}
 
