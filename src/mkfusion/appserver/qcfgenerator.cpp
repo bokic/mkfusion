@@ -1275,6 +1275,31 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             return m_Tabs + "throw QMKFusionCFAbortException();";
 		}
 	}
+    else if(p_CFTag.m_Name.compare("cfassociate", Qt::CaseInsensitive) == 0) // Done
+    {
+        if (p_CFTag.m_TagType == CFTagType)
+        {
+            QString baseTag;
+            QString dataCollection;
+
+            if(!CFTagHasArgument(p_CFTag, "baseTag"))
+            {
+                throw QMKFusionException("cfassociate tag needs baseTag attributes.");
+            }
+
+            baseTag = CFTagGetArgumentAsString(p_CFTag, "baseTag");
+            if(CFTagHasArgument(p_CFTag, "dataCollection"))
+            {
+                dataCollection = CFTagGetArgumentAsString(p_CFTag, "dataCollection");
+            }
+            else
+            {
+                dataCollection = "AssocAttribs";
+            }
+
+            return m_Tabs + "cfAssociate(\"" + toCPPEncodeStr(baseTag) + "\", \"" + toCPPEncodeStr(dataCollection) + "\");\n";
+        }
+    }
     else if(p_CFTag.m_Name.compare("cfapplication", Qt::CaseInsensitive) == 0) // TODO: cfapplication - Implemented attributes: name, sessionmanagement, setclientcookies
     {
         bool has_name = CFTagHasArgument(p_CFTag, "name");
@@ -1416,9 +1441,46 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
     }
     else if(p_CFTag.m_Name.compare("cfdump", Qt::CaseInsensitive) == 0) // TODO: cfdump - Only 'var' parameter is implemented
 	{
-        //return m_Tabs + "m_TemplateInstance->m_Output += mk_cfdump("+GenerateCFExpressionToCExpression(OptimizeQCFParserElement(p_CFTag.m_Arguments.m_ChildElements[0].m_ChildElements[2]))+");";
-        return m_Tabs + "m_TemplateInstance->m_Output += mk_cfdump(" + GenerateCFExpressionToCExpression(OptimizeQCFParserElement(CFTagGetArgumentObject(p_CFTag, "var"))) + ");";
+        if (!CFTagHasArgument(p_CFTag, "var"))
+        {
+            throw QMKFusionException("cfdump var attribute is missing.");
+        }
+
+        return m_Tabs + "m_TemplateInstance->m_Output += mk_cfdump(" + GenerateCFExpressionToCExpression(OptimizeQCFParserElement(CFTagGetArgumentObject(p_CFTag, "var").m_ChildElements.at(2))) + ");";
 	}
+    else if(p_CFTag.m_Name.compare("cfexit", Qt::CaseInsensitive) == 0) // Done
+    {
+        if (p_CFTag.m_TagType == CFTagType)
+        {
+            QString method;
+
+            if (CFTagHasArgument(p_CFTag, "method"))
+            {
+                method = CFTagGetArgumentAsString(p_CFTag, "method");
+            }
+            else
+            {
+                method = "exitTag";
+            }
+
+            if (method.compare("exitTag", Qt::CaseInsensitive) == 0)
+            {
+                return m_Tabs + "return;\n";
+            }
+            else if (method.compare("exitTemplate", Qt::CaseInsensitive) == 0)
+            {
+                return m_Tabs + "return;\n";
+            }
+            else if (method.compare("loop", Qt::CaseInsensitive) == 0)
+            {
+                return m_Tabs + "customTagLoop();\n" + m_Tabs + "return;\n";
+            }
+            else
+            {
+                throw QMKFusionException(QString("Invalid cfexit method attribute value[%1]").arg(method));
+            }
+        }
+    }
     else if(p_CFTag.m_Name.compare("cffile", Qt::CaseInsensitive) == 0) // TODO: cffile - Implemented 'action': delete, upload
     {
         const QString &action = CFTagGetArgumentPlain(p_CFTag, "action").toLower();
@@ -1498,6 +1560,10 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             return m_Tabs + "f_FileUploadMove(" + destination + ", "  + fileField + ", " + accept + ", " + attributes + ", "  + mode + ", " + nameConflict + ", " + result + ");\n";
         }
+    }
+    else if(p_CFTag.m_Name.compare("cfimport", Qt::CaseInsensitive) == 0) // TODO: Parser needs to be upgraded
+    {
+
     }
     else if(p_CFTag.m_Name.compare("cfinclude", Qt::CaseInsensitive) == 0) // Done
     {
@@ -1785,6 +1851,70 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             throw QMKFusionTemplateException("cflocation url, addToken, statusCode is NOT implemented.");
         }
     }
+    else if(p_CFTag.m_Name.compare("cfmodule", Qt::CaseInsensitive) == 0) // TODO: attributeCollection not implemented.
+    {
+        QString ret;
+
+        if (p_CFTag.m_TagType == CFTagType)
+        {
+            if((CFTagHasArgument(p_CFTag, "name"))&&(CFTagHasArgument(p_CFTag, "template")))
+            {
+                throw QMKFusionException("cfmodule tag can\'t have both name and template attributes.");
+            }
+            else if(CFTagHasArgument(p_CFTag, "name"))
+            {
+                ret += m_Tabs + "QWDDX cftag_attributes(QWDDX::Struct);\n";
+
+                for(const QCFParserElement &argument : p_CFTag.m_Arguments.m_ChildElements)
+                {
+                    if ((argument.m_Type == CFTagArgument)&&(argument.m_ChildElements.count() == 3))
+                    {
+                        const QString &argumentName = argument.m_ChildElements.at(0).m_Text;
+
+                        if (argumentName.compare("name", Qt::CaseInsensitive) != 0)
+                        {
+                            ret += m_Tabs + "cftag_attributes[L\"" + toCPPEncodeStr(argumentName) + "\"] = " + CFTagGetArgument(p_CFTag, argumentName) + ";\n";
+                        }
+                    }
+                }
+
+                ret += m_Tabs + "startServerCustomTag(\"" + toCPPEncodeStr(CFTagGetArgumentPlain(p_CFTag, "name")) + "\", cftag_attributes);\n";
+                ret += m_Tabs + "do {\n";
+            }
+            else if(CFTagHasArgument(p_CFTag, "template"))
+            {
+                ret += m_Tabs + "QWDDX cftag_attributes(QWDDX::Struct);\n";
+
+                for(const QCFParserElement &argument : p_CFTag.m_Arguments.m_ChildElements)
+                {
+                    if ((argument.m_Type == CFTagArgument)&&(argument.m_ChildElements.count() == 3))
+                    {
+                        const QString &argumentName = argument.m_ChildElements.at(0).m_Text;
+
+                        if (argumentName.compare("template", Qt::CaseInsensitive) != 0)
+                        {
+                            ret += m_Tabs + "cftag_attributes[L\"" + toCPPEncodeStr(argumentName) + "\"] = " + CFTagGetArgument(p_CFTag, argumentName) + ";\n";
+                        }
+                    }
+                }
+
+                ret += m_Tabs + "startCustomTag(\"" + toCPPEncodeStr(CFTagGetArgumentPlain(p_CFTag, "template")) + "\", cftag_attributes);\n";
+                ret += m_Tabs + "do {\n";
+            }
+            else
+            {
+                throw QMKFusionException("cfmodule tag must have ether name or template attribute.");
+            }
+        }
+        else
+        {
+            QString templateName = p_CFTag.m_OtherTag->m_Name.right(p_CFTag.m_Name.length() - 3).toLower();
+
+            ret = m_Tabs + "} while(endCustomTag(\"" + toCPPEncodeStr(templateName) + "\", cftag_attributes) == true);\n\n";
+        }
+
+        return ret;
+    }
     else if(p_CFTag.m_Name.compare("cfsetting", Qt::CaseInsensitive) == 0) // TODO: cfsetting - Unimplemented attributes: requestTimeOut, showDebugOutput
 	{
         QString l_enablecfoutputonly = CFTagGetArgumentPlain(p_CFTag, "enablecfoutputonly");
@@ -1886,6 +2016,38 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
         {
             return m_Tabs + "m_TemplateInstance->m_QueryParams.append(" +  CFTagGetArgument(p_CFTag, "value") + "); f_WriteOutput(QString::fromWCharArray(L\"?\", 1));";
         }
+    }
+    else if(p_CFTag.m_Name.startsWith("cf_", Qt::CaseInsensitive) == 0)
+    {
+        QString ret;
+
+        if (p_CFTag.m_TagType == CFTagType)
+        {
+            QString templateName = p_CFTag.m_Name.right(p_CFTag.m_Name.length() - 3).toLower();
+
+            ret += m_Tabs + "QWDDX cftag_attributes(QWDDX::Struct);\n";
+
+            for(const QCFParserElement &argument : p_CFTag.m_Arguments.m_ChildElements)
+            {
+                if ((argument.m_Type == CFTagArgument)&&(argument.m_ChildElements.count() == 3))
+                {
+                    const QString &argumentName = argument.m_ChildElements.at(0).m_Text;
+
+                    ret += m_Tabs + "cftag_attributes[L\"" + toCPPEncodeStr(argumentName) + "\"] = " + CFTagGetArgument(p_CFTag, argumentName) + ";\n";
+                }
+            }
+
+            ret += m_Tabs + "startCustomTag(\"" + toCPPEncodeStr(templateName) + "\", cftag_attributes);\n";
+            ret += m_Tabs + "do {\n";
+        }
+        else
+        {
+            QString templateName = p_CFTag.m_OtherTag->m_Name.right(p_CFTag.m_Name.length() - 3).toLower();
+
+            ret = m_Tabs + "} while(endCustomTag(\"" + toCPPEncodeStr(templateName) + "\", cftag_attributes) == true);\n\n";
+        }
+
+        return ret;
     }
 
     return "";
