@@ -20,6 +20,7 @@ public:
     QString CFTagGetArgumentPlain(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString CFTagGetArgument(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString CFTagGetArgumentAsString(const QCFParserTag &p_CFTag, const QString &p_Argument);
+    QString CFTagGetArgumentAsNumber(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString CFTagGetArgumentAsBool(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag);
 private:
