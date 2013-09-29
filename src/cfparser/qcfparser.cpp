@@ -1525,6 +1525,7 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 	m_Error.clear();
 	m_ErrorPosition = 0;	
 	m_InsideCFScript = false;
+    m_TagPrefixes.clear();
 
 	qint32 l_CodeInside = 0;
 	quint32 pos = 0, cf_pos = 0, cf_epos = 0, cf_comment = 0, cf_expression = 0;
@@ -1544,6 +1545,15 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 		if ((l_CodeInside > 0)&&(cf_expression <= pos))
 			cf_expression = p_Text.indexOf("#", pos, Qt::CaseSensitive);
 
+        for (const QString &prefix : m_TagPrefixes)
+        {
+            int tmp_pos = p_Text.indexOf("<" + prefix + ":", pos, Qt::CaseInsensitive);
+
+            if ((tmp_pos >= 0)&&((tmp_pos < (int)cf_pos)||(cf_pos == 0xFFFFFFFF)))
+            {
+                cf_pos = tmp_pos;
+            }
+        }
 
 		if ((cf_pos == 0xFFFFFFFF) && (cf_epos == 0xFFFFFFFF) && (cf_comment == 0xFFFFFFFF) && ((cf_expression == 0xFFFFFFFF)||(l_CodeInside <= 0)))
 			break; // No more ColdFusion tags remaining.
@@ -1661,7 +1671,7 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 				return ParsingError;
 			}
 
-			if ((openTag.m_Name.left(3).compare("cf_", Qt::CaseInsensitive))&&(openTag.m_Name.left(4).compare("cfx_", Qt::CaseInsensitive)))
+            if ((openTag.m_Name.left(3).compare("cf_", Qt::CaseInsensitive))&&(openTag.m_Name.left(4).compare("cfx_", Qt::CaseInsensitive))&&(openTag.m_Name.indexOf(':') == -1))
 			{
 				if (!m_CFTagsDef.contains(openTag.m_Name))
 				{
@@ -1710,10 +1720,33 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 
                 pos = openTag.m_Arguments.m_Position + openTag.m_Arguments.m_Size;
             }
+            else if (openTag.m_Name.compare("cfimport", Qt::CaseInsensitive) == 0)
+            {
+                for(const QCFParserElement &attribute : openTag.m_Arguments.m_ChildElements)
+                {
+                    if (attribute.m_ChildElements.count() == 3)
+                    {
+                        const QCFParserElement &key = attribute.m_ChildElements.at(0);
+                        const QCFParserElement &value = attribute.m_ChildElements.at(2);
+
+                        if ((key.m_Type == Variable)&&(key.m_Text.compare("prefix", Qt::CaseInsensitive) == 0)&&(value.m_Type == String))
+                        {
+                            const QString &item = value.m_Text.trimmed().toLower();
+
+                            if (!m_TagPrefixes.contains(item))
+                            {
+                                m_TagPrefixes.append(item);
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
 
 			m_Tags.append(openTag);
 
-			if ((openTag.m_Name.left(3).compare("cf_", Qt::CaseInsensitive))&&(openTag.m_Name.left(4).compare("cfx_", Qt::CaseInsensitive)))
+            if ((openTag.m_Name.left(3).compare("cf_", Qt::CaseInsensitive))&&(openTag.m_Name.left(4).compare("cfx_", Qt::CaseInsensitive))&&(openTag.m_Name.indexOf(':') == -1))
 			{
 				if (this->m_CFTagsDef.contains(openTag.m_Name))
 				{
@@ -1758,7 +1791,7 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 
 			m_Tags.append(closeTag);
 
-			if ((closeTag.m_Name.left(3).compare("cf_", Qt::CaseInsensitive))&&(closeTag.m_Name.left(4).compare("cfx_", Qt::CaseInsensitive)))
+            if ((closeTag.m_Name.left(3).compare("cf_", Qt::CaseInsensitive))&&(closeTag.m_Name.left(4).compare("cfx_", Qt::CaseInsensitive))&&(closeTag.m_Name.indexOf(':') == -1))
 			{
 				if (this->m_CFTagsDef.contains(closeTag.m_Name))
 				{
@@ -1885,7 +1918,7 @@ QCFParserErrorType QCFParser::validate()
 			continue;
 		}
 
-        if ((tag.m_Name.startsWith("cf_"))||(tag.m_Name.startsWith("cfx_")))
+        if ((tag.m_Name.startsWith("cf_"))||(tag.m_Name.startsWith("cfx_"))||(tag.m_Name.indexOf(':') >= 0))
         {
             continue;
         }

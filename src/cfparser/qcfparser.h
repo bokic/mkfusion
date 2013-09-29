@@ -95,6 +95,7 @@ public:
 	qint64 m_CFMFileSize;
 	uint m_CFMModifyDateTime;
 	bool m_InsideCFScript;
+    QStringList m_TagPrefixes;
 
     friend class QCFGenerator;
 };
