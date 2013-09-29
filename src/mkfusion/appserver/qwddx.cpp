@@ -2034,6 +2034,7 @@ Q_DECL_EXPORT bool QWDDX::canConvertToNumber()
 Q_DECL_EXPORT bool QWDDX::canConvertToDate()
 {
     // TODO: Implement QWDDX::canConvertToDate()
+    throw QMKFusionException("QWDDX::canConvertToDate() is not implemented");
 }
 
 Q_DECL_EXPORT QDateTime QWDDX::toDateTime() const

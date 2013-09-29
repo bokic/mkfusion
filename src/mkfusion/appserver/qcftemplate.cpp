@@ -659,7 +659,7 @@ void QCFTemplate::endQueryNoReturn(const QString &p_DataSource)
 
 void QCFTemplate::addCustomFunction(const QString &functionName, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &)> function)
 {
-    QCFRunningTemplate *templateInstance;
+    QCFRunningTemplate *templateInstance = nullptr;
 
     if (m_TemplateCustomFunctions.contains(functionName))
     {
@@ -678,7 +678,10 @@ void QCFTemplate::addCustomFunction(const QString &functionName, std::function<Q
 
         QMKFusionService *service = (QMKFusionService *)QtServiceBase::instance();
 
-        templateInstance = service->m_CFServer.getRunningTemplateByThreadId(threadID);
+        if (service)
+        {
+            templateInstance = service->m_CFServer.getRunningTemplateByThreadId(threadID);
+        }
 
         if (templateInstance == nullptr)
         {

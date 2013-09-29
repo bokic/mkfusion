@@ -69,7 +69,7 @@ public:
 
         //for (m_TemplateInstance->m_VARIABLES["I"] = (QWDDX(1)).toNumber(); (m_TemplateInstance->m_VARIABLES["I"]).toNumber()  <=  (m_TemplateInstance->m_VARIABLES["PRECISION"]).toNumber(); m_TemplateInstance->m_VARIABLES["I"] = (m_TemplateInstance->m_VARIABLES["I"]).toNumber() + 1)
         QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
-        for (*c_VARIABLES_I = 1; (*c_VARIABLES_I)  <=  (*c_VARIABLES_PRECISION); *c_VARIABLES_I = c_VARIABLES_I->toNumber() + 1)
+        for (*c_VARIABLES_I = 1; (*c_VARIABLES_I) <= (*c_VARIABLES_PRECISION); *c_VARIABLES_I = *c_VARIABLES_I + 1)
         {
             //m_TemplateInstance->m_VARIABLES["FINAL"][m_TemplateInstance->m_VARIABLES["I"]] = QWDDX(0);
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_FINAL, QStringLiteral("FINAL"));
