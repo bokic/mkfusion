@@ -698,8 +698,8 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 
 	ret.insert("cfimport", QCFTag("cfimport", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("taglib", true));
-	args.append(QCFTagArgument("prefix", true));
+    args.append(QCFTagArgument("taglib", true, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument("prefix", true, QCFTagArgument::TypeConstantString));
 	ret["cfimport"].m_ArgumentVariants.append(args);
 	
 	ret.insert("cfinclude", QCFTag("cfinclude", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));

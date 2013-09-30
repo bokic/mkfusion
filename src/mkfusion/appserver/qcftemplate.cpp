@@ -720,3 +720,15 @@ void QCFTemplate::f_SetCookie(const QString &name, const QString &value, const Q
 
     m_TemplateInstance->m_SetCookies.m_Struct->insert(name.toUpper(), val);
 }
+
+void QCFTemplate::startCustomTag(const QString &path, const QString &name, const QWDDX &attributes, bool hasEndTag, CustomTagType type)
+{
+    qDebug() << "startCustomTag" << path << name << hasEndTag << type;
+}
+
+bool QCFTemplate::endCustomTag(const QString &path, const QString &name, const QWDDX &attributes, CustomTagType type)
+{
+    qDebug() << "endCustomTag" << path << name << type;
+
+    return false;
+}

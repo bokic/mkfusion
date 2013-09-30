@@ -1547,11 +1547,20 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 
         for (const QString &prefix : m_TagPrefixes)
         {
-            int tmp_pos = p_Text.indexOf("<" + prefix + ":", pos, Qt::CaseInsensitive);
+            int tmp_pos;
+
+            tmp_pos = p_Text.indexOf("<" + prefix + ":", pos, Qt::CaseInsensitive);
 
             if ((tmp_pos >= 0)&&((tmp_pos < (int)cf_pos)||(cf_pos == 0xFFFFFFFF)))
             {
                 cf_pos = tmp_pos;
+            }
+
+            tmp_pos = p_Text.indexOf("</" + prefix + ":", pos, Qt::CaseInsensitive);
+
+            if ((tmp_pos >= 0)&&((tmp_pos < (int)cf_epos)||(cf_epos == 0xFFFFFFFF)))
+            {
+                cf_epos = tmp_pos;
             }
         }
 

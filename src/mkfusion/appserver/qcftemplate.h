@@ -19,7 +19,9 @@ struct QIsTemplateModified {
 class Q_DECL_EXPORT QCFTemplate : public QObject
 {
 public:
-	QCFTemplate();
+    enum CustomTagType {QCustomTagTypeModuleName, QCustomTagTypeModuleTemplate, QCustomTagType_, QCustomTagTypeImport};
+
+    QCFTemplate();
 	virtual ~QCFTemplate();
     virtual void run(QCFRunningTemplate *p_TemplateInstance);
 
@@ -38,6 +40,8 @@ public:
     void endQueryNoReturn(const QString &p_DataSource);
     void addCustomFunction(const QString &functionName, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)> function);
     void f_SetCookie(const QString &name, const QString &value, const QString &expires);
+    void startCustomTag(const QString &path, const QString &name, const QWDDX &attributes, bool hasEndTag, CustomTagType type);
+    bool endCustomTag(const QString &path, const QString &name, const QWDDX &attributes, CustomTagType type);
 
 	QCFRunningTemplate *m_TemplateInstance;
 	QIsTemplateModified m_isModified;

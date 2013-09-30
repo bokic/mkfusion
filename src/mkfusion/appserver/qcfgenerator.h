@@ -26,6 +26,7 @@ public:
 private:
 	QHash<QString, QCFTag> m_CFTagsDef;
 	QHash<QString, QCFFunction> m_CFFunctionsDef;
+    QHash<QString, QString> m_CustomTagsPrefixes;
 	bool m_EnableCFOutputOnly;
     QString m_Tabs;
     QList<const QCFParserTag *> m_SwitchTags;
