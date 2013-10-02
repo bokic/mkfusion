@@ -828,9 +828,9 @@ void QCFTemplate::startCustomTag(const QString &path, const QString &name, const
     updateVariableStr(m_TemplateInstance->m_VARIABLES, L"Caller", QWDDX(QWDDX::Struct));
     updateVariableStr(m_TemplateInstance->m_VARIABLES, L"Attributes", attributes);
     updateVariableStr(m_TemplateInstance->m_VARIABLES, L"ThisTag", QWDDX(QWDDX::Struct));
-    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"GeneratedContent", "");
-    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"executionMode", "start");
-    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"hasendtag", hasEndTag ? "YES":"NO");
+    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"GeneratedContent", L"");
+    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"executionMode", L"start");
+    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"hasendtag", hasEndTag ? L"YES":L"NO");
 
     // Call custom tag.
     QCFTemplate *l_page = createCFMTemplate();
@@ -992,8 +992,8 @@ bool QCFTemplate::endCustomTag(const QString &path, const QString &name, QCustom
     updateVariableStr(m_TemplateInstance->m_VARIABLES, L"Attributes", restoredVars[L"Attributes"]);
     updateVariableStr(m_TemplateInstance->m_VARIABLES, L"ThisTag", QWDDX(QWDDX::Struct));
     updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"GeneratedContent", m_TemplateInstance->m_Output);
-    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"executionMode", "end");
-    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"hasendtag", "YES");
+    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"executionMode", L"end");
+    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"hasendtag", L"YES");
 
     // Switch output.
     m_TemplateInstance->m_Output.clear();
