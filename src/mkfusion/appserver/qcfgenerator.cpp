@@ -1323,6 +1323,11 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
         }
     }
 
+    if ((p_CFTag.m_TagType != CFTagType)&&(p_CFTag.m_TagType != EndCFTagType))
+    {
+        return "";
+    }
+
     if(p_CFTag.m_Name.compare("cfabort", Qt::CaseInsensitive) == 0) // Done
 	{
 		if (CFTagHasArgument(p_CFTag, "showError"))
