@@ -760,7 +760,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 
                 if (item.m_Type == Variable)
                 {
-                    if (funct_local_vars == nullptr)
+                    /*if (funct_local_vars == nullptr)
                     {
                         QString tmp_funct_local_vars;
 
@@ -769,7 +769,8 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                     else
                     {
                         ret = "[" + GenerateVariable(item.m_Text.toUpper(), funct_params, *funct_local_vars) + "]";
-                    }
+                    }*/
+                    ret = "[L\"" + item.m_Text.toUpper() + "\"]";
                 }
                 else if (item.m_Type == String)
                 {
@@ -1358,10 +1359,10 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             }
             else
             {
-                dataCollection = "AssocAttribs";
+                dataCollection = "\"" + toCPPEncodeStr("AssocAttrib") + "\"";
             }
 
-            return m_Tabs + "cfAssociate(\"" + toCPPEncodeStr(baseTag) + "\", \"" + toCPPEncodeStr(dataCollection) + "\");\n";
+            return m_Tabs + "f_cfAssociate(" + baseTag + ", " + dataCollection + ");\n";
         }
     }
     else if(p_CFTag.m_Name.compare("cfapplication", Qt::CaseInsensitive) == 0) // TODO: cfapplication - Implemented attributes: name, sessionmanagement, setclientcookies

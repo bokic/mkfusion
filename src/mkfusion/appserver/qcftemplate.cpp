@@ -835,7 +835,9 @@ void QCFTemplate::startCustomTag(const QString &path, const QString &name, const
     // Call custom tag.
     QCFTemplate *l_page = createCFMTemplate();
     l_page->setParent(this);
+    l_page->m_CustomTags = m_CustomTags;
     l_page->run(this->m_TemplateInstance);
+    m_CustomTags = l_page->m_CustomTags;
     delete l_page;
     l_page = 0;
 
@@ -990,7 +992,7 @@ bool QCFTemplate::endCustomTag(const QString &path, const QString &name, QCustom
     // Add [Caller, Attributes, ThisTag] Variable vars.
     updateVariableStr(m_TemplateInstance->m_VARIABLES, L"Caller", restoredVars[L"Caller"]);
     updateVariableStr(m_TemplateInstance->m_VARIABLES, L"Attributes", restoredVars[L"Attributes"]);
-    updateVariableStr(m_TemplateInstance->m_VARIABLES, L"ThisTag", QWDDX(QWDDX::Struct));
+    updateVariableStr(m_TemplateInstance->m_VARIABLES, L"ThisTag", restoredVars[L"ThisTag"]);
     updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"GeneratedContent", m_TemplateInstance->m_Output);
     updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"executionMode", L"end");
     updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"hasendtag", L"YES");
@@ -1026,4 +1028,26 @@ bool QCFTemplate::endCustomTag(const QString &path, const QString &name, QCustom
     }
 
     return false;
+}
+
+void QCFTemplate::f_cfAssociate(const QString &baseTagName, const QString &keyName)
+{
+    for(QWDDX &customTag : m_CustomTags)
+    {
+        const QString &name = QString("cf_") + customTag[L"Name"].toString();
+
+        if (name.compare(baseTagName, Qt::CaseInsensitive) == 0)
+        {
+            if (!cf_StructKeyExists(customTag[L"ThisTag"], keyName.toUpper()))
+            {
+                updateVariableQStr(customTag[L"ThisTag"], keyName, QWDDX(QWDDX::Array));
+            }
+
+            cf_ArrayAppend(customTag[L"ThisTag"][keyName.toUpper()], m_TemplateInstance->m_VARIABLES[L"Attributes"]);
+
+            return;
+        }
+    }
+
+    throw QMKFusionException(QString("Not within [%1] custom tag.").arg(baseTagName));
 }
