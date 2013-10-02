@@ -718,7 +718,6 @@ void QCFTemplate::f_SetCookie(const QString &name, const QString &value, const Q
 void QCFTemplate::startCustomTag(const QString &path, const QString &name, const QWDDX &attributes, bool hasEndTag, QCustomTagType type)
 {
     // Get customtag handle.
-    //QDir templateDir = QFileInfo(this->m_isModified.m_Filename).dir();
     QString target_file;
     QString file;
 
@@ -775,10 +774,31 @@ void QCFTemplate::startCustomTag(const QString &path, const QString &name, const
         }
         break;
     case QCustomTagType_: // Search caller template path first, and if not found, search app defined custom tag dir.
+
+        target_file = QFileInfo(this->m_isModified.m_Filename).absolutePath() + QDir::separator() + name + ".cfm";
+
+        if (!QFile::exists(target_file))
+        {
+            target_file = ((QCFServer *)m_TemplateInstance->m_CFServer)->m_CustomTagsPath + QDir::separator() + name + ".cfm";
+
+            if (!QFile::exists(target_file))
+            {
+                throw QMKFusionException(QString("Custom tag [%1] is not found.").arg(name));
+            }
+        }
         break;
     case QCustomTagTypeImport:
+
+        // TODO: Somehow check if targetPath goes outside app dir.
+        target_file = QFileInfo(QFileInfo(this->m_isModified.m_Filename).absolutePath() + QDir::separator() + path + QDir::separator()).absolutePath() + QDir::separator() + name + ".cfm";
+
+        if (!QFile::exists(target_file))
+        {
+            throw QMKFusionException(QString("Custom tag [%1] within path[%2] is not found.").arg(name).arg(path));
+        }
         break;
     default:
+        throw QMKFusionException("Unknown custom tag type.");
         break;
     }
 
@@ -866,6 +886,8 @@ bool QCFTemplate::endCustomTag(const QString &path, const QString &name, const Q
     // Restore(pop) [Caller, Attributes, ThisTag] Variable from multihash.
 
     // Add [Caller, Attributes, ThisTag] Variable vars.
+
+    // Switch output.
 
     // Call custom tag.
 
