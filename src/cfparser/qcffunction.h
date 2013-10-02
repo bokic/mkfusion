@@ -29,13 +29,14 @@ public:
 
 	QCFFunction();
 	explicit QCFFunction(const QCFFunction &other);
-	QCFFunction(const QString &p_FunctionName, QCFFunctionReturnType p_ReturnType, const QList<QCFFunctionArgument> &p_Arguments = QList<QCFFunctionArgument>());
+    QCFFunction(const QString &p_FunctionName, QCFFunctionReturnType p_ReturnType, bool p_NeedsThis = false);
 	QCFFunction& operator=(const QCFFunction &other);
 	void setName(const QString &p_FunctionName);
     const QString &getName();
 
 	// Class members
 	QString m_Name;
+    bool m_NeedsThis;
 	QCFFunctionReturnType m_ReturnType;
 	QList<QCFFunctionArgument> m_Arguments;
 };

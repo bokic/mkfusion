@@ -3,6 +3,7 @@
 
 #include "qmkfusionexception.h"
 #include "qcfrunningtemplate.h"
+#include "qcftemplate.h"
 #include "common.h"
 #include "qwddx.h"
 
@@ -119,8 +120,8 @@ Q_DECL_EXPORT int cf_Fix(double);
 Q_DECL_EXPORT QString cf_FormatBaseN(int number, int radix);
 Q_DECL_EXPORT QString cf_GenerateSecretKey(const QString &algorithm, int keysize = -1);
 Q_DECL_EXPORT QString cf_GetAuthUser();
-Q_DECL_EXPORT QWDDX cf_GetBaseTagData(const QString &tagname, int instancenumber = 1);
-Q_DECL_EXPORT QString cf_GetBaseTagList();
+Q_DECL_EXPORT QWDDX cf_GetBaseTagData(const QCFTemplate * const thisTemplate, const QString &tagname, int instancenumber = 1);
+Q_DECL_EXPORT QString cf_GetBaseTagList(const QCFTemplate * const thisTemplate);
 Q_DECL_EXPORT QString cf_GetBaseTemplatePath();
 Q_DECL_EXPORT QString cf_GetClientVariablesList();
 Q_DECL_EXPORT QWDDX cf_GetComponentMetaData(const QString &path);

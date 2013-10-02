@@ -1,3 +1,4 @@
+#include "qcftemplate.h"
 #include "cffunctions.h"
 #include "qmkfusionexception.h"
 #include <QStringList>
@@ -1595,14 +1596,43 @@ Q_DECL_EXPORT QString cf_GetAuthUser()
     throw QMKFusionException("Not Implemented", "GetAuthUser is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetBaseTagData(const QString &tagname, int instancenumber)
+Q_DECL_EXPORT QWDDX cf_GetBaseTagData(const QCFTemplate * const thisTemplate, const QString &tagname, int instancenumber)
 {
-    throw QMKFusionException("Not Implemented", "GetBaseTagData is not Implemented (yet:))");
+    int found = 0;
+
+    for(QWDDX item : thisTemplate->m_CustomTags) // TODO: QWDDX [] operator should to be const?
+    {
+        if (tagname == "cf_" + item[L"NAME"].toString())
+        {
+            found++;
+
+            if (found == instancenumber)
+            {
+
+                QWDDX ret = item;
+
+                cf_StructDelete(ret, "OUTPUT");
+                cf_StructDelete(ret, "TYPE");
+                cf_StructDelete(ret, "NAME");
+
+                return ret;
+            }
+        }
+    }
+
+    throw QMKFusionException(QString("There is no basetag with name[%1] and level %2").arg(tagname).arg(instancenumber));
 }
 
-Q_DECL_EXPORT QString cf_GetBaseTagList()
+Q_DECL_EXPORT QString cf_GetBaseTagList(const QCFTemplate * const thisTemplate)
 {
-    throw QMKFusionException("Not Implemented", "GetBaseTagList is not Implemented (yet:))");
+    QStringList items;
+
+    for(QWDDX item : thisTemplate->m_CustomTags) // TODO: QWDDX [] operator should to be const?
+    {
+        items.append("cf_" + item[L"NAME"].toString());
+    }
+
+    return items.join(',');
 }
 
 Q_DECL_EXPORT QString cf_GetBaseTemplatePath()

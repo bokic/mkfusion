@@ -1574,6 +1574,12 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	ret.insert("fix", QCFFunction("Fix", QCFFunction::ReturnInt));
 	ret["fix"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
 
+    ret.insert("getbasetagdata", QCFFunction("GetBaseTagData", QCFFunction::ReturnQWDDX, true));
+    ret["getbasetagdata"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret["getbasetagdata"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("getbasetaglist", QCFFunction("GetBaseTagList", QCFFunction::ReturnString, true));
+
     ret.insert("int", QCFFunction("Int", QCFFunction::ReturnString));
     ret["int"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
 

@@ -41,24 +41,26 @@ QCFFunctionArgument& QCFFunctionArgument::operator=(const QCFFunctionArgument &o
 
 QCFFunction::QCFFunction()
 	: QObject()
+    , m_NeedsThis(false)
 	, m_ReturnType(ReturnVoid)
 {
 }
 
 QCFFunction::QCFFunction(const QCFFunction &other)
 	: QObject()
+    , m_Name(other.m_Name)
+    , m_NeedsThis(other.m_NeedsThis)
+    , m_ReturnType(other.m_ReturnType)
+    , m_Arguments(other.m_Arguments)
 {
-	m_Name = other.m_Name;
-	m_ReturnType = other.m_ReturnType;
-	m_Arguments = other.m_Arguments;
 }
 
-QCFFunction::QCFFunction(const QString &p_FunctionName, QCFFunctionReturnType p_ReturnType, const QList<QCFFunctionArgument> &p_Arguments)
+QCFFunction::QCFFunction(const QString &p_FunctionName, QCFFunctionReturnType p_ReturnType, bool p_NeedsThis)
 	: QObject()
+    , m_Name(p_FunctionName)
+    , m_NeedsThis(p_NeedsThis)
+    , m_ReturnType(p_ReturnType)
 {
-	m_Name = p_FunctionName;
-	m_ReturnType = p_ReturnType;
-	m_Arguments = p_Arguments;
 }
 
 QCFFunction& QCFFunction::operator=(const QCFFunction &other)
@@ -66,6 +68,7 @@ QCFFunction& QCFFunction::operator=(const QCFFunction &other)
 	if (this != &other)
 	{
 		m_Name = other.m_Name;
+        m_NeedsThis = other.m_NeedsThis;
 		m_ReturnType = other.m_ReturnType;
 		m_Arguments = other.m_Arguments;
 	}

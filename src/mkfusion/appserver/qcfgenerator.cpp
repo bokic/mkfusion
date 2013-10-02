@@ -807,7 +807,19 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
             } else {
                 if (m_CFFunctionsDef.contains(l_ElementName.toLower()))
                 {
-                    ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
+                    if (m_CFFunctionsDef[l_ElementName.toLower()].m_NeedsThis)
+                    {
+                        ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(this";
+
+                        if (m_CFFunctionsDef[l_ElementName.toLower()].m_Arguments.count() > 0)
+                        {
+                            ret += ", ";
+                        }
+                    }
+                    else
+                    {
+                        ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
+                    }
 
                     for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                     {
