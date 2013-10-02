@@ -41,7 +41,7 @@ public:
     void addCustomFunction(const QString &functionName, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)> function);
     void f_SetCookie(const QString &name, const QString &value, const QString &expires);
     void startCustomTag(const QString &path, const QString &name, const QWDDX &attributes, bool hasEndTag, QCustomTagType type);
-    bool endCustomTag(const QString &path, const QString &name, const QWDDX &attributes, QCustomTagType type);
+    bool endCustomTag(const QString &path, const QString &name, QCustomTagType type);
 
 	QCFRunningTemplate *m_TemplateInstance;
     QList<QWDDX> m_CustomTags;

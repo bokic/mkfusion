@@ -875,25 +875,155 @@ void QCFTemplate::startCustomTag(const QString &path, const QString &name, const
     }
 }
 
-bool QCFTemplate::endCustomTag(const QString &path, const QString &name, const QWDDX &attributes, QCustomTagType type)
+bool QCFTemplate::endCustomTag(const QString &path, const QString &name, QCustomTagType type)
 {
-    qDebug() << "endCustomTag" << path << name << type;
-
     // Get customtag handle.
+    QString target_file;
+    QString file;
+
+    switch(type)
+    {
+    case QCustomTagTypeModuleName: // Only search in app defined custom tag dir.
+        {
+            QStringList path;
+            path = name.split(".");
+            file = path.takeLast().trimmed();
+
+            if (file.isEmpty())
+            {
+                throw QMKFusionException(QString("cfmodule invalid parameter name. Empty filename is not supported. [%1].").arg(name));
+            }
+
+            target_file = ((QCFServer *)m_TemplateInstance->m_CFServer)->m_CustomTagsPath + QDir::separator();
+
+            for(int c = 0; c < path.count(); c++)
+            {
+                const QString subDir = path.at(c).trimmed();
+
+                if (subDir.isEmpty())
+                {
+                    throw QMKFusionException(QString("cfmodule invalid parameter name. Empty subdirs are not supported. [%1].").arg(name));
+                }
+
+                target_file.append(path.at(c) + QDir::separator());
+            }
+        }
+
+        target_file.append(file + ".cfm"); // TODO: custom tag with lower case extension is currently supported.
+
+        if (!QFile::exists(target_file))
+        {
+            throw QMKFusionException(QString("cfmodule attribute name. Custom tag [%1] is not found.").arg(name));
+        }
+        break;
+    case QCustomTagTypeModuleTemplate: // Only search in path relative from caller template.
+        {
+            QFileInfo fi(this->m_isModified.m_Filename);
+
+            QString tmpStr = fi.absolutePath();
+            QString targetPath = QDir(tmpStr + QDir::separator() + QFileInfo(name).path()).absolutePath();
+
+            // TODO: Somehow check if targetPath goes outside app dir.
+
+            target_file = targetPath + QDir::separator() + QFileInfo(name).fileName();
+        }
+
+        if (!QFile::exists(target_file))
+        {
+            throw QMKFusionException(QString("cfmodule attribute template. Custom tag [%1] is not found.").arg(name));
+        }
+        break;
+    case QCustomTagType_: // Search caller template path first, and if not found, search app defined custom tag dir.
+
+        target_file = QFileInfo(this->m_isModified.m_Filename).absolutePath() + QDir::separator() + name + ".cfm";
+
+        if (!QFile::exists(target_file))
+        {
+            target_file = ((QCFServer *)m_TemplateInstance->m_CFServer)->m_CustomTagsPath + QDir::separator() + name + ".cfm";
+
+            if (!QFile::exists(target_file))
+            {
+                throw QMKFusionException(QString("Custom tag [%1] is not found.").arg(name));
+            }
+        }
+        break;
+    case QCustomTagTypeImport:
+
+        // TODO: Somehow check if targetPath goes outside app dir.
+        target_file = QFileInfo(QFileInfo(this->m_isModified.m_Filename).absolutePath() + QDir::separator() + path + QDir::separator()).absolutePath() + QDir::separator() + name + ".cfm";
+
+        if (!QFile::exists(target_file))
+        {
+            throw QMKFusionException(QString("Custom tag [%1] within path[%2] is not found.").arg(name).arg(path));
+        }
+        break;
+    default:
+        throw QMKFusionException("Unknown custom tag type.");
+        break;
+    }
+
+    createCFMTemplateDef createCFMTemplate = (createCFMTemplateDef)this->m_TemplateInstance->compileAndLoadTemplate(target_file, "");
+
+    if (createCFMTemplate == nullptr)
+    {
+        throw QMKFusionException(tr("Can't load template '%1'").arg(target_file));
+    }
 
     // Save [Caller, Attributes, ThisTag] Variable vars to local var.
+    QWDDX save(QWDDX::Struct);
+    if (m_TemplateInstance->m_VARIABLES.m_Struct->contains("CALLER"))
+    {
+        updateVariableStr(save, L"Caller", m_TemplateInstance->m_VARIABLES[L"CALLER"]);
+    }
+    if (m_TemplateInstance->m_VARIABLES.m_Struct->contains("ATTRIBUTES"))
+    {
+        updateVariableStr(save, L"Attributes", m_TemplateInstance->m_VARIABLES[L"ATTRIBUTES"]);
+    }
+    if (m_TemplateInstance->m_VARIABLES.m_Struct->contains("THISTAG"))
+    {
+        updateVariableStr(save, L"ThisTag", m_TemplateInstance->m_VARIABLES[L"ThisTag"]);
+    }
 
     // Restore(pop) [Caller, Attributes, ThisTag] Variable from multihash.
+    QWDDX restoredVars = m_CustomTags.takeLast();
 
     // Add [Caller, Attributes, ThisTag] Variable vars.
+    updateVariableStr(m_TemplateInstance->m_VARIABLES, L"Caller", restoredVars[L"Caller"]);
+    updateVariableStr(m_TemplateInstance->m_VARIABLES, L"Attributes", restoredVars[L"Attributes"]);
+    updateVariableStr(m_TemplateInstance->m_VARIABLES, L"ThisTag", QWDDX(QWDDX::Struct));
+    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"GeneratedContent", m_TemplateInstance->m_Output);
+    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"executionMode", "end");
+    updateVariableStr(m_TemplateInstance->m_VARIABLES[L"ThisTag"], L"hasendtag", "YES");
 
     // Switch output.
+    m_TemplateInstance->m_Output.clear();
 
     // Call custom tag.
+    QCFTemplate *l_page = createCFMTemplate();
+    l_page->setParent(this);
+    l_page->run(this->m_TemplateInstance);
+    delete l_page;
+    l_page = 0;
 
     // Switch output.
+    m_TemplateInstance->m_Output = restoredVars[L"OUTPUT"].toString() + m_TemplateInstance->m_VARIABLES[L"ThisTag"][L"GeneratedContent"].toString() + m_TemplateInstance->m_Output;
 
     // Restore [Caller, Attributes, ThisTag] Variable vars from local var.
+    m_TemplateInstance->m_VARIABLES.m_Struct->remove("CALLER");
+    if (save.m_Struct->contains("CALLER"))
+    {
+        updateVariableStr(m_TemplateInstance->m_VARIABLES, L"Caller", save[L"CALLER"]);
+    }
+    m_TemplateInstance->m_VARIABLES.m_Struct->remove("ATTRIBUTES");
+    if (save.m_Struct->contains("ATTRIBUTES"))
+    {
+        updateVariableStr(m_TemplateInstance->m_VARIABLES, L"Attributes", save[L"ATTRIBUTES"]);
+    }
+    m_TemplateInstance->m_VARIABLES.m_Struct->remove("THISTAG");
+    if (save.m_Struct->contains("THISTAG"))
+    {
+        updateVariableStr(m_TemplateInstance->m_VARIABLES, L"ThisTag", save[L"THISTAG"]);
+    }
 
     return false;
 }

@@ -2033,7 +2033,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             m_Tabs = m_Tabs.left(m_Tabs.length() - 1);
 
-            ret = m_Tabs + "} while(endCustomTag(\"\", \"" + toCPPEncodeStr(name) + "\", cftag_attributes, " + tagType + ") == true);\n";
+            ret = m_Tabs + "} while(endCustomTag(\"\", \"" + toCPPEncodeStr(name) + "\", " + tagType + ") == true);\n";
 
             m_Tabs = m_Tabs.left(m_Tabs.length() - 1);
 
@@ -2188,7 +2188,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             m_Tabs = m_Tabs.left(m_Tabs.length() - 1);
 
-            ret = m_Tabs + "} while(endCustomTag(\"\", \"" + toCPPEncodeStr(templateName) + "\", cftag_attributes, QCFTemplate::QCustomTagType_) == true);\n";
+            ret = m_Tabs + "} while(endCustomTag(\"\", \"" + toCPPEncodeStr(templateName) + "\", QCFTemplate::QCustomTagType_) == true);\n";
 
             m_Tabs = m_Tabs.left(m_Tabs.length() - 1);
 
@@ -2261,7 +2261,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             m_Tabs = m_Tabs.left(m_Tabs.length() - 1);
 
-            ret = m_Tabs + "} while(endCustomTag(\"" + toCPPEncodeStr(path) + "\", \"" + toCPPEncodeStr(templateName) + "\", cftag_attributes, QCFTemplate::QCustomTagTypeImport) == true);\n";
+            ret = m_Tabs + "} while(endCustomTag(\"" + toCPPEncodeStr(path) + "\", \"" + toCPPEncodeStr(templateName) + "\", QCFTemplate::QCustomTagTypeImport) == true);\n";
 
             m_Tabs = m_Tabs.left(m_Tabs.length() - 1);
 
