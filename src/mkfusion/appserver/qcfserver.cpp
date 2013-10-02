@@ -176,12 +176,13 @@ void QCFServer::start()
 
 	m_mainTimer = startTimer(1000);
 
-    readConfig();
-
 	QFileInfo fi(getCurrentExecutableFileName());
 	QDir fi_dir = fi.absoluteDir();
 	fi_dir.cdUp();
 	m_MKFusionPath = fi_dir.absolutePath() + "/";
+
+    readConfig();
+
 	QLibrary l_TemplateLib;
 
 	QDir l_TemplatesDir(m_MKFusionPath + "templates");
@@ -253,6 +254,12 @@ void QCFServer::stop()
 void QCFServer::readConfig()
 {
     QSettings iniFile("mkfusion.ini", QSettings::IniFormat);
+
+    iniFile.beginGroup("Setup");
+
+    QString path = iniFile.value("CustomTagsDir", "../CustomTags").toString();
+    path = QDir(m_MKFusionPath + QDir::separator() + path).absolutePath();
+    m_CustomTagsPath = path;
 
     iniFile.beginGroup("Database");
     for(const QString &group : iniFile.childKeys())

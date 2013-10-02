@@ -47,6 +47,7 @@ public:
     QHash<QString, QSqlDatabase> m_DatabasePool;
     QLocalServer m_LocalServer;
     QReadWriteLock m_runningTemplatesLock;
+    QString m_CustomTagsPath;
     QString m_MKFusionPath;
     int m_mainTimer;
     int m_MaxSimulRunningTemplates;

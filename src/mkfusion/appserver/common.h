@@ -66,7 +66,7 @@ QString WriteException(const QMKFusionException &ex, const QCFRunningTemplate_Re
 extern "C" MY_EXPORT QString mk_cfdump(const QWDDX&);
 extern "C" MY_EXPORT QWDDX callCustomFunction(const QString &functionName, const QList<QWDDX> &arguments);
 extern "C" MY_EXPORT void updateVariableInt(QWDDX &dest, int key, const QWDDX &value);
-extern "C" MY_EXPORT void updateVariableStr(QWDDX &dest, const char *key, const QWDDX &value);
+extern "C" MY_EXPORT void updateVariableStr(QWDDX &dest, const wchar_t *key, const QWDDX &value);
 extern "C" MY_EXPORT void updateVariableQStr(QWDDX &dest, const QString &key, const QWDDX &value);
 extern "C" MY_EXPORT void updateVariable(QWDDX &dest, const QWDDX &key, const QWDDX &value);
 

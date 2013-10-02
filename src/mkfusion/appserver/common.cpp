@@ -623,7 +623,7 @@ void updateVariableInt(QWDDX &dest, int key, const QWDDX &value)
     }
 }
 
-void updateVariableStr(QWDDX &dest, const char *key, const QWDDX &value)
+void updateVariableStr(QWDDX &dest, const wchar_t *key, const QWDDX &value)
 {
     int index;
     bool ok;
@@ -631,10 +631,10 @@ void updateVariableStr(QWDDX &dest, const char *key, const QWDDX &value)
     switch(dest.m_Type)
     {
     case QWDDX::Struct:
-        (*dest.m_Struct)[QString(key).toUpper()] = value;
+        (*dest.m_Struct)[QString::fromWCharArray(key).toUpper()] = value;
         break;
     case QWDDX::Array:
-        index = QString(key).toInt(&ok);
+        index = QString::fromWCharArray(key).toInt(&ok);
 
         if (!ok)
         {
@@ -657,6 +657,7 @@ void updateVariableStr(QWDDX &dest, const char *key, const QWDDX &value)
         throw QMKFusionException("Destination variable is not Struct nor Array.");
     }
 }
+
 void updateVariableQStr(QWDDX &dest, const QString &key, const QWDDX &value)
 {
     int index;

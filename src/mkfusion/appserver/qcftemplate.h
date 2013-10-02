@@ -19,7 +19,7 @@ struct QIsTemplateModified {
 class Q_DECL_EXPORT QCFTemplate : public QObject
 {
 public:
-    enum CustomTagType {QCustomTagTypeModuleName, QCustomTagTypeModuleTemplate, QCustomTagType_, QCustomTagTypeImport};
+    enum QCustomTagType {QCustomTagTypeModuleName, QCustomTagTypeModuleTemplate, QCustomTagType_, QCustomTagTypeImport};
 
     QCFTemplate();
 	virtual ~QCFTemplate();
@@ -40,10 +40,11 @@ public:
     void endQueryNoReturn(const QString &p_DataSource);
     void addCustomFunction(const QString &functionName, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)> function);
     void f_SetCookie(const QString &name, const QString &value, const QString &expires);
-    void startCustomTag(const QString &path, const QString &name, const QWDDX &attributes, bool hasEndTag, CustomTagType type);
-    bool endCustomTag(const QString &path, const QString &name, const QWDDX &attributes, CustomTagType type);
+    void startCustomTag(const QString &path, const QString &name, const QWDDX &attributes, bool hasEndTag, QCustomTagType type);
+    bool endCustomTag(const QString &path, const QString &name, const QWDDX &attributes, QCustomTagType type);
 
 	QCFRunningTemplate *m_TemplateInstance;
+    QList<QWDDX> m_CustomTags;
 	QIsTemplateModified m_isModified;
     QHash<QString, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)>> m_TemplateCustomFunctions;
 };
