@@ -24,6 +24,7 @@ Name: "{app}\include";
 Name: "{app}\lib";
 Name: "{app}\logs";
 Name: "{app}\templates";
+Name: "{app}\CustomTags";
 
 [Files]
 ; MinGW runtime
