@@ -20,7 +20,7 @@ Ubuntu 13.04 (Raring Ringtail):
 * sudo apt-get install subversion g++ apache2-prefork-dev libssh-dev qtbase5-dev make fakeroot
 * chmod 744 buildall.sh
 * sh ./buildall.sh
-* sudo dpkg -i mkfusion_0.4.5-0ubuntu0_i386.deb
+* sudo dpkg -i mkfusion_0.5.0.xxx_i386.deb
 
 --------------------------------------------------------------------------------
 Arch Linux (raspberry pi too) WIP.

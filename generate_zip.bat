@@ -7,4 +7,4 @@ if %FIRST_HOUR_DIGIT%==" " (
 	set YYYY-MM-DD-HH-MM-SS=%YYYY-MM-DD-HH-MM-SS:~0,8%0%YYYY-MM-DD-HH-MM-SS:~9,5%
 )
 
-"C:\Program Files\7-Zip\7z.exe" a "mkfusion-0.4.5_%YYYY-MM-DD-HH-MM-SS%.zip" * -r -x!*.dll -x!Makefile -x!*.Debug -x!*.Release -x!bin/* -x!deps/* -x!libs/apache2/* -x!libs/libssh/* -x!libs/iis/* -x!libs/qtservice/* -x!obj/* -x!WINDOWS/*.exe -x!*.zip -x!*.user -x!.svn
+"C:\Program Files\7-Zip\7z.exe" a "mkfusion-0.5.0_%YYYY-MM-DD-HH-MM-SS%.zip" * -r -x!*.dll -x!Makefile -x!*.Debug -x!*.Release -x!bin/* -x!deps/* -x!libs/apache2/* -x!libs/libssh/* -x!libs/iis/* -x!libs/qtservice/* -x!obj/* -x!WINDOWS/*.exe -x!*.zip -x!*.user -x!.svn

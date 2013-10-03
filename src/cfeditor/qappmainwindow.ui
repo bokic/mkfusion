@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>CFEditor v0.4.5</string>
+   <string>CFEditor v0.5.0</string>
   </property>
   <widget class="QTabWidget" name="centralwidget">
    <property name="sizePolicy">
