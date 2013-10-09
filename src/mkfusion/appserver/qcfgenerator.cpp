@@ -78,7 +78,7 @@ QString QCFGenerator::toCPPEncodeStr(const QString &str)
     return ret;
 }
 
-QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath)
+QString QCFGenerator::generateTemplateCpp(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath)
 {
 	QFileInfo file(p_Target);
 	QString l_NewTarget = file.baseName();
@@ -388,15 +388,31 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 	l_cppFile.write("	}\n");
 	l_cppFile.write("};\n");
 	l_cppFile.write("\n");
-	l_cppFile.write("extern \"C\" MY_EXPORT QCFTemplate* createCFMTemplate()\n");
+    l_cppFile.write("extern \"C\" MY_EXPORT QCFTemplate * createCFMTemplate()\n");
 	l_cppFile.write("{\n");
 	l_cppFile.write("	return new QCFGeneratedTemplate();\n");
 	l_cppFile.write("};\n");
 	l_cppFile.close();
 
-	QProcess process;
+    return "";
+}
 
-	// Compile
+QString QCFGenerator::generateComponentCpp(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath)
+{
+    Q_UNUSED(p_Parser);
+    Q_UNUSED(p_Target);
+    Q_UNUSED(p_MKFusionPath);
+
+    return "QCFGenerator::compileComponent(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath) is not implemented YET.";
+}
+
+QString QCFGenerator::compile(const QString &p_Target, const QString &p_MKFusionPath)
+{
+    QFileInfo file(p_Target);
+    QString l_NewTarget = file.baseName();
+    QProcess process;
+
+    // Compile
 #ifdef Q_OS_WIN
     QString l_QtPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\qt\\";
     QString l_MingwPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\mingw\\";
@@ -492,39 +508,18 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
         << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".cpp")
     );
 
-/*#ifdef Q_OS_WIN
-    QString l_QtPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\qt\\";
-    QString l_MingwPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\mingw\\";
-
-#ifdef QT_NO_DEBUG
-    process.start("\"" + l_MingwPath+"bin\\g++.exe\" -c                                                    -O2                                                       -std=c++0x -frtti -fexceptions -mthreads -Wall -DUNICODE                       -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_CORE_LIB             -DQT_THREAD_SUPPORT -I\""+l_MingwPath+"include\" -I\""+l_QtPath+"include\\QtCore\" -I\""+l_QtPath+"include\\QtNetwork\" -I\""+l_QtPath+"include\\QtConcurrent\" -I\""+l_QtPath+"include\" -I\""+p_MKFusionPath+"include\" -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".cpp\"");
-#else
-    process.start("\"" + l_MingwPath+"bin\\g++.exe\" -c                                                        -g                                                    -std=c++0x -frtti -fexceptions -mthreads -Wall -DUNICODE                       -DQT_LARGEFILE_SUPPORT -DQT_DLL               -DQT_CORE_LIB             -DQT_THREAD_SUPPORT -I\""+l_MingwPath+"include\" -I\""+l_QtPath+"include\\QtCore\" -I\""+l_QtPath+"include\\QtNetwork\" -I\""+l_QtPath+"include\\QtConcurrent\" -I\""+l_QtPath+"include\" -I\""+p_MKFusionPath+"include\" -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".cpp\"");
-#endif // #ifdef QT_NO_DEBUG
-#elif defined Q_OS_LINUX
-#ifdef QT_NO_DEBUG
-    process.start("g++                               -c -m64 -pipe                                         -O2                                                       -std=c++0x                               -Wall           -W -D_REENTRANT -fPIE                                 -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_SHARED                     -I/usr/share/qt5/mkspecs/linux-g++-64 -I. -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5 -I\""+p_MKFusionPath+"include\"                   -o\""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".cpp\"");
-    ARM(rpi) ->    g++                               -c      -pipe -march=armv6 -mfloat-abi=hard -mfpu=vfp -O2     -pipe -fstack-protector --param=ssp-buffer-size=4 -std=c++0x                               -Wall           -W -D_REENTRANT -fPIE                                 -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_SHARED                     -I/usr/lib/qt/mkspecs/linux-g++ -I.   -I. -I../../textparser -I/usr/include/qt -I/usr/include/qt/QtXml -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -Irelease -o release/main.o main.cpp
-
-#else
-    process.start("g++                               -c -m64 -pipe                                             -g                                                    -std=c++0x                               -Wall           -W -D_REENTRANT -fPIE                                               -DQT_CORE_LIB -DQT_SHARED                     -I/usr/share/qt5/mkspecs/linux-g++-64 -I. -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -I/usr/include/qt5/QtConcurrent -I/usr/include/qt5 -I\""+p_MKFusionPath+"include\" -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".cpp\"");
-#endif // #ifdef QT_NO_DEBUG
-#else
-#error Windows and Linux OSs are currently supported.
-#endif // #ifdef Q_OS_WIN*/
-
     bool finished = process.waitForFinished(-1);
 
 #ifdef QT_NO_DEBUG
     QFile::remove(p_MKFusionPath+"templates/"+l_NewTarget+".cpp");
 #endif
 
-	if ((finished == false)||(process.exitCode() != 0))
-	{
-		return "compile error: " + QString::fromUtf8(process.readAllStandardError()) + QString::fromUtf8(process.readAllStandardOutput());
-	}
+    if ((finished == false)||(process.exitCode() != 0))
+    {
+        return "compile error: " + QString::fromUtf8(process.readAllStandardError()) + QString::fromUtf8(process.readAllStandardOutput());
+    }
 
-	// Link
+    // Link
 #ifdef Q_OS_WIN
     process.start(l_MingwPath + "bin\\g++.exe", QStringList()
 #elif defined Q_OS_LINUX
@@ -571,33 +566,17 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
         << "-lQt5Concurrent" << "-lQt5Core"
 #endif
     );
-/*#ifdef Q_OS_WIN
-#ifdef QT_NO_DEBUG
-    process.start("\"" + l_MingwPath+"bin\\g++.exe\"              -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -mthreads -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQt5Core");
-#else
-    process.start("\"" + l_MingwPath+"bin\\g++.exe\"              -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc        -mthreads -shared -o\""+p_MKFusionPath+"templates\\"+l_NewTarget+".dll\" \""+p_MKFusionPath+"templates\\"+l_NewTarget+".o\" -L\""+l_QtPath+"lib\" \""+p_MKFusionPath+"lib\\mkfusion.a\" -lQt5Cored");
-#endif
-#elif defined Q_OS_LINUX
-#ifdef QT_NO_DEBUG
-    process.start("g++                               -m64 -Wl,-O1                                                                                                     -shared -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".so\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" -L/usr/lib/x86_64-linux-gnu -lQt5Concurrent -lrt -lQt5Core -lpthread");
-    ARM(rpi) ->    g++                                    -Wl,-O1                                                                                                     -shared -o ../../../bin/textparser                            release/main.o release/qtextparser.o                                          -lQt5Concurrent -lrt -lQt5Core -lpthread
-#else
-    process.start("g++                               -m64                                                                                                             -shared -o \""+p_MKFusionPath+"templates/"+l_NewTarget+".so\" \""+p_MKFusionPath+"templates/"+l_NewTarget+".o\" -L/usr/lib/x86_64-linux-gnu -lQt5Concurrent -lrt -lQt5Core -lpthread");
-#endif
-#else
-#error Windows and Linux OSs are currently supported.
-#endif*/
 
     finished = process.waitForFinished(-1);
 
-	QFile::remove(p_MKFusionPath+"templates/"+l_NewTarget+".o");
+    QFile::remove(p_MKFusionPath+"templates/"+l_NewTarget+".o");
 
-	if ((finished == false)||(process.exitCode() != 0))
-	{
-		return "link error: " + process.readAllStandardError() + process.readAllStandardOutput();
-	}
+    if ((finished == false)||(process.exitCode() != 0))
+    {
+        return "link error: " + process.readAllStandardError() + process.readAllStandardOutput();
+    }
 
-	return "";
+    return "";
 }
 
 QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString &p_Funct_params, const QString &p_Funct_local_vars)
@@ -795,49 +774,38 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
             }
         break;
     case Function:
-
-        if (l_ElementName.toLower() == "isdefined")
+            if (m_CFFunctionsDef.contains(l_ElementName.toLower()))
             {
-                ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(p_TemplateInstance";
-
-                for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                if (m_CFFunctionsDef[l_ElementName.toLower()].m_NeedsThis)
                 {
-                    ret += ", " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
-                }
-            } else {
-                if (m_CFFunctionsDef.contains(l_ElementName.toLower()))
-                {
-                    if (m_CFFunctionsDef[l_ElementName.toLower()].m_NeedsThis)
-                    {
-                        ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(this";
+                    ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(this";
 
-                        if (m_CFFunctionsDef[l_ElementName.toLower()].m_Arguments.count() > 0)
-                        {
-                            ret += ", ";
-                        }
-                    }
-                    else
+                    if (m_CFFunctionsDef[l_ElementName.toLower()].m_Arguments.count() > 0)
                     {
-                        ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
-                    }
-
-                    for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
-                    {
-                        if (c > 0)
-                        {
-                            ret += ", ";
-                        }
-                        ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+                        ret += ", ";
                     }
                 }
                 else
                 {
-                    ret = "callCustomFunction(\"" + toCPPEncodeStr(l_ElementName.toLower()) + "\", QList<QWDDX>()";
+                    ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
+                }
 
-                    for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                {
+                    if (c > 0)
                     {
-                        ret += " << " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+                        ret += ", ";
                     }
+                    ret += GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
+                }
+            }
+            else
+            {
+                ret = "callCustomFunction(\"" + toCPPEncodeStr(l_ElementName.toLower()) + "\", QList<QWDDX>()";
+
+                for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                {
+                    ret += " << " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars);
                 }
             }
 
@@ -893,7 +861,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
         {
             ret = "]";
         }
-        else if (l_ElementName == "[")
+        else if (l_ElementName == "]")
         {
             ret = "]";
         }

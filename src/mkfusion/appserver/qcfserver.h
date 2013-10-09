@@ -28,7 +28,8 @@ public:
 	void stop();
     void readConfig();
     QSqlDatabase *getDBConnection(const QString &datasource);
-    QString compileTemplate(const QString&, const QString&);
+    QString compileTemplate(const QString &p_Filename, const QString &p_URI);
+    QString compileComponent(const QString &p_Filename, const QString &p_URI);
     QCFRunningTemplate *getRunningTemplateByThreadId(Qt::HANDLE threadId);
     void createSessonStrings(QString &cfid, QString &cftoken);
 
@@ -46,7 +47,7 @@ public:
     QHash<QString, QWDDX> m_Sessions;
     QHash<QString, QSqlDatabase> m_DatabasePool;
     QLocalServer m_LocalServer;
-    QReadWriteLock m_runningTemplatesLock;
+    QReadWriteLock m_runningLibrariesLock;
     QString m_CustomTagsPath;
     QString m_MKFusionPath;
     int m_mainTimer;

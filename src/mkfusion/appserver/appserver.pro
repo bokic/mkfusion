@@ -11,8 +11,8 @@ DEPENDPATH  += . ../../../libs/qtservice ../../cfparser
 INCLUDEPATH += . ../../../libs/qtservice ../../cfparser
 
 # main app
-SOURCES = main.cpp qmkfusionservice.cpp ../../cfparser/qcffunction.cpp ../../cfparser/qcfparser.cpp ../../cfparser/qcftag.cpp ../../cfparser/qcf8.cpp qcfapplication.cpp qmkfusionexception.cpp qcfrunningtemplate.cpp qcfgenerator.cpp cffunctions.cpp qcftemplate.cpp qcfserver.cpp common.cpp qwddx.cpp qhttpcodec.cpp
-HEADERS =          qmkfusionservice.h   ../../cfparser/qcffunction.h   ../../cfparser/qcfparser.h   ../../cfparser/qcftag.h   ../../cfparser/qcf8.h   qcfapplication.h   qmkfusionexception.h   qcfrunningtemplate.h   qcfgenerator.h   cffunctions.h   qcftemplate.h   qcfserver.h   common.h   qwddx.h   qhttpcodec.h   cftags.h
+SOURCES = main.cpp qmkfusionservice.cpp ../../cfparser/qcffunction.cpp ../../cfparser/qcfparser.cpp ../../cfparser/qcftag.cpp ../../cfparser/qcf8.cpp qcfapplication.cpp qmkfusionexception.cpp qcfrunningtemplate.cpp qcfgenerator.cpp cffunctions.cpp qcftemplate.cpp qcfserver.cpp common.cpp qwddx.cpp qwddxcomponent.cpp qwddxfunction.cpp qwddxargument.cpp qhttpcodec.cpp
+HEADERS =          qmkfusionservice.h   ../../cfparser/qcffunction.h   ../../cfparser/qcfparser.h   ../../cfparser/qcftag.h   ../../cfparser/qcf8.h   qcfapplication.h   qmkfusionexception.h   qcfrunningtemplate.h   qcfgenerator.h   cffunctions.h   qcftemplate.h   qcfserver.h   common.h   qwddx.h   qwddxcomponent.h   qwddxfunction.h   qwddxargument.h   qhttpcodec.h   cftags.h
 
 # QtService
 SOURCES       += ../../../libs/qtservice/qtservice.cpp

@@ -1321,9 +1321,6 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret.insert("ajaxonload", QCFFunction("AjaxOnLoad", QCFFunction::ReturnVoid));
     ret["ajaxonload"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
 
-    // ColdFusion 9
-	//ret.insert("applicationstop", QCFFunction("ApplicationStop", QCFFunction::ReturnVoid));
-
 	ret.insert("arrayappend", QCFFunction("ArrayAppend", QCFFunction::ReturnBool));
 	ret["arrayappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 	ret["arrayappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true));
@@ -1334,26 +1331,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 	ret.insert("arrayclear", QCFFunction("ArrayClear", QCFFunction::ReturnBool));
 	ret["arrayclear"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
-    // ColdFusion 9
-    //ret.insert("arraycontains", QCFFunction("ArrayContains", QCFFunction::ReturnBool));
-    //ret["arraycontains"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-
-    // ColdFusion 9
-    //ret.insert("arraydelete", QCFFunction("ArrayDelete", QCFFunction::ReturnBool));
-    //ret["arraydelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    //ret["arraydelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-
 	ret.insert("arraydeleteat", QCFFunction("ArrayDeleteAt", QCFFunction::ReturnBool));
 	ret["arraydeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 	ret["arraydeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
-
-    // ColdFusion 9
-    //ret.insert("arrayfind", QCFFunction("ArrayFind", QCFFunction::ReturnInt));
-    //ret["arrayfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    //ret["arrayfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
-
-    // ColdFusion 9
-	// ArrayFindNoCase;
 
     ret.insert("arrayinsertsat", QCFFunction("ArrayInsertAt", QCFFunction::ReturnBool));
     ret["arrayinsertsat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
@@ -1410,10 +1390,8 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["arraytolist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
     ret["arraytolist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
-
     ret.insert("asc", QCFFunction("Asc", QCFFunction::ReturnInt));
     ret["asc"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
 
     ret.insert("asin", QCFFunction("ASin", QCFFunction::ReturnDouble));
     ret["asin"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
@@ -1512,10 +1490,14 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
     ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
-    //ret.insert("createobject", QCFFunction("CreateObject"));
+    ret.insert("createobject", QCFFunction("CreateObject", QCFFunction::ReturnQWDDX, true));
+    ret["createobject"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeConstant));
+    ret["createobject"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeConstant));
 
     ret.insert("createodbcdatetime", QCFFunction("CreateODBCDateTime", QCFFunction::ReturnDateTime));
     ret["createodbcdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert("createuuid", QCFFunction("CreateUUID", QCFFunction::ReturnString));
 
     ret.insert("datecompare", QCFFunction("DateCompare", QCFFunction::ReturnInt));
     ret["datecompare"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
@@ -1526,7 +1508,6 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["dateformat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
     ret["dateformat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
     ret["dateformat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
 
     ret.insert("decrypt", QCFFunction("Decrypt", QCFFunction::ReturnString));
     ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
@@ -1587,7 +1568,7 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
     ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
 
-    ret.insert("isdefined", QCFFunction("IsDefined", QCFFunction::ReturnBool));
+    ret.insert("isdefined", QCFFunction("IsDefined", QCFFunction::ReturnBool, true));
     ret["isdefined"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
     ret.insert("isstruct", QCFFunction("IsStruct", QCFFunction::ReturnBool));
@@ -1844,6 +1825,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret.insert("valuelist", QCFFunction("ValueList", QCFFunction::ReturnString));
     ret["valuelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
     ret["valuelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert("writeoutput", QCFFunction("WriteOutput", QCFFunction::ReturnVoid, true));
+    ret["writeoutput"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
     return ret;
 }

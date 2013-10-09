@@ -9,6 +9,7 @@
 #include <QLibrary>
 #include <QHash>
 
+
 class QCFRunningTemplate : public QObject
 {
 	Q_OBJECT
@@ -19,7 +20,6 @@ public:
 
 	QCFRunningTemplate();
     virtual ~QCFRunningTemplate();
-    void cf_WriteOutput(const QString &string);
 
 	// Class members
 	QWDDX m_CGI;
@@ -45,6 +45,7 @@ public:
     QWDDX m_SetCookies;
     QHash<QString, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)>> m_CustomFunctions;
     QHash<QString, QLibrary*> m_LoadedTemplates;
+    QHash<QString, QLibrary*> m_LoadedComponents;
     QHash<QString, QCFFileUpload> m_FileUpload;
 
 signals:
@@ -54,6 +55,7 @@ public slots:
 	void worker();
 private:
     void * compileAndLoadTemplate(const QString &filename, const QString &uri);
+    void * compileAndLoadComponent(const QString &filename, const QString &uri);
     void runApplicationTemplate();
     void processPostData(QByteArray post);
 };

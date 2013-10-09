@@ -43,37 +43,6 @@ QCFParser::QCFParser(QCFParserMode mode): QObject()
 	m_Mode = mode;
 }
 
-quint32 GetLineNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset)
-{
-	quint32 ret = 1;
-
-	for(qint32 offset = p_FileContent.indexOf('\n', 0, Qt::CaseInsensitive); offset != -1; offset = p_FileContent.indexOf('\n', offset + 1, Qt::CaseInsensitive))
-	{
-		if (offset > p_FileOffset)
-		{
-			break;
-		}
-
-		ret++;
-	}
-
-	return ret;
-}
-
-quint32 GetColumnNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset)
-{
-	qint32 offset = 0;
-
-	for(offset = p_FileContent.indexOf('\n', 0, Qt::CaseInsensitive); offset != -1; offset = p_FileContent.indexOf('\n', offset + 1, Qt::CaseInsensitive))
-	{
-		if (offset > p_FileOffset)
-		{
-			break;
-		}
-	}
-
-	return p_FileOffset - offset + 1;
-}
 
 bool QCFParser::TrimCFCode(const QString &p_Text, int &p_Offset)
 {
@@ -2203,6 +2172,38 @@ QCFParserErrorType QCFParser::prioritizeOperatorsRecursive(QCFParserElement &ele
     }
 
     return NoError;
+}
+
+quint32 QCFParser::GetLineNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset)
+{
+    quint32 ret = 1;
+
+    for(qint32 offset = p_FileContent.indexOf('\n', 0, Qt::CaseInsensitive); offset != -1; offset = p_FileContent.indexOf('\n', offset + 1, Qt::CaseInsensitive))
+    {
+        if (offset > p_FileOffset)
+        {
+            break;
+        }
+
+        ret++;
+    }
+
+    return ret;
+}
+
+quint32 QCFParser::GetColumnNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset)
+{
+    qint32 offset = 0;
+
+    for(offset = p_FileContent.indexOf('\n', 0, Qt::CaseInsensitive); offset != -1; offset = p_FileContent.indexOf('\n', offset + 1, Qt::CaseInsensitive))
+    {
+        if (offset > p_FileOffset)
+        {
+            break;
+        }
+    }
+
+    return p_FileOffset - offset + 1;
 }
 
 QCFParserErrorType QCFParser::prioritizeOperators()

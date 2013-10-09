@@ -45,7 +45,7 @@ struct QCFParserTag
                 (m_Length == other.m_Length)&&
                 (m_Name == other.m_Name)&&
                 (m_TagType == other.m_TagType)&&
-                (&m_Arguments == &other.m_Arguments)&&
+                (&m_Arguments == &other.m_Arguments)&& // TODO: recursive check is needed here[QCFParserTag::operator==()]
                 (m_InlineClosedTag == other.m_InlineClosedTag)&&
                 (m_OtherTag == other.m_OtherTag)
            )
@@ -56,11 +56,6 @@ struct QCFParserTag
         return false;
     }
 };
-
-quint32 GetLineNumberFromPosition(const QString &, const qint32);
-quint32 GetColumnNumberFromPosition(const QString &, const qint32);
-
-qint32 FindEndString(QString, qint32);
 
 class QCFParser : public QObject
 {
@@ -77,6 +72,8 @@ private:
     QCFParserElement ParseCFCode(const QString &p_Text, const qint32 p_Offset, const QCFParserElementType p_ElementType, QCFParserElement *parent);
     quint32 FindCFCommentSize(const QString &p_Text, quint32 p_Position);
     QCFParserErrorType prioritizeOperatorsRecursive(QCFParserElement &element, const QList<QStringList> &priorities);
+    static quint32 GetLineNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset);
+    static quint32 GetColumnNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset);
 
 public:
 	QCFParser();

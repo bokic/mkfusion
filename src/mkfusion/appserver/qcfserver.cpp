@@ -82,7 +82,7 @@ void QCFServer::timerEvent(QTimerEvent *event)
 
 void QCFServer::on_newConnection()
 {
-    QWriteLocker lock(&m_runningTemplatesLock);
+    QWriteLocker lock(&m_runningLibrariesLock);
 
     while(m_LocalServer.hasPendingConnections())
 	{
@@ -346,21 +346,21 @@ QSqlDatabase *QCFServer::getDBConnection(const QString &datasource)
 
 QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_URI)
 {
-	if (m_CompiledTemplates.contains(p_Filename))
+    if (m_CompiledTemplates.contains(p_Filename))
 	{
-		QFileInfo l_fi(p_Filename);
+        QFileInfo l_fi(p_Filename);
 
-		if ((l_fi.size() == m_CompiledTemplates[p_Filename].m_ModifiedInfo.m_Size)&&(l_fi.lastModified().toTime_t() == m_CompiledTemplates[p_Filename].m_ModifiedInfo.m_Modified))
+        if ((l_fi.size() == m_CompiledTemplates[p_Filename].m_ModifiedInfo.m_Size)&&(l_fi.lastModified().toTime_t() == m_CompiledTemplates[p_Filename].m_ModifiedInfo.m_Modified))
 		{
 			return "";
 		}
 		else
 		{
-			m_CompiledTemplates.remove(p_Filename);
+            m_CompiledTemplates.remove(p_Filename);
 		}
 	}
 
-	QFile file(p_Filename);
+    QFile file(p_Filename);
 
     if (!file.exists())
     {
@@ -378,8 +378,8 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 
 	// ---- Parse .cfm file. ----
 	QCFParser l_parser(CompilerMode);
-	QFileInfo fileinfo(p_Filename);
-	l_parser.m_FileName = p_Filename;
+    QFileInfo fileinfo(p_Filename);
+    l_parser.m_FileName = p_Filename;
 	l_parser.m_CFMFileSize = fileinfo.size();
 	l_parser.m_CFMModifyDateTime = fileinfo.lastModified().toTime_t();
 	QCFParserErrorType l_parseError = l_parser.Parse(l_FileContent);
@@ -404,25 +404,32 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 #ifdef Q_OS_WIN
 	QString l_NewTemplateFile = QFileInfo(p_Filename).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".dll";
 #elif defined Q_OS_LINUX
-	QString l_NewTemplateFile = QFileInfo(p_Filename).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".so";
+    QString l_NewTemplateFile = QFileInfo(p_Filename).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".so";
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
 
 	QCFGenerator l_generator;
-	QString ret = l_generator.compile(l_parser, m_MKFusionPath + "templates/" + l_NewTemplateFile, m_MKFusionPath);
+    QString ret = l_generator.generateTemplateCpp(l_parser, m_MKFusionPath + "templates/" + l_NewTemplateFile, m_MKFusionPath);
 
 	if (ret.isEmpty())
 	{
 		QCFCompiledTemplateItem item;
 		item.m_CompiledFileName = l_NewTemplateFile;
-		item.m_ModifiedInfo.m_Filename = p_Filename;
+        item.m_ModifiedInfo.m_Filename = p_Filename;
 		item.m_ModifiedInfo.m_Size = fileinfo.size();
 		item.m_ModifiedInfo.m_Modified = fileinfo.lastModified().toTime_t();
-		m_CompiledTemplates.insert(p_Filename, item);
+        m_CompiledTemplates.insert(p_Filename, item);
 	}
 
 	return ret;
+}
+
+QString QCFServer::compileComponent(const QString &p_Filename, const QString &p_URI)
+{
+    QString ret;
+
+    return ret;
 }
 
 QCFRunningTemplate *QCFServer::getRunningTemplateByThreadId(Qt::HANDLE threadId)

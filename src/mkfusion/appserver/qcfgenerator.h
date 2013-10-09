@@ -12,7 +12,9 @@ class QCFGenerator
 public:
 	QCFGenerator();
     static QString toCPPEncodeStr(const QString &str);
-    QString compile(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath);
+    QString generateTemplateCpp(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath);
+    QString generateComponentCpp(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath);
+    QString compile(const QString &p_Target, const QString &p_MKFusionPath);
     QString GenerateVariable(const QString &p_Variable, const QString &p_Funct_params = "", const QString &p_Funct_local_vars = "");
     QString GenerateCFExpressionToCExpression(const QCFParserElement &p_CFExpression, const QString &funct_params = "", QString *funct_local_vars = nullptr);
     QCFParserElement OptimizeQCFParserElement(QCFParserElement p_CFExpression);

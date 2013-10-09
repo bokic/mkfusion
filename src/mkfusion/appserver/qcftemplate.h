@@ -43,6 +43,7 @@ public:
     void startCustomTag(const QString &path, const QString &name, const QWDDX &attributes, bool hasEndTag, QCustomTagType type);
     bool endCustomTag(const QString &path, const QString &name, QCustomTagType type);
     void f_cfAssociate(const QString &baseTagName, const QString &keyName);
+    QWDDX f_CreateComponent(const QString &component_name);
 
 	QCFRunningTemplate *m_TemplateInstance;
     QList<QWDDX> m_CustomTags;

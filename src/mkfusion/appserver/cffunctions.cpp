@@ -1,8 +1,11 @@
 #include "qcftemplate.h"
 #include "cffunctions.h"
 #include "qmkfusionexception.h"
+#include "qwddx.h"
+#include <QMutexLocker>
 #include <QStringList>
 #include <QDateTime>
+#include <QMutex>
 #include <QDate>
 #include <QFile>
 #include <QDir>
@@ -752,11 +755,16 @@ Q_DECL_EXPORT QWDDX cf_CreateDateTime(int year, int month, int day, int hour, in
     return QDateTime(QDate(year, month, day), QTime(hour, minute, second));
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateObject(const QString &type)
+Q_DECL_EXPORT QWDDX cf_CreateObject(QCFTemplate *thisTemplate, const QString &type, const QString &component_name)
 {
-    Q_UNUSED(type);
-
-    throw QMKFusionException("Not Implemented", "CreateObject is not Implemented (yet:))");
+    if (type.compare("component", Qt::CaseInsensitive) == 0)
+    {
+        return thisTemplate->f_CreateComponent(component_name);
+    }
+    else
+    {
+        throw QMKFusionException("Not supported", "CreateObject component is supported only.");
+    }
 }
 
 Q_DECL_EXPORT QWDDX cf_CreateODBCDate(const QDateTime &date)
@@ -806,7 +814,36 @@ Q_DECL_EXPORT QWDDX cf_CreateTimeSpan(int days, int hours, int minutes, int seco
 
 Q_DECL_EXPORT QString cf_CreateUUID()
 {
-    throw QMKFusionException("Not Implemented", "CreateUUID is not Implemented (yet:))");
+    QString ret;
+
+    static qint64 startTime = QDateTime::currentMSecsSinceEpoch();
+    static QString str = "1234567890ABCDEF";
+    static qint64 lastTime = 0;
+    static QMutex mutex;
+
+    QMutexLocker locker(&mutex);
+
+    qint64 curTime = (startTime * 10) + QDateTime::currentMSecsSinceEpoch();
+    if (curTime <= lastTime)
+    {
+        curTime = lastTime + 1;
+    }
+    lastTime = curTime;
+
+    ret = QString::number(curTime, 16).toUpper();
+
+    ret.append(str.at((rand() % 16) | 0x08));
+
+    while(ret.length() < 32)
+    {
+        ret.append(str.at(rand() % 16));
+    }
+
+    ret.insert(8, '-');
+    ret.insert(13, '-');
+    ret.insert(18, '-');
+
+    return ret;
 }
 
 Q_DECL_EXPORT QDateTime cf_DateAdd(const QString &datepart, int number, QDateTime &date)
@@ -1596,7 +1633,7 @@ Q_DECL_EXPORT QString cf_GetAuthUser()
     throw QMKFusionException("Not Implemented", "GetAuthUser is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetBaseTagData(const QCFTemplate * const thisTemplate, const QString &tagname, int instancenumber)
+Q_DECL_EXPORT QWDDX cf_GetBaseTagData(QCFTemplate *thisTemplate, const QString &tagname, int instancenumber)
 {
     int found = 0;
 
@@ -1623,7 +1660,7 @@ Q_DECL_EXPORT QWDDX cf_GetBaseTagData(const QCFTemplate * const thisTemplate, co
     throw QMKFusionException(QString("There is no basetag with name[%1] and level %2").arg(tagname).arg(instancenumber));
 }
 
-Q_DECL_EXPORT QString cf_GetBaseTagList(const QCFTemplate * const thisTemplate)
+Q_DECL_EXPORT QString cf_GetBaseTagList(QCFTemplate *thisTemplate)
 {
     QStringList items;
 
@@ -2184,9 +2221,11 @@ Q_DECL_EXPORT bool cf_IsDebugMode()
     throw QMKFusionException("Not Implemented", "IsDebugMode is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsDefined(QCFRunningTemplate *templ, const QString &variable_name)
+Q_DECL_EXPORT bool cf_IsDefined(QCFTemplate *thisTemplate, const QString &variable_name)
 {
     QStringList parts;
+
+    QCFRunningTemplate *templ = thisTemplate->m_TemplateInstance;
 
     if ((templ == nullptr)||(variable_name.length() == 0))
     {
@@ -2293,7 +2332,7 @@ Q_DECL_EXPORT bool cf_IsInstanceOf(const QWDDX &object, const QString &typeName)
     throw QMKFusionException("Not Implemented", "IsInstanceOf is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsJSON(const QWDDX &var)
+Q_DECL_EXPORT bool cf_IsJSON(const QString &var)
 {
     throw QMKFusionException("Not Implemented", "IsJSON is not Implemented (yet:))");
 }
@@ -3998,6 +4037,11 @@ Q_DECL_EXPORT int cf_Week(const QDateTime &date)
 Q_DECL_EXPORT QString cf_Wrap(const QString &string, int limit, bool strip)
 {
     throw QMKFusionException("Not Implemented", "Wrap is not Implemented (yet:))");
+}
+
+Q_DECL_EXPORT void cf_WriteOutput(QCFTemplate *thisTemplate, const QString &string)
+{
+    thisTemplate->m_TemplateInstance->m_Output.append(string);
 }
 
 Q_DECL_EXPORT bool cf_XmlChildPos(const QWDDX &elem, const QWDDX &childName, int N)

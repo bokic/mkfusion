@@ -134,7 +134,7 @@ void QCFTemplate::f_Param(const QString &name)
                     );
     }
 
-    if (!cf_IsDefined(m_TemplateInstance, name))
+    if (!cf_IsDefined(this, name))
     {
         throw QMKFusionException(
                     tr("The required parameter '%1' was not provided.").arg(name.toUpper()),
@@ -1050,4 +1050,20 @@ void QCFTemplate::f_cfAssociate(const QString &baseTagName, const QString &keyNa
     }
 
     throw QMKFusionException(QString("Not within [%1] custom tag.").arg(baseTagName));
+}
+
+QWDDX QCFTemplate::f_CreateComponent(const QString &component_name)
+{
+    QString componentFileName = component_name;
+
+    componentFileName = QFileInfo(m_isModified.m_Filename).absolutePath() + QDir::separator() + componentFileName.replace('.', QDir::separator()) + ".cfc";
+
+    void * obj = this->m_TemplateInstance->compileAndLoadComponent(componentFileName, "");
+
+    if (obj == nullptr)
+    {
+        throw QMKFusionCFAbortException();
+    }
+
+    return QWDDX();
 }

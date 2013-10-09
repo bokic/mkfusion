@@ -7,7 +7,7 @@
 
 #include <QTemporaryFile>
 #include <QDataStream>
-#include <QReadLocker>
+#include <QWriteLocker>
 #include <QUrlQuery>
 #include <QLibrary>
 #include <QProcess>
@@ -50,13 +50,10 @@ QCFRunningTemplate::~QCFRunningTemplate()
     }
 }
 
-void QCFRunningTemplate::cf_WriteOutput(const QString &string)
-{
-    m_Output.append(string);
-}
-
 void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const QString &uri)
 {
+    QWriteLocker lock(&((QCFServer*)m_CFServer)->m_runningLibrariesLock);
+
     if(m_LoadedTemplates.contains(filename))
     {
         if (m_LoadedTemplates[filename]->isLoaded() == false)
@@ -69,8 +66,6 @@ void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const
 
         return (void *)m_LoadedTemplates[filename]->resolve("createCFMTemplate");
     }
-
-    QReadLocker lock(&((QCFServer*)m_CFServer)->m_runningTemplatesLock);
 
     QString err = ((QCFServer*)m_CFServer)->compileTemplate(filename, uri);
     if (err.isEmpty())
@@ -90,6 +85,52 @@ void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const
 
             m_StatusCode = 500;
             m_Output = "Can\'t load template library.";
+        }
+    }
+    else
+    {
+        m_StatusCode = 500;
+        m_Output = "<div><code>" + err.toHtmlEscaped() + "</code></div><br /><br />";
+    }
+
+    return nullptr;
+}
+
+void * QCFRunningTemplate::compileAndLoadComponent(const QString &filename, const QString &uri)
+{
+    QWriteLocker lock(&((QCFServer*)m_CFServer)->m_runningLibrariesLock);
+
+    if(m_LoadedTemplates.contains(filename))
+    {
+        if (m_LoadedTemplates[filename]->isLoaded() == false)
+        {
+            m_StatusCode = 500;
+            m_Output = "component library was not loaded.";
+
+            return nullptr;
+        }
+
+        return (void *)m_LoadedTemplates[filename]->resolve("createCFMComponent");
+    }
+
+    QString err = ((QCFServer*)m_CFServer)->compileComponent(filename, uri);
+    if (err.isEmpty())
+    {
+        QLibrary *templateLib = new QLibrary();
+
+        templateLib->setFileName(((QCFServer*)m_CFServer)->m_MKFusionPath + "templates/" + ((QCFServer*)m_CFServer)->m_CompiledTemplates[filename].m_CompiledFileName);
+        if (templateLib->load() != false)
+        {
+            m_LoadedTemplates.insert(filename, templateLib);
+
+            return (void *)templateLib->resolve("createCFMComponent");
+        }
+        else
+        {
+            delete templateLib;
+
+            m_StatusCode = 500;
+            m_Output = "Can\'t load component library.";
         }
     }
     else
@@ -176,7 +217,6 @@ void QCFRunningTemplate::processPostData(QByteArray post)
 
                 updateVariableQStr(m_FORM, key, value);
             }
-
         }
         else if (m_Request.m_ContentType.startsWith("multipart/form-data"))
         {
