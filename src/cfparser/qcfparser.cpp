@@ -2079,14 +2079,9 @@ QCFParserErrorType QCFParser::validate()
 	return NoError;
 }
 
-QList<QCFParserTag> QCFParser::getTags() const
+const QList<QCFParserTag> & QCFParser::getTags() const
 {
 	return m_Tags;
-}
-
-QHash<QString, QCFTag> QCFParser::getCFTagsDef() const
-{
-    return m_CFTagsDef;
 }
 
 QList<QCFParserElement> QCFParser::getScriptFunctions(QList<QCFParserTag> const p_Tags) const

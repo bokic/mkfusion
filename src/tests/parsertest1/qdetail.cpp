@@ -185,7 +185,7 @@ void QDetail::addSubTrees(const QCFParserElement& p_ParserElement, QTreeWidgetIt
 
 void QDetail::recolor()
 {
-    QList<QCFParserTag> tags = m_Parser.getTags();
+    const QList<QCFParserTag> &tags = m_Parser.getTags();
 
     QTextCursor cursor = ui->textEdit->textCursor();
 

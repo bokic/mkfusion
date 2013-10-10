@@ -207,7 +207,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
     bool close_funct = false;
     int c;
 
-    auto l_CFFunctionsDef = m_Parser.m_CFFunctionsDef;
+    const QHash<QString, QCFFunction> &l_CFFunctionsDef = m_Parser.m_CFFunctionsDef;
 
     l_ElementName = p_CFExpression.m_Text;
 

@@ -62,7 +62,6 @@ void CFTest1::parseDir(const QString &p_dir)
 			QString fileContent = file.readAll();
 			file.close();
 
-			QList<QCFParserTag> l_tags;
 			QCFParser parser;
 
 			this->setWindowTitle("CFTest1 - " + item.fileName());qApp->processEvents();
@@ -85,8 +84,7 @@ void CFTest1::parseDir(const QString &p_dir)
 				}
 				else
 				{
-					l_tags = parser.getTags();
-                    for(const QCFParserTag &l_tag : l_tags)
+                    for(const QCFParserTag &l_tag : parser.getTags())
 					{
                         if (l_tag.m_TagType == CFTagType)
 						{

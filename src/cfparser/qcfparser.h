@@ -73,8 +73,7 @@ public:
     QCFParserErrorType buildTagTree();
     QCFParserErrorType validate();
     QCFParserErrorType prioritizeOperators();
-    QList<QCFParserTag> getTags() const;
-    QHash<QString, QCFTag> getCFTagsDef() const;
+    const QList<QCFParserTag> & getTags() const;
     QList<QCFParserElement> getScriptFunctions(QList<QCFParserTag> const p_Tags) const;
     QList<QCFParserTag> getTagFunctions(QList<QCFParserTag> const p_Tags);
     QString m_FileName;

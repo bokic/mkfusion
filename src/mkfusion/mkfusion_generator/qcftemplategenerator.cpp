@@ -5,7 +5,6 @@
 
 #include <QFileInfo>
 #include <QString>
-#include <QHash>
 #include <QFile>
 
 
@@ -41,7 +40,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
     l_cppFile.write(QString("		m_isModified.m_Modified = " + QString::number(m_Parser.m_FileModifyDateTime) + ";\n").toUtf8());
     l_cppFile.write("\n");
 
-    QList<QCFParserTag> l_Tags = m_Parser.getTags();
+    const QList<QCFParserTag> &l_Tags = m_Parser.getTags();
 
     /*for(const QCFParserTag &function : p_Parser.getTagFunctions(l_Tags))
     {
@@ -270,7 +269,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
             }
         }
 
-        if ((output_text)&&(m_Parser.getCFTagsDef().contains(l_Tags[c].m_Name))&&(m_Parser.getCFTagsDef()[l_Tags[c].m_Name].m_ExpressionInside == QCFTag::WithExpressionInside))
+        if ((output_text)&&(QCF8::generateCFTags().contains(l_Tags[c].m_Name))&&(QCF8::generateCFTags()[l_Tags[c].m_Name].m_ExpressionInside == QCFTag::WithExpressionInside))
         {
             if ((l_Tags[c].m_TagType == CFTagType)&&(l_Tags[c].m_InlineClosedTag == false))
             {
