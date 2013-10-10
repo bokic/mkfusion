@@ -5,1289 +5,1289 @@ QHash<QString, QCFTag> QCF8::generateCFTags()
 	QHash<QString, QCFTag> ret;
 	QList<QCFTagArgument> args;
 
-	ret.insert("cfabort", QCFTag("cfabort", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfabort"), QCFTag(QStringLiteral("cfabort"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("showError"));
-	ret["cfabort"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("showError")));
+    ret[QStringLiteral("cfabort")].m_ArgumentVariants.append(args);
 
-    ret.insert("cfadmin", QCFTag("cfadmin", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithoutExpressionInside, true)); // Railo cftag
+    ret.insert(QStringLiteral("cfadmin"), QCFTag(QStringLiteral("cfadmin"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithoutExpressionInside, true)); // Railo cftag
 
-	ret.insert("cfajaximport", QCFTag("cfajaximport", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfajaximport"), QCFTag(QStringLiteral("cfajaximport"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("cssSrc"));
-	args.append(QCFTagArgument("params"));
-	args.append(QCFTagArgument("scriptSrc"));
-	args.append(QCFTagArgument("tags"));
-	ret["cfajaximport"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("cssSrc")));
+    args.append(QCFTagArgument(QStringLiteral("params")));
+    args.append(QCFTagArgument(QStringLiteral("scriptSrc")));
+    args.append(QCFTagArgument(QStringLiteral("tags")));
+    ret[QStringLiteral("cfajaximport")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfajaxproxy", QCFTag("cfajaxproxy", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfajaxproxy"), QCFTag(QStringLiteral("cfajaxproxy"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("bind", true));
-	args.append(QCFTagArgument("jsclassname"));
-	args.append(QCFTagArgument("onError"));
-	args.append(QCFTagArgument("onSuccess"));
-	ret["cfajaxproxy"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("bind"), true));
+    args.append(QCFTagArgument(QStringLiteral("jsclassname")));
+    args.append(QCFTagArgument(QStringLiteral("onError")));
+    args.append(QCFTagArgument(QStringLiteral("onSuccess")));
+    ret[QStringLiteral("cfajaxproxy")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("cfc", true));
-	args.append(QCFTagArgument("jsclassname"));
-	args.append(QCFTagArgument("onError"));
-	args.append(QCFTagArgument("onSuccess"));
-	ret["cfajaxproxy"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("cfc"), true));
+    args.append(QCFTagArgument(QStringLiteral("jsclassname")));
+    args.append(QCFTagArgument(QStringLiteral("onError")));
+    args.append(QCFTagArgument(QStringLiteral("onSuccess")));
+    ret[QStringLiteral("cfajaxproxy")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfapplet", QCFTag("cfapplet", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfapplet"), QCFTag(QStringLiteral("cfapplet"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("appletSource", true));
-	args.append(QCFTagArgument("name", true));
-	args.append(QCFTagArgument("align"));
-	args.append(QCFTagArgument("height"));
-	args.append(QCFTagArgument("hSpace"));
-	args.append(QCFTagArgument("notSupported"));
-	args.append(QCFTagArgument("param_n"));
-	args.append(QCFTagArgument("vSpace"));
-	args.append(QCFTagArgument("width"));
-	ret["cfapplet"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("appletSource"), true));
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("align")));
+    args.append(QCFTagArgument(QStringLiteral("height")));
+    args.append(QCFTagArgument(QStringLiteral("hSpace")));
+    args.append(QCFTagArgument(QStringLiteral("notSupported")));
+    args.append(QCFTagArgument(QStringLiteral("param_n")));
+    args.append(QCFTagArgument(QStringLiteral("vSpace")));
+    args.append(QCFTagArgument(QStringLiteral("width")));
+    ret[QStringLiteral("cfapplet")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfapplication", QCFTag("cfapplication", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfapplication"), QCFTag(QStringLiteral("cfapplication"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("datasource"));
-	args.append(QCFTagArgument("name"));
-	args.append(QCFTagArgument("applicationTimeout"));
-	args.append(QCFTagArgument("clientManagement"));
-	args.append(QCFTagArgument("clientStorage"));
-	args.append(QCFTagArgument("googleMapKey"));
-	args.append(QCFTagArgument("loginStorage"));
-	args.append(QCFTagArgument("scriptProtect"));
-	args.append(QCFTagArgument("secureJSON"));
-	args.append(QCFTagArgument("serverSideFormValidation"));
-	args.append(QCFTagArgument("secureJSONPrefix"));
-	args.append(QCFTagArgument("sessionManagement"));
-	args.append(QCFTagArgument("sessionTimeout"));
-	args.append(QCFTagArgument("setClientCookies"));
-	args.append(QCFTagArgument("setDomainCookies"));
-	ret["cfapplication"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("datasource")));
+    args.append(QCFTagArgument(QStringLiteral("name")));
+    args.append(QCFTagArgument(QStringLiteral("applicationTimeout")));
+    args.append(QCFTagArgument(QStringLiteral("clientManagement")));
+    args.append(QCFTagArgument(QStringLiteral("clientStorage")));
+    args.append(QCFTagArgument(QStringLiteral("googleMapKey")));
+    args.append(QCFTagArgument(QStringLiteral("loginStorage")));
+    args.append(QCFTagArgument(QStringLiteral("scriptProtect")));
+    args.append(QCFTagArgument(QStringLiteral("secureJSON")));
+    args.append(QCFTagArgument(QStringLiteral("serverSideFormValidation")));
+    args.append(QCFTagArgument(QStringLiteral("secureJSONPrefix")));
+    args.append(QCFTagArgument(QStringLiteral("sessionManagement")));
+    args.append(QCFTagArgument(QStringLiteral("sessionTimeout")));
+    args.append(QCFTagArgument(QStringLiteral("setClientCookies")));
+    args.append(QCFTagArgument(QStringLiteral("setDomainCookies")));
+    ret[QStringLiteral("cfapplication")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfargument", QCFTag("cfargument", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfargument"), QCFTag(QStringLiteral("cfargument"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("name", true));
-	args.append(QCFTagArgument("default"));
-	args.append(QCFTagArgument("displayname"));
-	args.append(QCFTagArgument("hint"));
-	args.append(QCFTagArgument("required"));
-	args.append(QCFTagArgument("type"));
-	ret["cfargument"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("default")));
+    args.append(QCFTagArgument(QStringLiteral("displayname")));
+    args.append(QCFTagArgument(QStringLiteral("hint")));
+    args.append(QCFTagArgument(QStringLiteral("required")));
+    args.append(QCFTagArgument(QStringLiteral("type")));
+    ret[QStringLiteral("cfargument")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfassociate", QCFTag("cfassociate", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfassociate"), QCFTag(QStringLiteral("cfassociate"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("baseTag", true));
-	args.append(QCFTagArgument("dataCollection"));
-	ret["cfassociate"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("baseTag"), true));
+    args.append(QCFTagArgument(QStringLiteral("dataCollection")));
+    ret[QStringLiteral("cfassociate")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfbreak", QCFTag("cfbreak", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfbreak"), QCFTag(QStringLiteral("cfbreak"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfcache", QCFTag("cfcache", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfcache"), QCFTag(QStringLiteral("cfcache"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("action"));
-	args.append(QCFTagArgument("directory"));
-	args.append(QCFTagArgument("expireURL"));
-	args.append(QCFTagArgument("password"));
-	args.append(QCFTagArgument("port"));
-	args.append(QCFTagArgument("protocol"));
-	args.append(QCFTagArgument("timespan"));
-	args.append(QCFTagArgument("username"));
-	ret["cfcache"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action")));
+    args.append(QCFTagArgument(QStringLiteral("directory")));
+    args.append(QCFTagArgument(QStringLiteral("expireURL")));
+    args.append(QCFTagArgument(QStringLiteral("password")));
+    args.append(QCFTagArgument(QStringLiteral("port")));
+    args.append(QCFTagArgument(QStringLiteral("protocol")));
+    args.append(QCFTagArgument(QStringLiteral("timespan")));
+    args.append(QCFTagArgument(QStringLiteral("username")));
+    ret[QStringLiteral("cfcache")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfcalendar", QCFTag("cfcalendar", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfcalendar"), QCFTag(QStringLiteral("cfcalendar"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("name", true));
-	args.append(QCFTagArgument("dayNames"));
-	args.append(QCFTagArgument("disabled"));
-	args.append(QCFTagArgument("enabled"));
-	args.append(QCFTagArgument("endRange"));
-	args.append(QCFTagArgument("firstDayOfWeek"));
-	args.append(QCFTagArgument("height"));
-	args.append(QCFTagArgument("mask"));
-	args.append(QCFTagArgument("monthNames"));
-	args.append(QCFTagArgument("onBlur"));
-	args.append(QCFTagArgument("onChange"));
-	args.append(QCFTagArgument("onFocus"));
-	args.append(QCFTagArgument("selectedDate"));
-	args.append(QCFTagArgument("startRange"));
-	args.append(QCFTagArgument("style"));
-	args.append(QCFTagArgument("tooltip"));
-	args.append(QCFTagArgument("visible"));
-	args.append(QCFTagArgument("width"));
-	ret["cfcalendar"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("dayNames")));
+    args.append(QCFTagArgument(QStringLiteral("disabled")));
+    args.append(QCFTagArgument(QStringLiteral("enabled")));
+    args.append(QCFTagArgument(QStringLiteral("endRange")));
+    args.append(QCFTagArgument(QStringLiteral("firstDayOfWeek")));
+    args.append(QCFTagArgument(QStringLiteral("height")));
+    args.append(QCFTagArgument(QStringLiteral("mask")));
+    args.append(QCFTagArgument(QStringLiteral("monthNames")));
+    args.append(QCFTagArgument(QStringLiteral("onBlur")));
+    args.append(QCFTagArgument(QStringLiteral("onChange")));
+    args.append(QCFTagArgument(QStringLiteral("onFocus")));
+    args.append(QCFTagArgument(QStringLiteral("selectedDate")));
+    args.append(QCFTagArgument(QStringLiteral("startRange")));
+    args.append(QCFTagArgument(QStringLiteral("style")));
+    args.append(QCFTagArgument(QStringLiteral("tooltip")));
+    args.append(QCFTagArgument(QStringLiteral("visible")));
+    args.append(QCFTagArgument(QStringLiteral("width")));
+    ret[QStringLiteral("cfcalendar")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfcase", QCFTag("cfcase", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfcase"), QCFTag(QStringLiteral("cfcase"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("value", true));
-	args.append(QCFTagArgument("delimiters"));
-	ret["cfcase"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("value"), true));
+    args.append(QCFTagArgument(QStringLiteral("delimiters")));
+    ret[QStringLiteral("cfcase")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfcatch", QCFTag("cfcatch", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfcatch"), QCFTag(QStringLiteral("cfcatch"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("type"));
-	ret["cfcatch"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("type")));
+    ret[QStringLiteral("cfcatch")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfchart", QCFTag("cfchart", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfchart"), QCFTag(QStringLiteral("cfchart"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("backgroundColor"));
-	args.append(QCFTagArgument("chartHeight"));
-	args.append(QCFTagArgument("chartWidth"));
-	args.append(QCFTagArgument("dataBackgroundColor"));
-	args.append(QCFTagArgument("font"));
-	args.append(QCFTagArgument("fontBold"));
-	args.append(QCFTagArgument("fontItalic"));
-	args.append(QCFTagArgument("fontSize"));
-	args.append(QCFTagArgument("foregroundColor"));
-	args.append(QCFTagArgument("format"));
-	args.append(QCFTagArgument("gridlines"));
-	args.append(QCFTagArgument("labelFormat"));
-	args.append(QCFTagArgument("markerSize"));
-	args.append(QCFTagArgument("name"));
-	args.append(QCFTagArgument("pieSliceStyle"));
-	args.append(QCFTagArgument("scaleFrom"));
-	args.append(QCFTagArgument("scaleTo"));
-	args.append(QCFTagArgument("seriesPlacement"));
-	args.append(QCFTagArgument("show3D"));
-	args.append(QCFTagArgument("showBorder"));
-	args.append(QCFTagArgument("showLegend"));
-	args.append(QCFTagArgument("showMarkers"));
-	args.append(QCFTagArgument("showXGridlines"));
-	args.append(QCFTagArgument("showYGridlines"));
-	args.append(QCFTagArgument("sortXAxis"));
-	args.append(QCFTagArgument("style"));
-	args.append(QCFTagArgument("title"));
-	args.append(QCFTagArgument("tipbgcolor"));
-	args.append(QCFTagArgument("tipStyle"));
-	args.append(QCFTagArgument("url"));
-	args.append(QCFTagArgument("xAxisTitle"));
-	args.append(QCFTagArgument("xAxisType"));
-	args.append(QCFTagArgument("xOffset"));
-	args.append(QCFTagArgument("yAxisTitle"));
-	args.append(QCFTagArgument("yAxisType"));
-	args.append(QCFTagArgument("yOffset"));
-	ret["cfchart"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("backgroundColor")));
+    args.append(QCFTagArgument(QStringLiteral("chartHeight")));
+    args.append(QCFTagArgument(QStringLiteral("chartWidth")));
+    args.append(QCFTagArgument(QStringLiteral("dataBackgroundColor")));
+    args.append(QCFTagArgument(QStringLiteral("font")));
+    args.append(QCFTagArgument(QStringLiteral("fontBold")));
+    args.append(QCFTagArgument(QStringLiteral("fontItalic")));
+    args.append(QCFTagArgument(QStringLiteral("fontSize")));
+    args.append(QCFTagArgument(QStringLiteral("foregroundColor")));
+    args.append(QCFTagArgument(QStringLiteral("format")));
+    args.append(QCFTagArgument(QStringLiteral("gridlines")));
+    args.append(QCFTagArgument(QStringLiteral("labelFormat")));
+    args.append(QCFTagArgument(QStringLiteral("markerSize")));
+    args.append(QCFTagArgument(QStringLiteral("name")));
+    args.append(QCFTagArgument(QStringLiteral("pieSliceStyle")));
+    args.append(QCFTagArgument(QStringLiteral("scaleFrom")));
+    args.append(QCFTagArgument(QStringLiteral("scaleTo")));
+    args.append(QCFTagArgument(QStringLiteral("seriesPlacement")));
+    args.append(QCFTagArgument(QStringLiteral("show3D")));
+    args.append(QCFTagArgument(QStringLiteral("showBorder")));
+    args.append(QCFTagArgument(QStringLiteral("showLegend")));
+    args.append(QCFTagArgument(QStringLiteral("showMarkers")));
+    args.append(QCFTagArgument(QStringLiteral("showXGridlines")));
+    args.append(QCFTagArgument(QStringLiteral("showYGridlines")));
+    args.append(QCFTagArgument(QStringLiteral("sortXAxis")));
+    args.append(QCFTagArgument(QStringLiteral("style")));
+    args.append(QCFTagArgument(QStringLiteral("title")));
+    args.append(QCFTagArgument(QStringLiteral("tipbgcolor")));
+    args.append(QCFTagArgument(QStringLiteral("tipStyle")));
+    args.append(QCFTagArgument(QStringLiteral("url")));
+    args.append(QCFTagArgument(QStringLiteral("xAxisTitle")));
+    args.append(QCFTagArgument(QStringLiteral("xAxisType")));
+    args.append(QCFTagArgument(QStringLiteral("xOffset")));
+    args.append(QCFTagArgument(QStringLiteral("yAxisTitle")));
+    args.append(QCFTagArgument(QStringLiteral("yAxisType")));
+    args.append(QCFTagArgument(QStringLiteral("yOffset")));
+    ret[QStringLiteral("cfchart")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfchartdata", QCFTag("cfchartdata", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfchartdata"), QCFTag(QStringLiteral("cfchartdata"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("item", true));
-	args.append(QCFTagArgument("value", true));
-	ret["cfchartdata"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("item"), true));
+    args.append(QCFTagArgument(QStringLiteral("value"), true));
+    ret[QStringLiteral("cfchartdata")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfchartseries", QCFTag("cfchartseries", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfchartseries"), QCFTag(QStringLiteral("cfchartseries"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("type", true));
-    args.append(QCFTagArgument("itemColumn"));
-    args.append(QCFTagArgument("valueColumn"));
-    args.append(QCFTagArgument("colorlist"));
-    args.append(QCFTagArgument("dataLabelStyle"));
-    args.append(QCFTagArgument("markerStyle"));
-    args.append(QCFTagArgument("paintStyle"));
-    args.append(QCFTagArgument("query"));
-    args.append(QCFTagArgument("seriesColor"));
-    args.append(QCFTagArgument("seriesLabel"));
-    ret["cfchartseries"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("type"), true));
+    args.append(QCFTagArgument(QStringLiteral("itemColumn")));
+    args.append(QCFTagArgument(QStringLiteral("valueColumn")));
+    args.append(QCFTagArgument(QStringLiteral("colorlist")));
+    args.append(QCFTagArgument(QStringLiteral("dataLabelStyle")));
+    args.append(QCFTagArgument(QStringLiteral("markerStyle")));
+    args.append(QCFTagArgument(QStringLiteral("paintStyle")));
+    args.append(QCFTagArgument(QStringLiteral("query")));
+    args.append(QCFTagArgument(QStringLiteral("seriesColor")));
+    args.append(QCFTagArgument(QStringLiteral("seriesLabel")));
+    ret[QStringLiteral("cfchartseries")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfcol", QCFTag("cfcol", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfcol"), QCFTag(QStringLiteral("cfcol"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfcollection", QCFTag("cfcollection", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfcollection"), QCFTag(QStringLiteral("cfcollection"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("action", true));
-    args.append(QCFTagArgument("categories"));
-    args.append(QCFTagArgument("collection"));
-    args.append(QCFTagArgument("language"));
-    args.append(QCFTagArgument("name"));
-    args.append(QCFTagArgument("path"));
-    ret["cfcollection"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true));
+    args.append(QCFTagArgument(QStringLiteral("categories")));
+    args.append(QCFTagArgument(QStringLiteral("collection")));
+    args.append(QCFTagArgument(QStringLiteral("language")));
+    args.append(QCFTagArgument(QStringLiteral("name")));
+    args.append(QCFTagArgument(QStringLiteral("path")));
+    ret[QStringLiteral("cfcollection")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfcomponent", QCFTag("cfcomponent", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfcomponent"), QCFTag(QStringLiteral("cfcomponent"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("bindingname", false));
-    args.append(QCFTagArgument("displayname", false));
-    args.append(QCFTagArgument("extends", false));
-    args.append(QCFTagArgument("hint", false));
-    args.append(QCFTagArgument("implements", false));
-    args.append(QCFTagArgument("namespace", false));
-    args.append(QCFTagArgument("output", false));
-    args.append(QCFTagArgument("porttypename", false));
-    args.append(QCFTagArgument("serviceaddress", false));
-    args.append(QCFTagArgument("serviceportname", false));
-    args.append(QCFTagArgument("style", false));
-    args.append(QCFTagArgument("wsdlfile", false));
-    ret["cfcomponent"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("bindingname"), false));
+    args.append(QCFTagArgument(QStringLiteral("displayname"), false));
+    args.append(QCFTagArgument(QStringLiteral("extends"), false));
+    args.append(QCFTagArgument(QStringLiteral("hint"), false));
+    args.append(QCFTagArgument(QStringLiteral("implements"), false));
+    args.append(QCFTagArgument(QStringLiteral("namespace"), false));
+    args.append(QCFTagArgument(QStringLiteral("output"), false));
+    args.append(QCFTagArgument(QStringLiteral("porttypename"), false));
+    args.append(QCFTagArgument(QStringLiteral("serviceaddress"), false));
+    args.append(QCFTagArgument(QStringLiteral("serviceportname"), false));
+    args.append(QCFTagArgument(QStringLiteral("style"), false));
+    args.append(QCFTagArgument(QStringLiteral("wsdlfile"), false));
+    ret[QStringLiteral("cfcomponent")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfcontent", QCFTag("cfcontent", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfcontent"), QCFTag(QStringLiteral("cfcontent"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("deleteFile", false));
-    args.append(QCFTagArgument("file", false));
-    args.append(QCFTagArgument("reset", false));
-    args.append(QCFTagArgument("type", false));
-    args.append(QCFTagArgument("variable", false));
-    ret["cfcontent"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("deleteFile"), false));
+    args.append(QCFTagArgument(QStringLiteral("file"), false));
+    args.append(QCFTagArgument(QStringLiteral("reset"), false));
+    args.append(QCFTagArgument(QStringLiteral("type"), false));
+    args.append(QCFTagArgument(QStringLiteral("variable"), false));
+    ret[QStringLiteral("cfcontent")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfcookie", QCFTag("cfcookie", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfcookie"), QCFTag(QStringLiteral("cfcookie"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("name", true));
-    args.append(QCFTagArgument("domain", false));
-    args.append(QCFTagArgument("expires", false));
-    args.append(QCFTagArgument("path", false));
-    args.append(QCFTagArgument("secure", false));
-    args.append(QCFTagArgument("value", false));
-    ret["cfcookie"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("domain"), false));
+    args.append(QCFTagArgument(QStringLiteral("expires"), false));
+    args.append(QCFTagArgument(QStringLiteral("path"), false));
+    args.append(QCFTagArgument(QStringLiteral("secure"), false));
+    args.append(QCFTagArgument(QStringLiteral("value"), false));
+    ret[QStringLiteral("cfcookie")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfdbinfo", QCFTag("cfdbinfo", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfdbinfo"), QCFTag(QStringLiteral("cfdbinfo"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfdefaultcase", QCFTag("cfdefaultcase", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfdefaultcase"), QCFTag(QStringLiteral("cfdefaultcase"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfdirectory", QCFTag("cfdirectory", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfdirectory"), QCFTag(QStringLiteral("cfdirectory"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("directory", true));
-	args.append(QCFTagArgument("action", false, QCFTagArgument::TypeConstantString, "list"));
-	args.append(QCFTagArgument("filter", false));
-	args.append(QCFTagArgument("listinfo", false, QCFTagArgument::TypeConstantString));
-	ret["cfdirectory"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("directory"), true));
+    args.append(QCFTagArgument(QStringLiteral("action"), false, QCFTagArgument::TypeConstantString, QStringLiteral("list")));
+    args.append(QCFTagArgument(QStringLiteral("filter"), false));
+    args.append(QCFTagArgument(QStringLiteral("listinfo"), false, QCFTagArgument::TypeConstantString));
+    ret[QStringLiteral("cfdirectory")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfdiv", QCFTag("cfdiv", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfdiv"), QCFTag(QStringLiteral("cfdiv"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfdocument", QCFTag("cfdocument", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfdocument"), QCFTag(QStringLiteral("cfdocument"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("format", true));
-    args.append(QCFTagArgument("authPassword"));
-    args.append(QCFTagArgument("authUser"));
-    args.append(QCFTagArgument("backgroundVisible"));
-    args.append(QCFTagArgument("bookmark"));
-    args.append(QCFTagArgument("encryption"));
-    args.append(QCFTagArgument("filename"));
-    args.append(QCFTagArgument("fontEmbed"));
-    args.append(QCFTagArgument("localUrl"));
-    args.append(QCFTagArgument("marginBottom"));
-    args.append(QCFTagArgument("marginLeft"));
-    args.append(QCFTagArgument("marginRight"));
-    args.append(QCFTagArgument("marginTop"));
-    args.append(QCFTagArgument("mimeType"));
-    args.append(QCFTagArgument("name"));
-    args.append(QCFTagArgument("orientation"));
-    args.append(QCFTagArgument("overwrite"));
-    args.append(QCFTagArgument("ownerPassword"));
-    args.append(QCFTagArgument("pageHeight"));
-    args.append(QCFTagArgument("pageType"));
-    args.append(QCFTagArgument("pageWidth"));
-    args.append(QCFTagArgument("permissions"));
-    args.append(QCFTagArgument("proxyHost"));
-    args.append(QCFTagArgument("proxyPassword"));
-    args.append(QCFTagArgument("proxyPort"));
-    args.append(QCFTagArgument("proxyUser"));
-    args.append(QCFTagArgument("saveAsName"));
-    args.append(QCFTagArgument("scale"));
-    args.append(QCFTagArgument("src"));
-    args.append(QCFTagArgument("srcfile"));
-    args.append(QCFTagArgument("unit"));
-    args.append(QCFTagArgument("userAgent"));
-    args.append(QCFTagArgument("userPassword"));
-    ret["cfdocument"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("format"), true));
+    args.append(QCFTagArgument(QStringLiteral("authPassword")));
+    args.append(QCFTagArgument(QStringLiteral("authUser")));
+    args.append(QCFTagArgument(QStringLiteral("backgroundVisible")));
+    args.append(QCFTagArgument(QStringLiteral("bookmark")));
+    args.append(QCFTagArgument(QStringLiteral("encryption")));
+    args.append(QCFTagArgument(QStringLiteral("filename")));
+    args.append(QCFTagArgument(QStringLiteral("fontEmbed")));
+    args.append(QCFTagArgument(QStringLiteral("localUrl")));
+    args.append(QCFTagArgument(QStringLiteral("marginBottom")));
+    args.append(QCFTagArgument(QStringLiteral("marginLeft")));
+    args.append(QCFTagArgument(QStringLiteral("marginRight")));
+    args.append(QCFTagArgument(QStringLiteral("marginTop")));
+    args.append(QCFTagArgument(QStringLiteral("mimeType")));
+    args.append(QCFTagArgument(QStringLiteral("name")));
+    args.append(QCFTagArgument(QStringLiteral("orientation")));
+    args.append(QCFTagArgument(QStringLiteral("overwrite")));
+    args.append(QCFTagArgument(QStringLiteral("ownerPassword")));
+    args.append(QCFTagArgument(QStringLiteral("pageHeight")));
+    args.append(QCFTagArgument(QStringLiteral("pageType")));
+    args.append(QCFTagArgument(QStringLiteral("pageWidth")));
+    args.append(QCFTagArgument(QStringLiteral("permissions")));
+    args.append(QCFTagArgument(QStringLiteral("proxyHost")));
+    args.append(QCFTagArgument(QStringLiteral("proxyPassword")));
+    args.append(QCFTagArgument(QStringLiteral("proxyPort")));
+    args.append(QCFTagArgument(QStringLiteral("proxyUser")));
+    args.append(QCFTagArgument(QStringLiteral("saveAsName")));
+    args.append(QCFTagArgument(QStringLiteral("scale")));
+    args.append(QCFTagArgument(QStringLiteral("src")));
+    args.append(QCFTagArgument(QStringLiteral("srcfile")));
+    args.append(QCFTagArgument(QStringLiteral("unit")));
+    args.append(QCFTagArgument(QStringLiteral("userAgent")));
+    args.append(QCFTagArgument(QStringLiteral("userPassword")));
+    ret[QStringLiteral("cfdocument")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfdocumentitem", QCFTag("cfdocumentitem", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfdocumentitem"), QCFTag(QStringLiteral("cfdocumentitem"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("type", true));
-    ret["cfdocumentitem"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("type"), true));
+    ret[QStringLiteral("cfdocumentitem")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfdocumentsection", QCFTag("cfdocumentsection", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfdocumentsection"), QCFTag(QStringLiteral("cfdocumentsection"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("authPassword"));
-    args.append(QCFTagArgument("authUser"));
-    args.append(QCFTagArgument("marginBottom"));
-    args.append(QCFTagArgument("marginLeft"));
-    args.append(QCFTagArgument("marginRight"));
-    args.append(QCFTagArgument("marginTop"));
-    args.append(QCFTagArgument("mimeType"));
-    args.append(QCFTagArgument("name"));
-    args.append(QCFTagArgument("src"));
-    args.append(QCFTagArgument("srcfile"));
-    args.append(QCFTagArgument("userAgent"));
-    ret["cfdocumentsection"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("authPassword")));
+    args.append(QCFTagArgument(QStringLiteral("authUser")));
+    args.append(QCFTagArgument(QStringLiteral("marginBottom")));
+    args.append(QCFTagArgument(QStringLiteral("marginLeft")));
+    args.append(QCFTagArgument(QStringLiteral("marginRight")));
+    args.append(QCFTagArgument(QStringLiteral("marginTop")));
+    args.append(QCFTagArgument(QStringLiteral("mimeType")));
+    args.append(QCFTagArgument(QStringLiteral("name")));
+    args.append(QCFTagArgument(QStringLiteral("src")));
+    args.append(QCFTagArgument(QStringLiteral("srcfile")));
+    args.append(QCFTagArgument(QStringLiteral("userAgent")));
+    ret[QStringLiteral("cfdocumentsection")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfdump", QCFTag("cfdump", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfdump"), QCFTag(QStringLiteral("cfdump"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("var", true));
-	ret["cfdump"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("var"), true));
+    ret[QStringLiteral("cfdump")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfelse", QCFTag("cfelse", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeExpression));
+	ret.insert(QStringLiteral("cfelse"), QCFTag(QStringLiteral("cfelse"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeExpression));
 
-	ret.insert("cfelseif", QCFTag("cfelseif", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeExpression));
+	ret.insert(QStringLiteral("cfelseif"), QCFTag(QStringLiteral("cfelseif"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeExpression));
 
-	ret.insert("cferror", QCFTag("cferror", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cferror"), QCFTag(QStringLiteral("cferror"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("template", true));
-	args.append(QCFTagArgument("type", true));
-	args.append(QCFTagArgument("exception"));
-	args.append(QCFTagArgument("mailTo"));
-	ret["cferror"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("template"), true));
+    args.append(QCFTagArgument(QStringLiteral("type"), true));
+    args.append(QCFTagArgument(QStringLiteral("exception")));
+    args.append(QCFTagArgument(QStringLiteral("mailTo")));
+    ret[QStringLiteral("cferror")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfexchangecalendar", QCFTag("cfexchangecalendar", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfexchangecalendar"), QCFTag(QStringLiteral("cfexchangecalendar"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfexchangeconnection", QCFTag("cfexchangeconnection", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfexchangeconnection"), QCFTag(QStringLiteral("cfexchangeconnection"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfexchangecontact", QCFTag("cfexchangecontact", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfexchangecontact"), QCFTag(QStringLiteral("cfexchangecontact"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfexchangefilter", QCFTag("cfexchangefilter", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfexchangefilter"), QCFTag(QStringLiteral("cfexchangefilter"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfexchangemail", QCFTag("cfexchangemail", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfexchangemail"), QCFTag(QStringLiteral("cfexchangemail"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfexchangetask", QCFTag("cfexchangetask", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfexchangetask"), QCFTag(QStringLiteral("cfexchangetask"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfexecute", QCFTag("cfexecute", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfexecute"), QCFTag(QStringLiteral("cfexecute"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("name", true));
-	args.append(QCFTagArgument("arguments"));
-	args.append(QCFTagArgument("outputFile"));
-	args.append(QCFTagArgument("timeout"));
-	args.append(QCFTagArgument("variable"));
-	ret["cfexecute"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("arguments")));
+    args.append(QCFTagArgument(QStringLiteral("outputFile")));
+    args.append(QCFTagArgument(QStringLiteral("timeout")));
+    args.append(QCFTagArgument(QStringLiteral("variable")));
+    ret[QStringLiteral("cfexecute")].m_ArgumentVariants.append(args);
 
 
-	ret.insert("cfexit", QCFTag("cfexit", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfexit"), QCFTag(QStringLiteral("cfexit"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("method", false, QCFTagArgument::TypeConstantString));
-	ret["cfexit"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("method"), false, QCFTagArgument::TypeConstantString));
+    ret[QStringLiteral("cfexit")].m_ArgumentVariants.append(args);
 
-	//ret.insert("cffeed", QCFTag("cffeed"));
+	//ret.insert(QStringLiteral("cffeed"), QCFTag("cffeed"));
 
-	ret.insert("cffile", QCFTag("cffile", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cffile"), QCFTag(QStringLiteral("cffile"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString, "append"));
-	args.append(QCFTagArgument("file", true));
-	args.append(QCFTagArgument("output", true));
-	args.append(QCFTagArgument("addNewLine"));
-	args.append(QCFTagArgument("attributes"));
-	args.append(QCFTagArgument("charset"));
-	args.append(QCFTagArgument("fixnewline"));
-	args.append(QCFTagArgument("mode"));
-	ret["cffile"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString, QStringLiteral("append")));
+    args.append(QCFTagArgument(QStringLiteral("file"), true));
+    args.append(QCFTagArgument(QStringLiteral("output"), true));
+    args.append(QCFTagArgument(QStringLiteral("addNewLine")));
+    args.append(QCFTagArgument(QStringLiteral("attributes")));
+    args.append(QCFTagArgument(QStringLiteral("charset")));
+    args.append(QCFTagArgument(QStringLiteral("fixnewline")));
+    args.append(QCFTagArgument(QStringLiteral("mode")));
+    ret[QStringLiteral("cffile")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString, "copy"));
-	args.append(QCFTagArgument("destination", true));
-	args.append(QCFTagArgument("source", true));
-	args.append(QCFTagArgument("attributes"));
-	args.append(QCFTagArgument("mode"));
-	ret["cffile"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString, QStringLiteral("copy")));
+    args.append(QCFTagArgument(QStringLiteral("destination"), true));
+    args.append(QCFTagArgument(QStringLiteral("source"), true));
+    args.append(QCFTagArgument(QStringLiteral("attributes")));
+    args.append(QCFTagArgument(QStringLiteral("mode")));
+    ret[QStringLiteral("cffile")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString, "delete"));
-	args.append(QCFTagArgument("file", true));
-	ret["cffile"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString, QStringLiteral("delete")));
+    args.append(QCFTagArgument(QStringLiteral("file"), true));
+    ret[QStringLiteral("cffile")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString, "delete"));
-	args.append(QCFTagArgument("file", true));
-	ret["cffile"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString, QStringLiteral("delete")));
+    args.append(QCFTagArgument(QStringLiteral("file"), true));
+    ret[QStringLiteral("cffile")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString, "move"));
-	args.append(QCFTagArgument("destination", true));
-	args.append(QCFTagArgument("source", true));
-	args.append(QCFTagArgument("attributes"));
-	args.append(QCFTagArgument("charset"));
-	args.append(QCFTagArgument("mode"));
-	ret["cffile"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString, QStringLiteral("move")));
+    args.append(QCFTagArgument(QStringLiteral("destination"), true));
+    args.append(QCFTagArgument(QStringLiteral("source"), true));
+    args.append(QCFTagArgument(QStringLiteral("attributes")));
+    args.append(QCFTagArgument(QStringLiteral("charset")));
+    args.append(QCFTagArgument(QStringLiteral("mode")));
+    ret[QStringLiteral("cffile")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString, "read"));
-	args.append(QCFTagArgument("file", true));
-	args.append(QCFTagArgument("variable", true));
-	args.append(QCFTagArgument("charset"));
-	ret["cffile"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString, QStringLiteral("read")));
+    args.append(QCFTagArgument(QStringLiteral("file"), true));
+    args.append(QCFTagArgument(QStringLiteral("variable"), true));
+    args.append(QCFTagArgument(QStringLiteral("charset")));
+    ret[QStringLiteral("cffile")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString, "readBinary"));
-	args.append(QCFTagArgument("file", true));
-	args.append(QCFTagArgument("variable", true));
-	ret["cffile"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString, QStringLiteral("readBinary")));
+    args.append(QCFTagArgument(QStringLiteral("file"), true));
+    args.append(QCFTagArgument(QStringLiteral("variable"), true));
+    ret[QStringLiteral("cffile")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString, "rename"));
-	args.append(QCFTagArgument("destination", true));
-	args.append(QCFTagArgument("source", true));
-	args.append(QCFTagArgument("attributes"));
-	args.append(QCFTagArgument("mode"));
-	ret["cffile"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString, QStringLiteral("rename")));
+    args.append(QCFTagArgument(QStringLiteral("destination"), true));
+    args.append(QCFTagArgument(QStringLiteral("source"), true));
+    args.append(QCFTagArgument(QStringLiteral("attributes")));
+    args.append(QCFTagArgument(QStringLiteral("mode")));
+    ret[QStringLiteral("cffile")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString, "upload"));
-	args.append(QCFTagArgument("destination", true));
-	args.append(QCFTagArgument("fileField", true));
-	args.append(QCFTagArgument("accept"));
-	args.append(QCFTagArgument("attributes"));
-	args.append(QCFTagArgument("mode"));
-	args.append(QCFTagArgument("nameConflict"));
-	args.append(QCFTagArgument("result"));
-	ret["cffile"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString, QStringLiteral("upload")));
+    args.append(QCFTagArgument(QStringLiteral("destination"), true));
+    args.append(QCFTagArgument(QStringLiteral("fileField"), true));
+    args.append(QCFTagArgument(QStringLiteral("accept")));
+    args.append(QCFTagArgument(QStringLiteral("attributes")));
+    args.append(QCFTagArgument(QStringLiteral("mode")));
+    args.append(QCFTagArgument(QStringLiteral("nameConflict")));
+    args.append(QCFTagArgument(QStringLiteral("result")));
+    ret[QStringLiteral("cffile")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString, "uploadAll"));
-	args.append(QCFTagArgument("destination", true));
-	args.append(QCFTagArgument("accept"));
-	args.append(QCFTagArgument("attributes"));
-	args.append(QCFTagArgument("mode"));
-	args.append(QCFTagArgument("nameConflict"));
-	args.append(QCFTagArgument("result"));
-	ret["cffile"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString, QStringLiteral("uploadAll")));
+    args.append(QCFTagArgument(QStringLiteral("destination"), true));
+    args.append(QCFTagArgument(QStringLiteral("accept")));
+    args.append(QCFTagArgument(QStringLiteral("attributes")));
+    args.append(QCFTagArgument(QStringLiteral("mode")));
+    args.append(QCFTagArgument(QStringLiteral("nameConflict")));
+    args.append(QCFTagArgument(QStringLiteral("result")));
+    ret[QStringLiteral("cffile")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString, "write"));
-	args.append(QCFTagArgument("file", true));
-	args.append(QCFTagArgument("output", true));
-	args.append(QCFTagArgument("addNewLine"));
-	args.append(QCFTagArgument("attributes"));
-	args.append(QCFTagArgument("charset"));
-	args.append(QCFTagArgument("result"));
-	args.append(QCFTagArgument("mode"));
-	ret["cffile"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString, QStringLiteral("write")));
+    args.append(QCFTagArgument(QStringLiteral("file"), true));
+    args.append(QCFTagArgument(QStringLiteral("output"), true));
+    args.append(QCFTagArgument(QStringLiteral("addNewLine")));
+    args.append(QCFTagArgument(QStringLiteral("attributes")));
+    args.append(QCFTagArgument(QStringLiteral("charset")));
+    args.append(QCFTagArgument(QStringLiteral("result")));
+    args.append(QCFTagArgument(QStringLiteral("mode")));
+    ret[QStringLiteral("cffile")].m_ArgumentVariants.append(args);
 
-	ret.insert("cffinally", QCFTag("cffinally", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cffinally"), QCFTag(QStringLiteral("cffinally"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfflush", QCFTag("cfflush", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfflush"), QCFTag(QStringLiteral("cfflush"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("interval"));
-	ret["cfflush"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("interval")));
+    ret[QStringLiteral("cfflush")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfform", QCFTag("cfform", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfform"), QCFTag(QStringLiteral("cfform"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("accessible"));
-    args.append(QCFTagArgument("action"));
-    args.append(QCFTagArgument("archive"));
-    args.append(QCFTagArgument("codeBase"));
-    args.append(QCFTagArgument("format"));
-    args.append(QCFTagArgument("height"));
-    args.append(QCFTagArgument("id"));
-    args.append(QCFTagArgument("method"));
-    args.append(QCFTagArgument("name"));
-    args.append(QCFTagArgument("onError"));
-    args.append(QCFTagArgument("onLoad"));
-    args.append(QCFTagArgument("onReset"));
-    args.append(QCFTagArgument("onSubmit"));
-    args.append(QCFTagArgument("onSuccess"));
-    args.append(QCFTagArgument("preloader"));
-    args.append(QCFTagArgument("preserveData"));
-    args.append(QCFTagArgument("scriptSrc"));
-    args.append(QCFTagArgument("skin"));
-    args.append(QCFTagArgument("style"));
-    args.append(QCFTagArgument("timeout"));
-    args.append(QCFTagArgument("width"));
-    args.append(QCFTagArgument("wMode"));
-    ret["cfform"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("accessible")));
+    args.append(QCFTagArgument(QStringLiteral("action")));
+    args.append(QCFTagArgument(QStringLiteral("archive")));
+    args.append(QCFTagArgument(QStringLiteral("codeBase")));
+    args.append(QCFTagArgument(QStringLiteral("format")));
+    args.append(QCFTagArgument(QStringLiteral("height")));
+    args.append(QCFTagArgument(QStringLiteral("id")));
+    args.append(QCFTagArgument(QStringLiteral("method")));
+    args.append(QCFTagArgument(QStringLiteral("name")));
+    args.append(QCFTagArgument(QStringLiteral("onError")));
+    args.append(QCFTagArgument(QStringLiteral("onLoad")));
+    args.append(QCFTagArgument(QStringLiteral("onReset")));
+    args.append(QCFTagArgument(QStringLiteral("onSubmit")));
+    args.append(QCFTagArgument(QStringLiteral("onSuccess")));
+    args.append(QCFTagArgument(QStringLiteral("preloader")));
+    args.append(QCFTagArgument(QStringLiteral("preserveData")));
+    args.append(QCFTagArgument(QStringLiteral("scriptSrc")));
+    args.append(QCFTagArgument(QStringLiteral("skin")));
+    args.append(QCFTagArgument(QStringLiteral("style")));
+    args.append(QCFTagArgument(QStringLiteral("timeout")));
+    args.append(QCFTagArgument(QStringLiteral("width")));
+    args.append(QCFTagArgument(QStringLiteral("wMode")));
+    ret[QStringLiteral("cfform")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfformgroup", QCFTag("cfformgroup", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfformgroup"), QCFTag(QStringLiteral("cfformgroup"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("type", true, QCFTagArgument::TypeConstantString));
-    args.append(QCFTagArgument("label"));
-    args.append(QCFTagArgument("style"));
-    args.append(QCFTagArgument("selectedIndex"));
-    args.append(QCFTagArgument("width"));
-    args.append(QCFTagArgument("height"));
-    args.append(QCFTagArgument("enabled"));
-    args.append(QCFTagArgument("visible"));
-    args.append(QCFTagArgument("onChange"));
-    args.append(QCFTagArgument("tooltip"));
-    args.append(QCFTagArgument("id"));
-    args.append(QCFTagArgument("query"));
-    args.append(QCFTagArgument("maxrows"));
-    args.append(QCFTagArgument("startrow"));
-    ret["cfformgroup"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("type"), true, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("label")));
+    args.append(QCFTagArgument(QStringLiteral("style")));
+    args.append(QCFTagArgument(QStringLiteral("selectedIndex")));
+    args.append(QCFTagArgument(QStringLiteral("width")));
+    args.append(QCFTagArgument(QStringLiteral("height")));
+    args.append(QCFTagArgument(QStringLiteral("enabled")));
+    args.append(QCFTagArgument(QStringLiteral("visible")));
+    args.append(QCFTagArgument(QStringLiteral("onChange")));
+    args.append(QCFTagArgument(QStringLiteral("tooltip")));
+    args.append(QCFTagArgument(QStringLiteral("id")));
+    args.append(QCFTagArgument(QStringLiteral("query")));
+    args.append(QCFTagArgument(QStringLiteral("maxrows")));
+    args.append(QCFTagArgument(QStringLiteral("startrow")));
+    ret[QStringLiteral("cfformgroup")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfformitem", QCFTag("cfformitem", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfformitem"), QCFTag(QStringLiteral("cfformitem"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfftp", QCFTag("cfftp", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfftp"), QCFTag(QStringLiteral("cfftp"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("action", true, QCFTagArgument::TypeConstantString));
-    args.append(QCFTagArgument("actionparam"));
-    args.append(QCFTagArgument("buffersize"));
-    args.append(QCFTagArgument("connection"));
-    args.append(QCFTagArgument("passive"));
-    args.append(QCFTagArgument("password"));
-    args.append(QCFTagArgument("port"));
-    args.append(QCFTagArgument("proxyServer"));
-    args.append(QCFTagArgument("retryCount"));
-    args.append(QCFTagArgument("server"));
-    args.append(QCFTagArgument("stopOnError"));
-    args.append(QCFTagArgument("timeout"));
-    args.append(QCFTagArgument("username"));
-    ret["cfftp"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("actionparam")));
+    args.append(QCFTagArgument(QStringLiteral("buffersize")));
+    args.append(QCFTagArgument(QStringLiteral("connection")));
+    args.append(QCFTagArgument(QStringLiteral("passive")));
+    args.append(QCFTagArgument(QStringLiteral("password")));
+    args.append(QCFTagArgument(QStringLiteral("port")));
+    args.append(QCFTagArgument(QStringLiteral("proxyServer")));
+    args.append(QCFTagArgument(QStringLiteral("retryCount")));
+    args.append(QCFTagArgument(QStringLiteral("server")));
+    args.append(QCFTagArgument(QStringLiteral("stopOnError")));
+    args.append(QCFTagArgument(QStringLiteral("timeout")));
+    args.append(QCFTagArgument(QStringLiteral("username")));
+    ret[QStringLiteral("cfftp")].m_ArgumentVariants.append(args);
 
-	ret.insert("cffunction", QCFTag("cffunction", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cffunction"), QCFTag(QStringLiteral("cffunction"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("name", true, QCFTagArgument::TypeConstantString));
-	args.append(QCFTagArgument("access"));
-	args.append(QCFTagArgument("description"));
-	args.append(QCFTagArgument("displayName"));
-	args.append(QCFTagArgument("hint"));
-	args.append(QCFTagArgument("output"));
-	args.append(QCFTagArgument("returnFormat"));
-	args.append(QCFTagArgument("returnType"));
-	args.append(QCFTagArgument("roles"));
-	args.append(QCFTagArgument("secureJSON"));
-	args.append(QCFTagArgument("verifyClient"));
-	ret["cffunction"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("access")));
+    args.append(QCFTagArgument(QStringLiteral("description")));
+    args.append(QCFTagArgument(QStringLiteral("displayName")));
+    args.append(QCFTagArgument(QStringLiteral("hint")));
+    args.append(QCFTagArgument(QStringLiteral("output")));
+    args.append(QCFTagArgument(QStringLiteral("returnFormat")));
+    args.append(QCFTagArgument(QStringLiteral("returnType")));
+    args.append(QCFTagArgument(QStringLiteral("roles")));
+    args.append(QCFTagArgument(QStringLiteral("secureJSON")));
+    args.append(QCFTagArgument(QStringLiteral("verifyClient")));
+    ret[QStringLiteral("cffunction")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfgraph", QCFTag("cfgraph", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfgraph"), QCFTag(QStringLiteral("cfgraph"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfgraphdata", QCFTag("cfgraphdata", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfgraphdata"), QCFTag(QStringLiteral("cfgraphdata"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-    ret.insert("cfgrid", QCFTag("cfgrid", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+    ret.insert(QStringLiteral("cfgrid"), QCFTag(QStringLiteral("cfgrid"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("name", true));
-    args.append(QCFTagArgument("align"));
-    args.append(QCFTagArgument("appendKey"));
-    args.append(QCFTagArgument("autoWidth"));
-    args.append(QCFTagArgument("bgColor"));
-    args.append(QCFTagArgument("bind"));
-    args.append(QCFTagArgument("bindOnLoad"));
-    args.append(QCFTagArgument("bold"));
-    args.append(QCFTagArgument("colHeaderAlign"));
-    args.append(QCFTagArgument("colHeaderBold"));
-    args.append(QCFTagArgument("colHeaderFont"));
-    args.append(QCFTagArgument("colHeaderFontSize"));
-    args.append(QCFTagArgument("colHeaderItalic"));
-    args.append(QCFTagArgument("colHeaders"));
-    args.append(QCFTagArgument("colHeaderTextColor"));
-    args.append(QCFTagArgument("delete"));
-    args.append(QCFTagArgument("deleteButton"));
-    args.append(QCFTagArgument("enabled"));
-    args.append(QCFTagArgument("font"));
-    args.append(QCFTagArgument("fontSize"));
-    args.append(QCFTagArgument("format"));
-    args.append(QCFTagArgument("gridDataAlign"));
-    args.append(QCFTagArgument("gridLines"));
-    args.append(QCFTagArgument("height"));
-    args.append(QCFTagArgument("highlightHref"));
-    args.append(QCFTagArgument("href"));
-    args.append(QCFTagArgument("hrefKey"));
-    args.append(QCFTagArgument("hSpace"));
-    args.append(QCFTagArgument("insert"));
-    args.append(QCFTagArgument("insertButton"));
-    args.append(QCFTagArgument("italic"));
-    args.append(QCFTagArgument("maxRows"));
-    args.append(QCFTagArgument("notSupported"));
-    args.append(QCFTagArgument("onBlur"));
-    args.append(QCFTagArgument("onChange"));
-    args.append(QCFTagArgument("onError"));
-    args.append(QCFTagArgument("onFocus"));
-    args.append(QCFTagArgument("onValidate"));
-    args.append(QCFTagArgument("pageSize"));
-    args.append(QCFTagArgument("pictureBar"));
-    args.append(QCFTagArgument("preservePageOnSort"));
-    args.append(QCFTagArgument("query"));
-    args.append(QCFTagArgument("rowHeaderAlign"));
-    args.append(QCFTagArgument("rowHeaderBold"));
-    args.append(QCFTagArgument("rowHeaderFont"));
-    args.append(QCFTagArgument("rowHeaderFontSize"));
-    args.append(QCFTagArgument("rowHeaderItalic"));
-    args.append(QCFTagArgument("rowHeaders"));
-    args.append(QCFTagArgument("rowHeaderTextColor"));
-    args.append(QCFTagArgument("rowHeight"));
-    args.append(QCFTagArgument("selectColor"));
-    args.append(QCFTagArgument("selectMode"));
-    args.append(QCFTagArgument("selectOnLoad"));
-    args.append(QCFTagArgument("sort"));
-    args.append(QCFTagArgument("sortAscendingButton"));
-    args.append(QCFTagArgument("sortDescendingButton"));
-    args.append(QCFTagArgument("stripeRowColor"));
-    args.append(QCFTagArgument("stripeRows"));
-    args.append(QCFTagArgument("style"));
-    args.append(QCFTagArgument("target"));
-    args.append(QCFTagArgument("textColor"));
-    args.append(QCFTagArgument("tooltip"));
-    args.append(QCFTagArgument("visible"));
-    args.append(QCFTagArgument("vSpace"));
-    args.append(QCFTagArgument("width"));
-    ret["cfgrid"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("align")));
+    args.append(QCFTagArgument(QStringLiteral("appendKey")));
+    args.append(QCFTagArgument(QStringLiteral("autoWidth")));
+    args.append(QCFTagArgument(QStringLiteral("bgColor")));
+    args.append(QCFTagArgument(QStringLiteral("bind")));
+    args.append(QCFTagArgument(QStringLiteral("bindOnLoad")));
+    args.append(QCFTagArgument(QStringLiteral("bold")));
+    args.append(QCFTagArgument(QStringLiteral("colHeaderAlign")));
+    args.append(QCFTagArgument(QStringLiteral("colHeaderBold")));
+    args.append(QCFTagArgument(QStringLiteral("colHeaderFont")));
+    args.append(QCFTagArgument(QStringLiteral("colHeaderFontSize")));
+    args.append(QCFTagArgument(QStringLiteral("colHeaderItalic")));
+    args.append(QCFTagArgument(QStringLiteral("colHeaders")));
+    args.append(QCFTagArgument(QStringLiteral("colHeaderTextColor")));
+    args.append(QCFTagArgument(QStringLiteral("delete")));
+    args.append(QCFTagArgument(QStringLiteral("deleteButton")));
+    args.append(QCFTagArgument(QStringLiteral("enabled")));
+    args.append(QCFTagArgument(QStringLiteral("font")));
+    args.append(QCFTagArgument(QStringLiteral("fontSize")));
+    args.append(QCFTagArgument(QStringLiteral("format")));
+    args.append(QCFTagArgument(QStringLiteral("gridDataAlign")));
+    args.append(QCFTagArgument(QStringLiteral("gridLines")));
+    args.append(QCFTagArgument(QStringLiteral("height")));
+    args.append(QCFTagArgument(QStringLiteral("highlightHref")));
+    args.append(QCFTagArgument(QStringLiteral("href")));
+    args.append(QCFTagArgument(QStringLiteral("hrefKey")));
+    args.append(QCFTagArgument(QStringLiteral("hSpace")));
+    args.append(QCFTagArgument(QStringLiteral("insert")));
+    args.append(QCFTagArgument(QStringLiteral("insertButton")));
+    args.append(QCFTagArgument(QStringLiteral("italic")));
+    args.append(QCFTagArgument(QStringLiteral("maxRows")));
+    args.append(QCFTagArgument(QStringLiteral("notSupported")));
+    args.append(QCFTagArgument(QStringLiteral("onBlur")));
+    args.append(QCFTagArgument(QStringLiteral("onChange")));
+    args.append(QCFTagArgument(QStringLiteral("onError")));
+    args.append(QCFTagArgument(QStringLiteral("onFocus")));
+    args.append(QCFTagArgument(QStringLiteral("onValidate")));
+    args.append(QCFTagArgument(QStringLiteral("pageSize")));
+    args.append(QCFTagArgument(QStringLiteral("pictureBar")));
+    args.append(QCFTagArgument(QStringLiteral("preservePageOnSort")));
+    args.append(QCFTagArgument(QStringLiteral("query")));
+    args.append(QCFTagArgument(QStringLiteral("rowHeaderAlign")));
+    args.append(QCFTagArgument(QStringLiteral("rowHeaderBold")));
+    args.append(QCFTagArgument(QStringLiteral("rowHeaderFont")));
+    args.append(QCFTagArgument(QStringLiteral("rowHeaderFontSize")));
+    args.append(QCFTagArgument(QStringLiteral("rowHeaderItalic")));
+    args.append(QCFTagArgument(QStringLiteral("rowHeaders")));
+    args.append(QCFTagArgument(QStringLiteral("rowHeaderTextColor")));
+    args.append(QCFTagArgument(QStringLiteral("rowHeight")));
+    args.append(QCFTagArgument(QStringLiteral("selectColor")));
+    args.append(QCFTagArgument(QStringLiteral("selectMode")));
+    args.append(QCFTagArgument(QStringLiteral("selectOnLoad")));
+    args.append(QCFTagArgument(QStringLiteral("sort")));
+    args.append(QCFTagArgument(QStringLiteral("sortAscendingButton")));
+    args.append(QCFTagArgument(QStringLiteral("sortDescendingButton")));
+    args.append(QCFTagArgument(QStringLiteral("stripeRowColor")));
+    args.append(QCFTagArgument(QStringLiteral("stripeRows")));
+    args.append(QCFTagArgument(QStringLiteral("style")));
+    args.append(QCFTagArgument(QStringLiteral("target")));
+    args.append(QCFTagArgument(QStringLiteral("textColor")));
+    args.append(QCFTagArgument(QStringLiteral("tooltip")));
+    args.append(QCFTagArgument(QStringLiteral("visible")));
+    args.append(QCFTagArgument(QStringLiteral("vSpace")));
+    args.append(QCFTagArgument(QStringLiteral("width")));
+    ret[QStringLiteral("cfgrid")].m_ArgumentVariants.append(args);
 
-    ret.insert("cfgridcolumn", QCFTag("cfgridcolumn", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    ret.insert(QStringLiteral("cfgridcolumn"), QCFTag(QStringLiteral("cfgridcolumn"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("name", true));
-    args.append(QCFTagArgument("bgColor"));
-    args.append(QCFTagArgument("bold"));
-    args.append(QCFTagArgument("dataAlign"));
-    args.append(QCFTagArgument("display"));
-    args.append(QCFTagArgument("font"));
-    args.append(QCFTagArgument("fontSize"));
-    args.append(QCFTagArgument("header"));
-    args.append(QCFTagArgument("headerAlign"));
-    args.append(QCFTagArgument("headerBold"));
-    args.append(QCFTagArgument("headerFont"));
-    args.append(QCFTagArgument("headerFontSize"));
-    args.append(QCFTagArgument("headerItalic"));
-    args.append(QCFTagArgument("headerTextColor"));
-    args.append(QCFTagArgument("href"));
-    args.append(QCFTagArgument("hrefKey"));
-    args.append(QCFTagArgument("italic"));
-    args.append(QCFTagArgument("mask"));
-    args.append(QCFTagArgument("numberFormat"));
-    args.append(QCFTagArgument("select"));
-    args.append(QCFTagArgument("target"));
-    args.append(QCFTagArgument("textColor"));
-    args.append(QCFTagArgument("type"));
-    args.append(QCFTagArgument("values"));
-    args.append(QCFTagArgument("valuesDelimiter"));
-    args.append(QCFTagArgument("valuesDisplay"));
-    args.append(QCFTagArgument("width"));
-    ret["cfgridcolumn"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("bgColor")));
+    args.append(QCFTagArgument(QStringLiteral("bold")));
+    args.append(QCFTagArgument(QStringLiteral("dataAlign")));
+    args.append(QCFTagArgument(QStringLiteral("display")));
+    args.append(QCFTagArgument(QStringLiteral("font")));
+    args.append(QCFTagArgument(QStringLiteral("fontSize")));
+    args.append(QCFTagArgument(QStringLiteral("header")));
+    args.append(QCFTagArgument(QStringLiteral("headerAlign")));
+    args.append(QCFTagArgument(QStringLiteral("headerBold")));
+    args.append(QCFTagArgument(QStringLiteral("headerFont")));
+    args.append(QCFTagArgument(QStringLiteral("headerFontSize")));
+    args.append(QCFTagArgument(QStringLiteral("headerItalic")));
+    args.append(QCFTagArgument(QStringLiteral("headerTextColor")));
+    args.append(QCFTagArgument(QStringLiteral("href")));
+    args.append(QCFTagArgument(QStringLiteral("hrefKey")));
+    args.append(QCFTagArgument(QStringLiteral("italic")));
+    args.append(QCFTagArgument(QStringLiteral("mask")));
+    args.append(QCFTagArgument(QStringLiteral("numberFormat")));
+    args.append(QCFTagArgument(QStringLiteral("select")));
+    args.append(QCFTagArgument(QStringLiteral("target")));
+    args.append(QCFTagArgument(QStringLiteral("textColor")));
+    args.append(QCFTagArgument(QStringLiteral("type")));
+    args.append(QCFTagArgument(QStringLiteral("values")));
+    args.append(QCFTagArgument(QStringLiteral("valuesDelimiter")));
+    args.append(QCFTagArgument(QStringLiteral("valuesDisplay")));
+    args.append(QCFTagArgument(QStringLiteral("width")));
+    ret[QStringLiteral("cfgridcolumn")].m_ArgumentVariants.append(args);
     args.clear();
 
-	ret.insert("cfgridrow", QCFTag("cfgridrow", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfgridrow"), QCFTag(QStringLiteral("cfgridrow"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("data", true));
-    ret["cfgridrow"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("data"), true));
+    ret[QStringLiteral("cfgridrow")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfgridupdate", QCFTag("cfgridupdate", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfgridupdate"), QCFTag(QStringLiteral("cfgridupdate"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfheader", QCFTag("cfheader", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfheader"), QCFTag(QStringLiteral("cfheader"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("charset", false, QCFTagArgument::TypeConstantString));
-	args.append(QCFTagArgument("name", true, QCFTagArgument::TypeConstantString));
-	args.append(QCFTagArgument("value"));
-	ret["cfheader"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("charset"), false, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("name"), true, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("value")));
+    ret[QStringLiteral("cfheader")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("charset", false, QCFTagArgument::TypeConstantString));
-	args.append(QCFTagArgument("statusCode", true));
-	args.append(QCFTagArgument("statusText"));
-	args.append(QCFTagArgument("value"));
-	ret["cfheader"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("charset"), false, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("statusCode"), true));
+    args.append(QCFTagArgument(QStringLiteral("statusText")));
+    args.append(QCFTagArgument(QStringLiteral("value")));
+    ret[QStringLiteral("cfheader")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfhtmlhead", QCFTag("cfhtmlhead", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
-    args.append(QCFTagArgument("text", true));
-    ret["cfhtmlhead"].m_ArgumentVariants.append(args);
+	ret.insert(QStringLiteral("cfhtmlhead"), QCFTag(QStringLiteral("cfhtmlhead"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    args.append(QCFTagArgument(QStringLiteral("text"), true));
+    ret[QStringLiteral("cfhtmlhead")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfhttp", QCFTag("cfhttp", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfhttp"), QCFTag(QStringLiteral("cfhttp"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("url", true));
-    args.append(QCFTagArgument("charset"));
-    args.append(QCFTagArgument("clientCert"));
-    args.append(QCFTagArgument("clientCertPassword"));
-    args.append(QCFTagArgument("columns"));
-    args.append(QCFTagArgument("delimiter"));
-    args.append(QCFTagArgument("file"));
-    args.append(QCFTagArgument("firstrowasheaders"));
-    args.append(QCFTagArgument("getAsBinary"));
-    args.append(QCFTagArgument("method"));
-    args.append(QCFTagArgument("multipart"));
-    args.append(QCFTagArgument("name"));
-    args.append(QCFTagArgument("password"));
-    args.append(QCFTagArgument("path"));
-    args.append(QCFTagArgument("port"));
-    args.append(QCFTagArgument("proxyServer"));
-    args.append(QCFTagArgument("proxyPort"));
-    args.append(QCFTagArgument("proxyUser"));
-    args.append(QCFTagArgument("proxyPassword"));
-    args.append(QCFTagArgument("redirect"));
-    args.append(QCFTagArgument("resolveURL"));
-    args.append(QCFTagArgument("result"));
-    args.append(QCFTagArgument("TextQualifier"));
-    args.append(QCFTagArgument("throwOnError"));
-    args.append(QCFTagArgument("timeout"));
-    args.append(QCFTagArgument("username"));
-    args.append(QCFTagArgument("userAgent"));
-    ret["cfhttp"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("url"), true));
+    args.append(QCFTagArgument(QStringLiteral("charset")));
+    args.append(QCFTagArgument(QStringLiteral("clientCert")));
+    args.append(QCFTagArgument(QStringLiteral("clientCertPassword")));
+    args.append(QCFTagArgument(QStringLiteral("columns")));
+    args.append(QCFTagArgument(QStringLiteral("delimiter")));
+    args.append(QCFTagArgument(QStringLiteral("file")));
+    args.append(QCFTagArgument(QStringLiteral("firstrowasheaders")));
+    args.append(QCFTagArgument(QStringLiteral("getAsBinary")));
+    args.append(QCFTagArgument(QStringLiteral("method")));
+    args.append(QCFTagArgument(QStringLiteral("multipart")));
+    args.append(QCFTagArgument(QStringLiteral("name")));
+    args.append(QCFTagArgument(QStringLiteral("password")));
+    args.append(QCFTagArgument(QStringLiteral("path")));
+    args.append(QCFTagArgument(QStringLiteral("port")));
+    args.append(QCFTagArgument(QStringLiteral("proxyServer")));
+    args.append(QCFTagArgument(QStringLiteral("proxyPort")));
+    args.append(QCFTagArgument(QStringLiteral("proxyUser")));
+    args.append(QCFTagArgument(QStringLiteral("proxyPassword")));
+    args.append(QCFTagArgument(QStringLiteral("redirect")));
+    args.append(QCFTagArgument(QStringLiteral("resolveURL")));
+    args.append(QCFTagArgument(QStringLiteral("result")));
+    args.append(QCFTagArgument(QStringLiteral("TextQualifier")));
+    args.append(QCFTagArgument(QStringLiteral("throwOnError")));
+    args.append(QCFTagArgument(QStringLiteral("timeout")));
+    args.append(QCFTagArgument(QStringLiteral("username")));
+    args.append(QCFTagArgument(QStringLiteral("userAgent")));
+    ret[QStringLiteral("cfhttp")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfhttpparam", QCFTag("cfhttpparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfhttpparam"), QCFTag(QStringLiteral("cfhttpparam"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear(); // TODO: Make this argument as it should.
-    args.append(QCFTagArgument("type", true));
-    args.append(QCFTagArgument("encoded"));
-    args.append(QCFTagArgument("file"));
-    args.append(QCFTagArgument("mimeType"));
-    args.append(QCFTagArgument("name"));
-    args.append(QCFTagArgument("value"));
-    ret["cfhttpparam"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("type"), true));
+    args.append(QCFTagArgument(QStringLiteral("encoded")));
+    args.append(QCFTagArgument(QStringLiteral("file")));
+    args.append(QCFTagArgument(QStringLiteral("mimeType")));
+    args.append(QCFTagArgument(QStringLiteral("name")));
+    args.append(QCFTagArgument(QStringLiteral("value")));
+    ret[QStringLiteral("cfhttpparam")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfif", QCFTag("cfif", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeExpression));
+	ret.insert(QStringLiteral("cfif"), QCFTag(QStringLiteral("cfif"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeExpression));
 
-	ret.insert("cfimage", QCFTag("cfimage", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfimage"), QCFTag(QStringLiteral("cfimage"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfimpersonate", QCFTag("cfimpersonate", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfimpersonate"), QCFTag(QStringLiteral("cfimpersonate"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfimport", QCFTag("cfimport", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfimport"), QCFTag(QStringLiteral("cfimport"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-    args.append(QCFTagArgument("taglib", true, QCFTagArgument::TypeConstantString));
-    args.append(QCFTagArgument("prefix", true, QCFTagArgument::TypeConstantString));
-	ret["cfimport"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("taglib"), true, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("prefix"), true, QCFTagArgument::TypeConstantString));
+    ret[QStringLiteral("cfimport")].m_ArgumentVariants.append(args);
 	
-	ret.insert("cfinclude", QCFTag("cfinclude", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfinclude"), QCFTag(QStringLiteral("cfinclude"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("template", true));
-	ret["cfinclude"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("template"), true));
+    ret[QStringLiteral("cfinclude")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfindex", QCFTag("cfindex", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfindex"), QCFTag(QStringLiteral("cfindex"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("action", true));
-    args.append(QCFTagArgument("collection", true));
-    args.append(QCFTagArgument("key", true));
-    args.append(QCFTagArgument("body"));
-    args.append(QCFTagArgument("category"));
-    args.append(QCFTagArgument("categoryTree"));
-    args.append(QCFTagArgument("custom1"));
-    args.append(QCFTagArgument("custom2"));
-    args.append(QCFTagArgument("custom3"));
-    args.append(QCFTagArgument("custom4"));
-    args.append(QCFTagArgument("extensions"));
-    args.append(QCFTagArgument("language"));
-    args.append(QCFTagArgument("prefix"));
-    args.append(QCFTagArgument("query"));
-    args.append(QCFTagArgument("recurse"));
-    args.append(QCFTagArgument("status"));
-    args.append(QCFTagArgument("title"));
-    args.append(QCFTagArgument("type"));
-    args.append(QCFTagArgument("URLpath"));
-    ret["cfindex"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true));
+    args.append(QCFTagArgument(QStringLiteral("collection"), true));
+    args.append(QCFTagArgument(QStringLiteral("key"), true));
+    args.append(QCFTagArgument(QStringLiteral("body")));
+    args.append(QCFTagArgument(QStringLiteral("category")));
+    args.append(QCFTagArgument(QStringLiteral("categoryTree")));
+    args.append(QCFTagArgument(QStringLiteral("custom1")));
+    args.append(QCFTagArgument(QStringLiteral("custom2")));
+    args.append(QCFTagArgument(QStringLiteral("custom3")));
+    args.append(QCFTagArgument(QStringLiteral("custom4")));
+    args.append(QCFTagArgument(QStringLiteral("extensions")));
+    args.append(QCFTagArgument(QStringLiteral("language")));
+    args.append(QCFTagArgument(QStringLiteral("prefix")));
+    args.append(QCFTagArgument(QStringLiteral("query")));
+    args.append(QCFTagArgument(QStringLiteral("recurse")));
+    args.append(QCFTagArgument(QStringLiteral("status")));
+    args.append(QCFTagArgument(QStringLiteral("title")));
+    args.append(QCFTagArgument(QStringLiteral("type")));
+    args.append(QCFTagArgument(QStringLiteral("URLpath")));
+    ret[QStringLiteral("cfindex")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfinput", QCFTag("cfinput", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfinput"), QCFTag(QStringLiteral("cfinput"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("name", true, QCFTagArgument::TypeConstantString));
-	args.append(QCFTagArgument("autosuggest"));
-	args.append(QCFTagArgument("autosuggestBindDelay"));
-	args.append(QCFTagArgument("autosuggestMinLength"));
-	args.append(QCFTagArgument("bind"));
-	args.append(QCFTagArgument("bindAttribute"));
-	args.append(QCFTagArgument("bindOnLoad"));
-	args.append(QCFTagArgument("checked"));
-	args.append(QCFTagArgument("dayNames"));
-	args.append(QCFTagArgument("delimiter"));
-	args.append(QCFTagArgument("disabled"));
-	args.append(QCFTagArgument("enabled"));
-	args.append(QCFTagArgument("firstDayOfWeek"));
-	args.append(QCFTagArgument("height"));
-	args.append(QCFTagArgument("id"));
-	args.append(QCFTagArgument("label"));
-	args.append(QCFTagArgument("mask"));
-	args.append(QCFTagArgument("maxLength"));
-	args.append(QCFTagArgument("maxResultsDisplayed"));
-	args.append(QCFTagArgument("message"));
-	args.append(QCFTagArgument("monthNames"));
-	args.append(QCFTagArgument("onBindError"));
-	args.append(QCFTagArgument("onChange"));
-	args.append(QCFTagArgument("onClick"));
-	args.append(QCFTagArgument("onError"));
+    args.append(QCFTagArgument(QStringLiteral("name"), true, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("autosuggest")));
+    args.append(QCFTagArgument(QStringLiteral("autosuggestBindDelay")));
+    args.append(QCFTagArgument(QStringLiteral("autosuggestMinLength")));
+    args.append(QCFTagArgument(QStringLiteral("bind")));
+    args.append(QCFTagArgument(QStringLiteral("bindAttribute")));
+    args.append(QCFTagArgument(QStringLiteral("bindOnLoad")));
+    args.append(QCFTagArgument(QStringLiteral("checked")));
+    args.append(QCFTagArgument(QStringLiteral("dayNames")));
+    args.append(QCFTagArgument(QStringLiteral("delimiter")));
+    args.append(QCFTagArgument(QStringLiteral("disabled")));
+    args.append(QCFTagArgument(QStringLiteral("enabled")));
+    args.append(QCFTagArgument(QStringLiteral("firstDayOfWeek")));
+    args.append(QCFTagArgument(QStringLiteral("height")));
+    args.append(QCFTagArgument(QStringLiteral("id")));
+    args.append(QCFTagArgument(QStringLiteral("label")));
+    args.append(QCFTagArgument(QStringLiteral("mask")));
+    args.append(QCFTagArgument(QStringLiteral("maxLength")));
+    args.append(QCFTagArgument(QStringLiteral("maxResultsDisplayed")));
+    args.append(QCFTagArgument(QStringLiteral("message")));
+    args.append(QCFTagArgument(QStringLiteral("monthNames")));
+    args.append(QCFTagArgument(QStringLiteral("onBindError")));
+    args.append(QCFTagArgument(QStringLiteral("onChange")));
+    args.append(QCFTagArgument(QStringLiteral("onClick")));
+    args.append(QCFTagArgument(QStringLiteral("onError")));
 	// TODO: more
-	ret["cfinput"].m_ArgumentVariants.append(args);
+    ret[QStringLiteral("cfinput")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfinsert", QCFTag("cfinsert", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfinsert"), QCFTag(QStringLiteral("cfinsert"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfinterface", QCFTag("cfinterface", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfinterface"), QCFTag(QStringLiteral("cfinterface"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfinvoke", QCFTag("cfinvoke", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfinvoke"), QCFTag(QStringLiteral("cfinvoke"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("component", true));
-    args.append(QCFTagArgument("method", true));
-    args.append(QCFTagArgument("argumentCollection"));
-    args.append(QCFTagArgument("password"));
-    args.append(QCFTagArgument("returnVariable"));
-    args.append(QCFTagArgument("username"));
-    ret["cfinvoke"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("component"), true));
+    args.append(QCFTagArgument(QStringLiteral("method"), true));
+    args.append(QCFTagArgument(QStringLiteral("argumentCollection")));
+    args.append(QCFTagArgument(QStringLiteral("password")));
+    args.append(QCFTagArgument(QStringLiteral("returnVariable")));
+    args.append(QCFTagArgument(QStringLiteral("username")));
+    ret[QStringLiteral("cfinvoke")].m_ArgumentVariants.append(args);
     args.clear();
-    args.append(QCFTagArgument("method", true));
-    args.append(QCFTagArgument("argumentCollection"));
-    args.append(QCFTagArgument("component"));
-    args.append(QCFTagArgument("password"));
-    args.append(QCFTagArgument("returnVariable"));
-    args.append(QCFTagArgument("username"));
-    ret["cfinvoke"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("method"), true));
+    args.append(QCFTagArgument(QStringLiteral("argumentCollection")));
+    args.append(QCFTagArgument(QStringLiteral("component")));
+    args.append(QCFTagArgument(QStringLiteral("password")));
+    args.append(QCFTagArgument(QStringLiteral("returnVariable")));
+    args.append(QCFTagArgument(QStringLiteral("username")));
+    ret[QStringLiteral("cfinvoke")].m_ArgumentVariants.append(args);
     args.clear();
-    args.append(QCFTagArgument("method", true));
-    args.append(QCFTagArgument("webservice", true));
-    args.append(QCFTagArgument("argumentCollection"));
-    args.append(QCFTagArgument("component"));
-    args.append(QCFTagArgument("password"));
-    args.append(QCFTagArgument("proxyPassword"));
-    args.append(QCFTagArgument("proxyPort"));
-    args.append(QCFTagArgument("proxyServer"));
-    args.append(QCFTagArgument("proxyUser"));
-    args.append(QCFTagArgument("returnVariable"));
-    args.append(QCFTagArgument("servicePort"));
-    args.append(QCFTagArgument("timeout"));
-    args.append(QCFTagArgument("username"));
-    args.append(QCFTagArgument("wsdl2javaArgs"));
-    ret["cfinvoke"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("method"), true));
+    args.append(QCFTagArgument(QStringLiteral("webservice"), true));
+    args.append(QCFTagArgument(QStringLiteral("argumentCollection")));
+    args.append(QCFTagArgument(QStringLiteral("component")));
+    args.append(QCFTagArgument(QStringLiteral("password")));
+    args.append(QCFTagArgument(QStringLiteral("proxyPassword")));
+    args.append(QCFTagArgument(QStringLiteral("proxyPort")));
+    args.append(QCFTagArgument(QStringLiteral("proxyServer")));
+    args.append(QCFTagArgument(QStringLiteral("proxyUser")));
+    args.append(QCFTagArgument(QStringLiteral("returnVariable")));
+    args.append(QCFTagArgument(QStringLiteral("servicePort")));
+    args.append(QCFTagArgument(QStringLiteral("timeout")));
+    args.append(QCFTagArgument(QStringLiteral("username")));
+    args.append(QCFTagArgument(QStringLiteral("wsdl2javaArgs")));
+    ret[QStringLiteral("cfinvoke")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfinvokeargument", QCFTag("cfinvokeargument", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfinvokeargument"), QCFTag(QStringLiteral("cfinvokeargument"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("name", true));
-    args.append(QCFTagArgument("value", true));
-    args.append(QCFTagArgument("omit"));
-    ret["cfinvokeargument"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("value"), true));
+    args.append(QCFTagArgument(QStringLiteral("omit")));
+    ret[QStringLiteral("cfinvokeargument")].m_ArgumentVariants.append(args);
 
-	ret.insert("cflayout", QCFTag("cflayout", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cflayout"), QCFTag(QStringLiteral("cflayout"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cflayoutarea", QCFTag("cflayoutarea", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cflayoutarea"), QCFTag(QStringLiteral("cflayoutarea"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfldap", QCFTag("cfldap", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfldap"), QCFTag(QStringLiteral("cfldap"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cflocation", QCFTag("cflocation", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cflocation"), QCFTag(QStringLiteral("cflocation"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("url", true));
-	args.append(QCFTagArgument("addToken"));
-	args.append(QCFTagArgument("statusCode"));
-	ret["cflocation"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("url"), true));
+    args.append(QCFTagArgument(QStringLiteral("addToken")));
+    args.append(QCFTagArgument(QStringLiteral("statusCode")));
+    ret[QStringLiteral("cflocation")].m_ArgumentVariants.append(args);
 
-	ret.insert("cflock", QCFTag("cflock", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cflock"), QCFTag(QStringLiteral("cflock"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("timeout", true));
-	args.append(QCFTagArgument("name"));
-	args.append(QCFTagArgument("scope"));
-	args.append(QCFTagArgument("throwOnTimeout"));
-	args.append(QCFTagArgument("type"));
-	ret["cflock"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("timeout"), true));
+    args.append(QCFTagArgument(QStringLiteral("name")));
+    args.append(QCFTagArgument(QStringLiteral("scope")));
+    args.append(QCFTagArgument(QStringLiteral("throwOnTimeout")));
+    args.append(QCFTagArgument(QStringLiteral("type")));
+    ret[QStringLiteral("cflock")].m_ArgumentVariants.append(args);
 
-	ret.insert("cflog", QCFTag("cflog", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cflog"), QCFTag(QStringLiteral("cflog"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("text", true));
-	args.append(QCFTagArgument("application"));
-	args.append(QCFTagArgument("file"));
-	args.append(QCFTagArgument("log"));
-	args.append(QCFTagArgument("type"));
-	ret["cflog"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("text"), true));
+    args.append(QCFTagArgument(QStringLiteral("application")));
+    args.append(QCFTagArgument(QStringLiteral("file")));
+    args.append(QCFTagArgument(QStringLiteral("log")));
+    args.append(QCFTagArgument(QStringLiteral("type")));
+    ret[QStringLiteral("cflog")].m_ArgumentVariants.append(args);
 
-    ret.insert("cflogin", QCFTag("cflogin", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+    ret.insert(QStringLiteral("cflogin"), QCFTag(QStringLiteral("cflogin"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-    ret.insert("cfloginuser", QCFTag("cfloginuser", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    ret.insert(QStringLiteral("cfloginuser"), QCFTag(QStringLiteral("cfloginuser"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("name", true));
-    args.append(QCFTagArgument("password", true));
-    args.append(QCFTagArgument("roles", true));
-    ret["cfloginuser"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("password"), true));
+    args.append(QCFTagArgument(QStringLiteral("roles"), true));
+    ret[QStringLiteral("cfloginuser")].m_ArgumentVariants.append(args);
 
-    ret.insert("cflogout", QCFTag("cflogout", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    ret.insert(QStringLiteral("cflogout"), QCFTag(QStringLiteral("cflogout"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfloop", QCFTag("cfloop", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfloop"), QCFTag(QStringLiteral("cfloop"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("index", true, QCFTagArgument::TypeVariable));
-	args.append(QCFTagArgument("from", true, QCFTagArgument::TypeConstantString));
-	args.append(QCFTagArgument("to", true, QCFTagArgument::TypeConstantString));
-	args.append(QCFTagArgument("step", false, QCFTagArgument::TypeConstantString));
-	ret["cfloop"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("index"), true, QCFTagArgument::TypeVariable));
+    args.append(QCFTagArgument(QStringLiteral("from"), true, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("to"), true, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("step"), false, QCFTagArgument::TypeConstantString));
+    ret[QStringLiteral("cfloop")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("condition", true, QCFTagArgument::TypeExpression));
-	ret["cfloop"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("condition"), true, QCFTagArgument::TypeExpression));
+    ret[QStringLiteral("cfloop")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("query", true, QCFTagArgument::TypeVariable));
-    args.append(QCFTagArgument("startRow", false, QCFTagArgument::TypeAny));
-    args.append(QCFTagArgument("endRow", false, QCFTagArgument::TypeAny));
-	ret["cfloop"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("query"), true, QCFTagArgument::TypeVariable));
+    args.append(QCFTagArgument(QStringLiteral("startRow"), false, QCFTagArgument::TypeAny));
+    args.append(QCFTagArgument(QStringLiteral("endRow"), false, QCFTagArgument::TypeAny));
+    ret[QStringLiteral("cfloop")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("index", true, QCFTagArgument::TypeVariable));
-	args.append(QCFTagArgument("list", true, QCFTagArgument::TypeVariable));
-	args.append(QCFTagArgument("delimiters", false, QCFTagArgument::TypeConstantString));
-	ret["cfloop"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("index"), true, QCFTagArgument::TypeVariable));
+    args.append(QCFTagArgument(QStringLiteral("list"), true, QCFTagArgument::TypeVariable));
+    args.append(QCFTagArgument(QStringLiteral("delimiters"), false, QCFTagArgument::TypeConstantString));
+    ret[QStringLiteral("cfloop")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("index", true, QCFTagArgument::TypeVariable));
-	args.append(QCFTagArgument("file", true));
-	args.append(QCFTagArgument("characters"));
-	ret["cfloop"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("index"), true, QCFTagArgument::TypeVariable));
+    args.append(QCFTagArgument(QStringLiteral("file"), true));
+    args.append(QCFTagArgument(QStringLiteral("characters")));
+    ret[QStringLiteral("cfloop")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("index", true, QCFTagArgument::TypeVariable));
-	args.append(QCFTagArgument("array", true));
-	ret["cfloop"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("index"), true, QCFTagArgument::TypeVariable));
+    args.append(QCFTagArgument(QStringLiteral("array"), true));
+    ret[QStringLiteral("cfloop")].m_ArgumentVariants.append(args);
 	args.clear();
-	args.append(QCFTagArgument("collection", true));
-	args.append(QCFTagArgument("item", true));
-	ret["cfloop"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("collection"), true));
+    args.append(QCFTagArgument(QStringLiteral("item"), true));
+    ret[QStringLiteral("cfloop")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfmail", QCFTag("cfmail", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithExpressionInside));
+	ret.insert(QStringLiteral("cfmail"), QCFTag(QStringLiteral("cfmail"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithExpressionInside));
     args.clear();
-    args.append(QCFTagArgument("from", true));
-    args.append(QCFTagArgument("to", true));
-    args.append(QCFTagArgument("bcc"));
-    args.append(QCFTagArgument("cc"));
-    args.append(QCFTagArgument("charset"));
-    args.append(QCFTagArgument("debug"));
-    args.append(QCFTagArgument("failto"));
-    args.append(QCFTagArgument("group"));
-    args.append(QCFTagArgument("groupcasesensitive"));
-    args.append(QCFTagArgument("mailerid"));
-    args.append(QCFTagArgument("maxrows"));
-    args.append(QCFTagArgument("mimeattach"));
-    args.append(QCFTagArgument("password"));
-    args.append(QCFTagArgument("port"));
-    args.append(QCFTagArgument("priority"));
-    args.append(QCFTagArgument("query"));
-    args.append(QCFTagArgument("replyto"));
-    args.append(QCFTagArgument("server"));
-    args.append(QCFTagArgument("spoolenable"));
-    args.append(QCFTagArgument("startrow"));
-    args.append(QCFTagArgument("subject", true));
-    args.append(QCFTagArgument("timeout"));
-    args.append(QCFTagArgument("type"));
-    args.append(QCFTagArgument("username"));
-    args.append(QCFTagArgument("useSSL"));
-    args.append(QCFTagArgument("useTLS"));
-    args.append(QCFTagArgument("wraptext"));
-    ret["cfmail"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("from"), true));
+    args.append(QCFTagArgument(QStringLiteral("to"), true));
+    args.append(QCFTagArgument(QStringLiteral("bcc")));
+    args.append(QCFTagArgument(QStringLiteral("cc")));
+    args.append(QCFTagArgument(QStringLiteral("charset")));
+    args.append(QCFTagArgument(QStringLiteral("debug")));
+    args.append(QCFTagArgument(QStringLiteral("failto")));
+    args.append(QCFTagArgument(QStringLiteral("group")));
+    args.append(QCFTagArgument(QStringLiteral("groupcasesensitive")));
+    args.append(QCFTagArgument(QStringLiteral("mailerid")));
+    args.append(QCFTagArgument(QStringLiteral("maxrows")));
+    args.append(QCFTagArgument(QStringLiteral("mimeattach")));
+    args.append(QCFTagArgument(QStringLiteral("password")));
+    args.append(QCFTagArgument(QStringLiteral("port")));
+    args.append(QCFTagArgument(QStringLiteral("priority")));
+    args.append(QCFTagArgument(QStringLiteral("query")));
+    args.append(QCFTagArgument(QStringLiteral("replyto")));
+    args.append(QCFTagArgument(QStringLiteral("server")));
+    args.append(QCFTagArgument(QStringLiteral("spoolenable")));
+    args.append(QCFTagArgument(QStringLiteral("startrow")));
+    args.append(QCFTagArgument(QStringLiteral("subject"), true));
+    args.append(QCFTagArgument(QStringLiteral("timeout")));
+    args.append(QCFTagArgument(QStringLiteral("type")));
+    args.append(QCFTagArgument(QStringLiteral("username")));
+    args.append(QCFTagArgument(QStringLiteral("useSSL")));
+    args.append(QCFTagArgument(QStringLiteral("useTLS")));
+    args.append(QCFTagArgument(QStringLiteral("wraptext")));
+    ret[QStringLiteral("cfmail")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfmailparam", QCFTag("cfmailparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfmailparam"), QCFTag(QStringLiteral("cfmailparam"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfmailpart", QCFTag("cfmailpart", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfmailpart"), QCFTag(QStringLiteral("cfmailpart"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("type", true));
-    args.append(QCFTagArgument("charset"));
-    args.append(QCFTagArgument("wraptext"));
-    ret["cfmailpart"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("type"), true));
+    args.append(QCFTagArgument(QStringLiteral("charset")));
+    args.append(QCFTagArgument(QStringLiteral("wraptext")));
+    ret[QStringLiteral("cfmailpart")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfmenu", QCFTag("cfmenu", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfmenu"), QCFTag(QStringLiteral("cfmenu"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfmenuitem", QCFTag("cfmenuitem", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfmenuitem"), QCFTag(QStringLiteral("cfmenuitem"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-    ret.insert("cfmodule", QCFTag("cfmodule", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithoutExpressionInside, true));
+    ret.insert(QStringLiteral("cfmodule"), QCFTag(QStringLiteral("cfmodule"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithoutExpressionInside, true));
 
-	ret.insert("cfNTauthenticate", QCFTag("cfNTauthenticate", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfNTauthenticate"), QCFTag(QStringLiteral("cfNTauthenticate"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfobject", QCFTag("cfobject", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfobject"), QCFTag(QStringLiteral("cfobject"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("component", true));
-	args.append(QCFTagArgument("name", true));
-	args.append(QCFTagArgument("type", false, QCFTagArgument::TypeConstantString, "component"));
-	ret["cfobject"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("component"), true));
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("type"), false, QCFTagArgument::TypeConstantString, QStringLiteral("component")));
+    ret[QStringLiteral("cfobject")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfobjectcache", QCFTag("cfobjectcache", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfobjectcache"), QCFTag(QStringLiteral("cfobjectcache"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfoutput", QCFTag("cfoutput", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithExpressionInside));
+	ret.insert(QStringLiteral("cfoutput"), QCFTag(QStringLiteral("cfoutput"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithExpressionInside));
     args.clear();
-    ret["cfoutput"].m_ArgumentVariants.append(args);
-    args.append(QCFTagArgument("query", true));
-    ret["cfoutput"].m_ArgumentVariants.append(args);
+    ret[QStringLiteral("cfoutput")].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("query"), true));
+    ret[QStringLiteral("cfoutput")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfparam", QCFTag("cfparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfparam"), QCFTag(QStringLiteral("cfparam"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("name", true));
-	args.append(QCFTagArgument("default"));
-	args.append(QCFTagArgument("max"));
-	args.append(QCFTagArgument("min"));
-	args.append(QCFTagArgument("pattern"));
-	args.append(QCFTagArgument("type"));
-	ret["cfparam"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("default")));
+    args.append(QCFTagArgument(QStringLiteral("max")));
+    args.append(QCFTagArgument(QStringLiteral("min")));
+    args.append(QCFTagArgument(QStringLiteral("pattern")));
+    args.append(QCFTagArgument(QStringLiteral("type")));
+    ret[QStringLiteral("cfparam")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfpdf", QCFTag("cfpdf", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfpdf"), QCFTag(QStringLiteral("cfpdf"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfpdfform", QCFTag("cfpdfform", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfpdfform"), QCFTag(QStringLiteral("cfpdfform"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfpdfformparam", QCFTag("cfpdfformparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfpdfformparam"), QCFTag(QStringLiteral("cfpdfformparam"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfpdfparam", QCFTag("cfpdfparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfpdfparam"), QCFTag(QStringLiteral("cfpdfparam"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfpdfsubform", QCFTag("cfpdfsubform", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfpdfsubform"), QCFTag(QStringLiteral("cfpdfsubform"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfpod", QCFTag("cfpod", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfpod"), QCFTag(QStringLiteral("cfpod"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfpop", QCFTag("cfpop", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfpop"), QCFTag(QStringLiteral("cfpop"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfpresentation", QCFTag("cfpresentation", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfpresentation"), QCFTag(QStringLiteral("cfpresentation"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfpresentationslide", QCFTag("cfpresentationslide", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfpresentationslide"), QCFTag(QStringLiteral("cfpresentationslide"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfpresenter", QCFTag("cfpresenter", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfpresenter"), QCFTag(QStringLiteral("cfpresenter"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfprint", QCFTag("cfprint", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfprint"), QCFTag(QStringLiteral("cfprint"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfprocessingdirective", QCFTag("cfprocessingdirective", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfprocessingdirective"), QCFTag(QStringLiteral("cfprocessingdirective"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("pageEncoding"));
-	args.append(QCFTagArgument("suppressWhiteSpace"));
-	ret["cfprocessingdirective"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("pageEncoding")));
+    args.append(QCFTagArgument(QStringLiteral("suppressWhiteSpace")));
+    ret[QStringLiteral("cfprocessingdirective")].m_ArgumentVariants.append(args);
 
-    ret.insert("cfprocparam", QCFTag("cfprocparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    ret.insert(QStringLiteral("cfprocparam"), QCFTag(QStringLiteral("cfprocparam"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("CFSQLType", true));
-    args.append(QCFTagArgument("maxLength"));
-    args.append(QCFTagArgument("null"));
-    args.append(QCFTagArgument("scale"));
-    args.append(QCFTagArgument("type"));
-    args.append(QCFTagArgument("value"));
-    args.append(QCFTagArgument("variable"));
-    ret["cfprocparam"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("CFSQLType"), true));
+    args.append(QCFTagArgument(QStringLiteral("maxLength")));
+    args.append(QCFTagArgument(QStringLiteral("null")));
+    args.append(QCFTagArgument(QStringLiteral("scale")));
+    args.append(QCFTagArgument(QStringLiteral("type")));
+    args.append(QCFTagArgument(QStringLiteral("value")));
+    args.append(QCFTagArgument(QStringLiteral("variable")));
+    ret[QStringLiteral("cfprocparam")].m_ArgumentVariants.append(args);
 
-    ret.insert("cfprocresult", QCFTag("cfprocresult", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    ret.insert(QStringLiteral("cfprocresult"), QCFTag(QStringLiteral("cfprocresult"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("name", true));
-    args.append(QCFTagArgument("maxRows"));
-    args.append(QCFTagArgument("resultSet"));
-    ret["cfprocresult"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("maxRows")));
+    args.append(QCFTagArgument(QStringLiteral("resultSet")));
+    ret[QStringLiteral("cfprocresult")].m_ArgumentVariants.append(args);
 
-    ret.insert("cfproperty", QCFTag("cfproperty", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    ret.insert(QStringLiteral("cfproperty"), QCFTag(QStringLiteral("cfproperty"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("name", true));
-    args.append(QCFTagArgument("default"));
-    args.append(QCFTagArgument("displayname"));
-    args.append(QCFTagArgument("hint"));
-    args.append(QCFTagArgument("required"));
-    args.append(QCFTagArgument("type"));
-    ret["cfproperty"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("default")));
+    args.append(QCFTagArgument(QStringLiteral("displayname")));
+    args.append(QCFTagArgument(QStringLiteral("hint")));
+    args.append(QCFTagArgument(QStringLiteral("required")));
+    args.append(QCFTagArgument(QStringLiteral("type")));
+    ret[QStringLiteral("cfproperty")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfquery", QCFTag("cfquery", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithExpressionInside));
+	ret.insert(QStringLiteral("cfquery"), QCFTag(QStringLiteral("cfquery"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments, QCFTag::WithExpressionInside));
 	args.clear();
-    args.append(QCFTagArgument("name", true));
-	args.append(QCFTagArgument("blockFactor"));
-	args.append(QCFTagArgument("cachedAfter"));
-	args.append(QCFTagArgument("cachedWithin"));
-    args.append(QCFTagArgument("dataSource"));
-	args.append(QCFTagArgument("dbtype"));
-	args.append(QCFTagArgument("debug"));
-	args.append(QCFTagArgument("maxRows"));
-	args.append(QCFTagArgument("password"));
-	args.append(QCFTagArgument("result"));
-	args.append(QCFTagArgument("timeout"));
-	args.append(QCFTagArgument("username"));
-	ret["cfquery"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("blockFactor")));
+    args.append(QCFTagArgument(QStringLiteral("cachedAfter")));
+    args.append(QCFTagArgument(QStringLiteral("cachedWithin")));
+    args.append(QCFTagArgument(QStringLiteral("dataSource")));
+    args.append(QCFTagArgument(QStringLiteral("dbtype")));
+    args.append(QCFTagArgument(QStringLiteral("debug")));
+    args.append(QCFTagArgument(QStringLiteral("maxRows")));
+    args.append(QCFTagArgument(QStringLiteral("password")));
+    args.append(QCFTagArgument(QStringLiteral("result")));
+    args.append(QCFTagArgument(QStringLiteral("timeout")));
+    args.append(QCFTagArgument(QStringLiteral("username")));
+    ret[QStringLiteral("cfquery")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfqueryparam", QCFTag("cfqueryparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfqueryparam"), QCFTag(QStringLiteral("cfqueryparam"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("value", true));
-	args.append(QCFTagArgument("CFSQLType"));
-	args.append(QCFTagArgument("list"));
-	args.append(QCFTagArgument("maxLength"));
-	args.append(QCFTagArgument("null"));
-	args.append(QCFTagArgument("scale"));
-	args.append(QCFTagArgument("separator"));
-	ret["cfqueryparam"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("value"), true));
+    args.append(QCFTagArgument(QStringLiteral("CFSQLType")));
+    args.append(QCFTagArgument(QStringLiteral("list")));
+    args.append(QCFTagArgument(QStringLiteral("maxLength")));
+    args.append(QCFTagArgument(QStringLiteral("null")));
+    args.append(QCFTagArgument(QStringLiteral("scale")));
+    args.append(QCFTagArgument(QStringLiteral("separator")));
+    ret[QStringLiteral("cfqueryparam")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfregistry", QCFTag("cfregistry", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfregistry"), QCFTag(QStringLiteral("cfregistry"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfreport", QCFTag("cfreport", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfreport"), QCFTag(QStringLiteral("cfreport"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfreportparam", QCFTag("cfreportparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfreportparam"), QCFTag(QStringLiteral("cfreportparam"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfrethrow", QCFTag("cfrethrow", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfrethrow"), QCFTag(QStringLiteral("cfrethrow"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfreturn", QCFTag("cfreturn", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeExpression));
+	ret.insert(QStringLiteral("cfreturn"), QCFTag(QStringLiteral("cfreturn"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeExpression));
 
-	ret.insert("cfsavecontent", QCFTag("cfsavecontent", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfsavecontent"), QCFTag(QStringLiteral("cfsavecontent"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("variable"));
-    ret["cfsavecontent"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("variable")));
+    ret[QStringLiteral("cfsavecontent")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfschedule", QCFTag("cfschedule", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfschedule"), QCFTag(QStringLiteral("cfschedule"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("action", true));
-    args.append(QCFTagArgument("task", true));
-    args.append(QCFTagArgument("endDate"));
-    args.append(QCFTagArgument("endTime"));
-    args.append(QCFTagArgument("file"));
-    args.append(QCFTagArgument("interval"));
-    args.append(QCFTagArgument("operation"));
-    args.append(QCFTagArgument("password"));
-    args.append(QCFTagArgument("path"));
-    args.append(QCFTagArgument("port"));
-    args.append(QCFTagArgument("proxyPassword"));
-    args.append(QCFTagArgument("proxyPort"));
-    args.append(QCFTagArgument("proxyServer"));
-    args.append(QCFTagArgument("proxyUser"));
-    args.append(QCFTagArgument("publish"));
-    args.append(QCFTagArgument("requestTimeOut"));
-    args.append(QCFTagArgument("resolveURL"));
-    args.append(QCFTagArgument("startDate"));
-    args.append(QCFTagArgument("startTime"));
-    args.append(QCFTagArgument("url"));
-    args.append(QCFTagArgument("username"));
-    ret["cfschedule"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action"), true));
+    args.append(QCFTagArgument(QStringLiteral("task"), true));
+    args.append(QCFTagArgument(QStringLiteral("endDate")));
+    args.append(QCFTagArgument(QStringLiteral("endTime")));
+    args.append(QCFTagArgument(QStringLiteral("file")));
+    args.append(QCFTagArgument(QStringLiteral("interval")));
+    args.append(QCFTagArgument(QStringLiteral("operation")));
+    args.append(QCFTagArgument(QStringLiteral("password")));
+    args.append(QCFTagArgument(QStringLiteral("path")));
+    args.append(QCFTagArgument(QStringLiteral("port")));
+    args.append(QCFTagArgument(QStringLiteral("proxyPassword")));
+    args.append(QCFTagArgument(QStringLiteral("proxyPort")));
+    args.append(QCFTagArgument(QStringLiteral("proxyServer")));
+    args.append(QCFTagArgument(QStringLiteral("proxyUser")));
+    args.append(QCFTagArgument(QStringLiteral("publish")));
+    args.append(QCFTagArgument(QStringLiteral("requestTimeOut")));
+    args.append(QCFTagArgument(QStringLiteral("resolveURL")));
+    args.append(QCFTagArgument(QStringLiteral("startDate")));
+    args.append(QCFTagArgument(QStringLiteral("startTime")));
+    args.append(QCFTagArgument(QStringLiteral("url")));
+    args.append(QCFTagArgument(QStringLiteral("username")));
+    ret[QStringLiteral("cfschedule")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfscript", QCFTag("cfscript", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfscript"), QCFTag(QStringLiteral("cfscript"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    ret["cfscript"].m_ArgumentVariants.append(args);
+    ret[QStringLiteral("cfscript")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfsearch", QCFTag("cfsearch", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfsearch"), QCFTag(QStringLiteral("cfsearch"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("name", true));
-    args.append(QCFTagArgument("collection", true));
-    args.append(QCFTagArgument("category"));
-    args.append(QCFTagArgument("categoryTree"));
-    args.append(QCFTagArgument("contextBytes"));
-    args.append(QCFTagArgument("contextHighlightBegin"));
-    args.append(QCFTagArgument("contextHighlightEnd"));
-    args.append(QCFTagArgument("contextPassages"));
-    args.append(QCFTagArgument("criteria"));
-    args.append(QCFTagArgument("language"));
-    args.append(QCFTagArgument("maxRows"));
-    args.append(QCFTagArgument("previousCriteria"));
-    args.append(QCFTagArgument("startRow"));
-    args.append(QCFTagArgument("status"));
-    args.append(QCFTagArgument("suggestions"));
-    args.append(QCFTagArgument("type"));
-    ret["cfsearch"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("collection"), true));
+    args.append(QCFTagArgument(QStringLiteral("category")));
+    args.append(QCFTagArgument(QStringLiteral("categoryTree")));
+    args.append(QCFTagArgument(QStringLiteral("contextBytes")));
+    args.append(QCFTagArgument(QStringLiteral("contextHighlightBegin")));
+    args.append(QCFTagArgument(QStringLiteral("contextHighlightEnd")));
+    args.append(QCFTagArgument(QStringLiteral("contextPassages")));
+    args.append(QCFTagArgument(QStringLiteral("criteria")));
+    args.append(QCFTagArgument(QStringLiteral("language")));
+    args.append(QCFTagArgument(QStringLiteral("maxRows")));
+    args.append(QCFTagArgument(QStringLiteral("previousCriteria")));
+    args.append(QCFTagArgument(QStringLiteral("startRow")));
+    args.append(QCFTagArgument(QStringLiteral("status")));
+    args.append(QCFTagArgument(QStringLiteral("suggestions")));
+    args.append(QCFTagArgument(QStringLiteral("type")));
+    ret[QStringLiteral("cfsearch")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfselect", QCFTag("cfselect", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfselect"), QCFTag(QStringLiteral("cfselect"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
 	// TODO: more..
-	ret["cfselect"].m_ArgumentVariants.append(args);
+    ret[QStringLiteral("cfselect")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfservlet", QCFTag("cfservlet", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfservlet"), QCFTag(QStringLiteral("cfservlet"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfservletparam", QCFTag("cfservletparam", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfservletparam"), QCFTag(QStringLiteral("cfservletparam"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfset", QCFTag("cfset", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeExpression));
+	ret.insert(QStringLiteral("cfset"), QCFTag(QStringLiteral("cfset"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeExpression));
 
-	ret.insert("cfsetting", QCFTag("cfsetting", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfsetting"), QCFTag(QStringLiteral("cfsetting"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("enableCFoutputOnly"));
-	args.append(QCFTagArgument("requestTimeout"));
-	args.append(QCFTagArgument("showDebugOutput"));
-	ret["cfsetting"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("enableCFoutputOnly")));
+    args.append(QCFTagArgument(QStringLiteral("requestTimeout")));
+    args.append(QCFTagArgument(QStringLiteral("showDebugOutput")));
+    ret[QStringLiteral("cfsetting")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfsilent", QCFTag("cfsilent", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfsilent"), QCFTag(QStringLiteral("cfsilent"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfslider", QCFTag("cfslider", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfslider"), QCFTag(QStringLiteral("cfslider"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfsprydataset", QCFTag("cfsprydataset", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfsprydataset"), QCFTag(QStringLiteral("cfsprydataset"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-    ret.insert("cfstoredproc", QCFTag("cfstoredproc", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+    ret.insert(QStringLiteral("cfstoredproc"), QCFTag(QStringLiteral("cfstoredproc"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("dataSource", true));
-    args.append(QCFTagArgument("procedure", true));
-    args.append(QCFTagArgument("blockFactor"));
-    args.append(QCFTagArgument("debug"));
-    args.append(QCFTagArgument("password"));
-    args.append(QCFTagArgument("result"));
-    args.append(QCFTagArgument("returnCode"));
-    args.append(QCFTagArgument("username"));
-    ret["cfstoredproc"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("dataSource"), true));
+    args.append(QCFTagArgument(QStringLiteral("procedure"), true));
+    args.append(QCFTagArgument(QStringLiteral("blockFactor")));
+    args.append(QCFTagArgument(QStringLiteral("debug")));
+    args.append(QCFTagArgument(QStringLiteral("password")));
+    args.append(QCFTagArgument(QStringLiteral("result")));
+    args.append(QCFTagArgument(QStringLiteral("returnCode")));
+    args.append(QCFTagArgument(QStringLiteral("username")));
+    ret[QStringLiteral("cfstoredproc")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfswitch", QCFTag("cfswitch", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfswitch"), QCFTag(QStringLiteral("cfswitch"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("expression", true));
-	ret["cfswitch"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("expression"), true));
+    ret[QStringLiteral("cfswitch")].m_ArgumentVariants.append(args);
 
-	ret.insert("cftable", QCFTag("cftable", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cftable"), QCFTag(QStringLiteral("cftable"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-    ret.insert("cftextarea", QCFTag("cftextarea", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+    ret.insert(QStringLiteral("cftextarea"), QCFTag(QStringLiteral("cftextarea"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("name", true));
-    args.append(QCFTagArgument("basepath"));
-    args.append(QCFTagArgument("bind"));
-    args.append(QCFTagArgument("bindAttribute"));
-    args.append(QCFTagArgument("bindOnLoad"));
-    args.append(QCFTagArgument("disabled"));
-    args.append(QCFTagArgument("enabled"));
-    args.append(QCFTagArgument("fontFormats"));
-    args.append(QCFTagArgument("fontNames"));
-    args.append(QCFTagArgument("fontSizes"));
-    args.append(QCFTagArgument("height"));
-    args.append(QCFTagArgument("html"));
-    args.append(QCFTagArgument("label"));
-    args.append(QCFTagArgument("maxlength"));
-    args.append(QCFTagArgument("message"));
-    args.append(QCFTagArgument("onBindError"));
-    args.append(QCFTagArgument("onChange"));
-    args.append(QCFTagArgument("onClick"));
-    args.append(QCFTagArgument("onError"));
-    args.append(QCFTagArgument("onKeyDown"));
-    args.append(QCFTagArgument("onKeyUp"));
-    args.append(QCFTagArgument("onMouseDown"));
-    args.append(QCFTagArgument("onMouseUp"));
-    args.append(QCFTagArgument("onValidate"));
-    args.append(QCFTagArgument("pattern"));
-    args.append(QCFTagArgument("range"));
-    args.append(QCFTagArgument("required"));
-    args.append(QCFTagArgument("richtext"));
-    args.append(QCFTagArgument("skin"));
-    args.append(QCFTagArgument("sourceForToolTip"));
-    args.append(QCFTagArgument("style"));
-    args.append(QCFTagArgument("stylesXML"));
-    args.append(QCFTagArgument("templatesXML"));
-    args.append(QCFTagArgument("toolbar"));
-    args.append(QCFTagArgument("toolbarOnFocus"));
-    args.append(QCFTagArgument("tooltip"));
-    args.append(QCFTagArgument("validate"));
-    args.append(QCFTagArgument("validateAt"));
-    args.append(QCFTagArgument("value"));
-    args.append(QCFTagArgument("visible"));
-    args.append(QCFTagArgument("width"));
-    args.append(QCFTagArgument("wrap"));
-    ret["cftextarea"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true));
+    args.append(QCFTagArgument(QStringLiteral("basepath")));
+    args.append(QCFTagArgument(QStringLiteral("bind")));
+    args.append(QCFTagArgument(QStringLiteral("bindAttribute")));
+    args.append(QCFTagArgument(QStringLiteral("bindOnLoad")));
+    args.append(QCFTagArgument(QStringLiteral("disabled")));
+    args.append(QCFTagArgument(QStringLiteral("enabled")));
+    args.append(QCFTagArgument(QStringLiteral("fontFormats")));
+    args.append(QCFTagArgument(QStringLiteral("fontNames")));
+    args.append(QCFTagArgument(QStringLiteral("fontSizes")));
+    args.append(QCFTagArgument(QStringLiteral("height")));
+    args.append(QCFTagArgument(QStringLiteral("html")));
+    args.append(QCFTagArgument(QStringLiteral("label")));
+    args.append(QCFTagArgument(QStringLiteral("maxlength")));
+    args.append(QCFTagArgument(QStringLiteral("message")));
+    args.append(QCFTagArgument(QStringLiteral("onBindError")));
+    args.append(QCFTagArgument(QStringLiteral("onChange")));
+    args.append(QCFTagArgument(QStringLiteral("onClick")));
+    args.append(QCFTagArgument(QStringLiteral("onError")));
+    args.append(QCFTagArgument(QStringLiteral("onKeyDown")));
+    args.append(QCFTagArgument(QStringLiteral("onKeyUp")));
+    args.append(QCFTagArgument(QStringLiteral("onMouseDown")));
+    args.append(QCFTagArgument(QStringLiteral("onMouseUp")));
+    args.append(QCFTagArgument(QStringLiteral("onValidate")));
+    args.append(QCFTagArgument(QStringLiteral("pattern")));
+    args.append(QCFTagArgument(QStringLiteral("range")));
+    args.append(QCFTagArgument(QStringLiteral("required")));
+    args.append(QCFTagArgument(QStringLiteral("richtext")));
+    args.append(QCFTagArgument(QStringLiteral("skin")));
+    args.append(QCFTagArgument(QStringLiteral("sourceForToolTip")));
+    args.append(QCFTagArgument(QStringLiteral("style")));
+    args.append(QCFTagArgument(QStringLiteral("stylesXML")));
+    args.append(QCFTagArgument(QStringLiteral("templatesXML")));
+    args.append(QCFTagArgument(QStringLiteral("toolbar")));
+    args.append(QCFTagArgument(QStringLiteral("toolbarOnFocus")));
+    args.append(QCFTagArgument(QStringLiteral("tooltip")));
+    args.append(QCFTagArgument(QStringLiteral("validate")));
+    args.append(QCFTagArgument(QStringLiteral("validateAt")));
+    args.append(QCFTagArgument(QStringLiteral("value")));
+    args.append(QCFTagArgument(QStringLiteral("visible")));
+    args.append(QCFTagArgument(QStringLiteral("width")));
+    args.append(QCFTagArgument(QStringLiteral("wrap")));
+    ret[QStringLiteral("cftextarea")].m_ArgumentVariants.append(args);
 
-	ret.insert("cftextinput", QCFTag("cftextinput", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cftextinput"), QCFTag(QStringLiteral("cftextinput"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfthread", QCFTag("cfthread", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfthread"), QCFTag(QStringLiteral("cfthread"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("action"));
-    args.append(QCFTagArgument("duration"));
-    args.append(QCFTagArgument("name"));
-    args.append(QCFTagArgument("priority"));
-    args.append(QCFTagArgument("timeout"));
-    ret["cfthread"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("action")));
+    args.append(QCFTagArgument(QStringLiteral("duration")));
+    args.append(QCFTagArgument(QStringLiteral("name")));
+    args.append(QCFTagArgument(QStringLiteral("priority")));
+    args.append(QCFTagArgument(QStringLiteral("timeout")));
+    ret[QStringLiteral("cfthread")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfthrow", QCFTag("cfthrow", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfthrow"), QCFTag(QStringLiteral("cfthrow"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("detail"));
-    args.append(QCFTagArgument("errorCode"));
-    args.append(QCFTagArgument("extendedInfo"));
-    args.append(QCFTagArgument("message"));
-    ret["cfthrow"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("detail")));
+    args.append(QCFTagArgument(QStringLiteral("errorCode")));
+    args.append(QCFTagArgument(QStringLiteral("extendedInfo")));
+    args.append(QCFTagArgument(QStringLiteral("message")));
+    ret[QStringLiteral("cfthrow")].m_ArgumentVariants.append(args);
 
-	ret.insert("cftimer", QCFTag("cftimer", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cftimer"), QCFTag(QStringLiteral("cftimer"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("label", false, QCFTagArgument::TypeConstantString));
-    ret["cftimer"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("label"), false, QCFTagArgument::TypeConstantString));
+    ret[QStringLiteral("cftimer")].m_ArgumentVariants.append(args);
     args.clear();
-    args.append(QCFTagArgument("label", false, QCFTagArgument::TypeConstantString));
-    args.append(QCFTagArgument("type", false, QCFTagArgument::TypeConstantString, "inline"));
-    ret["cftimer"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("label"), false, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("type"), false, QCFTagArgument::TypeConstantString, QStringLiteral("inline")));
+    ret[QStringLiteral("cftimer")].m_ArgumentVariants.append(args);
     args.clear();
-    args.append(QCFTagArgument("label", false, QCFTagArgument::TypeConstantString));
-    args.append(QCFTagArgument("type", false, QCFTagArgument::TypeConstantString, "outline"));
-    ret["cftimer"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("label"), false, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("type"), false, QCFTagArgument::TypeConstantString, QStringLiteral("outline")));
+    ret[QStringLiteral("cftimer")].m_ArgumentVariants.append(args);
     args.clear();
-    args.append(QCFTagArgument("label", false, QCFTagArgument::TypeConstantString));
-    args.append(QCFTagArgument("type", false, QCFTagArgument::TypeConstantString, "comment"));
-    ret["cftimer"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("label"), false, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("type"), false, QCFTagArgument::TypeConstantString, QStringLiteral("comment")));
+    ret[QStringLiteral("cftimer")].m_ArgumentVariants.append(args);
     args.clear();
-    args.append(QCFTagArgument("label", false, QCFTagArgument::TypeConstantString));
-    args.append(QCFTagArgument("type", false, QCFTagArgument::TypeConstantString, "debug"));
-    ret["cftimer"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("label"), false, QCFTagArgument::TypeConstantString));
+    args.append(QCFTagArgument(QStringLiteral("type"), false, QCFTagArgument::TypeConstantString, QStringLiteral("debug")));
+    ret[QStringLiteral("cftimer")].m_ArgumentVariants.append(args);
 
-	ret.insert("cftooltip", QCFTag("cftooltip", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cftooltip"), QCFTag(QStringLiteral("cftooltip"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cftrace", QCFTag("cftrace", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cftrace"), QCFTag(QStringLiteral("cftrace"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("abort"));
-	args.append(QCFTagArgument("category"));
-	args.append(QCFTagArgument("inline"));
-	args.append(QCFTagArgument("text"));
-	ret["cftrace"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("abort")));
+    args.append(QCFTagArgument(QStringLiteral("category")));
+    args.append(QCFTagArgument(QStringLiteral("inline")));
+    args.append(QCFTagArgument(QStringLiteral("text")));
+    ret[QStringLiteral("cftrace")].m_ArgumentVariants.append(args);
 
-	ret.insert("cftransaction", QCFTag("cftransaction", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cftransaction"), QCFTag(QStringLiteral("cftransaction"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cftree", QCFTag("cftree", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cftree"), QCFTag(QStringLiteral("cftree"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cftreeitem", QCFTag("cftreeitem", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cftreeitem"), QCFTag(QStringLiteral("cftreeitem"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cftry", QCFTag("cftry", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cftry"), QCFTag(QStringLiteral("cftry"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfupdate", QCFTag("cfupdate", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfupdate"), QCFTag(QStringLiteral("cfupdate"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
-    ret.insert("cfwddx", QCFTag("cfwddx", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+    ret.insert(QStringLiteral("cfwddx"), QCFTag(QStringLiteral("cfwddx"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
     args.clear();
-    args.append(QCFTagArgument("name", true, QCFTagArgument::TypeConstantString, "cfml2wddx"));
-    args.append(QCFTagArgument("input", true));
-    args.append(QCFTagArgument("output", false));
-    args.append(QCFTagArgument("useTimeZoneInfo", false));
-    ret["cfwddx"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true, QCFTagArgument::TypeConstantString, QStringLiteral("cfml2wddx")));
+    args.append(QCFTagArgument(QStringLiteral("input"), true));
+    args.append(QCFTagArgument(QStringLiteral("output"), false));
+    args.append(QCFTagArgument(QStringLiteral("useTimeZoneInfo"), false));
+    ret[QStringLiteral("cfwddx")].m_ArgumentVariants.append(args);
     args.clear();
-    args.append(QCFTagArgument("name", true, QCFTagArgument::TypeConstantString, "wddx2cfml"));
-    args.append(QCFTagArgument("input", true));
-    args.append(QCFTagArgument("output", true));
-    args.append(QCFTagArgument("validate", false));
-    ret["cfwddx"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true, QCFTagArgument::TypeConstantString, QStringLiteral("wddx2cfml")));
+    args.append(QCFTagArgument(QStringLiteral("input"), true));
+    args.append(QCFTagArgument(QStringLiteral("output"), true));
+    args.append(QCFTagArgument(QStringLiteral("validate"), false));
+    ret[QStringLiteral("cfwddx")].m_ArgumentVariants.append(args);
     args.clear();
-    args.append(QCFTagArgument("name", true, QCFTagArgument::TypeConstantString, "cfml2js"));
-    args.append(QCFTagArgument("input", true));
-    args.append(QCFTagArgument("output", false));
-    args.append(QCFTagArgument("topLevelVariable", true));
-    ret["cfwddx"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true, QCFTagArgument::TypeConstantString, QStringLiteral("cfml2js")));
+    args.append(QCFTagArgument(QStringLiteral("input"), true));
+    args.append(QCFTagArgument(QStringLiteral("output"), false));
+    args.append(QCFTagArgument(QStringLiteral("topLevelVariable"), true));
+    ret[QStringLiteral("cfwddx")].m_ArgumentVariants.append(args);
     args.clear();
-    args.append(QCFTagArgument("name", true, QCFTagArgument::TypeConstantString, "wddx2js"));
-    args.append(QCFTagArgument("input", true));
-    args.append(QCFTagArgument("output", false));
-    args.append(QCFTagArgument("topLevelVariable", true));
-    args.append(QCFTagArgument("validate", false));
-    ret["cfwddx"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("name"), true, QCFTagArgument::TypeConstantString, QStringLiteral("wddx2js")));
+    args.append(QCFTagArgument(QStringLiteral("input"), true));
+    args.append(QCFTagArgument(QStringLiteral("output"), false));
+    args.append(QCFTagArgument(QStringLiteral("topLevelVariable"), true));
+    args.append(QCFTagArgument(QStringLiteral("validate"), false));
+    ret[QStringLiteral("cfwddx")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfwindow", QCFTag("cfwindow", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfwindow"), QCFTag(QStringLiteral("cfwindow"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfxml", QCFTag("cfxml", QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfxml"), QCFTag(QStringLiteral("cfxml"), QCFTag::TagTypeWithCloseTag, QCFTag::ArgumentsTypeArguments));
 	args.clear();
-	args.append(QCFTagArgument("variable", true));
-	args.append(QCFTagArgument("caseSensitive"));
-	ret["cfxml"].m_ArgumentVariants.append(args);
+    args.append(QCFTagArgument(QStringLiteral("variable"), true));
+    args.append(QCFTagArgument(QStringLiteral("caseSensitive")));
+    ret[QStringLiteral("cfxml")].m_ArgumentVariants.append(args);
 
-	ret.insert("cfzip", QCFTag("cfzip", QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfzip"), QCFTag(QStringLiteral("cfzip"), QCFTag::TagTypeNoRestriction, QCFTag::ArgumentsTypeArguments));
 
-	ret.insert("cfzipparam", QCFTag("cfzipparam", QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
+	ret.insert(QStringLiteral("cfzipparam"), QCFTag(QStringLiteral("cfzipparam"), QCFTag::TagTypeWithoutCloseTag, QCFTag::ArgumentsTypeArguments));
 
 	return ret;
 }
@@ -1296,538 +1296,538 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 {
 	QHash<QString, QCFFunction> ret;
 
-	ret.insert("abs", QCFFunction("Abs", QCFFunction::ReturnDouble));
-	ret["abs"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true));
+	ret.insert(QStringLiteral("abs"), QCFFunction("Abs", QCFFunction::ReturnDouble));
+    ret[QStringLiteral("abs")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true));
 
-	ret.insert("acos", QCFFunction("ACos", QCFFunction::ReturnDouble));
-	ret["acos"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true));
+	ret.insert(QStringLiteral("acos"), QCFFunction("ACos", QCFFunction::ReturnDouble));
+    ret[QStringLiteral("acos")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true));
 
-    ret.insert("addsoaprequestheader", QCFFunction("AddSOAPRequestHeader", QCFFunction::ReturnVoid));
-    ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
-    ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
-    ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
-    ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
-    ret["addsoaprequestheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false));
+    ret.insert(QStringLiteral("addsoaprequestheader"), QCFFunction("AddSOAPRequestHeader", QCFFunction::ReturnVoid));
+    ret[QStringLiteral("addsoaprequestheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("addsoaprequestheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret[QStringLiteral("addsoaprequestheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret[QStringLiteral("addsoaprequestheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
+    ret[QStringLiteral("addsoaprequestheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false));
 
-    ret.insert("addsoapresponseheader", QCFFunction("AddSOAPResponseHeader", QCFFunction::ReturnVoid));
-    ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
-    ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
-    ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
-    ret["addsoapresponseheader"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false));
+    ret.insert(QStringLiteral("addsoapresponseheader"), QCFFunction("AddSOAPResponseHeader", QCFFunction::ReturnVoid));
+    ret[QStringLiteral("addsoapresponseheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret[QStringLiteral("addsoapresponseheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret[QStringLiteral("addsoapresponseheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
+    ret[QStringLiteral("addsoapresponseheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false));
 
-    ret.insert("ajaxlink", QCFFunction("AjaxLink", QCFFunction::ReturnString));
-    ret["ajaxlink"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret.insert(QStringLiteral("ajaxlink"), QCFFunction("AjaxLink", QCFFunction::ReturnString));
+    ret[QStringLiteral("ajaxlink")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
 
-    ret.insert("ajaxonload", QCFFunction("AjaxOnLoad", QCFFunction::ReturnVoid));
-    ret["ajaxonload"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
+    ret.insert(QStringLiteral("ajaxonload"), QCFFunction("AjaxOnLoad", QCFFunction::ReturnVoid));
+    ret[QStringLiteral("ajaxonload")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
 
-	ret.insert("arrayappend", QCFFunction("ArrayAppend", QCFFunction::ReturnBool));
-	ret["arrayappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-	ret["arrayappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true));
+	ret.insert(QStringLiteral("arrayappend"), QCFFunction("ArrayAppend", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arrayappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("arrayappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true));
 
-	ret.insert("arrayavg", QCFFunction("ArrayAvg", QCFFunction::ReturnDouble));
-	ret["arrayavg"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+	ret.insert(QStringLiteral("arrayavg"), QCFFunction("ArrayAvg", QCFFunction::ReturnDouble));
+    ret[QStringLiteral("arrayavg")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
-	ret.insert("arrayclear", QCFFunction("ArrayClear", QCFFunction::ReturnBool));
-	ret["arrayclear"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+	ret.insert(QStringLiteral("arrayclear"), QCFFunction("ArrayClear", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arrayclear")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
-	ret.insert("arraydeleteat", QCFFunction("ArrayDeleteAt", QCFFunction::ReturnBool));
-	ret["arraydeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-	ret["arraydeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
+	ret.insert(QStringLiteral("arraydeleteat"), QCFFunction("ArrayDeleteAt", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arraydeleteat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("arraydeleteat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
 
-    ret.insert("arrayinsertsat", QCFFunction("ArrayInsertAt", QCFFunction::ReturnBool));
-    ret["arrayinsertsat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["arrayinsertsat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["arrayinsertsat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("arrayinsertsat"), QCFFunction("ArrayInsertAt", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arrayinsertsat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("arrayinsertsat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("arrayinsertsat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true, QCFFunctionArgument::TypeAny));
 
-    ret.insert("arrayisdefined", QCFFunction("ArrayIsDefined", QCFFunction::ReturnBool));
-    ret["arrayisdefined"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["arrayisdefined"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("arrayisdefined"), QCFFunction("ArrayIsDefined", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arrayisdefined")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("arrayisdefined")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
-    ret.insert("arrayisempty", QCFFunction("ArrayIsEmpty", QCFFunction::ReturnBool));
-    ret["arrayisempty"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret.insert(QStringLiteral("arrayisempty"), QCFFunction("ArrayIsEmpty", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arrayisempty")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
-    ret.insert("arraylen", QCFFunction("ArrayLen", QCFFunction::ReturnBool));
-    ret["arraylen"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret.insert(QStringLiteral("arraylen"), QCFFunction("ArrayLen", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arraylen")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
-    ret.insert("arraymax", QCFFunction("ArrayMax", QCFFunction::ReturnDouble));
-    ret["arraymax"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret.insert(QStringLiteral("arraymax"), QCFFunction("ArrayMax", QCFFunction::ReturnDouble));
+    ret[QStringLiteral("arraymax")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
-    ret.insert("arraymin", QCFFunction("ArrayMin", QCFFunction::ReturnDouble));
-    ret["arraymin"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret.insert(QStringLiteral("arraymin"), QCFFunction("ArrayMin", QCFFunction::ReturnDouble));
+    ret[QStringLiteral("arraymin")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
-    ret.insert("arraynew", QCFFunction("ArrayNew", QCFFunction::ReturnQWDDX));
-    ret["arraynew"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("arraynew"), QCFFunction("ArrayNew", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("arraynew")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
-    ret.insert("arrayprepend", QCFFunction("ArrayPrepend", QCFFunction::ReturnBool));
-    ret["arrayprepend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["arrayprepend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("arrayprepend"), QCFFunction("ArrayPrepend", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arrayprepend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("arrayprepend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true, QCFFunctionArgument::TypeAny));
 
-    ret.insert("arrayresize", QCFFunction("ArrayResize", QCFFunction::ReturnBool));
-    ret["arrayresize"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["arrayresize"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("arrayresize"), QCFFunction("ArrayResize", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arrayresize")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("arrayresize")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
-    ret.insert("arrayset", QCFFunction("ArraySet", QCFFunction::ReturnBool));
-    ret["arrayset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["arrayset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["arrayset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["arrayset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("arrayset"), QCFFunction("ArraySet", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arrayset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("arrayset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("arrayset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("arrayset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
 
-    ret.insert("arraysort", QCFFunction("ArraySort", QCFFunction::ReturnBool));
-    ret["arraysort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["arraysort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["arraysort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("arraysort"), QCFFunction("ArraySort", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arraysort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("arraysort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("arraysort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
-    ret.insert("arraysum", QCFFunction("ArraySum", QCFFunction::ReturnDouble));
-    ret["arraysum"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret.insert(QStringLiteral("arraysum"), QCFFunction("ArraySum", QCFFunction::ReturnDouble));
+    ret[QStringLiteral("arraysum")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
 
-    ret.insert("arrayswap", QCFFunction("ArraySwap", QCFFunction::ReturnBool));
-    ret["arrayswap"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["arrayswap"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["arrayswap"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("arrayswap"), QCFFunction("ArraySwap", QCFFunction::ReturnBool));
+    ret[QStringLiteral("arrayswap")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("arrayswap")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("arrayswap")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
-    ret.insert("arraytolist", QCFFunction("ArrayToList", QCFFunction::ReturnString));
-    ret["arraytolist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["arraytolist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("arraytolist"), QCFFunction("ArrayToList", QCFFunction::ReturnString));
+    ret[QStringLiteral("arraytolist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("arraytolist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
-    ret.insert("asc", QCFFunction("Asc", QCFFunction::ReturnInt));
-    ret["asc"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("asc"), QCFFunction("Asc", QCFFunction::ReturnInt));
+    ret[QStringLiteral("asc")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
-    ret.insert("asin", QCFFunction("ASin", QCFFunction::ReturnDouble));
-    ret["asin"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("asin"), QCFFunction("ASin", QCFFunction::ReturnDouble));
+    ret[QStringLiteral("asin")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
 
-    ret.insert("atn", QCFFunction("Atn", QCFFunction::ReturnDouble));
-    ret["atn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("atn"), QCFFunction("Atn", QCFFunction::ReturnDouble));
+    ret[QStringLiteral("atn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
 
     // AuthenticatedContext obsolete
     // AuthenticatedUser obsolete
 
-    ret.insert("binarydecode", QCFFunction("BinaryDecode", QCFFunction::ReturnBinary));
-    ret["binarydecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["binarydecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("binaryencode", QCFFunction("BinaryEncode", QCFFunction::ReturnString));
-    ret["binaryencode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBinary, true, QCFFunctionArgument::TypeAny));
-    ret["binaryencode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("bitand", QCFFunction("BitAnd", QCFFunction::ReturnInt));
-    ret["bitand"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["bitand"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("bitmaskclear", QCFFunction("BitMaskClear", QCFFunction::ReturnInt));
-    ret["bitmaskclear"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["bitmaskclear"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["bitmaskclear"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("bitmaskread", QCFFunction("BitMaskRead", QCFFunction::ReturnInt));
-    ret["bitmaskread"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["bitmaskread"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["bitmaskread"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("bitmaskset", QCFFunction("BitMaskSet", QCFFunction::ReturnInt));
-    ret["bitmaskset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["bitmaskset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["bitmaskset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["bitmaskset"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("bitnot", QCFFunction("BitNot", QCFFunction::ReturnInt));
-    ret["bitnot"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("bitor", QCFFunction("BitOr", QCFFunction::ReturnInt));
-    ret["bitor"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("bitshln", QCFFunction("BitSHLN", QCFFunction::ReturnInt));
-    ret["bitshln"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["bitshln"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("bitshrn", QCFFunction("BitSHRN", QCFFunction::ReturnInt));
-    ret["bitshrn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["bitshrn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("bitxor", QCFFunction("BitXor", QCFFunction::ReturnInt));
-    ret["bitxor"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["bitxor"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("ceiling", QCFFunction("Ceiling", QCFFunction::ReturnInt));
-    ret["ceiling"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("charsetdecode", QCFFunction("CharsetDecode", QCFFunction::ReturnBinary));
-    ret["charsetdecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["charsetdecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("charsetencode", QCFFunction("CharsetEncode", QCFFunction::ReturnString));
-    ret["charsetdecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBinary, true, QCFFunctionArgument::TypeAny));
-    ret["charsetdecode"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-	ret.insert("chr", QCFFunction("Chr", QCFFunction::ReturnString));
-	ret["chr"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("cjustify", QCFFunction("CJustify", QCFFunction::ReturnString));
-    ret["cjustify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["cjustify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("compare", QCFFunction("Compare", QCFFunction::ReturnInt));
-    ret["compare"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["compare"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("comparenocase", QCFFunction("CompareNoCase", QCFFunction::ReturnInt));
-    ret["comparenocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["comparenocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("cos", QCFFunction("Cos", QCFFunction::ReturnDouble));
-    ret["cos"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("createdate", QCFFunction("CreateDate", QCFFunction::ReturnDateTime));
-    ret["createdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["createdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["createdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("createdatetime", QCFFunction("CreateDateTime", QCFFunction::ReturnDateTime));
-    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["createdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("createobject", QCFFunction("CreateObject", QCFFunction::ReturnQWDDX, true));
-    ret["createobject"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeConstant));
-    ret["createobject"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeConstant));
-
-    ret.insert("createodbcdatetime", QCFFunction("CreateODBCDateTime", QCFFunction::ReturnDateTime));
-    ret["createodbcdatetime"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("createuuid", QCFFunction("CreateUUID", QCFFunction::ReturnString));
-
-    ret.insert("datecompare", QCFFunction("DateCompare", QCFFunction::ReturnInt));
-    ret["datecompare"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
-    ret["datecompare"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
-    ret["datecompare"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("dateformat", QCFFunction("DateFormat", QCFFunction::ReturnString));
-    ret["dateformat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["dateformat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["dateformat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("decrypt", QCFFunction("Decrypt", QCFFunction::ReturnString));
-    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, false, QCFFunctionArgument::TypeAny));
-    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("duplicate", QCFFunction("Duplicate", QCFFunction::ReturnQWDDX));
-    ret["duplicate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("encrypt", QCFFunction("Encrypt", QCFFunction::ReturnString));
-    ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["decrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, false, QCFFunctionArgument::TypeAny));
-    ret["encrypt"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("fileexists", QCFFunction("FileExists", QCFFunction::ReturnBool));
-    ret["fileexists"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("find", QCFFunction("Find", QCFFunction::ReturnInt));
-    ret["find"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["find"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["find"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("findnocase", QCFFunction("FindNoCase", QCFFunction::ReturnInt));
-    ret["findnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["findnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["findnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("findoneof", QCFFunction("FindOneOf", QCFFunction::ReturnInt));
-    ret["findoneof"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["findoneof"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["findoneof"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("formatbasen", QCFFunction("FormatBaseN", QCFFunction::ReturnString));
-    ret["formatbasen"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["formatbasen"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("getclientvariableslist", QCFFunction("GetClientVariablesList", QCFFunction::ReturnString));
-
-	ret.insert("fix", QCFFunction("Fix", QCFFunction::ReturnInt));
-	ret["fix"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("getbasetagdata", QCFFunction("GetBaseTagData", QCFFunction::ReturnQWDDX, true));
-    ret["getbasetagdata"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["getbasetagdata"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("getbasetaglist", QCFFunction("GetBaseTagList", QCFFunction::ReturnString, true));
-
-    ret.insert("int", QCFFunction("Int", QCFFunction::ReturnString));
-    ret["int"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("isarray", QCFFunction("IsArray", QCFFunction::ReturnBool));
-    ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["isarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("isdefined", QCFFunction("IsDefined", QCFFunction::ReturnBool, true));
-    ret["isdefined"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("isstruct", QCFFunction("IsStruct", QCFFunction::ReturnBool));
-    ret["isstruct"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-
-    ret.insert("isquery", QCFFunction("IsQuery", QCFFunction::ReturnBool));
-    ret["isquery"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-
-	ret.insert("lcase", QCFFunction("LCase", QCFFunction::ReturnString));
-	ret["lcase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-	ret.insert("left", QCFFunction("Left", QCFFunction::ReturnString));
-	ret["left"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-	ret["left"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-	ret.insert("len", QCFFunction("Len", QCFFunction::ReturnInt));
-	ret["len"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listappend", QCFFunction("ListAppend", QCFFunction::ReturnString));
-    ret["listappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-    ret["listappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listchangedelims", QCFFunction("ListChangeDelims", QCFFunction::ReturnString));
-    ret["listchangedelims"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listchangedelims"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listchangedelims"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listcontains", QCFFunction("ListContains", QCFFunction::ReturnString));
-    ret["listcontains"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listcontains"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listcontains"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listcontainsnocase", QCFFunction("ListContainsNoCase", QCFFunction::ReturnString));
-    ret["listcontainsnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listcontainsnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listcontainsnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listdeleteat", QCFFunction("ListDeleteAt", QCFFunction::ReturnString));
-    ret["listdeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listdeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["listdeleteat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listfind", QCFFunction("ListFind", QCFFunction::ReturnInt));
-    ret["listfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["listfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listfindnocase", QCFFunction("ListFindNoCase", QCFFunction::ReturnInt));
-    ret["listfindnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listfindnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["listfindnocase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listfirst", QCFFunction("ListFirst", QCFFunction::ReturnString));
-    ret["listfirst"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listfirst"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listgetat", QCFFunction("ListGetAt", QCFFunction::ReturnString));
-    ret["listgetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listgetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["listgetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listinsertat", QCFFunction("ListInsertAt", QCFFunction::ReturnString));
-    ret["listinsertat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listinsertat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["listinsertat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listinsertat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listlast", QCFFunction("ListLast", QCFFunction::ReturnString));
-    ret["listlast"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listlast"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listlen", QCFFunction("ListLen", QCFFunction::ReturnInt));
-    ret["listlen"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listlen"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listprepend", QCFFunction("ListPrepend", QCFFunction::ReturnString));
-    ret["listprepend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listprepend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listprepend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listqualify", QCFFunction("ListQualify", QCFFunction::ReturnString));
-    ret["listqualify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listqualify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listqualify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["listqualify"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listrest", QCFFunction("ListRest", QCFFunction::ReturnString));
-    ret["listrest"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listrest"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listsetat", QCFFunction("ListSetAt", QCFFunction::ReturnString));
-    ret["listsetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listsetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["listsetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["listsetat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listsort", QCFFunction("ListSort", QCFFunction::ReturnString));
-    ret["listsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["listsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listvaluecount", QCFFunction("ListValueCount", QCFFunction::ReturnInt));
-    ret["listvaluecount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listvaluecount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listvaluecount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listvaluecountnocount", QCFFunction("ListValueCountNoCase", QCFFunction::ReturnInt));
-    ret["listvaluecountnocount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listvaluecountnocount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listvaluecountnocount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("listtoarray", QCFFunction("ListToArray", QCFFunction::ReturnQWDDX));
-    ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["listtoarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("now", QCFFunction("Now", QCFFunction::ReturnDateTime));
-
-    ret.insert("queryaddrow", QCFFunction("QueryAddRow", QCFFunction::ReturnInt));
-    ret["queryaddrow"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-    ret["queryaddrow"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("querynew", QCFFunction("QueryNew", QCFFunction::ReturnQWDDX));
-    ret["querynew"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["querynew"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("quotedvaluelist", QCFFunction("QuotedValueList", QCFFunction::ReturnString));
-    ret["quotedvaluelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-    ret["quotedvaluelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("queryaddcolumn", QCFFunction("QueryAddColumn", QCFFunction::ReturnInt));
-    ret["queryaddcolumn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-    ret["queryaddcolumn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["queryaddcolumn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["queryaddcolumn"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("queryconvertforgrid", QCFFunction("QueryConvertForGrid", QCFFunction::ReturnQWDDX));
-    ret["queryconvertforgrid"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-    ret["queryconvertforgrid"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-    ret["queryconvertforgrid"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("querysetcell", QCFFunction("QuerySetCell", QCFFunction::ReturnBool));
-    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-    ret["querysetcell"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("quotedvalue", QCFFunction("QuotedValue", QCFFunction::ReturnString));
-    ret["quotedvalue"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-    ret["quotedvalue"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("replace", QCFFunction("Replace", QCFFunction::ReturnString));
-    ret["replace"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["replace"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["replace"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["replace"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("replacelist", QCFFunction("ReplaceList", QCFFunction::ReturnString));
-    ret["replacelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["replacelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["replacelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("reverse", QCFFunction("Reverse", QCFFunction::ReturnString));
-    ret["reverse"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("right", QCFFunction("Right", QCFFunction::ReturnString));
-    ret["right"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["right"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("structappend", QCFFunction("StructAppend", QCFFunction::ReturnBool));
-    ret["structappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["structappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["structappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("structclear", QCFFunction("StructClear", QCFFunction::ReturnBool));
-    ret["structappend"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-
-    ret.insert("structcopy", QCFFunction("StructCopy", QCFFunction::ReturnQWDDX));
-    ret["structcopy"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-
-    ret.insert("structcount", QCFFunction("StructCount", QCFFunction::ReturnInt));
-    ret["structcount"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-
-    ret.insert("structdelete", QCFFunction("StructDelete", QCFFunction::ReturnBool));
-    ret["structdelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["structdelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["structdelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("structfind", QCFFunction("StructFind", QCFFunction::ReturnQWDDX));
-    ret["structfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["structfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("structfindkey", QCFFunction("StructFindKey", QCFFunction::ReturnQWDDX));
-    ret["structfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["structfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["structfind"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("structfindvalue", QCFFunction("StructFindValue", QCFFunction::ReturnQWDDX));
-    ret["structfindvalue"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["structfindvalue"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["structfindvalue"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("structget", QCFFunction("StructGet", QCFFunction::ReturnQWDDX));
-    ret["structget"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("structinsert", QCFFunction("StructInsert", QCFFunction::ReturnBool));
-    ret["structinsert"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["structinsert"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-    ret["structinsert"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-    ret["structdelete"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("structisempty", QCFFunction("StructIsEmpty", QCFFunction::ReturnBool));
-    ret["structisempty"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-
-    ret.insert("structkeyarray", QCFFunction("StructKeyArray", QCFFunction::ReturnQWDDX));
-    ret["structkeyarray"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-
-    ret.insert("structkeyexists", QCFFunction("StructKeyExists", QCFFunction::ReturnBool));
-    ret["structkeyexists"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["structkeyexists"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("structkeylist", QCFFunction("StructKeyList", QCFFunction::ReturnBool));
-    ret["structkeylist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["structkeylist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("structnew", QCFFunction("StructNew", QCFFunction::ReturnQWDDX));
-
-    ret.insert("structsort", QCFFunction("StructSort", QCFFunction::ReturnQWDDX));
-    ret["structsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["structsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["structsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-    ret["structsort"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("structupdate", QCFFunction("StructUpdate", QCFFunction::ReturnBool));
-    ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-    ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
-    ret["structupdate"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-
-    ret.insert("timeformat", QCFFunction("TimeFormat", QCFFunction::ReturnString));
-    ret["timeformat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
-    ret["timeformat"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("trim", QCFFunction("Trim", QCFFunction::ReturnString));
-    ret["trim"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("ucase", QCFFunction("UCase", QCFFunction::ReturnString));
-    ret["ucase"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("val", QCFFunction("Val", QCFFunction::ReturnDouble));
-    ret["val"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-
-    ret.insert("valuelist", QCFFunction("ValueList", QCFFunction::ReturnString));
-    ret["valuelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
-    ret["valuelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-
-    ret.insert("writeoutput", QCFFunction("WriteOutput", QCFFunction::ReturnVoid, true));
-    ret["writeoutput"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret.insert(QStringLiteral("binarydecode"), QCFFunction("BinaryDecode", QCFFunction::ReturnBinary));
+    ret[QStringLiteral("binarydecode")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("binarydecode")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("binaryencode"), QCFFunction("BinaryEncode", QCFFunction::ReturnString));
+    ret[QStringLiteral("binaryencode")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBinary, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("binaryencode")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("bitand"), QCFFunction("BitAnd", QCFFunction::ReturnInt));
+    ret[QStringLiteral("bitand")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("bitand")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("bitmaskclear"), QCFFunction("BitMaskClear", QCFFunction::ReturnInt));
+    ret[QStringLiteral("bitmaskclear")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("bitmaskclear")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("bitmaskclear")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("bitmaskread"), QCFFunction("BitMaskRead", QCFFunction::ReturnInt));
+    ret[QStringLiteral("bitmaskread")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("bitmaskread")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("bitmaskread")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("bitmaskset"), QCFFunction("BitMaskSet", QCFFunction::ReturnInt));
+    ret[QStringLiteral("bitmaskset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("bitmaskset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("bitmaskset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("bitmaskset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("bitnot"), QCFFunction("BitNot", QCFFunction::ReturnInt));
+    ret[QStringLiteral("bitnot")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("bitor"), QCFFunction("BitOr", QCFFunction::ReturnInt));
+    ret[QStringLiteral("bitor")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("bitshln"), QCFFunction("BitSHLN", QCFFunction::ReturnInt));
+    ret[QStringLiteral("bitshln")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("bitshln")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("bitshrn"), QCFFunction("BitSHRN", QCFFunction::ReturnInt));
+    ret[QStringLiteral("bitshrn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("bitshrn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("bitxor"), QCFFunction("BitXor", QCFFunction::ReturnInt));
+    ret[QStringLiteral("bitxor")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("bitxor")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("ceiling"), QCFFunction("Ceiling", QCFFunction::ReturnInt));
+    ret[QStringLiteral("ceiling")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("charsetdecode"), QCFFunction("CharsetDecode", QCFFunction::ReturnBinary));
+    ret[QStringLiteral("charsetdecode")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("charsetdecode")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("charsetencode"), QCFFunction("CharsetEncode", QCFFunction::ReturnString));
+    ret[QStringLiteral("charsetdecode")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBinary, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("charsetdecode")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+	ret.insert(QStringLiteral("chr"), QCFFunction("Chr", QCFFunction::ReturnString));
+    ret[QStringLiteral("chr")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("cjustify"), QCFFunction("CJustify", QCFFunction::ReturnString));
+    ret[QStringLiteral("cjustify")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("cjustify")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("compare"), QCFFunction("Compare", QCFFunction::ReturnInt));
+    ret[QStringLiteral("compare")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("compare")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("comparenocase"), QCFFunction("CompareNoCase", QCFFunction::ReturnInt));
+    ret[QStringLiteral("comparenocase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("comparenocase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("cos"), QCFFunction("Cos", QCFFunction::ReturnDouble));
+    ret[QStringLiteral("cos")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("createdate"), QCFFunction("CreateDate", QCFFunction::ReturnDateTime));
+    ret[QStringLiteral("createdate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("createdate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("createdate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("createdatetime"), QCFFunction("CreateDateTime", QCFFunction::ReturnDateTime));
+    ret[QStringLiteral("createdatetime")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("createdatetime")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("createdatetime")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("createdatetime")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("createdatetime")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("createdatetime")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("createobject"), QCFFunction("CreateObject", QCFFunction::ReturnQWDDX, true));
+    ret[QStringLiteral("createobject")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeConstant));
+    ret[QStringLiteral("createobject")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeConstant));
+
+    ret.insert(QStringLiteral("createodbcdatetime"), QCFFunction("CreateODBCDateTime", QCFFunction::ReturnDateTime));
+    ret[QStringLiteral("createodbcdatetime")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("createuuid"), QCFFunction("CreateUUID", QCFFunction::ReturnString));
+
+    ret.insert(QStringLiteral("datecompare"), QCFFunction("DateCompare", QCFFunction::ReturnInt));
+    ret[QStringLiteral("datecompare")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("datecompare")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("datecompare")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("dateformat"), QCFFunction("DateFormat", QCFFunction::ReturnString));
+    ret[QStringLiteral("dateformat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("dateformat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("dateformat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("decrypt"), QCFFunction("Decrypt", QCFFunction::ReturnString));
+    ret[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("duplicate"), QCFFunction("Duplicate", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("duplicate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("encrypt"), QCFFunction("Encrypt", QCFFunction::ReturnString));
+    ret[QStringLiteral("encrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("encrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("encrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("encrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("encrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("fileexists"), QCFFunction("FileExists", QCFFunction::ReturnBool));
+    ret[QStringLiteral("fileexists")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("find"), QCFFunction("Find", QCFFunction::ReturnInt));
+    ret[QStringLiteral("find")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("find")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("find")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("findnocase"), QCFFunction("FindNoCase", QCFFunction::ReturnInt));
+    ret[QStringLiteral("findnocase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("findnocase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("findnocase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("findoneof"), QCFFunction("FindOneOf", QCFFunction::ReturnInt));
+    ret[QStringLiteral("findoneof")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("findoneof")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("findoneof")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("formatbasen"), QCFFunction("FormatBaseN", QCFFunction::ReturnString));
+    ret[QStringLiteral("formatbasen")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("formatbasen")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("getclientvariableslist"), QCFFunction("GetClientVariablesList", QCFFunction::ReturnString));
+
+	ret.insert(QStringLiteral("fix"), QCFFunction("Fix", QCFFunction::ReturnInt));
+    ret[QStringLiteral("fix")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("getbasetagdata"), QCFFunction("GetBaseTagData", QCFFunction::ReturnQWDDX, true));
+    ret[QStringLiteral("getbasetagdata")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("getbasetagdata")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("getbasetaglist"), QCFFunction("GetBaseTagList", QCFFunction::ReturnString, true));
+
+    ret.insert(QStringLiteral("int"), QCFFunction("Int", QCFFunction::ReturnString));
+    ret[QStringLiteral("int")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("isarray"), QCFFunction("IsArray", QCFFunction::ReturnBool));
+    ret[QStringLiteral("isarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("isarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("isdefined"), QCFFunction("IsDefined", QCFFunction::ReturnBool, true));
+    ret[QStringLiteral("isdefined")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("isstruct"), QCFFunction("IsStruct", QCFFunction::ReturnBool));
+    ret[QStringLiteral("isstruct")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert(QStringLiteral("isquery"), QCFFunction("IsQuery", QCFFunction::ReturnBool));
+    ret[QStringLiteral("isquery")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+	ret.insert(QStringLiteral("lcase"), QCFFunction("LCase", QCFFunction::ReturnString));
+    ret[QStringLiteral("lcase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+	ret.insert(QStringLiteral("left"), QCFFunction("Left", QCFFunction::ReturnString));
+    ret[QStringLiteral("left")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("left")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+	ret.insert(QStringLiteral("len"), QCFFunction("Len", QCFFunction::ReturnInt));
+    ret[QStringLiteral("len")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listappend"), QCFFunction("ListAppend", QCFFunction::ReturnString));
+    ret[QStringLiteral("listappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listchangedelims"), QCFFunction("ListChangeDelims", QCFFunction::ReturnString));
+    ret[QStringLiteral("listchangedelims")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listchangedelims")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listchangedelims")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listcontains"), QCFFunction("ListContains", QCFFunction::ReturnString));
+    ret[QStringLiteral("listcontains")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listcontains")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listcontains")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listcontainsnocase"), QCFFunction("ListContainsNoCase", QCFFunction::ReturnString));
+    ret[QStringLiteral("listcontainsnocase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listcontainsnocase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listcontainsnocase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listdeleteat"), QCFFunction("ListDeleteAt", QCFFunction::ReturnString));
+    ret[QStringLiteral("listdeleteat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listdeleteat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listdeleteat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listfind"), QCFFunction("ListFind", QCFFunction::ReturnInt));
+    ret[QStringLiteral("listfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listfindnocase"), QCFFunction("ListFindNoCase", QCFFunction::ReturnInt));
+    ret[QStringLiteral("listfindnocase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listfindnocase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listfindnocase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listfirst"), QCFFunction("ListFirst", QCFFunction::ReturnString));
+    ret[QStringLiteral("listfirst")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listfirst")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listgetat"), QCFFunction("ListGetAt", QCFFunction::ReturnString));
+    ret[QStringLiteral("listgetat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listgetat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listgetat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listinsertat"), QCFFunction("ListInsertAt", QCFFunction::ReturnString));
+    ret[QStringLiteral("listinsertat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listinsertat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listinsertat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listinsertat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listlast"), QCFFunction("ListLast", QCFFunction::ReturnString));
+    ret[QStringLiteral("listlast")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listlast")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listlen"), QCFFunction("ListLen", QCFFunction::ReturnInt));
+    ret[QStringLiteral("listlen")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listlen")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listprepend"), QCFFunction("ListPrepend", QCFFunction::ReturnString));
+    ret[QStringLiteral("listprepend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listprepend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listprepend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listqualify"), QCFFunction("ListQualify", QCFFunction::ReturnString));
+    ret[QStringLiteral("listqualify")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listqualify")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listqualify")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listqualify")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listrest"), QCFFunction("ListRest", QCFFunction::ReturnString));
+    ret[QStringLiteral("listrest")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listrest")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listsetat"), QCFFunction("ListSetAt", QCFFunction::ReturnString));
+    ret[QStringLiteral("listsetat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listsetat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listsetat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listsetat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listsort"), QCFFunction("ListSort", QCFFunction::ReturnString));
+    ret[QStringLiteral("listsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listvaluecount"), QCFFunction("ListValueCount", QCFFunction::ReturnInt));
+    ret[QStringLiteral("listvaluecount")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listvaluecount")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listvaluecount")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listvaluecountnocount"), QCFFunction("ListValueCountNoCase", QCFFunction::ReturnInt));
+    ret[QStringLiteral("listvaluecountnocount")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listvaluecountnocount")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listvaluecountnocount")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("listtoarray"), QCFFunction("ListToArray", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("listtoarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listtoarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("listtoarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("now"), QCFFunction("Now", QCFFunction::ReturnDateTime));
+
+    ret.insert(QStringLiteral("queryaddrow"), QCFFunction("QueryAddRow", QCFFunction::ReturnInt));
+    ret[QStringLiteral("queryaddrow")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("queryaddrow")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("querynew"), QCFFunction("QueryNew", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("querynew")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("querynew")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("quotedvaluelist"), QCFFunction("QuotedValueList", QCFFunction::ReturnString));
+    ret[QStringLiteral("quotedvaluelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("quotedvaluelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("queryaddcolumn"), QCFFunction("QueryAddColumn", QCFFunction::ReturnInt));
+    ret[QStringLiteral("queryaddcolumn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("queryaddcolumn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("queryaddcolumn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("queryaddcolumn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("queryconvertforgrid"), QCFFunction("QueryConvertForGrid", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("queryconvertforgrid")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("queryconvertforgrid")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("queryconvertforgrid")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("querysetcell"), QCFFunction("QuerySetCell", QCFFunction::ReturnBool));
+    ret[QStringLiteral("querysetcell")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("querysetcell")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("querysetcell")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("querysetcell")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("quotedvalue"), QCFFunction("QuotedValue", QCFFunction::ReturnString));
+    ret[QStringLiteral("quotedvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("quotedvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("replace"), QCFFunction("Replace", QCFFunction::ReturnString));
+    ret[QStringLiteral("replace")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("replace")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("replace")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("replace")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("replacelist"), QCFFunction("ReplaceList", QCFFunction::ReturnString));
+    ret[QStringLiteral("replacelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("replacelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("replacelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("reverse"), QCFFunction("Reverse", QCFFunction::ReturnString));
+    ret[QStringLiteral("reverse")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("right"), QCFFunction("Right", QCFFunction::ReturnString));
+    ret[QStringLiteral("right")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("right")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("structappend"), QCFFunction("StructAppend", QCFFunction::ReturnBool));
+    ret[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("structclear"), QCFFunction("StructClear", QCFFunction::ReturnBool));
+    ret[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert(QStringLiteral("structcopy"), QCFFunction("StructCopy", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("structcopy")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert(QStringLiteral("structcount"), QCFFunction("StructCount", QCFFunction::ReturnInt));
+    ret[QStringLiteral("structcount")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert(QStringLiteral("structdelete"), QCFFunction("StructDelete", QCFFunction::ReturnBool));
+    ret[QStringLiteral("structdelete")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structdelete")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("structdelete")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("structfind"), QCFFunction("StructFind", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("structfindkey"), QCFFunction("StructFindKey", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("structfindvalue"), QCFFunction("StructFindValue", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("structfindvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structfindvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("structfindvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("structget"), QCFFunction("StructGet", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("structget")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("structinsert"), QCFFunction("StructInsert", QCFFunction::ReturnBool));
+    ret[QStringLiteral("structinsert")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structinsert")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("structinsert")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("structdelete")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("structisempty"), QCFFunction("StructIsEmpty", QCFFunction::ReturnBool));
+    ret[QStringLiteral("structisempty")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert(QStringLiteral("structkeyarray"), QCFFunction("StructKeyArray", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("structkeyarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert(QStringLiteral("structkeyexists"), QCFFunction("StructKeyExists", QCFFunction::ReturnBool));
+    ret[QStringLiteral("structkeyexists")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structkeyexists")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("structkeylist"), QCFFunction("StructKeyList", QCFFunction::ReturnBool));
+    ret[QStringLiteral("structkeylist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structkeylist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("structnew"), QCFFunction("StructNew", QCFFunction::ReturnQWDDX));
+
+    ret.insert(QStringLiteral("structsort"), QCFFunction("StructSort", QCFFunction::ReturnQWDDX));
+    ret[QStringLiteral("structsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("structsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("structsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("structupdate"), QCFFunction("StructUpdate", QCFFunction::ReturnBool));
+    ret[QStringLiteral("structupdate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structupdate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
+    ret[QStringLiteral("structupdate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+
+    ret.insert(QStringLiteral("timeformat"), QCFFunction("TimeFormat", QCFFunction::ReturnString));
+    ret[QStringLiteral("timeformat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("timeformat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("trim"), QCFFunction("Trim", QCFFunction::ReturnString));
+    ret[QStringLiteral("trim")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("ucase"), QCFFunction("UCase", QCFFunction::ReturnString));
+    ret[QStringLiteral("ucase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("val"), QCFFunction("Val", QCFFunction::ReturnDouble));
+    ret[QStringLiteral("val")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("valuelist"), QCFFunction("ValueList", QCFFunction::ReturnString));
+    ret[QStringLiteral("valuelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+    ret[QStringLiteral("valuelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
+
+    ret.insert(QStringLiteral("writeoutput"), QCFFunction("WriteOutput", QCFFunction::ReturnVoid, true));
+    ret[QStringLiteral("writeoutput")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
     return ret;
 }
