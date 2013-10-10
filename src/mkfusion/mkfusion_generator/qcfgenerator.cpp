@@ -1,20 +1,69 @@
 #include "qcfgenerator.h"
-#include "qcfserver.h"
+#include "qcfgeneratorexception.h"
 #include "qcfparser.h"
-#include "qcf8.h"
 
+#include <QTextStream>
 #include <QDateTime>
+#include <QFileInfo>
 #include <QProcess>
 #include <QList>
+#include <QFile>
 #include <QDir>
 
 
 QCFGenerator::QCFGenerator()
-    : m_CFTagsDef(QCF8::generateCFTags())
-    , m_CFFunctionsDef(QCF8::generateCFFunctions())
+    : m_Parser(CompilerMode)
     , m_EnableCFOutputOnly(false)
     , m_Tabs("\t\t")
 {
+}
+
+QCFGenerator::~QCFGenerator()
+{
+}
+
+bool QCFGenerator::generate(const QString &srcFilePath, const QString &dstFilePath)
+{
+    if (m_Parser.parse(QFileInfo(srcFilePath)) != NoError)
+    {
+        m_Error = QObject::tr("Parser error: %1.").arg(m_Parser.error());
+
+        return false;
+    }
+
+    if (m_Parser.prioritizeOperators() != NoError)
+    {
+        m_Error = QObject::tr("Parser error(prioritize operators): %1.").arg(m_Parser.error());
+
+        return false;
+    }
+
+    if (m_Parser.buildTagTree() != NoError)
+    {
+        m_Error = QObject::tr("Parser error(build tag tree): %1.").arg(m_Parser.error());
+
+        return false;
+    }
+
+    try
+    {
+        generateCpp( dstFilePath);
+    }
+    catch(const QCFGeneratorException &ex)
+    {
+        int line = 0;
+        int col = 0;
+        m_Error = QObject::tr("Generator error: (%1), at line: %2:%3.").arg(ex.m_Message).arg(line).arg(col);
+
+        return false;
+    }
+
+    return true;
+}
+
+QString QCFGenerator::error() const
+{
+    return m_Error;
 }
 
 QString QCFGenerator::toCPPEncodeStr(const QString &str)
@@ -76,507 +125,6 @@ QString QCFGenerator::toCPPEncodeStr(const QString &str)
     }
 
     return ret;
-}
-
-QString QCFGenerator::generateTemplateCpp(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath)
-{
-	QFileInfo file(p_Target);
-	QString l_NewTarget = file.baseName();
-
-	QHash<QString, QCFTag> l_cf8tags = QCF8::generateCFTags();
-
-	QFile l_cppFile(p_MKFusionPath+"templates/"+ l_NewTarget + ".cpp");
-	l_cppFile.open(QIODevice::WriteOnly);
-    l_cppFile.write("#include <qmkfusionexception.h>\n");
-    l_cppFile.write("#include <qcfrunningtemplate.h>\n");
-    l_cppFile.write("#include <qcftemplate.h>\n");
-    l_cppFile.write("#include <cffunctions.h>\n");
-    l_cppFile.write("#include <common.h>\n");
-    l_cppFile.write("#include <qwddx.h>\n");
-	l_cppFile.write("\n");
-    l_cppFile.write("#ifdef Q_OS_WIN\n");
-	l_cppFile.write("#define MY_EXPORT __declspec(dllexport)\n");
-	l_cppFile.write("#else\n");
-	l_cppFile.write("#define MY_EXPORT\n");
-	l_cppFile.write("#endif\n");
-	l_cppFile.write("\n");
-	l_cppFile.write("class QCFGeneratedTemplate : public QCFTemplate\n");
-	l_cppFile.write("{\n");
-	l_cppFile.write("public:\n");
-	l_cppFile.write("	QCFGeneratedTemplate()\n");
-	l_cppFile.write("	{\n");
-    l_cppFile.write(QString("		m_isModified.m_Filename = QString::fromWCharArray(L\"" + toCPPEncodeStr(p_Parser.m_FileName) + "\");\n").toUtf8());
-    l_cppFile.write(QString("		m_isModified.m_Size = " + QString::number(p_Parser.m_CFMFileSize) + ";\n").toUtf8());
-    l_cppFile.write(QString("		m_isModified.m_Modified = " + QString::number(p_Parser.m_CFMModifyDateTime) + ";\n").toUtf8());
-    l_cppFile.write("\n");
-
-    QList<QCFParserTag> const l_Tags = p_Parser.getTags();
-
-    /*for(const QCFParserTag &function : p_Parser.getTagFunctions(l_Tags))
-    {
-
-    }*/
-
-    for(const QCFParserElement &function : p_Parser.getScriptFunctions(l_Tags))
-    {
-        QString f_name;
-        QString f_returnType;
-        QString f_roles;
-        QString f_access = "public";
-        QString f_output;
-        QString f_displayName;
-        QString f_hint;
-        QString f_description;
-
-        QStringList f_paramName;
-        QStringList f_paramRequired;
-        QStringList f_paramType;
-        QStringList f_paramDefault;
-
-        int pos = 0;
-
-        if (function.m_ChildElements.last().m_Type != CodeBlock)
-        {
-            throw QMKFusionException("Missing function body.");
-        }
-
-        if (
-                (function.m_ChildElements.at(pos).m_Type == Variable)&&
-                (
-                (function.m_ChildElements.at(pos).m_Text.compare("public", Qt::CaseInsensitive) == 0)||
-                (function.m_ChildElements.at(pos).m_Text.compare("private", Qt::CaseInsensitive) == 0)||
-                (function.m_ChildElements.at(pos).m_Text.compare("package", Qt::CaseInsensitive) == 0)||
-                (function.m_ChildElements.at(pos).m_Text.compare("remote", Qt::CaseInsensitive) == 0)
-                )
-            )
-        {
-            f_access = function.m_ChildElements.at(pos).m_Text.toLower();
-
-            pos++;
-        }
-
-        if (function.m_ChildElements.at(pos).m_Type == Variable)
-        {
-            f_returnType = function.m_ChildElements.at(pos).m_Text;
-
-            pos++;
-        }
-
-        if ((function.m_ChildElements.at(pos).m_Type != Keyword)||(function.m_ChildElements.at(pos).m_Text.compare("function", Qt::CaseInsensitive) != 0))
-        {
-            // TODO: Warning. Validator should not pass this case.
-
-            continue;
-        }
-
-        pos++;
-
-        if (function.m_ChildElements.at(pos).m_Type != Function)
-        {
-            // TODO: Warning. Validator should not pass this case.
-
-            continue;
-        }
-
-        f_name = function.m_ChildElements.at(pos).m_Text;
-
-        // parameters.
-        if (function.m_ChildElements.at(pos).m_ChildElements.count() > 0)
-        {
-            const QCFParserElement &parameters = function.m_ChildElements.at(pos).m_ChildElements.at(0);
-            for(const QCFParserElement &parameter : parameters.m_ChildElements)
-            {
-                QString name;
-                QString required;
-                QString type;
-                QString def;
-
-                if (parameter.m_ChildElements.at(0).m_ChildElements.count() == 0)
-                {
-                    if (parameter.m_ChildElements.at(0).m_Type != Variable)
-                    {
-                        throw QMKFusionException("function parameter must be variable.");
-                    }
-
-                    name = parameter.m_ChildElements.at(0).m_Text.toUpper();
-                }
-                else
-                {
-                    // TODO: Implement me.
-                    throw QMKFusionException("Not implemented.");
-                }
-
-                f_paramName.append(name);
-                f_paramRequired.append(required);
-                f_paramType.append(type);
-                f_paramDefault.append(def);
-            }
-        }
-
-        pos++;
-
-        // TODO: Implement this when possible(not urgent).
-
-        l_cppFile.write(QString("       addCustomFunction(\"" + toCPPEncodeStr(f_name.toLower()) + "\", [](QCFRunningTemplate *m_TemplateInstance, const QList<QWDDX> &arguments) -> QWDDX {\n").toUtf8());
-
-        l_cppFile.write("            QWDDX ARGUMENTS(QWDDX::Struct);\n");
-        l_cppFile.write("            QWDDX LOCAL(QWDDX::Struct);\n");
-        l_cppFile.write("\n");
-
-        // Parameters
-        for(int c = 0; c < f_paramName.count(); c++)
-        {
-
-            l_cppFile.write(QString("            if(arguments.count() > "+ QString::number(c) + " ) {\n").toUtf8());
-            l_cppFile.write(QString("                updateVariable(ARGUMENTS, L\"" + f_paramName[c].toUpper() + "\", arguments.at(" + QString::number(c) + "));\n").toUtf8());
-            l_cppFile.write(QString("            } else {\n").toUtf8());
-            l_cppFile.write(QString("                updateVariable(ARGUMENTS, L\"" + f_paramName[c].toUpper() + "\", L\"" + f_paramDefault[c] + "\");\n").toUtf8());
-            l_cppFile.write(QString("            }\n").toUtf8());
-            l_cppFile.write("\n");
-        }
-
-        QString l_localVars;
-        for(const QCFParserElement &expr : function.m_ChildElements.last().m_ChildElements)
-        {
-            l_cppFile.write(QString("            " + GenerateCFExpressionToCExpression(expr, f_paramName.join(","), &l_localVars)).toUtf8());
-
-            if ((expr.m_Type == Expression)&&(expr.m_ChildElements.count() > 0))
-            {
-                if (expr.m_ChildElements.last().m_Type != CodeBlock)
-                {
-                    l_cppFile.write(";");
-                }
-            }
-
-            l_cppFile.write("\n");
-        }
-
-        l_cppFile.write("            return QWDDX();\n"); // just in case custom function do not return.
-
-        l_cppFile.write("        });\n");
-    }
-
-	l_cppFile.write("	}\n");
-	l_cppFile.write("	\n");
-    l_cppFile.write("	virtual void run(QCFRunningTemplate *p_TemplateInstance)\n");
-	l_cppFile.write("	{\n"); // mybase::myfunc() ;
-	l_cppFile.write("		QCFTemplate::run(p_TemplateInstance);\n");
-
-	QString l_Text = p_Parser.getText();
-	QString l_tmpStr;
-
-	qint32 l_CFCodeInsideTags = 0;
-    bool output_text = true;
-
-	for(int c = 0; c < l_Tags.size(); c++)
-    {
-        // skip code generation from within cffunction and cfscript.
-        if ((l_Tags.at(c).m_TagType == CFTagType)&&((l_Tags.at(c).m_Name == "cffunction")||(l_Tags.at(c).m_Name == "cfscript")))
-        {
-            struct QCFParserTag *othertag = l_Tags.at(c).m_OtherTag;
-            int other = l_Tags.indexOf(*othertag);
-
-            if (other > c)
-            {
-                c = other;
-            }
-
-            continue;
-        }
-
-        if (output_text)
-        {
-            if (c == 0)
-            {
-                if (l_Tags[0].m_Start > 0)
-                {
-                    l_tmpStr = l_Text.left(l_Tags[0].m_Start);
-
-                    if (l_CFCodeInsideTags > 0)
-                    {
-                        l_tmpStr.replace("##", "#");
-                    }
-
-                    if (!m_EnableCFOutputOnly)
-                    {
-                        l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
-                    }
-                }
-            }
-            else
-            {
-                if (l_Tags[c].m_Start - (l_Tags[c - 1].m_Start + l_Tags[c - 1].m_Length) > 0)
-                {
-                    l_tmpStr = l_Text.mid(l_Tags[c - 1].m_Start + l_Tags[c - 1].m_Length, l_Tags[c].m_Start - l_Tags[c - 1].m_Start - l_Tags[c - 1].m_Length);
-
-                    if (l_CFCodeInsideTags > 0)
-                    {
-                        l_tmpStr.replace("##", "#");
-                    }
-
-                    if (!m_EnableCFOutputOnly)
-                    {
-                        l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
-                    }
-                }
-            }
-        }
-
-		QString l_CFromCFTag = GenerateCCodeFromCFTag(l_Tags[c]);
-		if (!l_CFromCFTag.isEmpty())
-		{
-            l_cppFile.write(QString("\n" + m_Tabs + "// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
-            l_cppFile.write(QString(l_CFromCFTag + "\n").toUtf8());
-        }
-
-        output_text = true;
-
-        if (m_NestedTags.count() > 0)
-        {
-            if (m_NestedTags.last()->m_Name.compare("cfswitch", Qt::CaseInsensitive) == 0)
-            {
-                output_text = false;
-            }
-        }
-
-        if ((output_text)&&(l_cf8tags.contains(l_Tags[c].m_Name))&&(l_cf8tags[l_Tags[c].m_Name].m_ExpressionInside == QCFTag::WithExpressionInside))
-		{
-			if ((l_Tags[c].m_TagType == CFTagType)&&(l_Tags[c].m_InlineClosedTag == false))
-			{
-				l_CFCodeInsideTags++;
-			}
-			else if (l_Tags[c].m_TagType == EndCFTagType)
-			{
-				l_CFCodeInsideTags--;
-			}
-		}
-	}
-
-	if (l_Tags.size() == 0)
-	{
-
-		l_tmpStr = l_Text;
-
-		if (l_CFCodeInsideTags > 0)
-		{
-			l_tmpStr.replace("##", "#");
-		}
-
-		if (!m_EnableCFOutputOnly)
-		{
-            l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
-		}
-	}
-	else
-	{
-		if (l_Text.size() > l_Tags.last().m_Start + l_Tags.last().m_Length)
-		{
-			l_tmpStr = l_Text.right(l_Text.length() - l_Tags.last().m_Start - l_Tags.last().m_Length);
-
-			if (l_CFCodeInsideTags > 0)
-			{
-				l_tmpStr.replace("##", "#");
-			}
-
-			if (!m_EnableCFOutputOnly)
-			{
-                l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
-			}
-		}
-	}
-
-	l_cppFile.write("	}\n");
-	l_cppFile.write("};\n");
-	l_cppFile.write("\n");
-    l_cppFile.write("extern \"C\" MY_EXPORT QCFTemplate * createCFMTemplate()\n");
-	l_cppFile.write("{\n");
-	l_cppFile.write("	return new QCFGeneratedTemplate();\n");
-	l_cppFile.write("};\n");
-	l_cppFile.close();
-
-    return "";
-}
-
-QString QCFGenerator::generateComponentCpp(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath)
-{
-    Q_UNUSED(p_Parser);
-    Q_UNUSED(p_Target);
-    Q_UNUSED(p_MKFusionPath);
-
-    return "QCFGenerator::compileComponent(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath) is not implemented YET.";
-}
-
-QString QCFGenerator::compile(const QString &p_Target, const QString &p_MKFusionPath)
-{
-    QFileInfo file(p_Target);
-    QString l_NewTarget = file.baseName();
-    QProcess process;
-
-    // Compile
-#ifdef Q_OS_WIN
-    QString l_QtPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\qt\\";
-    QString l_MingwPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\mingw\\";
-    process.start(l_MingwPath + "bin\\g++.exe", QStringList()
-#elif defined Q_OS_LINUX
-    process.start("g++", QStringList()
-#else
-#error Windows and Linux OSs are currently supported.
-#endif
-
-        << "-c"
-
-#ifdef __x86_64__
-        << "-m64"
-#endif
-
-#ifdef Q_OS_LINUX
-        << "-pipe"
-#endif
-
-#ifdef __arm__
-        << "-march=armv6" << "-mfloat-abi=hard" << "-mfpu=vfp"
-#endif
-
-#ifdef QT_NO_DEBUG
-        << "-O2"
-#else
-    << "-g"
-#endif
-
-#ifdef __arm__
-        << "-pipe" << "-fstack-protector" << "--param=ssp-buffer-size=4"
-#endif
-
-        << "-std=c++0x"
-
-#ifdef Q_OS_WIN
-        << "-frtti" << "-fexceptions" << "-mthreads"
-#endif
-
-        << "-Wall"
-
-#ifdef Q_OS_LINUX
-        << "-Wall" << "-W" << "-D_REENTRANT" << "-fPIE"
-#endif
-
-#ifdef Q_OS_WIN
-        << "-DQT_LARGEFILE_SUPPORT" << "-DQT_DLL"
-#endif
-
-#ifdef QT_NO_DEBUG
-    << "-DQT_NO_DEBUG"
-#endif
-
-    << "-DQT_CORE_LIB"
-
-#ifdef Q_OS_LINUX
-        << "-DQT_SHARED"
-#endif
-
-#ifdef Q_OS_WIN
-        << "-DQT_THREAD_SUPPORT"
-#endif
-
-#ifdef Q_OS_WIN
-        << "-I" << (l_MingwPath + "include")
-        << "-I" << (l_QtPath + "include" + QDir::separator() + "QtCore")
-        << "-I" << (l_QtPath + "include" + QDir::separator() + "QtNetwork")
-        << "-I" << (l_QtPath + "include" + QDir::separator() + "QtConcurrent")
-        << "-I" << (l_QtPath + "include")
-        << "-I" << (p_MKFusionPath + "include")
-#elif defined Q_OS_LINUX
-    #ifdef __x86_64__
-        << "-I" << "/usr/share/qt5/mkspecs/linux-g++-64"
-        << "-I" << "/usr/lib/qt/mkspecs/linux-g++-64" // Arch linux uses this path
-    #else
-        << "-I" << "/usr/share/qt5/mkspecs/linux-g++"
-        << "-I" << "/usr/lib/qt/mkspecs/linux-g++" // Arch linux uses this path
-    #endif
-        << "-I" << "."
-        << "-I" << "/usr/include/qt5/QtCore"
-        << "-I" << "/usr/include/qt5/QtNetwork"
-        << "-I" << "/usr/include/qt5/QtConcurrent"
-        << "-I" << "/usr/include/qt5"
-        << "-I" << "/usr/include/qt/QtCore" // Arch linux uses this path
-        << "-I" << "/usr/include/qt/QtNetwork" // Arch linux uses this path
-        << "-I" << "/usr/include/qt/QtConcurrent" // Arch linux uses this path
-        << "-I" << "/usr/include/qt" // Arch linux uses this path
-        << "-I" << (p_MKFusionPath + "include")
-#endif
-
-        << "-o" << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".o")
-        << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".cpp")
-    );
-
-    bool finished = process.waitForFinished(-1);
-
-#ifdef QT_NO_DEBUG
-    QFile::remove(p_MKFusionPath+"templates/"+l_NewTarget+".cpp");
-#endif
-
-    if ((finished == false)||(process.exitCode() != 0))
-    {
-        return "compile error: " + QString::fromUtf8(process.readAllStandardError()) + QString::fromUtf8(process.readAllStandardOutput());
-    }
-
-    // Link
-#ifdef Q_OS_WIN
-    process.start(l_MingwPath + "bin\\g++.exe", QStringList()
-#elif defined Q_OS_LINUX
-    process.start("g++", QStringList()
-#else
-#error Windows and Linux OSs are currently supported.
-#endif
-
-#ifdef __x86_64__
-        << "-m64"
-#endif
-
-#if defined Q_OS_LINUX && defined QT_NO_DEBUG
-        << "-Wl,-O1"
-#endif
-
-#ifdef Q_OS_WIN
-        << "-Wl,-enable-stdcall-fixup" << "-Wl,-enable-auto-import" << "-Wl,-enable-runtime-pseudo-reloc"
-    #ifdef QT_NO_DEBUG
-        << "-Wl,-s"
-    #endif
-        << "-mthreads"
-#endif
-
-        << "-shared"
-
-#ifdef Q_OS_WIN
-        << "-o" << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
-#else
-        << "-o" << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".so")
-#endif
-
-        << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".o")
-
-#ifdef Q_OS_WIN
-        << "-L" << (l_QtPath + "lib") << (p_MKFusionPath + "lib\\mkfusion.a")
-#else
-        << "-L/usr/lib/x86_64-linux-gnu" << "-lrt" << "-lpthread"
-#endif
-
-#if defined Q_OS_WIN && !defined QT_NO_DEBUG
-        << "-lQt5Concurrentd" << "-lQt5Cored"
-#else
-        << "-lQt5Concurrent" << "-lQt5Core"
-#endif
-    );
-
-    finished = process.waitForFinished(-1);
-
-    QFile::remove(p_MKFusionPath+"templates/"+l_NewTarget+".o");
-
-    if ((finished == false)||(process.exitCode() != 0))
-    {
-        return "link error: " + process.readAllStandardError() + process.readAllStandardOutput();
-    }
-
-    return "";
 }
 
 QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString &p_Funct_params, const QString &p_Funct_local_vars)
@@ -659,6 +207,8 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
     bool close_funct = false;
     int c;
 
+    auto l_CFFunctionsDef = m_Parser.m_CFFunctionsDef;
+
     l_ElementName = p_CFExpression.m_Text;
 
 	switch(p_CFExpression.m_Type)
@@ -676,7 +226,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
         }
         else
         {
-            throw QMKFusionTemplateException("Invalid boolean value.");
+            throw QCFGeneratorException("Invalid boolean value.", p_CFExpression.m_Position);
         }
         break;
     case Number:
@@ -761,7 +311,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                 }
                 else
                 {
-                    throw QMKFusionException("Unknown member access.");
+                    throw QCFGeneratorException("Unknown member access.", item.m_Position);
                 }
             }
             else if (p_CFExpression.m_ChildElements.count() > 1)
@@ -770,24 +320,24 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
             }
             else
             {
-                throw QMKFusionException("Unknown member access.");
+                throw QCFGeneratorException("Unknown member access.", p_CFExpression.m_Position);
             }
         break;
     case Function:
-            if (m_CFFunctionsDef.contains(l_ElementName.toLower()))
+            if (l_CFFunctionsDef.contains(l_ElementName.toLower()))
             {
-                if (m_CFFunctionsDef[l_ElementName.toLower()].m_NeedsThis)
+                if (l_CFFunctionsDef[l_ElementName.toLower()].m_NeedsThis)
                 {
-                    ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(this";
+                    ret = "cf_" + l_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(this";
 
-                    if (m_CFFunctionsDef[l_ElementName.toLower()].m_Arguments.count() > 0)
+                    if (l_CFFunctionsDef[l_ElementName.toLower()].m_Arguments.count() > 0)
                     {
                         ret += ", ";
                     }
                 }
                 else
                 {
-                    ret = "cf_" + m_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
+                    ret = "cf_" + l_CFFunctionsDef[l_ElementName.toLower()].m_Name + "(";
                 }
 
                 for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
@@ -1202,7 +752,7 @@ QString QCFGenerator::CFTagGetArgumentAsString(const QCFParserTag &p_CFTag, cons
         }
     }
 
-    throw QMKFusionTemplateException("Value is not string.");
+    throw QCFGeneratorException("Value is not string.", p_CFTag.m_Start);
 }
 
 QString QCFGenerator::CFTagGetArgumentAsNumber(const QCFParserTag &p_CFTag, const QString &p_Argument)
@@ -1246,7 +796,7 @@ QString QCFGenerator::CFTagGetArgumentAsNumber(const QCFParserTag &p_CFTag, cons
         }
     }
 
-    throw QMKFusionTemplateException("Value is not number.");
+    throw QCFGeneratorException("Value is not number.", p_CFTag.m_Start);
 }
 
 QString QCFGenerator::CFTagGetArgumentAsBool(const QCFParserTag &p_CFTag, const QString &p_Argument)
@@ -1281,7 +831,7 @@ QString QCFGenerator::CFTagGetArgumentAsBool(const QCFParserTag &p_CFTag, const 
         }
     }
 
-    throw QMKFusionTemplateException("Value is not boolean.");
+    throw QCFGeneratorException("Value is not boolean.", p_CFTag.m_Start);
 }
 
 QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
@@ -1329,7 +879,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             if(!CFTagHasArgument(p_CFTag, "baseTag"))
             {
-                throw QMKFusionException("cfassociate tag needs baseTag attributes.");
+                throw QCFGeneratorException("cfassociate tag needs baseTag attributes.", p_CFTag.m_Start);
             }
 
             baseTag = CFTagGetArgumentAsString(p_CFTag, "baseTag");
@@ -1355,7 +905,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
         }
         else
         {
-            throw QMKFusionTemplateException(QString("cfapplication tag must have name attribute."));
+            throw QCFGeneratorException("cfapplication tag must have name attribute.", p_CFTag.m_Start);
         }
     }
     else if(p_CFTag.m_Name.compare("cfbreak", Qt::CaseInsensitive) == 0) // Done
@@ -1451,7 +1001,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
                 }
                 else
                 {
-                    throw QMKFusionException(QString("Invalid cfcatch type[%1]").arg(type));
+                    throw QCFGeneratorException(QString("Invalid cfcatch type[%1]").arg(type), p_CFTag.m_Start);
                 }
             }
 
@@ -1488,7 +1038,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 	{
         if (!CFTagHasArgument(p_CFTag, "var"))
         {
-            throw QMKFusionException("cfdump var attribute is missing.");
+            throw QCFGeneratorException("cfdump var attribute is missing.", p_CFTag.m_Start);
         }
 
         return m_Tabs + "m_TemplateInstance->m_Output += mk_cfdump(" + GenerateCFExpressionToCExpression(OptimizeQCFParserElement(CFTagGetArgumentObject(p_CFTag, "var").m_ChildElements.at(2))) + ");";
@@ -1522,7 +1072,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             }
             else
             {
-                throw QMKFusionException(QString("Invalid cfexit method attribute value[%1]").arg(method));
+                throw QCFGeneratorException(QString("Invalid cfexit method attribute value[%1]").arg(method), p_CFTag.m_Start);
             }
         }
     }
@@ -1548,13 +1098,13 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             if (!CFTagHasArgument(p_CFTag, "destination"))
             {
-                throw QMKFusionException("At <cffile action=\"upload\" ... > destination parameter is empty or missing.");
+                throw QCFGeneratorException("At <cffile action=\"upload\" ... > destination parameter is empty or missing.", p_CFTag.m_Start);
             }
             destination = CFTagGetArgumentAsString(p_CFTag, "destination");
 
             if (!CFTagHasArgument(p_CFTag, "fileField"))
             {
-                throw QMKFusionException("At <cffile action=\"upload\" ... > fileField parameter is empty or missing.");
+                throw QCFGeneratorException("At <cffile action=\"upload\" ... > fileField parameter is empty or missing.", p_CFTag.m_Start);
             }
             fileField = CFTagGetArgumentAsString(p_CFTag, "fileField");
 
@@ -1610,12 +1160,12 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
     {
         if (!CFTagHasArgument(p_CFTag, "taglib"))
         {
-            throw QMKFusionException("cfimport needs taglib attribute.");
+            throw QCFGeneratorException("cfimport needs taglib attribute.", p_CFTag.m_Start);
         }
 
         if (!CFTagHasArgument(p_CFTag, "prefix"))
         {
-            throw QMKFusionException("cfimport needs prefix attribute.");
+            throw QCFGeneratorException("cfimport needs prefix attribute.", p_CFTag.m_Start);
         }
 
         const QString &tagLib = CFTagGetArgumentPlain(p_CFTag, "taglib");
@@ -1890,7 +1440,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
     {
         if (!CFTagHasArgument(p_CFTag, "url"))
         {
-            throw QMKFusionTemplateException("cflocation tag must have url attribute.");
+            throw QCFGeneratorException("cflocation tag must have url attribute.", p_CFTag.m_Start);
         }
 
         if ((!CFTagHasArgument(p_CFTag, "addToken"))&&(!CFTagHasArgument(p_CFTag, "statusCode")))
@@ -1899,15 +1449,15 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
         }
         else if ((CFTagHasArgument(p_CFTag, "addToken"))&&(!CFTagHasArgument(p_CFTag, "statusCode")))
         {
-            throw QMKFusionTemplateException("cflocation url addToken is NOT implemented.");
+            throw QCFGeneratorException("cflocation url addToken is NOT implemented.", p_CFTag.m_Start);
         }
         else if ((!CFTagHasArgument(p_CFTag, "addToken"))&&(CFTagHasArgument(p_CFTag, "statusCode")))
         {
-            throw QMKFusionTemplateException("cflocation url, statusCode is NOT implemented.");
+            throw QCFGeneratorException("cflocation url, statusCode is NOT implemented.", p_CFTag.m_Start);
         }
         else
         {
-            throw QMKFusionTemplateException("cflocation url, addToken, statusCode is NOT implemented.");
+            throw QCFGeneratorException("cflocation url, addToken, statusCode is NOT implemented.", p_CFTag.m_Start);
         }
     }
     else if(p_CFTag.m_Name.compare("cfmodule", Qt::CaseInsensitive) == 0) // TODO: attributeCollection not implemented.
@@ -1918,7 +1468,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
         {
             if((CFTagHasArgument(p_CFTag, "name"))&&(CFTagHasArgument(p_CFTag, "template")))
             {
-                throw QMKFusionException("cfmodule tag can\'t have both name and template attributes.");
+                throw QCFGeneratorException("cfmodule tag can\'t have both name and template attributes.", p_CFTag.m_Start);
             }
             else if(CFTagHasArgument(p_CFTag, "name"))
             {
@@ -1994,7 +1544,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             }
             else
             {
-                throw QMKFusionException("cfmodule tag must have ether name or template attribute.");
+                throw QCFGeneratorException("cfmodule tag must have ether name or template attribute.", p_CFTag.m_Start);
             }
         }
         else
@@ -2014,7 +1564,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             }
             else
             {
-                throw QMKFusionException("cfmodule tag must have ether name or template attribute.");
+                throw QCFGeneratorException("cfmodule tag must have ether name or template attribute.", p_CFTag.m_Start);
             }
 
             m_Tabs = m_Tabs.left(m_Tabs.length() - 1);
@@ -2197,7 +1747,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             if (!m_CustomTagsPrefixes.contains(prefix))
             {
-                throw QMKFusionException("Custom tag prefix is missing. parser error.");
+                throw QCFGeneratorException("Custom tag prefix is missing. parser error.", p_CFTag.m_Start);
             }
 
             const QString &path = m_CustomTagsPrefixes[prefix];
@@ -2240,7 +1790,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             if (!m_CustomTagsPrefixes.contains(prefix))
             {
-                throw QMKFusionException("Custom tag prefix is missing. parser error.");
+                throw QCFGeneratorException("Custom tag prefix is missing. parser error.", p_CFTag.m_Start);
             }
 
             const QString &path = m_CustomTagsPrefixes[prefix];

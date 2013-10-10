@@ -67,20 +67,20 @@ void CFTest1::parseDir(const QString &p_dir)
 
 			this->setWindowTitle("CFTest1 - " + item.fileName());qApp->processEvents();
 
-			if (parser.Parse(fileContent) != NoError)
+			if (parser.parse(fileContent) != NoError)
 			{
 				this->setWindowTitle("CFTest1");qApp->processEvents();
 
-				lastItem->setText(lastItem->text() + " error: " + parser.getError() + ", at position: " + QString::number(parser.getErrorPosition()));
+				lastItem->setText(lastItem->text() + " error: " + parser.error() + ", at position: " + QString::number(parser.getErrorPosition()));
 				lastItem->setBackgroundColor(QColor(255, 0, 0));
 			}
 			else
 			{
 				this->setWindowTitle("CFTest1");qApp->processEvents();
 
-				if (parser.BuildTagTree() != NoError)
+				if (parser.buildTagTree() != NoError)
 				{
-				lastItem->setText(lastItem->text() + " error: " + parser.getError() + ", at position: " + QString::number(parser.getErrorPosition()));
+				lastItem->setText(lastItem->text() + " error: " + parser.error() + ", at position: " + QString::number(parser.getErrorPosition()));
 				lastItem->setBackgroundColor(QColor(0, 255, 255));
 				}
 				else

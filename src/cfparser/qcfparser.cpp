@@ -1,10 +1,15 @@
 #include "qcfparser.h"
 #include "qcf8.h"
 
+#include <QTextStream>
+#include <QFileInfo>
+#include <QDateTime>
 #include <QString>
 #ifdef QT_DEBUG
 #include <QDebug>
 #endif
+#include <QFile>
+
 /*
   (0) comment inside cftags.
   (0) cfscript
@@ -1387,7 +1392,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 	return ret;
 }
 
-QString QCFParser::getError()
+QString QCFParser::error()
 {
 	return m_Error;
 }
@@ -1487,7 +1492,41 @@ quint32 QCFParser::FindCFCommentSize(const QString &p_Text, const quint32 p_Posi
     return 0;
 }
 
-QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
+QCFParserErrorType QCFParser::parse(const QFileInfo &p_File, bool *p_Terminate)
+{
+    QFile file(p_File.filePath());
+
+    if (!p_File.exists())
+    {
+        m_Error = QObject::tr("File (%1) doesn't exists.").arg(p_File.filePath());
+
+        return ForcedTerminationError;
+    }
+
+    m_FileName = p_File.filePath();
+    m_FileSize = p_File.size();
+    m_FileModifyDateTime = p_File.lastModified().toTime_t();
+
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        m_Error = QObject::tr("Can't open (%1) file for reading.").arg(p_File.filePath());
+
+        return ForcedTerminationError;
+    }
+
+    QString fileContent = QTextStream(&file).readAll();
+
+    if (file.error() != QFileDevice::NoError)
+    {
+        m_Error = QObject::tr("Error reading source file. Error: %1.").arg(file.errorString());
+
+        return ForcedTerminationError;
+    }
+
+    return parse(fileContent, p_Terminate);
+}
+
+QCFParserErrorType QCFParser::parse(const QString &p_Text, bool *p_Terminate)
 {
 	m_Text = p_Text;
 	m_Tags.clear();
@@ -1818,7 +1857,7 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 		}
 	}
 
-	QCFParserErrorType l_tagTree = BuildTagTree();
+	QCFParserErrorType l_tagTree = buildTagTree();
 
 	if (l_tagTree != NoError)
 	{
@@ -1828,7 +1867,7 @@ QCFParserErrorType QCFParser::Parse(const QString &p_Text, bool *p_Terminate)
 	return validate();
 }
 
-QCFParserErrorType QCFParser::BuildTagTree()
+QCFParserErrorType QCFParser::buildTagTree()
 {
 	QList<quint32> nestedList;
 	bool Found;
@@ -2041,12 +2080,17 @@ QCFParserErrorType QCFParser::validate()
 	return NoError;
 }
 
-QList<QCFParserTag> QCFParser::getTags()
+QList<QCFParserTag> QCFParser::getTags() const
 {
 	return m_Tags;
 }
 
-QList<QCFParserElement> QCFParser::getScriptFunctions(QList<QCFParserTag> const p_Tags)
+QHash<QString, QCFTag> QCFParser::getCFTagsDef() const
+{
+    return m_CFTagsDef;
+}
+
+QList<QCFParserElement> QCFParser::getScriptFunctions(QList<QCFParserTag> const p_Tags) const
 {
     QList<QCFParserElement> ret;
 

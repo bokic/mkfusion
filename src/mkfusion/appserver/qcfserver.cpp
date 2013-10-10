@@ -1,6 +1,5 @@
 #include "qcfserver.h"
 #include "qmkfusionexception.h"
-#include "qcfgenerator.h"
 #include "qcfrunningtemplate.h"
 #include "qcftemplate.h"
 #include "qcfparser.h"
@@ -376,51 +375,55 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 	QString l_FileContent = codec->toUnicode(file.readAll());
 	file.close();
 
-	// ---- Parse .cfm file. ----
-	QCFParser l_parser(CompilerMode);
-    QFileInfo fileinfo(p_Filename);
-    l_parser.m_FileName = p_Filename;
-	l_parser.m_CFMFileSize = fileinfo.size();
-	l_parser.m_CFMModifyDateTime = fileinfo.lastModified().toTime_t();
-	QCFParserErrorType l_parseError = l_parser.Parse(l_FileContent);
-	if (l_parseError != NoError)
-	{
-        return "Parsing error.\nError: " + l_parser.getError();
-	}
+    // TODO: Do cfm parse and cpp generation here
+    QString ret;
 
-    l_parseError = l_parser.prioritizeOperators();
-    if (l_parseError != NoError)
-    {
-        return "Parsing error.\nError: " + l_parser.getError();
-    }
+//	// ---- Parse .cfm file. ----
+//	QCFParser l_parser(CompilerMode);
+//    QFileInfo fileinfo(p_Filename);
+//    l_parser.m_FileName = p_Filename;
+//	l_parser.m_FileSize = fileinfo.size();
+//	l_parser.m_FileModifyDateTime = fileinfo.lastModified().toTime_t();
+//	QCFParserErrorType l_parseError = l_parser.Parse(l_FileContent);
+//	if (l_parseError != NoError)
+//	{
+//        return "Parsing error.\nError: " + l_parser.getError();
+//	}
 
-	l_parseError = l_parser.BuildTagTree();
-	if (l_parseError != NoError)
-	{
-		return "Parsing error(at building tag-tree).";
-	}
+//    l_parseError = l_parser.prioritizeOperators();
+//    if (l_parseError != NoError)
+//    {
+//        return "Parsing error.\nError: " + l_parser.getError();
+//    }
 
-	// Generate c file, compile it to dll/so, move it to target dir.
-#ifdef Q_OS_WIN
-	QString l_NewTemplateFile = QFileInfo(p_Filename).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".dll";
-#elif defined Q_OS_LINUX
-    QString l_NewTemplateFile = QFileInfo(p_Filename).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".so";
-#else
-#error Windows and Linux OSs are currently supported.
-#endif
+//	l_parseError = l_parser.BuildTagTree();
+//	if (l_parseError != NoError)
+//	{
+//		return "Parsing error(at building tag-tree).";
+//	}
 
-	QCFGenerator l_generator;
-    QString ret = l_generator.generateTemplateCpp(l_parser, m_MKFusionPath + "templates/" + l_NewTemplateFile, m_MKFusionPath);
+//	// Generate c file, compile it to dll/so, move it to target dir.
+//#ifdef Q_OS_WIN
+//	QString l_NewTemplateFile = QFileInfo(p_Filename).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".dll";
+//#elif defined Q_OS_LINUX
+//    QString l_NewTemplateFile = QFileInfo(p_Filename).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".so";
+//#else
+//#error Windows and Linux OSs are currently supported.
+//#endif
 
-	if (ret.isEmpty())
-	{
-		QCFCompiledTemplateItem item;
-		item.m_CompiledFileName = l_NewTemplateFile;
-        item.m_ModifiedInfo.m_Filename = p_Filename;
-		item.m_ModifiedInfo.m_Size = fileinfo.size();
-		item.m_ModifiedInfo.m_Modified = fileinfo.lastModified().toTime_t();
-        m_CompiledTemplates.insert(p_Filename, item);
-	}
+//    QString ret;
+//    /*QCFTemplateGenerator l_generator(m_MKFusionPath);
+//    QString ret = l_generator.generateCpp(l_parser, m_MKFusionPath + "templates/" + l_NewTemplateFile);
+
+//	if (ret.isEmpty())
+//	{
+//		QCFCompiledTemplateItem item;
+//		item.m_CompiledFileName = l_NewTemplateFile;
+//        item.m_ModifiedInfo.m_Filename = p_Filename;
+//		item.m_ModifiedInfo.m_Size = fileinfo.size();
+//		item.m_ModifiedInfo.m_Modified = fileinfo.lastModified().toTime_t();
+//        m_CompiledTemplates.insert(p_Filename, item);
+//    }*/
 
 	return ret;
 }

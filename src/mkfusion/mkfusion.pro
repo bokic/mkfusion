@@ -4,5 +4,5 @@ lessThan(QT_MAJOR_VERSION, 5) {
 
 TEMPLATE       = subdirs
 CONFIG        += debug_and_release c++11
-SUBDIRS        = appserver mod_mkfusion
+SUBDIRS        = appserver mkfusion_generator mkfusion_worker mod_mkfusion
 win32:SUBDIRS += uninstall

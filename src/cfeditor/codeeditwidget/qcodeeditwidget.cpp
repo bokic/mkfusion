@@ -561,39 +561,39 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
 	QPainter painter(viewport());
 
-	bool has_selection;
-	int selection_start_row;
-	int selection_end_row;
+    //bool has_selection;
+    //int selection_start_row;
+    //int selection_end_row;
 
 	if ((m_SelectionPosition.m_Row == m_CarretPosition.m_Row)&&(m_SelectionPosition.m_Column == m_CarretPosition.m_Column))
 	{
-		has_selection = false;
+        //has_selection = false;
 
-		selection_start_row = 0;
-		selection_end_row = 0;
+        //selection_start_row = 0;
+        //selection_end_row = 0;
 	}
 	else
 	{
-		has_selection = true;
+        //has_selection = true;
 
 		if (m_SelectionPosition.m_Row > m_CarretPosition.m_Row)
 		{
-			selection_start_row = m_CarretPosition.m_Row;
-			selection_end_row = m_SelectionPosition.m_Row;
+            //selection_start_row = m_CarretPosition.m_Row;
+            //selection_end_row = m_SelectionPosition.m_Row;
 		}
 		else
 		{
-			selection_start_row = m_SelectionPosition.m_Row;
-			selection_end_row = m_CarretPosition.m_Row;
+            //selection_start_row = m_SelectionPosition.m_Row;
+            //selection_end_row = m_CarretPosition.m_Row;
 		}
 	}
 
 	QFontMetrics l_fm(m_TextFont);
 	int l_fontHeight = l_fm.height();
 	int l_fontWidth = l_fm.width(' ');
-	int l_LinesToDraw = (viewport()->height() / l_fontHeight) + 1;
+    //int l_LinesToDraw = (viewport()->height() / l_fontHeight) + 1;
 	int l_LineNumbersPanelWidth = 16 + (l_fm.width(" ") * m_LineNumbersPanelWidth) + 4;
-	int l_CharsToDraw = (((viewport()->width() - l_LineNumbersPanelWidth) / l_fontWidth) + 1);
+    //int l_CharsToDraw = (((viewport()->width() - l_LineNumbersPanelWidth) / l_fontWidth) + 1);
 
 	painter.fillRect(QRect(0, 0, l_LineNumbersPanelWidth, viewport()->height()), m_LineNumbersBackground);
 

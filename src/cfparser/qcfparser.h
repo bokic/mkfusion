@@ -5,11 +5,11 @@ struct QCFParserElement;
 struct QCFParserTag;
 class QCFParser;
 
-#include "qcfgenerator.h"
 #include "qcffunction.h"
 #include "qcftag.h"
 
 #include <QStringList>
+#include <QFileInfo>
 #include <QString>
 #include <QObject>
 #include <QList>
@@ -20,9 +20,10 @@ enum QCFParserErrorType {NoError, ForcedTerminationError, ParsingError, InvalidC
 enum QCFParserTagType {UnknownTagType, CFTagType, EndCFTagType, CommentTagType, ExpressionTagType};
 enum QCFParserMode {FullParseMode, CompilerMode};
 
+
 struct QCFParserElement
 {
-	QCFParserElementType m_Type;
+    QCFParserElementType m_Type;
 	QString m_Text;
 	int m_Position;
 	int m_Size;
@@ -34,7 +35,7 @@ struct QCFParserTag
 	int m_Start;
 	int m_Length;
 	QString m_Name;
-	QCFParserTagType m_TagType;
+    QCFParserTagType m_TagType;
 	QCFParserElement m_Arguments;
 	bool m_InlineClosedTag;
     struct QCFParserTag *m_OtherTag;
@@ -59,6 +60,29 @@ struct QCFParserTag
 
 class QCFParser : public QObject
 {
+public:
+    friend class QCFGenerator;
+
+    QCFParser();
+    explicit QCFParser(QCFParserMode mode);
+    QString error();
+    const QString &getText() const;
+    quint32 getErrorPosition();
+    QCFParserErrorType parse(const QFileInfo &p_File, bool *p_Terminate = nullptr);
+    QCFParserErrorType parse(const QString &p_Text, bool *p_Terminate = nullptr);
+    QCFParserErrorType buildTagTree();
+    QCFParserErrorType validate();
+    QCFParserErrorType prioritizeOperators();
+    QList<QCFParserTag> getTags() const;
+    QHash<QString, QCFTag> getCFTagsDef() const;
+    QList<QCFParserElement> getScriptFunctions(QList<QCFParserTag> const p_Tags) const;
+    QList<QCFParserTag> getTagFunctions(QList<QCFParserTag> const p_Tags);
+    QString m_FileName;
+    qint64 m_FileSize;
+    uint m_FileModifyDateTime;
+    bool m_InsideCFScript;
+    QStringList m_TagPrefixes;
+
 private:
 	QList<QCFParserTag> m_Tags;
 	QHash<QString, QCFTag> m_CFTagsDef;
@@ -74,27 +98,6 @@ private:
     QCFParserErrorType prioritizeOperatorsRecursive(QCFParserElement &element, const QList<QStringList> &priorities);
     static quint32 GetLineNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset);
     static quint32 GetColumnNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset);
-
-public:
-	QCFParser();
-	explicit QCFParser(QCFParserMode mode);
-	QString getError();
-    const QString &getText() const;
-	quint32 getErrorPosition();
-    QCFParserErrorType Parse(const QString &p_Text, bool *p_Terminate = nullptr);
-	QCFParserErrorType BuildTagTree();
-	QCFParserErrorType validate();
-    QCFParserErrorType prioritizeOperators();
-	QList<QCFParserTag> getTags();
-    QList<QCFParserElement> getScriptFunctions(QList<QCFParserTag> const p_Tags);
-    QList<QCFParserTag> getTagFunctions(QList<QCFParserTag> const p_Tags);
-	QString m_FileName;
-	qint64 m_CFMFileSize;
-	uint m_CFMModifyDateTime;
-	bool m_InsideCFScript;
-    QStringList m_TagPrefixes;
-
-    friend class QCFGenerator;
 };
 
 #endif // QCFPARSER_H

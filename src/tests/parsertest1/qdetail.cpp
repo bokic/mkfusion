@@ -38,12 +38,12 @@ void QDetail::setFileForParsing(const QString& p_File)
 
 	ui->textEdit->setPlainText(fileContent);
 
-    if (m_Parser.Parse(fileContent) == NoError)
+    if (m_Parser.parse(fileContent) == NoError)
     {
         m_Parser.prioritizeOperators();
     }
 
-    ui->label->setText(m_Parser.getError());
+    ui->label->setText(m_Parser.error());
 
     ushort c = 0;
 

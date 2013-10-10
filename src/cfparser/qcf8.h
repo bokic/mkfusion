@@ -11,7 +11,7 @@
 class QCF8 : public QObject
 {
 public:
-	static QHash<QString, QCFTag> generateCFTags();
+    static QHash<QString, QCFTag> generateCFTags();
 	static QHash<QString, QCFFunction> generateCFFunctions();
 };
 

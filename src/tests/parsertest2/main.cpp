@@ -546,7 +546,7 @@ void TestCases::parseBigFile()
 	QString str = file.readAll();
 
 	QBENCHMARK {
-		parser.Parse(str);
+		parser.parse(str);
 
 		//int c = parser.getTags().count();
 
