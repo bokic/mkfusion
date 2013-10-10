@@ -105,7 +105,7 @@ void QRDSServer::setPromptedPassword(QByteArray PromptedPassword)
 	m_PromptedPassword = PromptedPassword;
 }
 
-QVector<QMap<QString, QString> > QRDSServer::getMapping()
+QVector<QMap<QString, QString>> QRDSServer::getMapping()
 {
 	return m_Mappings;
 }

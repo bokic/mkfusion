@@ -715,7 +715,7 @@ void QCFRunningTemplate::worker()
 					*/
 					QUrl l_url = QUrl::fromEncoded(QByteArray("?") + m_Request.m_Args.toUtf8(), QUrl::StrictMode);
 
-                    QList<QPair<QString, QString> > l_Arguments = QUrlQuery(l_url).queryItems();
+                    QList<QPair<QString, QString>> l_Arguments = QUrlQuery(l_url).queryItems();
 
                     for(const QPair<QString, QString> &l_Argument: l_Arguments)
 					{
