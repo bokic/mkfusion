@@ -85,8 +85,8 @@ public:
 
 private:
 	QList<QCFParserTag> m_Tags;
-	QHash<QString, QCFTag> m_CFTagsDef;
-	QHash<QString, QCFFunction> m_CFFunctionsDef;
+    const QHash<QString, QCFTag> &m_CFTagsDef;
+    const QHash<QString, QCFFunction> &m_CFFunctionsDef;
 	quint32 m_ErrorPosition;
 	QString m_Error;
 	QString m_Text;

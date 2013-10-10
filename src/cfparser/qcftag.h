@@ -10,7 +10,7 @@ public:
 	enum ArgumentType {TypeConstantNumber, TypeConstantString, TypeExpression, TypeVariable, TypeAny};
 
 	QCFTagArgument();
-	explicit QCFTagArgument(const QCFTagArgument &p_TagArgument);
+    QCFTagArgument(const QCFTagArgument &p_TagArgument);
 	QCFTagArgument(const QString &p_Name, bool p_Required = false, ArgumentType p_Type = TypeAny, const QString &p_MustBeValue = "");
     QCFTagArgument &operator=(const QCFTagArgument &p_TagArgument);
 #ifdef Q_COMPILER_RVALUE_REFS
@@ -30,7 +30,7 @@ public:
 	enum ArgumentsType{ArgumentsTypeArguments, ArgumentsTypeExpression};
 	enum ExpressionInside{WithoutExpressionInside, WithExpressionInside};
 	QCFTag();
-    explicit QCFTag(const QCFTag &other);
+    QCFTag(const QCFTag &other);
     QCFTag(const QString &p_TagName, CloseTagType p_CloseTagType, ArgumentsType p_ArgumentsType, ExpressionInside p_ExpressionInside = WithoutExpressionInside, bool p_AnyParam = false);
 	QCFTag& operator=(const QCFTag &other);
 #ifdef Q_COMPILER_RVALUE_REFS

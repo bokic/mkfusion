@@ -641,7 +641,7 @@ QCFParserElement QCFGenerator::OptimizeQCFParserElement(QCFParserElement p_CFExp
 
 QString QCFGenerator::ParseAndGenerateCppExpressionFromString(const QString str)
 {
-    QCFParser parser;
+    QCFParser parser(CompilerMode);
 
     QCFParserElement l_newConditionElement = parser.ParseCFCode(str, (qint32)0, Expression, nullptr);
 
@@ -1231,7 +1231,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                 if (l_conditionElement.m_ChildElements.count() == 3)
                 {
-                    QCFParser parser;
+                    QCFParser parser(CompilerMode);
 
                     const QString &l_conditionStr = l_conditionElement.m_ChildElements.at(2).m_Text;
 

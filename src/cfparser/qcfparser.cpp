@@ -32,22 +32,21 @@
   (0) parametar
   */
 
-QCFParser::QCFParser(): QObject()
+QCFParser::QCFParser()
+    : QObject()
+    , m_CFTagsDef(QCF8::generateCFTags())
+    , m_CFFunctionsDef(QCF8::generateCFFunctions())
+    , m_Mode(FullParseMode)
 {
-	this->m_CFTagsDef = QCF8::generateCFTags();
-	this->m_CFFunctionsDef = QCF8::generateCFFunctions();
-
-	m_Mode = FullParseMode;
 }
 
-QCFParser::QCFParser(QCFParserMode mode): QObject()
+QCFParser::QCFParser(QCFParserMode mode)
+    : QObject()
+    , m_CFTagsDef(QCF8::generateCFTags())
+    , m_CFFunctionsDef(QCF8::generateCFFunctions())
+    , m_Mode(mode)
 {
-	this->m_CFTagsDef = QCF8::generateCFTags();
-	this->m_CFFunctionsDef = QCF8::generateCFFunctions();
-
-	m_Mode = mode;
 }
-
 
 bool QCFParser::TrimCFCode(const QString &p_Text, int &p_Offset)
 {

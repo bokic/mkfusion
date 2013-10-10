@@ -12,9 +12,12 @@ public:
     enum QCFFunctionArgumentDataType {ArgumentDataTypeBool, ArgumentDataTypeInt, ArgumentDataTypeDouble, ArgumentDataTypeString, ArgumentDataTypeBinary, ArgumentDataTypeDateTime, ArgumentDataTypeQWDDX, ArgumentDataTypeAny};
 
 	QCFFunctionArgument();
-	explicit QCFFunctionArgument(const QCFFunctionArgument &other);
+    QCFFunctionArgument(const QCFFunctionArgument &other);
 	QCFFunctionArgument(QCFFunctionArgumentDataType p_DataType, bool p_Required = false, QCFFunctionArgumentType p_Type = QCFFunctionArgument::TypeExpression);
-	QCFFunctionArgument& operator=(const QCFFunctionArgument &other);
+    QCFFunctionArgument &operator=(const QCFFunctionArgument &other);
+#ifdef Q_COMPILER_RVALUE_REFS
+    QCFFunctionArgument &operator=(QCFFunctionArgument &&other);
+#endif
 
 	// Class members
 	QCFFunctionArgumentDataType m_DataType;
@@ -28,10 +31,13 @@ public:
     enum QCFFunctionReturnType {ReturnVoid, ReturnBool, ReturnInt, ReturnDouble, ReturnBinary, ReturnString, ReturnDateTime, ReturnQWDDX};
 
 	QCFFunction();
-	explicit QCFFunction(const QCFFunction &other);
+    QCFFunction(const QCFFunction &other);
     QCFFunction(const QString &p_FunctionName, QCFFunctionReturnType p_ReturnType, bool p_NeedsThis = false);
-	QCFFunction& operator=(const QCFFunction &other);
-	void setName(const QString &p_FunctionName);
+    QCFFunction &operator=(const QCFFunction &other);
+#ifdef Q_COMPILER_RVALUE_REFS
+    QCFFunction &operator=(QCFFunction &&other);
+#endif
+    void setName(const QString &p_FunctionName);
     const QString &getName();
 
 	// Class members
