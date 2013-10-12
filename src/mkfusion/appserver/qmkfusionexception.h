@@ -1,8 +1,6 @@
 #ifndef QMKFUSIONEXCEPTION_H
 #define QMKFUSIONEXCEPTION_H
 
-#include "qwddx.h"
-
 #include <qtconcurrentexception.h>
 #include <QDateTime>
 #include <QString>
@@ -35,19 +33,6 @@ public:
 
 	void raise() const { throw *this; }
     QException *clone() const { return new QMKFusionException(*this); }
-    /*virtual QWDDX GenerateCFCatch() // TODO: This funct. member needs to be moved to QCFRunningTemplate class
-	{
-		QWDDX ret(QWDDX::Struct);
-
-        // TODO: Do dynamic cast switch here.
-        //ret["Type"] = m_Type;
-        ret["Message"] = m_message;
-        ret["Detail"] = m_Detail;
-        ret["StackTrace"] = "Todo, schedule for v1.1";
-        ret["TagContext"] = "Todo, schedule for v1.1";
-
-		return ret;
-    }*/
 
     QString m_Message;
     QString m_Detail;

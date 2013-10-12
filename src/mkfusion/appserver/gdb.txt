@@ -1,9 +1,0 @@
-Кратко упатство за дебагирање на mkfusion
-
-1. gdb mkfusion
-
-2. set args -e
-
-3. break filename:linenum
-
-4. run

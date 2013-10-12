@@ -1,57 +1,46 @@
 #ifndef QCFSERVER_H
 #define QCFSERVER_H
 
-#include "qcfrunningtemplate.h"
-#include "qcfapplication.h"
-#include "qcftemplate.h"
+#include "qcfapplicationmanager.h"
+#include "qcfsessionmanager.h"
+#include "qcfdatabasepoolmanager.h"
+#include "qcfworkersmanager.h"
+#include "qcfsettingsmanager.h"
+#include "qcfschedulerthread.h"
 
-#include <QReadWriteLock>
 #include <QLocalServer>
-#include <QSqlDatabase>
-#include <QThread>
 #include <QObject>
-#include <QList>
-#include <QHash>
 
-struct QCFCompiledTemplateItem {
-	QString m_CompiledFileName;
-	QIsTemplateModified m_ModifiedInfo;
-};
 
 class QCFServer : public QObject
 {
-	Q_OBJECT
 public:
-	QCFServer();
-	virtual ~QCFServer();
+    QCFServer();
+    virtual ~QCFServer();
+
 	void start();
 	void stop();
-    void readConfig();
-    QSqlDatabase *getDBConnection(const QString &datasource);
-    QString compileTemplate(const QString &p_Filename, const QString &p_URI);
-    QString compileComponent(const QString &p_Filename, const QString &p_URI);
-    QCFRunningTemplate *getRunningTemplateByThreadId(Qt::HANDLE threadId);
-    void createSessonStrings(QString &cfid, QString &cftoken);
+    static QCFServer * instance();
+    static QString osName();
+    static QString osVersion();
 
-protected:
-    virtual void timerEvent(QTimerEvent*);
-
-private slots:
-	void on_newConnection();
-	void on_workerTerminated();
-
-public:
-    QHash<QString, QCFCompiledTemplateItem> m_CompiledTemplates;
-    QHash<Qt::HANDLE, QCFRunningTemplate *> m_RunnuingTemplatesByThreadId;
-    QHash<QString, QCFApplication> m_Applications;
-    QHash<QString, QWDDX> m_Sessions;
-    QHash<QString, QSqlDatabase> m_DatabasePool;
+    QCFApplicationManager m_Applications;
+    QCFSessionManager m_Sessions;
+    QCFDatabasePoolManager m_DatabasePool;
+    QCFWorkersManager m_Workers;
     QLocalServer m_LocalServer;
-    QReadWriteLock m_runningLibrariesLock;
-    QString m_CustomTagsPath;
+    QCFSettingsManager m_Settings;
+    QCFSchedulerThread m_Scheduler;
+
+public slots:
+    void on_workerTerminated();
+
+private:
     QString m_MKFusionPath;
-    int m_mainTimer;
-    int m_MaxSimulRunningTemplates;
+    static QString getCurrentExecutableFileName();
+    static QCFServer *m_instance;
+    static QString m_osName;
+    static QString m_osVersion;
 };
 
 #endif // QCFSERVER_H

@@ -7,22 +7,23 @@ CONFIG  += debug_and_release c++11
 TARGET   = mkfusion
 DESTDIR  = ../../../bin
 
-DEPENDPATH  += . ../../../libs/qtservice ../../cfparser
-INCLUDEPATH += . ../../../libs/qtservice ../../cfparser
+DEPENDPATH  += . ../../../libs/qtservice ../../cfparser qwddx
+INCLUDEPATH += . ../../../libs/qtservice ../../cfparser qwddx
 
 # main app
-SOURCES = main.cpp qmkfusionservice.cpp ../../cfparser/qcffunction.cpp ../../cfparser/qcftag.cpp ../../cfparser/qcf8.cpp qcfapplication.cpp qmkfusionexception.cpp qcfrunningtemplate.cpp cffunctions.cpp qcftemplate.cpp qcfserver.cpp common.cpp qwddx.cpp qwddxcomponent.cpp qwddxfunction.cpp qwddxargument.cpp qhttpcodec.cpp \
-    qcfcompiler.cpp \
-    qlog.cpp
-HEADERS =          qmkfusionservice.h   ../../cfparser/qcffunction.h   ../../cfparser/qcftag.h   ../../cfparser/qcf8.h   qcfapplication.h   qmkfusionexception.h   qcfrunningtemplate.h   cffunctions.h   qcftemplate.h   qcfserver.h   common.h   qwddx.h   qwddxcomponent.h   qwddxfunction.h   qwddxargument.h   qhttpcodec.h   cftags.h \
-    qcfcompiler.h \
-    qlog.h
+SOURCES  = main.cpp qmkfusionservice.cpp qcfserver.cpp qcfapplicationmanager.cpp qcfsessionmanager.cpp qcfdatabasepoolmanager.cpp qcfworkersmanager.cpp qcfsettingsmanager.cpp qcfschedulerthread.cpp qcflog.cpp qcfsettings.cpp qcfworkerthread.cpp
+HEADERS  =          qmkfusionservice.h   qcfserver.h    qcfapplicationmanager.h  qcfsessionmanager.h   qcfdatabasepoolmanager.h   qcfworkersmanager.h   qcfsettingsmanager.h   qcfschedulerthread.h   qcflog.h   qcfsettings.h   qcfworkerthread.h
+
+HEADERS += qcfsession.h qmkfusionexception.h
+
+SOURCES += qwddx/qwddx.cpp qwddx/qwddxargument.cpp qwddx/qwddxcomponent.cpp qwddx/qwddxfunction.cpp
+HEADERS += qwddx/qwddx.h   qwddx/qwddxargument.h   qwddx/qwddxcomponent.h   qwddx/qwddxfunction.h
 
 # QtService
 SOURCES       += ../../../libs/qtservice/qtservice.cpp
 win32:SOURCES += ../../../libs/qtservice/qtservice_win.cpp
 unix:SOURCES  += ../../../libs/qtservice/qtservice_unix.cpp ../../../libs/qtservice/qtunixsocket.cpp ../../../libs/qtservice/qtunixserversocket.cpp
-unix:HEADERS +=                                             ../../../libs/qtservice/qtunixsocket.h   ../../../libs/qtservice/qtunixserversocket.h
+unix:HEADERS  +=                                            ../../../libs/qtservice/qtunixsocket.h   ../../../libs/qtservice/qtunixserversocket.h
 
 QMAKE_CXXFLAGS += -Wno-unused-parameter
 

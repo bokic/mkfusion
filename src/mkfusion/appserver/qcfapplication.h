@@ -1,37 +1,23 @@
 #ifndef QCFAPPLICATION_H
 #define QCFAPPLICATION_H
 
-#include <QReadWriteLock>
+//#include "qwddx.h"
+
+#include <QDateTime>
 #include <QString>
-#include <QObject>
+#include <QMutex>
+#include <QHash>
 
-#include "qwddx.h"
-
-class QCFApplication : public QObject
+class QCFApplication
 {
-    Q_OBJECT
-public:
-    QCFApplication(QObject *parent = 0);
-    QCFApplication(const QCFApplication &other);
-#ifdef Q_COMPILER_RVALUE_REFS
-    QCFApplication &operator=(QCFApplication &&other);
-#endif
-    QCFApplication &operator=(const QCFApplication &other);
-
-    ~QCFApplication();
-
-    double ApplicationTimeout;
-    bool ClientManagement;
-    QString ClientStorage;
-    QString LoginStorage;
-    QString ScriptProtect;
-    bool SessionManagement;
-    double SessionTimeout;
-    bool SetClientCookies;
-    bool SetDomainCookies;
-
-    QReadWriteLock lock;
-    QWDDX data;
+    QString m_name;
+    QString m_path;
+    QString m_applicationTemplate;
+    bool m_callOnApplicationEnd;
+    //QWDDX m_data;
+    QHash<QString, QMutex> m_mutexHash;
+    QDateTime m_timeout;
+    QMutex m_mutex;
 };
 
 #endif // QCFAPPLICATION_H
