@@ -1,6 +1,7 @@
 #ifndef QCFWORKERTHREAD_H
 #define QCFWORKERTHREAD_H
 
+#include "qmkfusionexception.h"
 #include "qwddx.h"
 
 #include <QTemporaryFile>
@@ -60,8 +61,6 @@ class QCFWorkerThread : public QThread
 public:
     explicit QCFWorkerThread(QLocalSocket *socket, QObject *parent = 0);
     virtual ~QCFWorkerThread();
-    bool readRequest();
-    bool writeResponse();
 
 signals:
 
@@ -71,6 +70,10 @@ protected:
     void run();
 
 private:
+    bool readRequest();
+    bool writeResponse();
+    void writeException(const QMKFusionException &ex);
+
     // Class members
     QWDDX m_CGI;
     QWDDX m_SERVER;

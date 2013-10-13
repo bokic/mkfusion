@@ -35,6 +35,8 @@ void QCFWorkersManager::on_newConnection()
         {
             QCFLOG(CFLOG_WORKER, QCFLOG_ERROR, "Failed to connect with local socket.");
 
+            delete localSocket;
+
             continue;
         }
 
@@ -51,9 +53,38 @@ void QCFWorkersManager::on_newConnection()
         //}
 
         QCFWorkerThread *worker = new QCFWorkerThread(localSocket, this);
+        connect(worker, &QThread::finished, this, &QCFWorkersManager::on_workerTerminated);
 
-        connect(worker, &QThread::finished, QCFServer::instance(), &QCFServer::on_workerTerminated);
+        {
+            QMutexLocker lock(&m_mutex);
+
+            m_workers.push_back(worker);
+        }
+
+        worker->start();
     }
 
     QCFLOG(CFLOG_WORKER, QCFLOG_INFO, "Worker has ended.");
+}
+
+void QCFWorkersManager::on_workerTerminated()
+{
+    QCFWorkerThread *l_sender = (QCFWorkerThread *)sender();
+
+    {
+        QMutexLocker lock(&m_mutex);
+
+        if (m_workers.contains(l_sender))
+        {
+            m_workers.removeAll(l_sender);
+        }
+        else
+        {
+            QCFLOG(QCFLOG_DAEMON, QCFLOG_CRITICAL, "Worker object not found in list.");
+        }
+    }
+
+    l_sender->deleteLater();
+
+    //qApp->quit();
 }

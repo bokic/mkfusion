@@ -37,7 +37,7 @@ public slots:
 
 private:
     QString m_MKFusionPath;
-    static QString getCurrentExecutableFileName();
+    static QString getProcessExecutableFileName();
     static QCFServer *m_instance;
     static QString m_osName;
     static QString m_osVersion;

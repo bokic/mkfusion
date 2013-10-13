@@ -76,7 +76,7 @@ void QCFServer::start()
 {
     QCFLOG(QCFLOG_DAEMON, QCFLOG_INFO, "MKFusion daemon is starting.");
 
-    QFileInfo fi(getCurrentExecutableFileName());
+    QFileInfo fi(getProcessExecutableFileName());
     QDir fi_dir = fi.absoluteDir();
     fi_dir.cdUp();
     m_MKFusionPath = fi_dir.absolutePath() + "/";
@@ -140,10 +140,12 @@ QCFServer * QCFServer::instance()
 
 void QCFServer::on_workerTerminated()
 {
+
+    // Delete worker.
     sender()->deleteLater();
 }
 
-QString QCFServer::getCurrentExecutableFileName()
+QString QCFServer::getProcessExecutableFileName()
 {
     QString ret;
 #ifdef Q_OS_WIN

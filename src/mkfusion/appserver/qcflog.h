@@ -5,7 +5,7 @@
 
 
 #define QCFLOG(_file, _level, _text) if(_level & QCFLog::level()) QCFLog::write(_file, _level, QStringLiteral(_text));
-#define QCFLOG_QSTRING(_file, _level, _text) if(_level & QCFLog::level()) QCFLog::write(_file, _level, _text);
+#define QCFLOG_QSTRING(_file, _level, _text) if(_level & QCFLog::level()) QCFLog::write(_file, _level, QString(_text));
 
 #define QCFLOG_NO_LOG    (0x00)
 #define QCFLOG_CRITICAL  (0x01)
