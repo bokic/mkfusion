@@ -1,5 +1,6 @@
 #include "qcfworkerthread.h"
 #include "qmkfusionexception.h"
+#include "qcftemplateinstance.h"
 #include "qcfserver.h"
 
 #include <qcflog.h>
@@ -35,7 +36,8 @@ void QCFWorkerThread::run()
         }
 
         // LoadCompiledFile
-        //QCFServer::instance()->m_Workers.
+        QString err;
+        QCFTemplateInstance *instance = QCFServer::instance()->m_Templates.getTemplateInstanceForSource(m_Request.m_Filename);
 
     }
     catch (const QMKFusionCFAbortException &ex)

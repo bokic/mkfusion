@@ -4,9 +4,10 @@
 #include "qcfapplicationmanager.h"
 #include "qcfsessionmanager.h"
 #include "qcfdatabasepoolmanager.h"
-#include "qcfworkersmanager.h"
+#include "qcftemplatesmanager.h"
 #include "qcfsettingsmanager.h"
 #include "qcfschedulerthread.h"
+#include "qcfworkersmanager.h"
 
 #include <QLocalServer>
 #include <QObject>
@@ -28,6 +29,7 @@ public:
     QCFSessionManager m_Sessions;
     QCFDatabasePoolManager m_DatabasePool;
     QCFWorkersManager m_Workers;
+    QCFTemplatesManager m_Templates;
     QLocalServer m_LocalServer;
     QCFSettingsManager m_Settings;
     QCFSchedulerThread m_Scheduler;

@@ -128,7 +128,7 @@ void QCFServer::stop()
     m_Scheduler.wait();
     QCFLOG(QCFLOG_DAEMON, QCFLOG_INFO, "Scheduler stoped.");
 
-    // TODO: Wait until all workers are finished.
+    m_Workers.waitForAllWorkersToFinish();
 
     QCFLOG(QCFLOG_DAEMON, QCFLOG_INFO, "MKFusion daemon has stoped.");
 }

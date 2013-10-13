@@ -3,6 +3,7 @@
 #include "qcfserver.h"
 #include "qcflog.h"
 
+
 #include <QLocalServer>
 #include <QLocalSocket>
 
@@ -11,9 +12,21 @@ QCFWorkersManager::QCFWorkersManager()
 {
 }
 
-QString QCFWorkersManager::compile(const QString &file, bool checkForNewer)
+void QCFWorkersManager::waitForAllWorkersToFinish()
 {
-    return "";
+    forever
+    {
+        {
+            QMutexLocker lock(&m_mutex);
+
+            if (m_workers.isEmpty())
+            {
+                return;
+            }
+        }
+
+        QThread::currentThread()->sleep(10);
+    }
 }
 
 void QCFWorkersManager::on_newConnection()

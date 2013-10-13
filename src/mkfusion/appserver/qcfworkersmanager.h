@@ -13,7 +13,7 @@ class QCFWorkersManager : public QObject
 {
 public:
     QCFWorkersManager();
-    QString compile(const QString &file, bool checkForNewer = true);
+    void waitForAllWorkersToFinish();
 
 public slots:
     void on_newConnection();
