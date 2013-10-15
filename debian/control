@@ -1,17 +1,33 @@
-Source: libapache2-mod-mkfusion
+Source: mkfusion
 Section: httpd
 Priority: optional
-Maintainer: Boris Barbulovski <bbarbulovski@gmail.com>
+Maintainer: Boris Barbulovski (no comment) <bbarbulovski@gmail.com>
 Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 3.9.4
 Homepage: http://mkfusion.bokicsoft.com/
-#Vcs-Git: git://git.debian.org/collab-maint/tt.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/tt.git;a=summary
+Vcs-Git: http://svn.code.sf.net/p/mkfusion/code/trunk/
+Vcs-Browser: http://sourceforge.net/p/mkfusion/code/HEAD/tree/trunk/
 
-Package: libapache2-mod-mkfusion
+Package: mkfusion
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: CFML(ColdFusion compatible) application server
+ MKFusion is free opensource native CFML application server.
+ Features:
+ * 
+
+Package: cfeditor
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: CFML IDE
+ MKFusion is free opensource native CFML application server.
+ Features:
+ * 
+
+Package: libapache2-mod-mkfusion
+Architecture: any
+Depends: libqt5core5 (>= 5.0.1), libc6 (>= 2.17), libstdc++6 (>= 4.7.3), libcc1 (>= 1:4.7)
+Description: mkfusion apache module
  MKFusion is free opensource native CFML application server.
  Features:
  * 
