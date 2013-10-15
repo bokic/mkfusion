@@ -10,15 +10,21 @@ Vcs-Browser: http://sourceforge.net/p/mkfusion/code/HEAD/tree/trunk/
 
 Package: mkfusion
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: CFML(ColdFusion compatible) application server
  MKFusion is free opensource native CFML application server.
  Features:
  * 
 
+Package: mkfusion-generator
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Generates Qt c++ from cfm or cfc file
+ 
+
 Package: cfeditor
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: CFML IDE
  MKFusion is free opensource native CFML application server.
  Features:
@@ -26,7 +32,7 @@ Description: CFML IDE
 
 Package: libapache2-mod-mkfusion
 Architecture: any
-Depends: libqt5core5 (>= 5.0.1), libc6 (>= 2.17), libstdc++6 (>= 4.7.3), libcc1 (>= 1:4.7)
+Depends: ${misc:Depends}, ${shlibs:Depends}, libqt5core5 (>= 5.0.1), libstdc++6 (>= 4.7.3), libcc1 (>= 1:4.7)
 Description: mkfusion apache module
  MKFusion is free opensource native CFML application server.
  Features:

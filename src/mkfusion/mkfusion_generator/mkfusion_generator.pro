@@ -5,7 +5,7 @@ lessThan(QT_MAJOR_VERSION, 5) {
 TEMPLATE     = app
 QT           = core concurrent
 CONFIG      += debug_and_release c++11
-TARGET       = mkfusion_generator
+TARGET       = mkfusion-generator
 DESTDIR      = ../../../bin
 
 DEPENDPATH  += . ../../cfparser

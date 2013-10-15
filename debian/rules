@@ -1,22 +1,38 @@
 #!/usr/bin/make -f
 
+mkfusion = $(CURDIR)/bin/mkfusion
+
+mkfusion_generator = $(CURDIR)/bin/mkfusion-generator
+
 mkfusion_conf = $(CURDIR)/install/ubuntu/mkfusion_mkfusion.conf
 mkfusion_load = $(CURDIR)/install/ubuntu/mkfusion_mkfusion.load
 conf_d = $(CURDIR)/install/ubuntu/mkfusion_conf.d
 mod_mkfusion = $(CURDIR)/bin/libmod_mkfusion.so.1.0.0
-mkfusion = $(CURDIR)/bin/mkfusion
 
-APACHE2_MODS_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/etc/apache2/mods-available
-MKFUSION_CONF_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/etc/mkfusion/apache2
-MKFUSION_MODULE_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/usr/lib/apache2/modules
+
+MKFUSION_DEST = $(CURDIR)/debian/mkfusion/usr/sbin
+
+MKFUSION_GENERATOR_DEST =  $(CURDIR)/debian/mkfusion-generator/usr/bin
+
+MOD_MKFUSION_APACHE2_MODS_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/etc/apache2/mods-available
+MOD_MKFUSION_MKFUSION_CONF_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/etc/mkfusion/apache2
+MOD_MKFUSION_MKFUSION_MODULE_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/usr/lib/apache2/modules
 
 $(mkfusion):
 	cd src/mkfusion/appserver && qmake appserver.pro -o Makefile
 	cd src/mkfusion/appserver && make -f Makefile
 
+$(mkfusion_generator):
+	cd src/mkfusion/mkfusion_generator && qmake mkfusion_generator.pro -o Makefile
+	cd src/mkfusion/mkfusion_generator && make -f Makefile
+
 $(mod_mkfusion):
 	cd src/mkfusion/mod_mkfusion && qmake mod_mkfusion.pro -o Makefile
 	cd src/mkfusion/mod_mkfusion && make -f Makefile
+
+build-arch: build
+
+build-indep: build
 
 build: build-stamp
 
@@ -25,12 +41,18 @@ build-stamp:
 	touch build-stamp
 
 clean:
-#cleanup mkfusion(appserver)
+# cleanup mkfusion(appserver)
 	rm -f src/mkfusion/appserver/Makefile
 	rm -f src/mkfusion/appserver/Makefile.Debug
 	rm -f src/mkfusion/appserver/Makefile.Release
 	rm -f -r src/mkfusion/appserver/debug
 	rm -f -r src/mkfusion/appserver/release
+# cleanup mkfusion-generator
+	rm -f src/mkfusion/mkfusion_generator/Makefile
+	rm -f src/mkfusion/mkfusion_generator/Makefile.Debug
+	rm -f src/mkfusion/mkfusion_generator/Makefile.Release
+	rm -f -r src/mkfusion/mkfusion_generator/debug
+	rm -f -r src/mkfusion/mkfusion_generator/release
 # cleanup mod_mkfusion
 	rm -f src/mkfusion/mod_mkfusion/Makefile
 	rm -f src/mkfusion/mod_mkfusion/Makefile.Debug
@@ -40,27 +62,31 @@ clean:
 	rm -f bin/libmod_mkfusion.so
 	rm -f bin/libmod_mkfusion.so.1
 	rm -f bin/libmod_mkfusion.so.1.0
-#other cleanup
+# other cleanup
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp
 	dh_clean
 
-install: build clean $(mkfusion) $(mod_mkfusion) $(mkfusion_conf) $(mkfusion_load) $(conf_d)
+install: build $(mkfusion) $(mkfusion_generator) $(mod_mkfusion) $(mkfusion_conf) $(mkfusion_load) $(conf_d) clean
 	dh_testdir
 	dh_testroot
 	dh_prep
 	dh_installdirs
-
-	mkdir -m 755 -p $(APACHE2_MODS_DEST)
-	install -T -m 644 $(mkfusion_conf) $(APACHE2_MODS_DEST)/mkfusion.conf
-	install -T -m 644 $(mkfusion_load) $(APACHE2_MODS_DEST)/mkfusion.load
-
-	mkdir -m 755 -p $(MKFUSION_CONF_DEST)
-	install -T -m 644 $(conf_d) $(MKFUSION_CONF_DEST)/conf.d
-
-	mkdir -m 755 -p $(MKFUSION_MODULE_DEST)
-	install -m 644 $(mod_mkfusion) $(MKFUSION_MODULE_DEST)
+# mkfusion(appserver)
+	mkdir -m 755 -p $(MKFUSION_DEST)
+	install -m 744 -s $(mkfusion) $(MKFUSION_DEST)
+# mkfusion-generator
+	mkdir -m 755 -p $(MKFUSION_GENERATOR_DEST)
+	install -m 744 -s $(mkfusion_generator) $(MKFUSION_GENERATOR_DEST)
+# mod_mkfusion
+	mkdir -m 755 -p $(MOD_MKFUSION_APACHE2_MODS_DEST)
+	install -T -m 644 $(mkfusion_conf) $(MOD_MKFUSION_APACHE2_MODS_DEST)/mkfusion.conf
+	install -T -m 644 $(mkfusion_load) $(MOD_MKFUSION_APACHE2_MODS_DEST)/mkfusion.load
+	mkdir -m 755 -p $(MOD_MKFUSION_MKFUSION_CONF_DEST)
+	install -T -m 644 $(conf_d) $(MOD_MKFUSION_MKFUSION_CONF_DEST)/conf.d
+	mkdir -m 755 -p $(MOD_MKFUSION_MKFUSION_MODULE_DEST)
+	install -m 644 -s $(mod_mkfusion) $(MOD_MKFUSION_MKFUSION_MODULE_DEST)
 
 binary-indep: build install
 	dh_testdir
@@ -78,6 +104,7 @@ binary-indep: build install
 	dh_builddeb
 
 binary-arch: build install
+
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install
