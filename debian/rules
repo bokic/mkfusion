@@ -1,0 +1,69 @@
+#!/usr/bin/make -f
+
+mkfusion_conf = $(CURDIR)/install/ubuntu/mkfusion_mkfusion.conf
+mkfusion_load = $(CURDIR)/install/ubuntu/mkfusion_mkfusion.load
+conf_d = $(CURDIR)/install/ubuntu/mkfusion_conf.d
+mod_mkfusion = $(CURDIR)/bin/libmod_mkfusion.so.1.0.0
+
+APACHE2_MODS_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/etc/apache2/mods-available
+MKFUSION_CONF_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/etc/mkfusion/apache2
+MKFUSION_MODULE_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/usr/lib/apache2/modules
+
+build: build-stamp
+	cd src/mkfusion/mod_mkfusion && qmake mod_mkfusion.pro -o Makefile
+	cd src/mkfusion/mod_mkfusion && make -f Makefile
+
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	rm -f src/mkfusion/mod_mkfusion/Makefile
+	rm -f src/mkfusion/mod_mkfusion/Makefile.Debug
+	rm -f src/mkfusion/mod_mkfusion/Makefile.Release
+	rm -f -r src/mkfusion/mod_mkfusion/debug
+	rm -f -r src/mkfusion/mod_mkfusion/release
+	rm -f bin/libmod_mkfusion.so
+	rm -f bin/libmod_mkfusion.so.1
+	rm -f bin/libmod_mkfusion.so.1.0
+	#rm -f bin/libmod_mkfusion.so.1.0.0
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	dh_clean
+
+install: build clean $(mod_mkfusion) $(mkfusion_conf) $(mkfusion_load) $(conf_d)
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+
+	mkdir -m 755 -p $(APACHE2_MODS_DEST)
+	install -T -m 644 $(mkfusion_conf) $(APACHE2_MODS_DEST)/mkfusion.conf
+	install -T -m 644 $(mkfusion_load) $(APACHE2_MODS_DEST)/mkfusion.load
+
+	mkdir -m 755 -p $(MKFUSION_CONF_DEST)
+	install -T -m 644 $(conf_d) $(MKFUSION_CONF_DEST)/conf.d
+
+	mkdir -m 755 -p $(MKFUSION_MODULE_DEST)
+	install -m 644 $(mod_mkfusion) $(MKFUSION_MODULE_DEST)
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installexamples
+	dh_installman
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-arch: build install
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install
