@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 
+cfeditor = $(CURDIR)/bin/cfeditor
+
 mkfusion = $(CURDIR)/bin/mkfusion
 
 mkfusion_generator = $(CURDIR)/bin/mkfusion-generator
@@ -10,6 +12,8 @@ conf_d = $(CURDIR)/install/ubuntu/mkfusion_conf.d
 mod_mkfusion = $(CURDIR)/bin/libmod_mkfusion.so.1.0.0
 
 
+CFEDITOR_DEST = $(CURDIR)/debian/cfeditor/usr/sbin
+
 MKFUSION_DEST = $(CURDIR)/debian/mkfusion/usr/sbin
 
 MKFUSION_GENERATOR_DEST =  $(CURDIR)/debian/mkfusion-generator/usr/bin
@@ -18,6 +22,10 @@ MOD_MKFUSION_APACHE2_MODS_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/etc/ap
 MOD_MKFUSION_MKFUSION_CONF_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/etc/mkfusion/apache2
 MOD_MKFUSION_MKFUSION_MODULE_DEST = $(CURDIR)/debian/libapache2-mod-mkfusion/usr/lib/apache2/modules
 
+$(cfeditor):
+	cd src/cfeditor && qmake cfeditor.pro -o Makefile
+	cd src/cfeditor && make -f Makefile
+	
 $(mkfusion):
 	cd src/mkfusion/appserver && qmake appserver.pro -o Makefile
 	cd src/mkfusion/appserver && make -f Makefile
@@ -41,6 +49,13 @@ build-stamp:
 	touch build-stamp
 
 clean:
+# cleanup cfeditor
+	rm -f src/cfeditor/Makefile
+	rm -f src/cfeditor/Makefile.Debug
+	rm -f src/cfeditor/Makefile.Release
+	rm -f src/cfeditor/ui_*.h
+	rm -f -r src/cfeditor/debug
+	rm -f -r src/cfeditor/release
 # cleanup mkfusion(appserver)
 	rm -f src/mkfusion/appserver/Makefile
 	rm -f src/mkfusion/appserver/Makefile.Debug
@@ -68,11 +83,14 @@ clean:
 	rm -f build-stamp
 	dh_clean
 
-install: build $(mkfusion) $(mkfusion_generator) $(mod_mkfusion) $(mkfusion_conf) $(mkfusion_load) $(conf_d) clean
+install: build $(cfeditor) $(mkfusion) $(mkfusion_generator) $(mod_mkfusion) $(mkfusion_conf) $(mkfusion_load) $(conf_d) clean
 	dh_testdir
 	dh_testroot
 	dh_prep
 	dh_installdirs
+# cfeditor
+	mkdir -m 755 -p $(CFEDITOR_DEST)
+	install -m 744 -s $(cfeditor) $(CFEDITOR_DEST)
 # mkfusion(appserver)
 	mkdir -m 755 -p $(MKFUSION_DEST)
 	install -m 744 -s $(mkfusion) $(MKFUSION_DEST)

@@ -1,0 +1,21 @@
+#! /bin/sh
+
+# Is mkfusion running?
+IS_MKFUSION_RUNNING=`service mkfusion status`
+if [ "$IS_MKFUSION_RUNNING" != 'MKFusion is NOT running.' ]; then
+    # Stop mkfusion
+    service mkfusion stop
+fi
+
+# Remove mkfusion daemon
+insserv -r mkfusion
+
+# Delete compiled templates.
+rm -rf /var/mkfusion/templates
+
+# Delete config file if not upgrading
+if [ $1 != "upgrade" ]; then
+    rm -f /etc/mkfusion/mkfusion.conf
+fi
+
+exit 0

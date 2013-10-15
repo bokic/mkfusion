@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Install mkfusion daemon
+insserv mkfusion
+
+# Start mkfusion daemon
+service mkfusion start
+
+# If Apache is running, restart it
+IS_APACHE2_RUNNING=`service apache2 status`
+if [ "$IS_APACHE2_RUNNING" != 'Apache is NOT running.' ]; then
+    service apache2 restart
+fi
+
+return 0
