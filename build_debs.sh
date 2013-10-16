@@ -8,7 +8,7 @@ rm -f ../libapache2-mod-mkfusion_0.5.0*
 rm -f bin/mkfusion
 rm -f bin/libmod_mkfusion*
 
-dh_make -p mkfusion_0.5.0 -m -y -d -c lgpl3 --createorig || debuild
+dh_make -p mkfusion_0.5.0 -m -y -d -c lgpl3 --createorig || debuild -S
 
 rm -f debian/files
 
