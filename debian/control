@@ -10,7 +10,7 @@ Vcs-Browser: http://sourceforge.net/p/mkfusion/code/HEAD/tree/trunk/
 
 Package: mkfusion
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}, libstdc++6(>= 4.7.3), libgcc1(>= 1:4.7.3), qt5-default(>= 5.0.1), qtbase5-dev(>= 5.0.1), libqt5webkit5-dev(>= 5.0.1), g++(>= 4:4.7.3)
+Depends: ${misc:Depends}, ${shlibs:Depends}, libstdc++6(>= 4.7.3), libgcc1(>= 1:4.7.3), apache2-prefork-dev (>=2.2.22), qt5-default(>= 5.0.1), qtbase5-dev(>= 5.0.1), libqt5webkit5-dev(>= 5.0.1), g++(>= 4:4.7.3)
 Description: CFML(ColdFusion compatible) application server
  MKFusion is free opensource native CFML application server.
  Features:
@@ -33,7 +33,7 @@ Description: CFML IDE(ColdFusion, Railo, BlueDragon, MKFusion)
 
 Package: libapache2-mod-mkfusion
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}, libqt5core5 (>= 5.0.1), libstdc++6 (>= 4.7.3), libcc1 (>= 1:4.7)
+Depends: ${misc:Depends}, ${shlibs:Depends}, apache2-mpm-prefork (>= 2.2.22), libqt5core5 (>= 5.0.1), libstdc++6 (>= 4.7.3), libcc1 (>= 1:4.7)
 Description: mkfusion apache module
  MKFusion is free opensource native CFML application server.
  Features:
