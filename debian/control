@@ -23,7 +23,7 @@ Description: Generates Qt c++ from cfm or cfc file
  
 Package: cfeditor
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}, libstdc++6(>= 4.7.3), libgcc1(>= 1:4.7.3), libssh-4(>= 0.5.3), libqt5core5(>= 5.0.1), libqt5widgets5(>= 5.0.1), libqt5gui5(>= 5.0.1), libqt5network5(>= 5.0.1), libqt5xml5(>= 5.0.1), libqt5webkit5(>= 5.0.1)
+Depends: ${misc:Depends}, ${shlibs:Depends}, libstdc++6(>= 4.7.3), libgcc1(>= 1:4.7.3), libssh-4(>= 0.5.3), libqt5core5(>= 5.0.1), libqt5widgets5(>= 5.0.1), libqt5gui5(>= 5.0.1), libqt5network5(>= 5.0.1), libqt5xml5(>= 5.0.1), libqt5webkit5-dev(>= 5.0.1)
 Description: CFML IDE(ColdFusion, Railo, BlueDragon, MKFusion)
  CFEditor is free opensource ColdFusion IDE.
  Features:
