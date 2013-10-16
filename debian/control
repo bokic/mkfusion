@@ -2,7 +2,7 @@ Source: mkfusion
 Section: httpd
 Priority: optional
 Maintainer: Boris Barbulovski (no comment) <bbarbulovski@gmail.com>
-Build-Depends: debhelper (>= 8.0.0), qt5-qmake(>= 5.0.1)
+Build-Depends: debhelper (>= 8.0.0), qt5-qmake(>= 5.0.1), lsb-release (>= 4.0)
 Standards-Version: 3.9.4
 Homepage: http://mkfusion.bokicsoft.com/
 Vcs-Git: http://svn.code.sf.net/p/mkfusion/code/trunk/
