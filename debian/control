@@ -2,7 +2,7 @@ Source: mkfusion
 Section: httpd
 Priority: optional
 Maintainer: Boris Barbulovski <bbarbulovski@gmail.com>
-Build-Depends: debhelper (>= 8.0.0), apache2-prefork-dev (>=2.2.22), qt5-default(>= 5.0.1), libqt5webkit5-dev(>= 5.0.1), lsb-release (>= 4.0)
+Build-Depends: debhelper (>= 8.0.0), apache2-dev (>= 2.4.6) | apache2-prefork-dev (>= 2.2.22), qt5-default(>= 5.0.1), libqt5webkit5-dev(>= 5.0.1), libqt5declarative5(>= 5.0.1), lsb-release (>= 4.0)
 Standards-Version: 3.9.4
 Homepage: http://mkfusion.bokicsoft.com/
 Vcs-Git: http://svn.code.sf.net/p/mkfusion/code/trunk/
@@ -33,7 +33,7 @@ Description: CFML IDE(ColdFusion, Railo, BlueDragon, MKFusion)
 
 Package: libapache2-mod-mkfusion
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}, apache2-mpm-prefork (>= 2.2.22), libqt5core5 (>= 5.0.1), libstdc++6 (>= 4.7.3), libcc1 (>= 1:4.7)
+Depends: ${misc:Depends}, ${shlibs:Depends}, apache2 (>= 2.4.6) | apache2-mpm-prefork (>= 2.2.22), libqt5core5 (>= 5.0.1), libstdc++6 (>= 4.7.3), libcc1 (>= 1:4.7)
 Description: mkfusion apache module
  MKFusion is free opensource native CFML application server.
  Features:
