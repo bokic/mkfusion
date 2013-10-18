@@ -1,7 +1,7 @@
 Source: mkfusion
 Section: httpd
 Priority: optional
-Maintainer: Boris Barbulovski (no comment) <bbarbulovski@gmail.com>
+Maintainer: Boris Barbulovski <bbarbulovski@gmail.com>
 Build-Depends: debhelper (>= 8.0.0), apache2-prefork-dev (>=2.2.22), qt5-default(>= 5.0.1), libqt5webkit5-dev(>= 5.0.1), lsb-release (>= 4.0)
 Standards-Version: 3.9.4
 Homepage: http://mkfusion.bokicsoft.com/
