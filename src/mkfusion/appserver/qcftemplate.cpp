@@ -1,19 +1,21 @@
 #include "qcftemplate.h"
 
+#include <QProcess>
+
 
 QCFTemplate::QCFTemplate(const QString &filePath)
     : m_fileSize(0)
     , m_usage(0)
-    , m_isVaild(false)
+    , m_valid(false)
+    , m_compiling(true)
 {
     m_library = new QLibrary(filePath);
-
 
     if (m_library->load())
     {
         //m_library->
 
-        m_isVaild = true;
+        m_valid = true;
     }
 }
 
@@ -61,23 +63,30 @@ int QCFTemplate::fileSize() const
     return m_fileSize;
 }
 
-bool QCFTemplate::strip() const
+bool QCFTemplate::strip()
 {
+    if (m_usage > 0)
+    {
+        return false;
+    }
+
     bool reload = false;
 
-    if ((m_usage == 0)&&(m_library->isLoaded()))
+    if (m_library->isLoaded())
     {
         m_library->unload();
         reload = true;
     }
 
-    if (m_library->isLoaded())
-    {
-        return false;
-    }
-
     // TODO: do strip process here.
+    QProcess strip_process;
 
+    strip_process.start("strip", QStringList() << m_pathName);
+
+    if (!strip_process.waitForFinished(10000))
+    {
+
+    }
 
     if (reload)
     {
@@ -89,5 +98,20 @@ bool QCFTemplate::strip() const
 
 QString QCFTemplate::error() const
 {
-    m_error;
+    return m_error;
+}
+
+bool QCFTemplate::isValid() const
+{
+    return m_valid;
+}
+
+bool QCFTemplate::isCompiling() const
+{
+    return m_compiling;
+}
+
+void QCFTemplate::setCompiling(bool compiling)
+{
+    m_compiling = compiling;
 }

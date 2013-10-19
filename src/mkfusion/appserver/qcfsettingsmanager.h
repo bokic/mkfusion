@@ -10,10 +10,10 @@ public:
     QCFSettingsManager();
     QCFSettings readSettings() const;
     void writeSettings(const QCFSettings &settings);
+    void loadFromFile();
 
 private:
 
-    void loadFromFile();
     void saveToFile() const;
 
     QCFSettings m_settings;

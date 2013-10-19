@@ -25,8 +25,6 @@ QString QCFSettings::customTagsPath()
 void QCFSettings::setDatabaseConnections(const QList<QCFDatabaseConnection> &db_connections)
 {
     m_databaseConnections = db_connections;
-
-    QCFServer::instance()->m_DatabasePool.setConnectionDefinition(m_databaseConnections);
 }
 
 QList<QCFDatabaseConnection> QCFSettings::databaseConnections()

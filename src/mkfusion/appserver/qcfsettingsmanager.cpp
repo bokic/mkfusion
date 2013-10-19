@@ -14,7 +14,6 @@
 
 QCFSettingsManager::QCFSettingsManager()
 {
-    loadFromFile();
 }
 
 QCFSettings QCFSettingsManager::readSettings() const

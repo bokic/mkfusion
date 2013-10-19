@@ -11,12 +11,8 @@ DEPENDPATH  += . ../../../libs/qtservice ../../cfparser qwddx
 INCLUDEPATH += . ../../../libs/qtservice ../../cfparser qwddx
 
 # main app
-SOURCES  = main.cpp qmkfusionservice.cpp qcfserver.cpp qcfapplicationmanager.cpp qcfsessionmanager.cpp qcfdatabasepoolmanager.cpp qcfworkersmanager.cpp qcfsettingsmanager.cpp qcfschedulerthread.cpp qcflog.cpp qcfsettings.cpp qcfworkerthread.cpp qcfdatabaseconnection.cpp qcftemplatesmanager.cpp \
-    qcftemplate.cpp \
-    qcftemplateinstance.cpp
-HEADERS  =          qmkfusionservice.h   qcfserver.h    qcfapplicationmanager.h  qcfsessionmanager.h   qcfdatabasepoolmanager.h   qcfworkersmanager.h   qcfsettingsmanager.h   qcfschedulerthread.h   qcflog.h   qcfsettings.h   qcfworkerthread.h   qcfdatabaseconnection.h     qcftemplatesmanager.h \
-    qcftemplate.h \
-    qcftemplateinstance.h
+SOURCES  = main.cpp qmkfusionservice.cpp qcfserver.cpp qhttpcodec.cpp qcfcompiler.cpp qcfapplicationmanager.cpp qcfsessionmanager.cpp qcfdatabasepoolmanager.cpp qcfworkersmanager.cpp qcfsettingsmanager.cpp qcfschedulerthread.cpp qcflog.cpp qcfsettings.cpp qcfworkerthread.cpp qcfdatabaseconnection.cpp qcftemplatesmanager.cpp qcftemplate.cpp qcftemplateinstance.cpp
+HEADERS  =          qmkfusionservice.h   qcfserver.h   qhttpcodec.h   qcfcompiler.h   qcfapplicationmanager.h   qcfsessionmanager.h   qcfdatabasepoolmanager.h   qcfworkersmanager.h   qcfsettingsmanager.h   qcfschedulerthread.h   qcflog.h   qcfsettings.h   qcfworkerthread.h   qcfdatabaseconnection.h     qcftemplatesmanager.h qcftemplate.h   qcftemplateinstance.h
 
 HEADERS += qcfsession.h qmkfusionexception.h
 

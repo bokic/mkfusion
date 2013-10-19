@@ -3,6 +3,7 @@
 
 #include "qcftemplate.h"
 #include "qcftemplateinstance.h"
+#include "qcfcompiler.h"
 
 #include <QReadWriteLock>
 #include <QString>
@@ -15,10 +16,11 @@ public:
     QCFTemplatesManager();
 
     void init();
-    QCFTemplateInstance *getTemplateInstanceForSource(const QString &source);
+    QCFTemplateInstance *getTemplateInstance(const QString &sourceFile);
 
 private:
     QHash<QString, QCFTemplate> m_templates;
+    QCFCompiler m_compiler;
     QReadWriteLock m_lock;
 };
 

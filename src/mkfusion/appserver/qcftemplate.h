@@ -16,17 +16,21 @@ public:
     bool unload();
     bool isLoaded() const;
     int fileSize() const;
-    bool strip() const;
+    bool strip();
     QString error() const;
+    bool isValid() const;
+    bool isCompiling() const;
+    void setCompiling(bool compiling);
 
 private:
     QString m_pathName;
     QLibrary *m_library;
     QDateTime m_modified;
-    int m_fileSize;
+    volatile int m_fileSize;
     QString m_error;
-    int m_usage;
-    bool m_isVaild;
+    volatile int m_usage;
+    volatile bool m_valid;
+    volatile bool m_compiling;
 };
 
 #endif // QCFTEMPLATE_H

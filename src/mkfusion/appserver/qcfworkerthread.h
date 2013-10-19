@@ -70,9 +70,14 @@ protected:
     void run();
 
 private:
+    void processPostData(QByteArray post);
     bool readRequest();
     bool writeResponse();
     void writeException(const QMKFusionException &ex);
+    static void updateVariableInt(QWDDX &dest, int key, const QWDDX &value);
+    static void updateVariableStr(QWDDX &dest, const wchar_t *key, const QWDDX &value);
+    static void updateVariableQStr(QWDDX &dest, const QString &key, const QWDDX &value);
+    static void updateVariable(QWDDX &dest, const QWDDX &key, const QWDDX &value);
 
     // Class members
     QWDDX m_CGI;

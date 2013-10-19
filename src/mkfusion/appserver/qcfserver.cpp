@@ -28,6 +28,8 @@ QCFServer::QCFServer()
 {
     m_instance = this;
 
+    m_Settings.loadFromFile();
+
 #ifdef Q_OS_LINUX
     QProcess process;
 #endif
