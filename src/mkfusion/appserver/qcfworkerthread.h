@@ -35,7 +35,7 @@ struct QCFFileUpload
     QString m_Filename;
 };
 
-struct QCFRunningTemplate_Request
+struct QCFRequest
 {
     QString m_AuthType;
     QString m_User;
@@ -59,21 +59,26 @@ struct QCFRunningTemplate_Request
 class QCFWorkerThread : public QThread
 {
 public:
-    explicit QCFWorkerThread(QLocalSocket *socket, QObject *parent = 0);
+    explicit QCFWorkerThread(QObject *parent = 0);
     virtual ~QCFWorkerThread();
+
+    void setSocket(QLocalSocket *socket);
 
 signals:
 
 public slots:
 
 protected:
-    void run();
+    void run() override;
+    virtual void executePage();
 
 private:
     void processPostData(QByteArray post);
     bool readRequest();
     bool writeResponse();
     void writeException(const QMKFusionException &ex);
+    void runApplicationTemplate();
+    void updateVariables();
     static void updateVariableInt(QWDDX &dest, int key, const QWDDX &value);
     static void updateVariableStr(QWDDX &dest, const wchar_t *key, const QWDDX &value);
     static void updateVariableQStr(QWDDX &dest, const QString &key, const QWDDX &value);
@@ -96,7 +101,7 @@ private:
     QMultiHash<QString, QString> m_Header;
     bool m_HeadersSent;
     QLocalSocket *m_Socket;
-    QCFRunningTemplate_Request m_Request;
+    QCFRequest m_Request;
     QWDDX m_SetCookies;
     QHash<QString, std::function<QWDDX (QCFWorkerThread *, const QList<QWDDX> &arguments)>> m_CustomFunctions;
     QHash<QString, QCFFileUpload> m_FileUpload;

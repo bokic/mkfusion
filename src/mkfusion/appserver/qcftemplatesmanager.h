@@ -16,7 +16,7 @@ public:
     QCFTemplatesManager();
 
     void init();
-    QCFTemplateInstance *getTemplateInstance(const QString &sourceFile);
+    QCFTemplateInstance *getTemplateInstance(const QString &sourceFile, QString &error);
 
 private:
     QHash<QString, QCFTemplate> m_templates;

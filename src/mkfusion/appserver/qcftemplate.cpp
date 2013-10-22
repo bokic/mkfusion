@@ -1,4 +1,5 @@
 #include "qcftemplate.h"
+#include "qcflog.h"
 
 #include <QProcess>
 
@@ -78,14 +79,20 @@ bool QCFTemplate::strip()
         reload = true;
     }
 
-    // TODO: do strip process here.
     QProcess strip_process;
 
+#ifdef Q_OS_WIN
+// TODO: do strip process here.
+#warning Implement QCFTemplate::strip() for Windows
+#elif defined Q_OS_LINUX
     strip_process.start("strip", QStringList() << m_pathName);
+#else
+#error Windows and Linux OSs are currently supported.
+#endif
 
     if (!strip_process.waitForFinished(10000))
     {
-
+        QCFLOG(QCFLOG_DAEMON, QCFLOG_CRITICAL, "Strip process did not finished in 10 seconds.");
     }
 
     if (reload)

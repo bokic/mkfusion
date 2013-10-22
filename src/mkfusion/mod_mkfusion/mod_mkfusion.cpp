@@ -81,12 +81,15 @@ static int mkfusion_handler(request_rec *r)
 #endif
 		QByteArray l_Send;
 		QDataStream l_IOStream(&l_Send, QIODevice::WriteOnly);
-		l_IOStream.setVersion(QDataStream::Qt_4_4);
+        l_IOStream.setVersion(QDataStream::Qt_5_0);
 
-		l_IOStream << (quint32)0;
+        l_IOStream << r->filename;
+
+        qint64 chunk_pos = l_IOStream.device()->pos();
+
+        l_IOStream << (qint64)0;
 		l_IOStream << r->ap_auth_type;
 		l_IOStream << r->user;
-        l_IOStream << QDir::toNativeSeparators(r->filename).toUtf8();
 		l_IOStream << apr_table_get(r->headers_in, "Accept");
 		l_IOStream << apr_table_get(r->headers_in, "Accept-Encoding");
 		l_IOStream << apr_table_get(r->headers_in, "Accept-Language");
@@ -127,7 +130,7 @@ static int mkfusion_handler(request_rec *r)
         }
         else
         {
-            l_IOStream << (int)0;
+            l_IOStream << 0;
         }
 
 //        ap_setup_client_block(r, REQUEST_CHUNKED_DECHUNK);
@@ -146,8 +149,8 @@ static int mkfusion_handler(request_rec *r)
 		l_IOStream << r->protocol;
 		l_IOStream << r->hostname;
 		l_IOStream << r->uri;
-		l_IOStream.device()->seek(0);
-		l_IOStream << (quint32)l_Send.size();
+        l_IOStream.device()->seek(chunk_pos);
+        l_IOStream << (qint64)l_Send.size();
 
 		if (l_localSocket.write(l_Send) == -1)
 		{
@@ -174,7 +177,7 @@ static int mkfusion_handler(request_rec *r)
 						if (l_ReadBuf.size() >= 4)
 						{
 							QDataStream l_HeadersDataStream(&l_ReadBuf, QIODevice::ReadOnly);
-							l_HeadersDataStream.setVersion(QDataStream::Qt_4_4);
+                            l_HeadersDataStream.setVersion(QDataStream::Qt_5_0);
 							l_HeadersDataStream >> l_HeaderSize;
 							if ((l_HeaderSize <= 0)||(l_HeaderSize > 0x01000000))
 							{
@@ -198,7 +201,7 @@ static int mkfusion_handler(request_rec *r)
 					l_ReadBuf = l_ReadBuf.right(l_ReadBuf.size() - l_HeaderSize);
 
 					QDataStream l_HeadersDataStream(&l_Header, QIODevice::ReadOnly);
-					l_HeadersDataStream.setVersion(QDataStream::Qt_4_4);
+                    l_HeadersDataStream.setVersion(QDataStream::Qt_5_0);
 					l_HeadersDataStream >> l_HeaderSize;
 
 					QString l_tempStr;

@@ -1,6 +1,7 @@
 #include "qcfworkerthread.h"
-#include "qmkfusionexception.h"
 #include "qcftemplateinstance.h"
+#include "qmkfusionexception.h"
+#include "cffunctions.h"
 #include "qhttpcodec.h"
 #include "qcfserver.h"
 #include "qcflog.h"
@@ -12,21 +13,37 @@
 #include <QDir>
 
 
-QCFWorkerThread::QCFWorkerThread(QLocalSocket *socket, QObject *parent): QThread(parent)
+QCFWorkerThread::QCFWorkerThread(QObject *parent)
+    : QThread(parent)
+    , m_APPLICATION(nullptr)
+    , m_SESSION(nullptr)
+    , m_Socket(nullptr)
 {
-    m_Socket = socket;
-    m_Socket->setParent(nullptr);
-    m_Socket->moveToThread(this);
-    m_Socket->setParent(this);
 }
 
 QCFWorkerThread::~QCFWorkerThread()
 {
+    m_APPLICATION = nullptr;
+    m_SESSION = nullptr;
+
     if (m_Socket)
     {
-        delete m_Socket;
+        m_Socket->deleteLater();
         m_Socket = nullptr;
     }
+}
+
+void QCFWorkerThread::setSocket(QLocalSocket *socket)
+{
+    if (m_Socket)
+    {
+        QCFLOG(CFLOG_WORKER, QCFLOG_ERROR, "m_Socket NOT null at QCFWorkerThread::setSocket. Memory might leak.");
+    }
+
+    m_Socket = socket;
+    m_Socket->setParent(nullptr);
+    m_Socket->moveToThread(this);
+    m_Socket->setParent(this);
 }
 
 void QCFWorkerThread::run()
@@ -39,13 +56,17 @@ void QCFWorkerThread::run()
         {
             QCFLOG(CFLOG_WORKER, QCFLOG_ERROR, "Reading worker request failed.");
 
-            throw QMKFusionException("Unknown HTTP Method.");
+            throw QMKFusionException("Read request failed.");
         }
 
-        // LoadCompiledFile
-        //QString err;
-        QCFTemplateInstance *instance = QCFServer::instance()->m_Templates.getTemplateInstance(m_Request.m_Filename);
+        updateVariables();
 
+        runApplicationTemplate();
+
+        if (m_StatusCode == 200)
+        {
+            executePage();
+        }
     }
     catch (const QMKFusionCFAbortException &ex)
     {
@@ -76,7 +97,14 @@ void QCFWorkerThread::run()
 
     m_Socket->close();
 
+    setPriority(QThread::LowPriority);
+
     QCFLOG(CFLOG_WORKER, QCFLOG_INFO_PERF, "Worker thread ended.");
+}
+
+void QCFWorkerThread::executePage()
+{
+    QCFLOG(CFLOG_WORKER, QCFLOG_WARNING, "Empty QCFWorkerThread::executePage() has been executed.");
 }
 
 void QCFWorkerThread::processPostData(QByteArray post)
@@ -113,7 +141,6 @@ void QCFWorkerThread::processPostData(QByteArray post)
 
                 updateVariableQStr(m_FORM, key, value);
             }
-
         }
         else if (m_Request.m_ContentType.startsWith("multipart/form-data"))
         {
@@ -218,7 +245,7 @@ bool QCFWorkerThread::readRequest()
 {
     bool l_FoundRecieveBufSize = false;
     QByteArray l_RecievedBuffer;
-    qint32 l_RecieveBufSize = 0;
+    qint64 l_RecieveBufSize = 0;
 
     forever
     {
@@ -233,12 +260,17 @@ bool QCFWorkerThread::readRequest()
         }
 
         l_RecievedBuffer += m_Socket->readAll();
-        if ((l_FoundRecieveBufSize == false)&&(l_RecievedBuffer.size() >= 4))
+        if ((l_FoundRecieveBufSize == false)&&(l_RecievedBuffer.size() >= (int)sizeof(qint64)))
         {
             QDataStream l_ds(&l_RecievedBuffer, QIODevice::ReadOnly);
-            l_ds.setVersion(QDataStream::Qt_4_4);
+            l_ds.setVersion(QDataStream::Qt_5_0);
 
             l_ds >> l_RecieveBufSize;
+
+            if (l_RecieveBufSize < 0)
+            {
+                return false;
+            }
 
             if (l_RecieveBufSize > 10485760) // 10MB
             {
@@ -260,7 +292,8 @@ bool QCFWorkerThread::readRequest()
     }
 
     QDataStream l_ds(&l_RecievedBuffer, QIODevice::ReadOnly);
-    QStringList cookies;
+    l_ds.setVersion(QDataStream::Qt_5_0);
+
     char *tempstr;
     int tempint;
     QByteArray tempba;
@@ -347,7 +380,6 @@ bool QCFWorkerThread::readRequest()
     if (tempstr)
     {
         m_Request.m_Cookie = QString::fromUtf8(tempstr);
-        cookies = m_Request.m_Cookie.split(';');
         delete[] tempstr;
     }
 
@@ -483,6 +515,172 @@ void QCFWorkerThread::writeException(const QMKFusionException &ex)
     m_Output.append("\t\t</td>\n");
     m_Output.append("\t</tr>\n");
     m_Output.append("</table>\n");
+}
+
+void QCFWorkerThread::runApplicationTemplate()
+{
+
+}
+
+void QCFWorkerThread::updateVariables()
+{
+    m_SERVER.setType(QWDDX::Struct);
+    m_COOKIE.setType(QWDDX::Struct);
+    m_CGI.setType(QWDDX::Struct);
+    m_VARIABLES.setType(QWDDX::Struct);
+    m_URL.setType(QWDDX::Struct);
+    m_SetCookies.setType(QWDDX::Struct);
+
+    if (m_Request.m_Method == "GET")
+    {
+        m_FORM.setType(QWDDX::Error);
+        m_VARIABLES.m_HiddenScopeLast1 = &m_URL;
+        m_VARIABLES.m_HiddenScopeLast2 = &m_COOKIE;
+
+    }
+    else if (m_Request.m_Method == "POST")
+    {
+        m_VARIABLES.m_HiddenScopeLast1 = &m_FORM;
+        m_VARIABLES.m_HiddenScopeLast2 = &m_COOKIE;
+    }
+    else
+    {
+        throw QMKFusionException("Unknown HTTP Method.");
+    }
+
+    QStringList cookies = m_Request.m_Cookie.split(';');
+    for(const QString &cookie : cookies)
+    {
+        int separator = cookie.indexOf('=');
+
+        if (separator > 0)
+        {
+            QString key = QUrl::fromPercentEncoding(cookie.left(separator).trimmed().toLatin1()).toUpper();
+            QString value = QUrl::fromPercentEncoding(cookie.right(cookie.length() - separator - 1).toLatin1());
+            updateVariable(m_COOKIE, key, value);
+        }
+        else
+        {
+            qDebug() << "Invalid cookie.";
+        }
+    }
+
+    // Run compiled template(dll/so).
+    cf_StructUpdate(m_SERVER, QStringLiteral("COLDFUSION"), QWDDX(QWDDX::Struct));
+    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("APPSERVER"), QStringLiteral("mkfusion"));
+    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("EXPIRATION"), QDateTime::currentDateTime());
+#ifdef Q_OS_WIN
+    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("INSTALLKIT"), QStringLiteral("Windows"));
+#elif defined Q_OS_LINUX
+    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("INSTALLKIT"), QStringLiteral("Linux"));
+#else
+#error Windows and Linux OSs are currently supported.
+#endif
+    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("PRODUCTLEVEL"), QStringLiteral("Free"));
+    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("PRODUCTNAME"), QStringLiteral("MKFusion Server"));
+    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("PRODUCTVERSION"), QStringLiteral("0.5.0"));
+    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("ROOTDIR"), QCFServer::instance()->MKFusionPath().left(-1));
+    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("SUPPORTEDLOCALES"), QStringLiteral("English (US),en,en_US"));
+    cf_StructUpdate(m_SERVER, QStringLiteral("OS"), QWDDX(QWDDX::Struct));
+#ifdef Q_OS_WIN
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ADDITIONALINFORMATION"), QStringLiteral("Windows"));
+#ifdef _WIN64
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ARCH"), QStringLiteral("amd64"));
+#else
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ARCH"), QStringLiteral("i386"));
+#endif
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("BUILDNUMBER"), QStringLiteral(""));
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("NAME"), QStringLiteral("WINDOWS"));
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("VERSION"), QStringLiteral("XP"));
+#elif defined Q_OS_LINUX
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ADDITIONALINFORMATION"), QStringLiteral("Linux"));
+#ifdef __amd64__
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ARCH"), QStringLiteral("amd64"));
+#else
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ARCH"), QStringLiteral("i386"));
+#endif
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("BUILDNUMBER"), QStringLiteral("unknown"));
+
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("NAME"), QCFServer::instance()->osName());
+
+    cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("VERSION"), QCFServer::instance()->osVersion());
+#else
+#error Windows and Linux OSs are currently supported.
+#endif
+
+    cf_StructUpdate(m_CGI, QStringLiteral("AUTH_PASSWORD"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("AUTH_TYPE"), m_Request.m_AuthType);
+    cf_StructUpdate(m_CGI, QStringLiteral("AUTH_USER"), m_Request.m_User);
+    cf_StructUpdate(m_CGI, QStringLiteral("CERT_COOKIE"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("CERT_FLAGS"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("CERT_ISSUER"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("CERT_KEYSIZE"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("CERT_SECRETKEYSIZE"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("CERT_SERIALNUMBER"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("CERT_SERVER_ISSUER"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("CERT_SERVER_SUBJECT"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("CERT_SUBJECT"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("CF_TEMPLATE_PATH"), m_Request.m_Filename);
+    cf_StructUpdate(m_CGI, QStringLiteral("CONTENT_LENGTH"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("CONTENT_TYPE"), m_Request.m_ContentType);
+    cf_StructUpdate(m_CGI, QStringLiteral("CONTEXT_PATH"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("GATEWAY_INTERFACE"), QStringLiteral("CGI/1.1")); // TODO: Hardcoded.
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTPS"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTPS_KEYSIZE"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTPS_SECRETKEYSIZE"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTPS_SERVER_ISSUER"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTPS_SERVER_SUBJECT"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_ACCEPT"), m_Request.m_Accept);
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_ACCEPT_ENCODING"), m_Request.m_AcceptEncoding);
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_ACCEPT_LANGUAGE"), m_Request.m_AcceptLanguage);
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_CONNECTION"), m_Request.m_Connection);
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_COOKIE"), m_Request.m_Cookie);
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_HOST"), m_Request.m_Host);
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_REFERER"), m_Request.m_Referer);
+    cf_StructUpdate(m_CGI, QStringLiteral("HTTP_USER_AGENT"), m_Request.m_UserAgent);
+    cf_StructUpdate(m_CGI, QStringLiteral("PATH_INFO"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("PATH_TRANSLATED"), m_Request.m_Filename);
+    cf_StructUpdate(m_CGI, QStringLiteral("QUERY_STRING"), m_Request.m_Args);
+    cf_StructUpdate(m_CGI, QStringLiteral("REMOTE_ADDR"), m_Request.m_RemoteHost); // TODO: please check me.
+    cf_StructUpdate(m_CGI, QStringLiteral("REMOTE_HOST"), m_Request.m_RemoteHost);
+    cf_StructUpdate(m_CGI, QStringLiteral("REMOTE_USER"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("REQUEST_METHOD"), m_Request.m_Method);
+    cf_StructUpdate(m_CGI, QStringLiteral("SCRIPT_NAME"), m_Request.m_URI);
+    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_NAME"), m_Request.m_Host);
+    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PORT"), 80); // TODO: Hardcoded.
+    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PORT_SECURE"), 0); // TODO: Hardcoded.
+    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PROTOCOL"), m_Request.m_Protocol);
+    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_SOFTWARE"), QStringLiteral(""));
+    cf_StructUpdate(m_CGI, QStringLiteral("WEB_SERVER_API"), QStringLiteral(""));
+    /*
+
+      public void fillKnownVariables()
+      {
+        this.knownVariables.add("VARIABLES");
+        this.knownVariables.add("FORM");
+        this.knownVariables.add("URL");
+        this.knownVariables.add("ATTRIBUTES");
+        this.knownVariables.add("CALLER");
+        this.knownVariables.add("REQUEST");
+        this.knownVariables.add("CGI");
+        this.knownVariables.add("COOKIE");
+        this.knownVariables.add("CLIENT");
+        this.knownVariables.add("SESSION");
+        this.knownVariables.add("APPLICATION");
+        this.knownVariables.add("SERVER");
+        this.knownVariables.add("THISTAG");
+      }
+    */
+    QUrl l_url = QUrl::fromEncoded(QByteArray("?") + m_Request.m_Args.toUtf8(), QUrl::StrictMode);
+
+    QList<QPair<QString, QString> > l_Arguments = QUrlQuery(l_url).queryItems();
+
+    for(const QPair<QString, QString> &l_Argument: l_Arguments)
+    {
+        QString key = l_Argument.first;
+        QString value = l_Argument.second;
+        cf_StructUpdate(m_URL, key.toUpper(), value);
+    }
 }
 
 void QCFWorkerThread::updateVariableInt(QWDDX &dest, int key, const QWDDX &value)

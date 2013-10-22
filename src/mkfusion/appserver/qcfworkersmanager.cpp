@@ -3,13 +3,24 @@
 #include "qcfserver.h"
 #include "qcflog.h"
 
-
 #include <QLocalServer>
 #include <QLocalSocket>
+#include <QDataStream>
+#include <QDir>
 
 
 QCFWorkersManager::QCFWorkersManager()
 {
+}
+
+void QCFWorkersManager::init()
+{
+
+}
+
+QCFWorkerThread * QCFWorkersManager::createWorker(const QString &filePath)
+{
+    return nullptr;
 }
 
 void QCFWorkersManager::waitForAllWorkersToFinish()
@@ -31,7 +42,7 @@ void QCFWorkersManager::waitForAllWorkersToFinish()
 
 void QCFWorkersManager::on_newConnection()
 {
-    QCFLOG(CFLOG_WORKER, QCFLOG_INFO, "Worker has started.");
+    QCFLOG(CFLOG_WORKER, QCFLOG_INFO, "QCFWorkersManager::on_newConnection() has started.");
 
     while(((QLocalServer *)sender())->hasPendingConnections())
     {
@@ -65,7 +76,21 @@ void QCFWorkersManager::on_newConnection()
         //    return;
         //}
 
-        QCFWorkerThread *worker = new QCFWorkerThread(localSocket, this);
+        QDataStream l_IOStream(localSocket);
+        l_IOStream.setVersion(QDataStream::Qt_5_0);
+
+        char *tempstr = nullptr;
+        l_IOStream >> tempstr;
+        if (!tempstr)
+        {
+            QCFLOG(CFLOG_WORKER, QCFLOG_CRITICAL, "Empty template pathname returned.");
+            return;
+        }
+        QString templateFilePath = QDir::toNativeSeparators(QString::fromUtf8(tempstr));
+        delete[] tempstr; tempstr = nullptr;
+
+        QCFWorkerThread * worker = createWorker(templateFilePath);
+
         connect(worker, &QThread::finished, this, &QCFWorkersManager::on_workerTerminated);
 
         {
@@ -77,7 +102,7 @@ void QCFWorkersManager::on_newConnection()
         worker->start();
     }
 
-    QCFLOG(CFLOG_WORKER, QCFLOG_INFO, "Worker has ended.");
+    QCFLOG(CFLOG_WORKER, QCFLOG_INFO, "QCFWorkersManager::on_newConnection() has ended.");
 }
 
 void QCFWorkersManager::on_workerTerminated()

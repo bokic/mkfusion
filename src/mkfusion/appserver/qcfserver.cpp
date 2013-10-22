@@ -19,9 +19,6 @@
 
 
 QCFServer * QCFServer::m_instance = nullptr;
-QString QCFServer::m_osName;
-QString QCFServer::m_osVersion;
-
 
 QCFServer::QCFServer()
     : m_Scheduler(this)
@@ -135,9 +132,24 @@ void QCFServer::stop()
     QCFLOG(QCFLOG_DAEMON, QCFLOG_INFO, "MKFusion daemon has stoped.");
 }
 
+QString QCFServer::MKFusionPath() const
+{
+    return m_MKFusionPath;
+}
+
 QCFServer * QCFServer::instance()
 {
     return m_instance;
+}
+
+QString QCFServer::osName() const
+{
+    return m_osName;
+}
+
+QString QCFServer::osVersion() const
+{
+    return m_osVersion;
 }
 
 void QCFServer::on_workerTerminated()

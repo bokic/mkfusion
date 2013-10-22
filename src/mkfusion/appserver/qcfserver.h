@@ -21,9 +21,10 @@ public:
 
 	void start();
 	void stop();
+    QString MKFusionPath() const;
     static QCFServer * instance();
-    static QString osName();
-    static QString osVersion();
+    QString osName() const;
+    QString osVersion() const;
 
     QCFApplicationManager m_Applications;
     QCFSessionManager m_Sessions;
@@ -41,8 +42,8 @@ private:
     QString m_MKFusionPath;
     static QString getProcessExecutableFileName();
     static QCFServer *m_instance;
-    static QString m_osName;
-    static QString m_osVersion;
+    QString m_osName;
+    QString m_osVersion;
 };
 
 #endif // QCFSERVER_H
