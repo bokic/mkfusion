@@ -72,7 +72,6 @@ protected:
     void run() override;
     virtual void executePage();
 
-private:
     void processPostData(QByteArray post);
     bool readRequest();
     bool writeResponse();
@@ -83,6 +82,8 @@ private:
     static void updateVariableStr(QCFVariant &dest, const wchar_t *key, const QCFVariant &value);
     static void updateVariableQStr(QCFVariant &dest, const QString &key, const QCFVariant &value);
     static void updateVariable(QCFVariant &dest, const QCFVariant &key, const QCFVariant &value);
+    void f_WriteOutput(const QString &value);
+
 
     // Class members
     QCFVariant m_CGI;

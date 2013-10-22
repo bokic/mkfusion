@@ -79,7 +79,10 @@ Source: "..\..\src\mkfusion\appserver\common.h"; DestDir: "{app}\include"; Flags
 Source: "..\..\src\mkfusion\appserver\qcfrunningtemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
 Source: "..\..\src\mkfusion\appserver\qcftemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
 Source: "..\..\src\mkfusion\appserver\qmkfusionexception.h"; DestDir: "{app}\include"; Flags: ignoreversion;
-Source: "..\..\src\mkfusion\appserver\qwddx.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\..\src\mkfusion\appserver\qcfvariant\qcfvariant.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\..\src\mkfusion\appserver\qcfvariant\qcfvariantargument.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\..\src\mkfusion\appserver\qcfvariant\qcfvariantcomponent.h"; DestDir: "{app}\include"; Flags: ignoreversion;
+Source: "..\..\src\mkfusion\appserver\qcfvariant\qcfvariantfunction.h"; DestDir: "{app}\include"; Flags: ignoreversion;
 
 [Code]
 

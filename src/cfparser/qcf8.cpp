@@ -1323,13 +1323,13 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
         m_generateCFFunctions[QStringLiteral("addsoaprequestheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("addsoaprequestheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
         m_generateCFFunctions[QStringLiteral("addsoaprequestheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
-        m_generateCFFunctions[QStringLiteral("addsoaprequestheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
+        m_generateCFFunctions[QStringLiteral("addsoaprequestheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true));
         m_generateCFFunctions[QStringLiteral("addsoaprequestheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false));
 
         m_generateCFFunctions.insert(QStringLiteral("addsoapresponseheader"), QCFFunction("AddSOAPResponseHeader", QCFFunction::ReturnVoid));
         m_generateCFFunctions[QStringLiteral("addsoapresponseheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
         m_generateCFFunctions[QStringLiteral("addsoapresponseheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
-        m_generateCFFunctions[QStringLiteral("addsoapresponseheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
+        m_generateCFFunctions[QStringLiteral("addsoapresponseheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true));
         m_generateCFFunctions[QStringLiteral("addsoapresponseheader")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false));
 
         m_generateCFFunctions.insert(QStringLiteral("ajaxlink"), QCFFunction("AjaxLink", QCFFunction::ReturnString));
@@ -1339,72 +1339,72 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
         m_generateCFFunctions[QStringLiteral("ajaxonload")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true));
 
         m_generateCFFunctions.insert(QStringLiteral("arrayappend"), QCFFunction("ArrayAppend", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arrayappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arrayappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("arrayappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true));
 
         m_generateCFFunctions.insert(QStringLiteral("arrayavg"), QCFFunction("ArrayAvg", QCFFunction::ReturnDouble));
-        m_generateCFFunctions[QStringLiteral("arrayavg")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arrayavg")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("arrayclear"), QCFFunction("ArrayClear", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arrayclear")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arrayclear")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("arraydeleteat"), QCFFunction("ArrayDeleteAt", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arraydeleteat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-        m_generateCFFunctions[QStringLiteral("arraydeleteat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true));
+        m_generateCFFunctions[QStringLiteral("arraydeleteat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arraydeleteat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true));
 
         m_generateCFFunctions.insert(QStringLiteral("arrayinsertsat"), QCFFunction("ArrayInsertAt", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arrayinsertsat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arrayinsertsat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("arrayinsertsat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("arrayinsertsat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("arrayisdefined"), QCFFunction("ArrayIsDefined", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arrayisdefined")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arrayisdefined")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("arrayisdefined")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("arrayisempty"), QCFFunction("ArrayIsEmpty", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arrayisempty")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arrayisempty")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("arraylen"), QCFFunction("ArrayLen", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arraylen")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arraylen")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("arraymax"), QCFFunction("ArrayMax", QCFFunction::ReturnDouble));
-        m_generateCFFunctions[QStringLiteral("arraymax")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arraymax")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("arraymin"), QCFFunction("ArrayMin", QCFFunction::ReturnDouble));
-        m_generateCFFunctions[QStringLiteral("arraymin")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arraymin")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
-        m_generateCFFunctions.insert(QStringLiteral("arraynew"), QCFFunction("ArrayNew", QCFFunction::ReturnQWDDX));
+        m_generateCFFunctions.insert(QStringLiteral("arraynew"), QCFFunction("ArrayNew", QCFFunction::ReturnQCFVariant));
         m_generateCFFunctions[QStringLiteral("arraynew")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("arrayprepend"), QCFFunction("ArrayPrepend", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arrayprepend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arrayprepend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("arrayprepend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeAny, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("arrayresize"), QCFFunction("ArrayResize", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arrayresize")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arrayresize")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("arrayresize")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("arrayset"), QCFFunction("ArraySet", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arrayset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arrayset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("arrayset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("arrayset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
-        m_generateCFFunctions[QStringLiteral("arrayset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("arrayset")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("arraysort"), QCFFunction("ArraySort", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arraysort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arraysort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("arraysort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("arraysort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("arraysum"), QCFFunction("ArraySum", QCFFunction::ReturnDouble));
-        m_generateCFFunctions[QStringLiteral("arraysum")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arraysum")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("arrayswap"), QCFFunction("ArraySwap", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("arrayswap")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arrayswap")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("arrayswap")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("arrayswap")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("arraytolist"), QCFFunction("ArrayToList", QCFFunction::ReturnString));
-        m_generateCFFunctions[QStringLiteral("arraytolist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("arraytolist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("arraytolist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("asc"), QCFFunction("Asc", QCFFunction::ReturnInt));
@@ -1507,7 +1507,7 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
         m_generateCFFunctions[QStringLiteral("createdatetime")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("createdatetime")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
-        m_generateCFFunctions.insert(QStringLiteral("createobject"), QCFFunction("CreateObject", QCFFunction::ReturnQWDDX, true));
+        m_generateCFFunctions.insert(QStringLiteral("createobject"), QCFFunction("CreateObject", QCFFunction::ReturnQCFVariant, true));
         m_generateCFFunctions[QStringLiteral("createobject")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeConstant));
         m_generateCFFunctions[QStringLiteral("createobject")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeConstant));
 
@@ -1531,18 +1531,18 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
         m_generateCFFunctions[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-        m_generateCFFunctions[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, false, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, false, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
 
-        m_generateCFFunctions.insert(QStringLiteral("duplicate"), QCFFunction("Duplicate", QCFFunction::ReturnQWDDX));
-        m_generateCFFunctions[QStringLiteral("duplicate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions.insert(QStringLiteral("duplicate"), QCFFunction("Duplicate", QCFFunction::ReturnQCFVariant));
+        m_generateCFFunctions[QStringLiteral("duplicate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("encrypt"), QCFFunction("Encrypt", QCFFunction::ReturnString));
         m_generateCFFunctions[QStringLiteral("encrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("encrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("decrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("encrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
-        m_generateCFFunctions[QStringLiteral("encrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, false, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("encrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, false, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("encrypt")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("fileexists"), QCFFunction("FileExists", QCFFunction::ReturnBool));
@@ -1572,7 +1572,7 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
         m_generateCFFunctions.insert(QStringLiteral("fix"), QCFFunction("Fix", QCFFunction::ReturnInt));
         m_generateCFFunctions[QStringLiteral("fix")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
 
-        m_generateCFFunctions.insert(QStringLiteral("getbasetagdata"), QCFFunction("GetBaseTagData", QCFFunction::ReturnQWDDX, true));
+        m_generateCFFunctions.insert(QStringLiteral("getbasetagdata"), QCFFunction("GetBaseTagData", QCFFunction::ReturnQCFVariant, true));
         m_generateCFFunctions[QStringLiteral("getbasetagdata")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("getbasetagdata")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
 
@@ -1582,17 +1582,17 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
         m_generateCFFunctions[QStringLiteral("int")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDouble, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("isarray"), QCFFunction("IsArray", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("isarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("isarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("isarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("isdefined"), QCFFunction("IsDefined", QCFFunction::ReturnBool, true));
         m_generateCFFunctions[QStringLiteral("isdefined")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("isstruct"), QCFFunction("IsStruct", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("isstruct")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("isstruct")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("isquery"), QCFFunction("IsQuery", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("isquery")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("isquery")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("lcase"), QCFFunction("LCase", QCFFunction::ReturnString));
         m_generateCFFunctions[QStringLiteral("lcase")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
@@ -1606,7 +1606,7 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
 
         m_generateCFFunctions.insert(QStringLiteral("listappend"), QCFFunction("ListAppend", QCFFunction::ReturnString));
         m_generateCFFunctions[QStringLiteral("listappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-        m_generateCFFunctions[QStringLiteral("listappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("listappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("listappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("listchangedelims"), QCFFunction("ListChangeDelims", QCFFunction::ReturnString));
@@ -1699,7 +1699,7 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
         m_generateCFFunctions[QStringLiteral("listvaluecountnocount")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("listvaluecountnocount")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
-        m_generateCFFunctions.insert(QStringLiteral("listtoarray"), QCFFunction("ListToArray", QCFFunction::ReturnQWDDX));
+        m_generateCFFunctions.insert(QStringLiteral("listtoarray"), QCFFunction("ListToArray", QCFFunction::ReturnQCFVariant));
         m_generateCFFunctions[QStringLiteral("listtoarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("listtoarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("listtoarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
@@ -1707,36 +1707,36 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
         m_generateCFFunctions.insert(QStringLiteral("now"), QCFFunction("Now", QCFFunction::ReturnDateTime));
 
         m_generateCFFunctions.insert(QStringLiteral("queryaddrow"), QCFFunction("QueryAddRow", QCFFunction::ReturnInt));
-        m_generateCFFunctions[QStringLiteral("queryaddrow")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("queryaddrow")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("queryaddrow")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
 
-        m_generateCFFunctions.insert(QStringLiteral("querynew"), QCFFunction("QueryNew", QCFFunction::ReturnQWDDX));
+        m_generateCFFunctions.insert(QStringLiteral("querynew"), QCFFunction("QueryNew", QCFFunction::ReturnQCFVariant));
         m_generateCFFunctions[QStringLiteral("querynew")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("querynew")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("quotedvaluelist"), QCFFunction("QuotedValueList", QCFFunction::ReturnString));
-        m_generateCFFunctions[QStringLiteral("quotedvaluelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("quotedvaluelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("quotedvaluelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("queryaddcolumn"), QCFFunction("QueryAddColumn", QCFFunction::ReturnInt));
-        m_generateCFFunctions[QStringLiteral("queryaddcolumn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("queryaddcolumn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("queryaddcolumn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("queryaddcolumn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("queryaddcolumn")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
-        m_generateCFFunctions.insert(QStringLiteral("queryconvertforgrid"), QCFFunction("QueryConvertForGrid", QCFFunction::ReturnQWDDX));
-        m_generateCFFunctions[QStringLiteral("queryconvertforgrid")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions.insert(QStringLiteral("queryconvertforgrid"), QCFFunction("QueryConvertForGrid", QCFFunction::ReturnQCFVariant));
+        m_generateCFFunctions[QStringLiteral("queryconvertforgrid")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("queryconvertforgrid")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("queryconvertforgrid")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("querysetcell"), QCFFunction("QuerySetCell", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("querysetcell")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("querysetcell")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("querysetcell")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-        m_generateCFFunctions[QStringLiteral("querysetcell")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("querysetcell")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("querysetcell")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("quotedvalue"), QCFFunction("QuotedValue", QCFFunction::ReturnString));
-        m_generateCFFunctions[QStringLiteral("quotedvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("quotedvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("quotedvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("replace"), QCFFunction("Replace", QCFFunction::ReturnString));
@@ -1758,73 +1758,73 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
         m_generateCFFunctions[QStringLiteral("right")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("structappend"), QCFFunction("StructAppend", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
-        m_generateCFFunctions[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("structclear"), QCFFunction("StructClear", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
-        m_generateCFFunctions.insert(QStringLiteral("structcopy"), QCFFunction("StructCopy", QCFFunction::ReturnQWDDX));
-        m_generateCFFunctions[QStringLiteral("structcopy")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions.insert(QStringLiteral("structcopy"), QCFFunction("StructCopy", QCFFunction::ReturnQCFVariant));
+        m_generateCFFunctions[QStringLiteral("structcopy")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("structcount"), QCFFunction("StructCount", QCFFunction::ReturnInt));
-        m_generateCFFunctions[QStringLiteral("structcount")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("structcount")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("structdelete"), QCFFunction("StructDelete", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("structdelete")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("structdelete")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("structdelete")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("structdelete")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
 
-        m_generateCFFunctions.insert(QStringLiteral("structfind"), QCFFunction("StructFind", QCFFunction::ReturnQWDDX));
-        m_generateCFFunctions[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions.insert(QStringLiteral("structfind"), QCFFunction("StructFind", QCFFunction::ReturnQCFVariant));
+        m_generateCFFunctions[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
-        m_generateCFFunctions.insert(QStringLiteral("structfindkey"), QCFFunction("StructFindKey", QCFFunction::ReturnQWDDX));
-        m_generateCFFunctions[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions.insert(QStringLiteral("structfindkey"), QCFFunction("StructFindKey", QCFFunction::ReturnQCFVariant));
+        m_generateCFFunctions[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("structfind")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
-        m_generateCFFunctions.insert(QStringLiteral("structfindvalue"), QCFFunction("StructFindValue", QCFFunction::ReturnQWDDX));
-        m_generateCFFunctions[QStringLiteral("structfindvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions.insert(QStringLiteral("structfindvalue"), QCFFunction("StructFindValue", QCFFunction::ReturnQCFVariant));
+        m_generateCFFunctions[QStringLiteral("structfindvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("structfindvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("structfindvalue")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
-        m_generateCFFunctions.insert(QStringLiteral("structget"), QCFFunction("StructGet", QCFFunction::ReturnQWDDX));
+        m_generateCFFunctions.insert(QStringLiteral("structget"), QCFFunction("StructGet", QCFFunction::ReturnQCFVariant));
         m_generateCFFunctions[QStringLiteral("structget")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("structinsert"), QCFFunction("StructInsert", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("structinsert")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("structinsert")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("structinsert")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
-        m_generateCFFunctions[QStringLiteral("structinsert")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("structinsert")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("structdelete")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("structisempty"), QCFFunction("StructIsEmpty", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("structisempty")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("structisempty")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
-        m_generateCFFunctions.insert(QStringLiteral("structkeyarray"), QCFFunction("StructKeyArray", QCFFunction::ReturnQWDDX));
-        m_generateCFFunctions[QStringLiteral("structkeyarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions.insert(QStringLiteral("structkeyarray"), QCFFunction("StructKeyArray", QCFFunction::ReturnQCFVariant));
+        m_generateCFFunctions[QStringLiteral("structkeyarray")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("structkeyexists"), QCFFunction("StructKeyExists", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("structkeyexists")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("structkeyexists")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("structkeyexists")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("structkeylist"), QCFFunction("StructKeyList", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("structkeylist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("structkeylist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("structkeylist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
-        m_generateCFFunctions.insert(QStringLiteral("structnew"), QCFFunction("StructNew", QCFFunction::ReturnQWDDX));
+        m_generateCFFunctions.insert(QStringLiteral("structnew"), QCFFunction("StructNew", QCFFunction::ReturnQCFVariant));
 
-        m_generateCFFunctions.insert(QStringLiteral("structsort"), QCFFunction("StructSort", QCFFunction::ReturnQWDDX));
-        m_generateCFFunctions[QStringLiteral("structsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions.insert(QStringLiteral("structsort"), QCFFunction("StructSort", QCFFunction::ReturnQCFVariant));
+        m_generateCFFunctions[QStringLiteral("structsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("structsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("structsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("structsort")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("structupdate"), QCFFunction("StructUpdate", QCFFunction::ReturnBool));
-        m_generateCFFunctions[QStringLiteral("structupdate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("structupdate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("structupdate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeVariable));
-        m_generateCFFunctions[QStringLiteral("structupdate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("structupdate")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
 
         m_generateCFFunctions.insert(QStringLiteral("timeformat"), QCFFunction("TimeFormat", QCFFunction::ReturnString));
         m_generateCFFunctions[QStringLiteral("timeformat")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeDateTime, true, QCFFunctionArgument::TypeAny));
@@ -1840,7 +1840,7 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
         m_generateCFFunctions[QStringLiteral("val")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("valuelist"), QCFFunction("ValueList", QCFFunction::ReturnString));
-        m_generateCFFunctions[QStringLiteral("valuelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
+        m_generateCFFunctions[QStringLiteral("valuelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("valuelist")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
         m_generateCFFunctions.insert(QStringLiteral("writeoutput"), QCFFunction("WriteOutput", QCFFunction::ReturnVoid, true));

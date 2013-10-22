@@ -1,6 +1,6 @@
-#include <qcfrunningtemplate.h>
+#include <qcfvariant.h>
 #include <qcfparser.h>
-#include <qwddx.h>
+
 #include <QTest>
 #include <QFile>
 
@@ -380,15 +380,15 @@ void TestCases::BenchUnoptimisedCode()
 
     QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
-	m_TemplateInstance->m_VARIABLES.m_Type = QWDDX::Struct;
+    m_TemplateInstance->m_VARIABLES.m_Type = QCFVariant::Struct;
 
 	QBENCHMARK
 	{
-        m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = QWDDX(1);
+        m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = QCFVariant(1);
 
-        for (m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] = QWDDX(1); m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] <= QWDDX(1000000); m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] = m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] + QWDDX(1))
+        for (m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] = QCFVariant(1); m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] <= QCFVariant(1000000); m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] = m_TemplateInstance->m_VARIABLES[QStringLiteral("C")] + QCFVariant(1))
 		{
-            m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] + QWDDX(1);
+            m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] + QCFVariant(1);
 		}
 	}
 
@@ -399,16 +399,16 @@ void TestCases::BenchOptimisedCode()
 {
     QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
-	m_TemplateInstance->m_VARIABLES.m_Type = QWDDX::Struct;
+    m_TemplateInstance->m_VARIABLES.m_Type = QCFVariant::Struct;
 
 	QBENCHMARK
 	{
 		{
-			//QWDDX *opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES["A"]; *opt_m_VARIABLES_A = 1;
+            //QCFVariant *opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES["A"]; *opt_m_VARIABLES_A = 1;
             m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = 1;
 
-            //QWDDX *opt_m_VARIABLES_A = nullptr;
-            QWDDX *opt_m_VARIABLES_C = &m_TemplateInstance->m_VARIABLES[QStringLiteral("C")]; *opt_m_VARIABLES_C = 1;
+            //QCFVariant *opt_m_VARIABLES_A = nullptr;
+            QCFVariant *opt_m_VARIABLES_C = &m_TemplateInstance->m_VARIABLES[QStringLiteral("C")]; *opt_m_VARIABLES_C = 1;
 			for(; ; )
 			{
                 //if (opt_m_VARIABLES_A == nullptr) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[QStringLiteral("A")];
@@ -432,15 +432,15 @@ void TestCases::BenchOptimisedCode2()
 {
     QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
-	m_TemplateInstance->m_VARIABLES.m_Type = QWDDX::Struct;
+    m_TemplateInstance->m_VARIABLES.m_Type = QCFVariant::Struct;
 
 	QBENCHMARK
 	{
 		{
-			//QWDDX *opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES["A"]; *opt_m_VARIABLES_A = 1;
+            //QCFVariant *opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES["A"]; *opt_m_VARIABLES_A = 1;
             m_TemplateInstance->m_VARIABLES[QStringLiteral("A")] = 1;
 
-            QWDDX *opt_m_VARIABLES_A = nullptr;
+            QCFVariant *opt_m_VARIABLES_A = nullptr;
 			quint32 l_loopCounter = 1;
 			for(; ; )
 			{
@@ -563,15 +563,15 @@ void TestCases::benchPI()
 
 void TestCases::compareIssue()
 {
-    QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
+    /*QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
-    m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
+    m_TemplateInstance->m_VARIABLES.setType(QCFVariant::Struct);
 
     m_TemplateInstance->m_VARIABLES[L"SETTING"] = QString("Style");
 
-    QVERIFY(m_TemplateInstance->m_VARIABLES[L"SETTING"] == QWDDX(L"Style"));
+    QVERIFY(m_TemplateInstance->m_VARIABLES[L"SETTING"] == QCFVariant(L"Style"));
 
-    delete m_TemplateInstance;
+    delete m_TemplateInstance;*/
 }
 
 

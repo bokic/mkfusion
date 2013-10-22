@@ -2,10 +2,9 @@
 #include <pi_opt.h>
 #include <pi_opt2.h>
 
-#include <qcfrunningtemplate.h>
+#include <qcfvariant.h>
 #include <qcfparser.h>
 #include <qcfserver.h>
-#include <qwddx.h>
 #include <QTest>
 #include <QFile>
 
@@ -28,7 +27,7 @@ private slots:
 
         QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
-        m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
+        m_TemplateInstance->m_VARIABLES.setType(QCFVariant::Struct);
 
         origTemplate.run(m_TemplateInstance);
     }
@@ -41,7 +40,7 @@ void TestCases::optPI()
 
         QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
 
-        m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
+        m_TemplateInstance->m_VARIABLES.setType(QCFVariant::Struct);
 
         optTemplate.run(m_TemplateInstance);
 
@@ -53,21 +52,9 @@ void TestCases::optPI()
 void TestCases::optPI2()
 {
     QBENCHMARK {
-        QCFGeneratedTemplateOpt2 optTemplate;
+        QCFGeneratedWorkerThreadOpt2 optTemplate;
 
-        QCFServer m_Server;
-        QCFRunningTemplate *m_TemplateInstance = new QCFRunningTemplate();
-
-        m_TemplateInstance->m_CFServer = &m_Server;
-
-        m_Server.m_RunnuingTemplatesByThreadId.insert(QThread::currentThreadId(), m_TemplateInstance);
-
-        m_TemplateInstance->m_VARIABLES.setType(QWDDX::Struct);
-
-        optTemplate.run(m_TemplateInstance);
-
-        delete m_TemplateInstance;
-        m_TemplateInstance = nullptr;
+        optTemplate.executePage();
     }
 }
 

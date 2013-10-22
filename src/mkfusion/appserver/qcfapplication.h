@@ -1,7 +1,7 @@
 #ifndef QCFAPPLICATION_H
 #define QCFAPPLICATION_H
 
-//#include "qwddx.h"
+//#include "qcfvariant.h"
 
 #include <QDateTime>
 #include <QString>
@@ -14,7 +14,7 @@ class QCFApplication
     QString m_path;
     QString m_applicationTemplate;
     bool m_callOnApplicationEnd;
-    //QWDDX m_data;
+    //QCFVariant m_data;
     QHash<QString, QMutex> m_mutexHash;
     QDateTime m_timeout;
     QMutex m_mutex;

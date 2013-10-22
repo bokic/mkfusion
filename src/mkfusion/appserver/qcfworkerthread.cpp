@@ -817,3 +817,8 @@ void QCFWorkerThread::updateVariable(QCFVariant &dest, const QCFVariant &key, co
         throw QMKFusionException("Destination variable is not Struct nor Array.");
     }
 }
+
+void QCFWorkerThread::f_WriteOutput(const QString &value)
+{
+    m_Output.append(value);
+}

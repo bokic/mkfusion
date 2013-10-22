@@ -1,8 +1,9 @@
 #include "qmkfusionexception.h"
-#include "qcfrunningtemplate.h"
+#include "qcfworkerthread.h"
 #include "qcftemplate.h"
 #include "cffunctions.h"
-#include "common.h"
+#include "qcfvariant.h"
+
 
 #ifdef Q_OS_WIN
 #define MY_EXPORT __declspec(dllexport)
@@ -10,122 +11,120 @@
 #define MY_EXPORT
 #endif
 
-class QCFGeneratedTemplateOrig : public QCFTemplate
+class QCFGeneratedWorkerThreadOrig : public QCFWorkerThread
 {
 public:
-    QCFGeneratedTemplateOrig()
+    QCFGeneratedWorkerThreadOrig()
 	{
-		m_isModified.m_Filename = QString::fromWCharArray(L"/var/www/pi.cfm");
-		m_isModified.m_Size = 2081;
-		m_isModified.m_Modified = 1374408058;
+        //m_isModified.m_Filename = QString::fromWCharArray(L"/var/www/pi.cfm");
+        //m_isModified.m_Size = 2081;
+        //m_isModified.m_Modified = 1374408058;
 	}
 	
-    virtual ~QCFGeneratedTemplateOrig()
+    virtual ~QCFGeneratedWorkerThreadOrig()
 	{
 	}
 	
-    virtual void run(QCFRunningTemplate *p_TemplateInstance)
-	{
-		QCFTemplate::run(p_TemplateInstance);
-
+    virtual void executePage() override
+    {
 // Line 85.
-        m_TemplateInstance->m_VARIABLES[L"FINAL"] = cf_ArrayNew(QWDDX(1));
+        m_VARIABLES[L"FINAL"] = cf_ArrayNew(QCFVariant(1));
 
 // Line 115.
-        m_TemplateInstance->m_VARIABLES[L"TMP"] = cf_ArrayNew(QWDDX(1));
+        m_VARIABLES[L"TMP"] = cf_ArrayNew(QCFVariant(1));
 
 // Line 144.
-        m_TemplateInstance->m_VARIABLES[L"PRECISION"] = QWDDX(6);
+        m_VARIABLES[L"PRECISION"] = QCFVariant(6);
 
 // Line 169.
-        for (m_TemplateInstance->m_VARIABLES[L"I"] = (QWDDX(1)).toNumber(); (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber()  <=  (m_TemplateInstance->m_VARIABLES[L"PRECISION"]).toNumber(); m_TemplateInstance->m_VARIABLES[L"I"] = (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber() + 1) {
+        for (m_VARIABLES[L"I"] = (QCFVariant(1)).toNumber(); (m_VARIABLES[L"I"]).toNumber()  <=  (m_VARIABLES[L"PRECISION"]).toNumber(); m_VARIABLES[L"I"] = (m_VARIABLES[L"I"]).toNumber() + 1) {
 
 // Line 218.
-        m_TemplateInstance->m_VARIABLES[L"FINAL"][m_TemplateInstance->m_VARIABLES[L"I"]] = QWDDX(0);
+        m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]] = QCFVariant(0);
 
 // Line 245.
-        m_TemplateInstance->m_VARIABLES[L"TMP"][m_TemplateInstance->m_VARIABLES[L"I"]] = QWDDX(0);
+        m_VARIABLES[L"TMP"][m_VARIABLES[L"I"]] = QCFVariant(0);
 
 // Line 266.
 		}
 
 // Line 277.
-        m_TemplateInstance->m_VARIABLES[L"KEEPLOOPING"] = QWDDX(true);
+        m_VARIABLES[L"KEEPLOOPING"] = QCFVariant(true);
 
 // Line 306.
-        m_TemplateInstance->m_VARIABLES[L"DIVIDER"] = QWDDX(1);
+        m_VARIABLES[L"DIVIDER"] = QCFVariant(1);
 
 // Line 328.
-        m_TemplateInstance->m_VARIABLES[L"POSITIVESIGN"] = QWDDX(true);
+        m_VARIABLES[L"POSITIVESIGN"] = QCFVariant(true);
 
 // Line 358.
-        m_TemplateInstance->m_VARIABLES[L"COUNTER"] = QWDDX(0);
+        m_VARIABLES[L"COUNTER"] = QCFVariant(0);
 
 // Line 381.
-        while(m_TemplateInstance->m_VARIABLES[L"KEEPLOOPING"] == QWDDX(true)) {
+        while(m_VARIABLES[L"KEEPLOOPING"] == QCFVariant(true)) {
 
 // Line 426.
-        m_TemplateInstance->m_VARIABLES[L"KEEPLOOPING"] = QWDDX(false);
+        m_VARIABLES[L"KEEPLOOPING"] = QCFVariant(false);
 
 // Line 465.
-        m_TemplateInstance->m_VARIABLES[L"VALUE"] = QWDDX(1);
+        m_VARIABLES[L"VALUE"] = QCFVariant(1);
 
 // Line 489.
-        m_TemplateInstance->m_VARIABLES[L"REMAINING"] = QWDDX(0);
+        m_VARIABLES[L"REMAINING"] = QCFVariant(0);
 
 // Line 517.
-        for (m_TemplateInstance->m_VARIABLES[L"I"] = (QWDDX(1)).toNumber(); (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber()  <=  (m_TemplateInstance->m_VARIABLES[L"PRECISION"]).toNumber(); m_TemplateInstance->m_VARIABLES[L"I"] = (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber() + 1) {
+        for (m_VARIABLES[L"I"] = (QCFVariant(1)).toNumber(); (m_VARIABLES[L"I"]).toNumber()  <=  (m_VARIABLES[L"PRECISION"]).toNumber(); m_VARIABLES[L"I"] = (m_VARIABLES[L"I"]).toNumber() + 1) {
 
 // Line 563.
-        m_TemplateInstance->m_VARIABLES[L"TMP"][m_TemplateInstance->m_VARIABLES[L"I"]] = cf_Fix(m_TemplateInstance->m_VARIABLES[L"VALUE"] / m_TemplateInstance->m_VARIABLES[L"DIVIDER"]);
+        m_VARIABLES[L"TMP"][m_VARIABLES[L"I"]] = cf_Fix(m_VARIABLES[L"VALUE"] / m_VARIABLES[L"DIVIDER"]);
 
 // Line 604.
-        if (( m_TemplateInstance->m_VARIABLES[L"TMP"][m_TemplateInstance->m_VARIABLES[L"I"]] != QWDDX(0) ) && ( m_TemplateInstance->m_VARIABLES[L"KEEPLOOPING"] == QWDDX(false) )) {
+        if (( m_VARIABLES[L"TMP"][m_VARIABLES[L"I"]] != QCFVariant(0) ) && ( m_VARIABLES[L"KEEPLOOPING"] == QCFVariant(false) )) {
 
 // Line 658.
-        m_TemplateInstance->m_VARIABLES[L"KEEPLOOPING"] = QWDDX(true);
+        m_VARIABLES[L"KEEPLOOPING"] = QCFVariant(true);
 
 // Line 688.
 		}
 
 // Line 697.
-        m_TemplateInstance->m_VARIABLES[L"VALUE"] = cf_Fix(( m_TemplateInstance->m_VARIABLES[L"VALUE"]%m_TemplateInstance->m_VARIABLES[L"DIVIDER"] ) * QWDDX(10));
+        m_VARIABLES[L"VALUE"] = cf_Fix(( m_VARIABLES[L"VALUE"]%m_VARIABLES[L"DIVIDER"] ) * QCFVariant(10));
 
 // Line 749.
 		}
 
 // Line 768.
-        if (m_TemplateInstance->m_VARIABLES[L"KEEPLOOPING"] == QWDDX(true)) {
+        if (m_VARIABLES[L"KEEPLOOPING"] == QCFVariant(true)) {
 
 // Line 797.
-        if (m_TemplateInstance->m_VARIABLES[L"POSITIVESIGN"] == QWDDX(true)) {
+        if (m_VARIABLES[L"POSITIVESIGN"] == QCFVariant(true)) {
 
 // Line 828.
-        m_TemplateInstance->m_VARIABLES[L"TRANSFER"] = QWDDX(0);
+        m_VARIABLES[L"TRANSFER"] = QCFVariant(0);
 
 // Line 854.
-        for (m_TemplateInstance->m_VARIABLES[L"I"] = (m_TemplateInstance->m_VARIABLES[L"PRECISION"]).toNumber(); (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber()  >=  (QWDDX(1)).toNumber(); m_TemplateInstance->m_VARIABLES[L"I"] = (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber() + QWDDX(-1)) {
+        for (m_VARIABLES[L"I"] = (m_VARIABLES[L"PRECISION"]).toNumber(); (m_VARIABLES[L"I"]).toNumber()  >=  (QCFVariant(1)).toNumber(); m_VARIABLES[L"I"] = (m_VARIABLES[L"I"]).toNumber() + QCFVariant(-1)) {
 
 // Line 913.
-        m_TemplateInstance->m_VARIABLES[L"TMP_VAL"] = m_TemplateInstance->m_VARIABLES[L"FINAL"][m_TemplateInstance->m_VARIABLES[L"I"]] + m_TemplateInstance->m_VARIABLES[L"TMP"][m_TemplateInstance->m_VARIABLES[L"I"]] + m_TemplateInstance->m_VARIABLES[L"TRANSFER"];
+        m_VARIABLES[L"TMP_VAL"] = m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]] + m_VARIABLES[L"TMP"][m_VARIABLES[L"I"]] + m_VARIABLES[L"TRANSFER"];
 
 // Line 966.
-        if (m_TemplateInstance->m_VARIABLES[L"TMP_VAL"] > QWDDX(9)) {
+        if (m_VARIABLES[L"TMP_VAL"] > QCFVariant(9)) {
 
 // Line 991.
-        m_TemplateInstance->m_VARIABLES[L"FINAL"][m_TemplateInstance->m_VARIABLES[L"I"]] = m_TemplateInstance->m_VARIABLES[L"TMP_VAL"] - QWDDX(10);
+        m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]] = m_VARIABLES[L"TMP_VAL"] - QCFVariant(10);
 
 // Line 1030.
-        m_TemplateInstance->m_VARIABLES[L"TRANSFER"] = QWDDX(1);
+        m_VARIABLES[L"TRANSFER"] = QCFVariant(1);
 
 // Line 1057.
 		} else {
 
 // Line 1071.
-        m_TemplateInstance->m_VARIABLES[L"FINAL"][m_TemplateInstance->m_VARIABLES[L"I"]] = m_TemplateInstance->m_VARIABLES[L"TMP_VAL"];
+        m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]] = m_VARIABLES[L"TMP_VAL"];
 
 // Line 1105.
-        m_TemplateInstance->m_VARIABLES[L"TRANSFER"] = QWDDX(0);
+        m_VARIABLES[L"TRANSFER"] = QCFVariant(0);
 
 // Line 1132.
 		}
@@ -137,31 +136,31 @@ public:
 		} else {
 
 // Line 1167.
-        m_TemplateInstance->m_VARIABLES[L"TRANSFER"] = QWDDX(0);
+        m_VARIABLES[L"TRANSFER"] = QCFVariant(0);
 
 // Line 1193.
-        for (m_TemplateInstance->m_VARIABLES[L"I"] = (m_TemplateInstance->m_VARIABLES[L"PRECISION"]).toNumber(); (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber()  >=  (QWDDX(1)).toNumber(); m_TemplateInstance->m_VARIABLES[L"I"] = (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber() + QWDDX(-1)) {
+        for (m_VARIABLES[L"I"] = (m_VARIABLES[L"PRECISION"]).toNumber(); (m_VARIABLES[L"I"]).toNumber()  >=  (QCFVariant(1)).toNumber(); m_VARIABLES[L"I"] = (m_VARIABLES[L"I"]).toNumber() + QCFVariant(-1)) {
 
 // Line 1252.
-        m_TemplateInstance->m_VARIABLES[L"TMP_VAL"] = m_TemplateInstance->m_VARIABLES[L"FINAL"][m_TemplateInstance->m_VARIABLES[L"I"]] - m_TemplateInstance->m_VARIABLES[L"TMP"][m_TemplateInstance->m_VARIABLES[L"I"]] - m_TemplateInstance->m_VARIABLES[L"TRANSFER"];
+        m_VARIABLES[L"TMP_VAL"] = m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]] - m_VARIABLES[L"TMP"][m_VARIABLES[L"I"]] - m_VARIABLES[L"TRANSFER"];
 
 // Line 1305.
-        if (m_TemplateInstance->m_VARIABLES[L"TMP_VAL"] < QWDDX(0)) {
+        if (m_VARIABLES[L"TMP_VAL"] < QCFVariant(0)) {
 
 // Line 1330.
-        m_TemplateInstance->m_VARIABLES[L"FINAL"][m_TemplateInstance->m_VARIABLES[L"I"]] = m_TemplateInstance->m_VARIABLES[L"TMP_VAL"] + QWDDX(10);
+        m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]] = m_VARIABLES[L"TMP_VAL"] + QCFVariant(10);
 
 // Line 1369.
-        m_TemplateInstance->m_VARIABLES[L"TRANSFER"] = QWDDX(1);
+        m_VARIABLES[L"TRANSFER"] = QCFVariant(1);
 
 // Line 1396.
 		} else {
 
 // Line 1410.
-        m_TemplateInstance->m_VARIABLES[L"FINAL"][m_TemplateInstance->m_VARIABLES[L"I"]] = m_TemplateInstance->m_VARIABLES[L"TMP_VAL"];
+        m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]] = m_VARIABLES[L"TMP_VAL"];
 
 // Line 1444.
-        m_TemplateInstance->m_VARIABLES[L"TRANSFER"] = QWDDX(0);
+        m_VARIABLES[L"TRANSFER"] = QCFVariant(0);
 
 // Line 1471.
 		}
@@ -173,52 +172,52 @@ public:
 		}
 
 // Line 1507.
-        m_TemplateInstance->m_VARIABLES[L"DIVIDER"] = m_TemplateInstance->m_VARIABLES[L"DIVIDER"] + QWDDX(2);
+        m_VARIABLES[L"DIVIDER"] = m_VARIABLES[L"DIVIDER"] + QCFVariant(2);
 
 // Line 1541.
-        m_TemplateInstance->m_VARIABLES[L"POSITIVESIGN"] =  !m_TemplateInstance->m_VARIABLES[L"POSITIVESIGN"];
+        m_VARIABLES[L"POSITIVESIGN"] =  !m_VARIABLES[L"POSITIVESIGN"];
 
 // Line 1587.
 		}
 
 // Line 1596.
-        m_TemplateInstance->m_VARIABLES[L"COUNTER"] = m_TemplateInstance->m_VARIABLES[L"COUNTER"] + QWDDX(1);
+        m_VARIABLES[L"COUNTER"] = m_VARIABLES[L"COUNTER"] + QCFVariant(1);
 
 // Line 1628.
 		}
 
 // Line 1639.
-        m_TemplateInstance->m_VARIABLES[L"TRANSFER"] = QWDDX(0);
+        m_VARIABLES[L"TRANSFER"] = QCFVariant(0);
 
 // Line 1662.
-        for (m_TemplateInstance->m_VARIABLES[L"I"] = (m_TemplateInstance->m_VARIABLES[L"PRECISION"]).toNumber(); (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber()  >=  (QWDDX(1)).toNumber(); m_TemplateInstance->m_VARIABLES[L"I"] = (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber() + QWDDX(-1)) {
+        for (m_VARIABLES[L"I"] = (m_VARIABLES[L"PRECISION"]).toNumber(); (m_VARIABLES[L"I"]).toNumber()  >=  (QCFVariant(1)).toNumber(); m_VARIABLES[L"I"] = (m_VARIABLES[L"I"]).toNumber() + QCFVariant(-1)) {
 
 // Line 1718.
-        m_TemplateInstance->m_VARIABLES[L"TMP_VAL"] = ( m_TemplateInstance->m_VARIABLES[L"FINAL"][m_TemplateInstance->m_VARIABLES[L"I"]] * QWDDX(4) ) + m_TemplateInstance->m_VARIABLES[L"TRANSFER"];
+        m_VARIABLES[L"TMP_VAL"] = ( m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]] * QCFVariant(4) ) + m_VARIABLES[L"TRANSFER"];
 
 // Line 1765.
-        m_TemplateInstance->m_VARIABLES[L"TRANSFER"] = cf_Fix(m_TemplateInstance->m_VARIABLES[L"TMP_VAL"] / QWDDX(10));
+        m_VARIABLES[L"TRANSFER"] = cf_Fix(m_VARIABLES[L"TMP_VAL"] / QCFVariant(10));
 
 // Line 1805.
-        m_TemplateInstance->m_VARIABLES[L"FINAL"][m_TemplateInstance->m_VARIABLES[L"I"]] = m_TemplateInstance->m_VARIABLES[L"TMP_VAL"]%QWDDX(10);
+        m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]] = m_VARIABLES[L"TMP_VAL"]%QCFVariant(10);
 
 // Line 1841.
 		}
 
 // Line 1852.
-        m_TemplateInstance->m_VARIABLES[L"PI"] = QString("");
+        m_VARIABLES[L"PI"] = QString("");
 
 // Line 1870.
-        for (m_TemplateInstance->m_VARIABLES[L"I"] = (QWDDX(1)).toNumber(); (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber()  <=  (m_TemplateInstance->m_VARIABLES[L"PRECISION"]).toNumber(); m_TemplateInstance->m_VARIABLES[L"I"] = (m_TemplateInstance->m_VARIABLES[L"I"]).toNumber() + 1) {
+        for (m_VARIABLES[L"I"] = (QCFVariant(1)).toNumber(); (m_VARIABLES[L"I"]).toNumber()  <=  (m_VARIABLES[L"PRECISION"]).toNumber(); m_VARIABLES[L"I"] = (m_VARIABLES[L"I"]).toNumber() + 1) {
 
 // Line 1916.
-        m_TemplateInstance->m_VARIABLES[L"PI"] = m_TemplateInstance->m_VARIABLES[L"PI"] & cf_Chr(QWDDX(48) + m_TemplateInstance->m_VARIABLES[L"FINAL"][m_TemplateInstance->m_VARIABLES[L"I"]]);
+        m_VARIABLES[L"PI"] = m_VARIABLES[L"PI"] & cf_Chr(QCFVariant(48) + m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]]);
 
 // Line 1956.
-        if (m_TemplateInstance->m_VARIABLES[L"I"] == QWDDX(1)) {
+        if (m_VARIABLES[L"I"] == QCFVariant(1)) {
 
 // Line 1972.
-        m_TemplateInstance->m_VARIABLES[L"PI"] = m_TemplateInstance->m_VARIABLES[L"PI"] & QString(".");
+        m_VARIABLES[L"PI"] = m_VARIABLES[L"PI"] & QString(".");
 
 // Line 1997.
 		}
@@ -227,13 +226,13 @@ public:
 		}
 
 // Line 2016.
-		p_TemplateInstance->m_CFOutput++;
+        m_CFOutput++;
 
 // Line 2026.
-        f_WriteOutput(m_TemplateInstance->m_VARIABLES[L"PI"]);
+        f_WriteOutput(m_VARIABLES[L"PI"]);
 
 // Line 2030.
-		p_TemplateInstance->m_CFOutput--;
+        m_CFOutput--;
 	}
 };
 

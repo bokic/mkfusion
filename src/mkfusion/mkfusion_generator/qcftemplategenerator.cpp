@@ -21,8 +21,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
     l_cppFile.write("#include <qcfrunningtemplate.h>\n");
     l_cppFile.write("#include <qcftemplate.h>\n");
     l_cppFile.write("#include <cffunctions.h>\n");
-    l_cppFile.write("#include <common.h>\n");
-    l_cppFile.write("#include <qwddx.h>\n");
+    l_cppFile.write("#include <qcfvariant.h>\n");
     l_cppFile.write("\n");
     l_cppFile.write("#ifdef Q_OS_WIN\n");
     l_cppFile.write("#define MY_EXPORT __declspec(dllexport)\n");
@@ -147,10 +146,10 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
         // TODO: Implement this when possible(not urgent).
 
-        l_cppFile.write(QString("       addCustomFunction(\"" + toCPPEncodeStr(f_name.toLower()) + "\", [](QCFRunningTemplate *m_TemplateInstance, const QList<QWDDX> &arguments) -> QWDDX {\n").toUtf8());
+        l_cppFile.write(QString("       addCustomFunction(\"" + toCPPEncodeStr(f_name.toLower()) + "\", [](QCFRunningTemplate *m_TemplateInstance, const QList<QCFVariant> &arguments) -> QCFVariant {\n").toUtf8());
 
-        l_cppFile.write("            QWDDX ARGUMENTS(QWDDX::Struct);\n");
-        l_cppFile.write("            QWDDX LOCAL(QWDDX::Struct);\n");
+        l_cppFile.write("            QCFVariant ARGUMENTS(QCFVariant::Struct);\n");
+        l_cppFile.write("            QCFVariant LOCAL(QCFVariant::Struct);\n");
         l_cppFile.write("\n");
 
         // Parameters
@@ -181,7 +180,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
             l_cppFile.write("\n");
         }
 
-        l_cppFile.write("            return QWDDX();\n"); // just in case custom function do not return.
+        l_cppFile.write("            return QCFVariant();\n"); // just in case custom function do not return.
 
         l_cppFile.write("        });\n");
     }

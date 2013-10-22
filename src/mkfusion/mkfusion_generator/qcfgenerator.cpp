@@ -351,7 +351,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
             }
             else
             {
-                ret = "callCustomFunction(\"" + toCPPEncodeStr(l_ElementName.toLower()) + "\", QList<QWDDX>()";
+                ret = "callCustomFunction(\"" + toCPPEncodeStr(l_ElementName.toLower()) + "\", QList<QCFVariant>()";
 
                 for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                 {
@@ -1216,7 +1216,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
 				if ((l_Index.m_Type != Error)&&(l_Index.m_ChildElements.size() == 3))
 				{
-                    ret  = m_Tabs + "f_Param(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_IndexStr.toUpper()) + "\"), QWDDX(0));\n";
+                    ret  = m_Tabs + "f_Param(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_IndexStr.toUpper()) + "\"), QCFVariant(0));\n";
                     ret += m_Tabs + "for (" + GenerateVariable(l_IndexStr) + " = " + CFTagGetArgumentAsNumber(p_CFTag, "from") + "; (" + GenerateVariable(l_IndexStr) + ") " + l_Comparation + " (" + CFTagGetArgumentAsNumber(p_CFTag, "to") + "); " + GenerateVariable(l_IndexStr) + " = (" + GenerateVariable(l_IndexStr) + ") + " + l_Step + ")\n";
                     ret += m_Tabs + "{\n";
 
@@ -1279,7 +1279,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                 m_Tabs.append('\t');
 
-                ret += m_Tabs + "QWDDX l_Query(QWDDX::Struct);\n";
+                ret += m_Tabs + "QCFVariant l_Query(QCFVariant::Struct);\n";
                 ret += m_Tabs + "if (f_FetchQueryRow(l_Query, " + ParseAndGenerateCppExpressionFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
                 ret += m_Tabs + "l_Query.m_HiddenScopeLast1 = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
                 ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
@@ -1346,7 +1346,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                 m_Tabs.append('\t');
 
-                ret += m_Tabs + "QWDDX l_Query(QWDDX::Struct);\n";
+                ret += m_Tabs + "QCFVariant l_Query(QCFVariant::Struct);\n";
                 ret += m_Tabs + "if (f_FetchQueryRow(l_Query, " + ParseAndGenerateCppExpressionFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
                 ret += m_Tabs + "l_Query.m_HiddenScopeLast1 = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
                 ret += m_Tabs + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
@@ -1477,7 +1477,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
                 ret += m_Tabs + "{\n";
                 m_Tabs.append('\t');
 
-                ret += m_Tabs + "QWDDX cftag_attributes(QWDDX::Struct);\n";
+                ret += m_Tabs + "QCFVariant cftag_attributes(QCFVariant::Struct);\n";
 
                 for(const QCFParserElement &argument : p_CFTag.m_Arguments.m_ChildElements)
                 {
@@ -1513,7 +1513,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
                 ret += m_Tabs + "{\n";
                 m_Tabs.append('\t');
 
-                ret += m_Tabs + "QWDDX cftag_attributes(QWDDX::Struct);\n";
+                ret += m_Tabs + "QCFVariant cftag_attributes(QCFVariant::Struct);\n";
 
                 for(const QCFParserElement &argument : p_CFTag.m_Arguments.m_ChildElements)
                 {
@@ -1692,7 +1692,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             ret += m_Tabs + "{\n";
             m_Tabs.append('\t');
 
-            ret += m_Tabs + "QWDDX cftag_attributes(QWDDX::Struct);\n";
+            ret += m_Tabs + "QCFVariant cftag_attributes(QCFVariant::Struct);\n";
 
             for(const QCFParserElement &argument : p_CFTag.m_Arguments.m_ChildElements)
             {
@@ -1755,7 +1755,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             ret += m_Tabs + "{\n";
             m_Tabs.append('\t');
 
-            ret += m_Tabs + "QWDDX cftag_attributes(QWDDX::Struct);\n";
+            ret += m_Tabs + "QCFVariant cftag_attributes(QCFVariant::Struct);\n";
 
             for(const QCFParserElement &argument : p_CFTag.m_Arguments.m_ChildElements)
             {
