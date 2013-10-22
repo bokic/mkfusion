@@ -2,7 +2,7 @@
 #define QCFWORKERTHREAD_H
 
 #include "qmkfusionexception.h"
-#include "qwddx.h"
+#include "qcfvariant.h"
 
 #include <QTemporaryFile>
 #include <QLocalSocket>
@@ -79,22 +79,22 @@ private:
     void writeException(const QMKFusionException &ex);
     void runApplicationTemplate();
     void updateVariables();
-    static void updateVariableInt(QWDDX &dest, int key, const QWDDX &value);
-    static void updateVariableStr(QWDDX &dest, const wchar_t *key, const QWDDX &value);
-    static void updateVariableQStr(QWDDX &dest, const QString &key, const QWDDX &value);
-    static void updateVariable(QWDDX &dest, const QWDDX &key, const QWDDX &value);
+    static void updateVariableInt(QCFVariant &dest, int key, const QCFVariant &value);
+    static void updateVariableStr(QCFVariant &dest, const wchar_t *key, const QCFVariant &value);
+    static void updateVariableQStr(QCFVariant &dest, const QString &key, const QCFVariant &value);
+    static void updateVariable(QCFVariant &dest, const QCFVariant &key, const QCFVariant &value);
 
     // Class members
-    QWDDX m_CGI;
-    QWDDX m_SERVER;
-    QWDDX m_COOKIE;
-    QWDDX *m_APPLICATION;
-    QWDDX *m_SESSION;
-    QWDDX m_URL;
-    QWDDX m_FORM;
-    QWDDX m_VARIABLES;
+    QCFVariant m_CGI;
+    QCFVariant m_SERVER;
+    QCFVariant m_COOKIE;
+    QCFVariant *m_APPLICATION;
+    QCFVariant *m_SESSION;
+    QCFVariant m_URL;
+    QCFVariant m_FORM;
+    QCFVariant m_VARIABLES;
     QString m_Output;
-    QList<QWDDX> m_QueryParams;
+    QList<QCFVariant> m_QueryParams;
     qint32 m_CFOutput;
     QString m_ContentType;
     int m_StatusCode;
@@ -102,8 +102,8 @@ private:
     bool m_HeadersSent;
     QLocalSocket *m_Socket;
     QCFRequest m_Request;
-    QWDDX m_SetCookies;
-    QHash<QString, std::function<QWDDX (QCFWorkerThread *, const QList<QWDDX> &arguments)>> m_CustomFunctions;
+    QCFVariant m_SetCookies;
+    QHash<QString, std::function<QCFVariant (QCFWorkerThread *, const QList<QCFVariant> &arguments)>> m_CustomFunctions;
     QHash<QString, QCFFileUpload> m_FileUpload;
 };
 

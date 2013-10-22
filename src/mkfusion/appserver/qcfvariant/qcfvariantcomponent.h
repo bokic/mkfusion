@@ -1,18 +1,18 @@
-#ifndef QWDDXCOMPONENT_H
-#define QWDDXCOMPONENT_H
+#ifndef QCFVariantCOMPONENT_H
+#define QCFVariantCOMPONENT_H
 
-#include "qwddxfunction.h"
+#include "qcfvariantfunction.h"
 #include <QString>
 #include <QHash>
 
 
-class QWDDXComponent
+class QCFVariantComponent
 {
 public:
-    QWDDXComponent();
+    QCFVariantComponent();
 
     QString m_ComponentFileName;
-    QHash<QString, QWDDXFunction> m_Methods;
+    QHash<QString, QCFVariantFunction> m_Methods;
     QString m_BindingName;
     QString m_DisplayName;
     QString m_Extends;
@@ -27,4 +27,4 @@ public:
     QString m_WSDLFile;
 };
 
-#endif // QWDDXCOMPONENT_H
+#endif // QCFVariantCOMPONENT_H

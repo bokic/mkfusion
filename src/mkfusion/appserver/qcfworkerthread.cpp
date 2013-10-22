@@ -1,5 +1,4 @@
 #include "qcfworkerthread.h"
-#include "qcftemplateinstance.h"
 #include "qmkfusionexception.h"
 #include "cffunctions.h"
 #include "qhttpcodec.h"
@@ -109,7 +108,7 @@ void QCFWorkerThread::executePage()
 
 void QCFWorkerThread::processPostData(QByteArray post)
 {
-    m_FORM.setType(QWDDX::Struct);
+    m_FORM.setType(QCFVariant::Struct);
 
     if (!m_Request.m_ContentType.isEmpty())
     {
@@ -524,16 +523,16 @@ void QCFWorkerThread::runApplicationTemplate()
 
 void QCFWorkerThread::updateVariables()
 {
-    m_SERVER.setType(QWDDX::Struct);
-    m_COOKIE.setType(QWDDX::Struct);
-    m_CGI.setType(QWDDX::Struct);
-    m_VARIABLES.setType(QWDDX::Struct);
-    m_URL.setType(QWDDX::Struct);
-    m_SetCookies.setType(QWDDX::Struct);
+    m_SERVER.setType(QCFVariant::Struct);
+    m_COOKIE.setType(QCFVariant::Struct);
+    m_CGI.setType(QCFVariant::Struct);
+    m_VARIABLES.setType(QCFVariant::Struct);
+    m_URL.setType(QCFVariant::Struct);
+    m_SetCookies.setType(QCFVariant::Struct);
 
     if (m_Request.m_Method == "GET")
     {
-        m_FORM.setType(QWDDX::Error);
+        m_FORM.setType(QCFVariant::Error);
         m_VARIABLES.m_HiddenScopeLast1 = &m_URL;
         m_VARIABLES.m_HiddenScopeLast2 = &m_COOKIE;
 
@@ -566,7 +565,7 @@ void QCFWorkerThread::updateVariables()
     }
 
     // Run compiled template(dll/so).
-    cf_StructUpdate(m_SERVER, QStringLiteral("COLDFUSION"), QWDDX(QWDDX::Struct));
+    cf_StructUpdate(m_SERVER, QStringLiteral("COLDFUSION"), QCFVariant(QCFVariant::Struct));
     cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("APPSERVER"), QStringLiteral("mkfusion"));
     cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("EXPIRATION"), QDateTime::currentDateTime());
 #ifdef Q_OS_WIN
@@ -581,7 +580,7 @@ void QCFWorkerThread::updateVariables()
     cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("PRODUCTVERSION"), QStringLiteral("0.5.0"));
     cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("ROOTDIR"), QCFServer::instance()->MKFusionPath().left(-1));
     cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("SUPPORTEDLOCALES"), QStringLiteral("English (US),en,en_US"));
-    cf_StructUpdate(m_SERVER, QStringLiteral("OS"), QWDDX(QWDDX::Struct));
+    cf_StructUpdate(m_SERVER, QStringLiteral("OS"), QCFVariant(QCFVariant::Struct));
 #ifdef Q_OS_WIN
     cf_StructUpdate(m_SERVER[QStringLiteral("OS")], QStringLiteral("ADDITIONALINFORMATION"), QStringLiteral("Windows"));
 #ifdef _WIN64
@@ -683,13 +682,13 @@ void QCFWorkerThread::updateVariables()
     }
 }
 
-void QCFWorkerThread::updateVariableInt(QWDDX &dest, int key, const QWDDX &value)
+void QCFWorkerThread::updateVariableInt(QCFVariant &dest, int key, const QCFVariant &value)
 {
     int index;
 
     switch(dest.m_Type)
     {
-    case QWDDX::Array:
+    case QCFVariant::Array:
         index = key;
 
         if (index < 1)
@@ -709,17 +708,17 @@ void QCFWorkerThread::updateVariableInt(QWDDX &dest, int key, const QWDDX &value
     }
 }
 
-void QCFWorkerThread::updateVariableStr(QWDDX &dest, const wchar_t *key, const QWDDX &value)
+void QCFWorkerThread::updateVariableStr(QCFVariant &dest, const wchar_t *key, const QCFVariant &value)
 {
     int index;
     bool ok;
 
     switch(dest.m_Type)
     {
-    case QWDDX::Struct:
+    case QCFVariant::Struct:
         (*dest.m_Struct)[QString::fromWCharArray(key).toUpper()] = value;
         break;
-    case QWDDX::Array:
+    case QCFVariant::Array:
         index = QString::fromWCharArray(key).toInt(&ok);
 
         if (!ok)
@@ -744,17 +743,17 @@ void QCFWorkerThread::updateVariableStr(QWDDX &dest, const wchar_t *key, const Q
     }
 }
 
-void QCFWorkerThread::updateVariableQStr(QWDDX &dest, const QString &key, const QWDDX &value)
+void QCFWorkerThread::updateVariableQStr(QCFVariant &dest, const QString &key, const QCFVariant &value)
 {
     int index;
     bool ok;
 
     switch(dest.m_Type)
     {
-    case QWDDX::Struct:
+    case QCFVariant::Struct:
         (*dest.m_Struct)[key.toUpper()] = value;
         break;
-    case QWDDX::Array:
+    case QCFVariant::Array:
         index = key.toInt(&ok);
 
         if (!ok)
@@ -779,7 +778,7 @@ void QCFWorkerThread::updateVariableQStr(QWDDX &dest, const QString &key, const 
     }
 }
 
-void QCFWorkerThread::updateVariable(QWDDX &dest, const QWDDX &key, const QWDDX &value)
+void QCFWorkerThread::updateVariable(QCFVariant &dest, const QCFVariant &key, const QCFVariant &value)
 {
     int index;
     bool ok;
@@ -791,10 +790,10 @@ void QCFWorkerThread::updateVariable(QWDDX &dest, const QWDDX &key, const QWDDX 
 
     switch(dest.m_Type)
     {
-    case QWDDX::Struct:
+    case QCFVariant::Struct:
         (*dest.m_Struct)[key.toString().toUpper()] = value;
         break;
-    case QWDDX::Array:
+    case QCFVariant::Array:
         index = key.toString().toInt(&ok);
 
         if (!ok)

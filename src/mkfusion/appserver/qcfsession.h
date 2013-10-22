@@ -1,7 +1,7 @@
 #ifndef QCFSESSION_H
 #define QCFSESSION_H
 
-#include "qwddx.h"
+#include "qcfvariant.h"
 
 #include <QReadWriteLock>
 #include <QDateTime>
@@ -13,7 +13,7 @@ class QCFSession
     QString m_name;
     QString m_application;
     bool m_callOnSessionEnd;
-    QWDDX m_data;
+    QCFVariant m_data;
     QHash<QString, QReadWriteLock> m_lockHash;
     QDateTime m_timeout;
     QReadWriteLock m_lock;

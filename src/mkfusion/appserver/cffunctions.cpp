@@ -1,7 +1,7 @@
-#include "qcftemplate.h"
 #include "cffunctions.h"
+#include "qcftemplate.h"
 #include "qmkfusionexception.h"
-#include "qwddx.h"
+#include "qcfvariant.h"
 
 #include <QMutexLocker>
 #include <QStringList>
@@ -39,7 +39,7 @@ Q_DECL_EXPORT double cf_ACos(double number)
     return acos(number);
 }
 
-Q_DECL_EXPORT void cf_AddSOAPRequestHeader(QWDDX &webservice, const QString &_namespace, const QString &name, const QWDDX &value, bool mustunderstand)
+Q_DECL_EXPORT void cf_AddSOAPRequestHeader(QCFVariant &webservice, const QString &_namespace, const QString &name, const QCFVariant &value, bool mustunderstand)
 {
     Q_UNUSED(webservice);
     Q_UNUSED(_namespace);
@@ -50,7 +50,7 @@ Q_DECL_EXPORT void cf_AddSOAPRequestHeader(QWDDX &webservice, const QString &_na
     throw QMKFusionException("Not Implemented", "AddSOAPRequestHeader is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_AddSOAPResponseHeader(const QString &_namespace, const QString &name, const QWDDX &value, bool mustunderstand)
+Q_DECL_EXPORT void cf_AddSOAPResponseHeader(const QString &_namespace, const QString &name, const QCFVariant &value, bool mustunderstand)
 {
     Q_UNUSED(_namespace);
     Q_UNUSED(name);
@@ -74,16 +74,16 @@ Q_DECL_EXPORT void cf_AjaxOnLoad(const QString &functionName)
     throw QMKFusionException("Not Implemented", "AjaxOnLoad is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_ArrayAppend(QWDDX &array, const QWDDX &value)
+Q_DECL_EXPORT bool cf_ArrayAppend(QCFVariant &array, const QCFVariant &value)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
     if (array.m_ArrayDimension > 1)
 	{
-        if (value.type() != QWDDX::Array)
+        if (value.type() != QCFVariant::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
@@ -98,9 +98,9 @@ Q_DECL_EXPORT bool cf_ArrayAppend(QWDDX &array, const QWDDX &value)
 	return true;
 }
 
-Q_DECL_EXPORT double cf_ArrayAvg(const QWDDX &array)
+Q_DECL_EXPORT double cf_ArrayAvg(const QCFVariant &array)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -117,7 +117,7 @@ Q_DECL_EXPORT double cf_ArrayAvg(const QWDDX &array)
 
 	double sum = 0;
 
-    for (const QWDDX &item : *array.m_Array)
+    for (const QCFVariant &item : *array.m_Array)
 	{
         sum += item.toNumber();
 	}
@@ -125,9 +125,9 @@ Q_DECL_EXPORT double cf_ArrayAvg(const QWDDX &array)
     return sum / array.m_Array->size();
 }
 
-Q_DECL_EXPORT bool cf_ArrayClear(QWDDX &array)
+Q_DECL_EXPORT bool cf_ArrayClear(QCFVariant &array)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -137,9 +137,9 @@ Q_DECL_EXPORT bool cf_ArrayClear(QWDDX &array)
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArrayDeleteAt(QWDDX &array, int position)
+Q_DECL_EXPORT bool cf_ArrayDeleteAt(QCFVariant &array, int position)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -154,16 +154,16 @@ Q_DECL_EXPORT bool cf_ArrayDeleteAt(QWDDX &array, int position)
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArrayInsertAt(QWDDX &array, int position, const QWDDX &value)
+Q_DECL_EXPORT bool cf_ArrayInsertAt(QCFVariant &array, int position, const QCFVariant &value)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
     if (array.m_ArrayDimension > 1)
 	{
-        if (value.type() != QWDDX::Array)
+        if (value.type() != QCFVariant::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
@@ -183,9 +183,9 @@ Q_DECL_EXPORT bool cf_ArrayInsertAt(QWDDX &array, int position, const QWDDX &val
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArrayIsDefined(const QWDDX &array, int elementIndex)
+Q_DECL_EXPORT bool cf_ArrayIsDefined(const QCFVariant &array, int elementIndex)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -195,7 +195,7 @@ Q_DECL_EXPORT bool cf_ArrayIsDefined(const QWDDX &array, int elementIndex)
         throw QMKFusionInvalidArrayIndexException(elementIndex, array.m_Array->size());
 	}
 
-    if (array.m_Array->at(elementIndex - 1).type() == QWDDX::Null)
+    if (array.m_Array->at(elementIndex - 1).type() == QCFVariant::Null)
 	{
 		return false;
 	}
@@ -203,9 +203,9 @@ Q_DECL_EXPORT bool cf_ArrayIsDefined(const QWDDX &array, int elementIndex)
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArrayIsEmpty(const QWDDX &array)
+Q_DECL_EXPORT bool cf_ArrayIsEmpty(const QCFVariant &array)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -218,9 +218,9 @@ Q_DECL_EXPORT bool cf_ArrayIsEmpty(const QWDDX &array)
 	return false;
 }
 
-Q_DECL_EXPORT int cf_ArrayLen(const QWDDX &array)
+Q_DECL_EXPORT int cf_ArrayLen(const QCFVariant &array)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -228,9 +228,9 @@ Q_DECL_EXPORT int cf_ArrayLen(const QWDDX &array)
     return array.m_Array->size();
 }
 
-Q_DECL_EXPORT double cf_ArrayMax(const QWDDX &array)
+Q_DECL_EXPORT double cf_ArrayMax(const QCFVariant &array)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -245,7 +245,7 @@ Q_DECL_EXPORT double cf_ArrayMax(const QWDDX &array)
     // TODO: Optimize with c11 for container iterator.
     for(int c = 0; c < array.m_Array->size(); c++)
 	{
-        const QWDDX &temp = array.m_Array->at(c);
+        const QCFVariant &temp = array.m_Array->at(c);
 
 		if (c == 0)
 		{
@@ -263,9 +263,9 @@ Q_DECL_EXPORT double cf_ArrayMax(const QWDDX &array)
 	return ret;
 }
 
-Q_DECL_EXPORT double cf_ArrayMin(const QWDDX &array)
+Q_DECL_EXPORT double cf_ArrayMin(const QCFVariant &array)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -280,7 +280,7 @@ Q_DECL_EXPORT double cf_ArrayMin(const QWDDX &array)
     // TODO: Optimize with c11 for container iterator.
     for(int c = 0; c < array.m_Array->size(); c++)
 	{
-        const QWDDX &temp = array.m_Array->at(c);
+        const QCFVariant &temp = array.m_Array->at(c);
 
 		if (c == 0)
 		{
@@ -298,30 +298,30 @@ Q_DECL_EXPORT double cf_ArrayMin(const QWDDX &array)
 	return ret;
 }
 
-Q_DECL_EXPORT QWDDX cf_ArrayNew(int dimension)
+Q_DECL_EXPORT QCFVariant cf_ArrayNew(int dimension)
 {
     if ((dimension < 1)||(dimension > 3))
 	{
         throw QMKFusionBadArrayDimensionException(dimension);
 	}
 
-	QWDDX ret(QWDDX::Array);
+    QCFVariant ret(QCFVariant::Array);
 
     ret.m_ArrayDimension = dimension;
 
 	return ret;
 }
 
-Q_DECL_EXPORT bool cf_ArrayPrepend(QWDDX &array, const QWDDX &value)
+Q_DECL_EXPORT bool cf_ArrayPrepend(QCFVariant &array, const QCFVariant &value)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
 
     if (array.m_ArrayDimension > 1)
 	{
-        if (value.type() != QWDDX::Array)
+        if (value.type() != QCFVariant::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
@@ -331,16 +331,16 @@ Q_DECL_EXPORT bool cf_ArrayPrepend(QWDDX &array, const QWDDX &value)
 		}
 	}
 
-    QWDDX temp = value;
+    QCFVariant temp = value;
 
     array.m_Array->insert(0, temp);
 
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArrayResize(QWDDX &array, int minSize)
+Q_DECL_EXPORT bool cf_ArrayResize(QCFVariant &array, int minSize)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -353,9 +353,9 @@ Q_DECL_EXPORT bool cf_ArrayResize(QWDDX &array, int minSize)
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArraySet(QWDDX &array, int start, int end, const QWDDX &value)
+Q_DECL_EXPORT bool cf_ArraySet(QCFVariant &array, int start, int end, const QCFVariant &value)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -367,7 +367,7 @@ Q_DECL_EXPORT bool cf_ArraySet(QWDDX &array, int start, int end, const QWDDX &va
 
     if (array.m_ArrayDimension > 1)
 	{
-        if (value.type() != QWDDX::Array)
+        if (value.type() != QCFVariant::Array)
 		{
 			throw QMKFusionArrayGenericMultiDimException();
 		}
@@ -377,7 +377,7 @@ Q_DECL_EXPORT bool cf_ArraySet(QWDDX &array, int start, int end, const QWDDX &va
 		}
 	}
 
-    QWDDX temp = value;
+    QCFVariant temp = value;
 
     for(int c = start - 1; c < end; c++)
 	{
@@ -387,9 +387,9 @@ Q_DECL_EXPORT bool cf_ArraySet(QWDDX &array, int start, int end, const QWDDX &va
 	return true;
 }
 
-Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QString &sort_order)
+Q_DECL_EXPORT bool cf_ArraySort(QCFVariant &array, const QString &sort_type, const QString &sort_order)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
     {
         throw QMKFusionException("Error Occurred While Processing Request", "Parameter should be array.");
     }
@@ -411,7 +411,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QS
 
     if ((sort_type.compare("Numeric", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Asc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toNumber() < s2.toNumber();
         });
@@ -420,7 +420,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QS
     }
     else if ((sort_type.compare("Numeric", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Desc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toNumber() > s2.toNumber();
         });
@@ -429,7 +429,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QS
     }
     else if ((sort_type.compare("Text", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Asc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toString() < s2.toString();
         });
@@ -438,7 +438,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QS
     }
     else if ((sort_type.compare("Text", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Desc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toString() > s2.toString();
         });
@@ -447,7 +447,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QS
     }
     else if ((sort_type.compare("TextNoCase", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Asc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toString().compare(s2.toString(), Qt::CaseInsensitive) < 0;
         });
@@ -456,7 +456,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QS
     }
     else if ((sort_type.compare("TextNoCase", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Desc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QWDDX &s1, const QWDDX &s2)
+        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toString().compare(s2.toString(), Qt::CaseInsensitive) > 0;
         });
@@ -467,9 +467,9 @@ Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QS
     return false;
 }
 
-Q_DECL_EXPORT double cf_ArraySum(const QWDDX &array)
+Q_DECL_EXPORT double cf_ArraySum(const QCFVariant &array)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -494,9 +494,9 @@ Q_DECL_EXPORT double cf_ArraySum(const QWDDX &array)
 	return sum;
 }
 
-Q_DECL_EXPORT bool cf_ArraySwap(QWDDX &array, int position1, int position2)
+Q_DECL_EXPORT bool cf_ArraySwap(QCFVariant &array, int position1, int position2)
 {
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -513,18 +513,18 @@ Q_DECL_EXPORT bool cf_ArraySwap(QWDDX &array, int position1, int position2)
         throw QMKFusionArraySwapRangeException(position2 + 1, array.m_Array->size());
 	}
 
-    QWDDX temp = array.m_Array->at(position1);
+    QCFVariant temp = array.m_Array->at(position1);
     array.m_Array[position1] = array.m_Array[position2];
     array.m_Array->replace(position2, temp);
 
 	return true;
 }
 
-Q_DECL_EXPORT QString cf_ArrayToList(const QWDDX &array, const QString &delimiter)
+Q_DECL_EXPORT QString cf_ArrayToList(const QCFVariant &array, const QString &delimiter)
 {
 	QString ret;
 
-    if (array.type() != QWDDX::Array)
+    if (array.type() != QCFVariant::Array)
 	{
 		throw QMKFusionException("Not Array", "Not Array");
 	}
@@ -737,7 +737,7 @@ Q_DECL_EXPORT double cf_Cos(double number)
 	return cos(number);
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateDate(int year, int month, int day)
+Q_DECL_EXPORT QCFVariant cf_CreateDate(int year, int month, int day)
 {
     if ((month < 1)||(month > 12))
 	{
@@ -752,12 +752,12 @@ Q_DECL_EXPORT QWDDX cf_CreateDate(int year, int month, int day)
     return QDateTime(QDate(year, month, day));
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateDateTime(int year, int month, int day, int hour, int minute, int second)
+Q_DECL_EXPORT QCFVariant cf_CreateDateTime(int year, int month, int day, int hour, int minute, int second)
 {
     return QDateTime(QDate(year, month, day), QTime(hour, minute, second));
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateObject(QCFTemplate *thisTemplate, const QString &type, const QString &component_name)
+Q_DECL_EXPORT QCFVariant cf_CreateObject(QCFTemplate *thisTemplate, const QString &type, const QString &component_name)
 {
     if (type.compare("component", Qt::CaseInsensitive) == 0)
     {
@@ -770,22 +770,22 @@ Q_DECL_EXPORT QWDDX cf_CreateObject(QCFTemplate *thisTemplate, const QString &ty
     }
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateODBCDate(const QDateTime &date)
+Q_DECL_EXPORT QCFVariant cf_CreateODBCDate(const QDateTime &date)
 {
     return QDateTime(QDate(date.date().year(), date.date().month(), date.date().day()));
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateODBCDateTime(const QDateTime &date)
+Q_DECL_EXPORT QCFVariant cf_CreateODBCDateTime(const QDateTime &date)
 {
     return date;
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateODBCTime(const QDateTime &date)
+Q_DECL_EXPORT QCFVariant cf_CreateODBCTime(const QDateTime &date)
 {
     return QDateTime(QDate(1899, 12, 30), QTime(date.time().hour(), date.time().minute(), date.time().second()));
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateTime(int hour, int minute, int second)
+Q_DECL_EXPORT QCFVariant cf_CreateTime(int hour, int minute, int second)
 {
     if ((hour < 0)||(hour > 23))
 	{
@@ -805,7 +805,7 @@ Q_DECL_EXPORT QWDDX cf_CreateTime(int hour, int minute, int second)
     return QDateTime(QDate(1899, 12, 30), QTime(hour, minute, second));
 }
 
-Q_DECL_EXPORT QWDDX cf_CreateTimeSpan(int days, int hours, int minutes, int seconds)
+Q_DECL_EXPORT QCFVariant cf_CreateTimeSpan(int days, int hours, int minutes, int seconds)
 {
 	QDateTime ret = QDateTime(QDate(1899, 12, 30));
 
@@ -853,7 +853,7 @@ Q_DECL_EXPORT QDateTime cf_DateAdd(const QString &datepart, int number, QDateTim
 {
     throw QMKFusionException("Not Implemented", "DateAdd is not Implemented (yet:))");
 
-    QWDDX temp = date;
+    QCFVariant temp = date;
 	QDateTime ret = temp.toDateTime();
 
     if(datepart.compare("yyyy", Qt::CaseInsensitive) == 0)
@@ -1385,14 +1385,14 @@ Q_DECL_EXPORT QString cf_DollarFormat(double number)
     throw QMKFusionException("Not Implemented", "DollarFormat is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_DotNetToCFType(const QWDDX &variable_name)
+Q_DECL_EXPORT QCFVariant cf_DotNetToCFType(const QCFVariant &variable_name)
 {
     Q_UNUSED(variable_name);
 
     throw QMKFusionException("Not Implemented", "DotNetToCFType is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_Duplicate(const QWDDX &variable_name)
+Q_DECL_EXPORT QCFVariant cf_Duplicate(const QCFVariant &variable_name)
 {
     return variable_name;
 }
@@ -1420,7 +1420,7 @@ Q_DECL_EXPORT QString cf_EncryptBinary(const QString &bytes, const QString &key,
     throw QMKFusionException("Not Implemented", "EncryptBinary is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_Evaluate(const QStringList &string_expressions)
+Q_DECL_EXPORT QCFVariant cf_Evaluate(const QStringList &string_expressions)
 {
     Q_UNUSED(string_expressions);
 
@@ -1439,7 +1439,7 @@ Q_DECL_EXPORT QString cf_ExpandPath(const QString &relative_path)
     throw QMKFusionException("Not Implemented", "ExpandPath is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_FileClose(QWDDX &fileObj)
+Q_DECL_EXPORT void cf_FileClose(QCFVariant &fileObj)
 {
     Q_UNUSED(fileObj);
 
@@ -1472,7 +1472,7 @@ Q_DECL_EXPORT bool cf_FileExists(const QString &absolute_path)
     return QFile::exists(absolute_path);
 }
 
-Q_DECL_EXPORT bool cf_FileIsEOF(QWDDX &fileObj)
+Q_DECL_EXPORT bool cf_FileIsEOF(QCFVariant &fileObj)
 {
     Q_UNUSED(fileObj);
 
@@ -1487,7 +1487,7 @@ Q_DECL_EXPORT void cf_FileMove(const QString &source, const QString &destination
     throw QMKFusionException("Not Implemented", "FileMove is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_FileOpen(const QString &filepath, const QString mode, const QString charset)
+Q_DECL_EXPORT QCFVariant cf_FileOpen(const QString &filepath, const QString mode, const QString charset)
 {
     Q_UNUSED(filepath);
     Q_UNUSED(mode);
@@ -1504,7 +1504,7 @@ Q_DECL_EXPORT QString cf_FileRead(const QString &filepath, const QString charset
     throw QMKFusionException("Not Implemented", "FileRead1 is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_FileRead(QWDDX &fileObj, int buffersize)
+Q_DECL_EXPORT QString cf_FileRead(QCFVariant &fileObj, int buffersize)
 {
     Q_UNUSED(fileObj);
     Q_UNUSED(buffersize);
@@ -1512,14 +1512,14 @@ Q_DECL_EXPORT QString cf_FileRead(QWDDX &fileObj, int buffersize)
     throw QMKFusionException("Not Implemented", "FileRead2 is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_FileReadBinary(const QString &filepath)
+Q_DECL_EXPORT QCFVariant cf_FileReadBinary(const QString &filepath)
 {
     Q_UNUSED(filepath);
 
     throw QMKFusionException("Not Implemented", "FileReadBinary is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_FileReadLine(QWDDX &fileObj)
+Q_DECL_EXPORT QString cf_FileReadLine(QCFVariant &fileObj)
 {
     Q_UNUSED(fileObj);
 
@@ -1559,7 +1559,7 @@ Q_DECL_EXPORT void cf_FileWrite(const QString &filepath, const QString &data, co
     throw QMKFusionException("Not Implemented", "FileWrite1 is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_FileWrite(QWDDX &fileObj, const QString &data)
+Q_DECL_EXPORT void cf_FileWrite(QCFVariant &fileObj, const QString &data)
 {
     Q_UNUSED(fileObj);
     Q_UNUSED(data);
@@ -1636,12 +1636,12 @@ Q_DECL_EXPORT QString cf_GetAuthUser()
     throw QMKFusionException("Not Implemented", "GetAuthUser is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetBaseTagData(QCFTemplate *thisTemplate, const QString &tagname, int instancenumber)
+Q_DECL_EXPORT QCFVariant cf_GetBaseTagData(QCFTemplate *thisTemplate, const QString &tagname, int instancenumber)
 {
     int found = 0;
 
     // FIXME: Implement me Next.
-    /*for(QWDDX item : thisTemplate->m_CustomTags) // TODO: QWDDX [] operator should to be const?
+    /*for(QCFVariant item : thisTemplate->m_CustomTags) // TODO: QCFVariant [] operator should to be const?
     {
         if (tagname == "cf_" + item[L"NAME"].toString())
         {
@@ -1650,7 +1650,7 @@ Q_DECL_EXPORT QWDDX cf_GetBaseTagData(QCFTemplate *thisTemplate, const QString &
             if (found == instancenumber)
             {
 
-                QWDDX ret = item;
+                QCFVariant ret = item;
 
                 cf_StructDelete(ret, "OUTPUT");
                 cf_StructDelete(ret, "TYPE");
@@ -1669,7 +1669,7 @@ Q_DECL_EXPORT QString cf_GetBaseTagList(QCFTemplate *thisTemplate)
     QStringList items;
 
     // FIXME: Implement me Next.
-    /*for(QWDDX item : thisTemplate->m_CustomTags) // TODO: QWDDX [] operator should to be const?
+    /*for(QCFVariant item : thisTemplate->m_CustomTags) // TODO: QCFVariant [] operator should to be const?
     {
         items.append("cf_" + item[L"NAME"].toString());
     }*/
@@ -1687,7 +1687,7 @@ Q_DECL_EXPORT QString cf_GetClientVariablesList()
     throw QMKFusionException("Not Implemented", "GetClientVariablesList is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetComponentMetaData(const QString &path)
+Q_DECL_EXPORT QCFVariant cf_GetComponentMetaData(const QString &path)
 {
     throw QMKFusionException("Not Implemented", "GetComponentMetaData is not Implemented (yet:))");
 }
@@ -1712,7 +1712,7 @@ Q_DECL_EXPORT QString cf_GetEncoding(const QString &scope_name)
     throw QMKFusionException("Not Implemented", "GetEncoding is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetException(const QWDDX &object)
+Q_DECL_EXPORT QCFVariant cf_GetException(const QCFVariant &object)
 {
     throw QMKFusionException("Not Implemented", "GetException is not Implemented (yet:))");
 }
@@ -1722,7 +1722,7 @@ Q_DECL_EXPORT QString cf_GetFileFromPath(const QString &path)
     throw QMKFusionException("Not Implemented", "GetFileFromPath is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetFileInfo(const QString &path)
+Q_DECL_EXPORT QCFVariant cf_GetFileInfo(const QString &path)
 {
     throw QMKFusionException("Not Implemented", "GetFileInfo is not Implemented (yet:))");
 }
@@ -1732,12 +1732,12 @@ Q_DECL_EXPORT QString cf_GetFunctionList()
     throw QMKFusionException("Not Implemented", "GetFunctionList is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetGatewayHelper(const QString &gatewayID)
+Q_DECL_EXPORT QCFVariant cf_GetGatewayHelper(const QString &gatewayID)
 {
     throw QMKFusionException("Not Implemented", "GetGatewayHelper is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetHttpRequestData()
+Q_DECL_EXPORT QCFVariant cf_GetHttpRequestData()
 {
     throw QMKFusionException("Not Implemented", "GetHttpRequestData is not Implemented (yet:))");
 }
@@ -1772,32 +1772,32 @@ Q_DECL_EXPORT QString cf_GetLocalHostIP()
     throw QMKFusionException("Not Implemented", "GetLocalHostIP is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetMetaData(const QWDDX &object)
+Q_DECL_EXPORT QCFVariant cf_GetMetaData(const QCFVariant &object)
 {
     throw QMKFusionException("Not Implemented", "GetMetaData is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetMetricData(const QString &mode)
+Q_DECL_EXPORT QCFVariant cf_GetMetricData(const QString &mode)
 {
     throw QMKFusionException("Not Implemented", "GetMetricData is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetPageContext()
+Q_DECL_EXPORT QCFVariant cf_GetPageContext()
 {
     throw QMKFusionException("Not Implemented", "GetPageContext is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetPrinterInfo(const QString &printer)
+Q_DECL_EXPORT QCFVariant cf_GetPrinterInfo(const QString &printer)
 {
     throw QMKFusionException("Not Implemented", "GetPrinterInfo is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetProfileSections(const QString &iniFile)
+Q_DECL_EXPORT QCFVariant cf_GetProfileSections(const QString &iniFile)
 {
     throw QMKFusionException("Not Implemented", "GetProfileSections is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetProfileString(const QString &iniFile, const QString &section, const QString &entry)
+Q_DECL_EXPORT QCFVariant cf_GetProfileString(const QString &iniFile, const QString &section, const QString &entry)
 {
     throw QMKFusionException("Not Implemented", "GetProfileString is not Implemented (yet:))");
 }
@@ -1807,22 +1807,22 @@ Q_DECL_EXPORT QString cf_GetReadableImageFormats()
     throw QMKFusionException("Not Implemented", "GetReadableImageFormats is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetSOAPRequest()
+Q_DECL_EXPORT QCFVariant cf_GetSOAPRequest()
 {
     throw QMKFusionException("Not Implemented", "GetSOAPRequest is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetSOAPRequestHeader(const QString &_namespace, const QString &name, bool asXML)
+Q_DECL_EXPORT QCFVariant cf_GetSOAPRequestHeader(const QString &_namespace, const QString &name, bool asXML)
 {
     throw QMKFusionException("Not Implemented", "GetSOAPRequestHeader is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetSOAPResponse(QWDDX &webservice)
+Q_DECL_EXPORT QCFVariant cf_GetSOAPResponse(QCFVariant &webservice)
 {
     throw QMKFusionException("Not Implemented", "GetSOAPResponse is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_GetSOAPResponseHeader(const QString &_namespace, const QString &name, bool asXML)
+Q_DECL_EXPORT QCFVariant cf_GetSOAPResponseHeader(const QString &_namespace, const QString &name, bool asXML)
 {
     throw QMKFusionException("Not Implemented", "GetSOAPResponseHeader is not Implemented (yet:))");
 }
@@ -1859,7 +1859,7 @@ Q_DECL_EXPORT int cf_GetTickCount()
 #endif
 }
 
-Q_DECL_EXPORT QWDDX cf_GetTimeZoneInfo()
+Q_DECL_EXPORT QCFVariant cf_GetTimeZoneInfo()
 {
     throw QMKFusionException("Not Implemented", "GetTimeZoneInfo is not Implemented (yet:))");
 }
@@ -1913,242 +1913,242 @@ Q_DECL_EXPORT bool cf_IIf(bool condition, const QString &string_expression1, con
     throw QMKFusionException("Not Implemented", "IIf is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageAddBorder(QWDDX &name, int thickness, const QString &color, const QString &borderType)
+Q_DECL_EXPORT void cf_ImageAddBorder(QCFVariant &name, int thickness, const QString &color, const QString &borderType)
 {
     throw QMKFusionException("Not Implemented", "ImageAddBorder is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageBlur(QWDDX &name, int blurRadius)
+Q_DECL_EXPORT void cf_ImageBlur(QCFVariant &name, int blurRadius)
 {
     throw QMKFusionException("Not Implemented", "ImageBlur is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageClearRect(QWDDX &name, int x, int y, int width, int height)
+Q_DECL_EXPORT void cf_ImageClearRect(QCFVariant &name, int x, int y, int width, int height)
 {
     throw QMKFusionException("Not Implemented", "ImageClearRect is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ImageCopy(QWDDX &name, int x, int y, int width, int height, int dx, int dy)
+Q_DECL_EXPORT QCFVariant cf_ImageCopy(QCFVariant &name, int x, int y, int width, int height, int dx, int dy)
 {
     throw QMKFusionException("Not Implemented", "ImageCopy is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageCrop(QWDDX &name, int x, int y, int width, int height)
+Q_DECL_EXPORT void cf_ImageCrop(QCFVariant &name, int x, int y, int width, int height)
 {
     throw QMKFusionException("Not Implemented", "ImageCrop is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageDrawArc(QWDDX &name, int x, int y, int width, int height, int startAngle, double arcAngle, bool filled)
+Q_DECL_EXPORT void cf_ImageDrawArc(QCFVariant &name, int x, int y, int width, int height, int startAngle, double arcAngle, bool filled)
 {
     throw QMKFusionException("Not Implemented", "ImageDrawArc is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageDrawBeveledRect(QWDDX &name, int x, int y, int width, int height, bool raised, bool filled)
+Q_DECL_EXPORT void cf_ImageDrawBeveledRect(QCFVariant &name, int x, int y, int width, int height, bool raised, bool filled)
 {
     throw QMKFusionException("Not Implemented", "ImageDrawBeveledRect is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageDrawCubicCurve(QWDDX &name, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int x1, int y1, int x2, int y2)
+Q_DECL_EXPORT void cf_ImageDrawCubicCurve(QCFVariant &name, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int x1, int y1, int x2, int y2)
 {
     throw QMKFusionException("Not Implemented", "ImageDrawCubicCurve is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageDrawLine(QWDDX &name, int x1, int y1, int x2, int y2)
+Q_DECL_EXPORT void cf_ImageDrawLine(QCFVariant &name, int x1, int y1, int x2, int y2)
 {
     throw QMKFusionException("Not Implemented", "ImageDrawLine is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageDrawLines(QWDDX &name, const QWDDX &xcoords, const QWDDX &ycoords, bool isPolygon, bool filled)
+Q_DECL_EXPORT void cf_ImageDrawLines(QCFVariant &name, const QCFVariant &xcoords, const QCFVariant &ycoords, bool isPolygon, bool filled)
 {
     throw QMKFusionException("Not Implemented", "ImageDrawLines is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageDrawOval(QWDDX &name, int x, int y, int width, int height, bool filled)
+Q_DECL_EXPORT void cf_ImageDrawOval(QCFVariant &name, int x, int y, int width, int height, bool filled)
 {
     throw QMKFusionException("Not Implemented", "ImageDrawOval is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageDrawPoint(QWDDX &name, int x, int y)
+Q_DECL_EXPORT void cf_ImageDrawPoint(QCFVariant &name, int x, int y)
 {
     throw QMKFusionException("Not Implemented", "ImageDrawPoint is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageDrawQuadraticCurve(QWDDX &name, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int x1, int y1, int x2, int y2)
+Q_DECL_EXPORT void cf_ImageDrawQuadraticCurve(QCFVariant &name, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int x1, int y1, int x2, int y2)
 {
     throw QMKFusionException("Not Implemented", "ImageDrawQuadraticCurve is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageDrawRect(QWDDX &name, int x, int y, int width, int height, bool filled)
+Q_DECL_EXPORT void cf_ImageDrawRect(QCFVariant &name, int x, int y, int width, int height, bool filled)
 {
     throw QMKFusionException("Not Implemented", "ImageDrawRect is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageDrawRoundRect(QWDDX &name, int x, int y, int width, int height, int arcWidth, int arcHeight, bool filled)
+Q_DECL_EXPORT void cf_ImageDrawRoundRect(QCFVariant &name, int x, int y, int width, int height, int arcWidth, int arcHeight, bool filled)
 {
     throw QMKFusionException("Not Implemented", "ImageDrawRoundRect is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageDrawText(QWDDX &name, const QString &str, int x, int y, const QWDDX &attributeCollection)
+Q_DECL_EXPORT void cf_ImageDrawText(QCFVariant &name, const QString &str, int x, int y, const QCFVariant &attributeCollection)
 {
     throw QMKFusionException("Not Implemented", "ImageDrawText is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageFlip(QWDDX &name, const QString &transpose)
+Q_DECL_EXPORT void cf_ImageFlip(QCFVariant &name, const QString &transpose)
 {
     throw QMKFusionException("Not Implemented", "ImageFlip is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ImageGetBlob(const QWDDX &source)
+Q_DECL_EXPORT QCFVariant cf_ImageGetBlob(const QCFVariant &source)
 {
     throw QMKFusionException("Not Implemented", "ImageGetBlob is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ImageGetBufferedImage(const QWDDX &name)
+Q_DECL_EXPORT QCFVariant cf_ImageGetBufferedImage(const QCFVariant &name)
 {
     throw QMKFusionException("Not Implemented", "ImageGetBufferedImage is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_ImageGetEXIFTag(const QWDDX &name, const QString &tagName)
+Q_DECL_EXPORT QString cf_ImageGetEXIFTag(const QCFVariant &name, const QString &tagName)
 {
     throw QMKFusionException("Not Implemented", "ImageGetEXIFTag is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT int cf_ImageGetHeight(const QWDDX &name)
+Q_DECL_EXPORT int cf_ImageGetHeight(const QCFVariant &name)
 {
     throw QMKFusionException("Not Implemented", "ImageGetHeight is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_ImageGetIPTCTag(const QWDDX &name, const QString &tagName)
+Q_DECL_EXPORT QString cf_ImageGetIPTCTag(const QCFVariant &name, const QString &tagName)
 {
     throw QMKFusionException("Not Implemented", "ImageGetIPTCTag is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT int cf_ImageGetWidth(const QWDDX &name)
+Q_DECL_EXPORT int cf_ImageGetWidth(const QCFVariant &name)
 {
     throw QMKFusionException("Not Implemented", "ImageGetWidth is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageGrayscale(QWDDX &name)
+Q_DECL_EXPORT void cf_ImageGrayscale(QCFVariant &name)
 {
     throw QMKFusionException("Not Implemented", "ImageGrayscale is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ImageInfo(const QWDDX &name)
+Q_DECL_EXPORT QCFVariant cf_ImageInfo(const QCFVariant &name)
 {
     throw QMKFusionException("Not Implemented", "ImageInfo is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageNegative(QWDDX &name)
+Q_DECL_EXPORT void cf_ImageNegative(QCFVariant &name)
 {
     throw QMKFusionException("Not Implemented", "ImageNegative is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ImageNew(const QString &source, int width, int height, const QString &imageType, const QString canvasColor)
+Q_DECL_EXPORT QCFVariant cf_ImageNew(const QString &source, int width, int height, const QString &imageType, const QString canvasColor)
 {
     throw QMKFusionException("Not Implemented", "ImageNew is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageOverlay(QWDDX &source1, const QWDDX &source2)
+Q_DECL_EXPORT void cf_ImageOverlay(QCFVariant &source1, const QCFVariant &source2)
 {
     throw QMKFusionException("Not Implemented", "ImageOverlay is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ImagePaste(QWDDX &image1, const QWDDX &image2, int x, int y)
+Q_DECL_EXPORT QCFVariant cf_ImagePaste(QCFVariant &image1, const QCFVariant &image2, int x, int y)
 {
     throw QMKFusionException("Not Implemented", "ImagePaste is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ImageRead(const QString &path)
+Q_DECL_EXPORT QCFVariant cf_ImageRead(const QString &path)
 {
     throw QMKFusionException("Not Implemented", "ImageRead is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ImageReadBase64(const QString &string)
+Q_DECL_EXPORT QCFVariant cf_ImageReadBase64(const QString &string)
 {
     throw QMKFusionException("Not Implemented", "ImageReadBase64 is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageResize(QWDDX &name, int width, int height, const QString &interpolation, int blurFactor)
+Q_DECL_EXPORT void cf_ImageResize(QCFVariant &name, int width, int height, const QString &interpolation, int blurFactor)
 {
     throw QMKFusionException("Not Implemented", "ImageResize is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageRotate(QWDDX &name, double angle, int x, int y, const QString &interpolation)
+Q_DECL_EXPORT void cf_ImageRotate(QCFVariant &name, double angle, int x, int y, const QString &interpolation)
 {
     throw QMKFusionException("Not Implemented", "ImageRotate is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ImageRotateDrawingAxis(QWDDX &name, double angle, int x, int y)
+Q_DECL_EXPORT QCFVariant cf_ImageRotateDrawingAxis(QCFVariant &name, double angle, int x, int y)
 {
     throw QMKFusionException("Not Implemented", "ImageRotateDrawingAxis is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageScaleToFit(QWDDX &name, const QString &fitWidth, const QString &fitHeight, const QString &interpolation, int blurFactor)
+Q_DECL_EXPORT void cf_ImageScaleToFit(QCFVariant &name, const QString &fitWidth, const QString &fitHeight, const QString &interpolation, int blurFactor)
 {
     throw QMKFusionException("Not Implemented", "ImageScaleToFit is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageSetAntialiasing(QWDDX &name, bool antialias)
+Q_DECL_EXPORT void cf_ImageSetAntialiasing(QCFVariant &name, bool antialias)
 {
     throw QMKFusionException("Not Implemented", "ImageSetAntialiasing is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageSetBackgroundColor(QWDDX &name, const QString &color)
+Q_DECL_EXPORT void cf_ImageSetBackgroundColor(QCFVariant &name, const QString &color)
 {
     throw QMKFusionException("Not Implemented", "ImageSetBackgroundColor is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageSetDrawingColor(QWDDX &name, const QString &color)
+Q_DECL_EXPORT void cf_ImageSetDrawingColor(QCFVariant &name, const QString &color)
 {
     throw QMKFusionException("Not Implemented", "ImageSetDrawingColor is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageSetDrawingStroke(QWDDX &name, const QWDDX &attributeCollection)
+Q_DECL_EXPORT void cf_ImageSetDrawingStroke(QCFVariant &name, const QCFVariant &attributeCollection)
 {
     throw QMKFusionException("Not Implemented", "ImageSetDrawingStroke is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageSetDrawingTransparency(QWDDX &name, double percent)
+Q_DECL_EXPORT void cf_ImageSetDrawingTransparency(QCFVariant &name, double percent)
 {
     throw QMKFusionException("Not Implemented", "ImageSetDrawingTransparency is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageSharpen(QWDDX &name, double gain)
+Q_DECL_EXPORT void cf_ImageSharpen(QCFVariant &name, double gain)
 {
     throw QMKFusionException("Not Implemented", "ImageSharpen is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageShear(QWDDX &name, double shear, const QString &direction, const QString &interpolation)
+Q_DECL_EXPORT void cf_ImageShear(QCFVariant &name, double shear, const QString &direction, const QString &interpolation)
 {
     throw QMKFusionException("Not Implemented", "ImageShear is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageShearDrawingAxis(QWDDX &name, double shx, double shy)
+Q_DECL_EXPORT void cf_ImageShearDrawingAxis(QCFVariant &name, double shx, double shy)
 {
     throw QMKFusionException("Not Implemented", "ImageShearDrawingAxis is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageTranslate(QWDDX &name, int xTrans, int yTrans, const QString &interpolation)
+Q_DECL_EXPORT void cf_ImageTranslate(QCFVariant &name, int xTrans, int yTrans, const QString &interpolation)
 {
     throw QMKFusionException("Not Implemented", "ImageTranslate is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageTranslateDrawingAxis(QWDDX &name, int x, int y)
+Q_DECL_EXPORT void cf_ImageTranslateDrawingAxis(QCFVariant &name, int x, int y)
 {
     throw QMKFusionException("Not Implemented", "ImageTranslateDrawingAxis is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageWrite(const QWDDX &name, const QString &destination, double quality)
+Q_DECL_EXPORT void cf_ImageWrite(const QCFVariant &name, const QString &destination, double quality)
 {
     throw QMKFusionException("Not Implemented", "ImageWrite is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_ImageWriteBase64(const QWDDX &name, const QString &destination, const QString &format, bool inHTMLFormat)
+Q_DECL_EXPORT QString cf_ImageWriteBase64(const QCFVariant &name, const QString &destination, const QString &format, bool inHTMLFormat)
 {
     throw QMKFusionException("Not Implemented", "ImageWriteBase64 is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ImageXORDrawingMode(QWDDX &name, const QString &c1)
+Q_DECL_EXPORT void cf_ImageXORDrawingMode(QCFVariant &name, const QString &c1)
 {
     throw QMKFusionException("Not Implemented", "ImageXORDrawingMode is not Implemented (yet:))");
 }
@@ -2178,9 +2178,9 @@ Q_DECL_EXPORT QString cf_Int(double number)
     return QString::number(floor(number));
 }
 
-Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level)
+Q_DECL_EXPORT bool cf_IsArray(const QCFVariant &var, int level)
 {
-    if (var.type() != QWDDX::Array)
+    if (var.type() != QCFVariant::Array)
     {
         return false;
     }
@@ -2196,12 +2196,12 @@ Q_DECL_EXPORT bool cf_IsArray(const QWDDX &var, int level)
     return true;
 }
 
-Q_DECL_EXPORT bool cf_IsBinary(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsBinary(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsBinary is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsBoolean(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsBoolean(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsBoolean is not Implemented (yet:))");
 }
@@ -2213,7 +2213,7 @@ Q_DECL_EXPORT bool cf_IsCustomFunction(const QString &name)
 
 Q_DECL_EXPORT bool cf_IsDate(const QString &string)
 {
-    return QWDDX(string).canConvertToDate();
+    return QCFVariant(string).canConvertToDate();
 }
 
 Q_DECL_EXPORT bool cf_IsDDX(const QString &path_or_string)
@@ -2246,7 +2246,7 @@ Q_DECL_EXPORT bool cf_IsDefined(QCFTemplate *thisTemplate, const QString &variab
     }
 
     const QString &first = parts.takeFirst();
-    QWDDX var;
+    QCFVariant var;
 
     if (first == "CGI")
     {
@@ -2295,7 +2295,7 @@ Q_DECL_EXPORT bool cf_IsDefined(QCFTemplate *thisTemplate, const QString &variab
 
     for(const QString &item : parts)
     {
-        if (var.m_Type != QWDDX::Struct)
+        if (var.m_Type != QCFVariant::Struct)
         {
             return false;
         }
@@ -2323,17 +2323,17 @@ Q_DECL_EXPORT bool cf_IsDefined(QCFTemplate *thisTemplate, const QString &variab
     return true;
 }
 
-Q_DECL_EXPORT bool cf_IsImage(const QWDDX &name)
+Q_DECL_EXPORT bool cf_IsImage(const QCFVariant &name)
 {
     throw QMKFusionException("Not Implemented", "IsImage is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsImageFile(const QWDDX &path)
+Q_DECL_EXPORT bool cf_IsImageFile(const QCFVariant &path)
 {
     throw QMKFusionException("Not Implemented", "IsImageFile is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsInstanceOf(const QWDDX &object, const QString &typeName)
+Q_DECL_EXPORT bool cf_IsInstanceOf(const QCFVariant &object, const QString &typeName)
 {
     throw QMKFusionException("Not Implemented", "IsInstanceOf is not Implemented (yet:))");
 }
@@ -2363,7 +2363,7 @@ Q_DECL_EXPORT bool cf_IsNumericDate(double number)
     throw QMKFusionException("Not Implemented", "IsNumericDate is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsObject(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsObject(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsObject is not Implemented (yet:))");
 }
@@ -2373,21 +2373,21 @@ Q_DECL_EXPORT bool cf_IsPDFFile(const QString &path)
     throw QMKFusionException("Not Implemented", "IsPDFFile is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsPDFObject(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsPDFObject(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsPDFObject is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsQuery(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsQuery(const QCFVariant &value)
 {
-    return value.type() == QWDDX::Query;
+    return value.type() == QCFVariant::Query;
 }
 
-Q_DECL_EXPORT bool cf_IsSimpleValue(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsSimpleValue(const QCFVariant &value)
 {
-    QWDDX::QWDDXType type = value.type();
+    QCFVariant::QCFVariantType type = value.type();
 
-    if ((type == QWDDX::String)||(type == QWDDX::Number)||(type == QWDDX::Boolean)||(type == QWDDX::DateTime))
+    if ((type == QCFVariant::String)||(type == QCFVariant::Number)||(type == QCFVariant::Boolean)||(type == QCFVariant::DateTime))
     {
         return true;
     }
@@ -2400,9 +2400,9 @@ Q_DECL_EXPORT bool cf_IsSOAPRequest()
     throw QMKFusionException("Not Implemented", "IsSOAPRequest is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsStruct(const QWDDX &variable)
+Q_DECL_EXPORT bool cf_IsStruct(const QCFVariant &variable)
 {
-    if (variable.type() == QWDDX::Struct)
+    if (variable.type() == QCFVariant::Struct)
     {
         return true;
     }
@@ -2425,57 +2425,57 @@ Q_DECL_EXPORT bool cf_IsUserLoggedIn()
     throw QMKFusionException("Not Implemented", "IsUserLoggedIn is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsValid is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QWDDX &value, int min, int max)
+Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QCFVariant &value, int min, int max)
 {
     throw QMKFusionException("Not Implemented", "IsValid is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QWDDX &value, const QString &pattern)
+Q_DECL_EXPORT bool cf_IsValid(const QString &type, const QCFVariant &value, const QString &pattern)
 {
     throw QMKFusionException("Not Implemented", "IsValid is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsWDDX(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsWDDX(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsWDDX is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsXML(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsXML(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsXML is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsXmlAttribute(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsXmlAttribute(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsXmlAttribute is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsXmlDoc(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsXmlDoc(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsXmlDoc is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsXmlElem(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsXmlElem(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsXmlElem is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsXmlNode(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsXmlNode(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsXmlNode is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsXmlRoot(const QWDDX &value)
+Q_DECL_EXPORT bool cf_IsXmlRoot(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "IsXmlRoot is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_JavaCast(const QString &type, const QWDDX &value)
+Q_DECL_EXPORT QCFVariant cf_JavaCast(const QString &type, const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "JavaCast is not Implemented (yet:))");
 }
@@ -2513,7 +2513,7 @@ Q_DECL_EXPORT QString cf_ListAppend(QString &list, const QString &value, const Q
 Q_DECL_EXPORT QString cf_ListChangeDelims(QString &list, const QString &new_delimiter, const QString &delimiters)
 {
     QString ret;
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
     for(int c = 0; c < tmp.m_Array->count(); c++)
     {
@@ -2530,7 +2530,7 @@ Q_DECL_EXPORT QString cf_ListChangeDelims(QString &list, const QString &new_deli
 
 Q_DECL_EXPORT int cf_ListContains(const QString &list, const QString &substring, const QString &delimiters)
 {
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
     for(int c = 0; c < tmp.m_Array->count(); c++)
     {
@@ -2545,7 +2545,7 @@ Q_DECL_EXPORT int cf_ListContains(const QString &list, const QString &substring,
 
 Q_DECL_EXPORT int cf_ListContainsNoCase(const QString &list, const QString &substring, const QString &delimiters)
 {
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
     for(int c = 0; c < tmp.m_Array->count(); c++)
     {
@@ -2561,7 +2561,7 @@ Q_DECL_EXPORT int cf_ListContainsNoCase(const QString &list, const QString &subs
 Q_DECL_EXPORT QString cf_ListDeleteAt(QString &list, int position, const QString &delimiters)
 {
     QString ret;
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
     if (position < 1)
     {
@@ -2622,7 +2622,7 @@ Q_DECL_EXPORT QString cf_ListDeleteAt(QString &list, int position, const QString
 
 Q_DECL_EXPORT int cf_ListFind(const QString &list, const QString &value, const QString &delimiters)
 {
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
     for(int c = 0; c < tmp.m_Array->count(); c++)
     {
@@ -2637,7 +2637,7 @@ Q_DECL_EXPORT int cf_ListFind(const QString &list, const QString &value, const Q
 
 Q_DECL_EXPORT int cf_ListFindNoCase(const QString &list, const QString &value, const QString &delimiters)
 {
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
     for(int c = 0; c < tmp.m_Array->count(); c++)
     {
@@ -2652,7 +2652,7 @@ Q_DECL_EXPORT int cf_ListFindNoCase(const QString &list, const QString &value, c
 
 Q_DECL_EXPORT QString cf_ListFirst(const QString &list, const QString &delimiters)
 {
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
     if (tmp.m_Array->count() < 1)
     {
@@ -2664,7 +2664,7 @@ Q_DECL_EXPORT QString cf_ListFirst(const QString &list, const QString &delimiter
 
 Q_DECL_EXPORT QString cf_ListGetAt(const QString &list, int position, const QString &delimiters)
 {
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
     if (position < 1)
     {
@@ -2682,7 +2682,7 @@ Q_DECL_EXPORT QString cf_ListGetAt(const QString &list, int position, const QStr
 Q_DECL_EXPORT QString cf_ListInsertAt(QString &list, int position, const QString value, const QString &delimiters)
 {
     QString ret;
-    QWDDX tmp = cf_ListToArray(list, delimiters, true);
+    QCFVariant tmp = cf_ListToArray(list, delimiters, true);
 
     if (position < 1)
     {
@@ -2711,7 +2711,7 @@ Q_DECL_EXPORT QString cf_ListInsertAt(QString &list, int position, const QString
 
 Q_DECL_EXPORT QString cf_ListLast(const QString &list, const QString &delimiters)
 {
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
     if (tmp.m_Array->count() < 1)
     {
@@ -2723,7 +2723,7 @@ Q_DECL_EXPORT QString cf_ListLast(const QString &list, const QString &delimiters
 
 Q_DECL_EXPORT int cf_ListLen(const QString &list, const QString &delimiters)
 {
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
     return tmp.m_Array->count();
 }
@@ -2741,7 +2741,7 @@ Q_DECL_EXPORT QString cf_ListPrepend(QString &list, const QString &value, const 
 Q_DECL_EXPORT QString cf_ListQualify(QString &list, const QString &quallifier, const QString &delimiters, const QString elements)
 {
     QString ret;
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
     bool all;
 
     if (elements.compare("all", Qt::CaseInsensitive) == 0)
@@ -2799,7 +2799,7 @@ Q_DECL_EXPORT QString cf_ListQualify(QString &list, const QString &quallifier, c
 Q_DECL_EXPORT QString cf_ListRest(const QString &list, const QString &delimiters)
 {
     QString ret;
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
 
     // Trim empty head.
@@ -2847,7 +2847,7 @@ Q_DECL_EXPORT QString cf_ListRest(const QString &list, const QString &delimiters
 Q_DECL_EXPORT QString cf_ListSetAt(QString &list, int position, const QString value, const QString &delimiters)
 {
     QString ret;
-    QWDDX tmp = cf_ListToArray(list, delimiters);
+    QCFVariant tmp = cf_ListToArray(list, delimiters);
 
     if (position < 1)
     {
@@ -2880,9 +2880,9 @@ Q_DECL_EXPORT QString cf_ListSort(QString &list, const QString sort_type, const 
     throw QMKFusionException("Not Implemented", "ListSort is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ListToArray(const QString &list, const QString &delimiters, bool includeEmptyFields)
+Q_DECL_EXPORT QCFVariant cf_ListToArray(const QString &list, const QString &delimiters, bool includeEmptyFields)
 {
-    QWDDX ret(QWDDX::Array);
+    QCFVariant ret(QCFVariant::Array);
 
     if (delimiters.count() == 0)
     {
@@ -2930,7 +2930,7 @@ Q_DECL_EXPORT int cf_ListValueCount(const QString &list, const QString value, co
 {
     int ret = 0;
 
-    for(const QWDDX &item : *(cf_ListToArray(list, delimiters).m_Array))
+    for(const QCFVariant &item : *(cf_ListToArray(list, delimiters).m_Array))
     {
         if (item.toString().compare(value, Qt::CaseSensitive) == 0)
         {
@@ -2945,7 +2945,7 @@ Q_DECL_EXPORT int cf_ListValueCountNoCase(const QString &list, const QString val
 {
     int ret = 0;
 
-    for(const QWDDX &item : *(cf_ListToArray(list, delimiters).m_Array))
+    for(const QCFVariant &item : *(cf_ListToArray(list, delimiters).m_Array))
     {
         if (item.toString().compare(value, Qt::CaseInsensitive) == 0)
         {
@@ -3125,7 +3125,7 @@ Q_DECL_EXPORT double cf_Pi()
 #endif
 }
 
-Q_DECL_EXPORT QWDDX cf_PrecisionEvaluate(const QStringList &string_expressions)
+Q_DECL_EXPORT QCFVariant cf_PrecisionEvaluate(const QStringList &string_expressions)
 {
     throw QMKFusionException("Not Implemented", "PrecisionEvaluate is not Implemented (yet:))");
 }
@@ -3140,11 +3140,11 @@ Q_DECL_EXPORT int cf_Quarter(const QDateTime &date)
     return ((date.date().month() - 1) / 4) + 1;
 }
 
-Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, const QString &datatype, const QString &array_name)
+Q_DECL_EXPORT int cf_QueryAddColumn(QCFVariant &query, const QString &column_name, const QString &datatype, const QString &array_name)
 {
     Q_UNUSED(datatype);
 
-    if (query.type() != QWDDX::Query)
+    if (query.type() != QCFVariant::Query)
     {
         throw QMKFusionException("Parameter mismatch", "query parameter is not type Query.");
     }
@@ -3153,7 +3153,7 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, co
 
     int rows = query[L"RECORDCOUNT"];
 
-    QWDDX new_field = QWDDX(QWDDX::Array);
+    QCFVariant new_field = QCFVariant(QCFVariant::Array);
 
     if (rows > 0)
     {
@@ -3189,9 +3189,9 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QWDDX &query, const QString &column_name, co
     return query.m_Struct->count();
 }
 
-Q_DECL_EXPORT int cf_QueryAddRow(QWDDX &query, int number)
+Q_DECL_EXPORT int cf_QueryAddRow(QCFVariant &query, int number)
 {
-    if (query.type() != QWDDX::Query)
+    if (query.type() != QCFVariant::Query)
     {
         throw QMKFusionInvalidArgumentException("QueryAddRow", 1, 0, "query parameter is not type Query.");
     }
@@ -3208,7 +3208,7 @@ Q_DECL_EXPORT int cf_QueryAddRow(QWDDX &query, int number)
         return 0;
     }
 
-    QWDDX &queryData = query[L"RESULTSET"];
+    QCFVariant &queryData = query[L"RESULTSET"];
     int rows = query[L"RECORDCOUNT"];
     int new_rows = rows + number;
 
@@ -3223,7 +3223,7 @@ Q_DECL_EXPORT int cf_QueryAddRow(QWDDX &query, int number)
     return new_rows;
 }
 
-Q_DECL_EXPORT QWDDX cf_QueryConvertForGrid(const QWDDX &query, int page, int pageSize)
+Q_DECL_EXPORT QCFVariant cf_QueryConvertForGrid(const QCFVariant &query, int page, int pageSize)
 {
     Q_UNUSED(query);
     Q_UNUSED(page);
@@ -3232,9 +3232,9 @@ Q_DECL_EXPORT QWDDX cf_QueryConvertForGrid(const QWDDX &query, int page, int pag
     throw QMKFusionException("Not Implemented", "QueryConvertForGrid is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &columntypelist)
+Q_DECL_EXPORT QCFVariant cf_QueryNew(const QString &columnlist, const QString &columntypelist)
 {
-    QWDDX ret;
+    QCFVariant ret;
 
     Q_UNUSED(columntypelist);
 
@@ -3248,24 +3248,24 @@ Q_DECL_EXPORT QWDDX cf_QueryNew(const QString &columnlist, const QString &column
 
     //const QStringList column_types = columntypelist.split(",");
 
-    ret = QWDDX(QWDDX::Query);
+    ret = QCFVariant(QCFVariant::Query);
 
     ret.m_Struct->insert("COLUMNS", columnlistUpper);
-    ret.m_Struct->insert("RESULTSET", QWDDX(QWDDX::Struct));
+    ret.m_Struct->insert("RESULTSET", QCFVariant(QCFVariant::Struct));
     ret.m_Struct->insert("RECORDCOUNT", 0);
     ret.m_Struct->insert("CURRENTROW", 1);
 
     for(const QString &columnName : columns)
     {
-        ret[L"RESULTSET"].m_Struct->insert(columnName.trimmed(), QWDDX(QWDDX::Array));
+        ret[L"RESULTSET"].m_Struct->insert(columnName.trimmed(), QCFVariant(QCFVariant::Array));
     }
 
     return ret;
 }
 
-Q_DECL_EXPORT bool cf_QuerySetCell(QWDDX &query, const QString &column_name, const QWDDX &value, int row_number)
+Q_DECL_EXPORT bool cf_QuerySetCell(QCFVariant &query, const QString &column_name, const QCFVariant &value, int row_number)
 {
-    if (query.type() != QWDDX::Query)
+    if (query.type() != QCFVariant::Query)
     {
         throw QMKFusionException("Parameter mismatch, Parameter query is not type Query.");
     }
@@ -3287,16 +3287,16 @@ Q_DECL_EXPORT bool cf_QuerySetCell(QWDDX &query, const QString &column_name, con
     return true;
 }
 
-Q_DECL_EXPORT QString cf_QuotedValueList(const QWDDX &query_column, const QString &delimiter)
+Q_DECL_EXPORT QString cf_QuotedValueList(const QCFVariant &query_column, const QString &delimiter)
 {
-    if (query_column.type() != QWDDX::Array)
+    if (query_column.type() != QCFVariant::Array)
     {
         throw QMKFusionException("Parameter mismatch", "query_column is not column of a query.");
     }
 
     QStringList list;
 
-    for(const QWDDX &item : *query_column.m_Array)
+    for(const QCFVariant &item : *query_column.m_Array)
     {
         list << "'" + item.toString() + "'";
     }
@@ -3319,27 +3319,27 @@ Q_DECL_EXPORT int cf_RandRange(int number1, int number2, const QString &algorith
     throw QMKFusionException("Not Implemented", "RandRange is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_REFind(const QString &reg_expression, const QString &string, int start, bool returnsubexpressions)
+Q_DECL_EXPORT QCFVariant cf_REFind(const QString &reg_expression, const QString &string, int start, bool returnsubexpressions)
 {
     throw QMKFusionException("Not Implemented", "REFind is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_REFindNoCase(const QString &reg_expression, const QString &string, int start, bool returnsubexpressions)
+Q_DECL_EXPORT QCFVariant cf_REFindNoCase(const QString &reg_expression, const QString &string, int start, bool returnsubexpressions)
 {
     throw QMKFusionException("Not Implemented", "REFindNoCase is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_ReleaseComObject(QWDDX &objectName)
+Q_DECL_EXPORT void cf_ReleaseComObject(QCFVariant &objectName)
 {
     throw QMKFusionException("Not Implemented", "ReleaseComObject is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_REMatch(const QString &reg_expression, const QString &string)
+Q_DECL_EXPORT QCFVariant cf_REMatch(const QString &reg_expression, const QString &string)
 {
     throw QMKFusionException("Not Implemented", "REMatch is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_REMatchNoCase(const QString &reg_expression, const QString &string)
+Q_DECL_EXPORT QCFVariant cf_REMatchNoCase(const QString &reg_expression, const QString &string)
 {
     throw QMKFusionException("Not Implemented", "REMatchNoCase is not Implemented (yet:))");
 }
@@ -3448,12 +3448,12 @@ Q_DECL_EXPORT int cf_Second(const QDateTime &date)
     return date.time().second();
 }
 
-Q_DECL_EXPORT QString cf_SendGatewayMessage(const QString &gatewayID, const QWDDX &data)
+Q_DECL_EXPORT QString cf_SendGatewayMessage(const QString &gatewayID, const QCFVariant &data)
 {
     throw QMKFusionException("Not Implemented", "SendGatewayMessage is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_SerializeJSON(const QWDDX &var, bool serializeQueryByColumns)
+Q_DECL_EXPORT QString cf_SerializeJSON(const QCFVariant &var, bool serializeQueryByColumns)
 {
     throw QMKFusionException("Not Implemented", "SerializeJSON is not Implemented (yet:))");
 }
@@ -3473,7 +3473,7 @@ Q_DECL_EXPORT QString cf_SetProfileString(const QString &iniPath, const QString 
     throw QMKFusionException("Not Implemented", "SetProfileString is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_SetVariable(const QString &name, const QWDDX &value)
+Q_DECL_EXPORT QCFVariant cf_SetVariable(const QString &name, const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "SetVariable is not Implemented (yet:))");
 }
@@ -3508,12 +3508,12 @@ Q_DECL_EXPORT void cf_Sleep(int duration)
 #endif
 }
 
-Q_DECL_EXPORT QString cf_SpanExcluding(const QString &string, const QWDDX &set)
+Q_DECL_EXPORT QString cf_SpanExcluding(const QString &string, const QCFVariant &set)
 {
     throw QMKFusionException("Not Implemented", "SpanExcluding is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_SpanIncluding(const QString &string, const QWDDX &set)
+Q_DECL_EXPORT QString cf_SpanIncluding(const QString &string, const QCFVariant &set)
 {
     throw QMKFusionException("Not Implemented", "SpanIncluding is not Implemented (yet:))");
 }
@@ -3532,14 +3532,14 @@ Q_DECL_EXPORT QString cf_StripCR(const QString &string)
     return ret;
 }
 
-Q_DECL_EXPORT bool cf_StructAppend(QWDDX &struct1, const QWDDX &struct2, bool overwriteFlag)
+Q_DECL_EXPORT bool cf_StructAppend(QCFVariant &struct1, const QCFVariant &struct2, bool overwriteFlag)
 {
-    if (struct1.type() != QWDDX::Struct)
+    if (struct1.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "struct1 is not a struct");
     }
 
-    if (struct2.type() != QWDDX::Struct)
+    if (struct2.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "struct2 is not a struct");
     }
@@ -3557,9 +3557,9 @@ Q_DECL_EXPORT bool cf_StructAppend(QWDDX &struct1, const QWDDX &struct2, bool ov
     return true;
 }
 
-Q_DECL_EXPORT bool cf_StructClear(QWDDX &structure)
+Q_DECL_EXPORT bool cf_StructClear(QCFVariant &structure)
 {
-    if (structure.type() != QWDDX::Struct)
+    if (structure.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
@@ -3569,9 +3569,9 @@ Q_DECL_EXPORT bool cf_StructClear(QWDDX &structure)
     return true;
 }
 
-Q_DECL_EXPORT QWDDX cf_StructCopy(QWDDX &structure)
+Q_DECL_EXPORT QCFVariant cf_StructCopy(QCFVariant &structure)
 {
-    if (structure.type() != QWDDX::Struct)
+    if (structure.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
@@ -3579,9 +3579,9 @@ Q_DECL_EXPORT QWDDX cf_StructCopy(QWDDX &structure)
     return structure;
 }
 
-Q_DECL_EXPORT int cf_StructCount(const QWDDX &structure)
+Q_DECL_EXPORT int cf_StructCount(const QCFVariant &structure)
 {
-    if (structure.type() != QWDDX::Struct)
+    if (structure.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
@@ -3589,11 +3589,11 @@ Q_DECL_EXPORT int cf_StructCount(const QWDDX &structure)
     return structure.m_Struct->count();
 }
 
-Q_DECL_EXPORT bool cf_StructDelete(QWDDX &structure, const QString &key, bool indicatenotexisting)
+Q_DECL_EXPORT bool cf_StructDelete(QCFVariant &structure, const QString &key, bool indicatenotexisting)
 {
     bool ret = true;
 
-    if (structure.type() != QWDDX::Struct)
+    if (structure.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
@@ -3608,9 +3608,9 @@ Q_DECL_EXPORT bool cf_StructDelete(QWDDX &structure, const QString &key, bool in
     return ret;
 }
 
-Q_DECL_EXPORT QWDDX cf_StructFind(const QWDDX &structure, const QString &key)
+Q_DECL_EXPORT QCFVariant cf_StructFind(const QCFVariant &structure, const QString &key)
 {
-    if (structure.type() != QWDDX::Struct)
+    if (structure.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
@@ -3623,7 +3623,7 @@ Q_DECL_EXPORT QWDDX cf_StructFind(const QWDDX &structure, const QString &key)
     return structure.m_Struct->value(key.toUpper());
 }
 
-Q_DECL_EXPORT QWDDX cf_StructFindKey(const QWDDX &top, const QString &value, const QString &scope)
+Q_DECL_EXPORT QCFVariant cf_StructFindKey(const QCFVariant &top, const QString &value, const QString &scope)
 {
     Q_UNUSED(top);
     Q_UNUSED(value);
@@ -3632,7 +3632,7 @@ Q_DECL_EXPORT QWDDX cf_StructFindKey(const QWDDX &top, const QString &value, con
     throw QMKFusionException("Not Implemented", "StructFindKey is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_StructFindValue(const QWDDX &top, const QString &value, const QString &scope)
+Q_DECL_EXPORT QCFVariant cf_StructFindValue(const QCFVariant &top, const QString &value, const QString &scope)
 {
     Q_UNUSED(top);
     Q_UNUSED(value);
@@ -3641,16 +3641,16 @@ Q_DECL_EXPORT QWDDX cf_StructFindValue(const QWDDX &top, const QString &value, c
     throw QMKFusionException("Not Implemented", "StructFindValue is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_StructGet(const QString &pathDesired)
+Q_DECL_EXPORT QCFVariant cf_StructGet(const QString &pathDesired)
 {
     Q_UNUSED(pathDesired);
 
     throw QMKFusionException("Not Implemented", "StructGet is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_StructInsert(QWDDX &structure, const QString &key, const QWDDX &value, bool allowoverwrite)
+Q_DECL_EXPORT bool cf_StructInsert(QCFVariant &structure, const QString &key, const QCFVariant &value, bool allowoverwrite)
 {
-    if (structure.type() != QWDDX::Struct)
+    if (structure.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
@@ -3665,9 +3665,9 @@ Q_DECL_EXPORT bool cf_StructInsert(QWDDX &structure, const QString &key, const Q
     return false;
 }
 
-Q_DECL_EXPORT bool cf_StructIsEmpty(const QWDDX &structure)
+Q_DECL_EXPORT bool cf_StructIsEmpty(const QCFVariant &structure)
 {
-    if (structure.type() != QWDDX::Struct)
+    if (structure.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
@@ -3675,11 +3675,11 @@ Q_DECL_EXPORT bool cf_StructIsEmpty(const QWDDX &structure)
     return structure.m_Struct->isEmpty();
 }
 
-Q_DECL_EXPORT QWDDX cf_StructKeyArray(const QWDDX &structure)
+Q_DECL_EXPORT QCFVariant cf_StructKeyArray(const QCFVariant &structure)
 {
-    QWDDX ret(QWDDX::Array);
+    QCFVariant ret(QCFVariant::Array);
 
-    if (structure.type() != QWDDX::Struct)
+    if (structure.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
@@ -3692,9 +3692,9 @@ Q_DECL_EXPORT QWDDX cf_StructKeyArray(const QWDDX &structure)
     return ret;
 }
 
-Q_DECL_EXPORT bool cf_StructKeyExists(const QWDDX &structure, const QString &key)
+Q_DECL_EXPORT bool cf_StructKeyExists(const QCFVariant &structure, const QString &key)
 {
-    if (structure.type() != QWDDX::Struct)
+    if (structure.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
@@ -3702,11 +3702,11 @@ Q_DECL_EXPORT bool cf_StructKeyExists(const QWDDX &structure, const QString &key
     return structure.m_Struct->contains(key);
 }
 
-Q_DECL_EXPORT QString cf_StructKeyList(const QWDDX &structure, const QString &delimiter)
+Q_DECL_EXPORT QString cf_StructKeyList(const QCFVariant &structure, const QString &delimiter)
 {
     QStringList ret;
 
-    if (structure.type() != QWDDX::Struct)
+    if (structure.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
@@ -3719,12 +3719,12 @@ Q_DECL_EXPORT QString cf_StructKeyList(const QWDDX &structure, const QString &de
     return ret.join(delimiter);
 }
 
-Q_DECL_EXPORT QWDDX cf_StructNew()
+Q_DECL_EXPORT QCFVariant cf_StructNew()
 {
-    return QWDDX(QWDDX::Struct);
+    return QCFVariant(QCFVariant::Struct);
 }
 
-Q_DECL_EXPORT QWDDX cf_StructSort(const QWDDX &base, const QString &sortType, const QString &sortOrder, const QString &pathToSubElement)
+Q_DECL_EXPORT QCFVariant cf_StructSort(const QCFVariant &base, const QString &sortType, const QString &sortOrder, const QString &pathToSubElement)
 {
     Q_UNUSED(base);
     Q_UNUSED(sortType);
@@ -3734,9 +3734,9 @@ Q_DECL_EXPORT QWDDX cf_StructSort(const QWDDX &base, const QString &sortType, co
     throw QMKFusionException("Not Implemented", "StructSort is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_StructUpdate(QWDDX &structure, const QString &key, const QWDDX &value)
+Q_DECL_EXPORT bool cf_StructUpdate(QCFVariant &structure, const QString &key, const QCFVariant &value)
 {
-    if (structure.type() != QWDDX::Struct)
+    if (structure.type() != QCFVariant::Struct)
     {
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
@@ -3945,12 +3945,12 @@ Q_DECL_EXPORT QString cf_ToBase64(const QByteArray &object, const QString &encod
     throw QMKFusionException("Not Implemented", "ToBase64 is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ToBinary(const QString &string)
+Q_DECL_EXPORT QCFVariant cf_ToBinary(const QString &string)
 {
     throw QMKFusionException("Not Implemented", "ToBinary is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_ToBinary(const QByteArray &string)
+Q_DECL_EXPORT QCFVariant cf_ToBinary(const QByteArray &string)
 {
     throw QMKFusionException("Not Implemented", "ToBinary is not Implemented (yet:))");
 }
@@ -3960,7 +3960,7 @@ Q_DECL_EXPORT QString cf_ToScript(const QString &cfvar, const QString &javascrip
     throw QMKFusionException("Not Implemented", "ToScript is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_ToString(const QWDDX &value, const QString &encoding)
+Q_DECL_EXPORT QString cf_ToString(const QCFVariant &value, const QString &encoding)
 {
     throw QMKFusionException("Not Implemented", "ToString is not Implemented (yet:))");
 }
@@ -4013,16 +4013,16 @@ Q_DECL_EXPORT double cf_Val(const QString &string)
     return 0;
 }
 
-Q_DECL_EXPORT QString cf_ValueList(const QWDDX &query_column, const QString delimiter)
+Q_DECL_EXPORT QString cf_ValueList(const QCFVariant &query_column, const QString delimiter)
 {
-    if (query_column.type() != QWDDX::Array)
+    if (query_column.type() != QCFVariant::Array)
     {
         throw QMKFusionException("Parameter mismatch", "query_column is not column of a query.");
     }
 
     QStringList list;
 
-    for(const QWDDX &item : *query_column.m_Array)
+    for(const QCFVariant &item : *query_column.m_Array)
     {
         list << item.toString();
     }
@@ -4051,17 +4051,17 @@ Q_DECL_EXPORT void cf_WriteOutput(QCFTemplate *thisTemplate, const QString &stri
     //thisTemplate->m_TemplateInstance->m_Output.append(string);
 }
 
-Q_DECL_EXPORT bool cf_XmlChildPos(const QWDDX &elem, const QWDDX &childName, int N)
+Q_DECL_EXPORT bool cf_XmlChildPos(const QCFVariant &elem, const QCFVariant &childName, int N)
 {
     throw QMKFusionException("Not Implemented", "XmlChildPos is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_XmlElemNew(QWDDX &xmlObj, const QString &childName)
+Q_DECL_EXPORT QCFVariant cf_XmlElemNew(QCFVariant &xmlObj, const QString &childName)
 {
     throw QMKFusionException("Not Implemented", "XmlElemNew is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_XmlElemNew(QWDDX &xmlObj, const QString &_namespace, const QString &childName)
+Q_DECL_EXPORT QCFVariant cf_XmlElemNew(QCFVariant &xmlObj, const QString &_namespace, const QString &childName)
 {
     throw QMKFusionException("Not Implemented", "XmlElemNew is not Implemented (yet:))");
 }
@@ -4071,32 +4071,32 @@ Q_DECL_EXPORT QString cf_XmlFormat(const QString &string)
     throw QMKFusionException("Not Implemented", "XmlFormat is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_XmlGetNodeType(const QWDDX &xmlNode)
+Q_DECL_EXPORT QString cf_XmlGetNodeType(const QCFVariant &xmlNode)
 {
     throw QMKFusionException("Not Implemented", "XmlGetNodeType is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_XmlNew(bool caseSensitive)
+Q_DECL_EXPORT QCFVariant cf_XmlNew(bool caseSensitive)
 {
     throw QMKFusionException("Not Implemented", "XmlNew is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_XmlParse(const QString &xmlText, bool caseSensitive, const QString &validator)
+Q_DECL_EXPORT QCFVariant cf_XmlParse(const QString &xmlText, bool caseSensitive, const QString &validator)
 {
     throw QMKFusionException("Not Implemented", "XmlParse is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_XmlSearch(const QWDDX &xmlDoc, const QString &xPathString)
+Q_DECL_EXPORT QCFVariant cf_XmlSearch(const QCFVariant &xmlDoc, const QString &xPathString)
 {
     throw QMKFusionException("Not Implemented", "XmlSearch is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QString cf_XmlTransform(QWDDX &xml, const QString &xsl, const QWDDX &parameters)
+Q_DECL_EXPORT QString cf_XmlTransform(QCFVariant &xml, const QString &xsl, const QCFVariant &parameters)
 {
     throw QMKFusionException("Not Implemented", "XmlTransform is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QWDDX cf_XmlValidate(const QWDDX &xmlDoc, const QString &validator)
+Q_DECL_EXPORT QCFVariant cf_XmlValidate(const QCFVariant &xmlDoc, const QString &validator)
 {
     throw QMKFusionException("Not Implemented", "XmlValidate is not Implemented (yet:))");
 }
@@ -4106,7 +4106,7 @@ Q_DECL_EXPORT int cf_Year(const QDateTime &date)
     return date.date().year();
 }
 
-Q_DECL_EXPORT bool cf_YesNoFormat(const QWDDX &value)
+Q_DECL_EXPORT bool cf_YesNoFormat(const QCFVariant &value)
 {
     throw QMKFusionException("Not Implemented", "YesNoFormat is not Implemented (yet:))");
 }

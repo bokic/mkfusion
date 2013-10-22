@@ -7,8 +7,8 @@ CONFIG  += debug_and_release c++11
 TARGET   = mkfusion
 DESTDIR  = ../../../bin
 
-DEPENDPATH  += . ../../../libs/qtservice ../../cfparser qwddx
-INCLUDEPATH += . ../../../libs/qtservice ../../cfparser qwddx
+DEPENDPATH  += . ../../../libs/qtservice ../../cfparser qcfvariant
+INCLUDEPATH += . ../../../libs/qtservice ../../cfparser qcfvariant
 
 # main app
 SOURCES  = main.cpp qmkfusionservice.cpp qcfserver.cpp  qhttpcodec.cpp qcfcompiler.cpp qcfapplicationmanager.cpp qcfsessionmanager.cpp qcfdatabasepoolmanager.cpp qcfworkersmanager.cpp qcfsettingsmanager.cpp qcfschedulerthread.cpp qcflog.cpp qcfsettings.cpp qcfworkerthread.cpp qcfdatabaseconnection.cpp qcftemplatesmanager.cpp qcftemplate.cpp
@@ -16,8 +16,8 @@ HEADERS  =          qmkfusionservice.h   qcfserver.h    qhttpcodec.h   qcfcompil
 
 HEADERS += qcfsession.h qmkfusionexception.h
 
-SOURCES += qwddx/qwddx.cpp qwddx/qwddxargument.cpp qwddx/qwddxcomponent.cpp qwddx/qwddxfunction.cpp
-HEADERS += qwddx/qwddx.h   qwddx/qwddxargument.h   qwddx/qwddxcomponent.h   qwddx/qwddxfunction.h
+SOURCES += qcfvariant/qcfvariant.cpp qcfvariant/qcfvariantargument.cpp qcfvariant/qcfvariantcomponent.cpp qcfvariant/qcfvariantfunction.cpp
+HEADERS += qcfvariant/qcfvariant.h   qcfvariant/qcfvariantargument.h   qcfvariant/qcfvariantcomponent.h   qcfvariant/qcfvariantfunction.h
 
 SOURCES += cffunctions.cpp
 HEADERS += cffunctions.h

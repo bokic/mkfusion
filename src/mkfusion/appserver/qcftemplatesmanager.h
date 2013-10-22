@@ -2,7 +2,6 @@
 #define QCTEMPLATESMANAGER_H
 
 #include "qcftemplate.h"
-#include "qcftemplateinstance.h"
 #include "qcfcompiler.h"
 
 #include <QReadWriteLock>
@@ -16,7 +15,7 @@ public:
     QCFTemplatesManager();
 
     void init();
-    QCFTemplateInstance *getTemplateInstance(const QString &sourceFile, QString &error);
+    //QCFTemplateInstance *getTemplateInstance(const QString &sourceFile, QString &error);
 
 private:
     QHash<QString, QCFTemplate> m_templates;

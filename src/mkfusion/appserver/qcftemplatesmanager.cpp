@@ -16,7 +16,7 @@ void QCFTemplatesManager::init()
     QReadLocker lock(&m_lock);
 }
 
-QCFTemplateInstance *QCFTemplatesManager::getTemplateInstance(const QString &sourceFile, QString &error)
+/*QCFTemplateInstance *QCFTemplatesManager::getTemplateInstance(const QString &sourceFile, QString &error)
 {
     for(; ; QThread::msleep(1))
     {
@@ -51,3 +51,4 @@ QCFTemplateInstance *QCFTemplatesManager::getTemplateInstance(const QString &sou
 
     }
 }
+*/
