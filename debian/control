@@ -1,5 +1,5 @@
 Source: mkfusion
-Section: devel, httpd
+Section: devel httpd
 Priority: optional
 Maintainer: Boris Barbulovski <bbarbulovski@gmail.com>
 Build-Depends: debhelper (>= 8.0.0), apache2-dev (>= 2.4.6) | apache2-prefork-dev (>= 2.2.22), qt5-default(>= 5.0.1), lsb-release (>= 4.0)
