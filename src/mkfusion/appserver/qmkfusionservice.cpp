@@ -1,5 +1,7 @@
 #include "qmkfusionservice.h"
 #include "qtservice.h"
+
+#include <QCoreApplication>
 #include <QStringList>
 
 

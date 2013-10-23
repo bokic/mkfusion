@@ -23,7 +23,7 @@ QByteArray QAbstractRDSService::StringToSTR(QString p_String)
 
 QByteArray QAbstractRDSService::EncodePassword(QByteArray p_Password)
 {
-	return StringToHex(XORString(p_Password));
+    return XORString(p_Password).toHex();
 }
 
 QVector<QByteArray> QAbstractRDSService::BreakByteArrayIntoVector(QByteArray p_ByteArray)
@@ -31,11 +31,11 @@ QVector<QByteArray> QAbstractRDSService::BreakByteArrayIntoVector(QByteArray p_B
 	QVector<QByteArray> ret;
 	QByteArray str;
 
-	int pos = readToColon(str, p_ByteArray, 0);
+    int pos = readToColumn(str, p_ByteArray, 0);
 	int count = str.toInt();
 	for(int c = 0; c < count; c++)
 	{
-		pos = readToColon(str, p_ByteArray, pos + 1);
+        pos = readToColumn(str, p_ByteArray, pos + 1);
 
 		if (pos <= 0)
 			break;
@@ -118,7 +118,7 @@ QByteArray QAbstractRDSService::generatePostFromVector(QRDSServer rdsserver, QVe
 
 	for(int c = 0; c < map.size(); c++)
 	{
-		// Todo: Missing file types(for file upload) but I don't know where it is used!
+        // TODO: Missing file types(for file upload) but I don't know where it is used!
 		ret += StringToSTR(map.at(c));
 	}
 
@@ -178,27 +178,15 @@ QByteArray QAbstractRDSService::executeRDSCommandForByteArray(QString command, Q
 }
 
 // Private:
-
-QByteArray QAbstractRDSService::StringToHex(QByteArray s)
-{
-	const char hextable[] = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
-	QByteArray ret;
-	for (int c = 0; c < s.length(); c++)
-	{
-		char ch = s.at(c);
-		ret += hextable[ch >> 4];
-		ret += hextable[ch & 0x0F];
-	}
-	return ret;
-}
-
 QByteArray QAbstractRDSService::GetKeyForLength(int p_Length)
 {
+    static const char *fillup = "4p0L@r1$";
+
 	QByteArray ret;
-	int l_Segments = p_Length / 8; // lenght of "4p0L@r1$"
+    int l_Segments = p_Length / strlen(fillup);
 
 	for(int c = 0; c <= l_Segments; c++)
-		ret = ret + "4p0L@r1$";
+        ret.append(fillup);
 
 	return ret.left(p_Length);
 }
@@ -215,14 +203,14 @@ QByteArray QAbstractRDSService::XORString(QByteArray p_String)
 	return ret;
 }
 
-int QAbstractRDSService::readToColon(QByteArray &str, QByteArray buf, int offset)
+int QAbstractRDSService::readToColumn(QByteArray &str, QByteArray buf, int offset)
 {
 	str = "";
 
 	int c = offset;
 	int ret = -1;
 
-	for(; ; )
+    forever
 	{
 		if (c >= buf.size())
 			break;

@@ -53,7 +53,7 @@ bool QCFParser::TrimCFCode(const QString &p_Text, int &p_Offset)
 	int l_Len = p_Text.length();
 	ushort l_ch;
 
-	for( ; ; )
+    forever
 	{
 		if (p_Offset >= l_Len)
 		{
@@ -1210,7 +1210,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 		break;
 	case Parameters:
 		c = l_Offset;
-		for( ; ; )
+
+        forever
 		{
 			ch = p_Text.at(c).unicode();
 
@@ -1331,7 +1332,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 
 		m_InsideCFScript = true;
 
-		for( ; ; )
+        forever
 		{
 			if (TrimCFCode(p_Text, l_Offset))
 			{
@@ -1468,7 +1469,7 @@ quint32 QCFParser::FindCFCommentSize(const QString &p_Text, const quint32 p_Posi
 
         pos += 5;
 
-        for ( ; ; )
+        forever
         {
             begCFComment = p_Text.indexOf("<!---", pos, Qt::CaseInsensitive);
             endCFComment = p_Text.indexOf("--->", pos, Qt::CaseInsensitive);
@@ -1537,7 +1538,7 @@ QCFParserErrorType QCFParser::parse(const QString &p_Text, bool *p_Terminate)
 	qint32 l_CodeInside = 0;
 	quint32 pos = 0, cf_pos = 0, cf_epos = 0, cf_comment = 0, cf_expression = 0;
 
-	for ( ; ; )
+    forever
 	{
 		// For multithread applications. Set p_Terminate to true to stop parsing.
         if ((p_Terminate)&&(*p_Terminate == true))

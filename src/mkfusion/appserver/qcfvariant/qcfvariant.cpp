@@ -1885,7 +1885,7 @@ Q_DECL_EXPORT QString QCFVariant::toString() const
 
 				if (temp.indexOf('.') >= 0)
 				{
-					for(; ; )
+                    forever
 					{
 						if ((temp.length() == 0)||(temp[temp.length() - 1] != '0'))
 						{

@@ -409,7 +409,7 @@ void TestCases::BenchOptimisedCode()
 
             //QCFVariant *opt_m_VARIABLES_A = nullptr;
             QCFVariant *opt_m_VARIABLES_C = &m_TemplateInstance->m_VARIABLES[QStringLiteral("C")]; *opt_m_VARIABLES_C = 1;
-			for(; ; )
+            forever
 			{
                 //if (opt_m_VARIABLES_A == nullptr) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[QStringLiteral("A")];
 
@@ -442,7 +442,7 @@ void TestCases::BenchOptimisedCode2()
 
             QCFVariant *opt_m_VARIABLES_A = nullptr;
 			quint32 l_loopCounter = 1;
-			for(; ; )
+            forever
 			{
                 if (opt_m_VARIABLES_A == nullptr) opt_m_VARIABLES_A = &m_TemplateInstance->m_VARIABLES[QStringLiteral("A")];
 
@@ -547,11 +547,11 @@ void TestCases::parseBigFile()
 
 	QBENCHMARK {
 		parser.parse(str);
-
-		//int c = parser.getTags().count();
-
-		//qDebug("Parser element count is %u\n", c);
 	}
+
+    int c = parser.getTags().count();
+
+    qDebug("Parser element count is %u\n", c);
 }
 
 void TestCases::benchPI()

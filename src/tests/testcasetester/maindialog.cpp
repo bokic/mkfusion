@@ -88,7 +88,7 @@ void Dialog::on_start_clicked()
 	{
 		int l_pos = 0;
 
-		for(; ; )
+        forever
 		{
 			int l_trfrom = l_buf.indexOf("<tr", l_pos, Qt::CaseInsensitive);
 			if (l_trfrom < 0)
@@ -117,7 +117,7 @@ void Dialog::on_start_clicked()
 		l_cols.clear();
 
 		int l_pos = 0;
-		for(; ; )
+        forever
 		{
 			int l_tdfrom = l_rows[c].indexOf("<td", l_pos, Qt::CaseInsensitive);
 			if (l_tdfrom < 0)

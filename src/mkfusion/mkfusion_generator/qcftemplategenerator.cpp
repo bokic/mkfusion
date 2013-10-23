@@ -32,11 +32,11 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
     l_cppFile.write("class QCFGeneratedTemplate : public QCFTemplate\n");
     l_cppFile.write("{\n");
     l_cppFile.write("public:\n");
-    l_cppFile.write("	QCFGeneratedTemplate()\n");
-    l_cppFile.write("	{\n");
-    l_cppFile.write(QString("		m_isModified.m_Filename = QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName) + "\");\n").toUtf8());
-    l_cppFile.write(QString("		m_isModified.m_Size = " + QString::number(m_Parser.m_FileSize) + ";\n").toUtf8());
-    l_cppFile.write(QString("		m_isModified.m_Modified = " + QString::number(m_Parser.m_FileModifyDateTime) + ";\n").toUtf8());
+    l_cppFile.write("    QCFGeneratedTemplate()\n");
+    l_cppFile.write("    {\n");
+    l_cppFile.write(QString("        m_isModified.m_Filename = QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName) + "\");\n").toUtf8());
+    l_cppFile.write(QString("        m_isModified.m_Size = " + QString::number(m_Parser.m_FileSize) + ";\n").toUtf8());
+    l_cppFile.write(QString("        m_isModified.m_Modified = " + QString::number(m_Parser.m_FileModifyDateTime) + ";\n").toUtf8());
     l_cppFile.write("\n");
 
     const QList<QCFParserTag> &l_Tags = m_Parser.getTags();
@@ -146,7 +146,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
         // TODO: Implement this when possible(not urgent).
 
-        l_cppFile.write(QString("       addCustomFunction(\"" + toCPPEncodeStr(f_name.toLower()) + "\", [](QCFRunningTemplate *m_TemplateInstance, const QList<QCFVariant> &arguments) -> QCFVariant {\n").toUtf8());
+        l_cppFile.write(QString("        addCustomFunction(\"" + toCPPEncodeStr(f_name.toLower()) + "\", [](QCFRunningTemplate *m_TemplateInstance, const QList<QCFVariant> &arguments) -> QCFVariant {\n").toUtf8());
 
         l_cppFile.write("            QCFVariant ARGUMENTS(QCFVariant::Struct);\n");
         l_cppFile.write("            QCFVariant LOCAL(QCFVariant::Struct);\n");
@@ -185,11 +185,11 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
         l_cppFile.write("        });\n");
     }
 
-    l_cppFile.write("	}\n");
-    l_cppFile.write("	\n");
-    l_cppFile.write("	virtual void run(QCFRunningTemplate *p_TemplateInstance)\n");
-    l_cppFile.write("	{\n"); // mybase::myfunc() ;
-    l_cppFile.write("		QCFTemplate::run(p_TemplateInstance);\n");
+    l_cppFile.write("    }\n");
+    l_cppFile.write("    \n");
+    l_cppFile.write("    virtual void run(QCFRunningTemplate *p_TemplateInstance)\n");
+    l_cppFile.write("    {\n"); // mybase::myfunc() ;
+    l_cppFile.write("        QCFTemplate::run(p_TemplateInstance);\n");
 
     QString l_Text = m_Parser.getText();
     QString l_tmpStr;
@@ -228,7 +228,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
                     if (!m_EnableCFOutputOnly)
                     {
-                        l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
+                        l_cppFile.write(QString(Tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
                     }
                 }
             }
@@ -245,7 +245,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
                     if (!m_EnableCFOutputOnly)
                     {
-                        l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
+                        l_cppFile.write(QString(Tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
                     }
                 }
             }
@@ -254,7 +254,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
         QString l_CFromCFTag = GenerateCCodeFromCFTag(l_Tags[c]);
         if (!l_CFromCFTag.isEmpty())
         {
-            l_cppFile.write(QString("\n" + m_Tabs + "// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
+            l_cppFile.write(QString("\n" + Tabs() + "// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
             l_cppFile.write(QString(l_CFromCFTag + "\n").toUtf8());
         }
 
@@ -293,7 +293,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
         if (!m_EnableCFOutputOnly)
         {
-            l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
+            l_cppFile.write(QString(Tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
         }
     }
     else
@@ -309,17 +309,17 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
             if (!m_EnableCFOutputOnly)
             {
-                l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
+                l_cppFile.write(QString(Tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
             }
         }
     }
 
-    l_cppFile.write("	}\n");
+    l_cppFile.write("    }\n");
     l_cppFile.write("};\n");
     l_cppFile.write("\n");
     l_cppFile.write("extern \"C\" MY_EXPORT QCFTemplate * createCFMTemplate()\n");
     l_cppFile.write("{\n");
-    l_cppFile.write("	return new QCFGeneratedTemplate();\n");
+    l_cppFile.write("    return new QCFGeneratedTemplate();\n");
     l_cppFile.write("};\n");
 
     if (l_cppFile.error() != QFileDevice::NoError)

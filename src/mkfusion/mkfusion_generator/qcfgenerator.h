@@ -32,11 +32,12 @@ protected:
     QString CFTagGetArgumentAsNumber(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString CFTagGetArgumentAsBool(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag);
+    QString Tabs(int trim = 0);
 
     QCFParser m_Parser;
     QHash<QString, QString> m_CustomTagsPrefixes;
 	bool m_EnableCFOutputOnly;
-    QString m_Tabs;
+    int m_Tabs;
     QList<const QCFParserTag *> m_SwitchTags;
     QList<const QCFParserTag *> m_NestedTags;
     QList<int> m_SwitchCaseCount;
