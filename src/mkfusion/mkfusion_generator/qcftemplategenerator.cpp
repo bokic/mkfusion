@@ -18,8 +18,8 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
     QFile l_cppFile(dstFilePath);
     l_cppFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
     l_cppFile.write("#include <qmkfusionexception.h>\n");
-    l_cppFile.write("#include <qcfrunningtemplate.h>\n");
-    l_cppFile.write("#include <qcftemplate.h>\n");
+    l_cppFile.write("#include <qcfworkerthread.h>\n");
+    l_cppFile.write("#include <qcftemplateinfo.h>\n");
     l_cppFile.write("#include <cffunctions.h>\n");
     l_cppFile.write("#include <qcfvariant.h>\n");
     l_cppFile.write("\n");
@@ -29,15 +29,12 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
     l_cppFile.write("#define MY_EXPORT\n");
     l_cppFile.write("#endif\n");
     l_cppFile.write("\n");
-    l_cppFile.write("class QCFGeneratedTemplate : public QCFTemplate\n");
+    l_cppFile.write("class QCFGeneratedWorkerThread : public QCFWorkerThread\n");
     l_cppFile.write("{\n");
     l_cppFile.write("public:\n");
-    l_cppFile.write("\tQCFGeneratedTemplate()\n");
+    l_cppFile.write("\tQCFGeneratedWorkerThread()\n");
+    l_cppFile.write("\t\t: QCFWorkerThread()\n");
     l_cppFile.write("\t{\n");
-    l_cppFile.write(QString("\t\tm_isModified.m_Filename = QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName) + "\");\n").toUtf8());
-    l_cppFile.write(QString("\t\tm_isModified.m_Size = " + QString::number(m_Parser.m_FileSize) + ";\n").toUtf8());
-    l_cppFile.write(QString("\t\tm_isModified.m_Modified = " + QString::number(m_Parser.m_FileModifyDateTime) + ";\n").toUtf8());
-    l_cppFile.write("\n");
 
     const QList<QCFParserTag> &l_Tags = m_Parser.getTags();
 
@@ -187,9 +184,8 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
     l_cppFile.write("\t}\n");
     l_cppFile.write("\n");
-    l_cppFile.write("\tvirtual void run(QCFRunningTemplate *p_TemplateInstance)\n");
+    l_cppFile.write("\tvirtual void executePage()\n");
     l_cppFile.write("\t{\n"); // mybase::myfunc() ;
-    l_cppFile.write("\t\tQCFTemplate::run(p_TemplateInstance);\n");
 
     QString l_Text = m_Parser.getText();
     QString l_tmpStr;
@@ -317,9 +313,14 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
     l_cppFile.write("\t}\n");
     l_cppFile.write("};\n");
     l_cppFile.write("\n");
-    l_cppFile.write("extern \"C\" MY_EXPORT QCFTemplate * createCFMTemplate()\n");
+    l_cppFile.write("extern \"C\" MY_EXPORT QCFWorkerThread * createTemplate()\n");
     l_cppFile.write("{\n");
-    l_cppFile.write("\treturn new QCFGeneratedTemplate();\n");
+    l_cppFile.write("\treturn new QCFGeneratedWorkerThread();\n");
+    l_cppFile.write("};\n");
+    l_cppFile.write("\n");
+    l_cppFile.write("extern \"C\" MY_EXPORT QCFTemplateInfo getTemplateInfo()\n");
+    l_cppFile.write("{\n");
+    l_cppFile.write(QString("\treturn QCFTemplateInfo(QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName) + "\"), " + QString::number(m_Parser.m_FileSize) + ", " + QString::number(m_Parser.m_FileModifyDateTime) + ");\n").toUtf8());
     l_cppFile.write("};\n");
 
     if (l_cppFile.error() != QFileDevice::NoError)

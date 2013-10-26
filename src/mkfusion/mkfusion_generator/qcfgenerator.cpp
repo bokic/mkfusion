@@ -183,11 +183,11 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString 
     {
         if ((l_StrList.first() == "SESSION")|(l_StrList.first() == "APPLICATION"))
         {
-            ret = "(*m_TemplateInstance->m_" + l_StrList.first() + ")";
+            ret = "(*m_" + l_StrList.first() + ")";
         }
         else
         {
-            ret = "m_TemplateInstance->m_" + l_StrList.first();
+            ret = "m_" + l_StrList.first();
         }
     }
 
@@ -493,7 +493,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                     }
                     else
                     {
-                        ret += "updateVariable(m_TemplateInstance->m_VARIABLES, QString(\"" + toCPPEncodeStr(destVar.m_Text.toUpper()) + "\"), ";
+                        ret += "updateVariable(m_VARIABLES, QString(\"" + toCPPEncodeStr(destVar.m_Text.toUpper()) + "\"), ";
                     }
                 }
                 else if(destVar.m_ChildElements.count() > 0)
@@ -1041,7 +1041,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             throw QCFGeneratorException("cfdump var attribute is missing.", p_CFTag.m_Start);
         }
 
-        return Tabs() + "m_TemplateInstance->m_Output += mk_cfdump(" + GenerateCFExpressionToCExpression(OptimizeQCFParserElement(CFTagGetArgumentObject(p_CFTag, "var").m_ChildElements.at(2))) + ");";
+        return Tabs() + "f_cfdump(" + GenerateCFExpressionToCExpression(OptimizeQCFParserElement(CFTagGetArgumentObject(p_CFTag, "var").m_ChildElements.at(2))) + ");";
 	}
     else if(p_CFTag.m_Name.compare("cfexit", Qt::CaseInsensitive) == 0) // Done
     {
@@ -1281,8 +1281,8 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                 ret += Tabs() + "QCFVariant l_Query(QCFVariant::Struct);\n";
                 ret += Tabs() + "if (f_FetchQueryRow(l_Query, " + ParseAndGenerateCppExpressionFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
-                ret += Tabs() + "l_Query.m_HiddenScopeLast1 = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
-                ret += Tabs() + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
+                ret += Tabs() + "l_Query.m_HiddenScopeLast1 = m_VARIABLES.m_HiddenScopeFirst;\n";
+                ret += Tabs() + "m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
 
                 return ret;
             }
@@ -1292,7 +1292,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 		{
             if (CFTagHasArgument(*p_CFTag.m_OtherTag, "query"))
             {
-                ret += Tabs() + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = l_Query.m_HiddenScopeLast1;\n";
+                ret += Tabs() + "m_VARIABLES.m_HiddenScopeFirst = l_Query.m_HiddenScopeLast1;\n";
             }
 
             m_Tabs--;
@@ -1312,7 +1312,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
 		if (p_CFTag.m_TagType == CFTagType)
 		{
-            ret += Tabs() + "p_TemplateInstance->m_CFOutput++;\n";
+            ret += Tabs() + "m_CFOutput++;\n";
 
             if (CFTagHasArgument(p_CFTag, "query"))
             {
@@ -1348,8 +1348,8 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                 ret += Tabs() + "QCFVariant l_Query(QCFVariant::Struct);\n";
                 ret += Tabs() + "if (f_FetchQueryRow(l_Query, " + ParseAndGenerateCppExpressionFromString(CFTagGetArgumentPlain(p_CFTag, "query")) + ", i) == false) break;\n";
-                ret += Tabs() + "l_Query.m_HiddenScopeLast1 = m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst;\n";
-                ret += Tabs() + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
+                ret += Tabs() + "l_Query.m_HiddenScopeLast1 = m_VARIABLES.m_HiddenScopeFirst;\n";
+                ret += Tabs() + "m_VARIABLES.m_HiddenScopeFirst = &l_Query;\n";
             }
 
             return ret;
@@ -1359,14 +1359,14 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 		{
             if (CFTagHasArgument(*p_CFTag.m_OtherTag, "query"))
             {
-                ret += Tabs() + "m_TemplateInstance->m_VARIABLES.m_HiddenScopeFirst = l_Query.m_HiddenScopeLast1;\n";
+                ret += Tabs() + "m_VARIABLES.m_HiddenScopeFirst = l_Query.m_HiddenScopeLast1;\n";
 
                 m_Tabs--;
 
                 ret += Tabs() + "}\n";
             }
 
-            ret += Tabs() + "p_TemplateInstance->m_CFOutput--;\n";
+            ret += Tabs() + "m_CFOutput--;\n";
 
             return ret;
 		}
@@ -1657,7 +1657,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             if (p_CFTag.m_TagType == EndCFTagType)
             {
                 // TODO: LOCAL is missing.
-                return Tabs() + "updateVariable(m_TemplateInstance->m_VARIABLES, L\"" + l_queryName.toUpper() + "\", endQuery(" + l_queryDataSource + "));";
+                return Tabs() + "updateVariable(m_VARIABLES, L\"" + l_queryName.toUpper() + "\", endQuery(" + l_queryDataSource + "));";
             }
         }
         else if (((l_queryType.isEmpty())||(l_queryType.compare("query", Qt::CaseInsensitive) == 0))&&(l_queryName.isEmpty())&&(!l_queryDataSource.isEmpty()))
@@ -1677,7 +1677,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
     {
         if (p_CFTag.m_TagType == CFTagType)
         {
-            return Tabs() + "m_TemplateInstance->m_QueryParams.append(" +  CFTagGetArgument(p_CFTag, "value") + "); f_WriteOutput(QString::fromWCharArray(L\"?\", 1));";
+            return Tabs() + "m_QueryParams.append(" +  CFTagGetArgument(p_CFTag, "value") + "); f_WriteOutput(QString::fromWCharArray(L\"?\", 1));";
         }
     }
     else if(p_CFTag.m_Name.startsWith("cf_", Qt::CaseInsensitive))

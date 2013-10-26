@@ -17,6 +17,7 @@ QCFWorkerThread::QCFWorkerThread(QObject *parent)
     , m_APPLICATION(nullptr)
     , m_SESSION(nullptr)
     , m_Socket(nullptr)
+    , m_CFDump(false)
 {
 }
 
@@ -672,7 +673,7 @@ void QCFWorkerThread::updateVariables()
     */
     QUrl l_url = QUrl::fromEncoded(QByteArray("?") + m_Request.m_Args.toUtf8(), QUrl::StrictMode);
 
-    QList<QPair<QString, QString> > l_Arguments = QUrlQuery(l_url).queryItems();
+    QList<QPair<QString, QString>> l_Arguments = QUrlQuery(l_url).queryItems();
 
     for(const QPair<QString, QString> &l_Argument: l_Arguments)
     {
@@ -821,4 +822,484 @@ void QCFWorkerThread::updateVariable(QCFVariant &dest, const QCFVariant &key, co
 void QCFWorkerThread::f_WriteOutput(const QString &value)
 {
     m_Output.append(value);
+}
+
+void QCFWorkerThread::f_cfdump(const QCFVariant &var)
+{
+    if (!m_CFDump)
+    {
+        m_Output += "<style type=\"text/css\">\n" \
+            "	table.cfdump_wddx,\n" \
+            "	table.cfdump_xml,\n" \
+            "	table.cfdump_struct,\n" \
+            "	table.cfdump_array,\n" \
+            "	table.cfdump_query,\n" \
+            "	table.cfdump_cfc,\n" \
+            "	table.cfdump_object,\n" \
+            "	table.cfdump_binary,\n" \
+            "	table.cfdump_udf,\n" \
+            "	table.cfdump_udfbody,\n" \
+            "	table.cfdump_udfarguments {\n" \
+            "		font-size: xx-small;\n" \
+            "		font-family: verdana, arial, helvetica, sans-serif;\n" \
+            "		cell-spacing: 2px;\n" \
+            "	}\n" \
+            "	table.cfdump_wddx th,\n" \
+            "	table.cfdump_xml th,\n" \
+            "	table.cfdump_struct th,\n" \
+            "	table.cfdump_array th,\n" \
+            "	table.cfdump_query th,\n" \
+            "	table.cfdump_cfc th,\n" \
+            "	table.cfdump_object th,\n" \
+            "	table.cfdump_binary th,\n" \
+            "	table.cfdump_udf th,\n" \
+            "	table.cfdump_udfbody th,\n" \
+            "	table.cfdump_udfarguments th {\n" \
+            "		text-align: left;\n" \
+            "		color: white;\n" \
+            "		padding: 5px;\n" \
+            "	} \n" \
+            "	table.cfdump_wddx td,\n" \
+            "	table.cfdump_xml td,\n" \
+            "	table.cfdump_struct td,\n" \
+            "	table.cfdump_array td,\n" \
+            "	table.cfdump_query td,\n" \
+            "	table.cfdump_cfc td,\n" \
+            "	table.cfdump_object td,\n" \
+            "	table.cfdump_binary td,\n" \
+            "	table.cfdump_udf td,\n" \
+            "	table.cfdump_udfbody td,\n" \
+            "	table.cfdump_udfarguments td {\n" \
+            "		padding: 3px;\n" \
+            "		background-color: #ffffff;\n" \
+            "		vertical-align : top;\n" \
+            "	} \n" \
+            "	table.cfdump_wddx {\n" \
+            "		background-color: #000000;\n" \
+            "	}\n" \
+            "	table.cfdump_wddx th.wddx {\n" \
+            "		background-color: #444444;\n" \
+            "	}  \n" \
+            "	table.cfdump_xml {\n" \
+            "		background-color: #888888;\n" \
+            "	}\n" \
+            "	table.cfdump_xml th.xml {\n" \
+            "		background-color: #aaaaaa;\n" \
+            "	}\n" \
+            "	table.cfdump_xml td.xml {\n" \
+            "		background-color: #dddddd;\n" \
+            "	} \n" \
+            "	table.cfdump_struct {\n" \
+            "		background-color: #0000cc ;\n" \
+            "	}\n" \
+            "	table.cfdump_struct th.struct {\n" \
+            "		background-color: #4444cc ;\n" \
+            "	}\n" \
+            "	table.cfdump_struct td.struct {\n" \
+            "		background-color: #ccddff;\n" \
+            "	} \n" \
+            "	table.cfdump_array {\n" \
+            "		background-color: #006600 ;\n" \
+            "	}\n" \
+            "	table.cfdump_array th.array {\n" \
+            "		background-color: #009900 ;\n" \
+            "	}\n" \
+            "	table.cfdump_array td.array {\n" \
+            "		background-color: #ccffcc ;\n" \
+            "	} \n" \
+            "	table.cfdump_query {\n" \
+            "		background-color: #884488 ;\n" \
+            "	}\n" \
+            "	table.cfdump_query th.query {\n" \
+            "		background-color: #aa66aa ;\n" \
+            "	}\n" \
+            "	table.cfdump_query td.query {\n" \
+            "		background-color: #ffddff ;\n" \
+            "	}\n" \
+            "	table.cfdump_cfc {\n" \
+            "		background-color: #ff0000;\n" \
+            "	}\n" \
+            "	table.cfdump_cfc th.cfc{\n" \
+            "		background-color: #ff4444;\n" \
+            "	}\n" \
+            "	table.cfdump_cfc td.cfc {\n" \
+            "		background-color: #ffcccc;\n" \
+            "	}\n" \
+            "	table.cfdump_object {\n" \
+            "		background-color : #ff0000;\n" \
+            "	}\n" \
+            "	table.cfdump_object th.object{\n" \
+            "		background-color: #ff4444;\n" \
+            "	}\n" \
+            "	table.cfdump_binary {\n" \
+            "		background-color : #eebb00;\n" \
+            "	}\n" \
+            "	table.cfdump_binary th.binary {\n" \
+            "		background-color: #ffcc44;\n" \
+            "	}\n" \
+            "	table.cfdump_binary td {\n" \
+            "		font-size: x-small;\n" \
+            "	}\n" \
+            "	table.cfdump_udf {\n" \
+            "		background-color: #aa4400;\n" \
+            "	}\n" \
+            "	table.cfdump_udf th.udf {\n" \
+            "		background-color: #cc6600;\n" \
+            "	}\n" \
+            "	table.cfdump_udfarguments {\n" \
+            "		background-color: #dddddd;\n" \
+            "		cell-spacing: 3;\n" \
+            "	}\n" \
+            "	table.cfdump_udfarguments th {\n" \
+            "		background-color: #eeeeee;\n" \
+            "		color: #000000;\n" \
+            "	} \n" \
+            "	</style>\n" \
+            "	<script language=\"javascript\" type=\"text/javascript\">\n" \
+            "		var expand = \"open\";\n" \
+            "	\n" \
+            "		dump = function( obj ) {\n" \
+            "			var out = \"\" ;\n" \
+            "			if ( typeof obj == \"object\" ) {\n" \
+            "				for ( key in obj ) {\n" \
+            "					if ( typeof obj[key] != \"function\" ) out += key + ': ' + obj[key] + '<br>' ;\n" \
+            "				}\n" \
+            "			}\n" \
+            "		}\n" \
+            "	\n" \
+            "		cfdump_toggleRow = function(source) {\n" \
+            "			//target is the right cell\n" \
+            "			if(document.all) target = source.parentElement.cells[1];\n" \
+            "			else {\n" \
+            "				var element = null;\n" \
+            "				var vLen = source.parentNode.childNodes.length;\n" \
+            "				for(var i=vLen-1;i>0;i--){\n" \
+            "					if(source.parentNode.childNodes[i].nodeType == 1){\n" \
+            "						element = source.parentNode.childNodes[i];\n" \
+            "						break;\n" \
+            "					}\n" \
+            "				}\n" \
+            "				if(element == null)\n" \
+            "					target = source.parentNode.lastChild;\n" \
+            "				else\n" \
+            "					target = element;\n" \
+            "			}\n" \
+            "			//target = source.parentNode.lastChild ;\n" \
+            "			cfdump_toggleTarget( target, cfdump_toggleSource( source ) ) ;\n" \
+            "		}\n" \
+            "	\n" \
+            "		cfdump_toggleXmlDoc = function(source) {\n" \
+            "	\n" \
+            "			var caption = source.innerHTML.split( ' [' ) ;\n" \
+            "	\n" \
+            "			if ( source.style.fontStyle == 'italic' ) {\n" \
+            "				source.style.fontStyle = 'normal' ;\n" \
+            "				source.innerHTML = caption[0] + ' [short version]' ;\n" \
+            "				source.title = 'click to maximize' ;\n" \
+            "				switchLongToState = 'closed' ;\n" \
+            "				switchShortToState = 'open' ;\n" \
+            "			} else if ( source.innerHTML.indexOf('[short version]') != -1 ) {\n" \
+            "				source.innerHTML = caption[0] + ' [long version]' ;\n" \
+            "				source.title = 'click to collapse' ;\n" \
+            "				switchLongToState = 'open' ;\n" \
+            "				switchShortToState = 'closed' ;\n" \
+            "			} else {\n" \
+            "				source.style.fontStyle = 'italic' ;\n" \
+            "				source.title = 'click to expand' ;\n" \
+            "				source.innerHTML = caption[0] ;\n" \
+            "				switchLongToState = 'closed' ;\n" \
+            "				switchShortToState = 'closed' ;\n" \
+            "			}\n" \
+            "	\n" \
+            "			if(document.all) {\n" \
+            "				var table = source.parentElement.parentElement ;\n" \
+            "				for ( var i = 1; i < table.rows.length; i++ ) {\n" \
+            "					target = table.rows[i] ;\n" \
+            "					if ( i < 3 ) cfdump_toggleTarget( target, switchLongToState ) ;\n" \
+            "					else cfdump_toggleTarget( target, switchShortToState ) ;\n" \
+            "				}\n" \
+            "			} else {\n" \
+            "				var table = source.parentNode.parentNode ;\n" \
+            "				var row = 1;\n" \
+            "				for ( var i = 1; i < table.childNodes.length; i++ ) {\n" \
+            "					target = table.childNodes[i] ;\n" \
+            "					if( target.style ) {\n" \
+            "						if ( row < 3 ) {\n" \
+            "							cfdump_toggleTarget( target, switchLongToState ) ;\n" \
+            "						} else {\n" \
+            "							cfdump_toggleTarget( target, switchShortToState ) ;\n" \
+            "						}\n" \
+            "						row++;\n" \
+            "					}\n" \
+            "				}\n" \
+            "			}\n" \
+            "		}\n" \
+            "	\n" \
+            "		cfdump_toggleTable = function(source) {\n" \
+            "	\n" \
+            "			var switchToState = cfdump_toggleSource( source ) ;\n" \
+            "			if(document.all) {\n" \
+            "				var table = source.parentElement.parentElement ;\n" \
+            "				for ( var i = 1; i < table.rows.length; i++ ) {\n" \
+            "					target = table.rows[i] ;\n" \
+            "					cfdump_toggleTarget( target, switchToState ) ;\n" \
+            "				}\n" \
+            "			}\n" \
+            "			else {\n" \
+            "				var table = source.parentNode.parentNode ;\n" \
+            "				for ( var i = 1; i < table.childNodes.length; i++ ) {\n" \
+            "					target = table.childNodes[i] ;\n" \
+            "					if(target.style) {\n" \
+            "						cfdump_toggleTarget( target, switchToState ) ;\n" \
+            "					}\n" \
+            "				}\n" \
+            "			}\n" \
+            "		}\n" \
+            "	\n" \
+            "		cfdump_toggleSource = function( source ) {\n" \
+            "			if ( source.style.fontStyle == 'italic' || source.style.fontStyle == null) {\n" \
+            "				source.style.fontStyle = 'normal' ;\n" \
+            "				source.title = 'click to collapse' ;\n" \
+            "				return 'open' ;\n" \
+            "			} else {\n" \
+            "				source.style.fontStyle = 'italic' ;\n" \
+            "				source.title = 'click to expand' ;\n" \
+            "				return 'closed' ;\n" \
+            "			}\n" \
+            "		}\n" \
+            "	\n" \
+            "		cfdump_toggleTarget = function( target, switchToState ) {\n" \
+            "			if ( switchToState == 'open' )	target.style.display = '' ;\n" \
+            "			else target.style.display = 'none' ;\n" \
+            "		}\n" \
+            "	\n" \
+            "		cfdump_toggleRow_qry = function(source) {\n" \
+            "			expand = (source.title == \"click to collapse\") ? \"closed\" : \"open\";\n" \
+            "			if(document.all) {\n" \
+            "				var nbrChildren = source.parentElement.cells.length;\n" \
+            "				if(nbrChildren > 1){\n" \
+            "					for(i=nbrChildren-1;i>0;i--){\n" \
+            "						target = source.parentElement.cells[i];\n" \
+            "						cfdump_toggleTarget( target,expand ) ;\n" \
+            "						cfdump_toggleSource_qry(source);\n" \
+            "					}\n" \
+            "				}\n" \
+            "				else {\n" \
+            "					//target is the right cell\n" \
+            "					target = source.parentElement.cells[1];\n" \
+            "					cfdump_toggleTarget( target, cfdump_toggleSource( source ) ) ;\n" \
+            "				}\n" \
+            "			}\n" \
+            "			else{\n" \
+            "				var target = null;\n" \
+            "				var vLen = source.parentNode.childNodes.length;\n" \
+            "				for(var i=vLen-1;i>1;i--){\n" \
+            "					if(source.parentNode.childNodes[i].nodeType == 1){\n" \
+            "						target = source.parentNode.childNodes[i];\n" \
+            "						cfdump_toggleTarget( target,expand );\n" \
+            "						cfdump_toggleSource_qry(source);\n" \
+            "					}\n" \
+            "				}\n" \
+            "				if(target == null){\n" \
+            "					//target is the last cell\n" \
+            "					target = source.parentNode.lastChild;\n" \
+            "					cfdump_toggleTarget( target, cfdump_toggleSource( source ) ) ;\n" \
+            "				}\n" \
+            "			}\n" \
+            "		}\n" \
+            "	\n" \
+            "		cfdump_toggleSource_qry = function(source) {\n" \
+            "			if(expand == \"closed\"){\n" \
+            "				source.title = \"click to expand\";\n" \
+            "				source.style.fontStyle = \"italic\";\n" \
+            "			}\n" \
+            "			else{\n" \
+            "				source.title = \"click to collapse\";\n" \
+            "				source.style.fontStyle = \"normal\";\n" \
+            "			}\n" \
+            "		}\n" \
+            "	 </script>\n";
+
+        m_CFDump = true;
+    }
+
+    m_Output += f_cfdump_var(var);
+}
+
+QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
+{
+    QString ret;
+
+    int columns;
+
+    QCFVariant l_temp = var;
+    switch(l_temp.type())
+    {
+        case QCFVariant::Boolean:
+        case QCFVariant::DateTime:
+        case QCFVariant::Number:
+            ret += l_temp.toString();
+            break;
+        case QCFVariant::String:
+            if (!l_temp.m_String->isEmpty())
+            {
+                ret += *l_temp.m_String;
+            }
+            else
+            {
+                ret += "[empty string]";
+            }
+            break;
+        case QCFVariant::Struct:
+            ret += "<table class=\"cfdump_struct\"><tr><th class=\"struct\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">struct</th></tr>\n";
+
+            for(const QString &l_key: l_temp.m_Struct->keys())
+            {
+                QString l_keyType;
+
+                switch ((*l_temp.m_Struct)[l_key].m_Type) {
+                case QCFVariant::Null:
+                    ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key + " [null]</td><td>null</td></tr>\n";
+                    continue;
+                case QCFVariant::Boolean:
+                    l_keyType = "[boolean]";
+                    break;
+                case QCFVariant::Number:
+                    l_keyType = "[number]";
+                    break;
+                case QCFVariant::String:
+                    l_keyType = "[string]";
+                    break;
+                case QCFVariant::DateTime:
+                    l_keyType = "[datetime]";
+                    break;
+                case QCFVariant::Array:
+                    l_keyType = "[array]";
+                    break;
+                case QCFVariant::Struct:
+                    l_keyType = "[object]";
+                    break;
+                case QCFVariant::Binary:
+                    l_keyType = "[binary]";
+                    break;
+                case QCFVariant::Query:
+                    l_keyType = "[query]";
+                    break;
+                case QCFVariant::NotImplemented:
+                    l_keyType = "[not implemented]";
+                    break;
+                case QCFVariant::Error:
+                    l_keyType = "[error]";
+                    break;
+                default:
+                    l_keyType = "[unknown]";
+                    break;
+                }
+
+                ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key + " " + l_keyType + "</td><td>" + f_cfdump_var((*l_temp.m_Struct)[l_key]) + "</td></tr>\n";
+            }
+
+            ret += "</table>\n";
+            break;
+        case QCFVariant::Array:
+            ret += "<table class=\"cfdump_array\"><tr><th class=\"array\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">array</th></tr>\n";
+
+            for(int i = 0; i < var.m_Array->size(); i++)
+            {
+                QString l_keyType;
+
+                switch (l_temp.m_Array->at(i).m_Type) {
+                case QCFVariant::Null:
+                    ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i) + " [null]</td><td>null</td></tr>\n";
+                    continue;
+                case QCFVariant::Boolean:
+                    l_keyType = "[boolean]";
+                    break;
+                case QCFVariant::Number:
+                    l_keyType = "[number]";
+                    break;
+                case QCFVariant::String:
+                    l_keyType = "[string]";
+                    break;
+                case QCFVariant::DateTime:
+                    l_keyType = "[datetime]";
+                    break;
+                case QCFVariant::Array:
+                    l_keyType = "[array]";
+                    break;
+                case QCFVariant::Struct:
+                    l_keyType = "[object]";
+                    break;
+                case QCFVariant::Binary:
+                    l_keyType = "[binary]";
+                    break;
+                case QCFVariant::Query:
+                    l_keyType = "[query]";
+                    break;
+                case QCFVariant::NotImplemented:
+                    l_keyType = "[not implemented]";
+                    break;
+                case QCFVariant::Error:
+                    l_keyType = "[error]";
+                    break;
+                default:
+                    l_keyType = "[unknown]";
+                    break;
+                }
+
+                ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i) + " " + l_keyType + "</td><td>" + f_cfdump_var(l_temp.m_Array->at(i)) + "</td></tr>\n";
+            }
+
+            ret += "</table>\n";
+            break;
+        case QCFVariant::Query:
+
+            columns = var.m_Struct->value("RESULTSET").m_Struct->count();
+
+            ret += "<table class=\"cfdump_query\"><tr><th class=\"array\" colspan=\"" + QString::number(columns) + "\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">query</th></tr>\n";
+
+            if (columns > 0)
+            {
+                ret += "<tr bgcolor=\"eeaaaa\">\n";
+
+                ret += "<td class=\"query\" style=\"cursor: pointer; font-style: normal;\" title=\"click to collapse\" onclick=\"cfdump_toggleRow_qry(this);\">&nbsp;</td>\n";
+
+                for(int c = 0; c < columns; c++)
+                {
+                    ret += "<td class=\"query\">" + var.m_Struct->value("RESULTSET").m_Struct->keys().at(c).toHtmlEscaped() + "</td>\n";
+                }
+
+                ret += "</tr>";
+
+                int rows = var.m_Struct->value("RECORDCOUNT").toInt();
+
+                for(int r = 0; r < rows; r++)
+                {
+                    ret += "<tr>\n";
+
+                    ret += "<td class=\"query\" style=\"cursor: pointer; font-style: normal;\" title=\"click to collapse\" onclick=\"cfdump_toggleRow_qry(this);\">" + QString::number(r + 1) + "</td>\n";
+
+                    for(int c = 0; c < columns; c++)
+                    {
+                        QString cell_text = var.m_Struct->value("RESULTSET").m_Struct->values().at(c).m_Array->at(r).toString();
+
+                        if (cell_text.isEmpty())
+                        {
+                            cell_text = "[empty string]";
+                        }
+
+                        ret += "<td valign=\"top\">" + cell_text.toHtmlEscaped() + "</td>\n";
+                    }
+
+                    ret += "</tr>";
+                }
+            }
+
+            ret += "</table>\n";
+            break;
+        default:
+            break;
+    }
+
+    return ret;
 }

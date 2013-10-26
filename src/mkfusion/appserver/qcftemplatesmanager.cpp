@@ -101,4 +101,3 @@ QCFWorkerThread * QCFTemplatesManager::getWorker(const QString &sourceFile, QStr
 
     return nullptr;
 }
-

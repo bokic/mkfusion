@@ -72,6 +72,7 @@ protected:
     void run() override;
     virtual void executePage();
 
+public:
     void processPostData(QByteArray post);
     bool readRequest();
     bool writeResponse();
@@ -83,6 +84,7 @@ protected:
     static void updateVariableQStr(QCFVariant &dest, const QString &key, const QCFVariant &value);
     static void updateVariable(QCFVariant &dest, const QCFVariant &key, const QCFVariant &value);
     void f_WriteOutput(const QString &value);
+    void f_cfdump(const QCFVariant &var);
 
 
     // Class members
@@ -106,6 +108,11 @@ protected:
     QCFVariant m_SetCookies;
     QHash<QString, std::function<QCFVariant (QCFWorkerThread *, const QList<QCFVariant> &arguments)>> m_CustomFunctions;
     QHash<QString, QCFFileUpload> m_FileUpload;
+
+private:
+    static QString f_cfdump_var(const QCFVariant &var);
+
+    bool m_CFDump;
 };
 
 #endif // QCFWORKERTHREAD_H
