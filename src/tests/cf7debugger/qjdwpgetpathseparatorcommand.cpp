@@ -1,7 +1,7 @@
 #include "qjdwpgetpathseparatorcommand.h"
 #include "qjdwpclassesbysignaturecommand.h"
 
-QJDWPGetPathSeparatorCommand::QJDWPGetPathSeparatorCommand(QJDWPDebugger* parent)
+QJDWPGetPathSeparatorCommand::QJDWPGetPathSeparatorCommand(QJDWPDebugger *parent)
 	: QJDWPCommand(parent)
 {
 	m_Progress = CLASSES_BY_SIGNATURE;

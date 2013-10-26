@@ -32,7 +32,7 @@ public:
 	QCFTag();
     QCFTag(const QCFTag &other);
     QCFTag(const QString &p_TagName, CloseTagType p_CloseTagType, ArgumentsType p_ArgumentsType, ExpressionInside p_ExpressionInside = WithoutExpressionInside, bool p_AnyParam = false);
-	QCFTag& operator=(const QCFTag &other);
+    QCFTag &operator=(const QCFTag &other);
 #ifdef Q_COMPILER_RVALUE_REFS
     QCFTag &operator=(QCFTag &&other);
 #endif

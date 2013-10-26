@@ -18,7 +18,7 @@ int main(int argc, char **argv)
     {
         puts("Usage: mkfusion_generator <source_file> [destination_file]");
 
-        return -1;
+        return 1;
     }
 
     QString srcFile;
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     {
         printf("Source file (%s) doesn't exists.\n", argv[1]);
 
-        return -2;
+        return 2;
     }
 
     QCFGenerator *generator = nullptr;
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     {
         printf("Source file (%s) has invalid extension. Only cfm and cfc are valid\n", argv[1]);
 
-        return -3;
+        return 3;
     }
 
     if (!generator->generate(srcFile, dstFile))
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
         delete generator;
         generator = nullptr;
 
-        return -4;
+        return 4;
     }
 
     delete generator;
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
         {
             puts("Can't open tmp file.");
 
-            return -5;
+            return 5;
         }
 
         QString fileContent = QTextStream(&file).readAll();

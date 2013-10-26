@@ -7,11 +7,13 @@
 class QCFCompiler
 {
 public:
-    QCFCompiler(const QString &p_MKFusionPath);
-    QString compile(const QString &p_Target);
+    QCFCompiler();
+    void setTargetPath(const QString &target);
+    QString compile(const QString &cppFile);
+    QString generateCpp(const QString &cfmlFilePath, QString &cppFilePath);
 
 private:
-    QString m_MKFusionPath;
+    QString m_TargetPath;
 };
 
 #endif // QCFCOMPILER_H

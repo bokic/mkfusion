@@ -54,7 +54,7 @@ QByteArray CompareDialog::filterChars(const QByteArray &p_Text)
 	return ret;
 }
 
-void CompareDialog::updateEditor(QPlainTextEdit* p_TextEdit, const QByteArray &p_Text, const QByteArray &p_TextCompareTo)
+void CompareDialog::updateEditor(QPlainTextEdit *p_TextEdit, const QByteArray &p_Text, const QByteArray &p_TextCompareTo)
 {
     Q_UNUSED(p_TextCompareTo);
 

@@ -31,7 +31,7 @@ private:
     bool m_IsCurrentSelect;
 
 private slots:
-    void on_treeWidget_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
+    void on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
 };
 
 #endif // QDETAIL_H

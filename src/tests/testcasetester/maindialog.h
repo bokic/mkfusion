@@ -21,8 +21,8 @@ private:
     Ui::Dialog *ui;
 
 private slots:
-	void on_urlslist_itemDoubleClicked(QListWidgetItem* item);
- void on_start_clicked();
+    void on_urlslist_itemDoubleClicked(QListWidgetItem *item);
+    void on_start_clicked();
 };
 
 #endif // MAINDIALOG_H

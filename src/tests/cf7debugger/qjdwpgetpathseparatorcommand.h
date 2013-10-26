@@ -8,13 +8,13 @@ class QJDWPGetPathSeparatorCommand : public QJDWPCommand
 {
 	Q_OBJECT
 public:
-	explicit QJDWPGetPathSeparatorCommand(QJDWPDebugger* = 0);
+    explicit QJDWPGetPathSeparatorCommand(QJDWPDebugger * = 0);
 	virtual ~QJDWPGetPathSeparatorCommand();
 	char getPathSeparator();
 	virtual void processRecivedCommand(QByteArray);
 private:
 	char m_PathSeparator;
-	QJDWPCommand* m_SubCommand;
+    QJDWPCommand *m_SubCommand;
 	enum { CLASSES_BY_SIGNATURE, BETA, GAMMA } m_Progress;
 };
 

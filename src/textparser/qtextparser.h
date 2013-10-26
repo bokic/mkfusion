@@ -65,7 +65,7 @@ public:
         QString startString;
         QString endString;
         QString tokenString;
-        bool searchEndStringLast; // TODO: Unimplemented yet
+        bool searchEndStringLast; // TODO: Unimplemented yet(greedy/lazy??)
         bool immediateStartString;
         QVector<int> nestedTokens;
         QTextParserLanguageDefinitionToken() : searchEndStringLast(false), immediateStartString(false) {}

@@ -26,10 +26,9 @@ protected:
 	static QByteArray ArgumentsToString(QVector<QString>);
 	static QByteArray executeRDSCommandForByteArray(QString, QRDSServer, QVector<QString>);
 private:
-	static QByteArray StringToHex(QByteArray);
 	static QByteArray GetKeyForLength(int);
 	static QByteArray XORString(QByteArray);
-	static int readToColon(QByteArray&, QByteArray, int);
+	static int readToColumn(QByteArray&, QByteArray, int);
 };
 
 #endif // QABSTRACTRDSSERVICE_H

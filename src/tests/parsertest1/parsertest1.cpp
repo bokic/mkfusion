@@ -55,7 +55,7 @@ void CFTest1::parseDir(const QString &p_dir)
 		else
 		{
 			QString itemFileName = QDir::toNativeSeparators(item.filePath());
-			QListWidgetItem* lastItem = new QListWidgetItem(itemFileName);
+            QListWidgetItem *lastItem = new QListWidgetItem(itemFileName);
 
 			QFile file(itemFileName);
 			file.open(QIODevice::ReadOnly);

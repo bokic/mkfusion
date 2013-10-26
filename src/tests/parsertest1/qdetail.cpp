@@ -28,7 +28,7 @@ QDetail::~QDetail()
 	ui = 0;
 }
 
-void QDetail::setFileForParsing(const QString& p_File)
+void QDetail::setFileForParsing(const QString &p_File)
 {
     QFile file(p_File);
     file.open(QIODevice::ReadOnly);
@@ -89,7 +89,7 @@ void QDetail::setFileForParsing(const QString& p_File)
     ui->treeWidget->setFocus();
 }
 
-void QDetail::addSubTrees(const QCFParserElement& p_ParserElement, QTreeWidgetItem* p_WidgetItem)
+void QDetail::addSubTrees(const QCFParserElement &p_ParserElement, QTreeWidgetItem *p_WidgetItem)
 {
     ushort c = 0;
 
@@ -307,7 +307,7 @@ void QDetail::colorElement(const QCFParserElement &p_Element, const QString &p_E
     }
 }
 
-void QDetail::on_treeWidget_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous)
+void QDetail::on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
     if (previous)
     {

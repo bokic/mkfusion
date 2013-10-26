@@ -1,6 +1,6 @@
 #include "qjdwpcommand.h"
 
-QJDWPCommand::QJDWPCommand(QObject* parent)
+QJDWPCommand::QJDWPCommand(QObject * parent)
 	: QObject(parent)
 	, m_CommandID(0)
 {	

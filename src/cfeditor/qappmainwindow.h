@@ -60,8 +60,8 @@ private slots:
     void onmy_textedit_breakpoint_change(int);
 
 private:
-	void LoadProject(const QString&);
-    void UpdateProjectFileList(const QString& = "", QTreeWidgetItem* = nullptr);
+    void LoadProject(const QString &);
+    void UpdateProjectFileList(const QString & = "", QTreeWidgetItem * = nullptr);
 	void recolor();
 //	void colorElement(const QCFParserElement &);
 	Ui::QAppMainWindow *ui;

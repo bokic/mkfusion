@@ -75,6 +75,8 @@ void QCFServer::start()
 {
     QCFLOG(QCFLOG_DAEMON, QCFLOG_INFO, "MKFusion daemon is starting.");
 
+    m_Templates.init();
+
     QFileInfo fi(getProcessExecutableFileName());
     QDir fi_dir = fi.absoluteDir();
     fi_dir.cdUp();

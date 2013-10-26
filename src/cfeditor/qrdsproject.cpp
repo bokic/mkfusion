@@ -207,7 +207,7 @@ void QRDSProject::RenameDir(const QString &p_OldDir, const QString &p_NewDir)
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }
 
-const QString& QRDSProject::getHostName()
+const QString &QRDSProject::getHostName()
 {
     return m_HostName;
 }
@@ -217,12 +217,12 @@ quint16 QRDSProject::getPort()
     return m_Port;
 }
 
-const QString& QRDSProject::getUsername()
+const QString &QRDSProject::getUsername()
 {
     return m_Username;
 }
 
-const QString& QRDSProject::getPassword()
+const QString &QRDSProject::getPassword()
 {
     return m_Password;
 }

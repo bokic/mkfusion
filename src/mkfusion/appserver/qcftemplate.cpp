@@ -31,7 +31,6 @@ QCFTemplate::~QCFTemplate()
 
     delete m_library;
     m_library = nullptr;
-
 }
 
 int QCFTemplate::usageCount() const
@@ -106,6 +105,11 @@ bool QCFTemplate::strip()
 QString QCFTemplate::error() const
 {
     return m_error;
+}
+
+void QCFTemplate::setError(QString error)
+{
+    m_error = error;
 }
 
 bool QCFTemplate::isValid() const

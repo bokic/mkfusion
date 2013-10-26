@@ -32,11 +32,11 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
     l_cppFile.write("class QCFGeneratedTemplate : public QCFTemplate\n");
     l_cppFile.write("{\n");
     l_cppFile.write("public:\n");
-    l_cppFile.write("    QCFGeneratedTemplate()\n");
-    l_cppFile.write("    {\n");
-    l_cppFile.write(QString("        m_isModified.m_Filename = QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName) + "\");\n").toUtf8());
-    l_cppFile.write(QString("        m_isModified.m_Size = " + QString::number(m_Parser.m_FileSize) + ";\n").toUtf8());
-    l_cppFile.write(QString("        m_isModified.m_Modified = " + QString::number(m_Parser.m_FileModifyDateTime) + ";\n").toUtf8());
+    l_cppFile.write("\tQCFGeneratedTemplate()\n");
+    l_cppFile.write("\t{\n");
+    l_cppFile.write(QString("\t\tm_isModified.m_Filename = QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName) + "\");\n").toUtf8());
+    l_cppFile.write(QString("\t\tm_isModified.m_Size = " + QString::number(m_Parser.m_FileSize) + ";\n").toUtf8());
+    l_cppFile.write(QString("\t\tm_isModified.m_Modified = " + QString::number(m_Parser.m_FileModifyDateTime) + ";\n").toUtf8());
     l_cppFile.write("\n");
 
     const QList<QCFParserTag> &l_Tags = m_Parser.getTags();
@@ -146,28 +146,28 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
         // TODO: Implement this when possible(not urgent).
 
-        l_cppFile.write(QString("        addCustomFunction(\"" + toCPPEncodeStr(f_name.toLower()) + "\", [](QCFRunningTemplate *m_TemplateInstance, const QList<QCFVariant> &arguments) -> QCFVariant {\n").toUtf8());
+        l_cppFile.write(QString("\t\taddCustomFunction(\"" + toCPPEncodeStr(f_name.toLower()) + "\", [](QCFRunningTemplate *m_TemplateInstance, const QList<QCFVariant> &arguments) -> QCFVariant {\n").toUtf8());
 
-        l_cppFile.write("            QCFVariant ARGUMENTS(QCFVariant::Struct);\n");
-        l_cppFile.write("            QCFVariant LOCAL(QCFVariant::Struct);\n");
+        l_cppFile.write("\t\t\tQCFVariant ARGUMENTS(QCFVariant::Struct);\n");
+        l_cppFile.write("\t\t\tQCFVariant LOCAL(QCFVariant::Struct);\n");
         l_cppFile.write("\n");
 
         // Parameters
         for(int c = 0; c < f_paramName.count(); c++)
         {
 
-            l_cppFile.write(QString("            if(arguments.count() > "+ QString::number(c) + " ) {\n").toUtf8());
-            l_cppFile.write(QString("                updateVariable(ARGUMENTS, L\"" + f_paramName[c].toUpper() + "\", arguments.at(" + QString::number(c) + "));\n").toUtf8());
-            l_cppFile.write(QString("            } else {\n").toUtf8());
-            l_cppFile.write(QString("                updateVariable(ARGUMENTS, L\"" + f_paramName[c].toUpper() + "\", L\"" + f_paramDefault[c] + "\");\n").toUtf8());
-            l_cppFile.write(QString("            }\n").toUtf8());
+            l_cppFile.write(QString("\t\t\tif(arguments.count() > "+ QString::number(c) + " ) {\n").toUtf8());
+            l_cppFile.write(QString("\t\t\t\tupdateVariable(ARGUMENTS, L\"" + f_paramName[c].toUpper() + "\", arguments.at(" + QString::number(c) + "));\n").toUtf8());
+            l_cppFile.write(QString("\t\t\t} else {\n").toUtf8());
+            l_cppFile.write(QString("\t\t\t\tupdateVariable(ARGUMENTS, L\"" + f_paramName[c].toUpper() + "\", L\"" + f_paramDefault[c] + "\");\n").toUtf8());
+            l_cppFile.write(QString("\t\t\t}\n").toUtf8());
             l_cppFile.write("\n");
         }
 
         QString l_localVars;
         for(const QCFParserElement &expr : function.m_ChildElements.last().m_ChildElements)
         {
-            l_cppFile.write(QString("            " + GenerateCFExpressionToCExpression(expr, f_paramName.join(","), &l_localVars)).toUtf8());
+            l_cppFile.write(QString("\t\t\t" + GenerateCFExpressionToCExpression(expr, f_paramName.join(","), &l_localVars)).toUtf8());
 
             if ((expr.m_Type == Expression)&&(expr.m_ChildElements.count() > 0))
             {
@@ -180,16 +180,16 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
             l_cppFile.write("\n");
         }
 
-        l_cppFile.write("            return QCFVariant();\n"); // just in case custom function do not return.
+        l_cppFile.write("\t\t\treturn QCFVariant();\n"); // just in case custom function do not return.
 
-        l_cppFile.write("        });\n");
+        l_cppFile.write("\t\t});\n");
     }
 
-    l_cppFile.write("    }\n");
-    l_cppFile.write("    \n");
-    l_cppFile.write("    virtual void run(QCFRunningTemplate *p_TemplateInstance)\n");
-    l_cppFile.write("    {\n"); // mybase::myfunc() ;
-    l_cppFile.write("        QCFTemplate::run(p_TemplateInstance);\n");
+    l_cppFile.write("\t}\n");
+    l_cppFile.write("\n");
+    l_cppFile.write("\tvirtual void run(QCFRunningTemplate *p_TemplateInstance)\n");
+    l_cppFile.write("\t{\n"); // mybase::myfunc() ;
+    l_cppFile.write("\t\tQCFTemplate::run(p_TemplateInstance);\n");
 
     QString l_Text = m_Parser.getText();
     QString l_tmpStr;
@@ -314,12 +314,12 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
         }
     }
 
-    l_cppFile.write("    }\n");
+    l_cppFile.write("\t}\n");
     l_cppFile.write("};\n");
     l_cppFile.write("\n");
     l_cppFile.write("extern \"C\" MY_EXPORT QCFTemplate * createCFMTemplate()\n");
     l_cppFile.write("{\n");
-    l_cppFile.write("    return new QCFGeneratedTemplate();\n");
+    l_cppFile.write("\treturn new QCFGeneratedTemplate();\n");
     l_cppFile.write("};\n");
 
     if (l_cppFile.error() != QFileDevice::NoError)

@@ -18,11 +18,6 @@ void QCFWorkersManager::init()
 
 }
 
-QCFWorkerThread * QCFWorkersManager::createWorker(const QString &filePath)
-{
-    return nullptr;
-}
-
 void QCFWorkersManager::waitForAllWorkersToFinish()
 {
     forever
@@ -86,10 +81,25 @@ void QCFWorkersManager::on_newConnection()
             QCFLOG(CFLOG_WORKER, QCFLOG_CRITICAL, "Empty template pathname returned.");
             return;
         }
-        QString templateFilePath = QDir::toNativeSeparators(QString::fromUtf8(tempstr));
+        QString filePath = QDir::toNativeSeparators(QString::fromUtf8(tempstr));
         delete[] tempstr; tempstr = nullptr;
 
-        QCFWorkerThread * worker = createWorker(templateFilePath);
+        QString error;
+
+        QCFWorkerThread *worker = QCFServer::instance()->m_Templates.getWorker(filePath, error);
+
+        if (!worker)
+        {
+            QCFLOG_QSTRING(CFLOG_WORKER, QCFLOG_ERROR, QString("Failed to create worker thread. Error: %1").arg(error));
+
+            localSocket->write("\x00\x00\x00\x04", 4);
+            localSocket->write(error.toLatin1());
+            localSocket->waitForBytesWritten();
+            localSocket->disconnectFromServer();
+            localSocket->deleteLater();
+
+            return;
+        }
 
         connect(worker, &QThread::finished, this, &QCFWorkersManager::on_workerTerminated);
 

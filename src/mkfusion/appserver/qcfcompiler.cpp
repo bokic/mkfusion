@@ -1,25 +1,30 @@
 #include "qcfcompiler.h"
 
 #include <QFileInfo>
+#include <QDateTime>
 #include <QProcess>
 #include <QFile>
 #include <QDir>
 
-QCFCompiler::QCFCompiler(const QString &p_MKFusionPath)
-    : m_MKFusionPath(p_MKFusionPath)
+QCFCompiler::QCFCompiler()
 {
 }
 
-QString QCFCompiler::compile(const QString &p_Target)
+void QCFCompiler::setTargetPath(const QString &target)
 {
-    QFileInfo file(p_Target);
+    m_TargetPath = target;
+}
+
+QString QCFCompiler::compile(const QString &cppFile)
+{
+    QFileInfo file(cppFile);
     QString l_NewTarget = file.baseName();
     QProcess process;
 
     // Compile
 #ifdef Q_OS_WIN
-    QString l_QtPath = QDir::toNativeSeparators(m_MKFusionPath) + "bin\\qt\\";
-    QString l_MingwPath = QDir::toNativeSeparators(m_MKFusionPath) + "bin\\mingw\\";
+    QString l_QtPath = QDir::toNativeSeparators(m_TargetPath) + "bin\\qt\\";
+    QString l_MingwPath = QDir::toNativeSeparators(m_TargetPath) + "bin\\mingw\\";
     process.start(l_MingwPath + "bin\\g++.exe", QStringList()
 #elif defined Q_OS_LINUX
     process.start("g++", QStringList()
@@ -87,7 +92,7 @@ QString QCFCompiler::compile(const QString &p_Target)
         << "-I" << (l_QtPath + "include" + QDir::separator() + "QtNetwork")
         << "-I" << (l_QtPath + "include" + QDir::separator() + "QtConcurrent")
         << "-I" << (l_QtPath + "include")
-        << "-I" << (m_MKFusionPath + "include")
+        << "-I" << (m_TargetPath + "include")
 #elif defined Q_OS_LINUX
     #ifdef __x86_64__
         << "-I" << "/usr/share/qt5/mkspecs/linux-g++-64"
@@ -105,17 +110,17 @@ QString QCFCompiler::compile(const QString &p_Target)
         << "-I" << "/usr/include/qt/QtNetwork" // Arch linux uses this path
         << "-I" << "/usr/include/qt/QtConcurrent" // Arch linux uses this path
         << "-I" << "/usr/include/qt" // Arch linux uses this path
-        << "-I" << (m_MKFusionPath + "include")
+        << "-I" << (m_TargetPath + "include")
 #endif
 
-        << "-o" << (m_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".o")
-        << (m_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".cpp")
+        << "-o" << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".o")
+        << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".cpp")
     );
 
     bool finished = process.waitForFinished(-1);
 
 #ifdef QT_NO_DEBUG
-    QFile::remove(m_MKFusionPath+"templates/"+l_NewTarget+".cpp");
+    QFile::remove(m_TargetPath + "templates/" + l_NewTarget + ".cpp");
 #endif
 
     if ((finished == false)||(process.exitCode() != 0))
@@ -151,15 +156,15 @@ QString QCFCompiler::compile(const QString &p_Target)
         << "-shared"
 
 #ifdef Q_OS_WIN
-        << "-o" << (m_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
+        << "-o" << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
 #else
-        << "-o" << (m_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".so")
+        << "-o" << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".so")
 #endif
 
-        << (m_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".o")
+        << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".o")
 
 #ifdef Q_OS_WIN
-        << "-L" << (l_QtPath + "lib") << (m_MKFusionPath + "lib\\mkfusion.a")
+        << "-L" << (l_QtPath + "lib") << (m_TargetPath + "lib\\mkfusion.a")
 #else
         << "-L/usr/lib/x86_64-linux-gnu" << "-lrt" << "-lpthread"
 #endif
@@ -173,7 +178,7 @@ QString QCFCompiler::compile(const QString &p_Target)
 
     finished = process.waitForFinished(-1);
 
-    QFile::remove(m_MKFusionPath+"templates/"+l_NewTarget+".o");
+    QFile::remove(m_TargetPath+"templates/"+l_NewTarget+".o");
 
     if ((finished == false)||(process.exitCode() != 0))
     {
@@ -181,4 +186,25 @@ QString QCFCompiler::compile(const QString &p_Target)
     }
 
     return "";
+}
+
+QString QCFCompiler::generateCpp(const QString &cfmlFilePath, QString &cppFilePath)
+{
+    QProcess process;
+
+    cppFilePath = m_TargetPath + "templates" + QDir::separator() + QFileInfo(cfmlFilePath).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".cpp";
+
+    int ret = process.execute( \
+                "mkfusion-generator", \
+                QStringList() \
+                << cfmlFilePath \
+                << cppFilePath \
+                );
+
+    if (ret == 0)
+    {
+        return "";
+    }
+
+    return QString("Parser error(code %1):").arg(ret) + QString::fromLatin1(process.readAllStandardOutput());
 }

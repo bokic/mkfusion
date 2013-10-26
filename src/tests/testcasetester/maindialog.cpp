@@ -184,7 +184,7 @@ void Dialog::on_start_clicked()
 	ui->urlslist->setFocus();
 }
 
-void Dialog::on_urlslist_itemDoubleClicked(QListWidgetItem* item)
+void Dialog::on_urlslist_itemDoubleClicked(QListWidgetItem *item)
 {
 
 	QString l_filename = item->text();

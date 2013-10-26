@@ -18,6 +18,7 @@ public:
     int fileSize() const;
     bool strip();
     QString error() const;
+    void setError(QString error);
     bool isValid() const;
     bool isCompiling() const;
     void setCompiling(bool compiling);

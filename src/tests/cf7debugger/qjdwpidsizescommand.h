@@ -7,7 +7,7 @@
 class QJDWPIDSizesCommand : public QJDWPCommand
 {
 public:
-	explicit QJDWPIDSizesCommand(QJDWPDebugger* = 0);
+    explicit QJDWPIDSizesCommand(QJDWPDebugger * = 0);
 };
 
 #endif // QJDWPIDSIZESCOMMAND_H

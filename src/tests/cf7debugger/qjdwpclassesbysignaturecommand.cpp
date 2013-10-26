@@ -2,7 +2,7 @@
 #include "qjdwpsocket.h"
 #include "qjdwpdebugger.h"
 
-QJDWPClassesBySignatureCommand::QJDWPClassesBySignatureCommand(QObject* parent)
+QJDWPClassesBySignatureCommand::QJDWPClassesBySignatureCommand(QObject *parent)
 	: QJDWPCommand(parent)
 {
 }
@@ -36,7 +36,7 @@ void QJDWPClassesBySignatureCommand::processRecivedCommand(QByteArray p_Data)
 
 	for(int c = 0; c <  l_Size; c++)
 	{
-		QJDWPClassesBySignature* item = new QJDWPClassesBySignature();
+        QJDWPClassesBySignature *item = new QJDWPClassesBySignature();
 
 		m_Result.append(item);
 	}

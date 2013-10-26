@@ -105,7 +105,7 @@ void QCFFunction::setName(const QString &p_FunctionName)
 	m_Name = p_FunctionName;
 }
 
-const QString& QCFFunction::getName()
+const QString &QCFFunction::getName()
 {
 	return m_Name;
 }

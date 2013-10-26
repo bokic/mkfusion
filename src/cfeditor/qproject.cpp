@@ -81,12 +81,12 @@ QProject* QProject::LoadProjectFromText(const QString &p_Text)
         return nullptr;
 }
 
-const QString& QProject::getUrl()
+const QString & QProject::getUrl()
 {
 	return m_Url;
 }
 
-const QString& QProject::getPath()
+const QString & QProject::getPath()
 {
     return m_Path;
 }

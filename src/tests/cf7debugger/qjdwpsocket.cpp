@@ -12,7 +12,7 @@ QJDWPSocket::~QJDWPSocket()
 {
 }
 
-void QJDWPSocket::connectToHost(const QString& p_Host, quint16 p_Port)
+void QJDWPSocket::connectToHost(const QString &p_Host, quint16 p_Port)
 {
 	m_Socket.disconnectFromHost();
 
@@ -25,7 +25,7 @@ void QJDWPSocket::connectToHost(const QString& p_Host, quint16 p_Port)
 	m_InitTimer = startTimer(5000);
 }
 
-quint32 QJDWPSocket::sendCommand(quint8 p_CommandSet, quint8 p_Command, const QByteArray& p_Data)
+quint32 QJDWPSocket::sendCommand(quint8 p_CommandSet, quint8 p_Command, const QByteArray &p_Data)
 {
 	QByteArray l_Packet;
 	int l_PacketSize = p_Data.length() + 11;
@@ -122,7 +122,7 @@ void QJDWPSocket::on_m_Socket_readyRead()
 	}
 }
 
-void QJDWPSocket::timerEvent(QTimerEvent* event)
+void QJDWPSocket::timerEvent(QTimerEvent *event)
 {
 	qDebug("timerEvent");
 	if (event->timerId() == m_InitTimer)

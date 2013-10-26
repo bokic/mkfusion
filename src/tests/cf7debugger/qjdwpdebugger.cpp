@@ -16,14 +16,14 @@ void QJDWPDebugger::connectToHost(QString p_Host, quint16 p_Port)
 	m_JDWP.connectToHost(p_Host, p_Port);
 }
 
-void QJDWPDebugger::addCommand(QJDWPCommand* m_Command)
+void QJDWPDebugger::addCommand(QJDWPCommand *m_Command)
 {
 	m_Command->setParent(this);
 	m_Commands.append(m_Command);
 	//m_Command->se
 }
 
-quint32 QJDWPDebugger::sendCommand(quint8 p_CommandSet, quint8 p_Command, const QByteArray& p_Data)
+quint32 QJDWPDebugger::sendCommand(quint8 p_CommandSet, quint8 p_Command, const QByteArray &p_Data)
 {
 	return m_JDWP.sendCommand(p_CommandSet, p_Command, p_Data);
 }

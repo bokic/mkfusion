@@ -236,7 +236,7 @@ public:
 	}
 };
 
-/*extern "C" MY_EXPORT QCFTemplate* createCFMTemplate()
+/*extern "C" MY_EXPORT QCFTemplate * createCFMTemplate()
 {
 	return new QCFGeneratedTemplate();
 };*/

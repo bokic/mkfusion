@@ -14,7 +14,6 @@ class QCFWorkersManager : public QObject
 public:
     QCFWorkersManager();
     void init();
-    QCFWorkerThread * createWorker(const QString &filePath);
     void waitForAllWorkersToFinish();
 
 public slots:

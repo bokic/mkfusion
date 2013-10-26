@@ -271,7 +271,7 @@ void QAppMainWindow::on_action_Full_Screen_triggered()
     }
     else
     {
-        setWindowState(windowState() & ~Qt::WindowFullScreen);
+        setWindowState(windowState() & (~Qt::WindowFullScreen));
     }
 }
 

@@ -1,6 +1,7 @@
 #ifndef QCTEMPLATESMANAGER_H
 #define QCTEMPLATESMANAGER_H
 
+#include "qcfworkerthread.h"
 #include "qcftemplate.h"
 #include "qcfcompiler.h"
 
@@ -15,7 +16,7 @@ public:
     QCFTemplatesManager();
 
     void init();
-    //QCFTemplateInstance *getTemplateInstance(const QString &sourceFile, QString &error);
+    QCFWorkerThread * getWorker(const QString &sourceFile, QString &error);
 
 private:
     QHash<QString, QCFTemplate> m_templates;

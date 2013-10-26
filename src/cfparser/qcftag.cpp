@@ -75,7 +75,7 @@ QCFTag::QCFTag(const QString &p_TagName, CloseTagType p_CloseTagType, ArgumentsT
     m_AnyParam = p_AnyParam;
 }
 
-QCFTag& QCFTag::operator=(const QCFTag &other)
+QCFTag &QCFTag::operator=(const QCFTag &other)
 {
     if (this != &other)
 	{
