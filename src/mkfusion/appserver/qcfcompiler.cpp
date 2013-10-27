@@ -7,6 +7,7 @@
 #include <QDir>
 
 QCFCompiler::QCFCompiler()
+    : m_Strip(true)
 {
 }
 
@@ -189,6 +190,19 @@ QString QCFCompiler::compile(const QString &cppFile, QString &libFile)
     if ((finished == false)||(process.exitCode() != 0))
     {
         return "link error: " + process.readAllStandardError() + process.readAllStandardOutput();
+    }
+
+    if (m_Strip)
+    {
+        process.start("strip", QStringList()
+#ifdef Q_OS_WIN
+          << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
+#else
+          << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".so")
+#endif
+        );
+
+        process.waitForFinished(-1);
     }
 
     return "";

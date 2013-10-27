@@ -14,6 +14,7 @@ public:
 
 private:
     QString m_TargetPath;
+    bool m_Strip;
 };
 
 #endif // QCFCOMPILER_H

@@ -108,7 +108,6 @@ public:
     QCFVariant m_SetCookies;
     QHash<QString, std::function<QCFVariant (QCFWorkerThread *, const QList<QCFVariant> &arguments)>> m_CustomFunctions;
     QHash<QString, QCFFileUpload> m_FileUpload;
-    bool m_writtenHeaders;
 
 private:
     static QString f_cfdump_var(const QCFVariant &var);

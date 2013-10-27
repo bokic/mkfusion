@@ -16,8 +16,9 @@ QCFWorkerThread::QCFWorkerThread(QObject *parent)
     : QThread(parent)
     , m_APPLICATION(nullptr)
     , m_SESSION(nullptr)
+    , m_StatusCode(200)
+    , m_HeadersSent(false)
     , m_Socket(nullptr)
-    , m_writtenHeaders(false)
     , m_CFDump(false)
 {
 }
@@ -441,7 +442,7 @@ bool QCFWorkerThread::readRequest()
 
 bool QCFWorkerThread::writeResponse()
 {
-    if (!m_writtenHeaders)
+    if (!m_HeadersSent)
     {
         QByteArray l_header;
         QDataStream l_headerDataStream(&l_header, QIODevice::WriteOnly);
@@ -496,7 +497,7 @@ bool QCFWorkerThread::writeResponse()
 
         m_Socket->waitForBytesWritten(-1);
 
-        m_writtenHeaders  = true;
+        m_HeadersSent = true;
     }
 
     QByteArray l_SendBuf = m_Output.toUtf8(); // TODO: utf-8 output hardcoded
@@ -593,7 +594,7 @@ void QCFWorkerThread::writeException(const QMKFusionException &ex)
 
 void QCFWorkerThread::runApplicationTemplate()
 {
-    executePage();
+    //executePage();
 }
 
 void QCFWorkerThread::updateVariables()
