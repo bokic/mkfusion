@@ -17,6 +17,7 @@ QCFWorkerThread::QCFWorkerThread(QObject *parent)
     , m_APPLICATION(nullptr)
     , m_SESSION(nullptr)
     , m_Socket(nullptr)
+    , m_writtenHeaders(false)
     , m_CFDump(false)
 {
 }
@@ -440,6 +441,79 @@ bool QCFWorkerThread::readRequest()
 
 bool QCFWorkerThread::writeResponse()
 {
+    if (!m_writtenHeaders)
+    {
+        QByteArray l_header;
+        QDataStream l_headerDataStream(&l_header, QIODevice::WriteOnly);
+        l_headerDataStream.setVersion(QDataStream::Qt_5_0);
+
+        l_headerDataStream << (qint32) 0;
+        l_headerDataStream << m_ContentType;
+
+        l_headerDataStream << m_StatusCode;
+
+        if (m_SetCookies.m_Type == QCFVariant::Struct)
+        {
+            for(const QString &key : m_SetCookies.m_Struct->keys())
+            {
+                if (m_COOKIE.m_Struct->contains(key))
+                {
+                    m_COOKIE.m_Struct->remove(key);
+                }
+
+                const QCFVariant cookieData = m_SetCookies.m_Struct->value(key);
+
+                if (cookieData.m_Struct->value("expires").m_Type == QCFVariant::Number)
+                {
+                    m_Header.insert("Set-Cookie", QUrl::toPercentEncoding(key) + "=" + QUrl::toPercentEncoding(cookieData.m_Struct->value("value").toString()) +  ";Max-Age=" + cookieData.m_Struct->value("expires").toString() + ";path=/");
+                }
+                else
+                {
+                    m_Header.insert("Set-Cookie", QUrl::toPercentEncoding(key) + "=" + QUrl::toPercentEncoding(cookieData.m_Struct->value("value").toString()) +  ";expires=" + cookieData.m_Struct->value("expires").toString() + ";path=/");
+                }
+            }
+        }
+
+        if (m_COOKIE.m_Type == QCFVariant::Struct)
+        {
+            for(const QString &key : m_COOKIE.m_Struct->keys())
+            { // TODO: Unhardcode Max-Age.
+                m_Header.insert("Set-Cookie", QUrl::toPercentEncoding(key) + "=" + QUrl::toPercentEncoding(m_COOKIE[key].toString()) + "; Max-Age=3600; Path=/; HttpOnly");
+            }
+        }
+
+        l_headerDataStream << (qint32) m_Header.size();
+        for(int c = 0; c < m_Header.count(); c++)
+        {
+            l_headerDataStream << m_Header.keys().at(c);
+            l_headerDataStream << m_Header.values().at(c);
+        }
+
+        l_headerDataStream.device()->seek(0);
+        l_headerDataStream << (qint32) l_header.size();
+
+        m_Socket->write(l_header);
+
+        m_Socket->waitForBytesWritten(-1);
+
+        m_writtenHeaders  = true;
+    }
+
+    QByteArray l_SendBuf = m_Output.toUtf8(); // TODO: utf-8 output hardcoded
+    int l_SendBufPos = 0;
+
+    while(l_SendBuf.size() > l_SendBufPos)
+    {
+
+        if (m_Socket->write(l_SendBuf.mid(l_SendBufPos, 1024)) == -1)
+        {
+            break;
+        }
+        m_Socket->waitForBytesWritten(-1);
+
+        l_SendBufPos += 1024;
+    }
+
     return true;
 }
 
@@ -549,20 +623,23 @@ void QCFWorkerThread::updateVariables()
         throw QMKFusionException("Unknown HTTP Method.");
     }
 
-    QStringList cookies = m_Request.m_Cookie.split(';');
-    for(const QString &cookie : cookies)
+    if (!m_Request.m_Cookie.isEmpty())
     {
-        int separator = cookie.indexOf('=');
+        QStringList cookies = m_Request.m_Cookie.split(';');
+        for(const QString &cookie : cookies)
+        {
+            int separator = cookie.indexOf('=');
 
-        if (separator > 0)
-        {
-            QString key = QUrl::fromPercentEncoding(cookie.left(separator).trimmed().toLatin1()).toUpper();
-            QString value = QUrl::fromPercentEncoding(cookie.right(cookie.length() - separator - 1).toLatin1());
-            updateVariable(m_COOKIE, key, value);
-        }
-        else
-        {
-            qDebug() << "Invalid cookie.";
+            if (separator > 0)
+            {
+                QString key = QUrl::fromPercentEncoding(cookie.left(separator).trimmed().toLatin1()).toUpper();
+                QString value = QUrl::fromPercentEncoding(cookie.right(cookie.length() - separator - 1).toLatin1());
+                updateVariable(m_COOKIE, key, value);
+            }
+            else
+            {
+                qDebug() << "Invalid cookie.";
+            }
         }
     }
 
