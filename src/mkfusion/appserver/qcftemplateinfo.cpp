@@ -2,7 +2,7 @@
 
 QCFTemplateInfo::QCFTemplateInfo()
     : m_FileSize(-1)
-    , m_FileModified(-1)
+    , m_FileModified(0)
 {
 }
 

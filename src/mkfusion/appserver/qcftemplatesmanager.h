@@ -22,6 +22,7 @@ private:
     QHash<QString, QCFTemplate> m_templates;
     QCFCompiler m_compiler;
     QReadWriteLock m_lock;
+    QString m_cachePath;
 };
 
 #endif // QCTEMPLATESMANAGER_H

@@ -311,17 +311,17 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
     }
 
     l_cppFile.write("\t}\n");
-    l_cppFile.write("};\n");
+    l_cppFile.write("}\n");
     l_cppFile.write("\n");
     l_cppFile.write("extern \"C\" MY_EXPORT QCFWorkerThread * createTemplate()\n");
     l_cppFile.write("{\n");
     l_cppFile.write("\treturn new QCFGeneratedWorkerThread();\n");
-    l_cppFile.write("};\n");
+    l_cppFile.write("}\n");
     l_cppFile.write("\n");
     l_cppFile.write("extern \"C\" MY_EXPORT QCFTemplateInfo getTemplateInfo()\n");
     l_cppFile.write("{\n");
     l_cppFile.write(QString("\treturn QCFTemplateInfo(QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName) + "\"), " + QString::number(m_Parser.m_FileSize) + ", " + QString::number(m_Parser.m_FileModifyDateTime) + ");\n").toUtf8());
-    l_cppFile.write("};\n");
+    l_cppFile.write("}\n");
 
     if (l_cppFile.error() != QFileDevice::NoError)
     {

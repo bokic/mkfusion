@@ -16,8 +16,8 @@ public:
     QCFTemplateInfo &operator=(const QCFTemplateInfo &other);
 
     QString m_FilePath;
-    int m_FileSize;
-    int m_FileModified;
+    qint64 m_FileSize;
+    uint m_FileModified;
 };
 
 #endif // QCFTEMPLATEINFO_H

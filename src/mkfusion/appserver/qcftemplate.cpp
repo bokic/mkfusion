@@ -1,31 +1,26 @@
 #include "qcftemplate.h"
+#include "qcftemplateinfo.h"
 #include "qcflog.h"
 
+#include <QFileInfo>
 #include <QProcess>
 
 
-QCFTemplate::QCFTemplate(const QString &filePath)
-    : m_fileSize(0)
+QCFTemplate::QCFTemplate(const QString &filePath, const QCFTemplateInfo &templateInfo, bool compiling)
+    : m_pathName(filePath)
+    , m_library(new QLibrary(filePath))
+    , m_modified(templateInfo.m_FileModified)
+    , m_fileSize(templateInfo.m_FileSize)
     , m_usage(0)
-    , m_valid(false)
-    , m_compiling(true)
+    , m_valid(true)
+    , m_compiling(compiling)
 {
-    m_library = new QLibrary(filePath);
-
-    if (m_library->load())
-    {
-        //m_library->
-
-        m_valid = true;
-    }
 }
 
 QCFTemplate::~QCFTemplate()
 {
     if (m_library->isLoaded())
     {
-
-
         m_library->unload();
     }
 
@@ -38,7 +33,7 @@ int QCFTemplate::usageCount() const
     return m_usage;
 }
 
-QDateTime QCFTemplate::modified() const
+uint QCFTemplate::modified() const
 {
     return m_modified;
 }
@@ -125,4 +120,27 @@ bool QCFTemplate::isCompiling() const
 void QCFTemplate::setCompiling(bool compiling)
 {
     m_compiling = compiling;
+}
+
+QCFWorkerThread * QCFTemplate::getTemplateObject()
+{
+    if ((m_usage <= 0)||(!m_valid))
+    {
+        return nullptr;
+    }
+
+    typedef QCFWorkerThread * (*createTemplateDef)();
+
+    createTemplateDef getTemplateInfo = (createTemplateDef) m_library->resolve("createTemplate");
+
+    if (getTemplateInfo == nullptr)
+    {
+        m_valid = false;
+
+        m_error = "Could not resolve getTemplateInfo function.";
+
+        return nullptr;
+    }
+
+    return getTemplateInfo();
 }

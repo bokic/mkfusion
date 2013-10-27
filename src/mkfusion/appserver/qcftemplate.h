@@ -1,6 +1,9 @@
 #ifndef QCFTEMPLATE_H
 #define QCFTEMPLATE_H
 
+#include "qcftemplateinfo.h"
+#include "qcfworkerthread.h"
+
 #include <QDateTime>
 #include <QLibrary>
 
@@ -8,10 +11,10 @@
 class QCFTemplate
 {
 public:
-    QCFTemplate(const QString &filePath = "");
+    QCFTemplate(const QString &filePath = "", const QCFTemplateInfo &templateInfo = QCFTemplateInfo(),bool compiling = true);
     virtual ~QCFTemplate();
     int usageCount() const;
-    QDateTime modified() const;
+    uint modified() const;
     bool load();
     bool unload();
     bool isLoaded() const;
@@ -22,16 +25,17 @@ public:
     bool isValid() const;
     bool isCompiling() const;
     void setCompiling(bool compiling);
+    QCFWorkerThread * getTemplateObject();
 
 private:
     QString m_pathName;
     QLibrary *m_library;
-    QDateTime m_modified;
-    volatile int m_fileSize;
+    uint m_modified;
+    volatile qint64 m_fileSize;
     QString m_error;
     volatile int m_usage;
-    volatile bool m_valid;
-    volatile bool m_compiling;
+    bool m_valid;
+    bool m_compiling;
 };
 
 #endif // QCFTEMPLATE_H
