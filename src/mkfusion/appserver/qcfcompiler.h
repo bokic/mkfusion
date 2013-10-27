@@ -9,7 +9,7 @@ class QCFCompiler
 public:
     QCFCompiler();
     void setTargetPath(const QString &target);
-    QString compile(const QString &cppFile);
+    QString compile(const QString &cppFile, QString &libFile);
     QString generateCpp(const QString &cfmlFilePath, QString &cppFilePath);
 
 private:

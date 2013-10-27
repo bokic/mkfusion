@@ -15,11 +15,17 @@ void QCFCompiler::setTargetPath(const QString &target)
     m_TargetPath = target;
 }
 
-QString QCFCompiler::compile(const QString &cppFile)
+QString QCFCompiler::compile(const QString &cppFile, QString &libFile)
 {
     QFileInfo file(cppFile);
     QString l_NewTarget = file.baseName();
     QProcess process;
+
+#ifdef Q_OS_WIN
+    libFile = file.path() + QDir::separator() + file.completeBaseName() + ".dll";
+#else
+    libFile = file.path() + QDir::separator() + file.completeBaseName() + ".so";
+#endif
 
     // Compile
 #ifdef Q_OS_WIN

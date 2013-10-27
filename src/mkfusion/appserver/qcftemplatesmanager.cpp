@@ -81,7 +81,7 @@ void QCFTemplatesManager::init()
 
 QCFWorkerThread * QCFTemplatesManager::getWorker(const QString &sourceFile, QString &error)
 {
-    QString cppFile;
+    QString cppFile, libFile;
 
     forever
     {
@@ -110,7 +110,7 @@ QCFWorkerThread * QCFTemplatesManager::getWorker(const QString &sourceFile, QStr
             }
             else
             {
-                m_templates.insert(sourceFile, QCFTemplate(sourceFile));
+                m_templates.insert(sourceFile, QCFTemplate());
 
                 break;
             }
@@ -133,7 +133,7 @@ QCFWorkerThread * QCFTemplatesManager::getWorker(const QString &sourceFile, QStr
     }
 
     // do compile.
-    error = m_compiler.compile(cppFile);
+    error = m_compiler.compile(cppFile, libFile);
     if (!error.isEmpty())
     {
         QReadLocker lock(&m_lock);
@@ -150,12 +150,15 @@ QCFWorkerThread * QCFTemplatesManager::getWorker(const QString &sourceFile, QStr
 
         m_templates[sourceFile].setCompiling(false);
 
+        m_templates[sourceFile].setLibrary(libFile);
+
         if (!m_templates[sourceFile].load())
         {
             return nullptr;
         }
-    }
 
+        return m_templates[sourceFile].getTemplateObject();
+    }
 
     return nullptr;
 }

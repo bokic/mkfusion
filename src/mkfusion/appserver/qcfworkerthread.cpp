@@ -504,7 +504,6 @@ bool QCFWorkerThread::writeResponse()
 
     while(l_SendBuf.size() > l_SendBufPos)
     {
-
         if (m_Socket->write(l_SendBuf.mid(l_SendBufPos, 1024)) == -1)
         {
             break;

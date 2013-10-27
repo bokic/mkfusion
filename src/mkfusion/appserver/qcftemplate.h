@@ -32,6 +32,7 @@ public:
     bool isCompiling() const;
     QDateTime lastAccess() const;
     void setCompiling(bool compiling);
+    bool setLibrary(const QString &libName);
     QCFWorkerThread * getTemplateObject();
 
 private:

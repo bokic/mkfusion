@@ -212,6 +212,20 @@ void QCFTemplate::setCompiling(bool compiling)
     m_compiling = compiling;
 }
 
+bool QCFTemplate::setLibrary(const QString &libName)
+{
+    if (m_library->isLoaded())
+    {
+        return false;
+    }
+
+    m_library->setFileName(libName);
+
+    m_valid = true; // Assumption that is valid
+
+    return true;
+}
+
 QCFWorkerThread * QCFTemplate::getTemplateObject()
 {
     if ((m_usage <= 0)||(!m_valid))
