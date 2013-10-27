@@ -101,6 +101,8 @@ void QCFWorkersManager::on_newConnection()
             return;
         }
 
+        worker->setSocket(localSocket);
+
         connect(worker, &QThread::finished, this, &QCFWorkersManager::on_workerTerminated);
 
         {

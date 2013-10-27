@@ -150,7 +150,7 @@ static int mkfusion_handler(request_rec *r)
 		l_IOStream << r->hostname;
 		l_IOStream << r->uri;
         l_IOStream.device()->seek(chunk_pos);
-        l_IOStream << (qint64)l_Send.size();
+        l_IOStream << (qint64)l_Send.size() - chunk_pos;
 
 		if (l_localSocket.write(l_Send) == -1)
 		{

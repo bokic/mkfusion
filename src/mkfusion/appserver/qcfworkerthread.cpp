@@ -43,7 +43,7 @@ void QCFWorkerThread::setSocket(QLocalSocket *socket)
     m_Socket = socket;
     m_Socket->setParent(nullptr);
     m_Socket->moveToThread(this);
-    m_Socket->setParent(this);
+    //m_Socket->setParent(this);
 }
 
 void QCFWorkerThread::run()
@@ -259,7 +259,7 @@ bool QCFWorkerThread::readRequest()
             return false;
         }
 
-        l_RecievedBuffer += m_Socket->readAll();
+        l_RecievedBuffer.append(m_Socket->readAll());
         if ((l_FoundRecieveBufSize == false)&&(l_RecievedBuffer.size() >= (int)sizeof(qint64)))
         {
             QDataStream l_ds(&l_RecievedBuffer, QIODevice::ReadOnly);
@@ -286,10 +286,10 @@ bool QCFWorkerThread::readRequest()
         }
     }
 
-    if (l_FoundRecieveBufSize)
-    {
-        return false;
-    }
+    //if (l_FoundRecieveBufSize)
+    //{
+    //    return false;
+    //}
 
     QDataStream l_ds(&l_RecievedBuffer, QIODevice::ReadOnly);
     l_ds.setVersion(QDataStream::Qt_5_0);
@@ -299,6 +299,7 @@ bool QCFWorkerThread::readRequest()
     QByteArray tempba;
 
     l_ds >> l_RecieveBufSize;
+
     l_ds >> tempstr;
     if (tempstr)
     {
@@ -313,12 +314,12 @@ bool QCFWorkerThread::readRequest()
         delete[] tempstr;
     }
 
-    l_ds >> tempba;
-    if (!tempba.isEmpty())
-    {
-        m_Request.m_Filename = QString::fromUtf8(tempba.constData());
-        tempba.clear();
-    }
+    //l_ds >> tempba;
+    //if (!tempba.isEmpty())
+    //{
+    //    m_Request.m_Filename = QString::fromUtf8(tempba.constData());
+    //    tempba.clear();
+    //}
 
     l_ds >> tempstr;
     if (tempstr)
@@ -519,7 +520,7 @@ void QCFWorkerThread::writeException(const QMKFusionException &ex)
 
 void QCFWorkerThread::runApplicationTemplate()
 {
-
+    executePage();
 }
 
 void QCFWorkerThread::updateVariables()
