@@ -11,7 +11,13 @@
 class QCFTemplate
 {
 public:
-    QCFTemplate(const QString &filePath = "", const QCFTemplateInfo &templateInfo = QCFTemplateInfo(),bool compiling = true);
+    QCFTemplate();
+    QCFTemplate(const QString &filePath, const QCFTemplateInfo &templateInfo = QCFTemplateInfo(),bool compiling = true);
+    QCFTemplate(const QCFTemplate &other);
+#ifdef Q_COMPILER_RVALUE_REFS
+    QCFTemplate &operator=(QCFTemplate &&other);
+#endif
+    QCFTemplate &operator=(const QCFTemplate &other);
     virtual ~QCFTemplate();
     int usageCount() const;
     uint modified() const;
