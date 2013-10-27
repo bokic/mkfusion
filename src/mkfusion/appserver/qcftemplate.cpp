@@ -13,6 +13,7 @@ QCFTemplate::QCFTemplate()
     , m_usage(0)
     , m_valid(false)
     , m_compiling(false)
+    , m_lastAccess(QDateTime::currentDateTime())
 {
 }
 
@@ -24,6 +25,7 @@ QCFTemplate::QCFTemplate(const QString &filePath, const QCFTemplateInfo &templat
     , m_usage(0)
     , m_valid(true)
     , m_compiling(compiling)
+    , m_lastAccess(QDateTime::currentDateTime())
 {
 }
 
@@ -37,6 +39,7 @@ QCFTemplate::QCFTemplate(const QCFTemplate &other)
     m_usage = other.m_usage;
     m_valid = other.m_valid;
     m_compiling = other.m_compiling;
+    m_lastAccess = other.m_lastAccess;
 }
 
 #ifdef Q_COMPILER_RVALUE_REFS
@@ -50,6 +53,7 @@ QCFTemplate &QCFTemplate::operator=(QCFTemplate &&other)
     qSwap(m_usage, other.m_usage);
     qSwap(m_valid, other.m_valid);
     qSwap(m_compiling, other.m_compiling);
+    qSwap(m_lastAccess, other.m_lastAccess);
 
     return *this;
 }
@@ -68,6 +72,7 @@ QCFTemplate &QCFTemplate::operator=(const QCFTemplate &other)
     m_usage = other.m_usage;
     m_valid = other.m_valid;
     m_compiling = other.m_compiling;
+    m_lastAccess = other.m_lastAccess;
 
     return *this;
 }
@@ -97,8 +102,6 @@ bool QCFTemplate::load()
 {
     if (m_usage == 0)
     {
-        QString ttt = m_library->fileName();
-
         bool loaded = m_library->load();
 
         if (!loaded)
@@ -111,12 +114,23 @@ bool QCFTemplate::load()
 
     m_usage++;
 
+    m_lastAccess = QDateTime::currentDateTime();
+
     return true;
 }
 
 bool QCFTemplate::unload()
 {
-    return false;
+    m_usage--;
+
+    if (m_usage < 0)
+    {
+        return false;
+    }
+
+    m_lastAccess = QDateTime::currentDateTime();
+
+    return true;
 }
 
 bool QCFTemplate::isLoaded() const
@@ -186,6 +200,11 @@ bool QCFTemplate::isValid() const
 bool QCFTemplate::isCompiling() const
 {
     return m_compiling;
+}
+
+QDateTime QCFTemplate::lastAccess() const
+{
+    return m_lastAccess;
 }
 
 void QCFTemplate::setCompiling(bool compiling)

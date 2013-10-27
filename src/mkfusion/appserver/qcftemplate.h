@@ -30,6 +30,7 @@ public:
     void setError(QString error);
     bool isValid() const;
     bool isCompiling() const;
+    QDateTime lastAccess() const;
     void setCompiling(bool compiling);
     QCFWorkerThread * getTemplateObject();
 
@@ -42,6 +43,7 @@ private:
     volatile int m_usage;
     bool m_valid;
     bool m_compiling;
+    QDateTime m_lastAccess;
 };
 
 #endif // QCFTEMPLATE_H
