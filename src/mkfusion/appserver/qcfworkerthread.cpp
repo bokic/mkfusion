@@ -897,9 +897,113 @@ void QCFWorkerThread::updateVariable(QCFVariant &dest, const QCFVariant &key, co
     }
 }
 
+void QCFWorkerThread::f_WriteOutput(const QCFVariant &value)
+{
+    m_Output.append(value.toString());
+}
+
 void QCFWorkerThread::f_WriteOutput(const QString &value)
 {
     m_Output.append(value);
+}
+
+void QCFWorkerThread::f_Location(const QString &p_URL, int p_StatusCode)
+{
+    if ((p_StatusCode < 300)||(p_StatusCode > 307))
+    {
+        throw QMKFusionInvalidArgumentException("f_Location", 2, p_StatusCode, 300, 307);
+    }
+
+    m_StatusCode = p_StatusCode;
+
+    m_Header.insert("location", p_URL);
+
+    m_Output.clear();
+
+    // TODO: Add url redirect
+    throw QMKFusionCFAbortException();
+}
+
+void QCFWorkerThread::f_Location(const QString &p_URL, bool p_AddToken, int p_StatusCode)
+{
+    Q_UNUSED(p_URL);
+    Q_UNUSED(p_AddToken);
+    Q_UNUSED(p_StatusCode);
+}
+
+void QCFWorkerThread::f_Include(const QString &p_template)
+{
+    // TODO: Implement void QCFWorkerThread::f_Include(const QString &p_template)
+}
+
+void QCFWorkerThread::f_Param(const QString &name)
+{
+
+}
+
+void QCFWorkerThread::f_Param(const QString &name, const QCFVariant &p_default)
+{
+
+}
+
+bool QCFWorkerThread::f_FetchQueryRow(QCFVariant &destination, QCFVariant &query, int row)
+{
+
+}
+
+void QCFWorkerThread::f_Application(QString name, bool sessionManagement, bool setClientCookies)
+{
+
+}
+
+void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString &fileField, const QString &accept, const QString &attributes, const QString &mode, const QString &nameConflict, const QString &result)
+{
+
+}
+
+void QCFWorkerThread::startQuery()
+{
+
+}
+
+QCFVariant QCFWorkerThread::endQuery(const QString &p_DataSource)
+{
+
+}
+
+void QCFWorkerThread::endQueryNoReturn(const QString &p_DataSource)
+{
+
+}
+
+void QCFWorkerThread::addCustomFunction(const QString &functionName, std::function<QCFVariant (QCFWorkerThread *, const QList<QCFVariant> &)> function)
+{
+
+}
+
+void QCFWorkerThread::f_SetCookie(const QString &name, const QString &value, const QString &expires)
+{
+
+}
+
+void QCFWorkerThread::startCustomTag(const QString &path, const QString &name, const QCFVariant &attributes, bool hasEndTag, QCustomTagType type)
+{
+
+}
+
+bool QCFWorkerThread::endCustomTag(const QString &path, const QString &name, QCustomTagType type)
+{
+    return false;
+}
+
+void QCFWorkerThread::f_cfAssociate(const QString &baseTagName, const QString &keyName)
+{
+
+}
+
+QCFVariant QCFWorkerThread::f_CreateComponent(const QString &component_name)
+{
+
 }
 
 void QCFWorkerThread::f_cfdump(const QCFVariant &var)

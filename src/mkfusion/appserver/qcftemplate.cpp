@@ -100,6 +100,11 @@ uint QCFTemplate::modified() const
 
 bool QCFTemplate::load()
 {
+    if (!m_valid)
+    {
+        return false;
+    }
+
     if (m_usage == 0)
     {
         bool loaded = m_library->load();

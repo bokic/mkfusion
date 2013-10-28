@@ -214,12 +214,7 @@ QString QCFCompiler::generateCpp(const QString &cfmlFilePath, QString &cppFilePa
 
     cppFilePath = m_TargetPath + "templates" + QDir::separator() + QFileInfo(cfmlFilePath).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".cpp";
 
-    int ret = process.execute( \
-                "mkfusion-generator", \
-                QStringList() \
-                << cfmlFilePath \
-                << cppFilePath \
-                );
+    int ret = process.execute("mkfusion-generator", QStringList() << cfmlFilePath << cppFilePath);
 
     if (ret == 0)
     {

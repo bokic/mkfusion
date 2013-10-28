@@ -1,5 +1,6 @@
 #include "qcflog.h"
 
+#include <QCoreApplication>
 #include <QDateTime>
 #include <QThread>
 #include <QString>
@@ -39,37 +40,42 @@ void QCFLog::write(const QString &filename, int level, const QString &text)
 
     QString timeStamp = QDateTime::currentDateTime().toString("ddd MMMM d yy hh:mm:ss.zzz");
     QString type;
+    QString processID = QString::number(QCoreApplication::applicationPid(), 16);
     QString threadID = QString::number((unsigned long)QThread::currentThreadId(), 16);
 
-    switch(level)
+    if (level & QCFLOG_CRITICAL)
     {
-    case QCFLOG_CRITICAL:
         type = QObject::tr("CRITICAL");
-        break;
-    case QCFLOG_ERROR:
+    }
+    else if (level & QCFLOG_ERROR)
+    {
         type = QObject::tr("ERROR");
-        break;
-    case QCFLOG_WARNING:
+    }
+    else if (level & QCFLOG_WARNING)
+    {
         type = QObject::tr("WARNING");
-        break;
-    case QCFLOG_INFO:
+    }
+    else if (level & QCFLOG_INFO)
+    {
         type = QObject::tr("INFO");
-        break;
-    case QCFLOG_DEBUG:
+    }
+    else if (level & QCFLOG_DEBUG)
+    {
         type = QObject::tr("DEBUG");
-        break;
-    case QCFLOG_PERF:
+    }
+    else if (level & QCFLOG_PERF)
+    {
         type = QObject::tr("PERFORMANCE");
-        break;
-    default:
+    }
+    else
+    {
         type = QObject::tr("UNKNOWN(%1)").arg(QString::number(level, 16));
-        break;
     }
 
 #ifdef Q_OS_WIN
-    file.write(QByteArray(timeStamp.toUtf8()).append('\t').append(threadID).append('\t').append(type).append('\t').append(text.toUtf8()).append('\r').append('\n'));
+    file.write(QByteArray(timeStamp.toUtf8()).append('\t').append(processID).append('\t').append(threadID).append('\t').append(type).append('\t').append(text.toUtf8()).append('\r').append('\n'));
 #else
-    file.write(QByteArray(timeStamp.toUtf8()).append('\t').append(threadID).append('\t').append(type).append('\t').append(text.toUtf8()).append('\n'));
+    file.write(QByteArray(timeStamp.toUtf8()).append('\t').append(processID).append('\t').append(threadID).append('\t').append(type).append('\t').append(text.toUtf8()).append('\n'));
 #endif
 
     file.close();

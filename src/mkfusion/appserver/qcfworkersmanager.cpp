@@ -37,7 +37,7 @@ void QCFWorkersManager::waitForAllWorkersToFinish()
 
 void QCFWorkersManager::on_newConnection()
 {
-    QCFLOG(CFLOG_WORKER, QCFLOG_INFO, "QCFWorkersManager::on_newConnection() has started.");
+    QCFLOG(CFLOG_WORKER, QCFLOG_INFO, "QCFWorkersManager::on_newConnection()");
 
     while(((QLocalServer *)sender())->hasPendingConnections())
     {
@@ -113,12 +113,12 @@ void QCFWorkersManager::on_newConnection()
 
         worker->start();
     }
-
-    QCFLOG(CFLOG_WORKER, QCFLOG_INFO, "QCFWorkersManager::on_newConnection() has ended.");
 }
 
 void QCFWorkersManager::on_workerTerminated()
 {
+    QCFLOG(CFLOG_WORKER, QCFLOG_INFO, "void QCFWorkersManager::on_workerTerminated()");
+
     QCFWorkerThread *l_sender = (QCFWorkerThread *)sender();
 
     {

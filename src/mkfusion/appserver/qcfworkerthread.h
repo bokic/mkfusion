@@ -59,6 +59,8 @@ struct QCFRequest
 class QCFWorkerThread : public QThread
 {
 public:
+    enum QCustomTagType {QCustomTagTypeModuleName, QCustomTagTypeModuleTemplate, QCustomTagType_, QCustomTagTypeImport};
+
     explicit QCFWorkerThread(QObject *parent = 0);
     virtual ~QCFWorkerThread();
 
@@ -83,9 +85,26 @@ public:
     static void updateVariableStr(QCFVariant &dest, const wchar_t *key, const QCFVariant &value);
     static void updateVariableQStr(QCFVariant &dest, const QString &key, const QCFVariant &value);
     static void updateVariable(QCFVariant &dest, const QCFVariant &key, const QCFVariant &value);
+    void f_WriteOutput(const QCFVariant &value);
     void f_WriteOutput(const QString &value);
+    void f_Location(const QString &p_URL, int p_StatusCode);
+    void f_Location(const QString &p_URL, bool p_AddToken, int p_StatusCode);
+    void f_Include(const QString &p_template);
+    void f_Param(const QString &name);
+    void f_Param(const QString &name, const QCFVariant &p_default);
+    bool f_FetchQueryRow(QCFVariant &destination, QCFVariant &query, int row);
+    void f_Application(QString name, bool sessionManagement, bool setClientCookies);
+    void f_FileUploadMove(const QString &destination, const QString &fileField, const QString &accept, const QString &attributes, const QString &mode, const QString &nameConflict, const QString &result);
+    void startQuery();
+    QCFVariant endQuery(const QString &p_DataSource);
+    void endQueryNoReturn(const QString &p_DataSource);
+    void addCustomFunction(const QString &functionName, std::function<QCFVariant (QCFWorkerThread *, const QList<QCFVariant> &)> function);
+    void f_SetCookie(const QString &name, const QString &value, const QString &expires);
+    void startCustomTag(const QString &path, const QString &name, const QCFVariant &attributes, bool hasEndTag, QCustomTagType type);
+    bool endCustomTag(const QString &path, const QString &name, QCustomTagType type);
+    void f_cfAssociate(const QString &baseTagName, const QString &keyName);
+    QCFVariant f_CreateComponent(const QString &component_name);
     void f_cfdump(const QCFVariant &var);
-
 
     // Class members
     QCFVariant m_CGI;
