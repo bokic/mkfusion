@@ -938,12 +938,150 @@ void QCFWorkerThread::f_Include(const QString &p_template)
 
 void QCFWorkerThread::f_Param(const QString &name)
 {
+    if(name.length() == 0)
+    {
+        throw QMKFusionException(
+                    tr("Attribute validation error for CFPARAM."),
+                    tr("The value of the NAME attribute is invalid."
+                       "The length of the string, 0 character(s), must be greater than or equal to 1 character(s).")
+                    );
+    }
 
+    if (!cf_IsDefined(this, name))
+    {
+        throw QMKFusionException(
+                    tr("The required parameter '%1' was not provided.").arg(name.toUpper()),
+                    tr("This page uses the cfparam tag to declare the parameter '%1' as required for this template."
+                       "The parameter is not available. Ensure that you have passed or initialized the parameter correctly."
+                       "To set a default value for the parameter, use the default attribute of the cfparam tag.").arg(name.toUpper())
+                    );
+    }
 }
 
 void QCFWorkerThread::f_Param(const QString &name, const QCFVariant &p_default)
 {
+    QStringList parts;
 
+    if(name.length() == 0)
+    {
+        throw QMKFusionException(
+                    tr("Attribute validation error for CFPARAM."),
+                    tr("The value of the NAME attribute is invalid."
+                       "The length of the string, 0 character(s), must be greater than or equal to 1 character(s).")
+                    );
+    }
+
+
+    parts = name.toUpper().split(".");
+
+    if (parts.count() == 1)
+    {
+        if(!m_VARIABLES.m_Struct->contains(parts.at(0)))
+        {
+            if (m_VARIABLES.m_HiddenScopeLast1)
+            {
+                if (m_VARIABLES.m_HiddenScopeLast1->m_Struct->contains(parts.at(0)))
+                {
+                    return;
+                }
+            }
+            m_VARIABLES.m_Struct->insert(parts.at(0), p_default);
+        }
+
+        return;
+    }
+
+    if ((parts.first() != "CGI")&&(parts.first() != "SERVER")&&(parts.first() != "APPLICATION")&&(parts.first() != "SESSION")&&(parts.first() != "URL")&&(parts.first() != "FORM")&&(parts.first() != "VARIABLES"))
+    {
+        parts.prepend("VARIABLES");
+    }
+
+    const QString &first = parts.takeFirst();
+
+    QCFVariant *var = &m_VARIABLES;
+
+    if (first == "CGI")
+    {
+        var = &m_CGI;
+    }
+    else if (first == "SERVER")
+    {
+        var = &m_SERVER;
+    }
+    else if (first == "APPLICATION")
+    {
+        if (m_APPLICATION == nullptr)
+        {
+            throw QMKFusionException(tr("Appication scope not enabled."));
+        }
+
+        var = m_APPLICATION;
+    }
+    else if (first == "SESSION")
+    {
+        if (m_SESSION == nullptr)
+        {
+            throw QMKFusionException(tr("Session scope not enabled."));
+        }
+
+        var = m_SESSION;
+    }
+    else if (first == "URL")
+    {
+        var = &m_URL;
+    }
+    else if (first == "FORM")
+    {
+        var = &m_FORM;
+    }
+    else if (first == "VARIABLES")
+    {
+    }
+    else
+    {
+        throw QMKFusionException(tr("Internal error."), tr("Unknown type(cf_IsDefined)."));
+    }
+
+    bool inserted = false;
+
+    for(const QString &item : parts)
+    {
+        if ((var->m_Type != QCFVariant::Struct)&&(var->m_Type != QCFVariant::Null))
+        {
+            throw QMKFusionException(tr("Variable not object."));
+        }
+
+        if (var->m_Type == QCFVariant::Null)
+        {
+            var->setType(QCFVariant::Struct);
+        }
+
+        if (!var->m_Struct->contains(item))
+        {
+            if (var->m_HiddenScopeLast1)
+            {
+                var = var->m_HiddenScopeLast1;
+
+                if (var->m_Struct->contains(item))
+                {
+                    var = &(*var)[item];
+
+                    continue;
+                }
+            }
+
+            var->m_Struct->insert(item, QCFVariant(QCFVariant::Null));
+
+            inserted = true;
+        }
+
+        var = &(*var)[item];
+    }
+
+    if (inserted)
+    {
+        *var = p_default;
+    }
 }
 
 bool QCFWorkerThread::f_FetchQueryRow(QCFVariant &destination, QCFVariant &query, int row)
@@ -978,12 +1116,36 @@ void QCFWorkerThread::endQueryNoReturn(const QString &p_DataSource)
 
 void QCFWorkerThread::addCustomFunction(const QString &functionName, std::function<QCFVariant (QCFWorkerThread *, const QList<QCFVariant> &)> function)
 {
+    if (m_CustomFunctions.contains(functionName))
+    {
+        throw QMKFusionException(tr("Function [%1] is already defined in other template.").arg(functionName));
+    }
 
+    m_CustomFunctions.insert(functionName, function);
 }
 
 void QCFWorkerThread::f_SetCookie(const QString &name, const QString &value, const QString &expires)
 {
+    QCFVariant val(QCFVariant::Struct);
 
+    val.m_Struct->insert("value", value);
+
+    if (expires.compare("never", Qt::CaseInsensitive) == 0)
+    {
+        val.m_Struct->insert("expires", QLocale("en").toString(QDateTime::currentDateTime().addYears(30), "ddd, dd-MMM-yyyy hh:mm:ss").append(" GMT"));
+    }
+    else if (expires.compare("now", Qt::CaseInsensitive) == 0)
+    {
+        val.m_Struct->insert("expires", 0);
+    }
+    else
+    {
+        val.m_Struct->insert("expires", expires);
+    }
+
+    m_COOKIE.m_Struct->insert(name.toUpper(), value);
+
+    m_SetCookies.m_Struct->insert(name.toUpper(), val);
 }
 
 void QCFWorkerThread::startCustomTag(const QString &path, const QString &name, const QCFVariant &attributes, bool hasEndTag, QCustomTagType type)
@@ -998,12 +1160,40 @@ bool QCFWorkerThread::endCustomTag(const QString &path, const QString &name, QCu
 
 void QCFWorkerThread::f_cfAssociate(const QString &baseTagName, const QString &keyName)
 {
+    for(QCFVariant &customTag : m_CustomTags)
+    {
+        const QString &name = QString("cf_") + customTag[L"Name"].toString();
 
+        if (name.compare(baseTagName, Qt::CaseInsensitive) == 0)
+        {
+            if (!cf_StructKeyExists(customTag[L"ThisTag"], keyName.toUpper()))
+            {
+                updateVariableQStr(customTag[L"ThisTag"], keyName, QCFVariant(QCFVariant::Array));
+            }
+
+            cf_ArrayAppend(customTag[L"ThisTag"][keyName.toUpper()], m_VARIABLES[L"Attributes"]);
+
+            return;
+        }
+    }
+
+    throw QMKFusionException(QString("Not within [%1] custom tag.").arg(baseTagName));
 }
 
 QCFVariant QCFWorkerThread::f_CreateComponent(const QString &component_name)
 {
+    /*QString componentFileName = component_name;
 
+    componentFileName = QFileInfo(m_isModified.m_Filename).absolutePath() + QDir::separator() + componentFileName.replace('.', QDir::separator()) + ".cfc";
+
+    void * obj = this->m_TemplateInstance->compileAndLoadComponent(componentFileName, "");
+
+    if (obj == nullptr)
+    {
+        throw QMKFusionCFAbortException();
+    }*/
+
+    return QCFVariant();
 }
 
 void QCFWorkerThread::f_cfdump(const QCFVariant &var)

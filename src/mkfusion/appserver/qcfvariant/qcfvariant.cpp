@@ -393,7 +393,7 @@ Q_DECL_EXPORT int QCFVariant::size()
 	}
 }
 
-Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const double p_Index)
+Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const double index)
 {
     if ((m_Type != QCFVariant::Struct)&&(m_Type != QCFVariant::Array)&&(m_Type != QCFVariant::Query))
 	{
@@ -402,21 +402,21 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const double p_Index)
 
     if (m_Type == QCFVariant::Array)
 	{
-		if ((int)p_Index < 1)
+        if ((int)index < 1)
 		{
-            throw QMKFusionExpressionException("The element at position " + QString::number((int)p_Index) + " of array variable \"xxx\" cannot be found.");
+            throw QMKFusionExpressionException("The element at position " + QString::number((int)index) + " of array variable \"xxx\" cannot be found.");
 		}
 
-        if (m_Array->size() < (int)p_Index)
+        if (m_Array->size() < (int)index)
 		{
-            m_Array->resize((int)p_Index);
+            m_Array->resize((int)index);
 		}
 
-        return (*m_Array)[(int)p_Index - 1];
+        return (*m_Array)[(int)index - 1];
 	}
 	else
 	{
-        QString key = QString::number(p_Index);
+        QString key = QString::number(index);
 
         if (m_HiddenScopeFirst)
         {

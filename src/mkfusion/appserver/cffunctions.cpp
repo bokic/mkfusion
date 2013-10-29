@@ -1,6 +1,6 @@
 #include "cffunctions.h"
-#include "qcftemplate.h"
 #include "qmkfusionexception.h"
+#include "qcfworkerthread.h"
 #include "qcfvariant.h"
 
 #include <QMutexLocker>
@@ -757,12 +757,11 @@ Q_DECL_EXPORT QCFVariant cf_CreateDateTime(int year, int month, int day, int hou
     return QDateTime(QDate(year, month, day), QTime(hour, minute, second));
 }
 
-Q_DECL_EXPORT QCFVariant cf_CreateObject(QCFTemplate *thisTemplate, const QString &type, const QString &component_name)
+Q_DECL_EXPORT QCFVariant cf_CreateObject(QCFWorkerThread *thisTemplate, const QString &type, const QString &component_name)
 {
     if (type.compare("component", Qt::CaseInsensitive) == 0)
     {
-        // FIXME: Implement me Next.
-        //return thisTemplate->f_CreateComponent(component_name);
+        return thisTemplate->f_CreateComponent(component_name);
     }
     else
     {
@@ -1636,12 +1635,11 @@ Q_DECL_EXPORT QString cf_GetAuthUser()
     throw QMKFusionException("Not Implemented", "GetAuthUser is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT QCFVariant cf_GetBaseTagData(QCFTemplate *thisTemplate, const QString &tagname, int instancenumber)
+Q_DECL_EXPORT QCFVariant cf_GetBaseTagData(QCFWorkerThread *thisTemplate, const QString &tagname, int instancenumber)
 {
     int found = 0;
 
-    // FIXME: Implement me Next.
-    /*for(QCFVariant item : thisTemplate->m_CustomTags) // TODO: QCFVariant [] operator should to be const?
+    for(QCFVariant item : thisTemplate->m_CustomTags) // TODO: QCFVariant [] operator should to be const?
     {
         if (tagname == "cf_" + item[L"NAME"].toString())
         {
@@ -1659,20 +1657,19 @@ Q_DECL_EXPORT QCFVariant cf_GetBaseTagData(QCFTemplate *thisTemplate, const QStr
                 return ret;
             }
         }
-    }*/
+    }
 
     throw QMKFusionException(QString("There is no basetag with name[%1] and level %2").arg(tagname).arg(instancenumber));
 }
 
-Q_DECL_EXPORT QString cf_GetBaseTagList(QCFTemplate *thisTemplate)
+Q_DECL_EXPORT QString cf_GetBaseTagList(QCFWorkerThread *thisTemplate)
 {
     QStringList items;
 
-    // FIXME: Implement me Next.
-    /*for(QCFVariant item : thisTemplate->m_CustomTags) // TODO: QCFVariant [] operator should to be const?
+    for(QCFVariant item : thisTemplate->m_CustomTags) // TODO: QCFVariant [] operator should to be const?
     {
         items.append("cf_" + item[L"NAME"].toString());
-    }*/
+    }
 
     return items.join(',');
 }
@@ -2226,14 +2223,11 @@ Q_DECL_EXPORT bool cf_IsDebugMode()
     throw QMKFusionException("Not Implemented", "IsDebugMode is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT bool cf_IsDefined(QCFTemplate *thisTemplate, const QString &variable_name)
+Q_DECL_EXPORT bool cf_IsDefined(QCFWorkerThread *thisTemplate, const QString &variable_name)
 {
     QStringList parts;
 
-    // FIXME: Implement me Next.
-    /*QCFRunningTemplate *templ = thisTemplate->m_TemplateInstance;
-
-    if ((templ == nullptr)||(variable_name.length() == 0))
+    if ((thisTemplate == nullptr)||(variable_name.length() == 0))
     {
         return false;
     }
@@ -2250,41 +2244,41 @@ Q_DECL_EXPORT bool cf_IsDefined(QCFTemplate *thisTemplate, const QString &variab
 
     if (first == "CGI")
     {
-        var = templ->m_CGI;
+        var = thisTemplate->m_CGI;
     }
     else if (first == "SERVER")
     {
-        var = templ->m_SERVER;
+        var = thisTemplate->m_SERVER;
     }
     else if (first == "APPLICATION")
     {
-        if (templ->m_APPLICATION == nullptr)
+        if (thisTemplate->m_APPLICATION == nullptr)
         {
             throw QMKFusionException("Appication scope not enabled.");
         }
 
-        var = *templ->m_APPLICATION;
+        var = *thisTemplate->m_APPLICATION;
     }
     else if (first == "SESSION")
     {
-        if (templ->m_SESSION == nullptr)
+        if (thisTemplate->m_SESSION == nullptr)
         {
             throw QMKFusionException("Session scope not enabled.");
         }
 
-        var = *templ->m_SESSION;
+        var = *thisTemplate->m_SESSION;
     }
     else if (first == "URL")
     {
-        var = templ->m_URL;
+        var = thisTemplate->m_URL;
     }
     else if (first == "FORM")
     {
-        var = templ->m_FORM;
+        var = thisTemplate->m_FORM;
     }
     else if (first == "VARIABLES")
     {
-        var = templ->m_VARIABLES;
+        var = thisTemplate->m_VARIABLES;
     }
     else
     {
@@ -2318,7 +2312,7 @@ Q_DECL_EXPORT bool cf_IsDefined(QCFTemplate *thisTemplate, const QString &variab
         }
 
         var = var.m_Struct->value(item);
-    }*/
+    }
 
     return true;
 }
@@ -4045,10 +4039,9 @@ Q_DECL_EXPORT QString cf_Wrap(const QString &string, int limit, bool strip)
     throw QMKFusionException("Not Implemented", "Wrap is not Implemented (yet:))");
 }
 
-Q_DECL_EXPORT void cf_WriteOutput(QCFTemplate *thisTemplate, const QString &string)
+Q_DECL_EXPORT void cf_WriteOutput(QCFWorkerThread *thisTemplate, const QString &string)
 {
-    // FIXME: Implement me Next.
-    //thisTemplate->m_TemplateInstance->m_Output.append(string);
+    thisTemplate->m_Output.append(string);
 }
 
 Q_DECL_EXPORT bool cf_XmlChildPos(const QCFVariant &elem, const QCFVariant &childName, int N)

@@ -138,11 +138,11 @@ public:
     //friend QCFVariant operator&=(double, const QCFVariant &);
     //friend QCFVariant operator&=(const QString &, const QCFVariant &);
 
-    QCFVariant &operator[](const double);
-    QCFVariant &operator[](const QString &);
-    QCFVariant &operator[](const char *);
-    QCFVariant &operator[](const wchar_t *);
-    QCFVariant &operator[](const QCFVariant &);
+    QCFVariant &operator[](const double index);
+    QCFVariant &operator[](const QString &key);
+    QCFVariant &operator[](const char *key);
+    QCFVariant &operator[](const wchar_t *key);
+    QCFVariant &operator[](const QCFVariant &key);
 
     bool operator==(bool);
     bool operator==(int);

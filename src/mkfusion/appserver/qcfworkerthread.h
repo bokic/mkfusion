@@ -7,6 +7,7 @@
 #include <QTemporaryFile>
 #include <QLocalSocket>
 #include <QThread>
+#include <QList>
 
 
 struct QCFFileUpload
@@ -127,6 +128,7 @@ public:
     QCFVariant m_SetCookies;
     QHash<QString, std::function<QCFVariant (QCFWorkerThread *, const QList<QCFVariant> &arguments)>> m_CustomFunctions;
     QHash<QString, QCFFileUpload> m_FileUpload;
+    QList<QCFVariant> m_CustomTags;
 
 private:
     static QString f_cfdump_var(const QCFVariant &var);

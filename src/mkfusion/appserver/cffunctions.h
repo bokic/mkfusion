@@ -2,8 +2,7 @@
 #define CFFUNCTIONS_H
 
 #include "qmkfusionexception.h"
-//#include "qcfrunningtemplate.h"
-#include "qcftemplate.h"
+#include "qcfworkerthread.h"
 #include "qcfvariant.h"
 //#include "common.h"
 
@@ -60,7 +59,7 @@ Q_DECL_EXPORT int cf_CompareNoCase(const QString &string1, const QString &string
 Q_DECL_EXPORT double cf_Cos(double number);
 Q_DECL_EXPORT QCFVariant cf_CreateDate(int year, int month, int day);
 Q_DECL_EXPORT QCFVariant cf_CreateDateTime(int year, int month, int day, int hour, int minute, int second);
-Q_DECL_EXPORT QCFVariant cf_CreateObject(QCFTemplate *thisTemplate, const QString &type, const QString &component_name);
+Q_DECL_EXPORT QCFVariant cf_CreateObject(QCFWorkerThread *thisTemplate, const QString &type, const QString &component_name);
 Q_DECL_EXPORT QCFVariant cf_CreateODBCDate(const QDateTime &date);
 Q_DECL_EXPORT QCFVariant cf_CreateODBCDateTime(const QDateTime &date);
 Q_DECL_EXPORT QCFVariant cf_CreateODBCTime(const QDateTime &date);
@@ -119,8 +118,8 @@ Q_DECL_EXPORT int cf_Fix(double value);
 Q_DECL_EXPORT QString cf_FormatBaseN(int number, int radix);
 Q_DECL_EXPORT QString cf_GenerateSecretKey(const QString &algorithm, int keysize = -1);
 Q_DECL_EXPORT QString cf_GetAuthUser();
-Q_DECL_EXPORT QCFVariant cf_GetBaseTagData(QCFTemplate *thisTemplate, const QString &tagname, int instancenumber = 1);
-Q_DECL_EXPORT QString cf_GetBaseTagList(QCFTemplate *thisTemplate);
+Q_DECL_EXPORT QCFVariant cf_GetBaseTagData(QCFWorkerThread *thisTemplate, const QString &tagname, int instancenumber = 1);
+Q_DECL_EXPORT QString cf_GetBaseTagList(QCFWorkerThread *thisTemplate);
 Q_DECL_EXPORT QString cf_GetBaseTemplatePath();
 Q_DECL_EXPORT QString cf_GetClientVariablesList();
 Q_DECL_EXPORT QCFVariant cf_GetComponentMetaData(const QString &path);
@@ -223,7 +222,7 @@ Q_DECL_EXPORT bool cf_IsCustomFunction(const QString &name);
 Q_DECL_EXPORT bool cf_IsDate(const QString &string);
 Q_DECL_EXPORT bool cf_IsDDX(const QString &path_or_string);
 Q_DECL_EXPORT bool cf_IsDebugMode();
-Q_DECL_EXPORT bool cf_IsDefined(QCFTemplate *thisTemplate, const QString &variable_name);
+Q_DECL_EXPORT bool cf_IsDefined(QCFWorkerThread *thisTemplate, const QString &variable_name);
 Q_DECL_EXPORT bool cf_IsImage(const QCFVariant &name);
 Q_DECL_EXPORT bool cf_IsImageFile(const QCFVariant &path);
 Q_DECL_EXPORT bool cf_IsInstanceOf(const QCFVariant &object, const QString &typeName);
@@ -383,7 +382,7 @@ Q_DECL_EXPORT QString cf_ValueList(const QCFVariant &query_column, const QString
 Q_DECL_EXPORT void cf_VerifyClient();
 Q_DECL_EXPORT int cf_Week(const QDateTime &date);
 Q_DECL_EXPORT QString cf_Wrap(const QString &string, int limit, bool strip = false);
-Q_DECL_EXPORT void cf_WriteOutput(QCFTemplate *thisTemplate, const QString &string);
+Q_DECL_EXPORT void cf_WriteOutput(QCFWorkerThread *thisTemplate, const QString &string);
 Q_DECL_EXPORT bool cf_XmlChildPos(const QCFVariant &elem, const QCFVariant &childName, int N);
 Q_DECL_EXPORT QCFVariant cf_XmlElemNew(QCFVariant &xmlObj, const QString &childName);
 Q_DECL_EXPORT QCFVariant cf_XmlElemNew(QCFVariant &xmlObj, const QString &_namespace, const QString &childName);
