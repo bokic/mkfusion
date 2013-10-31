@@ -79,20 +79,21 @@ void QCFDatabasePoolManager::setConnectionDefinition(const QList<QCFDatabaseConn
     }
 }
 
-QSqlDatabase *QCFDatabasePoolManager::getDatabaseConnection(const QString &name)
+QSqlDatabase QCFDatabasePoolManager::getDatabaseConnection(const QString &name)
 {
     QWriteLocker locker(&m_lock);
 
-    return nullptr;
+    return QSqlDatabase::database(name);
 }
 
-void QCFDatabasePoolManager::putBackDatabaseConnection(QSqlDatabase *old_db_connection)
+void QCFDatabasePoolManager::putBackDatabaseConnection(QSqlDatabase old_db_connection)
 {
     QWriteLocker locker(&m_lock);
 
+    old_db_connection.close();
 }
 
-QReadWriteLock *QCFDatabasePoolManager::lock()
+QReadWriteLock * QCFDatabasePoolManager::lock()
 {
     return &m_lock;
 }

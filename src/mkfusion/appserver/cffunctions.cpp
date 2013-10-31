@@ -3922,8 +3922,8 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
         if (type == "m") ret.replace(pos, 1, time.toString("m"));
         if (type == "HH") ret.replace(pos, 2, time.toString("hh"));
         if (type == "H") ret.replace(pos, 1, time.toString("h"));
-        if (type == "hh") ret.replace(pos, 2, time.toString("hh")); // TODO: 12h format is not implemented.
-        if (type == "h") ret.replace(pos, 1, time.toString("h")); // TODO: 12h format is not implemented.
+        if (type == "hh") ret.replace(pos, 2, time.toString("hh")); // TODO: cf_TimeFormat 12h format is not implemented.
+        if (type == "h") ret.replace(pos, 1, time.toString("h")); // TODO: cf_TimeFormat 12h format is not implemented.
     }
 
     return ret;

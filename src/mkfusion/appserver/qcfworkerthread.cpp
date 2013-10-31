@@ -5,9 +5,13 @@
 #include "qcfserver.h"
 #include "qcflog.h"
 
+#include <QElapsedTimer>
 #include <QDataStream>
 #include <QStringList>
+#include <QSqlRecord>
 #include <QUrlQuery>
+#include <QSqlError>
+#include <QSqlQuery>
 #include <QPair>
 #include <QDir>
 
@@ -478,7 +482,7 @@ bool QCFWorkerThread::writeResponse()
         if (m_COOKIE.m_Type == QCFVariant::Struct)
         {
             for(const QString &key : m_COOKIE.m_Struct->keys())
-            { // TODO: Unhardcode Max-Age.
+            { // TODO: Unhardcode cookie Max-Age.
                 m_Header.insert("Set-Cookie", QUrl::toPercentEncoding(key) + "=" + QUrl::toPercentEncoding(m_COOKIE[key].toString()) + "; Max-Age=3600; Path=/; HttpOnly");
             }
         }
@@ -594,6 +598,7 @@ void QCFWorkerThread::writeException(const QMKFusionException &ex)
 
 void QCFWorkerThread::runApplicationTemplate()
 {
+    // TODO: Implement runApplicationTemplate.
     //executePage();
 }
 
@@ -702,7 +707,7 @@ void QCFWorkerThread::updateVariables()
     cf_StructUpdate(m_CGI, QStringLiteral("CONTENT_LENGTH"), QStringLiteral(""));
     cf_StructUpdate(m_CGI, QStringLiteral("CONTENT_TYPE"), m_Request.m_ContentType);
     cf_StructUpdate(m_CGI, QStringLiteral("CONTEXT_PATH"), QStringLiteral(""));
-    cf_StructUpdate(m_CGI, QStringLiteral("GATEWAY_INTERFACE"), QStringLiteral("CGI/1.1")); // TODO: Hardcoded.
+    cf_StructUpdate(m_CGI, QStringLiteral("GATEWAY_INTERFACE"), QStringLiteral("CGI/1.1")); // TODO: Hardcoded GATEWAY_INTERFACE.
     cf_StructUpdate(m_CGI, QStringLiteral("HTTPS"), QStringLiteral(""));
     cf_StructUpdate(m_CGI, QStringLiteral("HTTPS_KEYSIZE"), QStringLiteral(""));
     cf_StructUpdate(m_CGI, QStringLiteral("HTTPS_SECRETKEYSIZE"), QStringLiteral(""));
@@ -719,14 +724,14 @@ void QCFWorkerThread::updateVariables()
     cf_StructUpdate(m_CGI, QStringLiteral("PATH_INFO"), QStringLiteral(""));
     cf_StructUpdate(m_CGI, QStringLiteral("PATH_TRANSLATED"), m_Request.m_Filename);
     cf_StructUpdate(m_CGI, QStringLiteral("QUERY_STRING"), m_Request.m_Args);
-    cf_StructUpdate(m_CGI, QStringLiteral("REMOTE_ADDR"), m_Request.m_RemoteHost); // TODO: please check me.
+    cf_StructUpdate(m_CGI, QStringLiteral("REMOTE_ADDR"), m_Request.m_RemoteHost); // TODO: please check me(REMOTE_ADDR).
     cf_StructUpdate(m_CGI, QStringLiteral("REMOTE_HOST"), m_Request.m_RemoteHost);
     cf_StructUpdate(m_CGI, QStringLiteral("REMOTE_USER"), QStringLiteral(""));
     cf_StructUpdate(m_CGI, QStringLiteral("REQUEST_METHOD"), m_Request.m_Method);
     cf_StructUpdate(m_CGI, QStringLiteral("SCRIPT_NAME"), m_Request.m_URI);
     cf_StructUpdate(m_CGI, QStringLiteral("SERVER_NAME"), m_Request.m_Host);
-    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PORT"), 80); // TODO: Hardcoded.
-    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PORT_SECURE"), 0); // TODO: Hardcoded.
+    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PORT"), 80); // TODO: Hardcoded SERVER_PORT.
+    cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PORT_SECURE"), 0); // TODO: Hardcoded SERVER_PORT_SECURE.
     cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PROTOCOL"), m_Request.m_Protocol);
     cf_StructUpdate(m_CGI, QStringLiteral("SERVER_SOFTWARE"), QStringLiteral(""));
     cf_StructUpdate(m_CGI, QStringLiteral("WEB_SERVER_API"), QStringLiteral(""));
@@ -933,7 +938,7 @@ void QCFWorkerThread::f_Location(const QString &p_URL, bool p_AddToken, int p_St
 
 void QCFWorkerThread::f_Include(const QString &p_template)
 {
-    // TODO: Implement void QCFWorkerThread::f_Include(const QString &p_template)
+    // TODO: Implement f_Include(const QString &p_template)
 }
 
 void QCFWorkerThread::f_Param(const QString &name)
@@ -1086,32 +1091,156 @@ void QCFWorkerThread::f_Param(const QString &name, const QCFVariant &p_default)
 
 bool QCFWorkerThread::f_FetchQueryRow(QCFVariant &destination, QCFVariant &query, int row)
 {
+    if (query.m_Type != QCFVariant::Query)
+    {
+        throw QMKFusionException("Variable is not query.");
+    }
 
+    if ((row < 1)||(row > query.m_Struct->value("RECORDCOUNT"))||(query.m_Struct->value("COLUMNS").toString().isEmpty()))
+    {
+        return false;
+    }
+
+    query[L"CURRENTROW"] = row;
+
+    for(int i = 0; i < query.m_Struct->value("RESULTSET").m_Struct->count(); i++)
+    {
+        QString columnName = query.m_Struct->value("RESULTSET").m_Struct->keys().at(i);
+
+        QCFVariant columnData = query.m_Struct->value("RESULTSET").m_Struct->values().at(i).m_Array->at(row - 1);
+
+        updateVariable(destination, columnName, columnData);
+    }
+
+    return true;
 }
 
 void QCFWorkerThread::f_Application(QString name, bool sessionManagement, bool setClientCookies)
 {
-
+    // TODO: Implement f_Application.
 }
 
 void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString &fileField, const QString &accept, const QString &attributes, const QString &mode, const QString &nameConflict, const QString &result)
 {
-
+    // TODO: Implement f_FileUploadMove.
 }
 
 void QCFWorkerThread::startQuery()
 {
-
+    m_NestedOutput.push_back(m_Output);
+    m_Output.clear();
 }
 
 QCFVariant QCFWorkerThread::endQuery(const QString &p_DataSource)
 {
+    QElapsedTimer timer;
+    QCFVariant ret = cf_QueryNew("");
 
+    QString sql = m_Output;
+    m_Output = m_NestedOutput.takeLast();
+
+    timer.start();
+
+    //Get dbconnection object
+    QSqlDatabase conn = QCFServer::instance()->m_DatabasePool.getDatabaseConnection(p_DataSource);
+
+    if (!conn.isOpen())
+    {
+        if (conn.open() == false)
+        {
+            throw QMKFusionDatabaseException("Database connection failed.<br />\nDatabase error string: " + conn.lastError().text());
+        }
+    }
+
+    //Call prepare query
+    QSqlQuery query(conn);
+
+    if (query.prepare(sql) == false)
+    {
+        throw QMKFusionDatabaseException("Invalid query syntax.", "Database error string: " + query.lastError().text() + "<br />\n Query: " + sql);
+    }
+
+    //Send query parameters(if any)
+    for(int c = 0; c < m_QueryParams.count(); c++)
+    {
+        query.bindValue(c, m_QueryParams.at(c).toString());
+    }
+
+    //call query exec.
+    if (query.exec() == false)
+    {
+        throw QMKFusionDatabaseException("query execute failed.<br />\nDatabase error string: " + query.lastError().text());
+    }
+
+    // copy
+    for(int f = 0; f < query.record().count(); f++)
+    {
+        QString fieldName = query.record().fieldName(f);
+        cf_QueryAddColumn(ret, fieldName);
+    }
+
+    int row = 1;
+
+    while(query.next())
+    {
+        cf_QueryAddRow(ret);
+
+        for(int f = 0; f < query.record().count(); f++)
+        {
+            cf_QuerySetCell(ret, query.record().fieldName(f), query.record().value(f).toString(), row);
+        }
+
+        row++;
+    }
+
+    ret.m_Struct->insert("RECORDCOUNT", row - 1); // TODO: Rewrite it when possible.
+
+    m_VARIABLES.m_Struct->insert("CFQUERY.EXECUTIONTIME", (int)timer.elapsed());
+
+    return ret;
 }
 
 void QCFWorkerThread::endQueryNoReturn(const QString &p_DataSource)
 {
+    QElapsedTimer timer;
 
+    QString sql = m_Output;
+    m_Output = m_NestedOutput.takeLast();
+
+    timer.start();
+
+    //Get dbconnection object
+    QSqlDatabase conn = QCFServer::instance()->m_DatabasePool.getDatabaseConnection(p_DataSource);
+
+    if (!conn.isOpen())
+    {
+        if (conn.open() == false)
+        {
+            throw QMKFusionDatabaseException("Database connection failed.<br />\nDatabase error string: " + conn.lastError().text());
+        }
+    }
+
+    //Call prepare query
+    QSqlQuery query(conn);
+
+    if (query.prepare(sql) == false)
+    {
+        throw QMKFusionDatabaseException("Invalid query syntax.", "Database error string: " + query.lastError().text() + "<br />\n Query: " + sql);
+    }
+
+    //Send query parameters(if any)
+    for(int c = 0; c < m_QueryParams.count(); c++)
+    {
+        query.bindValue(c, m_QueryParams.at(c).toString());
+    }
+
+    //call query exec.
+    if (query.exec() == false)
+    {
+        throw QMKFusionDatabaseException("query execute failed.<br />\nDatabase error string: " + query.lastError().text());
+    }
+
+    m_VARIABLES.m_Struct->insert("CFQUERY.EXECUTIONTIME", (int)timer.elapsed());
 }
 
 void QCFWorkerThread::addCustomFunction(const QString &functionName, std::function<QCFVariant (QCFWorkerThread *, const QList<QCFVariant> &)> function)
@@ -1150,11 +1279,13 @@ void QCFWorkerThread::f_SetCookie(const QString &name, const QString &value, con
 
 void QCFWorkerThread::startCustomTag(const QString &path, const QString &name, const QCFVariant &attributes, bool hasEndTag, QCustomTagType type)
 {
-
+    // TODO: Implement startCustomTag.
 }
 
 bool QCFWorkerThread::endCustomTag(const QString &path, const QString &name, QCustomTagType type)
 {
+    // TODO: Implement endCustomTag.
+
     return false;
 }
 
@@ -1182,6 +1313,8 @@ void QCFWorkerThread::f_cfAssociate(const QString &baseTagName, const QString &k
 
 QCFVariant QCFWorkerThread::f_CreateComponent(const QString &component_name)
 {
+    // TODO: Implement f_CreateComponent.
+
     /*QString componentFileName = component_name;
 
     componentFileName = QFileInfo(m_isModified.m_Filename).absolutePath() + QDir::separator() + componentFileName.replace('.', QDir::separator()) + ".cfc";
@@ -1531,7 +1664,7 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
 
                 switch ((*l_temp.m_Struct)[l_key].m_Type) {
                 case QCFVariant::Null:
-                    ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key + " [null]</td><td>null</td></tr>\n";
+                    ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key.toHtmlEscaped() + " [null]</td><td>null</td></tr>\n";
                     continue;
                 case QCFVariant::Boolean:
                     l_keyType = "[boolean]";
@@ -1568,7 +1701,7 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
                     break;
                 }
 
-                ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key + " " + l_keyType + "</td><td>" + f_cfdump_var((*l_temp.m_Struct)[l_key]) + "</td></tr>\n";
+                ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key.toHtmlEscaped() + " " + l_keyType.toHtmlEscaped() + "</td><td>" + f_cfdump_var((*l_temp.m_Struct)[l_key]).toHtmlEscaped() + "</td></tr>\n";
             }
 
             ret += "</table>\n";
@@ -1619,7 +1752,7 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
                     break;
                 }
 
-                ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i) + " " + l_keyType + "</td><td>" + f_cfdump_var(l_temp.m_Array->at(i)) + "</td></tr>\n";
+                ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i) + " " + l_keyType.toHtmlEscaped() + "</td><td>" + f_cfdump_var(l_temp.m_Array->at(i)).toHtmlEscaped() + "</td></tr>\n";
             }
 
             ret += "</table>\n";
@@ -1641,7 +1774,7 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
                     ret += "<td class=\"query\">" + var.m_Struct->value("RESULTSET").m_Struct->keys().at(c).toHtmlEscaped() + "</td>\n";
                 }
 
-                ret += "</tr>";
+                ret += "</tr>\n";
 
                 int rows = var.m_Struct->value("RECORDCOUNT").toInt();
 
@@ -1663,7 +1796,7 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
                         ret += "<td valign=\"top\">" + cell_text.toHtmlEscaped() + "</td>\n";
                     }
 
-                    ret += "</tr>";
+                    ret += "</tr>\n";
                 }
             }
 

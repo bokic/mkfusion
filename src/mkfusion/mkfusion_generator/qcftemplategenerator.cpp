@@ -128,7 +128,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
                 }
                 else
                 {
-                    // TODO: Implement me.
+                    // TODO: Implement CFML function describers.
                     throw QCFGeneratorException("Not implemented(TODO).", parameter.m_ChildElements.at(0).m_Position);
                 }
 

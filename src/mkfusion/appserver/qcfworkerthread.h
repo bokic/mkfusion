@@ -129,6 +129,7 @@ public:
     QHash<QString, std::function<QCFVariant (QCFWorkerThread *, const QList<QCFVariant> &arguments)>> m_CustomFunctions;
     QHash<QString, QCFFileUpload> m_FileUpload;
     QList<QCFVariant> m_CustomTags;
+    QList<QString> m_NestedOutput;
 
 private:
     static QString f_cfdump_var(const QCFVariant &var);

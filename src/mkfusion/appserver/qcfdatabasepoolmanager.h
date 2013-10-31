@@ -14,9 +14,9 @@ class QCFDatabasePoolManager
 public:
     QCFDatabasePoolManager();
     void setConnectionDefinition(const QList<QCFDatabaseConnection> &db_connections);
-    QSqlDatabase *getDatabaseConnection(const QString &name);
-    void putBackDatabaseConnection(QSqlDatabase *old_db_connection);
-    QReadWriteLock *lock();
+    QSqlDatabase getDatabaseConnection(const QString &name);
+    void putBackDatabaseConnection(QSqlDatabase old_db_connection);
+    QReadWriteLock * lock();
 
 private:
     QHash<QString, QSqlDatabase *> m_connections;
