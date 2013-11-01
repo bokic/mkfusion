@@ -1,11 +1,25 @@
 #include "qcfsessionmanager.h"
+#include "qcfworkerthread.h"
 
 #include <QWriteLocker>
 #include <QMutexLocker>
 #include <QMutex>
 
+
 QCFSessionManager::QCFSessionManager()
 {
+}
+
+QCFVariant * QCFSessionManager::getSession(QCFWorkerThread *worker, const QString &name, bool sessionManagement, bool setClientCookies)
+{
+    /*
+        worker->updateVariable(*worker->m_SESSION, L"CFID", CFID);
+        worker->updateVariable(*worker->m_SESSION, L"CFTOKEN", CFTOKEN);
+        worker->updateVariable(*worker->m_SESSION, L"SESSIONID", l_name + "_" + CFID + "_" + CFTOKEN);
+        worker->updateVariable(*worker->m_SESSION, L"URLTOKEN", "CFID=" + CFID + "&CFTOKEN=" + CFTOKEN);
+    */
+
+    return nullptr;
 }
 
 void QCFSessionManager::createSessonStrings(QString &cfid, QString &cftoken)

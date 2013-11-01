@@ -1,6 +1,7 @@
 #ifndef QCFAPPLICATIONMANAGER_H
 #define QCFAPPLICATIONMANAGER_H
 
+#include "qcfworkerthread.h"
 #include "qcfapplication.h"
 
 #include <QReadWriteLock>
@@ -12,6 +13,7 @@ class QCFApplicationManager
 public:
     QCFApplicationManager();
 
+    void updateApplication(QCFWorkerThread *worker, const QString &name, bool sessionManagement, bool setClientCookies);
     void stopAndRemoveTimeoutApplication();
     QReadWriteLock *lock();
 

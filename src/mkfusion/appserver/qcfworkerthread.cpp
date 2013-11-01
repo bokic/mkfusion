@@ -504,7 +504,7 @@ bool QCFWorkerThread::writeResponse()
         m_HeadersSent = true;
     }
 
-    QByteArray l_SendBuf = m_Output.toUtf8(); // TODO: utf-8 output hardcoded
+    QByteArray l_SendBuf = m_Output.toUtf8(); // TODO: utf-8 output hardcoded.
     int l_SendBufPos = 0;
 
     while(l_SendBuf.size() > l_SendBufPos)
@@ -925,7 +925,7 @@ void QCFWorkerThread::f_Location(const QString &p_URL, int p_StatusCode)
 
     m_Output.clear();
 
-    // TODO: Add url redirect
+    // TODO: Add URL redirect
     throw QMKFusionCFAbortException();
 }
 
@@ -938,7 +938,7 @@ void QCFWorkerThread::f_Location(const QString &p_URL, bool p_AddToken, int p_St
 
 void QCFWorkerThread::f_Include(const QString &p_template)
 {
-    // TODO: Implement f_Include(const QString &p_template)
+    // TODO: Implement f_Include
 }
 
 void QCFWorkerThread::f_Param(const QString &name)
@@ -1115,14 +1115,158 @@ bool QCFWorkerThread::f_FetchQueryRow(QCFVariant &destination, QCFVariant &query
     return true;
 }
 
-void QCFWorkerThread::f_Application(QString name, bool sessionManagement, bool setClientCookies)
+void QCFWorkerThread::f_Application(const QString &name, bool sessionManagement, bool setClientCookies)
 {
-    // TODO: Implement f_Application.
+    QCFServer::instance()->m_Applications.updateApplication(this, name, sessionManagement, setClientCookies);
 }
 
 void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString &fileField, const QString &accept, const QString &attributes, const QString &mode, const QString &nameConflict, const QString &result)
 {
-    // TODO: Implement f_FileUploadMove.
+#ifdef Q_OS_WIN
+    Q_UNUSED(mode);
+#elif defined Q_OS_LINUX
+    Q_UNUSED(attributes);
+#else
+    #error Windows and Linux OSs are currently supported.
+#endif
+    QString tmp;
+    QDir destinationDir(destination);
+
+    if (!destinationDir.exists())
+    {
+        throw QMKFusionException("Directory does\'t exists.", QString("Directory [%1] does\'t exists.").arg(destination));
+    }
+
+    tmp = fileField.toUpper();
+
+    if (tmp.startsWith("FORM."))
+    {
+        tmp = tmp.right(fileField.length() - 5);
+    }
+
+    if (!m_FileUpload.contains(tmp))
+    {
+        throw QMKFusionException(QString("No file field with name [%1].").arg(tmp));
+    }
+
+    if (!accept.isEmpty())
+    {
+        QStringList acceptList = accept.split(',');
+        QString contentType = m_FileUpload[tmp].m_ContentType.trimmed();
+        bool found = false;
+
+        for(const QString item : acceptList)
+        {
+            if (item.trimmed().compare(contentType, Qt::CaseInsensitive) == 0)
+            {
+                found = true;
+
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            throw QMKFusionException(QString("cffile upload content-type [%1] is not permitted.").arg(contentType));
+        }
+    }
+
+    QFile destinationFile(destinationDir.absoluteFilePath(m_FileUpload[tmp].m_Filename));
+    QCFVariant cffile(QCFVariant::Struct);
+    bool copied = false;
+
+    //cffile.m_Struct->insert("ATTEMPTEDSERVERFILE", destinationFile.fileName());
+    //cffile.m_Struct->insert("FILEEXISTED", destinationFile.exists());
+
+    if ((nameConflict.isEmpty())||(nameConflict.compare("Error", Qt::CaseInsensitive) == 0))
+    {
+        /*if (destinationFile.exists())
+        {
+            throw QMKFusionException("cffile upload errror.", QString("Destination file [%1] allready exist.").arg(destinationFile.fileName()));
+        }
+
+        if (!m_TemplateInstance->m_FileUpload[tmp].m_File->copy(destinationFile.fileName()))
+        {
+            throw QMKFusionException("cffile upload errror.", QString("Error copying file [%1].").arg(destinationFile.fileName()));
+        }*/
+        throw QMKFusionException("cffile upload nameConflict=Error is not implemented.");
+    }
+    else if (nameConflict.compare("Skip", Qt::CaseInsensitive) == 0)
+    {
+        /*if (destinationFile.exists())
+        {
+            cffile.m_Struct->insert("FILEEXISTED", false);
+
+
+            updateVariableQStr(m_TemplateInstance->m_VARIABLES, result, cffile);
+            return;
+        }*/
+        throw QMKFusionException("cffile upload nameConflict=Skip is not implemented.");
+    }
+    else if (nameConflict.compare("Overwrite", Qt::CaseInsensitive) == 0)
+    {
+        /*if (destinationFile.exists())
+        {
+            if (!destinationFile.remove())
+            {
+                throw QMKFusionException("cffile upload errror.", QString("Error overwriting file [%1].").arg(destinationFile.fileName()));
+            }
+        }*/
+        throw QMKFusionException("cffile upload nameConflict=Overwrite is not implemented.");
+    }
+    else if (nameConflict.compare("MakeUnique", Qt::CaseInsensitive) == 0)
+    {
+        if (destinationFile.exists())
+        {
+            QFile newFile;
+            int index = 1;
+
+            do
+            {
+                QFileInfo fi(destinationFile);
+
+                QString newBaseName = fi.completeBaseName() + QString::number(index) + "." + fi.suffix();
+
+                fi.setFile(fi.dir(), newBaseName);
+
+                newFile.setFileName(fi.absoluteFilePath());
+
+                index++;
+
+            } while(newFile.exists());
+
+            destinationFile.setFileName(newFile.fileName());
+        }
+
+        if (!m_FileUpload[tmp].m_File->copy(destinationFile.fileName()))
+        {
+            throw QMKFusionException("cffile upload errror.", QString("Error writing to file [%1].").arg(destinationFile.fileName()));
+        }
+
+        cffile.m_Struct->insert("SERVERDIRECTORY", QDir::toNativeSeparators(QFileInfo(destinationFile).path()));
+        cffile.m_Struct->insert("SERVERFILE", QFileInfo(destinationFile).fileName());
+        cffile.m_Struct->insert("SERVERFILENAME", QFileInfo(destinationFile).completeBaseName());
+        cffile.m_Struct->insert("SERVERFILEEXT", QFileInfo(destinationFile).completeSuffix());
+        cffile.m_Struct->insert("TIMECREATED", QFileInfo(destinationFile).created());
+        cffile.m_Struct->insert("TIMELASTMODIFIED", QFileInfo(destinationFile).lastModified());
+    }
+    else
+    {
+        throw QMKFusionException(QString("Invalid cffile nameConflict value [%1].").arg(nameConflict));
+    }
+
+    if ((copied)&&(!mode.isEmpty()))
+    {
+/*#ifdef Q_OS_WIN
+        ::SetFileAttributes();
+#elif defined Q_OS_LINUX
+        destinationFile.setPermissions();
+#else
+    #error Windows and Linux OSs are currently supported.
+#endif*/
+    }
+
+    updateVariableQStr(m_VARIABLES, result, cffile);
 }
 
 void QCFWorkerThread::startQuery()

@@ -11,12 +11,11 @@ DEPENDPATH  += . ../../../libs/qtservice ../../cfparser qcfvariant
 INCLUDEPATH += . ../../../libs/qtservice ../../cfparser qcfvariant
 
 # main app
-SOURCES  = main.cpp qmkfusionservice.cpp qcfserver.cpp  qhttpcodec.cpp qcfcompiler.cpp qcfapplicationmanager.cpp qcfsessionmanager.cpp qcfdatabasepoolmanager.cpp qcfworkersmanager.cpp qcfsettingsmanager.cpp qcfschedulerthread.cpp qcflog.cpp qcfsettings.cpp qcfworkerthread.cpp qcfdatabaseconnection.cpp qcftemplatesmanager.cpp qcftemplate.cpp \
-    qcftemplateinfo.cpp
-HEADERS  =          qmkfusionservice.h   qcfserver.h    qhttpcodec.h   qcfcompiler.h   qcfapplicationmanager.h   qcfsessionmanager.h   qcfdatabasepoolmanager.h   qcfworkersmanager.h   qcfsettingsmanager.h   qcfschedulerthread.h   qcflog.h   qcfsettings.h   qcfworkerthread.h   qcfdatabaseconnection.h     qcftemplatesmanager.h qcftemplate.h \
-    qcftemplateinfo.h
+SOURCES  = main.cpp qmkfusionservice.cpp qcfserver.cpp  qhttpcodec.cpp qcfcompiler.cpp qcfapplicationmanager.cpp qcfsessionmanager.cpp qcfdatabasepoolmanager.cpp qcfworkersmanager.cpp qcfsettingsmanager.cpp qcfschedulerthread.cpp qcflog.cpp qcfsettings.cpp qcfworkerthread.cpp qcfdatabaseconnection.cpp qcftemplatesmanager.cpp qcftemplate.cpp qcftemplateinfo.cpp
+HEADERS  =          qmkfusionservice.h   qcfserver.h    qhttpcodec.h   qcfcompiler.h   qcfapplicationmanager.h   qcfsessionmanager.h   qcfdatabasepoolmanager.h   qcfworkersmanager.h   qcfsettingsmanager.h   qcfschedulerthread.h   qcflog.h   qcfsettings.h   qcfworkerthread.h   qcfdatabaseconnection.h   qcftemplatesmanager.h   qcftemplate.h   qcftemplateinfo.h
 
-HEADERS += qcfsession.h qmkfusionexception.h
+SOURCES += qcfapplication.cpp
+HEADERS += qcfapplication.h   qcfsession.h qmkfusionexception.h
 
 SOURCES += qcfvariant/qcfvariant.cpp qcfvariant/qcfvariantargument.cpp qcfvariant/qcfvariantcomponent.cpp qcfvariant/qcfvariantfunction.cpp
 HEADERS += qcfvariant/qcfvariant.h   qcfvariant/qcfvariantargument.h   qcfvariant/qcfvariantcomponent.h   qcfvariant/qcfvariantfunction.h
