@@ -1,4 +1,5 @@
 #!/usr/bin/make -f
+include /usr/share/cdbs/1/rules/debhelper.mk
 
 mkfusion = $(CURDIR)/bin/mkfusion
 
