@@ -41,34 +41,6 @@ build-stamp:
 	dh_testdir
 	touch build-stamp
 
-clean:
-# cleanup mkfusion(appserver)
-	rm -f src/mkfusion/appserver/Makefile
-	rm -f src/mkfusion/appserver/Makefile.Debug
-	rm -f src/mkfusion/appserver/Makefile.Release
-	rm -f -r src/mkfusion/appserver/debug
-	rm -f -r src/mkfusion/appserver/release
-# cleanup mkfusion-generator
-	rm -f src/mkfusion/mkfusion_generator/Makefile
-	rm -f src/mkfusion/mkfusion_generator/Makefile.Debug
-	rm -f src/mkfusion/mkfusion_generator/Makefile.Release
-	rm -f -r src/mkfusion/mkfusion_generator/debug
-	rm -f -r src/mkfusion/mkfusion_generator/release
-# cleanup mod_mkfusion
-	rm -f src/mkfusion/mod_mkfusion/Makefile
-	rm -f src/mkfusion/mod_mkfusion/Makefile.Debug
-	rm -f src/mkfusion/mod_mkfusion/Makefile.Release
-	rm -f -r src/mkfusion/mod_mkfusion/debug
-	rm -f -r src/mkfusion/mod_mkfusion/release
-	rm -f bin/libmod_mkfusion.so
-	rm -f bin/libmod_mkfusion.so.1
-	rm -f bin/libmod_mkfusion.so.1.0
-# other cleanup
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp
-	dh_clean
-
 install: build $(mkfusion) $(mkfusion_generator) $(mod_mkfusion) $(mkfusion_conf) $(mkfusion_load) $(conf_d) clean
 	dh_testdir
 	dh_testroot

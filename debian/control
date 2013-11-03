@@ -2,7 +2,7 @@ Source: mkfusion
 Section: devel
 Priority: optional
 Maintainer: Boris Barbulovski <bbarbulovski@gmail.com>
-Build-Depends: debhelper (>= 8.0.0), apache2-dev (>= 2.4.6) | apache2-prefork-dev (>= 2.2.22), qt5-default(>= 5.0.1), lsb-release (>= 4.0)
+Build-Depends: cdbs (>= 0.4), debhelper (>= 8.0.0), apache2-dev (>= 2.4.6) | apache2-prefork-dev (>= 2.2.22), qt5-default(>= 5.0.1), lsb-release (>= 4.0)
 Standards-Version: 3.9.4
 Homepage: http://mkfusion.bokicsoft.com/
 Vcs-Svn: http://svn.code.sf.net/p/mkfusion/code/trunk/
