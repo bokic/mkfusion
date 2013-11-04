@@ -12,8 +12,8 @@ QRDSProject::QRDSProject(const QHash<QString, QString> &p_Args)
     m_Password = p_Args["Password"];
     m_DirSeparator = 0;
 
-	m_Server.setHostName(p_Args["Host"]);
-	m_Server.setUserName(p_Args["Username"]);
+	m_Server.setHostname(p_Args["Host"]);
+	m_Server.setUsername(p_Args["Username"]);
     m_Server.setPassword(p_Args["Password"].toLatin1());
 	m_Server.setPort(p_Args["Port"].toInt());
 

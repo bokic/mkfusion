@@ -1,5 +1,5 @@
-#ifndef QCFVariantCOMPONENT_H
-#define QCFVariantCOMPONENT_H
+#ifndef QCFVARIANTCOMPONENT_H
+#define QCFVARIANTCOMPONENT_H
 
 #include "qcfvariantfunction.h"
 #include <QString>
@@ -10,7 +10,14 @@ class QCFVariantComponent
 {
 public:
     QCFVariantComponent();
+    QCFVariantComponent(const QCFVariantComponent &other);
+#ifdef Q_COMPILER_RVALUE_REFS
+    QCFVariantComponent &operator=(QCFVariantComponent &&other);
+#endif
+    QCFVariantComponent &operator=(const QCFVariantComponent &other);
+    ~QCFVariantComponent();
 
+    QCFVariantComponent *m_Inherit;
     QString m_ComponentFileName;
     QHash<QString, QCFVariantFunction> m_Methods;
     QString m_BindingName;
@@ -27,4 +34,4 @@ public:
     QString m_WSDLFile;
 };
 
-#endif // QCFVariantCOMPONENT_H
+#endif // QCFVARIANTCOMPONENT_H

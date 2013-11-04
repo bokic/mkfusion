@@ -7,7 +7,8 @@
 #include <QMap>
 #include <QUrl>
 
-QAbstractRDSService::QAbstractRDSService(): QObject()
+QAbstractRDSService::QAbstractRDSService()
+    : QObject()
 {
 }
 
@@ -15,61 +16,70 @@ QAbstractRDSService::~QAbstractRDSService()
 {
 }
 
-QByteArray QAbstractRDSService::StringToSTR(QString p_String)
+QByteArray QAbstractRDSService::StringToSTR(const QString &value)
 {
-    QByteArray l_ba = p_String.toUtf8(); // TODO: hardcoded utf-8
-    return QByteArray("STR:") + QByteArray::number(l_ba.length()) + QByteArray(":") + l_ba;
+    QByteArray ret, tmp;
+
+    tmp = value.toUtf8(); // TODO: hardcoded utf-8
+
+    ret.append("STR:");
+    ret.append(QByteArray::number(tmp.length()));
+    ret.append(':');
+    ret.append(tmp);
+
+    return ret;
 }
 
-QByteArray QAbstractRDSService::EncodePassword(QByteArray p_Password)
+QByteArray QAbstractRDSService::EncodePassword(const QByteArray &value)
 {
-    return XORString(p_Password).toHex();
+    return XORString(value).toHex();
 }
 
-QVector<QByteArray> QAbstractRDSService::BreakByteArrayIntoVector(QByteArray p_ByteArray)
+QVector<QByteArray> QAbstractRDSService::BreakByteArrayIntoVector(const QByteArray &value)
 {
 	QVector<QByteArray> ret;
 	QByteArray str;
 
-    int pos = readToColumn(str, p_ByteArray, 0);
+    int pos = readToColumn(str, value, 0);
 	int count = str.toInt();
 	for(int c = 0; c < count; c++)
 	{
-        pos = readToColumn(str, p_ByteArray, pos + 1);
+        pos = readToColumn(str, value, pos + 1);
 
 		if (pos <= 0)
 			break;
 
 		int count2 = str.toInt();
-		ret.append(p_ByteArray.mid(pos + 1, count2));
+        ret.append(value.mid(pos + 1, count2));
 		pos += count2;
 	}
 
 	return ret;
 }
 
-QByteArray QAbstractRDSService::generateRDSCommandSocketOutput(QString url, QByteArray post)
+QByteArray QAbstractRDSService::generateRDSCommandSocketOutput(const QString &url, const QByteArray &post)
 {
 	QUrl l_url(url);
-	QString l_Port;
+    QString portStr;
 
 	int port = l_url.port();
-	if (port == -1)
+    if ((port < 0x0000)||(port > 0xffff))
 		port = 80;
 
 	if (port == 80)
-		l_Port = "";
+        portStr = "";
 	else
-		l_Port = ":" + QString::number(port);
+        portStr = ":" + QString::number(port);
 
 	QString path = url.right(url.size() - url.indexOf(l_url.host()) - l_url.host().size());
 	path = path.right(path.size() - path.indexOf('/'));
 
-	QString toSend = "POST " + path + " HTTP/1.0\r\nHost: " + l_url.host() + l_Port + "\r\nConnection: close\r\nUser-Agent: Mozilla/3.0 (compatible; Macromedia RDS Client)\r\nAccept: text/html, */*\r\nAccept-Encoding: deflate\r\nContent-type: text/html\r\nContent-length: " + QString::number(post.size()) + "\r\n\r\n";
-    return toSend.toLatin1() + post;
+    QString toSend = "POST " + path + " HTTP/1.0\r\nHost: " + l_url.host() + portStr + "\r\nConnection: close\r\nUser-Agent: Mozilla/3.0 (compatible; Macromedia RDS Client)\r\nAccept: text/html, */*\r\nAccept-Encoding: deflate\r\nContent-type: text/html\r\nContent-length: " + QString::number(post.size()) + "\r\n\r\n";
+
+    return toSend.toLatin1() + post; // TODO: toLatin1()
 }
 
-QByteArray QAbstractRDSService::executeRDSCommandURL(QString url, QByteArray post)
+QByteArray QAbstractRDSService::executeRDSCommandURL(const QString &url, const QByteArray &post)
 {
 	QTcpSocket socket;
 	QUrl l_url(url);
@@ -107,103 +117,122 @@ QByteArray QAbstractRDSService::executeRDSCommandURL(QString url, QByteArray pos
 	return ret;
 }
 
-QByteArray QAbstractRDSService::generatePostFromVector(QRDSServer rdsserver, QVector<QString> map)
+QByteArray QAbstractRDSService::generatePostFromVector(const QRDSServer &rdsserver, const QVector<QString> &map)
 {
-	QByteArray ret = QByteArray::number(map.size() + 2) + ":";
-	QByteArray password = rdsserver.getPromptedPassword();
-	if(password == "")
+    QByteArray ret;
+    QByteArray password;
+
+    ret = QByteArray::number(map.size() + 2) + ":"; // `+ 2` is plus username and plus password.
+    password = rdsserver.promptedPassword();
+
+    if(password.isEmpty())
 	{
-		password = rdsserver.getPassword().toUtf8();
+		password = rdsserver.password().toUtf8();
 	}
 
-	for(int c = 0; c < map.size(); c++)
+    for(const QString &item : map)
 	{
         // TODO: Missing file types(for file upload) but I don't know where it is used!
-		ret += StringToSTR(map.at(c));
+        ret.append(StringToSTR(item));
 	}
 
-	ret += StringToSTR(rdsserver.getUserName());
-	ret += StringToSTR(EncodePassword(password));
+    ret.append(StringToSTR(rdsserver.username()));
+    ret.append(StringToSTR(EncodePassword(password)));
 
 	return ret;
 }
 
-QByteArray QAbstractRDSService::executeRDSCommandForByteArray(QString command, QRDSServer rdsserver, QVector<QString> map, quint16 port)
+QByteArray QAbstractRDSService::executeRDSCommandForByteArray(const QString &command, const QRDSServer &rdsserver, const QVector<QString> &map, quint16 port)
 {
-	QString s2 = prepareURL(rdsserver, command, port);
+    QString url;
+    QByteArray post;
 
-	QString tt = generatePostFromVector(rdsserver, map);
+    url = prepareURL(rdsserver, command, port);
+    post = generatePostFromVector(rdsserver, map);
 
-	return executeRDSCommandURL(s2, generatePostFromVector(rdsserver, map));
+    return executeRDSCommandURL(url, post);
 }
 
-// Protected:
-
-QString QAbstractRDSService::prepareURL(QRDSServer rdsserver, QString command, quint16 port)
+QString QAbstractRDSService::prepareURL(const QRDSServer &rdsserver, const QString &command, quint16 port)
 {
-	QString ret = "http://" + rdsserver.getHostName();
+    QString ret, content;
+
+    ret = "http://" + rdsserver.hostname();
 
 	if (port != 80)
-        {
-		ret += ":" + QString::number(port);
-        }
+    {
+        ret.append(":" + QString::number(port));
+    }
 
-	QString content = rdsserver.getContextRoot().trimmed();
-	if((content!="")&&(content!="/")&&(content!="\\"))
+    content = rdsserver.contextRoot().trimmed();
+
+    if((!content.isEmpty())&&(content != "/")&&(content != "\\"))
 	{
 		if(!content.startsWith("/") && !content.startsWith("\\"))
-			ret += "/";
-		ret += content;
+        {
+            ret.append('/');
+        }
+        ret.append(content);
 	}
 	
-	ret += "/CFIDE/main/ide.cfm?CFSRV=IDE&ACTION=" + command;
+    ret.append("/CFIDE/main/ide.cfm?CFSRV=IDE&ACTION=" + command);
 
 	return ret;
 }
 
-QByteArray QAbstractRDSService::ArgumentsToString(QVector<QString> args)
+// Protected Members:
+QByteArray QAbstractRDSService::ArgumentsToString(const QVector<QString> &args)
 {
 	QByteArray ret;
 
     for(const QString &item: args)
 	{
-		ret += StringToSTR(item);
+        ret.append(StringToSTR(item));
 	}
+
 	return ret;
 }
 
-QByteArray QAbstractRDSService::executeRDSCommandForByteArray(QString command, QRDSServer rdsserver, QVector<QString> map)
+QByteArray QAbstractRDSService::executeRDSCommandForByteArray(const QString &command, const QRDSServer &rdsserver, const QVector<QString> &map)
 {
-	return executeRDSCommandForByteArray(command, rdsserver, map, rdsserver.getPort());
+	return executeRDSCommandForByteArray(command, rdsserver, map, rdsserver.port());
 }
 
 // Private:
-QByteArray QAbstractRDSService::GetKeyForLength(int p_Length)
+QByteArray QAbstractRDSService::GetKeyForLength(int len)
 {
     static const char *fillup = "4p0L@r1$";
 
-	QByteArray ret;
-    int l_Segments = p_Length / strlen(fillup);
+    QByteArray ret;
+    int segments;
 
-	for(int c = 0; c <= l_Segments; c++)
+    segments = len / strlen(fillup);
+
+    for(int c = 0; c <= segments; c++)
+    {
         ret.append(fillup);
+    }
 
-	return ret.left(p_Length);
+    return ret.left(len);
 }
 
-QByteArray QAbstractRDSService::XORString(QByteArray p_String)
+QByteArray QAbstractRDSService::XORString(const QByteArray &value)
 {
-	QByteArray ret;
-	int l_StringLen = p_String.length();
-	QByteArray l_Key = GetKeyForLength(l_StringLen);
+    QByteArray ret, tmp;
+    int len;
 
-	for(int c = 0; c < l_StringLen; c++)
-		ret += (p_String.at(c) ^ l_Key.at(c));
+    len = value.length();
+    tmp = GetKeyForLength(len);
+
+    for(int c = 0; c < len; c++)
+    {
+        ret.append(value.at(c) ^ tmp.at(c));
+    }
 
 	return ret;
 }
 
-int QAbstractRDSService::readToColumn(QByteArray &str, QByteArray buf, int offset)
+int QAbstractRDSService::readToColumn(QByteArray &str, const QByteArray &buf, int offset)
 {
 	str = "";
 
@@ -221,9 +250,10 @@ int QAbstractRDSService::readToColumn(QByteArray &str, QByteArray buf, int offse
 			break;
 		}
 
-		str += buf.at(c);
+        str.append(buf.at(c));
 
 		c++;
 	}
+
 	return ret;
 }

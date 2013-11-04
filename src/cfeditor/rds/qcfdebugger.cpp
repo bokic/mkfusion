@@ -25,7 +25,7 @@ quint16 QCFDebugger::getDebuggerPort()
 		QByteArray ba;
 
 		//m_RDSServer.setPort(8000); // This is needed for CF7
-		m_ServerPort = m_RDSServer.getPort();
+		m_ServerPort = m_RDSServer.port();
 
 		QDebuggerService dbgService;
 		QWDDXUtils wddxUtils;
@@ -54,7 +54,7 @@ bool QCFDebugger::StartDebugger()
 	QDefaultService defaultService;
 	QByteArray ba = defaultService.ExecuteRDSCommand(m_RDSServer, QDefaultService::IdeDefaultCommand, map);
 
-	if (m_RDSServer.getAuthenticated() == false)
+	if (m_RDSServer.authenticated() == false)
 		return false;
 
 	m_RDSServer.setPort(getDebuggerPort());
@@ -84,7 +84,7 @@ bool QCFDebugger::StartDebugger()
 	SetBreakpoint("/home/projects/boro_test/test.cfm", 1, true);
 
 	m_EventReconect = true;
-	m_EventSocket.connectToHost(m_RDSServer.getHostName(), m_ServerPort);
+	m_EventSocket.connectToHost(m_RDSServer.hostname(), m_ServerPort);
 
 	return true;
 }
@@ -217,7 +217,7 @@ void QCFDebugger::onEventConnected()
 	map.append("DBG_EVENTS");
 	map.append(m_SessionID);
 
-	QByteArray ba = dbgService.generateRDSCommandSocketOutput(dbgService.prepareURL(m_RDSServer, "DBGREQUEST", m_RDSServer.getPort()), dbgService.generatePostFromVector(m_RDSServer, map));
+	QByteArray ba = dbgService.generateRDSCommandSocketOutput(dbgService.prepareURL(m_RDSServer, "DBGREQUEST", m_RDSServer.port()), dbgService.generatePostFromVector(m_RDSServer, map));
 
 	//ba[ba.indexOf("HTTP/1.0") + 7] = '1';
 	//ba.insert(ba.indexOf("Connection: close") + 17, ", TE\r\nTE: trailers, deflate, gzip, compress");
@@ -235,7 +235,7 @@ void QCFDebugger::onEventDisconnected()
 	QString rec = m_EventReadData;
 
 	if (m_EventReconect == true)
-		m_EventSocket.connectToHost(m_RDSServer.getHostName(), m_ServerPort);
+		m_EventSocket.connectToHost(m_RDSServer.hostname(), m_ServerPort);
 }
 
 void QCFDebugger::onEventError(QAbstractSocket::SocketError p_Error)

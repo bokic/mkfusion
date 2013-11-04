@@ -1,5 +1,5 @@
-#ifndef QCFVariantARGUMENT_H
-#define QCFVariantARGUMENT_H
+#ifndef QCFVARIANTARGUMENT_H
+#define QCFVARIANTARGUMENT_H
 
 #include <QString>
 
@@ -8,6 +8,11 @@ class QCFVariantArgument
 {
 public:
     QCFVariantArgument();
+    QCFVariantArgument(const QCFVariantArgument &other);
+#ifdef Q_COMPILER_RVALUE_REFS
+    QCFVariantArgument &operator=(QCFVariantArgument &&other);
+#endif
+    QCFVariantArgument &operator=(const QCFVariantArgument &other);
 
     QString m_Name;
     QString m_Required;
@@ -15,4 +20,4 @@ public:
     QString m_Default;
 };
 
-#endif // QCFVariantARGUMENT_H
+#endif // QCFVARIANTARGUMENT_H

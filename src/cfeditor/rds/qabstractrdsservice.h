@@ -13,22 +13,22 @@ class QAbstractRDSService : public QObject
 public:
 	QAbstractRDSService();
 	virtual ~QAbstractRDSService();
-	static QByteArray StringToSTR(QString);
-	static QByteArray EncodePassword(QByteArray);
-	static QVector<QByteArray> BreakByteArrayIntoVector(QByteArray);
-	static QByteArray generateRDSCommandSocketOutput(QString, QByteArray);
-	static QByteArray executeRDSCommandURL(QString, QByteArray);
-	static QByteArray generatePostFromVector(QRDSServer, QVector<QString>);
-	static QByteArray executeRDSCommandForByteArray(QString, QRDSServer, QVector<QString>, quint16);
-	virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>) = 0;
-	static QString prepareURL(QRDSServer, QString, quint16);
+    static QByteArray StringToSTR(const QString &value);
+    static QByteArray EncodePassword(const QByteArray &value);
+    static QVector<QByteArray> BreakByteArrayIntoVector(const QByteArray &value);
+    static QByteArray generateRDSCommandSocketOutput(const QString &url, const QByteArray &post);
+    static QByteArray executeRDSCommandURL(const QString &url, const QByteArray &post);
+    static QByteArray generatePostFromVector(const QRDSServer &rdsserver, const QVector<QString> &map);
+    static QByteArray executeRDSCommandForByteArray(const QString &command, const QRDSServer &rdsserver, const QVector<QString> &map, quint16 port);
+    virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>) = 0;
+    static QString prepareURL(const QRDSServer &rdsserver, const QString &command, quint16 port);
 protected:
-	static QByteArray ArgumentsToString(QVector<QString>);
-	static QByteArray executeRDSCommandForByteArray(QString, QRDSServer, QVector<QString>);
+    static QByteArray ArgumentsToString(const QVector<QString> &args);
+    static QByteArray executeRDSCommandForByteArray(const QString &command, const QRDSServer &rdsserver, const QVector<QString> &map);
 private:
-	static QByteArray GetKeyForLength(int);
-	static QByteArray XORString(QByteArray);
-	static int readToColumn(QByteArray&, QByteArray, int);
+    static QByteArray GetKeyForLength(int len);
+    static QByteArray XORString(const QByteArray &value);
+    static int readToColumn(QByteArray &str, const QByteArray &buf, int offset);
 };
 
 #endif // QABSTRACTRDSSERVICE_H

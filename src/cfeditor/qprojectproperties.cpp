@@ -135,8 +135,8 @@ void QProjectProperties::on_rds_Test_button_clicked()
 
 	ui.rds_Test_button->setEnabled(false); QApplication::processEvents();
 
-	l_RDSServer.setHostName(ui.rds_Host_lineEdit->text());
-	l_RDSServer.setUserName(ui.rds_Username_lineEdit->text());
+	l_RDSServer.setHostname(ui.rds_Host_lineEdit->text());
+	l_RDSServer.setUsername(ui.rds_Username_lineEdit->text());
     l_RDSServer.setPassword(ui.rds_Password_lineEdit->text().toLatin1());
 
 	QFileIOService l_FileIO;

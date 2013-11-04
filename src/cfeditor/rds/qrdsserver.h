@@ -11,34 +11,33 @@ class QRDSServer
 {
 public:
 	QRDSServer();
-	QString getDescription();
+    QString description() const;
 	void setDescription(QString);
-	QString getHostName();
-	void setHostName(QString);
-	quint16 getPort();
+    QString hostname() const;
+    void setHostname(QString);
+    quint16 port() const;
 	void setPort(quint16);
-	QString getContextRoot();
+    QString contextRoot() const;
 	void setContextRoot(QString);
-	QString getUserName();
-	void setUserName(QString);
-	QString getPassword();
+    QString username() const;
+    void setUsername(QString);
+    QString password() const;
 	void setPassword(QString);
-	bool getAuthenticated();
+    bool authenticated() const;
 	void setAuthenticated(bool);
-	bool getPromptForPassword();
+    bool promptForPassword() const;
 	void setPromptForPassword(bool);
-	QByteArray getPromptedPassword();
+    QByteArray promptedPassword() const;
 	void setPromptedPassword(QByteArray);
-    QVector<QMap<QString, QString>> getMapping();
+    QVector<QMap<QString, QString>> mapping() const;
 	void updateMapping(quint32, QMap<QString, QString>);
 	void addMapping(QMap<QString, QString>);
 	void clearMappings();
-	int getMappingCount();
-	//QRDSServer duplicate();
+    int getMappingCount() const;
 	//static const QString CLIENT_DIR_VIEW;
 	//static const QString SERVER_DIR_VIEW;
 protected:
-	bool validateMap(QMap<QString, QString>);
+    bool validateMap(QMap<QString, QString>) const;
 private:
 	QString m_Description;
 	QString m_HostName;
