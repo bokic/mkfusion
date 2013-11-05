@@ -17,6 +17,7 @@ public:
 
     void init();
     QCFWorkerThread * getWorker(const QString &sourceFile, QString &error);
+    QCFVariant getComponent(const QString &sourceFile, QCFWorkerThread *worker, QString &error);
 
 private:
     QHash<QString, QCFTemplate> m_templates;

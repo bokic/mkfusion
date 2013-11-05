@@ -130,6 +130,9 @@ public:
     QHash<QString, QCFFileUpload> m_FileUpload;
     QList<QCFVariant> m_CustomTags;
     QList<QString> m_NestedOutput;
+    QString m_TemplateFilePath;
+    qint64 m_TemplateFileSize;
+    uint m_TemplateFileModified;
 
 private:
     static QString f_cfdump_var(const QCFVariant &var);

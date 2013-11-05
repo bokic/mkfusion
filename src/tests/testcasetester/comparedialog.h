@@ -14,15 +14,15 @@ public:
     explicit CompareDialog(QWidget *parent = 0);
     virtual ~CompareDialog();
 
-	void setLeftText(const QByteArray&);
-	void setRightText(const QByteArray&);
+    void setLeftText(const QByteArray &text);
+    void setRightText(const QByteArray &text);
 	void updateEditors();
 protected:
     void changeEvent(QEvent *e);
 
 private:
-	static QByteArray filterChars(const QByteArray&);
-	static void updateEditor(QPlainTextEdit*, const QByteArray&, const QByteArray&);
+    static QByteArray filterChars(const QByteArray &text);
+    static void updateEditor(QPlainTextEdit *, const QByteArray &, const QByteArray &);
 	Ui::CompareDialog *ui;
 
 	QByteArray m_LeftText;

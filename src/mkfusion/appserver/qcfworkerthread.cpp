@@ -1457,20 +1457,21 @@ void QCFWorkerThread::f_cfAssociate(const QString &baseTagName, const QString &k
 
 QCFVariant QCFWorkerThread::f_CreateComponent(const QString &component_name)
 {
-    // TODO: Implement f_CreateComponent.
+    QCFVariant ret;
 
-    /*QString componentFileName = component_name;
+    QString componentFileName = component_name;
+    QString errorStr;
 
-    componentFileName = QFileInfo(m_isModified.m_Filename).absolutePath() + QDir::separator() + componentFileName.replace('.', QDir::separator()) + ".cfc";
+    componentFileName = QFileInfo(m_TemplateFilePath).absolutePath() + QDir::separator() + componentFileName.replace('.', QDir::separator()) + ".cfc"; // TODO: QCFWorkerThread::f_CreateComponent - Only lower case extension is implemented.
 
-    void * obj = this->m_TemplateInstance->compileAndLoadComponent(componentFileName, "");
+    ret = QCFServer::instance()->m_Templates.getComponent(componentFileName, this, errorStr);
 
-    if (obj == nullptr)
+    if (ret.type() != QCFVariant::Component)
     {
-        throw QMKFusionCFAbortException();
-    }*/
+        throw QMKFusionException(QString("CreateComponent failed for component `%1`, full path name `%2`. Error: %3").arg(component_name).arg(componentFileName).arg(errorStr));
+    }
 
-    return QCFVariant();
+    return ret;
 }
 
 void QCFWorkerThread::f_cfdump(const QCFVariant &var)
@@ -1834,6 +1835,9 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
                 case QCFVariant::Query:
                     l_keyType = "[query]";
                     break;
+                case QCFVariant::Component:
+                    l_keyType = "[component]";
+                    break;
                 case QCFVariant::NotImplemented:
                     l_keyType = "[not implemented]";
                     break;
@@ -1884,6 +1888,9 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
                     break;
                 case QCFVariant::Query:
                     l_keyType = "[query]";
+                    break;
+                case QCFVariant::Component:
+                    l_keyType = "[component]";
                     break;
                 case QCFVariant::NotImplemented:
                     l_keyType = "[not implemented]";
@@ -1945,6 +1952,9 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
             }
 
             ret += "</table>\n";
+            break;
+        case QCFVariant::Component:
+            throw QMKFusionException("Not implemented");
             break;
         default:
             break;

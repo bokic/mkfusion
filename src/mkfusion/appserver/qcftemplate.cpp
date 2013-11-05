@@ -231,25 +231,52 @@ bool QCFTemplate::setLibrary(const QString &libName)
     return true;
 }
 
-QCFWorkerThread * QCFTemplate::getTemplateObject()
+QCFWorkerThread * QCFTemplate::createWorkerThread()
 {
     if ((m_usage <= 0)||(!m_valid))
     {
+        m_error = "Template is invalid.";
+
         return nullptr;
     }
 
     typedef QCFWorkerThread * (*createTemplateDef)();
 
-    createTemplateDef getTemplateInfo = (createTemplateDef) m_library->resolve("createTemplate");
+    createTemplateDef createTemplateFunct = (createTemplateDef) m_library->resolve("createTemplate");
 
-    if (getTemplateInfo == nullptr)
+    if (createTemplateFunct == nullptr)
     {
         m_valid = false;
 
-        m_error = "Could not resolve getTemplateInfo function.";
+        m_error = "Could not resolve createTemplate function.";
 
         return nullptr;
     }
 
-    return getTemplateInfo();
+    return createTemplateFunct();
+}
+
+QCFVariant QCFTemplate::createComponent(QCFWorkerThread *worker)
+{
+    if ((m_usage <= 0)||(!m_valid))
+    {
+        m_error = "Template is invalid.";
+
+        return QCFVariant(QCFVariant::Error);
+    }
+
+    typedef QCFVariant (*createComponentDef)(QCFWorkerThread *);
+
+    createComponentDef createComponentFunct = (createComponentDef) m_library->resolve("createComponent");
+
+    if (createComponentFunct == nullptr)
+    {
+        m_valid = false;
+
+        m_error = "Could not resolve createComponent function.";
+
+        return QCFVariant(QCFVariant::Error);
+    }
+
+    return createComponentFunct(worker);
 }

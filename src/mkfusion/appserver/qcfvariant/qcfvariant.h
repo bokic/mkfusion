@@ -1,6 +1,8 @@
 #ifndef QCFVARIANT_H
 #define QCFVARIANT_H
 
+#include "qcfvariantcomponent.h"
+
 #include <QDateTime>
 #include <QVector>
 #include <QString>
@@ -19,6 +21,7 @@ public:
 		Struct,
 		Binary,
         Query,
+        Component,
 		NotImplemented,
 		Error
 	};
@@ -27,15 +30,16 @@ public:
 	QCFVariant();
     virtual ~QCFVariant();
 
-    QCFVariant(bool);
-    QCFVariant(int);
-    QCFVariant(double);
-    QCFVariant(const char *);
-    QCFVariant(const wchar_t *);
-    QCFVariant(const QString &);
-    QCFVariant(const QDateTime &);
-    QCFVariant(const QCFVariant &);
-    QCFVariant(const QCFVariantType);
+    QCFVariant(bool value);
+    QCFVariant(int value);
+    QCFVariant(double value);
+    QCFVariant(const char *value);
+    QCFVariant(const wchar_t *value);
+    QCFVariant(const QString &value);
+    QCFVariant(const QDateTime &value);
+    QCFVariant(const QCFVariantComponent &value);
+    QCFVariant(const QCFVariant &value);
+    QCFVariant(const QCFVariantType type);
 
 #ifdef Q_COMPILER_RVALUE_REFS
     QCFVariant &operator=(QCFVariant &&other);
@@ -187,6 +191,7 @@ public:
     QCFVariant &operator=(const wchar_t *);
     QCFVariant &operator=(const QString &);
     QCFVariant &operator=(const QDateTime &);
+    QCFVariant &operator=(const QCFVariantComponent &);
     QCFVariant &operator=(const QCFVariant &);
 
     QCFVariant join(const QCFVariant &);
@@ -203,6 +208,10 @@ public:
     QDateTime toDateTime() const;
     bool toBool() const;
 
+    static QCFVariant createComponent(const QString &path, const QString &name);
+    QCFVariant call(const QString &function, QList<QCFVariant> params);
+    QCFVariant call(const QString &function, QHash<QString, QCFVariant> params);
+
 
 	// Member Variables
     QVector<QCFVariant> *m_Array;
@@ -212,6 +221,7 @@ public:
 	double m_Number;
 	bool m_Bool;
     QDateTime *m_DateTime;
+    QCFVariantComponent *m_Component;
 	QCFVariantType m_Type;
     quint32 m_ArrayDimension;
     QCFVariant *m_HiddenScopeFirst;

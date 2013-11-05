@@ -99,7 +99,7 @@ QCFWorkerThread * QCFTemplatesManager::getWorker(const QString &sourceFile, QStr
 
                 if (m_templates[sourceFile].load())
                 {
-                    return m_templates[sourceFile].getTemplateObject();
+                    return m_templates[sourceFile].createWorkerThread();
                 }
                 else
                 {
@@ -157,8 +157,88 @@ QCFWorkerThread * QCFTemplatesManager::getWorker(const QString &sourceFile, QStr
             return nullptr;
         }
 
-        return m_templates[sourceFile].getTemplateObject();
+        return m_templates[sourceFile].createWorkerThread();
+    }
+}
+
+QCFVariant QCFTemplatesManager::getComponent(const QString &sourceFile, QCFWorkerThread *worker, QString &error)
+{
+    QString cppFile, libFile;
+
+    forever
+    {
+        {
+            QWriteLocker lock(&m_lock);
+
+            if (m_templates.contains(sourceFile))
+            {
+                if (m_templates[sourceFile].isCompiling())
+                {
+                    QThread::msleep(1);
+
+                    continue;
+                }
+
+                if (m_templates[sourceFile].load())
+                {
+                    return m_templates[sourceFile].createComponent(worker);
+                }
+                else
+                {
+                    error = m_templates[sourceFile].error();
+
+                    return QCFVariant(QCFVariant::Error);
+                }
+            }
+            else
+            {
+                m_templates.insert(sourceFile, QCFTemplate());
+
+                break;
+            }
+        }
+
+        QThread::msleep(1);
     }
 
-    return nullptr;
+    // do cfml2c++ conversion.
+    error = m_compiler.generateCpp(sourceFile, cppFile);
+    if (!error.isEmpty())
+    {
+        QReadLocker lock(&m_lock);
+
+        m_templates[sourceFile].setCompiling(false);
+
+        m_templates[sourceFile].setError(error);
+
+        return QCFVariant(QCFVariant::Error);;
+    }
+
+    // do compile.
+    error = m_compiler.compile(cppFile, libFile);
+    if (!error.isEmpty())
+    {
+        QReadLocker lock(&m_lock);
+
+        m_templates[sourceFile].setCompiling(false);
+
+        m_templates[sourceFile].setError(error);
+
+        return QCFVariant(QCFVariant::Error);;
+    }
+
+    {
+        QReadLocker lock(&m_lock);
+
+        m_templates[sourceFile].setCompiling(false);
+
+        m_templates[sourceFile].setLibrary(libFile);
+
+        if (!m_templates[sourceFile].load())
+        {
+            return QCFVariant(QCFVariant::Error);;
+        }
+
+        return m_templates[sourceFile].createWorkerThread();
+    }
 }

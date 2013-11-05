@@ -34,16 +34,16 @@ void CFTest1::findFunctionsRecursive(const QCFParserElement &parserElement)
     }
 }
 
-void CFTest1::parseDir(const QString &p_dir)
+void CFTest1::parseDir(const QString &dir)
 {
-	QDir dir(p_dir);
+    QDir d(dir);
 
-	dir.setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
-	dir.setSorting(QDir::DirsFirst | QDir::Name);
+    d.setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
+    d.setSorting(QDir::DirsFirst | QDir::Name);
 	QStringList filters;
 	filters << "*.cfm" << "*.cfc";
-    dir.setNameFilters(filters);
-	QFileInfoList files = dir.entryInfoList();
+    d.setNameFilters(filters);
+    QFileInfoList files = d.entryInfoList();
 
 	for (int c = 0; c < files.size(); c++)
 	{

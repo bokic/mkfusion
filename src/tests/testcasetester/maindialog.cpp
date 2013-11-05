@@ -35,30 +35,44 @@ void Dialog::changeEvent(QEvent *e)
     }
 }
 
-QByteArray getUrlContent(QString p_URL)
+QByteArray getUrlContent(QString url)
 {
-	QUrl url(p_URL);
-	QTcpSocket l_socket;
+    QUrl qurl(url);
+    QTcpSocket socket;
+    QByteArray send, recieved;
 
-	int l_port = url.port();
-	if (l_port == -1)
+    int port = qurl.port();
+    if (port == -1)
 	{
-		l_port = 80;
+        port = 80;
 	}
 
-	l_socket.connectToHost(url.host(), l_port);
+    socket.connectToHost(qurl.host(), port);
 
-    if (l_socket.waitForConnected(30000) == false)
+    if (!socket.waitForConnected())
 	{
 		return QByteArray();
 	}
 
-    l_socket.write(QString("GET " + url.path(QUrl::EncodeSpaces | QUrl::EncodeUnicode | QUrl::EncodeDelimiters | QUrl::EncodeReserved) + "\r\n\r\n").toUtf8());
-    l_socket.waitForBytesWritten(30000);
+    send = "GET ";
+    send.append(qurl.path(QUrl::EncodeSpaces | QUrl::EncodeUnicode | QUrl::EncodeDelimiters | QUrl::EncodeReserved).toUtf8());
+    send.append("\r\n\r\n");
 
-    l_socket.waitForDisconnected(30000);
+    socket.write(send);
 
-	return l_socket.readAll();
+    if (!socket.waitForBytesWritten())
+    {
+        return QByteArray();
+    }
+
+    while(socket.state() == QAbstractSocket::ConnectedState)
+    {
+        socket.waitForReadyRead();
+
+        recieved.append(socket.readAll());
+    }
+
+    return recieved;
 }
 
 void Dialog::on_start_clicked()

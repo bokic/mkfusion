@@ -25,75 +25,77 @@ void CompareDialog::changeEvent(QEvent *e)
     }
 }
 
-void CompareDialog::setLeftText(const QByteArray &p_Text)
+void CompareDialog::setLeftText(const QByteArray &text)
 {
-	m_LeftText = p_Text;
+    m_LeftText = text;
 }
 
-void CompareDialog::setRightText(const QByteArray &p_Text)
+void CompareDialog::setRightText(const QByteArray &text)
 {
-	m_RightText = p_Text;
+    m_RightText = text;
 }
 
-QByteArray CompareDialog::filterChars(const QByteArray &p_Text)
+QByteArray CompareDialog::filterChars(const QByteArray &text)
 {
 	QByteArray ret;
 
-	for (int c = 0; c < p_Text.length(); c++)
+    for (int c = 0; c < text.length(); c++)
 	{
-		if ((p_Text[c] < 32)||(p_Text[c] < 0))
+        if ((text[c] < 32)||(text[c] < 0))
 		{
 			ret += '.';
 		}
 		else
 		{
-			ret += p_Text[c];
+            ret += text[c];
 		}
 	}
 
 	return ret;
 }
 
-void CompareDialog::updateEditor(QPlainTextEdit *p_TextEdit, const QByteArray &p_Text, const QByteArray &p_TextCompareTo)
+void CompareDialog::updateEditor(QPlainTextEdit *widget, const QByteArray &p_Text, const QByteArray &p_TextCompareTo)
 {
     Q_UNUSED(p_TextCompareTo);
 
-	QString l_Text;
+    QString text, hex;
+    QByteArray row;
+    int rowCount;
 
-	int l_rows = p_Text.size() / 8;
+    rowCount = p_Text.size() / 8;
 	if ((p_Text.size() % 8) != 0)
 	{
-		l_rows++;
+        rowCount++;
 	}
 
-	for(int c = 0; c < l_rows; c++)
+    for(int c = 0; c < rowCount; c++)
 	{
-		QByteArray l_rowBA;
 
-		l_rowBA = p_Text.mid(c * 8, 8);
+        row = p_Text.mid(c * 8, 8);
 
 		for(int c2 = 0; c2 < 8; c2++)
 		{
-			if (c2 < l_rowBA.size())
+            if (c2 < row.size())
 			{
-				QString l_hex = QString::number(l_rowBA[c2], 16);
-				if (l_hex.length() == 1)
+                hex = QString::number((uint)row[c2], 16);
+
+                if (hex.length() == 1)
 				{
-					l_hex = '0' + l_hex;
+                    hex = '0' + hex;
 				}
 
-				l_Text += l_hex + ' ';
+                text.append(hex + ' ');
 			}
 			else
 			{
-				l_Text += "   ";
+                text.append("   ");
 			}
 		}
-		l_Text += "| " + filterChars(l_rowBA) + '\n';
+
+        text.append("| " + filterChars(row) + '\n');
 	}
 
-
-	p_TextEdit->setPlainText(l_Text);
+    widget->setPlainText(text);
 }
 
 void CompareDialog::updateEditors()

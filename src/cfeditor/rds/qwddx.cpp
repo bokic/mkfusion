@@ -10,26 +10,26 @@ QWDDX::QWDDX(QWDDXType p_Type)
 	m_Type = p_Type;
 }
 
-QWDDX &QWDDX::operator=(const QString &p_NewValue)
+QWDDX &QWDDX::operator=(const QString &value)
 {
 	m_Type = QWDDX::String;
-	m_String = p_NewValue;
+    m_String = value;
 
 	return *this;
 }
 
-QWDDX &QWDDX::operator=(const char *p_NewValue)
+QWDDX &QWDDX::operator=(const char *value)
 {
 	m_Type = QWDDX::String;
-	m_String = p_NewValue;
+    m_String = value;
 
 	return *this;
 }
 
-QWDDX &QWDDX::operator=(const QByteArray &p_NewValue)
+QWDDX &QWDDX::operator=(const QByteArray &value)
 {
 	m_Type = QWDDX::Binary;
-	m_ByteArray = p_NewValue;
+    m_ByteArray = value;
 
 	return *this;
 }
@@ -114,18 +114,18 @@ QWDDX &QWDDX::operator=(const QDateTime &p_DateTime)
 	return *this;
 }
 
-QWDDX &QWDDX::operator=(const double p_NewValue)
+QWDDX &QWDDX::operator=(const double value)
 {
 	m_Type = QWDDX::Number;
-	m_Number = p_NewValue;
+    m_Number = value;
 
 	return *this;
 }
 
-QWDDX &QWDDX::operator=(const bool p_NewValue)
+QWDDX &QWDDX::operator=(const bool value)
 {
 	m_Type = QWDDX::Boolean;
-	m_Bool = p_NewValue;
+    m_Bool = value;
 
 	return *this;
 }

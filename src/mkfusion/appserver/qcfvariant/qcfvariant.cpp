@@ -11,6 +11,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant()
     , m_Number(0)
 	, m_Bool(false)
     , m_DateTime(nullptr)
+    , m_Component(nullptr)
 	, m_Type(Null)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -27,14 +28,15 @@ Q_DECL_EXPORT QCFVariant::~QCFVariant()
     m_HiddenScopeLast2 = nullptr;
 }
 
-Q_DECL_EXPORT QCFVariant::QCFVariant(bool p_NewValue)
+Q_DECL_EXPORT QCFVariant::QCFVariant(bool value)
     : m_Array(nullptr)
     , m_Struct(nullptr)
     , m_String(nullptr)
     , m_ByteArray(nullptr)
     , m_Number(0)
-	, m_Bool(p_NewValue)
+    , m_Bool(value)
     , m_DateTime(nullptr)
+    , m_Component(nullptr)
 	, m_Type(Boolean)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -43,14 +45,15 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(bool p_NewValue)
 {
 }
 
-Q_DECL_EXPORT QCFVariant::QCFVariant(int p_NewValue)
+Q_DECL_EXPORT QCFVariant::QCFVariant(int value)
     : m_Array(nullptr)
     , m_Struct(nullptr)
     , m_String(nullptr)
     , m_ByteArray(nullptr)
-	, m_Number(p_NewValue)
+    , m_Number(value)
 	, m_Bool(false)
     , m_DateTime(nullptr)
+    , m_Component(nullptr)
 	, m_Type(Number)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -59,14 +62,15 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(int p_NewValue)
 {
 }
 
-Q_DECL_EXPORT QCFVariant::QCFVariant(double p_NewValue)
+Q_DECL_EXPORT QCFVariant::QCFVariant(double value)
     : m_Array(nullptr)
     , m_Struct(nullptr)
     , m_String(nullptr)
     , m_ByteArray(nullptr)
-	, m_Number(p_NewValue)
+    , m_Number(value)
 	, m_Bool(false)
     , m_DateTime(nullptr)
+    , m_Component(nullptr)
 	, m_Type(Number)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -75,47 +79,33 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(double p_NewValue)
 {
 }
 
-Q_DECL_EXPORT QCFVariant::QCFVariant(const char *p_NewValue)
+Q_DECL_EXPORT QCFVariant::QCFVariant(const char *value)
     : m_Array(nullptr)
     , m_Struct(nullptr)
-    , m_String(new QString(p_NewValue))
+    , m_String(new QString(value))
     , m_ByteArray(nullptr)
 	, m_Number(0)
 	, m_Bool(false)
     , m_DateTime(nullptr)
+    , m_Component(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
 {
-    qDebug() << "QCFVariant::QCFVariant(const char *p_NewValue) called. to be deleted soon.";
+    qDebug() << "QCFVariant::QCFVariant(const char *value) called. to be deleted soon.";
 }
 
-Q_DECL_EXPORT QCFVariant::QCFVariant(const wchar_t *p_NewValue)
+Q_DECL_EXPORT QCFVariant::QCFVariant(const wchar_t *value)
     : m_Array(nullptr)
     , m_Struct(nullptr)
-    , m_String(new QString(QString::fromWCharArray(p_NewValue)))
+    , m_String(new QString(QString::fromWCharArray(value)))
     , m_ByteArray(nullptr)
 	, m_Number(0)
 	, m_Bool(false)
     , m_DateTime(nullptr)
-	, m_Type(String)
-    , m_ArrayDimension(1)
-    , m_HiddenScopeFirst(nullptr)
-    , m_HiddenScopeLast1(nullptr)
-    , m_HiddenScopeLast2(nullptr)
-{
-}
-
-Q_DECL_EXPORT QCFVariant::QCFVariant(const QString &p_NewValue)
-    : m_Array(nullptr)
-    , m_Struct(nullptr)
-    , m_String(new QString(p_NewValue))
-    , m_ByteArray(nullptr)
-	, m_Number(0)
-	, m_Bool(false)
-    , m_DateTime(nullptr)
+    , m_Component(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -124,16 +114,50 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QString &p_NewValue)
 {
 }
 
-Q_DECL_EXPORT QCFVariant::QCFVariant(const QDateTime &p_NewValue)
+Q_DECL_EXPORT QCFVariant::QCFVariant(const QString &value)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
+    , m_String(new QString(value))
+    , m_ByteArray(nullptr)
+	, m_Number(0)
+	, m_Bool(false)
+    , m_DateTime(nullptr)
+    , m_Component(nullptr)
+	, m_Type(String)
+    , m_ArrayDimension(1)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast1(nullptr)
+    , m_HiddenScopeLast2(nullptr)
+{
+}
 
+Q_DECL_EXPORT QCFVariant::QCFVariant(const QDateTime &value)
     : m_Array(nullptr)
     , m_Struct(nullptr)
     , m_String(nullptr)
     , m_ByteArray(nullptr)
 	, m_Number(0)
 	, m_Bool(false)
-    , m_DateTime(new QDateTime(p_NewValue))
+    , m_DateTime(new QDateTime(value))
+    , m_Component(nullptr)
 	, m_Type(DateTime)
+    , m_ArrayDimension(1)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast1(nullptr)
+    , m_HiddenScopeLast2(nullptr)
+{
+}
+
+Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariantComponent &value)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
+    , m_String(nullptr)
+    , m_ByteArray(nullptr)
+    , m_Number(0)
+    , m_Bool(false)
+    , m_DateTime(nullptr)
+    , m_Component(new QCFVariantComponent(value))
+    , m_Type(DateTime)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
@@ -149,6 +173,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariant &other)
     , m_Number(0)
     , m_Bool(false)
     , m_DateTime(nullptr)
+    , m_Component(nullptr)
     , m_Type(other.m_Type)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -170,6 +195,9 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariant &other)
         break;
     case DateTime:
         m_DateTime = new QDateTime(*other.m_DateTime);
+        break;
+    case Component:
+        m_Component = new QCFVariantComponent(*other.m_Component);
         break;
     case Array:
         m_Array = new QVector<QCFVariant>();
@@ -199,7 +227,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariant &other)
     }
 }
 
-Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariantType p_Type)
+Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariantType type)
     : m_Array(nullptr)
     , m_Struct(nullptr)
     , m_String(nullptr)
@@ -207,13 +235,14 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariantType p_Type)
 	, m_Number(0)
 	, m_Bool(false)
     , m_DateTime(nullptr)
+    , m_Component(nullptr)
     , m_Type(Null)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
 {
-    setType(p_Type);
+    setType(type);
 }
 
 #ifdef Q_COMPILER_RVALUE_REFS
@@ -235,6 +264,8 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(QCFVariant &&other)
     case DateTime:
         qSwap(m_DateTime, other.m_DateTime);
         break;
+    case Component:
+        qSwap(m_Component, other.m_Component);
     case Array:
         qSwap(m_Array, other.m_Array);
         qSwap(m_ArrayDimension, other.m_ArrayDimension);
@@ -300,6 +331,9 @@ Q_DECL_EXPORT void QCFVariant::setType(QCFVariantType type)
         delete m_Struct;
         m_Struct = nullptr;
         break;
+    case Component:
+        delete m_Component;
+        m_Component = nullptr;
     case NotImplemented:
         break;
     case Error:
@@ -331,6 +365,8 @@ Q_DECL_EXPORT void QCFVariant::setType(QCFVariantType type)
     case Query:
         m_Struct = new QMap<QString, QCFVariant>();
         break;
+    case Component:
+        m_Component = new QCFVariantComponent();
     case NotImplemented:
         break;
     case Error:
@@ -1412,6 +1448,14 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QDateTime &p_newValue)
 	return *this;
 }
 
+Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariantComponent &p_newValue)
+{
+    setType(Component);
+    *m_Component = p_newValue;
+
+    return *this;
+}
+
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariant &p_newValue)
 {
     if (this != &p_newValue)
@@ -1434,6 +1478,9 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariant &p_newValue)
 		case DateTime:
 			*m_DateTime = *p_newValue.m_DateTime;
 			break;
+        case Component:
+            *m_Component = *p_newValue.m_Component;
+            break;
 		case Array:
 			*m_Array = *p_newValue.m_Array;
 			m_ArrayDimension = p_newValue.m_ArrayDimension;
@@ -1451,7 +1498,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariant &p_newValue)
         case Query:
             *m_Struct = *p_newValue.m_Struct;
 			break;
-		case NotImplemented:
+        case NotImplemented:
 			break;
 		case Error:
 			break;
@@ -2091,4 +2138,24 @@ Q_DECL_EXPORT bool QCFVariant::toBool() const
 		default:;
 	}
 	throw QMKFusionExpressionException("The value cannot be converted to a boolean.");
+}
+
+Q_DECL_EXPORT QCFVariant QCFVariant::createComponent(const QString &path, const QString &name)
+{
+    return QCFVariant();
+}
+
+Q_DECL_EXPORT QCFVariant QCFVariant::call(const QString &function, QList<QCFVariant> params)
+{
+    if (m_Type != Component)
+    {
+        throw QMKFusionException("Variable is not component.");
+    }
+
+    return QCFVariant();
+}
+
+Q_DECL_EXPORT QCFVariant QCFVariant::call(const QString &function, QHash<QString, QCFVariant> params)
+{
+    return QCFVariant();
 }

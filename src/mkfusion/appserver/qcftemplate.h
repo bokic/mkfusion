@@ -3,6 +3,7 @@
 
 #include "qcftemplateinfo.h"
 #include "qcfworkerthread.h"
+#include "qcfvariant.h"
 
 #include <QDateTime>
 #include <QLibrary>
@@ -33,7 +34,8 @@ public:
     QDateTime lastAccess() const;
     void setCompiling(bool compiling);
     bool setLibrary(const QString &libName);
-    QCFWorkerThread * getTemplateObject();
+    QCFWorkerThread * createWorkerThread();
+    QCFVariant createComponent(QCFWorkerThread *worker);
 
 private:
     QString m_pathName;

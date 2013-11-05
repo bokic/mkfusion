@@ -17,7 +17,7 @@ public:
     virtual ~CFTest1();
 private:
     void findFunctionsRecursive(const QCFParserElement &parserElement);
-    void parseDir(const QString &p_dir);
+    void parseDir(const QString &dir);
 
 private slots:
     void on_listWidget_itemDoubleClicked(QListWidgetItem *item);

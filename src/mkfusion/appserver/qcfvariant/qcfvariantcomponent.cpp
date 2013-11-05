@@ -1,4 +1,6 @@
 #include "qcfvariantcomponent.h"
+#include "qcfvariant.h"
+
 
 QCFVariantComponent::QCFVariantComponent()
     : m_Inherit(nullptr)
