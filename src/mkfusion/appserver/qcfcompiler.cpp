@@ -7,7 +7,11 @@
 #include <QDir>
 
 QCFCompiler::QCFCompiler()
+#ifdef QT_NO_DEBUG
     : m_Strip(true)
+#else
+    : m_Strip(false)
+#endif
 {
 }
 

@@ -1,9 +1,10 @@
 #ifndef QCFVARIANTCOMPONENT_H
 #define QCFVARIANTCOMPONENT_H
 
-#include "qcfvariantfunction.h"
 #include <QString>
 #include <QHash>
+
+class QCFVariant;
 
 
 class QCFVariantComponent
@@ -19,7 +20,7 @@ public:
 
     QCFVariantComponent *m_Inherit;
     QString m_ComponentFileName;
-    QHash<QString, QCFVariantFunction> m_Methods;
+    QHash<QString, QCFVariant> self;
     QString m_BindingName;
     QString m_DisplayName;
     QString m_Extends;
@@ -32,6 +33,10 @@ public:
     QString m_ServicePortName;
     QString m_Style;
     QString m_WSDLFile;
+
+    QString m_TemplateFilePath;
+    qint64 m_TemplateFileSize;
+    uint m_TemplateFileModified;
 };
 
 #endif // QCFVARIANTCOMPONENT_H

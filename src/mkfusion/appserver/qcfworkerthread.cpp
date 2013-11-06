@@ -20,6 +20,7 @@ QCFWorkerThread::QCFWorkerThread(QObject *parent)
     : QThread(parent)
     , m_APPLICATION(nullptr)
     , m_SESSION(nullptr)
+    , m_ContentType("text/html;charset=UTF-8")
     , m_StatusCode(200)
     , m_HeadersSent(false)
     , m_Socket(nullptr)
@@ -1464,7 +1465,7 @@ QCFVariant QCFWorkerThread::f_CreateComponent(const QString &component_name)
 
     componentFileName = QFileInfo(m_TemplateFilePath).absolutePath() + QDir::separator() + componentFileName.replace('.', QDir::separator()) + ".cfc"; // TODO: QCFWorkerThread::f_CreateComponent - Only lower case extension is implemented.
 
-    ret = QCFServer::instance()->m_Templates.getComponent(componentFileName, this, errorStr);
+    ret = QCFServer::instance()->m_Templates.getComponent(componentFileName, *this, errorStr);
 
     if (ret.type() != QCFVariant::Component)
     {
@@ -1954,7 +1955,7 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
             ret += "</table>\n";
             break;
         case QCFVariant::Component:
-            throw QMKFusionException("Not implemented");
+            ret += "Not implemented";
             break;
         default:
             break;

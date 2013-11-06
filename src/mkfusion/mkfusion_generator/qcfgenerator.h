@@ -32,7 +32,7 @@ protected:
     QString CFTagGetArgumentAsNumber(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString CFTagGetArgumentAsBool(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag);
-    QString Tabs(int trim = 0);
+    QString tabs(int trim = 0);
 
     QCFParser m_Parser;
     QHash<QString, QString> m_CustomTagsPrefixes;

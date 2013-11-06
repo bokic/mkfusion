@@ -256,8 +256,10 @@ QCFWorkerThread * QCFTemplate::createWorkerThread()
     return createTemplateFunct();
 }
 
-QCFVariant QCFTemplate::createComponent(QCFWorkerThread *worker)
+QCFVariant QCFTemplate::createComponent(QCFWorkerThread &worker)
 {
+    QCFVariantComponent component;
+
     if ((m_usage <= 0)||(!m_valid))
     {
         m_error = "Template is invalid.";
@@ -265,7 +267,7 @@ QCFVariant QCFTemplate::createComponent(QCFWorkerThread *worker)
         return QCFVariant(QCFVariant::Error);
     }
 
-    typedef QCFVariant (*createComponentDef)(QCFWorkerThread *);
+    typedef QCFVariantComponent (*createComponentDef)(QCFWorkerThread &);
 
     createComponentDef createComponentFunct = (createComponentDef) m_library->resolve("createComponent");
 
@@ -278,5 +280,7 @@ QCFVariant QCFTemplate::createComponent(QCFWorkerThread *worker)
         return QCFVariant(QCFVariant::Error);
     }
 
-    return createComponentFunct(worker);
+    component = createComponentFunct(worker);
+
+    return QCFVariant(component);
 }

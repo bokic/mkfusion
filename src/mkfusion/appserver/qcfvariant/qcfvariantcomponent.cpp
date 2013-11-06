@@ -4,13 +4,15 @@
 
 QCFVariantComponent::QCFVariantComponent()
     : m_Inherit(nullptr)
+    , m_TemplateFileSize(0)
+    , m_TemplateFileModified(0)
 {
 }
 
 QCFVariantComponent::QCFVariantComponent(const QCFVariantComponent &other)
     : m_Inherit(other.m_Inherit)
     , m_ComponentFileName(other.m_ComponentFileName)
-    , m_Methods(other.m_Methods)
+    , self(other.self)
     , m_BindingName(other.m_BindingName)
     , m_DisplayName(other.m_DisplayName)
     , m_Extends(other.m_Extends)
@@ -23,6 +25,10 @@ QCFVariantComponent::QCFVariantComponent(const QCFVariantComponent &other)
     , m_ServicePortName(other.m_ServicePortName)
     , m_Style(other.m_Style)
     , m_WSDLFile(other.m_WSDLFile)
+    , m_TemplateFilePath(other.m_TemplateFilePath)
+    , m_TemplateFileSize(other.m_TemplateFileSize)
+    , m_TemplateFileModified(other.m_TemplateFileModified)
+
 {
 }
 
@@ -31,7 +37,7 @@ QCFVariantComponent &QCFVariantComponent::operator=(QCFVariantComponent &&other)
 {
     qSwap(m_Inherit, other.m_Inherit);
     qSwap(m_ComponentFileName, other.m_ComponentFileName);
-    qSwap(m_Methods, other.m_Methods);
+    qSwap(self, other.self);
     qSwap(m_BindingName, other.m_BindingName);
     qSwap(m_DisplayName, other.m_DisplayName);
     qSwap(m_Extends, other.m_Extends);
@@ -44,6 +50,9 @@ QCFVariantComponent &QCFVariantComponent::operator=(QCFVariantComponent &&other)
     qSwap(m_ServicePortName, other.m_ServicePortName);
     qSwap(m_Style, other.m_Style);
     qSwap(m_WSDLFile, other.m_WSDLFile);
+    qSwap(m_TemplateFilePath, other.m_TemplateFilePath);
+    qSwap(m_TemplateFileSize, other.m_TemplateFileSize);
+    qSwap(m_TemplateFileModified, other.m_TemplateFileModified);
 
     return *this;
 }
@@ -53,7 +62,7 @@ QCFVariantComponent &QCFVariantComponent::operator=(const QCFVariantComponent &o
 {
     m_Inherit = other.m_Inherit;
     m_ComponentFileName = other.m_ComponentFileName;
-    m_Methods = other.m_Methods;
+    self = other.self;
     m_BindingName = other.m_BindingName;
     m_DisplayName = other.m_DisplayName;
     m_Extends = other.m_Extends;
@@ -66,6 +75,9 @@ QCFVariantComponent &QCFVariantComponent::operator=(const QCFVariantComponent &o
     m_ServicePortName = other.m_ServicePortName;
     m_Style = other.m_Style;
     m_WSDLFile = other.m_WSDLFile;
+    m_TemplateFilePath = other.m_TemplateFilePath;
+    m_TemplateFileSize = other.m_TemplateFileSize;
+    m_TemplateFileModified = other.m_TemplateFileModified;
 
     return *this;
 }

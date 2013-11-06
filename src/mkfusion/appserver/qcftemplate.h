@@ -35,7 +35,7 @@ public:
     void setCompiling(bool compiling);
     bool setLibrary(const QString &libName);
     QCFWorkerThread * createWorkerThread();
-    QCFVariant createComponent(QCFWorkerThread *worker);
+    QCFVariant createComponent(QCFWorkerThread &worker);
 
 private:
     QString m_pathName;

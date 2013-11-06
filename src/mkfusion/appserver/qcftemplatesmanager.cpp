@@ -161,7 +161,7 @@ QCFWorkerThread * QCFTemplatesManager::getWorker(const QString &sourceFile, QStr
     }
 }
 
-QCFVariant QCFTemplatesManager::getComponent(const QString &sourceFile, QCFWorkerThread *worker, QString &error)
+QCFVariant QCFTemplatesManager::getComponent(const QString &sourceFile, QCFWorkerThread &worker, QString &error)
 {
     QString cppFile, libFile;
 
@@ -239,6 +239,6 @@ QCFVariant QCFTemplatesManager::getComponent(const QString &sourceFile, QCFWorke
             return QCFVariant(QCFVariant::Error);;
         }
 
-        return m_templates[sourceFile].createWorkerThread();
+        return m_templates[sourceFile].createComponent(worker);
     }
 }
