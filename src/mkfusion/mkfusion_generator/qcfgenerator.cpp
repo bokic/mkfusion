@@ -11,8 +11,9 @@
 #include <QDir>
 
 
-QCFGenerator::QCFGenerator()
-    : m_Parser(CompilerMode)
+QCFGenerator::QCFGenerator(QObject *parent)
+    : QObject(parent)
+    , m_Parser(CompilerMode)
     , m_EnableCFOutputOnly(false)
     , m_Tabs(2)
 {
@@ -838,7 +839,6 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 {
 	if (p_CFTag.m_TagType == ExpressionTagType)
 	{
-        //return "f_WriteOutput(" + GenerateCFExpressionToCExpression(OprimizeQCFParserElement(p_CFTag.m_Arguments)) + ");";
         return tabs() + "f_WriteOutput(" + GenerateCFExpressionToCExpression(p_CFTag.m_Arguments) + ");";
 	}
 
@@ -1810,6 +1810,18 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
     return "";
 }
 
+QByteArray QCFGenerator::GenerateWriteOutput(const QString &output)
+{
+    if (isComponent())
+    {
+        return "worker.f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(output).toUtf8() + "\", " + QByteArray::number(output.length()) + "));\n";
+    }
+    else
+    {
+        return "worker.f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(output).toUtf8() + "\", " + QByteArray::number(output.length()) + "));\n";
+    }
+}
+
 QString QCFGenerator::tabs(int trim)
 {
     QString ret;
@@ -1820,4 +1832,9 @@ QString QCFGenerator::tabs(int trim)
     }
 
     return ret;
+}
+
+bool QCFGenerator::isComponent() const
+{
+    return strcmp(this->staticMetaObject.className(), "QCFComponentGenerator");
 }

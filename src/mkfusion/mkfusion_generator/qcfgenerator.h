@@ -7,13 +7,14 @@
 #include "qcf8.h"
 
 #include <QString>
+#include <QObject>
 #include <QHash>
 
 
-class QCFGenerator
+class QCFGenerator : public QObject
 {
 public:
-    QCFGenerator();
+    QCFGenerator(QObject *parent = 0);
     virtual ~QCFGenerator();
 
     bool generate(const QString &srcFilePath, const QString &dstFilePath);
@@ -32,7 +33,9 @@ protected:
     QString CFTagGetArgumentAsNumber(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString CFTagGetArgumentAsBool(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag);
+    QByteArray GenerateWriteOutput(const QString &output);
     QString tabs(int trim = 0);
+    bool isComponent() const;
 
     QCFParser m_Parser;
     QHash<QString, QString> m_CustomTagsPrefixes;

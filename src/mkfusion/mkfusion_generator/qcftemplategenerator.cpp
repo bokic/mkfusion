@@ -8,8 +8,8 @@
 #include <QFile>
 
 
-QCFTemplateGenerator::QCFTemplateGenerator()
-    : QCFGenerator()
+QCFTemplateGenerator::QCFTemplateGenerator(QObject *parent)
+    : QCFGenerator(parent)
 {
 }
 
@@ -43,10 +43,10 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
     const QList<QCFParserTag> &l_Tags = m_Parser.getTags();
 
-    /*for(const QCFParserTag &function : p_Parser.getTagFunctions(l_Tags))
+    for(const QCFParserTag &function : m_Parser.getTagFunctions(l_Tags))
     {
 
-    }*/
+    }
 
     for(const QCFParserElement &function : m_Parser.getScriptFunctions(l_Tags))
     {

@@ -8,8 +8,8 @@
 #include <QFile>
 
 
-QCFComponentGenerator::QCFComponentGenerator()
-    : QCFGenerator()
+QCFComponentGenerator::QCFComponentGenerator(QObject *parent)
+    : QCFGenerator(parent)
     , m_EnableComponentOutput(true)
     , m_EnableFunctionOutput(true)
 {
@@ -42,23 +42,67 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
     l_cppFile.write("\t\tm_TemplateFilePath = QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName).toUtf8() + "\");\n");
     l_cppFile.write("\t\tm_TemplateFileSize = " + QByteArray::number(m_Parser.m_FileSize) + ";\n");
     l_cppFile.write("\t\tm_TemplateFileModified = " + QByteArray::number(m_Parser.m_FileModifyDateTime) + ";\n");
-
-
-    // Test chunk.
-    l_cppFile.write("\t\tworker.f_WriteOutput(QString(\"Something before data member\"));\n");
-    l_cppFile.write("\t\tself[QString::fromWCharArray(L\"key\")] = QString::fromWCharArray(L\"value\");\n");
-    l_cppFile.write("\t\tworker.f_WriteOutput(QString(\"Something after data member\"));\n");
-    l_cppFile.write("\t\tworker.f_WriteOutput(QString(\"Something before function member\"));\n");
-    l_cppFile.write("\t\t//self[L\"function\"] = ;\n");
-    l_cppFile.write("\t\tworker.f_WriteOutput(QString(\"Something after function member\"));\n");
+    l_cppFile.write("\n");
 
     const QList<QCFParserTag> &l_Tags = m_Parser.getTags();
+
+    for(const QCFParserTag &function : m_Parser.getTagFunctions(l_Tags))
+    {
+        QString f_name = CFTagGetArgumentPlain(function, "name");
+        QString f_access = CFTagGetArgumentPlain(function, "access");
+        QString f_description = CFTagGetArgumentPlain(function, "description");
+        QString f_displayName = CFTagGetArgumentPlain(function, "displayName");
+        QString f_hint = CFTagGetArgumentPlain(function, "hint");
+        QString f_output = CFTagGetArgumentPlain(function, "output");
+        QString f_returnFormat = CFTagGetArgumentPlain(function, "returnFormat");
+        QString f_returnType = CFTagGetArgumentPlain(function, "returnType");
+        QString f_roles = CFTagGetArgumentPlain(function, "roles");
+        QString f_secureJSON = CFTagGetArgumentPlain(function, "secureJSON");
+        QString f_verifyClient = CFTagGetArgumentPlain(function, "verifyClient");
+
+        l_cppFile.write("\t\tself[\"" + toCPPEncodeStr(f_name).toUpper().toUtf8() + "\"] = QCFVariantFunction(\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_name).toUtf8() + "\", // Name\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_access).toUtf8() + "\", // Access\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_description).toUtf8() + "\", // Description\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_displayName).toUtf8() + "\", // Display Name\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_hint).toUtf8() + "\", // Hint\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_output).toUtf8() + "\", // Output\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_returnFormat).toUtf8() + "\", // Return Format\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_returnType).toUtf8() + "\", // Return Type\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_roles).toUtf8() + "\", // Roles\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_secureJSON).toUtf8() + "\", // Secure JSON\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_verifyClient).toUtf8() + "\", // Verify Client\n");
+        l_cppFile.write("\t\t\tQCFVariantArgumentList(), // Arguments\n"); // TODO: Implement arguments.
+        l_cppFile.write("\t\t\t[](QCFVariantComponent &self, QCFWorkerThread &worker, const QList<QCFVariant> &arguments) -> QCFVariant {\n");
+
+
+
+
+
+        l_cppFile.write("\n\t\t\t\treturn QCFVariant();\n");
+        l_cppFile.write("\t\t\t});\n\n");
+    }
+
+    /*for(const QCFParserElement &function : m_Parser.getScriptFunctions(l_Tags))
+    {
+
+    }*/
 
     QString l_Text = m_Parser.getText();
     QString l_tmpStr;
 
     qint32 l_CFCodeInsideTags = 0;
     bool output_text = true;
+
+    if ((!l_Tags.isEmpty())&&(output_text))
+    {
+        l_tmpStr = l_Text.left(l_Tags.first().m_Start);
+
+        if ((!l_tmpStr.isEmpty())&&(!m_EnableCFOutputOnly)&&(m_EnableComponentOutput)&&(m_EnableFunctionOutput))
+        {
+            l_cppFile.write(tabs().toUtf8() + GenerateWriteOutput(l_tmpStr));
+        }
+    }
 
     for(int c = 0; c < l_Tags.size(); c++)
     {
@@ -76,52 +120,59 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
             continue;
         }
 
-        if (output_text)
+        if (c > 0)
         {
-            if (c == 0)
+            int left = l_Tags.at(c - 1).m_Start + l_Tags.at(c - 1).m_Length;
+            int right = l_Tags.at(c).m_Start;
+
+            l_tmpStr = l_Text.mid(left, right - left);
+
+            if ((!l_tmpStr.isEmpty())&&(!m_EnableCFOutputOnly)&&(m_EnableComponentOutput)&&(m_EnableFunctionOutput))
             {
-                if (l_Tags[0].m_Start > 0)
-                {
-                    l_tmpStr = l_Text.left(l_Tags[0].m_Start);
-
-                    if (l_CFCodeInsideTags > 0)
-                    {
-                        l_tmpStr.replace("##", "#");
-                    }
-
-                    if ((!m_EnableCFOutputOnly)&&(m_EnableComponentOutput)&&(m_EnableFunctionOutput))
-                    {
-                        l_cppFile.write(QString(tabs() + "worker.f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
-                    }
-                }
-            }
-            else
-            {
-                if (l_Tags[c].m_Start - (l_Tags[c - 1].m_Start + l_Tags[c - 1].m_Length) > 0)
-                {
-                    l_tmpStr = l_Text.mid(l_Tags[c - 1].m_Start + l_Tags[c - 1].m_Length, l_Tags[c].m_Start - l_Tags[c - 1].m_Start - l_Tags[c - 1].m_Length);
-
-                    if (l_CFCodeInsideTags > 0)
-                    {
-                        l_tmpStr.replace("##", "#");
-                    }
-
-                    if ((!m_EnableCFOutputOnly)&&(m_EnableComponentOutput)&&(m_EnableFunctionOutput))
-                    {
-                        l_cppFile.write(QString(tabs() + "worker.f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
-                    }
-                }
+                l_cppFile.write(tabs().toUtf8() + GenerateWriteOutput(l_tmpStr));
             }
         }
 
+        QString l_CFromCFTag = GenerateCCodeFromCFTag(l_Tags[c]);
+        if (!l_CFromCFTag.isEmpty())
+        {
+            l_cppFile.write("\n");
+            l_cppFile.write(QString(tabs() + "// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
+            l_cppFile.write(QString(tabs() + l_CFromCFTag + "\n").toUtf8());
+        }
 
+        output_text = true;
 
+        if (m_NestedTags.count() > 0)
+        {
+            if (m_NestedTags.last()->m_Name.compare("cfswitch", Qt::CaseInsensitive) == 0)
+            {
+                output_text = false;
+            }
+        }
 
-
+        if ((output_text)&&(QCF8::generateCFTags().contains(l_Tags[c].m_Name))&&(QCF8::generateCFTags()[l_Tags[c].m_Name].m_ExpressionInside == QCFTag::WithExpressionInside))
+        {
+            if ((l_Tags[c].m_TagType == CFTagType)&&(l_Tags[c].m_InlineClosedTag == false))
+            {
+                l_CFCodeInsideTags++;
+            }
+            else if (l_Tags[c].m_TagType == EndCFTagType)
+            {
+                l_CFCodeInsideTags--;
+            }
+        }
     }
 
+    if ((!l_Tags.isEmpty())&&(output_text))
+    {
+        l_tmpStr = l_Text.right(l_Text.length() - l_Tags.last().m_Start - l_Tags.last().m_Length);
 
-
+        if ((!l_tmpStr.isEmpty())&&(!m_EnableCFOutputOnly)&&(m_EnableComponentOutput)&&(m_EnableFunctionOutput))
+        {
+            l_cppFile.write(tabs().toUtf8() + GenerateWriteOutput(l_tmpStr));
+        }
+    }
 
     l_cppFile.write("\t}\n");
     l_cppFile.write("};\n");

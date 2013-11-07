@@ -3,13 +3,15 @@
 
 #include "qcfgenerator.h"
 #include "qcfparser.h"
+
 #include <QString>
+#include <QObject>
 
 
 class QCFComponentGenerator : public QCFGenerator
 {
 public:
-    QCFComponentGenerator();
+    QCFComponentGenerator(QObject *parent = 0);
     virtual void generateCpp(const QString &dstFilePath) override;
 
 private:

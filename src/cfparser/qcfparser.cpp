@@ -2091,7 +2091,7 @@ QList<QCFParserElement> QCFParser::getScriptFunctions(QList<QCFParserTag> const 
 
     for(const QCFParserTag &tag : p_Tags)
     {
-        if (tag.m_Name == "cfscript")
+        if ((tag.m_Name == "cfscript")&&(tag.m_TagType == CFTagType))
         {
             for(const QCFParserElement &element : tag.m_Arguments.m_ChildElements)
             {
@@ -2119,7 +2119,7 @@ QList<QCFParserTag> QCFParser::getTagFunctions(QList<QCFParserTag> const p_Tags)
 
     for(const QCFParserTag &tag : p_Tags)
     {
-        if (tag.m_Name == "cffunction")
+        if ((tag.m_Name == "cffunction")&&(tag.m_TagType == CFTagType))
         {
             ret.append(tag);
         }

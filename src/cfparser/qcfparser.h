@@ -28,6 +28,21 @@ struct QCFParserElement
 	int m_Position;
 	int m_Size;
 	QList<QCFParserElement> m_ChildElements;
+    bool operator==(const struct QCFParserElement &other)
+    {
+        if (
+                (m_Type == other.m_Type)&&
+                (m_Text == other.m_Text)&&
+                (m_Position == other.m_Position)&&
+                (m_Size == other.m_Size)&&
+                (m_ChildElements == other.m_ChildElements)
+           )
+        {
+            return true;
+        }
+
+        return false;
+    }
 };
 
 struct QCFParserTag
@@ -46,7 +61,7 @@ struct QCFParserTag
                 (m_Length == other.m_Length)&&
                 (m_Name == other.m_Name)&&
                 (m_TagType == other.m_TagType)&&
-                (&m_Arguments == &other.m_Arguments)&& // TODO: recursive check is needed here[QCFParserTag::operator==()]
+                (m_Arguments == other.m_Arguments)&&
                 (m_InlineClosedTag == other.m_InlineClosedTag)&&
                 (m_OtherTag == other.m_OtherTag)
            )
