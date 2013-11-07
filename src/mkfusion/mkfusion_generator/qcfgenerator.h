@@ -22,7 +22,7 @@ public:
 
 protected:
     virtual void generateCpp(const QString &p_Target) = 0;
-    static QString toCPPEncodeStr(const QString &str);
+    static QByteArray toCPPEncodedString(const QString &string);
     QString GenerateVariable(const QString &p_Variable, const QString &p_Funct_params = "", const QString &p_Funct_local_vars = "");
     QString GenerateCFExpressionToCExpression(const QCFParserElement &p_CFExpression, const QString &funct_params = "", QString *funct_local_vars = nullptr);
     QCFParserElement OptimizeQCFParserElement(QCFParserElement p_CFExpression);

@@ -67,11 +67,11 @@ QString QCFGenerator::error() const
     return m_Error;
 }
 
-QString QCFGenerator::toCPPEncodeStr(const QString &str)
+QByteArray QCFGenerator::toCPPEncodedString(const QString &string)
 {
-    QString ret;
+    QByteArray ret;
 
-    for(const QChar &qch : str)
+    for(const QChar &qch : string)
     {
         ushort ch = qch.unicode();
 
@@ -109,11 +109,11 @@ QString QCFGenerator::toCPPEncodeStr(const QString &str)
 
         if ((ch >= 32)&&(ch <= 128))
         {
-            ret.append(QChar(ch));
+            ret.append((char)ch);
             continue;
         }
 
-        QString tmp = QString::number(ch, 16);
+        QByteArray tmp = QByteArray::number(ch, 16);
 
         while(tmp.length() < 4)
         {
@@ -265,7 +265,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
         }
         else
         {
-            ret = "QString::fromWCharArray(L\"" + toCPPEncodeStr(l_ElementName) + "\")";
+            ret = "QString::fromWCharArray(L\"" + toCPPEncodedString(l_ElementName) + "\")";
         }
         break;
     case Variable:
@@ -352,7 +352,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
             }
             else
             {
-                ret = "callCustomFunction(\"" + toCPPEncodeStr(l_ElementName.toLower()) + "\", QList<QCFVariant>()";
+                ret = "callCustomFunction(\"" + toCPPEncodedString(l_ElementName.toLower()) + "\", QList<QCFVariant>()";
 
                 for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                 {
@@ -490,11 +490,11 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 
                     if (localVars.contains(destVar.m_Text.toUpper()))
                     {
-                        ret += "updateVariable(LOCAL, QString(\"" + toCPPEncodeStr(destVar.m_Text.toUpper()) + "\"), ";
+                        ret += "updateVariable(LOCAL, QString(\"" + toCPPEncodedString(destVar.m_Text.toUpper()) + "\"), ";
                     }
                     else
                     {
-                        ret += "updateVariable(m_VARIABLES, QString(\"" + toCPPEncodeStr(destVar.m_Text.toUpper()) + "\"), ";
+                        ret += "updateVariable(m_VARIABLES, QString(\"" + toCPPEncodedString(destVar.m_Text.toUpper()) + "\"), ";
                     }
                 }
                 else if(destVar.m_ChildElements.count() > 0)
@@ -535,7 +535,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 
                     if ((destVar.m_Type == Variable)&&(destVar.m_ChildElements.count() == 0))
                     {
-                        ret += "updateVariable(LOCAL, QString(\"" + toCPPEncodeStr(destVar.m_Text.toUpper()) + "\"), ";
+                        ret += "updateVariable(LOCAL, QString(\"" + toCPPEncodedString(destVar.m_Text.toUpper()) + "\"), ";
                     }
                     else if(destVar.m_ChildElements.count() > 0)
                     {
@@ -889,7 +889,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             }
             else
             {
-                dataCollection = "\"" + toCPPEncodeStr("AssocAttrib") + "\"";
+                dataCollection = "\"" + toCPPEncodedString("AssocAttrib") + "\"";
             }
 
             return tabs() + "f_cfAssociate(" + baseTag + ", " + dataCollection + ");\n";
@@ -1216,7 +1216,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
 				if ((l_Index.m_Type != Error)&&(l_Index.m_ChildElements.size() == 3))
 				{
-                    ret  = tabs() + "f_Param(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_IndexStr.toUpper()) + "\"), QCFVariant(0));\n";
+                    ret  = tabs() + "f_Param(QString::fromWCharArray(L\"" + toCPPEncodedString(l_IndexStr.toUpper()) + "\"), QCFVariant(0));\n";
                     ret += tabs() + "for (" + GenerateVariable(l_IndexStr) + " = " + CFTagGetArgumentAsNumber(p_CFTag, "from") + "; (" + GenerateVariable(l_IndexStr) + ") " + l_Comparation + " (" + CFTagGetArgumentAsNumber(p_CFTag, "to") + "); " + GenerateVariable(l_IndexStr) + " = (" + GenerateVariable(l_IndexStr) + ") + " + l_Step + ")\n";
                     ret += tabs() + "{\n";
 
@@ -1487,12 +1487,12 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                         if (argumentName.compare("name", Qt::CaseInsensitive) != 0)
                         {
-                            ret += tabs() + "updateVariable(cftag_attributes, QString::fromWCharArray(L\"" + toCPPEncodeStr(argumentName.toUpper()) + "\"), " + CFTagGetArgument(p_CFTag, argumentName) + ");\n";
+                            ret += tabs() + "updateVariable(cftag_attributes, QString::fromWCharArray(L\"" + toCPPEncodedString(argumentName.toUpper()) + "\"), " + CFTagGetArgument(p_CFTag, argumentName) + ");\n";
                         }
                     }
                 }
 
-                ret += tabs() + "startCustomTag(\"\", \"" + toCPPEncodeStr(CFTagGetArgumentPlain(p_CFTag, "name")) + "\",cftag_attributes, " + endTag + ", QCustomTagTypeModuleName);\n";
+                ret += tabs() + "startCustomTag(\"\", \"" + toCPPEncodedString(CFTagGetArgumentPlain(p_CFTag, "name")) + "\",cftag_attributes, " + endTag + ", QCustomTagTypeModuleName);\n";
 
                 if (p_CFTag.m_OtherTag)
                 {
@@ -1523,12 +1523,12 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                         if (argumentName.compare("template", Qt::CaseInsensitive) != 0)
                         {
-                            ret += tabs() + "updateVariable(cftag_attributes, QString::fromWCharArray(L\"" + toCPPEncodeStr(argumentName.toUpper()) + "\"), " + CFTagGetArgument(p_CFTag, argumentName) + ");\n";
+                            ret += tabs() + "updateVariable(cftag_attributes, QString::fromWCharArray(L\"" + toCPPEncodedString(argumentName.toUpper()) + "\"), " + CFTagGetArgument(p_CFTag, argumentName) + ");\n";
                         }
                     }
                 }
 
-                ret += tabs() + "startCustomTag(\"\", \"" + toCPPEncodeStr(CFTagGetArgumentPlain(p_CFTag, "template")) + "\", cftag_attributes, " + endTag + ", QCustomTagTypeModuleTemplate);\n";
+                ret += tabs() + "startCustomTag(\"\", \"" + toCPPEncodedString(CFTagGetArgumentPlain(p_CFTag, "template")) + "\", cftag_attributes, " + endTag + ", QCustomTagTypeModuleTemplate);\n";
 
                 if (p_CFTag.m_OtherTag)
                 {
@@ -1569,7 +1569,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             m_Tabs--;
 
-            ret = tabs() + "} while(endCustomTag(\"\", \"" + toCPPEncodeStr(name) + "\", " + tagType + ") == true);\n";
+            ret = tabs() + "} while(endCustomTag(\"\", \"" + toCPPEncodedString(name) + "\", " + tagType + ") == true);\n";
 
             m_Tabs--;
 
@@ -1700,11 +1700,11 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
                 {
                     const QString &argumentName = argument.m_ChildElements.at(0).m_Text;
 
-                    ret += tabs() + "updateVariable(cftag_attributes, QString::fromWCharArray(L\"" + toCPPEncodeStr(argumentName.toUpper()) + "\"), " + CFTagGetArgument(p_CFTag, argumentName) + ");\n";
+                    ret += tabs() + "updateVariable(cftag_attributes, QString::fromWCharArray(L\"" + toCPPEncodedString(argumentName.toUpper()) + "\"), " + CFTagGetArgument(p_CFTag, argumentName) + ");\n";
                 }
             }
 
-            ret += tabs() + "startCustomTag(\"\", \"" + toCPPEncodeStr(templateName) + "\", cftag_attributes, " + endTag + ", QCustomTagType_);\n";
+            ret += tabs() + "startCustomTag(\"\", \"" + toCPPEncodedString(templateName) + "\", cftag_attributes, " + endTag + ", QCustomTagType_);\n";
 
             if (p_CFTag.m_OtherTag)
             {
@@ -1724,7 +1724,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             m_Tabs--;
 
-            ret = tabs() + "} while(endCustomTag(\"\", \"" + toCPPEncodeStr(templateName) + "\", QCustomTagType_) == true);\n";
+            ret = tabs() + "} while(endCustomTag(\"\", \"" + toCPPEncodedString(templateName) + "\", QCustomTagType_) == true);\n";
 
             m_Tabs--;
 
@@ -1763,11 +1763,11 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
                 {
                     const QString &argumentName = argument.m_ChildElements.at(0).m_Text;
 
-                    ret += tabs() + "updateVariable(cftag_attributes, QString::fromWCharArray(L\"" + toCPPEncodeStr(argumentName.toUpper()) + "\"), " + CFTagGetArgument(p_CFTag, argumentName) + ");\n";
+                    ret += tabs() + "updateVariable(cftag_attributes, QString::fromWCharArray(L\"" + toCPPEncodedString(argumentName.toUpper()) + "\"), " + CFTagGetArgument(p_CFTag, argumentName) + ");\n";
                 }
             }
 
-            ret += tabs() + "startCustomTag(\"" + toCPPEncodeStr(path) + "\", \"" + toCPPEncodeStr(templateName) + "\", cftag_attributes, " + endTag + ", QCustomTagTypeImport);\n";
+            ret += tabs() + "startCustomTag(\"" + toCPPEncodedString(path) + "\", \"" + toCPPEncodedString(templateName) + "\", cftag_attributes, " + endTag + ", QCustomTagTypeImport);\n";
 
             if (p_CFTag.m_OtherTag)
             {
@@ -1797,7 +1797,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
             m_Tabs--;
 
-            ret = tabs() + "} while(endCustomTag(\"" + toCPPEncodeStr(path) + "\", \"" + toCPPEncodeStr(templateName) + "\", QCustomTagTypeImport) == true);\n";
+            ret = tabs() + "} while(endCustomTag(\"" + toCPPEncodedString(path) + "\", \"" + toCPPEncodedString(templateName) + "\", QCustomTagTypeImport) == true);\n";
 
             m_Tabs--;
 
@@ -1814,11 +1814,11 @@ QByteArray QCFGenerator::GenerateWriteOutput(const QString &output)
 {
     if (isComponent())
     {
-        return "worker.f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(output).toUtf8() + "\", " + QByteArray::number(output.length()) + "));\n";
+        return "worker.f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodedString(output) + "\", " + QByteArray::number(output.length()) + "));\n";
     }
     else
     {
-        return "worker.f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(output).toUtf8() + "\", " + QByteArray::number(output.length()) + "));\n";
+        return "worker.f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodedString(output) + "\", " + QByteArray::number(output.length()) + "));\n";
     }
 }
 

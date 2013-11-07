@@ -39,7 +39,7 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
     l_cppFile.write("\t\t: QCFVariantComponent()\n");
     l_cppFile.write("\t{\n");
 
-    l_cppFile.write("\t\tm_TemplateFilePath = QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName).toUtf8() + "\");\n");
+    l_cppFile.write("\t\tm_TemplateFilePath = QString::fromWCharArray(L\"" + toCPPEncodedString(m_Parser.m_FileName) + "\");\n");
     l_cppFile.write("\t\tm_TemplateFileSize = " + QByteArray::number(m_Parser.m_FileSize) + ";\n");
     l_cppFile.write("\t\tm_TemplateFileModified = " + QByteArray::number(m_Parser.m_FileModifyDateTime) + ";\n");
     l_cppFile.write("\n");
@@ -60,18 +60,18 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
         QString f_secureJSON = CFTagGetArgumentPlain(function, "secureJSON");
         QString f_verifyClient = CFTagGetArgumentPlain(function, "verifyClient");
 
-        l_cppFile.write("\t\tself[\"" + toCPPEncodeStr(f_name).toUpper().toUtf8() + "\"] = QCFVariantFunction(\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_name).toUtf8() + "\", // Name\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_access).toUtf8() + "\", // Access\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_description).toUtf8() + "\", // Description\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_displayName).toUtf8() + "\", // Display Name\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_hint).toUtf8() + "\", // Hint\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_output).toUtf8() + "\", // Output\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_returnFormat).toUtf8() + "\", // Return Format\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_returnType).toUtf8() + "\", // Return Type\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_roles).toUtf8() + "\", // Roles\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_secureJSON).toUtf8() + "\", // Secure JSON\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodeStr(f_verifyClient).toUtf8() + "\", // Verify Client\n");
+        l_cppFile.write("\t\tself[\"" + toCPPEncodedString(f_name).toUpper() + "\"] = QCFVariantFunction(\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_name) + "\", // Name\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_access) + "\", // Access\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_description) + "\", // Description\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_displayName) + "\", // Display Name\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_hint) + "\", // Hint\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_output) + "\", // Output\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_returnFormat) + "\", // Return Format\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_returnType) + "\", // Return Type\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_roles) + "\", // Roles\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_secureJSON) + "\", // Secure JSON\n");
+        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_verifyClient) + "\", // Verify Client\n");
         l_cppFile.write("\t\t\tQCFVariantArgumentList(), // Arguments\n"); // TODO: Implement arguments.
         l_cppFile.write("\t\t\t[](QCFVariantComponent &self, QCFWorkerThread &worker, const QList<QCFVariant> &arguments) -> QCFVariant {\n");
 
@@ -184,7 +184,7 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
     l_cppFile.write("\n");
     l_cppFile.write("extern \"C\" MY_EXPORT QCFTemplateInfo getTemplateInfo()\n");
     l_cppFile.write("{\n");
-    l_cppFile.write(QString("\treturn QCFTemplateInfo(QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName) + "\"), " + QString::number(m_Parser.m_FileSize) + ", " + QString::number(m_Parser.m_FileModifyDateTime) + ");\n").toUtf8());
+    l_cppFile.write(QString("\treturn QCFTemplateInfo(QString::fromWCharArray(L\"" + toCPPEncodedString(m_Parser.m_FileName) + "\"), " + QString::number(m_Parser.m_FileSize) + ", " + QString::number(m_Parser.m_FileModifyDateTime) + ");\n").toUtf8());
     l_cppFile.write("};\n");
 
     if (l_cppFile.error() != QFileDevice::NoError)

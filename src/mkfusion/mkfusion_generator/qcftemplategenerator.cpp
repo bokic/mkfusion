@@ -37,16 +37,16 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
     l_cppFile.write("\t\t: QCFWorkerThread()\n");
     l_cppFile.write("\t{\n");
 
-    l_cppFile.write("\t\tm_TemplateFilePath = QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName).toUtf8() + "\");\n");
+    l_cppFile.write("\t\tm_TemplateFilePath = QString::fromWCharArray(L\"" + toCPPEncodedString(m_Parser.m_FileName) + "\");\n");
     l_cppFile.write("\t\tm_TemplateFileSize = " + QByteArray::number(m_Parser.m_FileSize) + ";\n");
     l_cppFile.write("\t\tm_TemplateFileModified = " + QByteArray::number(m_Parser.m_FileModifyDateTime) + ";\n");
 
     const QList<QCFParserTag> &l_Tags = m_Parser.getTags();
 
-    for(const QCFParserTag &function : m_Parser.getTagFunctions(l_Tags))
-    {
-
-    }
+    //for(const QCFParserTag &function : m_Parser.getTagFunctions(l_Tags))
+    //{
+    //
+    //}
 
     for(const QCFParserElement &function : m_Parser.getScriptFunctions(l_Tags))
     {
@@ -148,7 +148,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
         // TODO: Implement this when possible(not urgent).
 
-        l_cppFile.write(QString("\t\taddCustomFunction(\"" + toCPPEncodeStr(f_name.toLower()) + "\", [](QCFRunningTemplate *m_TemplateInstance, const QList<QCFVariant> &arguments) -> QCFVariant {\n").toUtf8());
+        l_cppFile.write(QString("\t\taddCustomFunction(\"" + toCPPEncodedString(f_name.toLower()) + "\", [](QCFRunningTemplate *m_TemplateInstance, const QList<QCFVariant> &arguments) -> QCFVariant {\n").toUtf8());
 
         l_cppFile.write("\t\t\tQCFVariant ARGUMENTS(QCFVariant::Struct);\n");
         l_cppFile.write("\t\t\tQCFVariant LOCAL(QCFVariant::Struct);\n");
@@ -229,7 +229,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
                     if (!m_EnableCFOutputOnly)
                     {
-                        l_cppFile.write(QString(tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
+                        l_cppFile.write(QString(tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodedString(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
                     }
                 }
             }
@@ -246,7 +246,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
                     if (!m_EnableCFOutputOnly)
                     {
-                        l_cppFile.write(QString(tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
+                        l_cppFile.write(QString(tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodedString(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
                     }
                 }
             }
@@ -295,7 +295,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
         if (!m_EnableCFOutputOnly)
         {
-            l_cppFile.write(QString(tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
+            l_cppFile.write(QString(tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodedString(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
         }
     }
     else
@@ -311,7 +311,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
 
             if (!m_EnableCFOutputOnly)
             {
-                l_cppFile.write(QString(tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
+                l_cppFile.write(QString(tabs() + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodedString(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
             }
         }
     }
@@ -326,7 +326,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
     l_cppFile.write("\n");
     l_cppFile.write("extern \"C\" MY_EXPORT QCFTemplateInfo getTemplateInfo()\n");
     l_cppFile.write("{\n");
-    l_cppFile.write(QString("\treturn QCFTemplateInfo(QString::fromWCharArray(L\"" + toCPPEncodeStr(m_Parser.m_FileName) + "\"), " + QString::number(m_Parser.m_FileSize) + ", " + QString::number(m_Parser.m_FileModifyDateTime) + ");\n").toUtf8());
+    l_cppFile.write(QString("\treturn QCFTemplateInfo(QString::fromWCharArray(L\"" + toCPPEncodedString(m_Parser.m_FileName) + "\"), " + QString::number(m_Parser.m_FileSize) + ", " + QString::number(m_Parser.m_FileModifyDateTime) + ");\n").toUtf8());
     l_cppFile.write("};\n");
 
     if (l_cppFile.error() != QFileDevice::NoError)
