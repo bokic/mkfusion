@@ -21,11 +21,4 @@ public:
     QString m_Default;
 };
 
-class QCFVariantArgumentList : public QList<QCFVariantArgument>
-{
-public:
-    inline QCFVariantArgumentList &operator<<(const QCFVariantArgument &arg)
-    { append(arg); return *this; }
-};
-
 #endif // QCFVARIANTARGUMENT_H

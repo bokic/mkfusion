@@ -394,7 +394,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                             (str.compare("if", Qt::CaseInsensitive) == 0)||
                             (str.compare("else", Qt::CaseInsensitive) == 0)||
                             (str.compare("try", Qt::CaseInsensitive) == 0)||
-                            (str.compare("catch", Qt::CaseInsensitive) == 0)
+                            (str.compare("catch", Qt::CaseInsensitive) == 0)||
+                            (str.compare("this", Qt::CaseInsensitive) == 0)
                             )
                     {
                         ret.m_Type = Keyword;
@@ -421,16 +422,17 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                 if ((ch == '[')||(ch == '.'))
 				{
                     ret.m_Text = p_Text.mid(l_Offset, c - l_Offset).trimmed();
-                    //c = ret.m_Position + 1;
 
-                    if (parent)
+                    if (ret.m_Text.compare("this", Qt::CaseInsensitive) == 0)
                     {
-                        if (parent->m_Type == VariableMember)
-                        {
-                            ret.m_Size = c - ret.m_Position;
+                        ret.m_Type = Keyword;
+                    }
 
-                            return ret;
-                        }
+                    if ((parent)&&(parent->m_Type == VariableMember))
+                    {
+                        ret.m_Size = c - ret.m_Position;
+
+                        return ret;
                     }
 
                     do
@@ -529,7 +531,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                             (ret.m_Text.compare("function", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("return", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("if", Qt::CaseInsensitive) == 0)||
-                            (ret.m_Text.compare("else", Qt::CaseInsensitive) == 0)
+                            (ret.m_Text.compare("else", Qt::CaseInsensitive) == 0)||
+                            (ret.m_Text.compare("this", Qt::CaseInsensitive) == 0)
                             )
                     {
                         ret.m_Type = Keyword;
@@ -576,7 +579,10 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
             {
                 ret.m_Type = Boolean;
             }
-            else if (ret.m_Text.compare("var", Qt::CaseInsensitive) == 0)
+            else if (
+                     (ret.m_Text.compare("var", Qt::CaseInsensitive) == 0)||
+                     (ret.m_Text.compare("this", Qt::CaseInsensitive) == 0)
+                    )
             {
                 ret.m_Type = Keyword;
             }

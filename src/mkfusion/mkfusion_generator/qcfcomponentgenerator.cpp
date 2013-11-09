@@ -72,7 +72,7 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
         l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_roles) + "\", // Roles\n");
         l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_secureJSON) + "\", // Secure JSON\n");
         l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_verifyClient) + "\", // Verify Client\n");
-        l_cppFile.write("\t\t\tQCFVariantArgumentList(), // Arguments\n"); // TODO: Implement arguments.
+        l_cppFile.write("\t\t\tQCFVariant(QCFVariant::Array), // Arguments\n"); // TODO: Implement arguments.
         l_cppFile.write("\t\t\t[](QCFVariantComponent &self, QCFWorkerThread &worker, const QList<QCFVariant> &arguments) -> QCFVariant {\n");
 
 
@@ -103,6 +103,8 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
             l_cppFile.write(tabs().toUtf8() + GenerateWriteOutput(l_tmpStr));
         }
     }
+
+    m_Tabs = 2;
 
     for(int c = 0; c < l_Tags.size(); c++)
     {
@@ -138,7 +140,7 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
         {
             l_cppFile.write("\n");
             l_cppFile.write(QString(tabs() + "// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
-            l_cppFile.write(QString(tabs() + l_CFromCFTag + "\n").toUtf8());
+            l_cppFile.write(QString(l_CFromCFTag + "\n").toUtf8());
         }
 
         output_text = true;
