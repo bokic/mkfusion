@@ -257,7 +257,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
         {
             l_cppFile.write("\n");
             l_cppFile.write(QString(tabs() + "// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
-            l_cppFile.write(QString(tabs() + l_CFromCFTag + "\n").toUtf8());
+            l_cppFile.write(QString(l_CFromCFTag + "\n").toUtf8());
         }
 
         output_text = true;

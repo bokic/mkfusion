@@ -290,16 +290,6 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 
                 if (item.m_Type == Variable)
                 {
-                    /*if (funct_local_vars == nullptr)
-                    {
-                        QString tmp_funct_local_vars;
-
-                        ret = "[" + GenerateVariable(item.m_Text.toUpper(), funct_params, tmp_funct_local_vars) + "]";
-                    }
-                    else
-                    {
-                        ret = "[" + GenerateVariable(item.m_Text.toUpper(), funct_params, *funct_local_vars) + "]";
-                    }*/
                     ret = "[L\"" + item.m_Text.toUpper() + "\"]";
                 }
                 else if (item.m_Type == String)
@@ -356,7 +346,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
             }
             else
             {
-                ret = "call(\"" + toCPPEncodedString(l_ElementName.toLower()) + "\", QList<QCFVariant>()";
+                ret = "call(L\"" + toCPPEncodedString(l_ElementName.toLower()) + "\", QList<QCFVariant>()";
 
                 for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                 {
