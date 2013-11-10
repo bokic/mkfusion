@@ -310,6 +310,10 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                 {
                     ret = "[" + item.m_Text + "]";
                 }
+                else if (item.m_Type == Function)
+                {
+                    ret = "." + GenerateCFExpressionToCExpression(item, funct_params, funct_local_vars);
+                }
                 else
                 {
                     throw QCFGeneratorException("Unknown member access.", item.m_Position);
@@ -352,7 +356,7 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
             }
             else
             {
-                ret = "callCustomFunction(\"" + toCPPEncodedString(l_ElementName.toLower()) + "\", QList<QCFVariant>()";
+                ret = "call(\"" + toCPPEncodedString(l_ElementName.toLower()) + "\", QList<QCFVariant>()";
 
                 for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                 {
@@ -450,7 +454,6 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
     case Expression:
         c = 0;
 
-
         if (p_CFExpression.m_ChildElements.size() >= 2)
         {
             const QCFParserElement &var = p_CFExpression.m_ChildElements.at(0);
@@ -505,9 +508,16 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                     if (key.m_Type == VariableMember)
                     {
                         key.m_Type = Expression;
+
+                        if ((key.m_ChildElements.count() == 1)&&(key.m_ChildElements[0].m_Type == Variable))
+                        {
+                            key.m_ChildElements[0].m_Type = String;
+                        }
+
                         ret += "updateVariable(" + GenerateCFExpressionToCExpression(tmp, funct_params, funct_local_vars) + ", " + GenerateCFExpressionToCExpression(key, funct_params, funct_local_vars) + ", ";
 
-                    } else if ((key.m_ChildElements.count() == 1)&&(key.m_ChildElements.first().m_Type == Variable))
+                    }
+                    else if ((key.m_ChildElements.count() == 1)&&(key.m_ChildElements.first().m_Type == Variable))
                     {
                         ret += "updateVariable(" + GenerateCFExpressionToCExpression(tmp, funct_params, funct_local_vars) + ", L\"" + key.m_ChildElements.first().m_Text.toUpper() + "\", ";
                     }
@@ -612,7 +622,11 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 
     case Keyword:
 
-        if (p_CFExpression.m_Text.compare("var", Qt::CaseInsensitive) != 0)
+        if (p_CFExpression.m_Text.compare("this", Qt::CaseInsensitive) == 0)
+        {
+            ret += "self";
+        }
+        else if (p_CFExpression.m_Text.compare("var", Qt::CaseInsensitive) != 0)
         {
             ret += p_CFExpression.m_Text + " ";
         }

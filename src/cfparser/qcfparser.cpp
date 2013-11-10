@@ -375,7 +375,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                         ret.m_Size = c - p_Offset;
 
                         return ret;
-                    } else if (
+                    }
+                    else if (
                             (str.compare("true", Qt::CaseInsensitive) == 0)||
                             (str.compare("false", Qt::CaseInsensitive) == 0)||
                             (str.compare("yes", Qt::CaseInsensitive) == 0)||
@@ -387,7 +388,8 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                         ret.m_Size = c - p_Offset;
 
                         return ret;
-                    } else if (
+                    }
+                    else if (
                             (str.compare("var", Qt::CaseInsensitive) == 0)||
                             (str.compare("function", Qt::CaseInsensitive) == 0)||
                             (str.compare("return", Qt::CaseInsensitive) == 0)||
