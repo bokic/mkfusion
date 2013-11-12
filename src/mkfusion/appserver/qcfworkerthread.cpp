@@ -1970,6 +1970,12 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
         break;
     case QCFVariant::Component:
         component_filename = var.m_Component->m_TemplateFilePath;
+
+        if (!var.m_Component->isComponentLatest())
+        {
+            component_filename += " - OLD";
+        }
+
         ret = "<table class=\"cfdump_object\"><tr><th class=\"object\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">component - " + component_filename.toHtmlEscaped() + "</th></tr>\n";
 
         for(const QString &l_key: var.m_Component->self.m_Struct->keys())

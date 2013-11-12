@@ -1,6 +1,8 @@
 #include "qcfvariantcomponent.h"
 #include "qcfvariant.h"
 
+#include <QFileInfo>
+
 
 QCFVariantComponent::QCFVariantComponent()
     : m_Inherit(nullptr)
@@ -86,4 +88,21 @@ QCFVariantComponent &QCFVariantComponent::operator=(const QCFVariantComponent &o
 QCFVariantComponent::~QCFVariantComponent()
 {
     m_Inherit = nullptr;
+}
+
+bool QCFVariantComponent::isComponentLatest()
+{
+    QFileInfo fi(m_TemplateFilePath);
+
+    if (!fi.exists())
+    {
+        return false;
+    }
+
+    if ((fi.lastModified().toTime_t() == m_TemplateFileModified)&&(fi.size() == m_TemplateFileSize))
+    {
+        return true;
+    }
+
+    return false;
 }

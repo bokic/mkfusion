@@ -18,6 +18,8 @@ public:
     QCFVariantComponent &operator=(const QCFVariantComponent &other);
     ~QCFVariantComponent();
 
+    bool isComponentLatest();
+
     QCFVariantComponent *m_Inherit;
     QString m_ComponentFileName;
     QCFVariant self;
