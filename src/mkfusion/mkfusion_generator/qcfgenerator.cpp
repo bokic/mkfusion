@@ -351,8 +351,14 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
             }
             else
             {
-                // TODO: Implement component calls component.
-                ret = "call(*this, QString::fromWCharArray(L\"" + toCPPEncodedString(l_ElementName.toLower()) + "\"), QList<QCFVariant>()";
+                if (m_Parser.m_FileType == QCFParserTemplateFile)
+                {
+                    ret = "call(*this, QString::fromWCharArray(L\"" + toCPPEncodedString(l_ElementName.toLower()) + "\"), QList<QCFVariant>()";
+                }
+                else
+                {
+                    ret = "call(worker, QString::fromWCharArray(L\"" + toCPPEncodedString(l_ElementName.toLower()) + "\"), QList<QCFVariant>()";
+                }
 
                 for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                 {
