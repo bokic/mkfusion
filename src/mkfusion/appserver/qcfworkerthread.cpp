@@ -1,4 +1,5 @@
 #include "qcfworkerthread.h"
+#include "qcfvariantcomponent.h"
 #include "qmkfusionexception.h"
 #include "cffunctions.h"
 #include "qhttpcodec.h"
@@ -1779,186 +1780,264 @@ void QCFWorkerThread::f_cfdump(const QCFVariant &var)
 
 QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
 {
-    QString ret;
+    QString ret, component_filename;
 
     int columns;
 
-    QCFVariant l_temp = var;
-    switch(l_temp.type())
+    switch(var.type())
     {
-        case QCFVariant::Boolean:
-        case QCFVariant::DateTime:
-        case QCFVariant::Number:
-            ret += l_temp.toString();
-            break;
-        case QCFVariant::String:
-            if (!l_temp.m_String->isEmpty())
+    case QCFVariant::Null:
+        return "Null";
+        break;
+    case QCFVariant::Boolean:
+    case QCFVariant::DateTime:
+    case QCFVariant::Number:
+        return var.toString();
+        break;
+    case QCFVariant::String:
+        if (!var.m_String->isEmpty())
+        {
+            return *var.m_String;
+        }
+        else
+        {
+            return "[empty string]";
+        }
+        break;
+    case QCFVariant::Struct:
+        ret = "<table class=\"cfdump_struct\"><tr><th class=\"struct\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">struct</th></tr>\n";
+
+        for(const QString &l_key: var.m_Struct->keys())
+        {
+            QString l_keyType;
+
+            switch (var.m_Struct->value(l_key).m_Type)
             {
-                ret += *l_temp.m_String;
-            }
-            else
-            {
-                ret += "[empty string]";
-            }
-            break;
-        case QCFVariant::Struct:
-            ret += "<table class=\"cfdump_struct\"><tr><th class=\"struct\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">struct</th></tr>\n";
-
-            for(const QString &l_key: l_temp.m_Struct->keys())
-            {
-                QString l_keyType;
-
-                switch ((*l_temp.m_Struct)[l_key].m_Type) {
-                case QCFVariant::Null:
-                    ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key.toHtmlEscaped() + " [null]</td><td>null</td></tr>\n";
-                    continue;
-                case QCFVariant::Boolean:
-                    l_keyType = "[boolean]";
-                    break;
-                case QCFVariant::Number:
-                    l_keyType = "[number]";
-                    break;
-                case QCFVariant::String:
-                    l_keyType = "[string]";
-                    break;
-                case QCFVariant::DateTime:
-                    l_keyType = "[datetime]";
-                    break;
-                case QCFVariant::Array:
-                    l_keyType = "[array]";
-                    break;
-                case QCFVariant::Struct:
-                    l_keyType = "[object]";
-                    break;
-                case QCFVariant::Binary:
-                    l_keyType = "[binary]";
-                    break;
-                case QCFVariant::Query:
-                    l_keyType = "[query]";
-                    break;
-                case QCFVariant::Component:
-                    l_keyType = "[component]";
-                    break;
-                case QCFVariant::NotImplemented:
-                    l_keyType = "[not implemented]";
-                    break;
-                case QCFVariant::Error:
-                    l_keyType = "[error]";
-                    break;
-                default:
-                    l_keyType = "[unknown]";
-                    break;
-                }
-
-                ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key.toHtmlEscaped() + " " + l_keyType.toHtmlEscaped() + "</td><td>" + f_cfdump_var((*l_temp.m_Struct)[l_key]).toHtmlEscaped() + "</td></tr>\n";
-            }
-
-            ret += "</table>\n";
-            break;
-        case QCFVariant::Array:
-            ret += "<table class=\"cfdump_array\"><tr><th class=\"array\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">array</th></tr>\n";
-
-            for(int i = 0; i < var.m_Array->size(); i++)
-            {
-                QString l_keyType;
-
-                switch (l_temp.m_Array->at(i).m_Type) {
-                case QCFVariant::Null:
-                    ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i) + " [null]</td><td>null</td></tr>\n";
-                    continue;
-                case QCFVariant::Boolean:
-                    l_keyType = "[boolean]";
-                    break;
-                case QCFVariant::Number:
-                    l_keyType = "[number]";
-                    break;
-                case QCFVariant::String:
-                    l_keyType = "[string]";
-                    break;
-                case QCFVariant::DateTime:
-                    l_keyType = "[datetime]";
-                    break;
-                case QCFVariant::Array:
-                    l_keyType = "[array]";
-                    break;
-                case QCFVariant::Struct:
-                    l_keyType = "[object]";
-                    break;
-                case QCFVariant::Binary:
-                    l_keyType = "[binary]";
-                    break;
-                case QCFVariant::Query:
-                    l_keyType = "[query]";
-                    break;
-                case QCFVariant::Component:
-                    l_keyType = "[component]";
-                    break;
-                case QCFVariant::NotImplemented:
-                    l_keyType = "[not implemented]";
-                    break;
-                case QCFVariant::Error:
-                    l_keyType = "[error]";
-                    break;
-                default:
-                    l_keyType = "[unknown]";
-                    break;
-                }
-
-                ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i) + " " + l_keyType.toHtmlEscaped() + "</td><td>" + f_cfdump_var(l_temp.m_Array->at(i)).toHtmlEscaped() + "</td></tr>\n";
+            case QCFVariant::Null:
+                l_keyType = "[null]";
+                break;
+            case QCFVariant::Boolean:
+                l_keyType = "[boolean]";
+                break;
+            case QCFVariant::Number:
+                l_keyType = "[number]";
+                break;
+            case QCFVariant::String:
+                l_keyType = "[string]";
+                break;
+            case QCFVariant::DateTime:
+                l_keyType = "[datetime]";
+                break;
+            case QCFVariant::Array:
+                l_keyType = "[array]";
+                break;
+            case QCFVariant::Struct:
+                l_keyType = "[object]";
+                break;
+            case QCFVariant::Binary:
+                l_keyType = "[binary]";
+                break;
+            case QCFVariant::Query:
+                l_keyType = "[query]";
+                break;
+            case QCFVariant::Component:
+                l_keyType = "[component]";
+                break;
+            case QCFVariant::Function:
+                l_keyType = "[function]";
+                break;
+            case QCFVariant::NotImplemented:
+                l_keyType = "[not implemented]";
+                break;
+            case QCFVariant::Error:
+                l_keyType = "[error]";
+                break;
+            default:
+                l_keyType = "[unknown]";
+                break;
             }
 
-            ret += "</table>\n";
-            break;
-        case QCFVariant::Query:
+            ret += "<tr><td class=\"struct\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key.toHtmlEscaped() + " " + l_keyType.toHtmlEscaped() + "</td><td>" + f_cfdump_var(var.m_Struct->value(l_key)) + "</td></tr>\n";
+        }
 
-            columns = var.m_Struct->value("RESULTSET").m_Struct->count();
+        ret += "</table>\n";
+        break;
+    case QCFVariant::Array:
+        ret = "<table class=\"cfdump_array\"><tr><th class=\"array\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">array</th></tr>\n";
 
-            ret += "<table class=\"cfdump_query\"><tr><th class=\"array\" colspan=\"" + QString::number(columns) + "\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">query</th></tr>\n";
+        for(int i = 0; i < var.m_Array->size(); i++)
+        {
+            QString l_keyType;
 
-            if (columns > 0)
+            switch (var.m_Array->at(i).m_Type) {
+            case QCFVariant::Null:
+                l_keyType = "[null]";
+                break;
+            case QCFVariant::Boolean:
+                l_keyType = "[boolean]";
+                break;
+            case QCFVariant::Number:
+                l_keyType = "[number]";
+                break;
+            case QCFVariant::String:
+                l_keyType = "[string]";
+                break;
+            case QCFVariant::DateTime:
+                l_keyType = "[datetime]";
+                break;
+            case QCFVariant::Array:
+                l_keyType = "[array]";
+                break;
+            case QCFVariant::Struct:
+                l_keyType = "[object]";
+                break;
+            case QCFVariant::Binary:
+                l_keyType = "[binary]";
+                break;
+            case QCFVariant::Query:
+                l_keyType = "[query]";
+                break;
+            case QCFVariant::Component:
+                l_keyType = "[component]";
+                break;
+            case QCFVariant::Function:
+                l_keyType = "[function]";
+                break;
+            case QCFVariant::NotImplemented:
+                l_keyType = "[not implemented]";
+                break;
+            case QCFVariant::Error:
+                l_keyType = "[error]";
+                break;
+            default:
+                l_keyType = "[unknown]";
+                break;
+            }
+
+            ret += "<tr><td class=\"array\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + QString::number(i) + " " + l_keyType.toHtmlEscaped() + "</td><td>" + f_cfdump_var(var.m_Array->at(i)) + "</td></tr>\n";
+        }
+
+        ret += "</table>\n";
+        break;
+    case QCFVariant::Binary:
+        return "Binary is not implemented";
+        break;
+    case QCFVariant::Query:
+
+        columns = var.m_Struct->value("RESULTSET").m_Struct->count();
+
+        ret = "<table class=\"cfdump_query\"><tr><th class=\"array\" colspan=\"" + QString::number(columns) + "\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">query</th></tr>\n";
+
+        if (columns > 0)
+        {
+            ret += "<tr bgcolor=\"eeaaaa\">\n";
+
+            ret += "<td class=\"query\" style=\"cursor: pointer; font-style: normal;\" title=\"click to collapse\" onclick=\"cfdump_toggleRow_qry(this);\">&nbsp;</td>\n";
+
+            for(int c = 0; c < columns; c++)
             {
-                ret += "<tr bgcolor=\"eeaaaa\">\n";
+                ret += "<td class=\"query\">" + var.m_Struct->value("RESULTSET").m_Struct->keys().at(c).toHtmlEscaped() + "</td>\n";
+            }
 
-                ret += "<td class=\"query\" style=\"cursor: pointer; font-style: normal;\" title=\"click to collapse\" onclick=\"cfdump_toggleRow_qry(this);\">&nbsp;</td>\n";
+            ret += "</tr>\n";
+
+            int rows = var.m_Struct->value("RECORDCOUNT").toInt();
+
+            for(int r = 0; r < rows; r++)
+            {
+                ret += "<tr>\n";
+
+                ret += "<td class=\"query\" style=\"cursor: pointer; font-style: normal;\" title=\"click to collapse\" onclick=\"cfdump_toggleRow_qry(this);\">" + QString::number(r + 1) + "</td>\n";
 
                 for(int c = 0; c < columns; c++)
                 {
-                    ret += "<td class=\"query\">" + var.m_Struct->value("RESULTSET").m_Struct->keys().at(c).toHtmlEscaped() + "</td>\n";
+                    QString cell_text = var.m_Struct->value("RESULTSET").m_Struct->values().at(c).m_Array->at(r).toString();
+
+                    if (cell_text.isEmpty())
+                    {
+                        cell_text = "[empty string]";
+                    }
+
+                    ret += "<td valign=\"top\">" + cell_text.toHtmlEscaped() + "</td>\n";
                 }
 
                 ret += "</tr>\n";
+            }
+        }
 
-                int rows = var.m_Struct->value("RECORDCOUNT").toInt();
+        ret += "</table>\n";
+        break;
+    case QCFVariant::Component:
+        component_filename = var.m_Component->m_TemplateFilePath;
+        ret = "<table class=\"cfdump_object\"><tr><th class=\"component\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">component - " + component_filename.toHtmlEscaped() + "</th></tr>\n";
 
-                for(int r = 0; r < rows; r++)
-                {
-                    ret += "<tr>\n";
+        for(const QString &l_key: var.m_Component->self.m_Struct->keys())
+        {
+            QString l_keyType;
 
-                    ret += "<td class=\"query\" style=\"cursor: pointer; font-style: normal;\" title=\"click to collapse\" onclick=\"cfdump_toggleRow_qry(this);\">" + QString::number(r + 1) + "</td>\n";
-
-                    for(int c = 0; c < columns; c++)
-                    {
-                        QString cell_text = var.m_Struct->value("RESULTSET").m_Struct->values().at(c).m_Array->at(r).toString();
-
-                        if (cell_text.isEmpty())
-                        {
-                            cell_text = "[empty string]";
-                        }
-
-                        ret += "<td valign=\"top\">" + cell_text.toHtmlEscaped() + "</td>\n";
-                    }
-
-                    ret += "</tr>\n";
-                }
+            switch (var.m_Component->self.m_Struct->value(l_key).m_Type)
+            {
+            case QCFVariant::Null:
+                l_keyType = "[null]";
+                break;
+            case QCFVariant::Boolean:
+                l_keyType = "[boolean]";
+                break;
+            case QCFVariant::Number:
+                l_keyType = "[number]";
+                break;
+            case QCFVariant::String:
+                l_keyType = "[string]";
+                break;
+            case QCFVariant::DateTime:
+                l_keyType = "[datetime]";
+                break;
+            case QCFVariant::Array:
+                l_keyType = "[array]";
+                break;
+            case QCFVariant::Struct:
+                l_keyType = "[object]";
+                break;
+            case QCFVariant::Binary:
+                l_keyType = "[binary]";
+                break;
+            case QCFVariant::Query:
+                l_keyType = "[query]";
+                break;
+            case QCFVariant::Component:
+                l_keyType = "[component]";
+                break;
+            case QCFVariant::Function:
+                l_keyType = "[function]";
+                break;
+            case QCFVariant::NotImplemented:
+                l_keyType = "[not implemented]";
+                break;
+            case QCFVariant::Error:
+                l_keyType = "[error]";
+                break;
+            default:
+                l_keyType = "[unknown]";
+                break;
             }
 
-            ret += "</table>\n";
-            break;
-        case QCFVariant::Component:
-            ret += "Not implemented";
-            break;
-        default:
-            break;
+            ret += "<tr><td class=\"component\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key.toHtmlEscaped() + " " + l_keyType.toHtmlEscaped() + "</td><td>" + f_cfdump_var(var.m_Component->self.m_Struct->value(l_key)) + "</td></tr>\n";
+        }
+
+        ret += "</table>\n";
+        break;
+    case QCFVariant::Function:
+        return "Not implemented";
+        break;
+    case QCFVariant::NotImplemented:
+        return "Not implemented";
+        break;
+    case QCFVariant::Error:
+        return "Error";
+        break;
+    default:
+        return "Unknown";
+        break;
     }
 
     return ret;
