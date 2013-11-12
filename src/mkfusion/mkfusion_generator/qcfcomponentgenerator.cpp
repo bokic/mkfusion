@@ -8,17 +8,20 @@
 #include <QFile>
 
 
-QCFComponentGenerator::QCFComponentGenerator(QObject *parent)
-    : QCFGenerator(parent)
+QCFComponentGenerator::QCFComponentGenerator()
+    : QCFGenerator()
     , m_EnableComponentOutput(true)
     , m_EnableFunctionOutput(true)
 {
+    m_Type = QCFComponentGeneratorType;
 }
 
 void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
 {
     QFile l_cppFile(dstFilePath);
     l_cppFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
+    l_cppFile.write("#include <qcfvariantcomponent.h>\n");
+    l_cppFile.write("#include <qcfvariantfunction.h>\n");
     l_cppFile.write("#include <qmkfusionexception.h>\n");
     l_cppFile.write("#include <qcfworkerthread.h>\n");
     l_cppFile.write("#include <qcftemplateinfo.h>\n");
@@ -59,20 +62,42 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
         QString f_roles = CFTagGetArgumentPlain(function, "roles");
         QString f_secureJSON = CFTagGetArgumentPlain(function, "secureJSON");
         QString f_verifyClient = CFTagGetArgumentPlain(function, "verifyClient");
+        QString f_args;
 
-        l_cppFile.write("\t\tself[\"" + toCPPEncodedString(f_name).toUpper() + "\"] = QCFVariantFunction(\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_name) + "\", // Name\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_access) + "\", // Access\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_description) + "\", // Description\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_displayName) + "\", // Display Name\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_hint) + "\", // Hint\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_output) + "\", // Output\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_returnFormat) + "\", // Return Format\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_returnType) + "\", // Return Type\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_roles) + "\", // Roles\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_secureJSON) + "\", // Secure JSON\n");
-        l_cppFile.write("\t\t\t\"" + toCPPEncodedString(f_verifyClient) + "\", // Verify Client\n");
-        l_cppFile.write("\t\t\tQCFVariant(QCFVariant::Array), // Arguments\n"); // TODO: Implement arguments.
+        for(const QCFParserTag &arg : m_Parser.getFunctionArguments(function))
+        {
+            QString a_name = CFTagGetArgumentPlain(arg, "name");
+            QString a_default = CFTagGetArgumentPlain(arg, "default");
+            QString a_displayname = CFTagGetArgumentPlain(arg, "displayname");
+            QString a_hint = CFTagGetArgumentPlain(arg, "hint");
+            QString a_required = CFTagGetArgumentPlain(arg, "required");
+            QString a_type = CFTagGetArgumentPlain(arg, "type");
+
+            f_args.append("\n\t\t\t\t<< QCFVariantArgument(");
+
+            f_args.append("QString::fromWCharArray(L\"" + toCPPEncodedString(a_name) + "\"), ");
+            f_args.append("QString::fromWCharArray(L\"" + toCPPEncodedString(a_default) + "\"), ");
+            f_args.append("QString::fromWCharArray(L\"" + toCPPEncodedString(a_displayname) + "\"), ");
+            f_args.append("QString::fromWCharArray(L\"" + toCPPEncodedString(a_hint) + "\"), ");
+            f_args.append("QString::fromWCharArray(L\"" + toCPPEncodedString(a_required) + "\"), ");
+            f_args.append("QString::fromWCharArray(L\"" + toCPPEncodedString(a_type) + "\")");
+
+            f_args.append(")");
+        }
+
+        l_cppFile.write("\t\tself[QString::fromWCharArray(L\"" + toCPPEncodedString(f_name).toUpper() + "\")] = QCFVariantFunction(\n");
+        l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_name) + "\"), // Name\n");
+        l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_access) + "\"), // Access\n");
+        l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_description) + "\"), // Description\n");
+        l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_displayName) + "\"), // Display Name\n");
+        l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_hint) + "\"), // Hint\n");
+        l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_output) + "\"), // Output\n");
+        l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_returnFormat) + "\"), // Return Format\n");
+        l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_returnType) + "\"), // Return Type\n");
+        l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_roles) + "\"), // Roles\n");
+        l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_secureJSON) + "\"), // Secure JSON\n");
+        l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_verifyClient) + "\"), // Verify Client\n");
+        l_cppFile.write("\t\t\tQCFVariantArgumentList()" + f_args.toUtf8() + ", // Arguments\n");
         l_cppFile.write("\t\t\t[](QCFVariantComponent &self, QCFWorkerThread &worker, const QList<QCFVariant> &arguments) -> QCFVariant {\n");
 
 

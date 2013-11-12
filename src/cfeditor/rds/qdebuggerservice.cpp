@@ -4,26 +4,26 @@
 #include <QString>
 #include <QMap>
 
-QByteArray QDebuggerService::ExecuteRDSCommand(QRDSServer rdsserver, quint8 command, QMap<QString, QString> map)
+QByteArray QDebuggerService::ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
 {
 	QByteArray ret;
 
-	switch (command)
+    switch (command)
 	{
 	case 0:
-		return GetServerInfo(rdsserver);
+        return GetServerInfo(rdsserver);
 		break;
 	case 1:
-		return DoDebugStart(rdsserver, map);
+        return DoDebugStart(rdsserver, map);
 		break;
 	case 2:
-		return DoDebugStop(rdsserver, map);
+        return DoDebugStop(rdsserver, map);
 		break;
 	case 3:
-		return DoDebugRequest(rdsserver, map);
+        return DoDebugRequest(rdsserver, map);
 		break;
 	case 4:
-		return DoDebugEvents(rdsserver, map);
+        return DoDebugEvents(rdsserver, map);
 		break;
 	}
 	

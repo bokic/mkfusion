@@ -21,9 +21,9 @@ QString QRDSServer::description() const
 	return m_Description;
 }
 
-void QRDSServer::setDescription(QString Desctription)
+void QRDSServer::setDescription(const QString &desctription)
 {
-	m_Description = Desctription;
+    m_Description = desctription;
 }
 
 QString QRDSServer::hostname() const
@@ -31,9 +31,9 @@ QString QRDSServer::hostname() const
 	return m_HostName;
 }
 
-void QRDSServer::setHostname(QString HostName)
+void QRDSServer::setHostname(const QString &hostname)
 {
-	m_HostName = HostName;
+    m_HostName = hostname;
 }
 
 quint16 QRDSServer::port() const
@@ -41,9 +41,9 @@ quint16 QRDSServer::port() const
 	return m_Port;
 }
 
-void QRDSServer::setPort(quint16 Port)
+void QRDSServer::setPort(quint16 port)
 {
-	m_Port = Port;
+    m_Port = port;
 }
 
 QString QRDSServer::contextRoot() const
@@ -51,7 +51,7 @@ QString QRDSServer::contextRoot() const
 	return m_ContextRoot;
 }
 
-void QRDSServer::setContextRoot(QString ContextRoot)
+void QRDSServer::setContextRoot(const QString &ContextRoot)
 {
 	m_ContextRoot = ContextRoot;
 }
@@ -61,9 +61,9 @@ QString QRDSServer::username() const
 	return m_UserName;
 }
 
-void QRDSServer::setUsername(QString UserName)
+void QRDSServer::setUsername(const QString &username)
 {
-	m_UserName = UserName;
+    m_UserName = username;
 }
 
 QString QRDSServer::password() const
@@ -71,9 +71,9 @@ QString QRDSServer::password() const
 	return m_Password;
 }
 
-void QRDSServer::setPassword(QString Password)
+void QRDSServer::setPassword(const QString &password)
 {
-	m_Password = Password;
+    m_Password = password;
 }
 
 bool QRDSServer::authenticated() const
@@ -101,7 +101,7 @@ QByteArray QRDSServer::promptedPassword() const
 	return m_PromptedPassword;
 }
 
-void QRDSServer::setPromptedPassword(QByteArray PromptedPassword)
+void QRDSServer::setPromptedPassword(const QByteArray &PromptedPassword)
 {
 	m_PromptedPassword = PromptedPassword;
 }
@@ -111,12 +111,12 @@ QVector<QMap<QString, QString>> QRDSServer::mapping() const
 	return m_Mappings;
 }
 
-void QRDSServer::updateMapping(quint32 i, QMap<QString, QString> item)
+void QRDSServer::updateMapping(quint32 i, const QMap<QString, QString> &item)
 {
 	m_Mappings.replace(i, item);
 }
 
-void QRDSServer::addMapping(QMap<QString, QString> item)
+void QRDSServer::addMapping(const QMap<QString, QString> &item)
 {
 	m_Mappings.append(item);
 }
@@ -126,14 +126,14 @@ void QRDSServer::clearMappings()
 	m_Mappings.clear();
 }
 
-int QRDSServer::getMappingCount() const
+int QRDSServer::mappingCount() const
 {
 	return m_Mappings.size();
 }
 
-bool QRDSServer::validateMap(QMap<QString, QString> Map) const
+bool QRDSServer::validateMap(const QMap<QString, QString> &map) const
 {
-	if ((!Map.contains("CLIENT_VIEW"))||(!Map.contains("SERVER_VIEW")))
+    if ((!map.contains("CLIENT_VIEW"))||(!map.contains("SERVER_VIEW")))
     {
 		return false;
     }

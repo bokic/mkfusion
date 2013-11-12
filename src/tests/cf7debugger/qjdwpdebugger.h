@@ -11,7 +11,7 @@ class QJDWPDebugger : public QObject
 public:
 	explicit QJDWPDebugger(QObject *parent=0);
 	void connectToHost(QString, quint16);
-	void addCommand(QJDWPCommand*);
+    void addCommand(QJDWPCommand*p_Command);
 	quint32 sendCommand(quint8, quint8, const QByteArray&);
 signals:
 	void recieveCommand(QJDWPCommand*);

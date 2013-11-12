@@ -35,7 +35,7 @@ char QRDSProject::getDirSeparator()
 		QByteArray l_ba;
 
 		QFileIOService fileIO;
-		l_ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::FileGetRootDirCommand, l_map);
+        l_ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::QFileGetRootDirCommand, l_map);
 
 		QVector<QByteArray> l_elements = fileIO.BreakByteArrayIntoVector(l_ba);
 
@@ -68,7 +68,7 @@ QByteArray QRDSProject::ReadFile(const QString &file)
 	
 	map.clear();
 	map.insert("NAME", m_Path + file);
-	ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::FileReadCommand, map);
+    ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::QFileReadCommand, map);
 
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 
@@ -92,7 +92,7 @@ void QRDSProject::WriteFile(const QString &p_File, const QByteArray &p_Content)
 	map.clear();
 	map.insert("NAME", m_Path + p_File);
 	map.insert("FILE_CONTENTS", QString::fromUtf8(p_Content, p_Content.size()));
-	ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::FileWriteCommand, map);
+    ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::QFileWriteCommand, map);
 
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }
@@ -106,7 +106,7 @@ void QRDSProject::DeleteFile(const QString &p_File)
 	
 	map.clear();
 	map.insert("NAME", m_Path + p_File);
-	ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::FileRemoveFileCommand, map);
+    ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::QFileRemoveFileCommand, map);
 
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }
@@ -121,7 +121,7 @@ void QRDSProject::RenameFile(const QString &p_OldFile, const QString &p_NewFile)
 	map.insert("NAME", m_Path + p_OldFile);
 	map.insert("NEW_NAME", m_Path + p_NewFile);
 
-	ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::FileRenameCommand, map);
+    ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::QFileRenameCommand, map);
 
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }
@@ -137,7 +137,7 @@ QList<QProjectFile> QRDSProject::getFolderItems(const QString &p_Folder)
 	map.insert("NAME", m_Path + p_Folder);
 	map.insert("MASK", "");
 
-	ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::BrowseDirCommand, map);
+    ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::QBrowseDirCommand, map);
 
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 	QProjectFile file;
@@ -173,7 +173,7 @@ void QRDSProject::CreateDir(const QString &p_NewDir)
 
 	map.insert("NAME", m_Path + p_NewDir);
 
-	ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::FileCreateDirCommand, map);
+    ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::QFileCreateDirCommand, map);
 
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }
@@ -187,7 +187,7 @@ void QRDSProject::DeleteDir(const QString &p_Dir, bool)
 
 	map.insert("NAME", m_Path + p_Dir);
 
-	ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::FileRemoveDirectoryCommand, map);
+    ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::QFileRemoveDirectoryCommand, map);
 
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }
@@ -202,7 +202,7 @@ void QRDSProject::RenameDir(const QString &p_OldDir, const QString &p_NewDir)
 	map.insert("NAME", m_Path + p_OldDir);
 	map.insert("NEW_NAME", m_Path + p_NewDir);
 
-	ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::FileRenameCommand, map);
+    ba = fileIO.ExecuteRDSCommand(m_Server, QFileIOService::QFileRenameCommand, map);
 
 	QVector<QByteArray> elements = fileIO.BreakByteArrayIntoVector(ba);
 }

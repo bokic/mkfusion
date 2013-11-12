@@ -4,16 +4,16 @@
 #include <QString>
 #include <QMap>
 
-QByteArray QDefaultService::ExecuteRDSCommand(QRDSServer rdsserver, quint8 command, QMap<QString, QString> map)
+QByteArray QDefaultService::ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
 {
     Q_UNUSED(map);
 
 	QByteArray ret;
 
-	switch (command)
+    switch (command)
 	{
 	case 0:
-		return IdeDefault(rdsserver);
+        return IdeDefault(rdsserver);
 		break;
 	}
 	

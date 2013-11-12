@@ -9,9 +9,9 @@ class QJDWPGetPathSeparatorCommand : public QJDWPCommand
 	Q_OBJECT
 public:
     explicit QJDWPGetPathSeparatorCommand(QJDWPDebugger * = 0);
-	virtual ~QJDWPGetPathSeparatorCommand();
+    virtual ~QJDWPGetPathSeparatorCommand();
 	char getPathSeparator();
-	virtual void processRecivedCommand(QByteArray);
+    virtual void processRecivedCommand(const QByteArray &p_Data) override;
 private:
 	char m_PathSeparator;
     QJDWPCommand *m_SubCommand;

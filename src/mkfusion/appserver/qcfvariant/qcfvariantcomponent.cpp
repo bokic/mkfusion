@@ -4,6 +4,7 @@
 
 QCFVariantComponent::QCFVariantComponent()
     : m_Inherit(nullptr)
+    , self(QCFVariant::Struct)
     , m_TemplateFileSize(0)
     , m_TemplateFileModified(0)
 {

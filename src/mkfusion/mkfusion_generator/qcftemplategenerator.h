@@ -11,7 +11,7 @@
 class QCFTemplateGenerator : public QCFGenerator
 {
 public:
-    QCFTemplateGenerator(QObject *parent = 0);
+    QCFTemplateGenerator();
     virtual void generateCpp(const QString &dstFilePath) override;
 };
 

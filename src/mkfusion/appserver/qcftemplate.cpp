@@ -1,4 +1,5 @@
 #include "qcftemplate.h"
+#include "qcfvariantcomponent.h"
 #include "qcftemplateinfo.h"
 #include "qcflog.h"
 

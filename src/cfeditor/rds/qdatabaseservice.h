@@ -23,7 +23,7 @@ public:
 
 	QDatabaseService();
 	virtual ~QDatabaseService();
-	virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
+    virtual QByteArray ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map);
 protected:
 private:
 	QByteArray GetDSNs(QRDSServer);

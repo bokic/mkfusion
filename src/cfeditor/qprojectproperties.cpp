@@ -141,7 +141,7 @@ void QProjectProperties::on_rds_Test_button_clicked()
 
 	QFileIOService l_FileIO;
 	QMap<QString, QString> l_map;
-	QByteArray l_ba = l_FileIO.ExecuteRDSCommand(l_RDSServer, QFileIOService::FileGetRootDirCommand, l_map);
+    QByteArray l_ba = l_FileIO.ExecuteRDSCommand(l_RDSServer, QFileIOService::QFileGetRootDirCommand, l_map);
 
 	if ((l_ba.left(2) == "1:"))// TODO: Bad check. Example: 1:16:/opt/coldfusion9
 	{

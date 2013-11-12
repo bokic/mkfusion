@@ -12,26 +12,26 @@
  {
  }
 
-QByteArray QDatabaseService::ExecuteRDSCommand(QRDSServer rdsserver, quint8 command, QMap<QString, QString> map)
+QByteArray QDatabaseService::ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
 {
 	QByteArray ret;
 
-	switch (command)
+    switch (command)
 	{
 	case 0:
-		return GetDSNs(rdsserver);
+        return GetDSNs(rdsserver);
 	case 1:
-		return GetTables(rdsserver, map);
+        return GetTables(rdsserver, map);
 	case 2:
-		return GetColumns(rdsserver, map);
+        return GetColumns(rdsserver, map);
 	case 3:
-		return GetPrimaryKeys(rdsserver, map);
+        return GetPrimaryKeys(rdsserver, map);
 	case 4:
-		return ExecuteStatement(rdsserver, map);
+        return ExecuteStatement(rdsserver, map);
 	case 5:
-		return GetMetaData(rdsserver, map);
+        return GetMetaData(rdsserver, map);
 	case 6:
-		return GetSupportedCommands(rdsserver);
+        return GetSupportedCommands(rdsserver);
 	default:
 		return ret;
 	}

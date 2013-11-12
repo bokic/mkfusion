@@ -2,41 +2,42 @@
 #define QFILEIOSERVICE_H
 
 #include "qabstractrdsservice.h"
+
 #include <QObject>
 #include <QString>
 #include <QVector>
 #include <QList>
 #include <QMap>
 
+
 class QFileIOService : public QAbstractRDSService
 {
 public:
-    enum Command {
-        BrowseDirCommand,
-        FileReadCommand,
-        FileWriteCommand,
-        FileRenameCommand,
-        FileRemoveFileCommand,
-        FileRemoveDirectoryCommand,
-        FileExistCommand,
-        FileCreateDirCommand,
-		FileGetRootDirCommand
+    enum QFileIOCommand {
+        QBrowseDirCommand,
+        QFileReadCommand,
+        QFileWriteCommand,
+        QFileRenameCommand,
+        QFileRemoveFileCommand,
+        QFileRemoveDirectoryCommand,
+        QFileExistCommand,
+        QFileCreateDirCommand,
+        QFileGetRootDirCommand
     };
 
-    QFileIOService() : QAbstractRDSService(){}
-    virtual ~QFileIOService() {}
-	
-	virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
-protected:
+    QFileIOService();
+    virtual ~QFileIOService();
+
+    virtual QByteArray ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map) override;
 private:
-	QByteArray BrowseDir(QRDSServer, QMap<QString, QString>);
-	QByteArray FileRead(QRDSServer, QMap<QString, QString>);
-	QByteArray FileWrite(QRDSServer, QMap<QString, QString>);
-	QByteArray FileRename(QRDSServer, QMap<QString, QString>);
-	QByteArray FileRemove(QRDSServer, QMap<QString, QString>, bool);
-	QByteArray Existence(QRDSServer, QMap<QString, QString>);
-	QByteArray CreateDir(QRDSServer, QMap<QString, QString>);
-	QByteArray GetRootDir(QRDSServer rdsserver);
+    QByteArray BrowseDir(const QRDSServer &rdsserver, const QMap<QString, QString> &map);
+    QByteArray FileRead(const QRDSServer &rdsserver, const QMap<QString, QString> &map);
+    QByteArray FileWrite(const QRDSServer &rdsserver, const QMap<QString, QString> &map);
+    QByteArray FileRename(const QRDSServer &rdsserver, const QMap<QString, QString> &map);
+    QByteArray FileRemove(const QRDSServer &rdsserver, const QMap<QString, QString> &map, bool isFile = true);
+    QByteArray Existence(const QRDSServer &rdsserver, const QMap<QString, QString> &map);
+    QByteArray CreateDir(const QRDSServer &rdsserver, const QMap<QString, QString> &map);
+    QByteArray GetRootDir(const QRDSServer &rdsserver);
 };
 
 #endif // QFILEIOSERVICE_H

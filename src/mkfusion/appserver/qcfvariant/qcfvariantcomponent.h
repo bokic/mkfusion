@@ -1,10 +1,10 @@
 #ifndef QCFVARIANTCOMPONENT_H
 #define QCFVARIANTCOMPONENT_H
 
+#include "qcfvariant.h"
+
 #include <QString>
 #include <QHash>
-
-class QCFVariant;
 
 
 class QCFVariantComponent
@@ -20,7 +20,7 @@ public:
 
     QCFVariantComponent *m_Inherit;
     QString m_ComponentFileName;
-    QHash<QString, QCFVariant> self;
+    QCFVariant self;
     QString m_BindingName;
     QString m_DisplayName;
     QString m_Extends;

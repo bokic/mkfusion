@@ -11,10 +11,13 @@
 #include <QHash>
 
 
-class QCFGenerator : public QObject
+class QCFGenerator
 {
 public:
-    QCFGenerator(QObject *parent = 0);
+    enum QCFGeneratorType {QCFUnknownGeneratorType, QCFTemplateGeneratorType, QCFComponentGeneratorType};
+
+
+    QCFGenerator();
     virtual ~QCFGenerator();
 
     bool generate(const QString &srcFilePath, const QString &dstFilePath);
@@ -45,8 +48,7 @@ protected:
     QList<const QCFParserTag *> m_NestedTags;
     QList<int> m_SwitchCaseCount;
     QString m_Error;
-
-
+    QCFGeneratorType m_Type;
 };
 
 #endif // QCFGENERATOR_H

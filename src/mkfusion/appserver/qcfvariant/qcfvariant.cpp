@@ -1,7 +1,11 @@
 #include "qcfvariant.h"
+#include "qcfvariantcomponent.h"
+#include "qcfvariantfunction.h"
 #include "qmkfusionexception.h"
+
 #include <QDebug>
 #include <math.h>
+
 
 Q_DECL_EXPORT QCFVariant::QCFVariant()
     : m_Array(nullptr)
@@ -12,6 +16,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant()
 	, m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
+    , m_Function(nullptr)
 	, m_Type(Null)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -37,6 +42,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(bool value)
     , m_Bool(value)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
+    , m_Function(nullptr)
 	, m_Type(Boolean)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -54,6 +60,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(int value)
 	, m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
+    , m_Function(nullptr)
 	, m_Type(Number)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -71,6 +78,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(double value)
 	, m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
+    , m_Function(nullptr)
 	, m_Type(Number)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -88,6 +96,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const char *value)
 	, m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
+    , m_Function(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -106,6 +115,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const wchar_t *value)
 	, m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
+    , m_Function(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -123,6 +133,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QString &value)
 	, m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
+    , m_Function(nullptr)
 	, m_Type(String)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -140,6 +151,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QDateTime &value)
 	, m_Bool(false)
     , m_DateTime(new QDateTime(value))
     , m_Component(nullptr)
+    , m_Function(nullptr)
 	, m_Type(DateTime)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -157,7 +169,26 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariantComponent &value)
     , m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(new QCFVariantComponent(value))
+    , m_Function(nullptr)
     , m_Type(Component)
+    , m_ArrayDimension(1)
+    , m_HiddenScopeFirst(nullptr)
+    , m_HiddenScopeLast1(nullptr)
+    , m_HiddenScopeLast2(nullptr)
+{
+}
+
+Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariantFunction &value)
+    : m_Array(nullptr)
+    , m_Struct(nullptr)
+    , m_String(nullptr)
+    , m_ByteArray(nullptr)
+    , m_Number(0)
+    , m_Bool(false)
+    , m_DateTime(nullptr)
+    , m_Component(nullptr)
+    , m_Function(new QCFVariantFunction(value))
+    , m_Type(Function)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
@@ -174,6 +205,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariant &other)
     , m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
+    , m_Function(nullptr)
     , m_Type(other.m_Type)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
@@ -198,6 +230,9 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariant &other)
         break;
     case Component:
         m_Component = new QCFVariantComponent(*other.m_Component);
+        break;
+    case Function:
+        m_Function = new QCFVariantFunction(*other.m_Function);
         break;
     case Array:
         m_Array = new QVector<QCFVariant>();
@@ -266,6 +301,8 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(QCFVariant &&other)
         break;
     case Component:
         qSwap(m_Component, other.m_Component);
+    case Function:
+        qSwap(m_Function, other.m_Function);
     case Array:
         qSwap(m_Array, other.m_Array);
         qSwap(m_ArrayDimension, other.m_ArrayDimension);
@@ -334,6 +371,9 @@ Q_DECL_EXPORT void QCFVariant::setType(QCFVariantType type)
     case Component:
         delete m_Component;
         m_Component = nullptr;
+    case Function:
+        delete m_Function;
+        m_Function = nullptr;
     case NotImplemented:
         break;
     case Error:
@@ -367,6 +407,8 @@ Q_DECL_EXPORT void QCFVariant::setType(QCFVariantType type)
         break;
     case Component:
         m_Component = new QCFVariantComponent();
+    case Function:
+        m_Function = new QCFVariantFunction();
     case NotImplemented:
         break;
     case Error:
@@ -1456,6 +1498,14 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariantComponent &p_new
     return *this;
 }
 
+Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariantFunction &p_newValue)
+{
+    setType(Function);
+    *m_Function = p_newValue;
+
+    return *this;
+}
+
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariant &p_newValue)
 {
     if (this != &p_newValue)
@@ -1481,7 +1531,10 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariant &p_newValue)
         case Component:
             *m_Component = *p_newValue.m_Component;
             break;
-		case Array:
+        case Function:
+            *m_Function = *p_newValue.m_Function;
+            break;
+        case Array:
 			*m_Array = *p_newValue.m_Array;
 			m_ArrayDimension = p_newValue.m_ArrayDimension;
             m_Number = p_newValue.m_Number;
@@ -2151,6 +2204,8 @@ Q_DECL_EXPORT QCFVariant QCFVariant::call(const QString &function, QList<QCFVari
     {
         throw QMKFusionException("Variable is not component.");
     }
+
+
 
     return QCFVariant();
 }

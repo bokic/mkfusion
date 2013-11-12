@@ -8,9 +8,10 @@
 #include <QFile>
 
 
-QCFTemplateGenerator::QCFTemplateGenerator(QObject *parent)
-    : QCFGenerator(parent)
+QCFTemplateGenerator::QCFTemplateGenerator()
+    : QCFGenerator()
 {
+    m_Type = QCFTemplateGeneratorType;
 }
 
 void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)

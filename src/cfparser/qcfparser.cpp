@@ -2121,7 +2121,7 @@ QList<QCFParserElement> QCFParser::getScriptFunctions(QList<QCFParserTag> const 
     return ret;
 }
 
-QList<QCFParserTag> QCFParser::getTagFunctions(QList<QCFParserTag> const p_Tags)
+QList<QCFParserTag> QCFParser::getTagFunctions(QList<QCFParserTag> const p_Tags) const
 {
     QList<QCFParserTag> ret;
 
@@ -2130,6 +2130,45 @@ QList<QCFParserTag> QCFParser::getTagFunctions(QList<QCFParserTag> const p_Tags)
         if ((tag.m_Name == "cffunction")&&(tag.m_TagType == CFTagType))
         {
             ret.append(tag);
+        }
+    }
+
+    return ret;
+}
+
+QList<QCFParserTag> QCFParser::getFunctionArguments(const QCFParserTag &p_Function) const
+{
+    QList<QCFParserTag> ret;
+    bool start;
+
+
+    if (p_Function.m_OtherTag == nullptr)
+    {
+        return ret;
+    }
+
+    start = false;
+
+    for(const QCFParserTag &tag : m_Tags)
+    {
+        if (start == false)
+        {
+            if (tag == p_Function)
+            {
+                start = true;
+            }
+        }
+        else
+        {
+            if (tag == *p_Function.m_OtherTag)
+            {
+                break;
+            }
+
+            if ((tag.m_TagType == CFTagType)&&(tag.m_Name.compare("cfargument", Qt::CaseInsensitive) == 0))
+            {
+                ret.append(tag);
+            }
         }
     }
 

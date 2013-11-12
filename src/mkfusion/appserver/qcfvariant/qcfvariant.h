@@ -1,12 +1,13 @@
 #ifndef QCFVARIANT_H
 #define QCFVARIANT_H
 
-#include "qcfvariantcomponent.h"
-
 #include <QDateTime>
 #include <QVector>
 #include <QString>
 #include <QMap>
+
+class QCFVariantComponent;
+class QCFVariantFunction;
 
 class Q_DECL_EXPORT QCFVariant
 {
@@ -22,6 +23,7 @@ public:
 		Binary,
         Query,
         Component,
+        Function,
 		NotImplemented,
 		Error
 	};
@@ -38,6 +40,7 @@ public:
     QCFVariant(const QString &value);
     QCFVariant(const QDateTime &value);
     QCFVariant(const QCFVariantComponent &value);
+    QCFVariant(const QCFVariantFunction &value);
     QCFVariant(const QCFVariant &value);
     QCFVariant(const QCFVariantType type);
 
@@ -192,6 +195,7 @@ public:
     QCFVariant &operator=(const QString &);
     QCFVariant &operator=(const QDateTime &);
     QCFVariant &operator=(const QCFVariantComponent &);
+    QCFVariant &operator=(const QCFVariantFunction &);
     QCFVariant &operator=(const QCFVariant &);
 
     QCFVariant join(const QCFVariant &);
@@ -222,6 +226,7 @@ public:
 	bool m_Bool;
     QDateTime *m_DateTime;
     QCFVariantComponent *m_Component;
+    QCFVariantFunction *m_Function;
 	QCFVariantType m_Type;
     quint32 m_ArrayDimension;
     QCFVariant *m_HiddenScopeFirst;

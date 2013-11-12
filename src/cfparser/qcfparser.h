@@ -28,7 +28,7 @@ struct QCFParserElement
 	int m_Position;
 	int m_Size;
 	QList<QCFParserElement> m_ChildElements;
-    bool operator==(const struct QCFParserElement &other)
+    bool operator==(const struct QCFParserElement &other) const
     {
         if (
                 (m_Type == other.m_Type)&&
@@ -54,7 +54,7 @@ struct QCFParserTag
 	QCFParserElement m_Arguments;
 	bool m_InlineClosedTag;
     struct QCFParserTag *m_OtherTag;
-    bool operator==(const struct QCFParserTag &other)
+    bool operator==(const struct QCFParserTag &other) const
     {
         if (
                 (m_Start == other.m_Start)&&
@@ -90,7 +90,8 @@ public:
     QCFParserErrorType prioritizeOperators();
     const QList<QCFParserTag> & getTags() const;
     QList<QCFParserElement> getScriptFunctions(QList<QCFParserTag> const p_Tags) const;
-    QList<QCFParserTag> getTagFunctions(QList<QCFParserTag> const p_Tags);
+    QList<QCFParserTag> getTagFunctions(QList<QCFParserTag> const p_Tags) const;
+    QList<QCFParserTag> getFunctionArguments(const QCFParserTag &p_Function) const;
     QString m_FileName;
     qint64 m_FileSize;
     uint m_FileModifyDateTime;
