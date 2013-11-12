@@ -2194,11 +2194,6 @@ Q_DECL_EXPORT bool QCFVariant::toBool() const
 	throw QMKFusionExpressionException("The value cannot be converted to a boolean.");
 }
 
-Q_DECL_EXPORT QCFVariant QCFVariant::createComponent(const QString &path, const QString &name)
-{
-    return QCFVariant();
-}
-
 Q_DECL_EXPORT QCFVariant QCFVariant::call(QCFWorkerThread &worker, const QString &function, QList<QCFVariant> params)
 {
     if (m_Type != Component)
@@ -2218,6 +2213,11 @@ Q_DECL_EXPORT QCFVariant QCFVariant::call(QCFWorkerThread &worker, const QString
     if (funct.type() != QCFVariantType::Function)
     {
         throw QMKFusionException(QString("`%1` is not function.").arg(l_Function));
+    }
+
+    if(params.count() > funct.m_Function->m_Arguments.count())
+    {
+        throw QMKFusionException(QString("Too many arguments to call `%1` function.").arg(l_Function));
     }
 
     QCFVariant args(QCFVariant::Struct);
