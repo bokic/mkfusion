@@ -1,5 +1,6 @@
 #include "qcfworkerthread.h"
 #include "qcfvariantcomponent.h"
+#include "qcfvariantfunction.h"
 #include "qmkfusionexception.h"
 #include "cffunctions.h"
 #include "qhttpcodec.h"
@@ -1969,7 +1970,7 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
         break;
     case QCFVariant::Component:
         component_filename = var.m_Component->m_TemplateFilePath;
-        ret = "<table class=\"cfdump_object\"><tr><th class=\"component\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">component - " + component_filename.toHtmlEscaped() + "</th></tr>\n";
+        ret = "<table class=\"cfdump_object\"><tr><th class=\"object\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">component - " + component_filename.toHtmlEscaped() + "</th></tr>\n";
 
         for(const QString &l_key: var.m_Component->self.m_Struct->keys())
         {
@@ -2021,13 +2022,41 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
                 break;
             }
 
-            ret += "<tr><td class=\"component\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key.toHtmlEscaped() + " " + l_keyType.toHtmlEscaped() + "</td><td>" + f_cfdump_var(var.m_Component->self.m_Struct->value(l_key)) + "</td></tr>\n";
+            ret += "<tr><td class=\"object\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + l_key.toHtmlEscaped() + " " + l_keyType.toHtmlEscaped() + "</td><td>" + f_cfdump_var(var.m_Component->self.m_Struct->value(l_key)) + "</td></tr>\n";
         }
 
         ret += "</table>\n";
         break;
     case QCFVariant::Function:
-        return "Not implemented";
+        ret = "<table class=\"cfdump_udf\"><tr><th class=\"udf\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">function</th></tr>\n";
+
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">name</td><td>" + var.m_Function->m_Name.toHtmlEscaped() + "</td></tr>\n";
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">access</td><td>" + var.m_Function->m_Access.toHtmlEscaped() + "</td></tr>\n";
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">description</td><td>" + var.m_Function->m_Description.toHtmlEscaped() + "</td></tr>\n";
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">display name</td><td>" + var.m_Function->m_DisplayName.toHtmlEscaped() + "</td></tr>\n";
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">hint</td><td>" + var.m_Function->m_Hint.toHtmlEscaped() + "</td></tr>\n";
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">output</td><td>" + var.m_Function->m_Output.toHtmlEscaped() + "</td></tr>\n";
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">return format</td><td>" + var.m_Function->m_ReturnFormat.toHtmlEscaped() + "</td></tr>\n";
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">return type</td><td>" + var.m_Function->m_ReturnType.toHtmlEscaped() + "</td></tr>\n";
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">roles</td><td>" + var.m_Function->m_Roles.toHtmlEscaped() + "</td></tr>\n";
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">secure JSON</td><td>" + var.m_Function->m_SecureJSON.toHtmlEscaped() + "</td></tr>\n";
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">verify clients</td><td>" + var.m_Function->m_VerifyClients.toHtmlEscaped() + "</td></tr>\n";
+
+        ret += "<tr><td class=\"udf\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">arguments</td><td>";
+        ret += "<table class=\"cfdump_udfarguments\"><tr><th class=\"udfarguments\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">arguments</th></tr>\n";
+
+        for(const QCFVariantArgument &arg: var.m_Function->m_Arguments)
+        {
+            ret += "<tr><td class=\"udfarguments\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + arg.m_Name.toHtmlEscaped() + "</td><td>\n";
+
+
+
+            ret += "</td></tr>\n";
+        }
+
+        ret += "</table>\n";
+        ret += "</td></tr>\n";
+        ret += "</table>\n";
         break;
     case QCFVariant::NotImplemented:
         return "Not implemented";
