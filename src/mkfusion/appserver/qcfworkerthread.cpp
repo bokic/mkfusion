@@ -2049,7 +2049,16 @@ QString QCFWorkerThread::f_cfdump_var(const QCFVariant &var)
         {
             ret += "<tr><td class=\"udfarguments\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">" + arg.m_Name.toHtmlEscaped() + "</td><td>\n";
 
+            ret += "<table class=\"cfdump_udfarguments\"><tr><th class=\"udfarguments\" colspan=\"2\" onClick=\"cfdump_toggleTable(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">argument</th></tr>\n";
 
+            ret += "<tr><td class=\"udfarguments\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">name</td><td>" + arg.m_Name.toHtmlEscaped() + "</td></tr>\n";
+            ret += "<tr><td class=\"udfarguments\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">required</td><td>" + arg.m_Required.toHtmlEscaped() + "</td></tr>\n";
+            ret += "<tr><td class=\"udfarguments\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">type</td><td>" + arg.m_Type.toHtmlEscaped() + "</td></tr>\n";
+            ret += "<tr><td class=\"udfarguments\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">default</td><td>" + arg.m_Default.toHtmlEscaped() + "</td></tr>\n";
+            ret += "<tr><td class=\"udfarguments\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">display name</td><td>" + arg.m_DisplayName.toHtmlEscaped() + "</td></tr>\n";
+            ret += "<tr><td class=\"udfarguments\" onClick=\"cfdump_toggleRow(this);\" onmousedown=\"return false;\" onselectstart=\"return false;\" style=\"cursor:pointer;\" title=\"click to collapse\">hint</td><td>" + arg.m_Hint.toHtmlEscaped() + "</td></tr>\n";
+
+            ret += "</table>\n";
 
             ret += "</td></tr>\n";
         }
