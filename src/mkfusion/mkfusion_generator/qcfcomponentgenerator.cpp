@@ -13,7 +13,7 @@ QCFComponentGenerator::QCFComponentGenerator()
     , m_EnableComponentOutput(true)
     , m_EnableFunctionOutput(true)
 {
-    m_Type = QCFComponentGeneratorType;
+    m_Parser.m_FileType = QCFParserComponentFile;
 }
 
 void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
@@ -85,7 +85,7 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
             f_args.append(")");
         }
 
-        l_cppFile.write("\t\tself[QString::fromWCharArray(L\"" + toCPPEncodedString(f_name).toUpper() + "\")] = QCFVariantFunction(\n");
+        l_cppFile.write("\t\tQCFWorkerThread::updateVariable(self, QString::fromWCharArray(L\"" + toCPPEncodedString(f_name).toUpper() + "\"), QCFVariantFunction(\n");
         l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_name) + "\"), // Name\n");
         l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_access) + "\"), // Access\n");
         l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_description) + "\"), // Description\n");
@@ -98,14 +98,14 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
         l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_secureJSON) + "\"), // Secure JSON\n");
         l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_verifyClient) + "\"), // Verify Client\n");
         l_cppFile.write("\t\t\tQCFVariantArgumentList()" + f_args.toUtf8() + ", // Arguments\n");
-        l_cppFile.write("\t\t\t[](QCFVariantComponent &self, QCFWorkerThread &worker, const QList<QCFVariant> &arguments) -> QCFVariant {\n");
+        l_cppFile.write("\t\t\t[](QCFVariant &self, QCFWorkerThread &worker, QCFVariant &arguments) -> QCFVariant {\n");
 
 
 
 
 
         l_cppFile.write("\n\t\t\t\treturn QCFVariant();\n");
-        l_cppFile.write("\t\t\t});\n\n");
+        l_cppFile.write("\t\t\t}));\n\n");
     }
 
     /*for(const QCFParserElement &function : m_Parser.getScriptFunctions(l_Tags))

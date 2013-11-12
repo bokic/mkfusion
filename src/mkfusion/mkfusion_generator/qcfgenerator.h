@@ -14,9 +14,6 @@
 class QCFGenerator
 {
 public:
-    enum QCFGeneratorType {QCFUnknownGeneratorType, QCFTemplateGeneratorType, QCFComponentGeneratorType};
-
-
     QCFGenerator();
     virtual ~QCFGenerator();
 
@@ -48,7 +45,6 @@ protected:
     QList<const QCFParserTag *> m_NestedTags;
     QList<int> m_SwitchCaseCount;
     QString m_Error;
-    QCFGeneratorType m_Type;
 };
 
 #endif // QCFGENERATOR_H

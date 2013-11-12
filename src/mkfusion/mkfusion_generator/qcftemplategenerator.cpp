@@ -11,7 +11,7 @@
 QCFTemplateGenerator::QCFTemplateGenerator()
     : QCFGenerator()
 {
-    m_Type = QCFTemplateGeneratorType;
+    m_Parser.m_FileType = QCFParserTemplateFile;
 }
 
 void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)

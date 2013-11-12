@@ -13,10 +13,9 @@
 
 
 QCFGenerator::QCFGenerator()
-    : m_Parser(CompilerMode)
+    : m_Parser(CompilerMode, QCFParserTemplateFile)
     , m_EnableCFOutputOnly(false)
     , m_Tabs(2)
-    , m_Type(QCFUnknownGeneratorType)
 {
 }
 
@@ -352,7 +351,8 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
             }
             else
             {
-                ret = "call(L\"" + toCPPEncodedString(l_ElementName.toLower()) + "\", QList<QCFVariant>()";
+                // TODO: Implement component calls component.
+                ret = "call(*this, QString::fromWCharArray(L\"" + toCPPEncodedString(l_ElementName.toLower()) + "\"), QList<QCFVariant>()";
 
                 for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
                 {
@@ -652,7 +652,7 @@ QCFParserElement QCFGenerator::OptimizeQCFParserElement(QCFParserElement p_CFExp
 
 QString QCFGenerator::ParseAndGenerateCppExpressionFromString(const QString str)
 {
-    QCFParser parser(CompilerMode);
+    QCFParser parser(CompilerMode, m_Parser.m_FileType);
 
     QCFParserElement l_newConditionElement = parser.ParseCFCode(str, (qint32)0, Expression, nullptr);
 
@@ -1248,7 +1248,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
                 if (l_conditionElement.m_ChildElements.count() == 3)
                 {
-                    QCFParser parser(CompilerMode);
+                    QCFParser parser(CompilerMode, QCFParserTemplateFile);
 
                     const QString &l_conditionStr = l_conditionElement.m_ChildElements.at(2).m_Text;
 
@@ -1853,5 +1853,5 @@ QString QCFGenerator::tabs(int trim)
 
 bool QCFGenerator::isComponent() const
 {
-    return m_Type == QCFComponentGeneratorType;
+    return m_Parser.m_FileType == QCFParserComponentFile;
 }

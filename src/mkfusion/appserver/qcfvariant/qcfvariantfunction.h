@@ -9,7 +9,7 @@
 #include <QHash>
 
 
-#define QCFVariantFunctor std::function<QCFVariant (QCFVariantComponent &, QCFWorkerThread &, const QList<QCFVariant> &)>
+#define QCFVariantFunctor std::function<QCFVariant (QCFVariant &, QCFWorkerThread &, QCFVariant &)>
 
 class QCFVariantFunction
 {
@@ -48,7 +48,7 @@ public:
     QString m_SecureJSON;
     QString m_VerifyClients;
     QCFVariantArgumentList m_Arguments;
-    QCFVariantFunctor m_Function;
+    QCFVariantFunctor m_Functor;
 };
 
 #endif // QCFVARIANTFUNCTION_H

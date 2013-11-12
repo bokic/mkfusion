@@ -1,7 +1,7 @@
 #include "qcfvariantfunction.h"
 
 QCFVariantFunction::QCFVariantFunction()
-    : m_Function(nullptr)
+    : m_Functor(nullptr)
 {
 }
 
@@ -18,7 +18,7 @@ QCFVariantFunction::QCFVariantFunction(const QCFVariantFunction &other)
     , m_SecureJSON(other.m_SecureJSON)
     , m_VerifyClients(other.m_VerifyClients)
     , m_Arguments(other.m_Arguments)
-    , m_Function(other.m_Function)
+    , m_Functor(other.m_Functor)
 {
 }
 
@@ -49,7 +49,7 @@ QCFVariantFunction::QCFVariantFunction(
     , m_SecureJSON(secureJSON)
     , m_VerifyClients(verifyClients)
     , m_Arguments(args)
-    , m_Function(function)
+    , m_Functor(function)
 {
 }
 
@@ -68,7 +68,7 @@ QCFVariantFunction &QCFVariantFunction::operator=(QCFVariantFunction &&other)
     qSwap(m_SecureJSON, other.m_SecureJSON);
     qSwap(m_VerifyClients, other.m_VerifyClients);
     qSwap(m_Arguments, other.m_Arguments);
-    qSwap(m_Function, other.m_Function);
+    qSwap(m_Functor, other.m_Functor);
 
     return *this;
 }
@@ -88,7 +88,7 @@ QCFVariantFunction &QCFVariantFunction::operator=(const QCFVariantFunction &othe
     m_SecureJSON = other.m_SecureJSON;
     m_VerifyClients = other.m_VerifyClients;
     m_Arguments = other.m_Arguments;
-    m_Function = other.m_Function;
+    m_Functor = other.m_Functor;
 
     return *this;
 }

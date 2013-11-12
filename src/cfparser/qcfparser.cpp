@@ -34,14 +34,16 @@
 
 QCFParser::QCFParser()
     : QObject()
+    , m_FileType(QCFParserTemplateFile)
     , m_CFTagsDef(QCF8::generateCFTags())
     , m_CFFunctionsDef(QCF8::generateCFFunctions())
     , m_Mode(FullParseMode)
 {
 }
 
-QCFParser::QCFParser(QCFParserMode mode)
+QCFParser::QCFParser(QCFParserMode mode, QCFParserFileType filetype)
     : QObject()
+    , m_FileType(filetype)
     , m_CFTagsDef(QCF8::generateCFTags())
     , m_CFFunctionsDef(QCF8::generateCFFunctions())
     , m_Mode(mode)
@@ -397,7 +399,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                             (str.compare("else", Qt::CaseInsensitive) == 0)||
                             (str.compare("try", Qt::CaseInsensitive) == 0)||
                             (str.compare("catch", Qt::CaseInsensitive) == 0)||
-                            (str.compare("this", Qt::CaseInsensitive) == 0)
+                            ((str.compare("this", Qt::CaseInsensitive) == 0)&&(m_FileType == QCFParserComponentFile))
                             )
                     {
                         ret.m_Type = Keyword;
@@ -425,7 +427,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 				{
                     ret.m_Text = p_Text.mid(l_Offset, c - l_Offset).trimmed();
 
-                    if (ret.m_Text.compare("this", Qt::CaseInsensitive) == 0)
+                    if ((ret.m_Text.compare("this", Qt::CaseInsensitive) == 0)&&(m_FileType == QCFParserComponentFile))
                     {
                         ret.m_Type = Keyword;
                     }
@@ -534,7 +536,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                             (ret.m_Text.compare("return", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("if", Qt::CaseInsensitive) == 0)||
                             (ret.m_Text.compare("else", Qt::CaseInsensitive) == 0)||
-                            (ret.m_Text.compare("this", Qt::CaseInsensitive) == 0)
+                            ((ret.m_Text.compare("this", Qt::CaseInsensitive) == 0)&&(m_FileType == QCFParserComponentFile))
                             )
                     {
                         ret.m_Type = Keyword;
@@ -583,7 +585,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
             }
             else if (
                      (ret.m_Text.compare("var", Qt::CaseInsensitive) == 0)||
-                     (ret.m_Text.compare("this", Qt::CaseInsensitive) == 0)
+                     ((ret.m_Text.compare("this", Qt::CaseInsensitive) == 0)&&(m_FileType == QCFParserComponentFile))
                     )
             {
                 ret.m_Type = Keyword;

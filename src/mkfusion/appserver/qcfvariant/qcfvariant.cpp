@@ -2,6 +2,7 @@
 #include "qcfvariantcomponent.h"
 #include "qcfvariantfunction.h"
 #include "qmkfusionexception.h"
+#include "qcfworkerthread.h"
 
 #include <QDebug>
 #include <math.h>
@@ -2198,19 +2199,35 @@ Q_DECL_EXPORT QCFVariant QCFVariant::createComponent(const QString &path, const 
     return QCFVariant();
 }
 
-Q_DECL_EXPORT QCFVariant QCFVariant::call(const QString &function, QList<QCFVariant> params)
+Q_DECL_EXPORT QCFVariant QCFVariant::call(QCFWorkerThread &worker, const QString &function, QList<QCFVariant> params)
 {
     if (m_Type != Component)
     {
         throw QMKFusionException("Variable is not component.");
     }
 
+    const QString &l_Function = function.toUpper();
 
+    if (!m_Component->self.m_Struct->contains(l_Function))
+    {
+        throw QMKFusionException(QString("There is not `%1` function.").arg(l_Function));
+    }
 
-    return QCFVariant();
+    const QCFVariant &funct = m_Component->self.m_Struct->value(l_Function);
+
+    if (funct.type() != QCFVariantType::Function)
+    {
+        throw QMKFusionException(QString("`%1` is not function.").arg(l_Function));
+    }
+
+    QCFVariant args(QCFVariant::Struct);
+
+    // TODO: NEXT: Implement component arguments.
+
+    return funct.m_Function->m_Functor(m_Component->self, worker, args);
 }
 
-Q_DECL_EXPORT QCFVariant QCFVariant::call(const QString &function, QHash<QString, QCFVariant> params)
+Q_DECL_EXPORT QCFVariant QCFVariant::call(QCFWorkerThread &worker, const QString &function, QHash<QString, QCFVariant> params)
 {
     return QCFVariant();
 }

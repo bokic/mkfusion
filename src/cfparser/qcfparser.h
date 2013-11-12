@@ -19,6 +19,7 @@ enum QCFParserElementType {Boolean, Number, String, Variable, Function, Operator
 enum QCFParserErrorType {NoError, ForcedTerminationError, ParsingError, InvalidCloseTagError, InvalidCFTagError, InvalidArgumentError, InvalidArgumentTypeError, InvalidNestedTagPositionError};
 enum QCFParserTagType {UnknownTagType, CFTagType, EndCFTagType, CommentTagType, ExpressionTagType};
 enum QCFParserMode {FullParseMode, CompilerMode};
+enum QCFParserFileType {QCFParserTemplateFile, QCFParserComponentFile};
 
 
 struct QCFParserElement
@@ -79,7 +80,7 @@ public:
     friend class QCFGenerator;
 
     QCFParser();
-    explicit QCFParser(QCFParserMode mode);
+    explicit QCFParser(QCFParserMode mode, QCFParserFileType filetype);
     QString error();
     const QString &getText() const;
     quint32 getErrorPosition();
@@ -97,6 +98,7 @@ public:
     uint m_FileModifyDateTime;
     bool m_InsideCFScript;
     QStringList m_TagPrefixes;
+    QCFParserFileType m_FileType;
 
 private:
 	QList<QCFParserTag> m_Tags;

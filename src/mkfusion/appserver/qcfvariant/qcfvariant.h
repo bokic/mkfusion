@@ -8,6 +8,7 @@
 
 class QCFVariantComponent;
 class QCFVariantFunction;
+class QCFWorkerThread;
 
 class Q_DECL_EXPORT QCFVariant
 {
@@ -213,8 +214,8 @@ public:
     bool toBool() const;
 
     static QCFVariant createComponent(const QString &path, const QString &name);
-    QCFVariant call(const QString &function, QList<QCFVariant> params);
-    QCFVariant call(const QString &function, QHash<QString, QCFVariant> params);
+    QCFVariant call(QCFWorkerThread &worker, const QString &function, QList<QCFVariant> params);
+    QCFVariant call(QCFWorkerThread &worker, const QString &function, QHash<QString, QCFVariant> params);
 
 
 	// Member Variables
