@@ -88,6 +88,8 @@ QCFWorkerThread * QCFTemplatesManager::getWorker(const QString &sourceFile, QStr
         {
             QWriteLocker lock(&m_lock);
 
+            // TODO: Check if compiled template is old.
+
             if (m_templates.contains(sourceFile))
             {
                 if (m_templates[sourceFile].isCompiling())
@@ -211,7 +213,7 @@ QCFVariant QCFTemplatesManager::getComponent(const QString &sourceFile, QCFWorke
 
         m_templates[sourceFile].setError(error);
 
-        return QCFVariant(QCFVariant::Error);;
+        return QCFVariant(QCFVariant::Error);
     }
 
     // do compile.
@@ -224,7 +226,7 @@ QCFVariant QCFTemplatesManager::getComponent(const QString &sourceFile, QCFWorke
 
         m_templates[sourceFile].setError(error);
 
-        return QCFVariant(QCFVariant::Error);;
+        return QCFVariant(QCFVariant::Error);
     }
 
     {
@@ -236,7 +238,7 @@ QCFVariant QCFTemplatesManager::getComponent(const QString &sourceFile, QCFWorke
 
         if (!m_templates[sourceFile].load())
         {
-            return QCFVariant(QCFVariant::Error);;
+            return QCFVariant(QCFVariant::Error);
         }
 
         return m_templates[sourceFile].createComponent(worker);

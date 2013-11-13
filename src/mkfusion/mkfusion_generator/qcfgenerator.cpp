@@ -1295,7 +1295,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
                 }
                 else
                 {
-                    ret = tabs() + "for(int i = " + start + ";; i++)\n";
+                    ret = tabs() + "for(int i = " + start + "; ; i++)\n";
                 }
 
                 ret += tabs() + "{\n";

@@ -100,11 +100,53 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
         l_cppFile.write("\t\t\tQCFVariantArgumentList()" + f_args.toUtf8() + ", // Arguments\n");
         l_cppFile.write("\t\t\t[](QCFVariant &self, QCFWorkerThread &worker, QCFVariant &arguments) -> QCFVariant {\n");
 
+        bool is_last_tag_cfreturn = false;
 
+        if (function.m_OtherTag)
+        {
+            bool found_start = false;
 
+            for(int c = 0; c < l_Tags.count(); c++)
+            {
+                if (!found_start)
+                {
+                    if (function == l_Tags.at(c))
+                    {
+                        found_start = true;
+                    }
 
+                    continue;
+                }
 
-        l_cppFile.write("\n\t\t\t\treturn QCFVariant();\n");
+                if (*function.m_OtherTag == l_Tags.at(c))
+                {
+                    break;
+                }
+
+                QString l_CFromCFTag = GenerateCCodeFromCFTag(l_Tags[c]);
+                if (!l_CFromCFTag.isEmpty())
+                {
+                    l_cppFile.write("\n");
+                    l_cppFile.write(QString(tabs(2) + "// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
+                    l_cppFile.write(QString("\t\t" + l_CFromCFTag + "\n").toUtf8());
+                }
+
+                if ((l_Tags[c].m_TagType == CFTagType)&&(l_Tags[c].m_Name.compare("cfreturn", Qt::CaseInsensitive) == 0))
+                {
+                    is_last_tag_cfreturn = true;
+                }
+                else
+                {
+                    is_last_tag_cfreturn = false;
+                }
+            }
+        }
+
+        if (!is_last_tag_cfreturn)
+        {
+            l_cppFile.write("\n\t\t\t\treturn QCFVariant();\n");
+        }
+
         l_cppFile.write("\t\t\t}));\n\n");
     }
 
