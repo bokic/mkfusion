@@ -1239,8 +1239,10 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 
 				if ((l_Index.m_Type != Error)&&(l_Index.m_ChildElements.size() == 3))
 				{
+                    QString index_var = GenerateVariable(l_IndexStr);
+
                     ret  = tabs() + "f_Param(QString::fromWCharArray(L\"" + toCPPEncodedString(l_IndexStr.toUpper()) + "\"), QCFVariant(0));\n";
-                    ret += tabs() + "for (" + GenerateVariable(l_IndexStr) + " = " + CFTagGetArgumentAsNumber(p_CFTag, "from") + "; (" + GenerateVariable(l_IndexStr) + ") " + l_Comparation + " (" + CFTagGetArgumentAsNumber(p_CFTag, "to") + "); " + GenerateVariable(l_IndexStr) + " = (" + GenerateVariable(l_IndexStr) + ") + " + l_Step + ")\n";
+                    ret += tabs() + "for (" + index_var + " = " + CFTagGetArgumentAsNumber(p_CFTag, "from") + "; (" + index_var + ") " + l_Comparation + " (" + CFTagGetArgumentAsNumber(p_CFTag, "to") + "); " + index_var + " = (" + index_var + ") + " + l_Step + ")\n";
                     ret += tabs() + "{\n";
 
                     m_Tabs++;
