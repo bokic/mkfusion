@@ -62,6 +62,8 @@ install: build $(mkfusion) $(mkfusion_generator) $(mod_mkfusion) $(mkfusion_conf
 	install -m 644 -s $(mod_mkfusion) $(MOD_MKFUSION_MKFUSION_MODULE_DEST)
 
 binary-indep: build install
+
+binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs
@@ -75,8 +77,6 @@ binary-indep: build install
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
-
-binary-arch: build install
 
 
 binary: binary-indep binary-arch
