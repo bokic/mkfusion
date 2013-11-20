@@ -170,7 +170,7 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
         QString l_localVars;
         for(const QCFParserElement &expr : function.m_ChildElements.last().m_ChildElements)
         {
-            l_cppFile.write(QString("\t\t\t" + GenerateCFExpressionToCExpression(expr, f_paramName.join(","), &l_localVars)).toUtf8());
+            l_cppFile.write(QString("\t\t\t" + GenerateCFExpressionToCExpression(expr, f_paramName.join(","), l_localVars)).toUtf8());
 
             if ((expr.m_Type == Expression)&&(expr.m_ChildElements.count() > 0))
             {
