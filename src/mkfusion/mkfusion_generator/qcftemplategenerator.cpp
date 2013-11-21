@@ -160,9 +160,9 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
         {
 
             l_cppFile.write(QString("\t\t\tif(arguments.count() > "+ QString::number(c) + " ) {\n").toUtf8());
-            l_cppFile.write(QString("\t\t\t\tupdateVariable(ARGUMENTS, L\"" + f_paramName[c].toUpper() + "\", arguments.at(" + QString::number(c) + "));\n").toUtf8());
+            l_cppFile.write(QString("\t\t\t\tARGUMENTS._(L\"" + f_paramName[c].toUpper() + "\")[] = arguments.at(" + QString::number(c) + ");\n").toUtf8());
             l_cppFile.write(QString("\t\t\t} else {\n").toUtf8());
-            l_cppFile.write(QString("\t\t\t\tupdateVariable(ARGUMENTS, L\"" + f_paramName[c].toUpper() + "\", L\"" + f_paramDefault[c] + "\");\n").toUtf8());
+            l_cppFile.write(QString("\t\t\t\tARGUMENTS._(L\"" + f_paramName[c].toUpper() + "\")[] = L\"" + f_paramDefault[c] + "\");\n").toUtf8());
             l_cppFile.write(QString("\t\t\t}\n").toUtf8());
             l_cppFile.write("\n");
         }
@@ -256,8 +256,13 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
         QString l_CFromCFTag = GenerateCCodeFromCFTag(l_Tags[c]);
         if (!l_CFromCFTag.isEmpty())
         {
+            QString cf_code = m_Parser.getText().mid(l_Tags[c].m_Start, l_Tags[c].m_Length);
+
+            cf_code.replace("\r", "");
+            cf_code.replace("\n", "");
+
             l_cppFile.write("\n");
-            l_cppFile.write(QString(tabs() + "// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
+            l_cppFile.write(QString(tabs() + "//setLine(%1); // %2\n").arg(lineFromPosition(l_Tags[c].m_Start)).arg(cf_code).toUtf8());
             l_cppFile.write(QString(l_CFromCFTag + "\n").toUtf8());
         }
 

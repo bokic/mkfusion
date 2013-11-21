@@ -85,7 +85,7 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
             f_args.append(")");
         }
 
-        l_cppFile.write("\t\tQCFWorkerThread::updateVariable(self, QString::fromWCharArray(L\"" + toCPPEncodedString(f_name).toUpper() + "\"), QCFVariantFunction(\n");
+        l_cppFile.write("\t\tself->_()[L\"" + toCPPEncodedString(f_name).toUpper() + "\"] = QCFVariantFunction(\n");
         l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_name) + "\"), // Name\n");
         l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_access) + "\"), // Access\n");
         l_cppFile.write("\t\t\tQString::fromWCharArray(L\"" + toCPPEncodedString(f_description) + "\"), // Description\n");
@@ -126,8 +126,13 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
                 QString l_CFromCFTag = GenerateCCodeFromCFTag(l_Tags[c]);
                 if (!l_CFromCFTag.isEmpty())
                 {
+                    QString cf_code = m_Parser.getText().mid(l_Tags[c].m_Start, l_Tags[c].m_Length);
+
+                    cf_code.replace("\r", "");
+                    cf_code.replace("\n", "");
+
                     l_cppFile.write("\n");
-                    l_cppFile.write(QString(tabs(2) + "// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
+                    l_cppFile.write(QString(tabs() + "//setLine(%1); // %2\n").arg(lineFromPosition(l_Tags[c].m_Start)).arg(cf_code).toUtf8());
                     l_cppFile.write(QString("\t\t" + l_CFromCFTag + "\n").toUtf8());
                 }
 
@@ -147,7 +152,7 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
             l_cppFile.write("\n\t\t\t\treturn QCFVariant();\n");
         }
 
-        l_cppFile.write("\t\t\t}));\n\n");
+        l_cppFile.write("\t\t\t});\n\n");
     }
 
     /*for(const QCFParserElement &function : m_Parser.getScriptFunctions(l_Tags))
@@ -205,8 +210,13 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
         QString l_CFromCFTag = GenerateCCodeFromCFTag(l_Tags[c]);
         if (!l_CFromCFTag.isEmpty())
         {
+            QString cf_code = m_Parser.getText().mid(l_Tags[c].m_Start, l_Tags[c].m_Length);
+
+            cf_code.replace("\r", "");
+            cf_code.replace("\n", "");
+
             l_cppFile.write("\n");
-            l_cppFile.write(QString(tabs() + "// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
+            l_cppFile.write(QString(tabs() + "//setLine(%1); // %2\n").arg(lineFromPosition(l_Tags[c].m_Start)).arg(cf_code).toUtf8());
             l_cppFile.write(QString(l_CFromCFTag + "\n").toUtf8());
         }
 

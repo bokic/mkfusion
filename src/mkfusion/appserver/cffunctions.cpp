@@ -1071,7 +1071,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("full", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 4, "dddd, mmmm d, yyyy");
+        ret.replace(i, 4, "dddd, mmmm d, yyyy");
         pos = i + 1;
     }
 
@@ -1080,7 +1080,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("long", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 4, "mmmm d, yyyy");
+        ret.replace(i, 4, "mmmm d, yyyy");
         pos = i + 1;
     }
 
@@ -1089,7 +1089,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("medium", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 6, "mmm d, yyyy");
+        ret.replace(i, 6, "mmm d, yyyy");
         pos = i + 1;
     }
 
@@ -1098,7 +1098,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("short", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 5, "m/d/y");
+        ret.replace(i, 5, "m/d/y");
         pos = i + 1;
     }
 
@@ -1117,7 +1117,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("yyyy", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 4, "____");
+        ret.replace(i, 4, "____");
         segments.insert("yyyy", i);
         pos = i + 1;
     }
@@ -1127,7 +1127,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("yy", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 2, "__");
+        ret.replace(i, 2, "__");
         segments.insert("yy", i);
         pos = i + 1;
     }
@@ -1137,7 +1137,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("mmmm", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 4, "____");
+        ret.replace(i, 4, "____");
         segments.insert("mmmm", i);
         pos = i + 1;
     }
@@ -1147,7 +1147,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("mmm", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 3, "___");
+        ret.replace(i, 3, "___");
         segments.insert("mmm", i);
         pos = i + 1;
     }
@@ -1157,7 +1157,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("mm", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 2, "__");
+        ret.replace(i, 2, "__");
         segments.insert("mm", i);
         pos = i + 1;
     }
@@ -1167,7 +1167,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("m", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 1, "_");
+        ret.replace(i, 1, "_");
         segments.insert("m", i);
         pos = i + 1;
     }
@@ -1177,7 +1177,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("dddd", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 4, "____");
+        ret.replace(i, 4, "____");
         segments.insert("dddd", i);
         pos = i + 1;
     }
@@ -1187,7 +1187,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("ddd", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 3, "___");
+        ret.replace(i, 3, "___");
         segments.insert("ddd", i);
         pos = i + 1;
     }
@@ -1197,7 +1197,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("dd", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 2, "__");
+        ret.replace(i, 2, "__");
         segments.insert("dd", i);
         pos = i + 1;
     }
@@ -1207,7 +1207,7 @@ Q_DECL_EXPORT QString cf_DateFormat(const QDateTime &date, const QString &mask)
     {
         int i = ret.indexOf("d", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 1, "_");
+        ret.replace(i, 1, "_");
         segments.insert("d", i);
         pos = i + 1;
     }
@@ -1897,10 +1897,10 @@ Q_DECL_EXPORT QString cf_HTMLEditFormat(const QString &string, double version)
 
     QString ret = string;
 
-    ret = ret.replace("&", "&amp;");
-    ret = ret.replace("<", "&lt;");
-    ret = ret.replace(">", "&gt;");
-    ret = ret.replace("\"", "&quot;");
+    ret.replace("&", "&amp;");
+    ret.replace("<", "&lt;");
+    ret.replace(">", "&gt;");
+    ret.replace("\"", "&quot;");
 
     return ret;
 }
@@ -3756,7 +3756,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("full", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 4, "h:mm:ss tt");
+        ret.replace(i, 4, "h:mm:ss tt");
         pos = i + 1;
     }
 
@@ -3765,7 +3765,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("long", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 4, "h:mm:ss tt");
+        ret.replace(i, 4, "h:mm:ss tt");
         pos = i + 1;
     }
 
@@ -3774,7 +3774,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("medium", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 6, "h:mm:ss tt");
+        ret.replace(i, 6, "h:mm:ss tt");
         pos = i + 1;
     }
 
@@ -3783,7 +3783,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("short", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 5, "h:mm tt");
+        ret.replace(i, 5, "h:mm tt");
         pos = i + 1;
     }
 
@@ -3792,7 +3792,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("tt", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 2, "__");
+        ret.replace(i, 2, "__");
         segments.insert("tt", i);
         pos = i + 1;
     }
@@ -3802,7 +3802,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("t", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 1, "_");
+        ret.replace(i, 1, "_");
         segments.insert("t", i);
         pos = i + 1;
     }
@@ -3812,7 +3812,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("i", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 1, "_");
+        ret.replace(i, 1, "_");
         segments.insert("i", i);
         pos = i + 1;
     }
@@ -3822,7 +3822,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("l", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 1, "_");
+        ret.replace(i, 1, "_");
         segments.insert("l", i);
         pos = i + 1;
     }
@@ -3832,7 +3832,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("ss", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 2, "__");
+        ret.replace(i, 2, "__");
         segments.insert("ss", i);
         pos = i + 1;
     }
@@ -3842,7 +3842,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("s", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 1, "_");
+        ret.replace(i, 1, "_");
         segments.insert("s", i);
         pos = i + 1;
     }
@@ -3852,7 +3852,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("mm", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 2, "__");
+        ret.replace(i, 2, "__");
         segments.insert("mm", i);
         pos = i + 1;
     }
@@ -3862,7 +3862,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("m", pos, Qt::CaseInsensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 1, "_");
+        ret.replace(i, 1, "_");
         segments.insert("m", i);
         pos = i + 1;
     }
@@ -3872,7 +3872,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("HH", pos, Qt::CaseSensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 2, "__");
+        ret.replace(i, 2, "__");
         segments.insert("HH", i);
         pos = i + 1;
     }
@@ -3882,7 +3882,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("H", pos, Qt::CaseSensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 1, "_");
+        ret.replace(i, 1, "_");
         segments.insert("H", i);
         pos = i + 1;
     }
@@ -3892,7 +3892,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("hh", pos, Qt::CaseSensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 2, "__");
+        ret.replace(i, 2, "__");
         segments.insert("hh", i);
         pos = i + 1;
     }
@@ -3902,7 +3902,7 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
     {
         int i = ret.indexOf("h", pos, Qt::CaseSensitive);
         if (i < 0) break;
-        ret = ret.replace(i, 1, "_");
+        ret.replace(i, 1, "_");
         segments.insert("h", i);
         pos = i + 1;
     }

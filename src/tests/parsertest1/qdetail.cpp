@@ -33,7 +33,7 @@ void QDetail::setFileForParsing(const QString &p_File)
     QFile file(p_File);
     file.open(QIODevice::ReadOnly);
     QString fileContent = file.readAll();
-    fileContent = fileContent.replace("\r\n", "\n"); // TODO: Investigate this when possible.
+    fileContent.replace("\r\n", "\n"); // TODO: Investigate this when possible.
     file.close();
 
 	ui->textEdit->setPlainText(fileContent);

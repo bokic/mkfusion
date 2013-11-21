@@ -65,7 +65,7 @@ void QCFWorkerThread::run()
         {
             QCFLOG(CFLOG_WORKER, QCFLOG_ERROR, "Reading worker request failed.");
 
-            throw QMKFusionException("Read request failed.");
+            throw QMKFusionException(QObject::tr("Read request failed."));
         }
 
         updateVariables();
@@ -98,7 +98,7 @@ void QCFWorkerThread::run()
     {
         m_StatusCode = 500;
 
-        writeException(QMKFusionException("Internal error."));
+        writeException(QMKFusionException(QObject::tr("Internal error.")));
     }
 #endif
 
@@ -135,7 +135,7 @@ void QCFWorkerThread::processPostData(QByteArray post)
 
                 if (pairs.length() != 1)
                 {
-                    throw QMKFusionException("Invalid application/x-www-form-urlencoded POST item.");
+                    throw QMKFusionException(QObject::tr("Invalid application/x-www-form-urlencoded POST item."));
                 }
 
                 QPair<QString, QString> pair = pairs.takeFirst();
@@ -145,10 +145,10 @@ void QCFWorkerThread::processPostData(QByteArray post)
 
                 if (pair.first.isEmpty())
                 {
-                    throw QMKFusionException("Invalid application/x-www-form-urlencoded POST item name.");
+                    throw QMKFusionException(QObject::tr("Invalid application/x-www-form-urlencoded POST item name."));
                 }
 
-                updateVariableQStr(m_FORM, key, value);
+                m_FORM._()[key] = value;
             }
         }
         else if (m_Request.m_ContentType.startsWith("multipart/form-data"))
@@ -157,7 +157,7 @@ void QCFWorkerThread::processPostData(QByteArray post)
 
             if (tmp1 <= 0)
             {
-                throw QMKFusionException("Invalid boundary line in POST method.");
+                throw QMKFusionException(QObject::tr("Invalid boundary line in POST method."));
             }
 
             QByteArray boundary = post.left(tmp1);
@@ -167,7 +167,7 @@ void QCFWorkerThread::processPostData(QByteArray post)
 
             if ((!post.startsWith(stWith))||(!post.endsWith(enWith))||(stWith != boundary + "\r\n")||(enWith != "\r\n" + boundary + "--\r\n"))
             {
-                throw QMKFusionException("Corrupted POST method.");
+                throw QMKFusionException(QObject::tr("Corrupted POST method."));
             }
 
             post = post.mid(stWith.length(), post.length() - stWith.length() - enWith.length());
@@ -190,12 +190,12 @@ void QCFWorkerThread::processPostData(QByteArray post)
 
                 if (!codec.isValid())
                 {
-                    throw QMKFusionException("Corrupted POST method(Form field NOT valid).");
+                    throw QMKFusionException(QObject::tr("Corrupted POST method(Form field NOT valid)."));
                 }
 
                 if (!codec.contansHeaderKey("Content-Disposition"))
                 {
-                    throw QMKFusionException("Corrupted POST method(Content-Disposition is missing).");
+                    throw QMKFusionException(QObject::tr("Corrupted POST method(Content-Disposition is missing)."));
                 }
 
                 const QHttpCodecValue *headerKeyValue = codec.getHeaderKey("Content-Disposition")->getValue("form-data");
@@ -214,12 +214,12 @@ void QCFWorkerThread::processPostData(QByteArray post)
 
                         if (item->m_File->open() == false)
                         {
-                            throw QMKFusionException("Can\'t create temponary file.");
+                            throw QMKFusionException(QObject::tr("Can\'t create temponary file."));
                         }
 
                         if (item->m_File->write(codec.getBody()) != codec.getBody().length())
                         {
-                            throw QMKFusionException("Temponary file didn\'t write all data.");
+                            throw QMKFusionException(QObject::tr("Temponary file didn\'t write all data."));
                         }
 
                         item->m_File->close();
@@ -245,7 +245,7 @@ void QCFWorkerThread::processPostData(QByteArray post)
         }
         else
         {
-            throw QMKFusionException("Unsupported Content-Type in POST method.");
+            throw QMKFusionException(QObject::tr("Unsupported Content-Type in POST method."));
         }
     }
 }
@@ -403,7 +403,7 @@ bool QCFWorkerThread::readRequest()
     }
     else if (tempint < 0)
     {
-        throw QMKFusionException("Invalid POST data size.");
+        throw QMKFusionException(QObject::tr("Invalid POST data size."));
     }
 
     l_ds >> tempstr;
@@ -628,7 +628,7 @@ void QCFWorkerThread::updateVariables()
     }
     else
     {
-        throw QMKFusionException("Unknown HTTP Method.");
+        throw QMKFusionException(QObject::tr("Unknown HTTP Method."));
     }
 
     if (!m_Request.m_Cookie.isEmpty())
@@ -642,7 +642,7 @@ void QCFWorkerThread::updateVariables()
             {
                 QString key = QUrl::fromPercentEncoding(cookie.left(separator).trimmed().toLatin1()).toUpper();
                 QString value = QUrl::fromPercentEncoding(cookie.right(cookie.length() - separator - 1).toLatin1());
-                updateVariable(m_COOKIE, key, value);
+                m_COOKIE._()[key] = value;
             }
             else
             {
@@ -769,142 +769,6 @@ void QCFWorkerThread::updateVariables()
     }
 }
 
-void QCFWorkerThread::updateVariableInt(QCFVariant &dest, int key, const QCFVariant &value)
-{
-    int index;
-
-    switch(dest.m_Type)
-    {
-    case QCFVariant::Array:
-        index = key;
-
-        if (index < 1)
-        {
-            throw QMKFusionException("Key index must be more than 0.");
-        }
-
-        if (index > dest.m_Array->size())
-        {
-            dest.m_Array->resize(index);
-        }
-
-        (*dest.m_Array)[index - 1] = value;
-        break;
-    default:
-        throw QMKFusionException("Destination variable is not Struct nor Array.");
-    }
-}
-
-void QCFWorkerThread::updateVariableStr(QCFVariant &dest, const wchar_t *key, const QCFVariant &value)
-{
-    int index;
-    bool ok;
-
-    switch(dest.m_Type)
-    {
-    case QCFVariant::Struct:
-        (*dest.m_Struct)[QString::fromWCharArray(key).toUpper()] = value;
-        break;
-    case QCFVariant::Array:
-        index = QString::fromWCharArray(key).toInt(&ok);
-
-        if (!ok)
-        {
-            throw QMKFusionException("index is not number.");
-        }
-
-        if (index < 1)
-        {
-            throw QMKFusionException("Key index must be more than 0.");
-        }
-
-        if (index > dest.m_Array->size())
-        {
-            dest.m_Array->resize(index);
-        }
-
-        (*dest.m_Array)[index - 1] = value;
-        break;
-    default:
-        throw QMKFusionException("Destination variable is not Struct nor Array.");
-    }
-}
-
-void QCFWorkerThread::updateVariableQStr(QCFVariant &dest, const QString &key, const QCFVariant &value)
-{
-    int index;
-    bool ok;
-
-    switch(dest.m_Type)
-    {
-    case QCFVariant::Struct:
-        (*dest.m_Struct)[key.toUpper()] = value;
-        break;
-    case QCFVariant::Array:
-        index = key.toInt(&ok);
-
-        if (!ok)
-        {
-            throw QMKFusionException("index is not number.");
-        }
-
-        if (index < 1)
-        {
-            throw QMKFusionException("Key index must be more than 0.");
-        }
-
-        if (index > dest.m_Array->size())
-        {
-            dest.m_Array->resize(index);
-        }
-
-        (*dest.m_Array)[index - 1] = value;
-        break;
-    default:
-        throw QMKFusionException("Destination variable is not Struct nor Array.");
-    }
-}
-
-void QCFWorkerThread::updateVariable(QCFVariant &dest, const QCFVariant &key, const QCFVariant &value)
-{
-    int index;
-    bool ok;
-
-    if (&dest == nullptr)
-    {
-        throw QMKFusionException("Variable is null.");
-    }
-
-    switch(dest.m_Type)
-    {
-    case QCFVariant::Struct:
-        (*dest.m_Struct)[key.toString().toUpper()] = value;
-        break;
-    case QCFVariant::Array:
-        index = key.toString().toInt(&ok);
-
-        if (!ok)
-        {
-            throw QMKFusionException("index is not number.");
-        }
-
-        if (index < 1)
-        {
-            throw QMKFusionException("Key index must be more than 0.");
-        }
-
-        if (index > dest.m_Array->size())
-        {
-            dest.m_Array->resize(index);
-        }
-
-        (*dest.m_Array)[index - 1] = value;
-        break;
-    default:
-        throw QMKFusionException("Destination variable is not Struct nor Array.");
-    }
-}
-
 void QCFWorkerThread::f_WriteOutput(const QCFVariant &value)
 {
     m_Output.append(value.toString());
@@ -913,6 +777,11 @@ void QCFWorkerThread::f_WriteOutput(const QCFVariant &value)
 void QCFWorkerThread::f_WriteOutput(const QString &value)
 {
     m_Output.append(value);
+}
+
+void QCFWorkerThread::f_WriteOutput(const wchar_t *value)
+{
+    f_WriteOutput(QString::fromWCharArray(value));
 }
 
 void QCFWorkerThread::f_Location(const QString &p_URL, int p_StatusCode)
@@ -949,8 +818,8 @@ void QCFWorkerThread::f_Param(const QString &name)
     if(name.length() == 0)
     {
         throw QMKFusionException(
-                    tr("Attribute validation error for CFPARAM."),
-                    tr("The value of the NAME attribute is invalid."
+                    QObject::tr("Attribute validation error for CFPARAM."),
+                    QObject::tr("The value of the NAME attribute is invalid."
                        "The length of the string, 0 character(s), must be greater than or equal to 1 character(s).")
                     );
     }
@@ -958,8 +827,8 @@ void QCFWorkerThread::f_Param(const QString &name)
     if (!cf_IsDefined(this, name))
     {
         throw QMKFusionException(
-                    tr("The required parameter '%1' was not provided.").arg(name.toUpper()),
-                    tr("This page uses the cfparam tag to declare the parameter '%1' as required for this template."
+                    QObject::tr("The required parameter '%1' was not provided.").arg(name.toUpper()),
+                    QObject::tr("This page uses the cfparam tag to declare the parameter '%1' as required for this template."
                        "The parameter is not available. Ensure that you have passed or initialized the parameter correctly."
                        "To set a default value for the parameter, use the default attribute of the cfparam tag.").arg(name.toUpper())
                     );
@@ -973,8 +842,8 @@ void QCFWorkerThread::f_Param(const QString &name, const QCFVariant &p_default)
     if(name.length() == 0)
     {
         throw QMKFusionException(
-                    tr("Attribute validation error for CFPARAM."),
-                    tr("The value of the NAME attribute is invalid."
+                    QObject::tr("Attribute validation error for CFPARAM."),
+                    QObject::tr("The value of the NAME attribute is invalid."
                        "The length of the string, 0 character(s), must be greater than or equal to 1 character(s).")
                     );
     }
@@ -1020,7 +889,7 @@ void QCFWorkerThread::f_Param(const QString &name, const QCFVariant &p_default)
     {
         if (m_APPLICATION == nullptr)
         {
-            throw QMKFusionException(tr("Appication scope not enabled."));
+            throw QMKFusionException(QObject::tr("Appication scope not enabled."));
         }
 
         var = m_APPLICATION;
@@ -1029,7 +898,7 @@ void QCFWorkerThread::f_Param(const QString &name, const QCFVariant &p_default)
     {
         if (m_SESSION == nullptr)
         {
-            throw QMKFusionException(tr("Session scope not enabled."));
+            throw QMKFusionException(QObject::tr("Session scope not enabled."));
         }
 
         var = m_SESSION;
@@ -1047,7 +916,7 @@ void QCFWorkerThread::f_Param(const QString &name, const QCFVariant &p_default)
     }
     else
     {
-        throw QMKFusionException(tr("Internal error."), tr("Unknown type(cf_IsDefined)."));
+        throw QMKFusionException(QObject::tr("Internal error."), QObject::tr("Unknown type(cf_IsDefined)."));
     }
 
     bool inserted = false;
@@ -1056,7 +925,7 @@ void QCFWorkerThread::f_Param(const QString &name, const QCFVariant &p_default)
     {
         if ((var->m_Type != QCFVariant::Struct)&&(var->m_Type != QCFVariant::Null))
         {
-            throw QMKFusionException(tr("Variable not object."));
+            throw QMKFusionException(QObject::tr("Variable not object."));
         }
 
         if (var->m_Type == QCFVariant::Null)
@@ -1078,7 +947,7 @@ void QCFWorkerThread::f_Param(const QString &name, const QCFVariant &p_default)
                 }
             }
 
-            var->m_Struct->insert(item, QCFVariant(QCFVariant::Null));
+            var->m_Struct->insert(item, QCFVariant());
 
             inserted = true;
         }
@@ -1096,7 +965,7 @@ bool QCFWorkerThread::f_FetchQueryRow(QCFVariant &destination, QCFVariant &query
 {
     if (query.m_Type != QCFVariant::Query)
     {
-        throw QMKFusionException("Variable is not query.");
+        throw QMKFusionException(QObject::tr("Variable is not query."));
     }
 
     if ((row < 1)||(row > query.m_Struct->value("RECORDCOUNT"))||(query.m_Struct->value("COLUMNS").toString().isEmpty()))
@@ -1112,7 +981,7 @@ bool QCFWorkerThread::f_FetchQueryRow(QCFVariant &destination, QCFVariant &query
 
         QCFVariant columnData = query.m_Struct->value("RESULTSET").m_Struct->values().at(i).m_Array->at(row - 1);
 
-        updateVariable(destination, columnName, columnData);
+        destination._()[columnName] = columnData;
     }
 
     return true;
@@ -1137,7 +1006,7 @@ void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString
 
     if (!destinationDir.exists())
     {
-        throw QMKFusionException("Directory does\'t exists.", QString("Directory [%1] does\'t exists.").arg(destination));
+        throw QMKFusionException(QObject::tr("Directory does\'t exists."), QObject::tr("Directory [%1] does\'t exists.").arg(destination));
     }
 
     tmp = fileField.toUpper();
@@ -1149,7 +1018,7 @@ void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString
 
     if (!m_FileUpload.contains(tmp))
     {
-        throw QMKFusionException(QString("No file field with name [%1].").arg(tmp));
+        throw QMKFusionException(QObject::tr("No file field with name [%1].").arg(tmp));
     }
 
     if (!accept.isEmpty())
@@ -1170,7 +1039,7 @@ void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString
 
         if (!found)
         {
-            throw QMKFusionException(QString("cffile upload content-type [%1] is not permitted.").arg(contentType));
+            throw QMKFusionException(QObject::tr("cffile upload content-type [%1] is not permitted.").arg(contentType));
         }
     }
 
@@ -1185,14 +1054,14 @@ void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString
     {
         /*if (destinationFile.exists())
         {
-            throw QMKFusionException("cffile upload errror.", QString("Destination file [%1] allready exist.").arg(destinationFile.fileName()));
+            throw QMKFusionException(QObject::tr("cffile upload errror."), QObject::tr("Destination file [%1] allready exist.").arg(destinationFile.fileName()));
         }
 
         if (!m_TemplateInstance->m_FileUpload[tmp].m_File->copy(destinationFile.fileName()))
         {
-            throw QMKFusionException("cffile upload errror.", QString("Error copying file [%1].").arg(destinationFile.fileName()));
+            throw QMKFusionException(QObject::tr("cffile upload errror."), QObject::tr("Error copying file [%1].").arg(destinationFile.fileName()));
         }*/
-        throw QMKFusionException("cffile upload nameConflict=Error is not implemented.");
+        throw QMKFusionException(QObject::tr("cffile upload nameConflict=Error is not implemented."));
     }
     else if (nameConflict.compare("Skip", Qt::CaseInsensitive) == 0)
     {
@@ -1201,10 +1070,10 @@ void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString
             cffile.m_Struct->insert("FILEEXISTED", false);
 
 
-            updateVariableQStr(m_TemplateInstance->m_VARIABLES, result, cffile);
+            m_VARIABLES._()[result] = cffile;
             return;
         }*/
-        throw QMKFusionException("cffile upload nameConflict=Skip is not implemented.");
+        throw QMKFusionException(QObject::tr("cffile upload nameConflict=Skip is not implemented."));
     }
     else if (nameConflict.compare("Overwrite", Qt::CaseInsensitive) == 0)
     {
@@ -1212,10 +1081,10 @@ void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString
         {
             if (!destinationFile.remove())
             {
-                throw QMKFusionException("cffile upload errror.", QString("Error overwriting file [%1].").arg(destinationFile.fileName()));
+                throw QMKFusionException(QObject::tr("cffile upload errror."), QObject::tr("Error overwriting file [%1].").arg(destinationFile.fileName()));
             }
         }*/
-        throw QMKFusionException("cffile upload nameConflict=Overwrite is not implemented.");
+        throw QMKFusionException(QObject::tr("cffile upload nameConflict=Overwrite is not implemented."));
     }
     else if (nameConflict.compare("MakeUnique", Qt::CaseInsensitive) == 0)
     {
@@ -1243,7 +1112,7 @@ void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString
 
         if (!m_FileUpload[tmp].m_File->copy(destinationFile.fileName()))
         {
-            throw QMKFusionException("cffile upload errror.", QString("Error writing to file [%1].").arg(destinationFile.fileName()));
+            throw QMKFusionException(QObject::tr("cffile upload errror."), QObject::tr("Error writing to file [%1].").arg(destinationFile.fileName()));
         }
 
         cffile.m_Struct->insert("SERVERDIRECTORY", QDir::toNativeSeparators(QFileInfo(destinationFile).path()));
@@ -1255,7 +1124,7 @@ void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString
     }
     else
     {
-        throw QMKFusionException(QString("Invalid cffile nameConflict value [%1].").arg(nameConflict));
+        throw QMKFusionException(QObject::tr("Invalid cffile nameConflict value [%1].").arg(nameConflict));
     }
 
     if ((copied)&&(!mode.isEmpty()))
@@ -1269,7 +1138,7 @@ void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString
 #endif*/
     }
 
-    updateVariableQStr(m_VARIABLES, result, cffile);
+    m_VARIABLES._()[result] = cffile;
 }
 
 void QCFWorkerThread::startQuery()
@@ -1394,7 +1263,7 @@ void QCFWorkerThread::addCustomFunction(const QString &functionName, std::functi
 {
     if (m_CustomFunctions.contains(functionName))
     {
-        throw QMKFusionException(tr("Function [%1] is already defined in other template.").arg(functionName));
+        throw QMKFusionException(QObject::tr("Function [%1] is already defined in other template.").arg(functionName));
     }
 
     m_CustomFunctions.insert(functionName, function);
@@ -1446,7 +1315,7 @@ void QCFWorkerThread::f_cfAssociate(const QString &baseTagName, const QString &k
         {
             if (!cf_StructKeyExists(customTag[L"ThisTag"], keyName.toUpper()))
             {
-                updateVariableQStr(customTag[L"ThisTag"], keyName, QCFVariant(QCFVariant::Array));
+                customTag[L"ThisTag"]._()[keyName] = QCFVariant(QCFVariant::Array);
             }
 
             cf_ArrayAppend(customTag[L"ThisTag"][keyName.toUpper()], m_VARIABLES[L"Attributes"]);
@@ -1455,7 +1324,7 @@ void QCFWorkerThread::f_cfAssociate(const QString &baseTagName, const QString &k
         }
     }
 
-    throw QMKFusionException(QString("Not within [%1] custom tag.").arg(baseTagName));
+    throw QMKFusionException(QObject::tr("Not within [%1] custom tag.").arg(baseTagName));
 }
 
 QCFVariant QCFWorkerThread::f_CreateComponent(const QString &component_name)
@@ -1471,7 +1340,7 @@ QCFVariant QCFWorkerThread::f_CreateComponent(const QString &component_name)
 
     if (ret.type() != QCFVariant::Component)
     {
-        throw QMKFusionException(QString("CreateComponent failed for component `%1`, full path name `%2`. Error: %3").arg(component_name).arg(componentFileName).arg(errorStr));
+        throw QMKFusionException(QObject::tr("CreateComponent failed for component `%1`, full path name `%2`. Error: %3").arg(component_name).arg(componentFileName).arg(errorStr));
     }
 
     return ret;

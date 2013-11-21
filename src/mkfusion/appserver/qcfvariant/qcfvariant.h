@@ -146,6 +146,9 @@ public:
     //friend QCFVariant operator&=(double, const QCFVariant &);
     //friend QCFVariant operator&=(const QString &, const QCFVariant &);
 
+    QCFVariant &_();
+
+    QCFVariant &operator[](int index);
     QCFVariant &operator[](const double index);
     QCFVariant &operator[](const QString &key);
     QCFVariant &operator[](const char *key);
@@ -232,6 +235,7 @@ public:
     QCFVariant *m_HiddenScopeFirst;
     QCFVariant *m_HiddenScopeLast1;
     QCFVariant *m_HiddenScopeLast2;
+    mutable bool m_AddMissingMember;
 };
 
 Q_DECL_EXPORT bool operator!=(int, const QCFVariant &);

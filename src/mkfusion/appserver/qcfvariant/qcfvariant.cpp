@@ -23,6 +23,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant()
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
 }
 
@@ -49,6 +50,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(bool value)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
 }
 
@@ -67,6 +69,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(int value)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
 }
 
@@ -85,6 +88,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(double value)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
 }
 
@@ -103,6 +107,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const char *value)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
     qDebug() << "QCFVariant::QCFVariant(const char *value) called. to be deleted soon.";
 }
@@ -122,6 +127,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const wchar_t *value)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
 }
 
@@ -140,6 +146,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QString &value)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
 }
 
@@ -158,6 +165,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QDateTime &value)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
 }
 
@@ -176,6 +184,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariantComponent &value)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
 }
 
@@ -194,6 +203,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariantFunction &value)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
 }
 
@@ -212,6 +222,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariant &other)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
     switch(other.m_Type)
     {
@@ -277,6 +288,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariantType type)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
     , m_HiddenScopeLast2(nullptr)
+    , m_AddMissingMember(false)
 {
     setType(type);
 }
@@ -328,6 +340,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(QCFVariant &&other)
     }
 
     qSwap(m_Type, other.m_Type);
+    qSwap(m_AddMissingMember, other.m_AddMissingMember);
 
     return *this;
 }
@@ -384,6 +397,7 @@ Q_DECL_EXPORT void QCFVariant::setType(QCFVariantType type)
     }
 
     m_Type = type;
+    m_AddMissingMember = false;
 
     switch(m_Type)
     {
@@ -435,7 +449,7 @@ Q_DECL_EXPORT QCFVariant::operator bool()
     case String:
         return toBool();
     default:
-        throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+        throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
     }
 }
 
@@ -472,30 +486,39 @@ Q_DECL_EXPORT int QCFVariant::size()
 	}
 }
 
-Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const double index)
+Q_DECL_EXPORT QCFVariant &QCFVariant::_()
 {
-    if ((m_Type != QCFVariant::Struct)&&(m_Type != QCFVariant::Array)&&(m_Type != QCFVariant::Query))
-	{
-        throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members.");
-	}
+    m_AddMissingMember = true;
 
-    if (m_Type == QCFVariant::Array)
-	{
-        if ((int)index < 1)
-		{
-            throw QMKFusionExpressionException("The element at position " + QString::number((int)index) + " of array variable \"xxx\" cannot be found.");
-		}
+    return *this;
+}
 
-        if (m_Array->size() < (int)index)
-		{
-            m_Array->resize((int)index);
-		}
+Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](int index)
+{
+    bool l_AddMissingMember;
+    QString key;
 
-        return (*m_Array)[(int)index - 1];
-	}
-	else
-	{
-        QString key = QString::number(index);
+    l_AddMissingMember = m_AddMissingMember;
+    m_AddMissingMember = false;
+
+    switch(m_Type)
+    {
+    case QCFVariant::Array:
+        if (index < 1)
+        {
+            throw QMKFusionExpressionException(QObject::tr("The element at position %1 of array variable is out of range.").arg(index));
+        }
+
+        if (m_Array->size() < index)
+        {
+            m_Array->resize(index);
+        }
+
+        return (*m_Array)[index - 1];
+        break;
+
+    case QCFVariant::Struct:
+        key = QString::number(index);
 
         if (m_HiddenScopeFirst)
         {
@@ -506,7 +529,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const double index)
         }
 
         if (m_Struct->contains(key) == false)
-		{
+        {
             if (m_HiddenScopeLast1)
             {
                 if (m_HiddenScopeLast1->m_Struct->contains(key))
@@ -523,22 +546,138 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const double index)
                 }
             }
 
-            m_Struct->insert(key, QCFVariant(QCFVariant::Null));
-		}
+            if (l_AddMissingMember)
+            {
+                m_Struct->insert(key, QCFVariant());
+            }
+            else
+            {
+                throw QMKFusionException(QObject::tr("Variable %1 is undefined.").arg(key));
+            }
+
+        }
 
         return (*m_Struct)[key];
-	}
+        break;
+
+    default:
+        break;
+    }
+
+    throw QMKFusionExpressionException(QObject::tr("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members."));
+}
+
+Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const double index)
+{
+    bool l_AddMissingMember;
+    QString key;
+
+    l_AddMissingMember = m_AddMissingMember;
+    m_AddMissingMember = false;
+
+    switch(m_Type)
+    {
+    case QCFVariant::Array:
+        if ((int)index < 1)
+        {
+            throw QMKFusionExpressionException(QObject::tr("The element at position %1 of array variable is out of range.").arg((int)index));
+        }
+
+        if (m_Array->size() < (int)index)
+        {
+            m_Array->resize((int)index);
+        }
+
+        return (*m_Array)[(int)index - 1];
+        break;
+
+    case QCFVariant::Struct:
+        key = QString::number(index);
+
+        if (m_HiddenScopeFirst)
+        {
+            if (m_HiddenScopeFirst->m_Struct->contains(key))
+            {
+                return (*m_HiddenScopeFirst->m_Struct)[key];
+            }
+        }
+
+        if (m_Struct->contains(key) == false)
+        {
+            if (m_HiddenScopeLast1)
+            {
+                if (m_HiddenScopeLast1->m_Struct->contains(key))
+                {
+                    return (*m_HiddenScopeLast1->m_Struct)[key];
+                }
+
+                if (m_HiddenScopeLast2)
+                {
+                    if (m_HiddenScopeLast2->m_Struct->contains(key))
+                    {
+                        return (*m_HiddenScopeLast2->m_Struct)[key];
+                    }
+                }
+            }
+
+            if (l_AddMissingMember)
+            {
+                m_Struct->insert(key, QCFVariant());
+            }
+            else
+            {
+                throw QMKFusionException(QObject::tr("Variable %1 is undefined.").arg(key));
+            }
+
+        }
+
+        return (*m_Struct)[key];
+        break;
+
+    default:
+        break;
+    }
+
+    throw QMKFusionExpressionException(QObject::tr("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members."));
 }
 
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QString &key)
 {
-    if ((m_Type != QCFVariant::Struct)&&(m_Type != QCFVariant::Array)&&(m_Type != QCFVariant::Query))
-	{
-        throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class \'QString\' as a structure with members.");
-	}
+    bool l_AddMissingMember;
+    qint32 val;
+    bool ok;
 
-    if (m_Type == QCFVariant::Struct)
-	{
+    l_AddMissingMember = m_AddMissingMember;
+    m_AddMissingMember = false;
+
+    switch(m_Type)
+    {
+    case QCFVariant::Array:
+        val = (qint32)key.toDouble(&ok);
+        if (ok == false)
+        {
+            throw QMKFusionExpressionException(QObject::tr("The value %1 cannot be converted to a number.").arg(key));
+        }
+
+        if (val < 1)
+        {
+            throw QMKFusionExpressionException(QObject::tr("The element at position %1 of array variable is out of range.").arg(val));
+        }
+
+        if (m_Array->size() > val)
+        {
+            m_Array->resize(val);
+        }
+
+        if (((*m_Array)[val - 1].m_Type != QCFVariant::Array)&&(m_ArrayDimension > 1))
+        {
+            (*m_Array)[val - 1] = QCFVariant(QCFVariant::Array);
+            (*m_Array)[val - 1].m_ArrayDimension = m_ArrayDimension - 1;
+        }
+
+        return (*m_Array)[val - 1];
+        break;
+    case QCFVariant::Struct:
         if (m_HiddenScopeFirst)
         {
             if (m_HiddenScopeFirst->m_Struct->contains(key))
@@ -548,7 +687,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QString &key)
         }
 
         if (m_Struct->contains(key) == false)
-		{
+        {
             if (m_HiddenScopeLast1)
             {
                 if (m_HiddenScopeLast1->m_Struct->contains(key))
@@ -565,13 +704,19 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QString &key)
                 }
             }
 
-            throw QMKFusionException(QString("Variable %1 is undefined.").arg(key));
-		}
+            if (l_AddMissingMember)
+            {
+                m_Struct->insert(key, QCFVariant());
+            }
+            else
+            {
+                throw QMKFusionException(QObject::tr("Variable %1 is undefined.").arg(key));
+            }
+        }
 
         return (*m_Struct)[key];
-	}
-    else if (m_Type == QCFVariant::Query)
-    {
+        break;
+    case QCFVariant::Query:
         if (!m_Struct->contains(key))
         {
             if ((*this)[L"RESULTSET"].m_Struct->contains(key))
@@ -580,127 +725,54 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QString &key)
                 return (*this)[L"RESULTSET"][key];
             }
 
-            throw QMKFusionException(QString("Variable %1 is undefined.").arg(key));
+            throw QMKFusionException(QObject::tr("Variable %1 is undefined.").arg(key));
         }
 
         return (*m_Struct)[key];
+        break;
+    default:
+        break;
     }
-	else
-	{
-		bool ok;
-		qint32 val = (qint32)key.toDouble(&ok);
-		if (ok == false)
-		{
-			throw QMKFusionExpressionException("The value " + key + " cannot be converted to a number.");
-		}
 
-		if (val < 1)
-		{
-			throw QMKFusionExpressionException("The element at position " + QString::number(val) + " of array variable xxx cannot be found.");
-		}
-
-        if (m_Array->size() > val)
-		{
-            m_Array->resize(val);
-		}
-
-        return (*m_Array)[val - 1];
-	}
+    throw QMKFusionExpressionException(QObject::tr("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members."));
 }
 
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const char *key)
 {
-    qDebug() << "QCFVariant::operator[](const char *key) called. to be deleted soon.";
-
-    if ((m_Type != QCFVariant::Struct)&&(m_Type != QCFVariant::Array)&&(m_Type != QCFVariant::Query))
-	{
-		throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class wchar_t* as a structure with members.");
-	}
-
-    QString l_key = QString::fromLatin1(key);
-
-    if (m_Type == QCFVariant::Struct)
-	{
-        if (m_HiddenScopeFirst)
-        {
-            if (m_HiddenScopeFirst->m_Struct->contains(key))
-            {
-                return (*m_HiddenScopeFirst->m_Struct)[key];
-            }
-        }
-
-        if (m_Struct->contains(l_key) == false)
-		{
-            if (m_HiddenScopeLast1)
-            {
-                if (m_HiddenScopeLast1->m_Struct->contains(key))
-                {
-                    return (*m_HiddenScopeLast1->m_Struct)[key];
-                }
-
-                if (m_HiddenScopeLast2)
-                {
-                    if (m_HiddenScopeLast2->m_Struct->contains(key))
-                    {
-                        return (*m_HiddenScopeLast2->m_Struct)[key];
-                    }
-                }
-            }
-
-            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_key));
-		}
-
-        return (*m_Struct)[l_key];
-	}
-    else if (m_Type == QCFVariant::Query)
-    {
-        if (!m_Struct->contains(l_key))
-        {
-            if ((*this)[L"RESULTSET"].m_Struct->contains(l_key))
-            {
-                (*this)[L"RESULTSET"][l_key].m_Number = (*this)[L"CURRENTROW"];
-                return (*this)[L"RESULTSET"][l_key];
-            }
-
-            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_key));
-        }
-
-        return (*m_Struct)[l_key];
-    }
-	else
-	{
-		bool ok;
-		qint32 val = (qint32)l_key.toDouble(&ok);
-		if (ok == false)
-		{
-			throw QMKFusionExpressionException("The value " + l_key + " cannot be converted to a number.");
-		}
-
-		if (val < 1)
-		{
-			throw QMKFusionExpressionException("The element at position " + QString::number(val) + " of array variable xxx cannot be found.");
-		}
-
-        if (m_Array->size() > val)
-		{
-            m_Array->resize(val);
-		}
-
-        return (*m_Array)[val - 1];
-	}
-}
-
-Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const wchar_t *key)
-{
+    bool l_AddMissingMember;
     QString l_key;
     qint32 val;
     bool ok;
 
+    l_AddMissingMember = m_AddMissingMember;
+    m_AddMissingMember = false;
+
+    qDebug() << "QCFVariant::operator[](const char *key) called. to be deleted soon.";
+
+    l_key = QString::fromLatin1(key);
+
     switch(m_Type)
     {
-    case QCFVariant::Struct:
-        l_key = QString::fromStdWString(key).toUpper();
+    case QCFVariant::Array:
+        val = (qint32)l_key.toDouble(&ok);
+        if (ok == false)
+        {
+            throw QMKFusionExpressionException(QObject::tr("The value %1 cannot be converted to a number.").arg(l_key));
+        }
 
+        if (val < 1)
+        {
+            throw QMKFusionExpressionException(QObject::tr("The element at position %1 of array variable is out of range.").arg(val));
+        }
+
+        if (m_Array->size() > val)
+        {
+            m_Array->resize(val);
+        }
+
+        return (*m_Array)[val - 1];
+        break;
+    case QCFVariant::Struct:
         if (m_HiddenScopeFirst)
         {
             if (m_HiddenScopeFirst->m_Struct->contains(l_key))
@@ -727,14 +799,19 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const wchar_t *key)
                 }
             }
 
-            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_key));
+            if (l_AddMissingMember)
+            {
+                m_Struct->insert(l_key, QCFVariant());
+            }
+            else
+            {
+                throw QMKFusionException(QObject::tr("Variable %1 is undefined.").arg(l_key));
+            }
         }
 
         return (*m_Struct)[l_key];
         break;
     case QCFVariant::Query:
-        l_key = QString::fromStdWString(key).toUpper();
-
         if (!m_Struct->contains(l_key))
         {
             if ((*this)[L"RESULTSET"].m_Struct->contains(l_key))
@@ -743,14 +820,33 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const wchar_t *key)
                 return (*this)[L"RESULTSET"][l_key];
             }
 
-            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_key));
+            throw QMKFusionException(QObject::tr("Variable %1 is undefined.").arg(l_key));
         }
 
         return (*m_Struct)[l_key];
         break;
-    case QCFVariant::Array:
-        l_key = QString::fromStdWString(key).toUpper();
+    default:
+        break;
+    }
 
+    throw QMKFusionExpressionException(QObject::tr("You have attempted to dereference a scalar variable of type class wchar_t* as a structure with members."));
+}
+
+Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const wchar_t *key)
+{
+    bool l_AddMissingMember;
+    QString l_key;
+    qint32 val;
+    bool ok;
+
+    l_AddMissingMember = m_AddMissingMember;
+    m_AddMissingMember = false;
+
+    l_key = QString::fromStdWString(key).toUpper();
+
+    switch(m_Type)
+    {
+    case QCFVariant::Array:
         val = (qint32)l_key.toDouble(&ok);
         if (ok == false)
         {
@@ -769,6 +865,59 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const wchar_t *key)
 
         return (*m_Array)[val - 1];
         break;
+    case QCFVariant::Struct:
+        if (m_HiddenScopeFirst)
+        {
+            if (m_HiddenScopeFirst->m_Struct->contains(l_key))
+            {
+                return (*m_HiddenScopeFirst->m_Struct)[l_key];
+            }
+        }
+
+        if (m_Struct->contains(l_key) == false)
+        {
+            if (m_HiddenScopeLast1)
+            {
+                if (m_HiddenScopeLast1->m_Struct->contains(l_key))
+                {
+                    return (*m_HiddenScopeLast1->m_Struct)[l_key];
+                }
+
+                if (m_HiddenScopeLast2)
+                {
+                    if (m_HiddenScopeLast2->m_Struct->contains(l_key))
+                    {
+                        return (*m_HiddenScopeLast2->m_Struct)[l_key];
+                    }
+                }
+            }
+
+            if (l_AddMissingMember)
+            {
+                m_Struct->insert(l_key, QCFVariant());
+            }
+            else
+            {
+                throw QMKFusionException(QObject::tr("Variable %1 is undefined.").arg(l_key));
+            }
+        }
+
+        return (*m_Struct)[l_key];
+        break;
+    case QCFVariant::Query:
+        if (!m_Struct->contains(l_key))
+        {
+            if ((*this)[L"RESULTSET"].m_Struct->contains(l_key))
+            {
+                (*this)[L"RESULTSET"][l_key].m_Number = (*this)[L"CURRENTROW"];
+                return (*this)[L"RESULTSET"][l_key];
+            }
+
+            throw QMKFusionException(QObject::tr("Variable %1 is undefined.").arg(l_key));
+        }
+
+        return (*m_Struct)[l_key];
+        break;
     default:
         throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class wchar_t* as a structure with members.");
         break;
@@ -777,11 +926,36 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const wchar_t *key)
 
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QCFVariant &key)
 {
+    bool l_AddMissingMember;
     QString l_keyStr;
     int l_keyInt;
 
+    l_AddMissingMember = m_AddMissingMember;
+    m_AddMissingMember = false;
+
     switch(m_Type)
     {
+    case QCFVariant::Array:
+        l_keyInt = (int)key.toNumber();
+
+        if (l_keyInt < 1)
+        {
+            throw QMKFusionExpressionException(QObject::tr("The element at position %1 of array variable is out of range.").arg(l_keyInt));
+        }
+
+        if (m_Array->size() < l_keyInt)
+        {
+            m_Array->resize(l_keyInt);
+        }
+
+        if (((*m_Array)[l_keyInt - 1].m_Type != QCFVariant::Array)&&(m_ArrayDimension > 1))
+        {
+            (*m_Array)[l_keyInt - 1] = QCFVariant(QCFVariant::Array);
+            (*m_Array)[l_keyInt - 1].m_ArrayDimension = m_ArrayDimension - 1;
+        }
+
+        return (*m_Array)[l_keyInt - 1];
+        break;
     case QCFVariant::Struct:
         l_keyStr = key.toString();
 
@@ -811,7 +985,14 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QCFVariant &key)
                 }
             }
 
-            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_keyStr));
+            if (l_AddMissingMember)
+            {
+                m_Struct->insert(l_keyStr, QCFVariant());
+            }
+            else
+            {
+                throw QMKFusionException(QObject::tr("Variable %1 is undefined.").arg(l_keyStr));
+            }
         }
 
         return (*m_Struct)[l_keyStr];
@@ -827,31 +1008,10 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QCFVariant &key)
                 return (*this)[L"RESULTSET"][l_keyStr];
             }
 
-            throw QMKFusionException(QString("Variable %1 is undefined.").arg(l_keyStr));
+            throw QMKFusionException(QObject::tr("Variable %1 is undefined.").arg(l_keyStr));
         }
 
         return (*m_Struct)[l_keyStr];
-        break;
-    case QCFVariant::Array:
-        l_keyInt = (int)key.toNumber();
-
-        if (l_keyInt < 1)
-        {
-            throw QMKFusionExpressionException("The element at position " + QString::number(l_keyInt) + " of array variable \"xxx\" cannot be found.");
-        }
-
-        if (m_Array->size() < l_keyInt)
-        {
-            m_Array->resize(l_keyInt);
-        }
-
-        if (((*m_Array)[l_keyInt - 1].m_Type != QCFVariant::Array)&&(m_ArrayDimension > 1))
-        {
-            (*m_Array)[l_keyInt - 1] = QCFVariant(QCFVariant::Array);
-            (*m_Array)[l_keyInt - 1].m_ArrayDimension = m_ArrayDimension - 1;
-        }
-
-        return (*m_Array)[l_keyInt - 1];
         break;
     default:
         throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members.");
@@ -866,7 +1026,7 @@ Q_DECL_EXPORT bool QCFVariant::operator==(bool p_Value)
         return m_Bool == p_Value;
     }
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator==(int p_Value)
@@ -889,7 +1049,7 @@ Q_DECL_EXPORT bool QCFVariant::operator==(int p_Value)
         }
     }
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator==(double p_Value)
@@ -904,7 +1064,7 @@ Q_DECL_EXPORT bool QCFVariant::operator==(double p_Value)
 		return toNumber() == p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator==(const QString &p_Value)
@@ -919,7 +1079,7 @@ Q_DECL_EXPORT bool QCFVariant::operator==(const QString &p_Value)
 		return m_String == p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator==(const QCFVariant &p_Value)
@@ -947,33 +1107,13 @@ Q_DECL_EXPORT bool QCFVariant::operator==(const QCFVariant &p_Value)
         return l_temp1.toNumber() == l_temp2.toNumber();
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
-
-/*Q_DECL_EXPORT bool operator!()
-{
-    if ((m_Type == Boolean))
-    {
-        return QCFVariant(!m_Bool);
-    }
-
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
-}*/
 
 Q_DECL_EXPORT QCFVariant QCFVariant::operator!()
 {
     return QCFVariant(!toBool());
 }
-
-/*Q_DECL_EXPORT bool operator!(const QCFVariant &operand)
-{
-    if ((operand.m_Type == QCFVariant::Boolean))
-    {
-        return !operand.m_Bool;
-    }
-
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
-}*/
 
 Q_DECL_EXPORT QCFVariant operator!(const QCFVariant &operand)
 {
@@ -982,7 +1122,7 @@ Q_DECL_EXPORT QCFVariant operator!(const QCFVariant &operand)
         return QCFVariant(!operand.m_Bool);
     }
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator!=(int p_Value)
@@ -997,7 +1137,7 @@ Q_DECL_EXPORT bool QCFVariant::operator!=(int p_Value)
 		return toNumber() != (double)p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator!=(double p_Value)
@@ -1012,7 +1152,7 @@ Q_DECL_EXPORT bool QCFVariant::operator!=(double p_Value)
         return toNumber() != p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator!=(const QString &p_Value)
@@ -1027,7 +1167,7 @@ Q_DECL_EXPORT bool QCFVariant::operator!=(const QString &p_Value)
         return *m_String != p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator!=(const QCFVariant &p_Value)
@@ -1050,7 +1190,7 @@ Q_DECL_EXPORT bool QCFVariant::operator!=(const QCFVariant &p_Value)
         return l_temp1.toNumber() != l_temp2.toNumber();
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool operator!=(int p_Value1, const QCFVariant &p_Value2)
@@ -1080,7 +1220,7 @@ Q_DECL_EXPORT bool QCFVariant::operator<=(int p_Value)
 		return toNumber() <=(double)p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<=(double p_Value)
@@ -1095,7 +1235,7 @@ Q_DECL_EXPORT bool QCFVariant::operator<=(double p_Value)
 		return toNumber() <= p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<=(const QString &p_Value)
@@ -1110,7 +1250,7 @@ Q_DECL_EXPORT bool QCFVariant::operator<=(const QString &p_Value)
         return *m_String <= p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<=(const QCFVariant &p_Value)
@@ -1133,7 +1273,7 @@ Q_DECL_EXPORT bool QCFVariant::operator<=(const QCFVariant &p_Value)
         return l_temp1.toNumber() <= l_temp2.toNumber();
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool operator<=(int p_Value1, const QCFVariant &p_Value2)
@@ -1163,7 +1303,7 @@ Q_DECL_EXPORT bool QCFVariant::operator>=(int p_Value)
 		return toNumber() >= (double)p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>=(double p_Value)
@@ -1178,7 +1318,7 @@ Q_DECL_EXPORT bool QCFVariant::operator>=(double p_Value)
 		return toNumber() >= p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>=(const QString &p_Value)
@@ -1193,7 +1333,7 @@ Q_DECL_EXPORT bool QCFVariant::operator>=(const QString &p_Value)
         return *m_String >= p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>=(const QCFVariant &p_Value)
@@ -1216,7 +1356,7 @@ Q_DECL_EXPORT bool QCFVariant::operator>=(const QCFVariant &p_Value)
         return l_temp1.toNumber() >= l_temp2.toNumber();
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool operator>=(int p_Value1, const QCFVariant &p_Value2)
@@ -1246,7 +1386,7 @@ Q_DECL_EXPORT bool QCFVariant::operator<(int p_Value)
 		return toNumber() < (double)p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<(double p_Value)
@@ -1261,7 +1401,7 @@ Q_DECL_EXPORT bool QCFVariant::operator<(double p_Value)
 		return toNumber() < p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<(const QString &p_Value)
@@ -1276,7 +1416,7 @@ Q_DECL_EXPORT bool QCFVariant::operator<(const QString &p_Value)
         return *m_String < p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<(const QCFVariant &p_Value)
@@ -1299,7 +1439,7 @@ Q_DECL_EXPORT bool QCFVariant::operator<(const QCFVariant &p_Value)
         return l_temp1.toNumber() < l_temp2.toNumber();
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool operator<(int p_Value1, const QCFVariant &p_Value2)
@@ -1329,7 +1469,7 @@ Q_DECL_EXPORT bool QCFVariant::operator>(int p_Value)
 		return toNumber() > (double)p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>(double p_Value)
@@ -1344,7 +1484,7 @@ Q_DECL_EXPORT bool QCFVariant::operator>(double p_Value)
 		return toNumber() > p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>(const QString &p_Value)
@@ -1359,7 +1499,7 @@ Q_DECL_EXPORT bool QCFVariant::operator>(const QString &p_Value)
         return *m_String > p_Value;
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>(const QCFVariant &p_Value)
@@ -1382,7 +1522,7 @@ Q_DECL_EXPORT bool QCFVariant::operator>(const QCFVariant &p_Value)
         return l_temp1.toNumber() > l_temp2.toNumber();
 	}
 
-    throw QMKFusionExpressionException(QString("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
+    throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool operator>(int p_Value1, const QCFVariant &p_Value2)
@@ -1566,7 +1706,7 @@ Q_DECL_EXPORT QCFVariant QCFVariant::operator+(bool p_Value)
 {
     Q_UNUSED(p_Value);
 
-    throw QMKFusionExpressionException("Illegal operation. Can\'t accumulate bool.");
+    throw QMKFusionExpressionException(QObject::tr("Illegal operation. Can\'t accumulate bool."));
 }
 
 Q_DECL_EXPORT QCFVariant QCFVariant::operator+(int p_Value)
@@ -1638,7 +1778,7 @@ Q_DECL_EXPORT QCFVariant operator+(bool p_Value1, const QCFVariant &p_Value2)
     Q_UNUSED(p_Value1);
     Q_UNUSED(p_Value2);
 
-    throw QMKFusionExpressionException("Illegal operation. Can\'t accumulate bool.");
+    throw QMKFusionExpressionException(QObject::tr("Illegal operation. Can\'t accumulate bool."));
 }
 
 Q_DECL_EXPORT QCFVariant operator+(int p_Value1, const QCFVariant &p_Value2)
@@ -2023,7 +2163,7 @@ Q_DECL_EXPORT QString QCFVariant::toString() const
             return m_Array->at(m_Number - 1).toString();
         }
         default:
-			throw QMKFusionExpressionException("Complex object types cannot be converted to simple values.", "The expression has requested a variable or an intermediate expression result as a simple value, however, the result cannot be converted to a simple value. Simple values are strings, numbers, boolean values, and date/time values. Queries, arrays, and COM objects are examples of complex values. <p> The most likely cause of the error is that you are trying to use a complex value as a simple one. For example, you might be trying to use a query variable in a cfif tag.");
+            throw QMKFusionExpressionException(QObject::tr("Complex object types cannot be converted to simple values.", "The expression has requested a variable or an intermediate expression result as a simple value, however, the result cannot be converted to a simple value. Simple values are strings, numbers, boolean values, and date/time values. Queries, arrays, and COM objects are examples of complex values. <p> The most likely cause of the error is that you are trying to use a complex value as a simple one. For example, you might be trying to use a query variable in a cfif tag."));
 		break;
 	}
 
@@ -2037,7 +2177,7 @@ Q_DECL_EXPORT QByteArray QCFVariant::toBinary() const
     case QCFVariant::Binary:
         return *m_ByteArray;
     default:
-        throw QMKFusionExpressionException("The value  cannot be converted to binary.");
+        throw QMKFusionExpressionException(QObject::tr("The value cannot be converted to binary."));
     }
 }
 
@@ -2056,7 +2196,7 @@ Q_DECL_EXPORT double QCFVariant::toNumber() const
         ret = m_String->toDouble(&ok);
 		if (ok == false)
 		{
-            throw QMKFusionExpressionException("The value " + *m_String + " cannot be converted to a number.");
+            throw QMKFusionExpressionException(QObject::tr("The value %1 cannot be converted to a number.").arg(*m_String));
 		}
 
 		return ret;
@@ -2071,7 +2211,7 @@ Q_DECL_EXPORT double QCFVariant::toNumber() const
             return m_Array->at(m_Number - 1).toNumber();
         }
 	default:
-		throw QMKFusionExpressionException("The value cannot be converted to a number.");
+        throw QMKFusionExpressionException(QObject::tr("The value cannot be converted to a number."));
 	}
 }
 
@@ -2090,7 +2230,7 @@ Q_DECL_EXPORT int QCFVariant::toInt() const
         ret = m_String->toInt(&ok);
         if (ok == false)
         {
-            throw QMKFusionExpressionException("The value [" + *m_String + "] cannot be converted to a int.");
+            throw QMKFusionExpressionException(QObject::tr("The value [%1] cannot be converted to a int.").arg(*m_String));
         }
 
         return ret;
@@ -2105,7 +2245,7 @@ Q_DECL_EXPORT int QCFVariant::toInt() const
             return m_Array->at(m_Number - 1).toInt();
         }
     default:
-        throw QMKFusionExpressionException("The value cannot be converted to a int.");
+        throw QMKFusionExpressionException(QObject::tr("The value cannot be converted to a int."));
     }
 }
 
@@ -2135,7 +2275,7 @@ Q_DECL_EXPORT bool QCFVariant::canConvertToNumber()
 Q_DECL_EXPORT bool QCFVariant::canConvertToDate()
 {
     // TODO: Implement QCFVariant::canConvertToDate()
-    throw QMKFusionException("QCFVariant::canConvertToDate() is not implemented");
+    throw QMKFusionException(QObject::tr("QCFVariant::canConvertToDate() is not implemented"));
 }
 
 Q_DECL_EXPORT QDateTime QCFVariant::toDateTime() const
@@ -2155,7 +2295,7 @@ Q_DECL_EXPORT QDateTime QCFVariant::toDateTime() const
         }
     }
 
-    throw QMKFusionExpressionException("The value cannot be converted to a datetime.");
+    throw QMKFusionExpressionException(QObject::tr("The value cannot be converted to a datetime."));
 }
 
 Q_DECL_EXPORT bool QCFVariant::toBool() const
@@ -2191,33 +2331,34 @@ Q_DECL_EXPORT bool QCFVariant::toBool() const
 			break;
 		default:;
 	}
-	throw QMKFusionExpressionException("The value cannot be converted to a boolean.");
+
+    throw QMKFusionExpressionException(QObject::tr("The value cannot be converted to a boolean."));
 }
 
 Q_DECL_EXPORT QCFVariant QCFVariant::call(QCFWorkerThread &worker, const QString &function, QList<QCFVariant> params)
 {
     if (m_Type != Component)
     {
-        throw QMKFusionException("Variable is not component.");
+        throw QMKFusionException(QObject::tr("Variable is not component."));
     }
 
     const QString &l_Function = function.toUpper();
 
     if (!m_Component->self.m_Struct->contains(l_Function))
     {
-        throw QMKFusionException(QString("There is not `%1` function.").arg(l_Function));
+        throw QMKFusionException(QObject::tr("There is not `%1` function.").arg(l_Function));
     }
 
     const QCFVariant &funct = m_Component->self.m_Struct->value(l_Function);
 
     if (funct.type() != QCFVariantType::Function)
     {
-        throw QMKFusionException(QString("`%1` is not function.").arg(l_Function));
+        throw QMKFusionException(QObject::tr("`%1` is not function.").arg(l_Function));
     }
 
     if(params.count() > funct.m_Function->m_Arguments.count())
     {
-        throw QMKFusionException(QString("Too many arguments to call `%1` function.").arg(l_Function));
+        throw QMKFusionException(QObject::tr("Too many arguments to call `%1` function.").arg(l_Function));
     }
 
     QCFVariant args(QCFVariant::Struct);

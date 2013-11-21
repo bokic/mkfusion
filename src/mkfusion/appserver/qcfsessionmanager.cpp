@@ -13,10 +13,10 @@ QCFSessionManager::QCFSessionManager()
 QCFVariant * QCFSessionManager::getSession(QCFWorkerThread *worker, const QString &name, bool sessionManagement, bool setClientCookies)
 {
     /*
-        worker->updateVariable(*worker->m_SESSION, L"CFID", CFID);
-        worker->updateVariable(*worker->m_SESSION, L"CFTOKEN", CFTOKEN);
-        worker->updateVariable(*worker->m_SESSION, L"SESSIONID", l_name + "_" + CFID + "_" + CFTOKEN);
-        worker->updateVariable(*worker->m_SESSION, L"URLTOKEN", "CFID=" + CFID + "&CFTOKEN=" + CFTOKEN);
+        worker->m_SESSION->_()[L"CFID"] = CFID;
+        worker->m_SESSION->_()[L"CFTOKEN"] = CFTOKEN;
+        worker->m_SESSION->_()[L"SESSIONID"] = l_name + "_" + CFID + "_" + CFTOKEN;
+        worker->m_SESSION->_()[L"URLTOKEN"] = "CFID=" + CFID + "&CFTOKEN=" + CFTOKEN;
     */
 
     return nullptr;

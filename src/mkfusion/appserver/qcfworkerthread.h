@@ -82,12 +82,9 @@ public:
     void writeException(const QMKFusionException &ex);
     void runApplicationTemplate();
     void updateVariables();
-    static void updateVariableInt(QCFVariant &dest, int key, const QCFVariant &value);
-    static void updateVariableStr(QCFVariant &dest, const wchar_t *key, const QCFVariant &value);
-    static void updateVariableQStr(QCFVariant &dest, const QString &key, const QCFVariant &value);
-    static void updateVariable(QCFVariant &dest, const QCFVariant &key, const QCFVariant &value);
     void f_WriteOutput(const QCFVariant &value);
     void f_WriteOutput(const QString &value);
+    void f_WriteOutput(const wchar_t *value);
     void f_Location(const QString &p_URL, int p_StatusCode);
     void f_Location(const QString &p_URL, bool p_AddToken, int p_StatusCode);
     void f_Include(const QString &p_template);
