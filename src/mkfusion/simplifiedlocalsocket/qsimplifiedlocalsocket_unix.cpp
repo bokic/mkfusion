@@ -11,8 +11,9 @@
 #include <poll.h>
 
 QSimplifiedLocalSocket::QSimplifiedLocalSocket()
+    : m_Handle(0)
+    , m_Timeout(100)
 {
-	m_Handle = 0;
 }
 
 QSimplifiedLocalSocket::~QSimplifiedLocalSocket()

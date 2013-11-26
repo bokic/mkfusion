@@ -1,19 +1,15 @@
 #include "qwddxutils.h"
 #include <QHash>
 
-QWDDXUtils::QWDDXUtils()
-{
-	QHash<QString, QWDDX> hash;
-}
 
-QDomNode EncodeRecursive(QDomDocument doc, QWDDX node)
+QDomNode EncodeRecursive(QDomDocument &doc, const QWDDX &node)
 {
 	QDomElement ret;
 	QDomText content;
 
 	int len;
 
-	switch(node.getType())
+    switch(node.type())
 	{
 	case QWDDX::Array:
 		ret = doc.createElement("array");
@@ -21,7 +17,9 @@ QDomNode EncodeRecursive(QDomDocument doc, QWDDX node)
 		ret.setAttribute("length", QString::number(len));
 
 		for (int c = 0; c < len; c++)
-			ret.appendChild(EncodeRecursive(doc, node[c]));
+        {
+            ret.appendChild(EncodeRecursive(doc, node.at(c)));
+        }
 		break;
 
 	case QWDDX::Struct:
@@ -33,7 +31,7 @@ QDomNode EncodeRecursive(QDomDocument doc, QWDDX node)
 			QDomElement var = doc.createElement("var");
 			var.setAttribute("name", node.StructKeyAt(c));
 
-			var.appendChild(EncodeRecursive(doc, node[c]));
+            var.appendChild(EncodeRecursive(doc, node.at(c)));
 			ret.appendChild(var);
 		}
 		break;
@@ -73,7 +71,7 @@ QDomNode EncodeRecursive(QDomDocument doc, QWDDX node)
 	return ret;
 }
 
-QString QWDDXUtils::serialize(QWDDX node)
+QString QWDDXUtils::serialize(const QWDDX &node)
 {
 	QDomDocument doc;
 
@@ -81,7 +79,7 @@ QString QWDDXUtils::serialize(QWDDX node)
 	QDomElement headerNode = doc.createElement("header");
 	QDomElement dataNode = doc.createElement("data");
 
-	dataNode.appendChild(EncodeRecursive(doc, node));
+    dataNode.appendChild(EncodeRecursive(doc, node));
 
 	wddxPacketNode.appendChild(headerNode);
 	wddxPacketNode.appendChild(dataNode);
@@ -89,12 +87,10 @@ QString QWDDXUtils::serialize(QWDDX node)
 
 	doc.appendChild(wddxPacketNode);
 
-	QString tt = doc.toString();
-
 	return doc.toString();
 }
 
-QWDDX DecodeRecursive(QDomNode node)
+QWDDX DecodeRecursive(const QDomNode &node)
 {
 	int c;
 	QString nodeName = node.nodeName();
@@ -175,23 +171,21 @@ QWDDX DecodeRecursive(QDomNode node)
 	return QWDDX(QWDDX::Error);
 }
 
-QWDDX QWDDXUtils::deserialize(QString txt)
+QWDDX QWDDXUtils::deserialize(const QString &txt)
 {
-	QString error = "";
 	QDomDocument domdoc;
 	if (domdoc.setContent(txt, false) == true)
 	{
 		if (domdoc.childNodes().count() > 0)
 		{
 			QDomNode mainNode = domdoc.firstChild();
-			QString ttt = mainNode.nodeName();
 			if (mainNode.nodeName() == "wddxPacket")
 			{
 				if (mainNode.attributes().namedItem("version").nodeValue() == "1.0")
 				{
 					if (mainNode.childNodes().count() == 2)
 					{
-						QDomNode header = mainNode.childNodes().at(0);
+                        //QDomNode header = mainNode.childNodes().at(0);
 						QDomNode data = mainNode.childNodes().at(1);
 
 						if (data.childNodes().count() == 1)

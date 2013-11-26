@@ -5,9 +5,9 @@ QWDDX::QWDDX()
 	m_Type = QWDDX::Null;
 }
 
-QWDDX::QWDDX(QWDDXType p_Type)
+QWDDX::QWDDX(QWDDXType type)
 {
-	m_Type = p_Type;
+    m_Type = type;
 }
 
 QWDDX &QWDDX::operator=(const QString &value)
@@ -34,12 +34,12 @@ QWDDX &QWDDX::operator=(const QByteArray &value)
 	return *this;
 }
 
-QWDDX::QWDDXType QWDDX::getType()
+QWDDX::QWDDXType QWDDX::type() const
 {
 	return m_Type;
 }
 
-int QWDDX::size()
+int QWDDX::size() const
 {
 	switch(m_Type)
 	{
@@ -52,7 +52,7 @@ int QWDDX::size()
 	}
 }
 
-QWDDX & QWDDX::operator[](const int p_Index)
+QWDDX & QWDDX::operator[](int index)
 {
 	if (m_Type == QWDDX::Null)
 		m_Type = QWDDX::Array;
@@ -60,17 +60,17 @@ QWDDX & QWDDX::operator[](const int p_Index)
 	switch(m_Type)
 	{
 	case QWDDX::Array:
-		if (m_Array.size() <= p_Index)
-			m_Array.resize(p_Index + 1);
+        if (m_Array.size() <= index)
+            m_Array.resize(index + 1);
 
-		return m_Array[p_Index];
+        return m_Array[index];
 		break;
 	
 	case QWDDX::Struct:
-		if (m_Struct.size() <= p_Index)
+        if (m_Struct.size() <= index)
 			return *(new QWDDX(QWDDX::Error));
 
-		return m_Struct[m_Struct.keys().at(p_Index)];
+        return m_Struct[m_Struct.keys().at(index)];
 
 	default:
 		return *(new QWDDX(QWDDX::Error));
@@ -78,7 +78,7 @@ QWDDX & QWDDX::operator[](const int p_Index)
 	}
 }
 
-QWDDX & QWDDX::operator[](QString key)
+QWDDX & QWDDX::operator[](const QString &key)
 {
 	if (m_Type == QWDDX::Null)
 		m_Type = QWDDX::Struct;
@@ -92,7 +92,7 @@ QWDDX & QWDDX::operator[](QString key)
 	return m_Struct[key];
 }
 
-QWDDX &QWDDX::operator[](char *key)
+QWDDX &QWDDX::operator[](const char *key)
 {
 	if (m_Type == QWDDX::Null)
 		m_Type = QWDDX::Struct;
@@ -106,15 +106,15 @@ QWDDX &QWDDX::operator[](char *key)
 	return m_Struct[key];
 }
 
-QWDDX &QWDDX::operator=(const QDateTime &p_DateTime)
+QWDDX &QWDDX::operator=(const QDateTime &value)
 {
 	m_Type = QWDDX::DateTime;
-	m_DateTime = p_DateTime;
+    m_DateTime = value;
 
 	return *this;
 }
 
-QWDDX &QWDDX::operator=(const double value)
+QWDDX &QWDDX::operator=(double value)
 {
 	m_Type = QWDDX::Number;
     m_Number = value;
@@ -122,7 +122,7 @@ QWDDX &QWDDX::operator=(const double value)
 	return *this;
 }
 
-QWDDX &QWDDX::operator=(const bool value)
+QWDDX &QWDDX::operator=(bool value)
 {
 	m_Type = QWDDX::Boolean;
     m_Bool = value;
@@ -130,15 +130,30 @@ QWDDX &QWDDX::operator=(const bool value)
 	return *this;
 }
 
-QString QWDDX::StructKeyAt(int p_Index)
+QWDDX QWDDX::at(int index) const
 {
-	if (m_Struct.size() <= p_Index)
-		return "";
+    if (m_Type != QWDDX::Array)
+    {
+        return QWDDX(Error);
+    }
 
-	return m_Struct.keys().at(p_Index);
+    if ((index < 0)||(m_Array.size() <= index))
+    {
+        return QWDDX(Error);
+    }
+
+    return m_Array.at(index);
 }
 
-QString QWDDX::toString()
+QString QWDDX::StructKeyAt(int index) const
+{
+    if (m_Struct.size() <= index)
+		return "";
+
+    return m_Struct.keys().at(index);
+}
+
+QString QWDDX::toString() const
 {
 	switch(m_Type)
 	{
@@ -167,7 +182,7 @@ QString QWDDX::toString()
 	return "";
 }
 
-double QWDDX::toNumber()
+double QWDDX::toNumber() const
 {
 	if (m_Type != QWDDX::Number)
 		return 0;
@@ -175,7 +190,7 @@ double QWDDX::toNumber()
 	return m_Number;
 }
 
-QDateTime QWDDX::toDateTime()
+QDateTime QWDDX::toDateTime() const
 {
 	if (m_Type != QWDDX::DateTime)
 		return QDateTime();
@@ -183,7 +198,7 @@ QDateTime QWDDX::toDateTime()
 	return m_DateTime;
 }
 
-bool QWDDX::toBool()
+bool QWDDX::toBool() const
 {
 	if (m_Type != QWDDX::Boolean)
 		return false;

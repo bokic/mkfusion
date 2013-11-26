@@ -369,9 +369,28 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
                     ret = "call(worker, QString::fromWCharArray(L\"" + toCPPEncodedString(l_ElementName.toLower()) + "\"), QList<QCFVariant>()";
                 }
 
-                for (c = 0; c < p_CFExpression.m_ChildElements.size(); c++)
+                if (p_CFExpression.m_ChildElements.count() > 0)
                 {
-                    ret += " << " + GenerateCFExpressionToCExpression(p_CFExpression.m_ChildElements[c], funct_params, funct_local_vars, assignment);
+                    if (p_CFExpression.m_ChildElements.count() == 1)
+                    {
+                        const QCFParserElement &parameters = p_CFExpression.m_ChildElements.at(0);
+
+                        if (parameters.m_Type == Parameters)
+                        {
+                            for (c = 0; c < parameters.m_ChildElements.size(); c++)
+                            {
+                                ret += " << (" + GenerateCFExpressionToCExpression(parameters.m_ChildElements[c], funct_params, funct_local_vars, assignment) + ")";
+                            }
+                        }
+                        else
+                        {
+                            throw QCFGeneratorException("Tag function has children type other than parameters.", p_CFExpression.m_Position);
+                        }
+                    }
+                    else
+                    {
+                        throw QCFGeneratorException("Tag function has more than one children.", p_CFExpression.m_Position);
+                    }
                 }
             }
 

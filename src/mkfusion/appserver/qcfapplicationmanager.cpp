@@ -5,12 +5,19 @@
 
 
 QCFApplicationManager::QCFApplicationManager()
+    : m_lock(new QReadWriteLock)
 {
+}
+
+QCFApplicationManager::~QCFApplicationManager()
+{
+    delete m_lock;
+    m_lock = nullptr;
 }
 
 void QCFApplicationManager::updateApplication(QCFWorkerThread *worker, const QString &name, bool sessionManagement, bool setClientCookies)
 {
-    QWriteLocker locker(&m_lock);
+    QWriteLocker locker(m_lock);
 
     QString l_name = name.toUpper();
 
@@ -33,12 +40,12 @@ void QCFApplicationManager::updateApplication(QCFWorkerThread *worker, const QSt
 
 void QCFApplicationManager::stopAndRemoveTimeoutApplication()
 {
-    QWriteLocker locker(&m_lock);
+    QWriteLocker locker(m_lock);
 
 }
 
 
 QReadWriteLock * QCFApplicationManager::lock()
 {
-    return &m_lock;
+    return m_lock;
 }

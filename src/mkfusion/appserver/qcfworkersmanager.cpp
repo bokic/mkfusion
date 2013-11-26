@@ -71,11 +71,11 @@ void QCFWorkersManager::on_newConnection()
         //    return;
         //}
 
-        QDataStream l_IOStream(localSocket);
-        l_IOStream.setVersion(QDataStream::Qt_5_0);
+        QDataStream stream(localSocket);
+        stream.setVersion(QDataStream::Qt_5_0);
 
         char *tempstr = nullptr;
-        l_IOStream >> tempstr;
+        stream >> tempstr;
         if (!tempstr)
         {
             QCFLOG(CFLOG_WORKER, QCFLOG_CRITICAL, "Empty template pathname returned.");

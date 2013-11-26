@@ -12,6 +12,7 @@ class QCFApplicationManager
 {
 public:
     QCFApplicationManager();
+    ~QCFApplicationManager();
 
     void updateApplication(QCFWorkerThread *worker, const QString &name, bool sessionManagement, bool setClientCookies);
     void stopAndRemoveTimeoutApplication();
@@ -19,7 +20,7 @@ public:
 
 private:
     QHash<QString, QCFApplication> m_applications;
-    QReadWriteLock m_lock;
+    QReadWriteLock *m_lock;
 };
 
 #endif // QCFAPPLICATIONMANAGER_H

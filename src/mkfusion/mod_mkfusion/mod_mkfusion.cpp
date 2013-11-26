@@ -1,9 +1,7 @@
 #include <qsimplifiedlocalsocket.h>
 #include <QCoreApplication>
-#include <QByteArray>
 #include <QDataStream>
-#include <QFile>
-#include <QDir>
+#include <QByteArray>
 
 #include <httpd.h>
 #include <http_config.h>
@@ -80,26 +78,26 @@ static int mkfusion_handler(request_rec *r)
  #endif
 #endif
 		QByteArray l_Send;
-		QDataStream l_IOStream(&l_Send, QIODevice::WriteOnly);
-        l_IOStream.setVersion(QDataStream::Qt_5_0);
+        QDataStream stream(&l_Send, QIODevice::WriteOnly);
+        stream.setVersion(QDataStream::Qt_5_0);
 
-        l_IOStream << r->filename;
+        stream << r->filename;
 
-        qint64 chunk_pos = l_IOStream.device()->pos();
+        qint64 chunk_pos = stream.device()->pos();
 
-        l_IOStream << (qint64)0;
-		l_IOStream << r->ap_auth_type;
-		l_IOStream << r->user;
-		l_IOStream << apr_table_get(r->headers_in, "Accept");
-		l_IOStream << apr_table_get(r->headers_in, "Accept-Encoding");
-		l_IOStream << apr_table_get(r->headers_in, "Accept-Language");
-		//l_IOStream << apr_table_get(r->headers_in, "Accept-Charset"); // New ISO-8859-1,utf-8;q=0.7,*;q=0.3
-		l_IOStream << apr_table_get(r->headers_in, "Connection");
-        l_IOStream << apr_table_get(r->headers_in, "Content-Type");
-		l_IOStream << apr_table_get(r->headers_in, "Host");
-		l_IOStream << apr_table_get(r->headers_in, "Referer");
-		l_IOStream << apr_table_get(r->headers_in, "User-Agent");
-        l_IOStream << apr_table_get(r->headers_in, "Cookie");
+        stream << (qint64)0;
+        stream << r->ap_auth_type;
+        stream << r->user;
+        stream << apr_table_get(r->headers_in, "Accept");
+        stream << apr_table_get(r->headers_in, "Accept-Encoding");
+        stream << apr_table_get(r->headers_in, "Accept-Language");
+        //stream << apr_table_get(r->headers_in, "Accept-Charset"); // New ISO-8859-1,utf-8;q=0.7,*;q=0.3
+        stream << apr_table_get(r->headers_in, "Connection");
+        stream << apr_table_get(r->headers_in, "Content-Type");
+        stream << apr_table_get(r->headers_in, "Host");
+        stream << apr_table_get(r->headers_in, "Referer");
+        stream << apr_table_get(r->headers_in, "User-Agent");
+        stream << apr_table_get(r->headers_in, "Cookie");
 
         // Transfer POST data.
         ap_setup_client_block(r, REQUEST_CHUNKED_DECHUNK);
@@ -125,32 +123,21 @@ static int mkfusion_handler(request_rec *r)
                 buf.append(chunk.left(len));
             }
 
-            l_IOStream << (int)buf.length();
-            l_IOStream << buf;
+            stream << (int)buf.length();
+            stream << buf;
         }
         else
         {
-            l_IOStream << 0;
+            stream << 0;
         }
 
-//        ap_setup_client_block(r, REQUEST_CHUNKED_DECHUNK);
-//        writeError(r, QString("ap_should_client_block(r): %1.<br />").arg(ap_should_client_block(r)).toLatin1());
-//        char buf[1024];
-//        memset(buf, 0, sizeof(buf));
-//        long len = ap_get_client_block(r, buf, sizeof(buf));
-//        if( len > 0)
-//        {
-//            writeError(r, QString("POST: %1.<br />").arg(buf).toLatin1());
-//        }
-//        return OK;
-
-		l_IOStream << r->args;
-		l_IOStream << r->method;
-		l_IOStream << r->protocol;
-		l_IOStream << r->hostname;
-		l_IOStream << r->uri;
-        l_IOStream.device()->seek(chunk_pos);
-        l_IOStream << (qint64)l_Send.size() - chunk_pos;
+        stream << r->args;
+        stream << r->method;
+        stream << r->protocol;
+        stream << r->hostname;
+        stream << r->uri;
+        stream.device()->seek(chunk_pos);
+        stream << (qint64)l_Send.size() - chunk_pos;
 
 		if (l_localSocket.write(l_Send) == -1)
 		{

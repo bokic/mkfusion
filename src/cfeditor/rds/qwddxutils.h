@@ -11,9 +11,8 @@
 class QWDDXUtils
 {
 public:
-	QWDDXUtils();
-	QString serialize(QWDDX);
-	QWDDX deserialize(QString);
+    QString serialize(const QWDDX &node);
+    QWDDX deserialize(const QString &txt);
 	QString getLastError();
 protected:
 private:

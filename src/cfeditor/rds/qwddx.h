@@ -26,24 +26,25 @@ public:
 
 public:
 	QWDDX();
-	QWDDX(QWDDXType);
-    QWDDX &operator=(const QString &);
-    QWDDX &operator=(const char *);
-    QWDDX &operator=(const double);
-    QWDDX &operator=(const bool);
-    QWDDX &operator=(const QDateTime &);
-    QWDDX &operator=(const QByteArray &);
-	QWDDXType getType();
-	int size();
-	QWDDX & operator[](const int);
-	QWDDX & operator[](QString);
-    QWDDX & operator[](char *);
-	QString StructKeyAt(int);
-	QString toString();
-	QByteArray toBinary();
-	double toNumber();
-	QDateTime toDateTime();
-	bool toBool();
+    QWDDX(QWDDXType type);
+    QWDDX &operator=(const QString &value);
+    QWDDX &operator=(const char *value);
+    QWDDX &operator=(double value);
+    QWDDX &operator=(bool value);
+    QWDDX &operator=(const QDateTime &value);
+    QWDDX &operator=(const QByteArray &value);
+    QWDDXType type() const;
+    int size() const;
+    QWDDX &operator[](int index);
+    QWDDX &operator[](const QString &index);
+    QWDDX &operator[](const char *index);
+    QWDDX at(int index) const;
+    QString StructKeyAt(int index) const;
+    QString toString() const;
+    QByteArray toBinary() const;
+    double toNumber() const;
+    QDateTime toDateTime() const;
+    bool toBool() const;
 protected:
 private:
 	QVector<QWDDX> m_Array;

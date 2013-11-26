@@ -2,8 +2,8 @@
 #include <QIODevice>
 
 QSimplifiedLocalSocket::QSimplifiedLocalSocket()
+    : m_Handle(INVALID_HANDLE_VALUE)
 {
-	m_Handle = INVALID_HANDLE_VALUE;
 }
 
 QSimplifiedLocalSocket::~QSimplifiedLocalSocket()
