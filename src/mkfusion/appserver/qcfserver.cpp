@@ -164,6 +164,8 @@ void QCFServer::start()
 	}
 #endif
 
+	m_LocalServer.setSocketOptions(QLocalServer::WorldAccessOption);
+
 	if (m_LocalServer.listen("mkfusion") == false)
 	{
 		return;
