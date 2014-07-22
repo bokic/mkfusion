@@ -10,6 +10,11 @@
 
 #include <math.h>
 
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#endif
+
 const quint32 KBD_BACKSPACE = 8;
 const quint32 KBD_ENTER = 13;
 const quint32 KBD_DELETE = 127;

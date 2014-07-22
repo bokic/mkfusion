@@ -6,33 +6,31 @@
 #include <QApplication>
 #include <QStringList>
 #include <QTcpSocket>
-#include <QColor>
-//#include <QHttp>
-#include <QUrlQuery>
+#include <QString>
 #include <QUrl>
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 }
 
 Dialog::~Dialog()
 {
-    delete ui;
+	delete ui;
 }
 
 void Dialog::changeEvent(QEvent *e)
 {
-    QDialog::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
-        break;
-    default:
-        break;
-    }
+	QDialog::changeEvent(e);
+	switch (e->type()) {
+	case QEvent::LanguageChange:
+		ui->retranslateUi(this);
+		break;
+	default:
+		break;
+	}
 }
 
 QByteArray getUrlContent(QString p_URL)
@@ -48,22 +46,22 @@ QByteArray getUrlContent(QString p_URL)
 
 	l_socket.connectToHost(url.host(), l_port);
 
-    if (l_socket.waitForConnected(30000) == false)
+	if (l_socket.waitForConnected(30000) == false)
 	{
 		return QByteArray();
 	}
 
-    l_socket.write(QString("GET " + url.path(QUrl::EncodeSpaces | QUrl::EncodeUnicode | QUrl::EncodeDelimiters | QUrl::EncodeReserved) + "\r\n\r\n").toUtf8());
-    l_socket.waitForBytesWritten(30000);
+	l_socket.write(QString("GET " + url.path(QUrl::EncodeSpaces | QUrl::EncodeUnicode | QUrl::EncodeDelimiters | QUrl::EncodeReserved) + "\r\n\r\n").toUtf8());
+	l_socket.waitForBytesWritten(30000);
 
-    l_socket.waitForDisconnected(30000);
+	l_socket.waitForDisconnected(30000);
 
 	return l_socket.readAll();
 }
 
 void Dialog::on_start_clicked()
 {
-	QByteArray l_ba = getUrlContent(ui->urledit->text());
+    QByteArray l_ba = getUrlContent(ui->urledit->text());
 
 	{
 		int l_tablebeg = l_ba.indexOf("<table");
@@ -166,7 +164,7 @@ void Dialog::on_start_clicked()
 
 			QString m_cffile = ui->urledit->text() + l_filename;
 			QString m_mffile = ui->urledit->text() + l_filename;
-			m_mffile[m_mffile.length() - 3] = 'm';
+			m_mffile[(uint)m_mffile.length() - 3] = 'm';
 
 			QApplication::processEvents();
 			QByteArray l_cf = getUrlContent(m_cffile);
@@ -191,7 +189,7 @@ void Dialog::on_urlslist_itemDoubleClicked(QListWidgetItem* item)
 
 	QString m_cffile = ui->urledit->text() + l_filename;
 	QString m_mffile = ui->urledit->text() + l_filename;
-	m_mffile[m_mffile.length() - 3] = 'm';
+	m_mffile[(uint)m_mffile.length() - 3] = 'm';
 
 	CompareDialog *dlg = new CompareDialog(this);
 	dlg->setLeftText(getUrlContent(m_cffile));
