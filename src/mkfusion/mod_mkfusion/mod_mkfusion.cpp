@@ -249,7 +249,11 @@ static int mkfusion_handler(request_rec *r)
 static void mkfusion_register_hooks(apr_pool_t *p)
 {
 #ifdef QT_DEBUG
+ #if AP_SERVER_MINORVERSION_NUMBER > 2
+    ap_log_perror(__FILE__, __LINE__, 0, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
+ #else
     ap_log_perror(__FILE__, __LINE__, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
+ #endif
 #endif
 
     ap_hook_handler(mkfusion_handler, nullptr, nullptr, APR_HOOK_MIDDLE);
