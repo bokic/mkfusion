@@ -18,13 +18,13 @@
 
 
 QCFRunningTemplate::QCFRunningTemplate()
-	: QObject()
+    : QObject()
     , m_APPLICATION(nullptr)
     , m_SESSION(nullptr)
-	, m_CFOutput(0)
-	, m_ContentType("text/html; charset=utf-8")
+    , m_CFOutput(0)
+    , m_ContentType("text/html; charset=utf-8")
     , m_StatusCode(200)
-	, m_HeadersSent(false)
+    , m_HeadersSent(false)
     , m_Socket(nullptr)
     , m_CFServer(nullptr)
     , m_OutputType(OutputTypeContent)
@@ -139,7 +139,8 @@ void QCFRunningTemplate::runApplicationTemplate()
             break;
         }
 
-    } while (dir.cdUp());
+    }
+    while (dir.cdUp());
 }
 
 void QCFRunningTemplate::processPostData(QByteArray post)
@@ -281,57 +282,57 @@ void QCFRunningTemplate::worker()
 {
     createCFMTemplateDef createCFMTemplate = 0;
     bool l_FoundRecieveBufSize = false;
-	QByteArray l_RecievedBuffer;
-	qint32 l_RecieveBufSize = 0;
+    QByteArray l_RecievedBuffer;
+    qint32 l_RecieveBufSize = 0;
     QCFTemplate *l_page = 0;
 
 #ifdef Q_OS_LINUX
     QProcess process;
 #endif
 
-	if ((!m_Socket)||(!m_CFServer))
-	{
-		return;
-	}
+    if ((!m_Socket)||(!m_CFServer))
+    {
+        return;
+    }
 
-	forever
-	{
-		forever
-		{
-			if (m_Socket->bytesAvailable() == 0)
-			{
-				m_Socket->waitForReadyRead(100);
-			}
+    forever
+    {
+        forever
+        {
+            if (m_Socket->bytesAvailable() == 0)
+            {
+                m_Socket->waitForReadyRead(100);
+            }
 
             if(!m_Socket->isOpen())
             {
                 break;
             }
 
-			l_RecievedBuffer += m_Socket->readAll();
-			if ((l_FoundRecieveBufSize == false)&&(l_RecievedBuffer.size() >= 4))
-			{
-				QDataStream l_ds(&l_RecievedBuffer, QIODevice::ReadOnly);
-				l_ds.setVersion(QDataStream::Qt_4_4);
+            l_RecievedBuffer += m_Socket->readAll();
+            if ((l_FoundRecieveBufSize == false)&&(l_RecievedBuffer.size() >= 4))
+            {
+                QDataStream l_ds(&l_RecievedBuffer, QIODevice::ReadOnly);
+                l_ds.setVersion(QDataStream::Qt_4_4);
 
-				l_ds >> l_RecieveBufSize;
-				if (l_RecieveBufSize > 10485760) // 10MB
-				{
-					break;
-				}
-				l_FoundRecieveBufSize = true;
-			}
+                l_ds >> l_RecieveBufSize;
+                if (l_RecieveBufSize > 10485760) // 10MB
+                {
+                    break;
+                }
+                l_FoundRecieveBufSize = true;
+            }
 
-			if ((l_FoundRecieveBufSize == true)&&(l_RecievedBuffer.size() >= l_RecieveBufSize))
-			{
-				break;
-			}
-		}
+            if ((l_FoundRecieveBufSize == true)&&(l_RecievedBuffer.size() >= l_RecieveBufSize))
+            {
+                break;
+            }
+        }
 
-		if (l_FoundRecieveBufSize == false)
-		{
-			break;
-		}
+        if (l_FoundRecieveBufSize == false)
+        {
+            break;
+        }
 
         try
         {
@@ -481,10 +482,10 @@ void QCFRunningTemplate::worker()
             createCFMTemplate = (createCFMTemplateDef)compileAndLoadTemplate(m_Request.m_Filename, m_Request.m_URI);
 
             if (createCFMTemplate)
-			{
-				l_page = createCFMTemplate();
+            {
+                l_page = createCFMTemplate();
                 if (l_page)
-				{
+                {
                     ((QCFServer*)m_CFServer)->m_RunnuingTemplatesByThreadId.insert(QThread::currentThreadId(), this);
 
                     m_SERVER.setType(QWDDX::Struct);
@@ -527,7 +528,7 @@ void QCFRunningTemplate::worker()
                         }
                     }
 
-					// Run compiled template(dll/so).
+                    // Run compiled template(dll/so).
                     cf_StructUpdate(m_SERVER, QStringLiteral("COLDFUSION"), QWDDX(QWDDX::Struct));
                     cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("APPSERVER"), QStringLiteral("mkfusion"));
                     cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("EXPIRATION"), QDateTime::currentDateTime());
@@ -599,7 +600,7 @@ void QCFRunningTemplate::worker()
 
                         if(osVersion.indexOf(":") > -1)
                         {
-                        osVersion = osVersion.right(osVersion.length() - osVersion.lastIndexOf(":") - 1).trimmed();
+                            osVersion = osVersion.right(osVersion.length() - osVersion.lastIndexOf(":") - 1).trimmed();
                         }
 #else
                         osVersion = QStringLiteral("unknown");
@@ -654,35 +655,35 @@ void QCFRunningTemplate::worker()
                     cf_StructUpdate(m_CGI, QStringLiteral("SERVER_PROTOCOL"), m_Request.m_Protocol);
                     cf_StructUpdate(m_CGI, QStringLiteral("SERVER_SOFTWARE"), QStringLiteral(""));
                     cf_StructUpdate(m_CGI, QStringLiteral("WEB_SERVER_API"), QStringLiteral(""));
-					/*
-					
-					  public void fillKnownVariables()
-					  {
-						this.knownVariables.add("VARIABLES");
-						this.knownVariables.add("FORM");
-						this.knownVariables.add("URL");
-						this.knownVariables.add("ATTRIBUTES");
-						this.knownVariables.add("CALLER");
-						this.knownVariables.add("REQUEST");
-						this.knownVariables.add("CGI");
-						this.knownVariables.add("COOKIE");
-						this.knownVariables.add("CLIENT");
-						this.knownVariables.add("SESSION");
-						this.knownVariables.add("APPLICATION");
-						this.knownVariables.add("SERVER");
-						this.knownVariables.add("THISTAG");
-					  }
-					*/
-					QUrl l_url = QUrl::fromEncoded(QByteArray("?") + m_Request.m_Args.toUtf8(), QUrl::StrictMode);
+                    /*
+
+                      public void fillKnownVariables()
+                      {
+                    	this.knownVariables.add("VARIABLES");
+                    	this.knownVariables.add("FORM");
+                    	this.knownVariables.add("URL");
+                    	this.knownVariables.add("ATTRIBUTES");
+                    	this.knownVariables.add("CALLER");
+                    	this.knownVariables.add("REQUEST");
+                    	this.knownVariables.add("CGI");
+                    	this.knownVariables.add("COOKIE");
+                    	this.knownVariables.add("CLIENT");
+                    	this.knownVariables.add("SESSION");
+                    	this.knownVariables.add("APPLICATION");
+                    	this.knownVariables.add("SERVER");
+                    	this.knownVariables.add("THISTAG");
+                      }
+                    */
+                    QUrl l_url = QUrl::fromEncoded(QByteArray("?") + m_Request.m_Args.toUtf8(), QUrl::StrictMode);
 
                     QList<QPair<QString, QString> > l_Arguments = QUrlQuery(l_url).queryItems();
 
                     for(const QPair<QString, QString> &l_Argument: l_Arguments)
-					{
-						QString key = l_Argument.first;
-						QString value = l_Argument.second;
-						cf_StructUpdate(m_URL, key.toUpper(), value);
-					}
+                    {
+                        QString key = l_Argument.first;
+                        QString value = l_Argument.second;
+                        cf_StructUpdate(m_URL, key.toUpper(), value);
+                    }
 
                     runApplicationTemplate();
 
@@ -690,35 +691,35 @@ void QCFRunningTemplate::worker()
                     {
                         l_page->run(this);
                     }
-				}
-				else
-				{
+                }
+                else
+                {
                     m_StatusCode = 500;
                     m_Output = "QCFTemplate == nullptr";
-				}
-			}
-			else
-			{
+                }
+            }
+            else
+            {
                 if (m_StatusCode == 200)
-				{
+                {
                     m_StatusCode = 500;
                     m_Output = "createCFMTemplate() == nullptr";
-				}
-			}
-		}
-		catch (const QMKFusionCFAbortException &ex)
-		{
-		}
-		catch (const QMKFusionTemplateException &ex)
-		{
+                }
+            }
+        }
+        catch (const QMKFusionCFAbortException &ex)
+        {
+        }
+        catch (const QMKFusionTemplateException &ex)
+        {
             m_StatusCode = 500;
-			m_Output += WriteException(ex, this->m_Request);
-		}
-		catch (const QMKFusionException &ex)
-		{
+            m_Output += WriteException(ex, this->m_Request);
+        }
+        catch (const QMKFusionException &ex)
+        {
             m_StatusCode = 500;
-			m_Output += WriteException(ex, this->m_Request);
-		}
+            m_Output += WriteException(ex, this->m_Request);
+        }
 #ifndef QT_DEBUG
         catch(...)
         {
@@ -732,28 +733,28 @@ void QCFRunningTemplate::worker()
             ((QCFServer*)m_CFServer)->m_RunnuingTemplatesByThreadId.remove(QThread::currentThreadId());
         }
 
-		delete l_page;
+        delete l_page;
         l_page = 0;
 
         createCFMTemplate = nullptr;
 
-/*		if (l_TemplateLib.isLoaded())
-		{
-#ifdef Q_OS_WIN
-            m_VARIABLES.m_Struct->clear(); // TODO: If this line is not here the app will crash. Check it when possible.
-#endif
+        /*		if (l_TemplateLib.isLoaded())
+        		{
+        #ifdef Q_OS_WIN
+                    m_VARIABLES.m_Struct->clear(); // TODO: If this line is not here the app will crash. Check it when possible.
+        #endif
 
-            l_TemplateLib.unload();
-        }*/
+                    l_TemplateLib.unload();
+                }*/
 
-		if (m_HeadersSent == false)
-		{
-			QByteArray l_header;
-			QDataStream l_headerDataStream(&l_header, QIODevice::WriteOnly);
-			l_headerDataStream.setVersion(QDataStream::Qt_4_4);
+        if (m_HeadersSent == false)
+        {
+            QByteArray l_header;
+            QDataStream l_headerDataStream(&l_header, QIODevice::WriteOnly);
+            l_headerDataStream.setVersion(QDataStream::Qt_4_4);
 
-			l_headerDataStream << (qint32) 0;
-			l_headerDataStream << m_ContentType;
+            l_headerDataStream << (qint32) 0;
+            l_headerDataStream << m_ContentType;
 
             l_headerDataStream << m_StatusCode;
 
@@ -782,52 +783,53 @@ void QCFRunningTemplate::worker()
             if (m_COOKIE.m_Type == QWDDX::Struct)
             {
                 for(const QString &key : m_COOKIE.m_Struct->keys())
-                { // TODO: Unhardcode Max-Age.
+                {
+                    // TODO: Unhardcode Max-Age.
                     m_Header.insert("Set-Cookie", QUrl::toPercentEncoding(key) + "=" + QUrl::toPercentEncoding(m_COOKIE[key].toString()) + "; Max-Age=3600; Path=/; HttpOnly");
                 }
             }
 
             l_headerDataStream << (qint32) m_Header.size();
             for(int c = 0; c < m_Header.count(); c++)
-			{
+            {
                 l_headerDataStream << m_Header.keys().at(c);
                 l_headerDataStream << m_Header.values().at(c);
-			}
+            }
 
-			l_headerDataStream.device()->seek(0);
-			l_headerDataStream << (qint32) l_header.size();
+            l_headerDataStream.device()->seek(0);
+            l_headerDataStream << (qint32) l_header.size();
 
-			if (m_Socket->write(l_header) == -1)
-			{
-				break;
-			}
+            if (m_Socket->write(l_header) == -1)
+            {
+                break;
+            }
 
-			m_Socket->waitForBytesWritten(-1);
-		}
+            m_Socket->waitForBytesWritten(-1);
+        }
 
-		QByteArray l_SendBuf = m_Output.toUtf8(); // TODO: utf-8 output hardcoded
-		int l_SendBufPos = 0;
+        QByteArray l_SendBuf = m_Output.toUtf8(); // TODO: utf-8 output hardcoded
+        int l_SendBufPos = 0;
 
-		while(l_SendBuf.size() > l_SendBufPos)
-		{
+        while(l_SendBuf.size() > l_SendBufPos)
+        {
 
-			if (m_Socket->write(l_SendBuf.mid(l_SendBufPos, 1024)) == -1)
-			{
-				break;
-			}
-			m_Socket->waitForBytesWritten(-1);
+            if (m_Socket->write(l_SendBuf.mid(l_SendBufPos, 1024)) == -1)
+            {
+                break;
+            }
+            m_Socket->waitForBytesWritten(-1);
 
-			l_SendBufPos += 1024;
-		}
+            l_SendBufPos += 1024;
+        }
 
-		break;
-	}
+        break;
+    }
 
-	m_Socket->close();
+    m_Socket->close();
 
-	QThread::currentThread()->setPriority(QThread::IdlePriority);
-	m_Socket->deleteLater();
-	deleteLater();
+    QThread::currentThread()->setPriority(QThread::IdlePriority);
+    m_Socket->deleteLater();
+    deleteLater();
 
-	emit finished();
+    emit finished();
 }

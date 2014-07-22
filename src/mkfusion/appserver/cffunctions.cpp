@@ -30,9 +30,9 @@ Q_DECL_EXPORT double cf_Abs(double number)
 Q_DECL_EXPORT double cf_ACos(double number)
 {
     if ((number < -1)||(number > 1))
-	{
+    {
         throw QMKFusionInvalidArgumentException("ACos", 1, number, -1, 1);
-	}
+    }
 
     return acos(number);
 }
@@ -75,50 +75,50 @@ Q_DECL_EXPORT void cf_AjaxOnLoad(const QString &functionName)
 Q_DECL_EXPORT bool cf_ArrayAppend(QWDDX &array, const QWDDX &value)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if (array.m_ArrayDimension > 1)
-	{
+    {
         if (value.type() != QWDDX::Array)
-		{
-			throw QMKFusionArrayGenericMultiDimException();
-		}
+        {
+            throw QMKFusionArrayGenericMultiDimException();
+        }
         if (array.m_ArrayDimension != value.m_ArrayDimension + 1)
-		{
-			throw QMKFusionArrayGenericMultiDimException();
-		}
-	}
+        {
+            throw QMKFusionArrayGenericMultiDimException();
+        }
+    }
 
     array.m_Array->append(value);
 
-	return true;
+    return true;
 }
 
 Q_DECL_EXPORT double cf_ArrayAvg(const QWDDX &array)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if (array.m_ArrayDimension != 1)
-	{
-		throw QMKFusionArrayNotOneDimensionException();
-	}
+    {
+        throw QMKFusionArrayNotOneDimensionException();
+    }
 
     if (array.m_Array->size() == 0)
-	{
-		return 0;
-	}
+    {
+        return 0;
+    }
 
-	double sum = 0;
+    double sum = 0;
 
     for (const QWDDX &item : *array.m_Array)
-	{
+    {
         sum += item.toNumber();
-	}
+    }
 
     return sum / array.m_Array->size();
 }
@@ -126,102 +126,102 @@ Q_DECL_EXPORT double cf_ArrayAvg(const QWDDX &array)
 Q_DECL_EXPORT bool cf_ArrayClear(QWDDX &array)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     array.m_Array->clear();
 
-	return true;
+    return true;
 }
 
 Q_DECL_EXPORT bool cf_ArrayDeleteAt(QWDDX &array, int position)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if ((position < 1)||(position > array.m_Array->size()))
-	{
+    {
         throw QMKFusionInvalidArrayIndexException(position, array.m_Array->size());
-	}
+    }
 
     array.m_Array->remove(position - 1);
 
-	return true;
+    return true;
 }
 
 Q_DECL_EXPORT bool cf_ArrayInsertAt(QWDDX &array, int position, const QWDDX &value)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if (array.m_ArrayDimension > 1)
-	{
+    {
         if (value.type() != QWDDX::Array)
-		{
-			throw QMKFusionArrayGenericMultiDimException();
-		}
+        {
+            throw QMKFusionArrayGenericMultiDimException();
+        }
         if (array.m_ArrayDimension != value.m_ArrayDimension + 1)
-		{
-			throw QMKFusionArrayGenericMultiDimException();
-		}
-	}
+        {
+            throw QMKFusionArrayGenericMultiDimException();
+        }
+    }
 
     if ((position < 1)||(position > array.m_Array->size()))
-	{
+    {
         throw QMKFusionInvalidArrayIndexException(position, array.m_Array->size());
-	}
+    }
 
     array.m_Array->insert(position - 1, value);
 
-	return true;
+    return true;
 }
 
 Q_DECL_EXPORT bool cf_ArrayIsDefined(const QWDDX &array, int elementIndex)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if ((elementIndex < 1)||(elementIndex > array.m_Array->size()))
-	{
+    {
         throw QMKFusionInvalidArrayIndexException(elementIndex, array.m_Array->size());
-	}
+    }
 
     if (array.m_Array->at(elementIndex - 1).type() == QWDDX::Null)
-	{
-		return false;
-	}
+    {
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 Q_DECL_EXPORT bool cf_ArrayIsEmpty(const QWDDX &array)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if (array.m_Array->size() == 0)
-	{
-		return true;
-	}
+    {
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 Q_DECL_EXPORT int cf_ArrayLen(const QWDDX &array)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     return array.m_Array->size();
 }
@@ -229,160 +229,160 @@ Q_DECL_EXPORT int cf_ArrayLen(const QWDDX &array)
 Q_DECL_EXPORT double cf_ArrayMax(const QWDDX &array)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if (array.m_ArrayDimension != 1)
-	{
-		throw QMKFusionArrayNotOneDimensionException();
-	}
+    {
+        throw QMKFusionArrayNotOneDimensionException();
+    }
 
-	double ret = 0;
+    double ret = 0;
 
     // TODO: Optimize with c11 for container iterator.
     for(int c = 0; c < array.m_Array->size(); c++)
-	{
+    {
         const QWDDX &temp = array.m_Array->at(c);
 
-		if (c == 0)
-		{
-			ret = temp.toNumber();
-		}
-		else
-		{
-			if (temp.toNumber() > ret)
-			{
-				ret = temp.toNumber();
-			}
-		}
-	}
+        if (c == 0)
+        {
+            ret = temp.toNumber();
+        }
+        else
+        {
+            if (temp.toNumber() > ret)
+            {
+                ret = temp.toNumber();
+            }
+        }
+    }
 
-	return ret;
+    return ret;
 }
 
 Q_DECL_EXPORT double cf_ArrayMin(const QWDDX &array)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if (array.m_ArrayDimension != 1)
-	{
-		throw QMKFusionArrayNotOneDimensionException();
-	}
+    {
+        throw QMKFusionArrayNotOneDimensionException();
+    }
 
-	double ret = 0;
+    double ret = 0;
 
     // TODO: Optimize with c11 for container iterator.
     for(int c = 0; c < array.m_Array->size(); c++)
-	{
+    {
         const QWDDX &temp = array.m_Array->at(c);
 
-		if (c == 0)
-		{
-			ret = temp.toNumber();
-		}
-		else
-		{
-			if (temp.toNumber() < ret)
-			{
-				ret = temp.toNumber();
-			}
-		}
-	}
+        if (c == 0)
+        {
+            ret = temp.toNumber();
+        }
+        else
+        {
+            if (temp.toNumber() < ret)
+            {
+                ret = temp.toNumber();
+            }
+        }
+    }
 
-	return ret;
+    return ret;
 }
 
 Q_DECL_EXPORT QWDDX cf_ArrayNew(int dimension)
 {
     if ((dimension < 1)||(dimension > 3))
-	{
+    {
         throw QMKFusionBadArrayDimensionException(dimension);
-	}
+    }
 
-	QWDDX ret(QWDDX::Array);
+    QWDDX ret(QWDDX::Array);
 
     ret.m_ArrayDimension = dimension;
 
-	return ret;
+    return ret;
 }
 
 Q_DECL_EXPORT bool cf_ArrayPrepend(QWDDX &array, const QWDDX &value)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if (array.m_ArrayDimension > 1)
-	{
+    {
         if (value.type() != QWDDX::Array)
-		{
-			throw QMKFusionArrayGenericMultiDimException();
-		}
+        {
+            throw QMKFusionArrayGenericMultiDimException();
+        }
         if (array.m_ArrayDimension != value.m_ArrayDimension + 1)
-		{
-			throw QMKFusionArrayGenericMultiDimException();
-		}
-	}
+        {
+            throw QMKFusionArrayGenericMultiDimException();
+        }
+    }
 
     QWDDX temp = value;
 
     array.m_Array->insert(0, temp);
 
-	return true;
+    return true;
 }
 
 Q_DECL_EXPORT bool cf_ArrayResize(QWDDX &array, int minSize)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if (array.m_Array->size() < minSize)
-	{
+    {
         array.m_Array->resize(minSize);
-	}
+    }
 
-	return true;
+    return true;
 }
 
 Q_DECL_EXPORT bool cf_ArraySet(QWDDX &array, int start, int end, const QWDDX &value)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if((start > end)||(start <= 0))
-	{
+    {
         throw QMKFusionArraySetRangeException(start, end);
-	}
+    }
 
     if (array.m_ArrayDimension > 1)
-	{
+    {
         if (value.type() != QWDDX::Array)
-		{
-			throw QMKFusionArrayGenericMultiDimException();
-		}
+        {
+            throw QMKFusionArrayGenericMultiDimException();
+        }
         if (array.m_ArrayDimension != value.m_ArrayDimension + 1)
-		{
-			throw QMKFusionArrayGenericMultiDimException();
-		}
-	}
+        {
+            throw QMKFusionArrayGenericMultiDimException();
+        }
+    }
 
     QWDDX temp = value;
 
     for(int c = start - 1; c < end; c++)
-	{
+    {
         array.m_Array->replace(c, temp);
-	}
+    }
 
-	return true;
+    return true;
 }
 
 Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QString &sort_order)
@@ -468,89 +468,89 @@ Q_DECL_EXPORT bool cf_ArraySort(QWDDX &array, const QString &sort_type, const QS
 Q_DECL_EXPORT double cf_ArraySum(const QWDDX &array)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if (array.m_ArrayDimension != 1)
-	{
-		throw QMKFusionArrayNotOneDimensionException();
-	}
+    {
+        throw QMKFusionArrayNotOneDimensionException();
+    }
 
     if (array.m_Array->size() == 0)
-	{
-		return 0;
-	}
+    {
+        return 0;
+    }
 
-	double sum = 0;
+    double sum = 0;
 
     for (int c = 0; c < array.m_Array->size(); c++)
-	{
+    {
         sum += array.m_Array->at(c).toNumber();
-	}
+    }
 
-	return sum;
+    return sum;
 }
 
 Q_DECL_EXPORT bool cf_ArraySwap(QWDDX &array, int position1, int position2)
 {
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     position1--;
     position2--;
 
     if((position1 < 0)||(position1 >= array.m_Array->size()))
-	{
+    {
         throw QMKFusionArraySwapRangeException(position1 + 1, array.m_Array->size());
-	}
+    }
     if((position2 < 0)||(position2 >= array.m_Array->size()))
-	{
+    {
         throw QMKFusionArraySwapRangeException(position2 + 1, array.m_Array->size());
-	}
+    }
 
     QWDDX temp = array.m_Array->at(position1);
     array.m_Array[position1] = array.m_Array[position2];
     array.m_Array->replace(position2, temp);
 
-	return true;
+    return true;
 }
 
 Q_DECL_EXPORT QString cf_ArrayToList(const QWDDX &array, const QString &delimiter)
 {
-	QString ret;
+    QString ret;
 
     if (array.type() != QWDDX::Array)
-	{
-		throw QMKFusionException("Not Array", "Not Array");
-	}
+    {
+        throw QMKFusionException("Not Array", "Not Array");
+    }
 
     if (array.m_ArrayDimension != 1)
-	{
-		throw QMKFusionArrayNotOneDimensionException();
-	}
+    {
+        throw QMKFusionArrayNotOneDimensionException();
+    }
 
     for(int c = 0; c < array.m_Array->size(); c++)
-	{
-		if (c > 0)
-		{
+    {
+        if (c > 0)
+        {
             ret.append(delimiter);
-		}
+        }
 
         ret.append(array.m_Array->at(c).toString());
-	}
+    }
 
-	return ret;
+    return ret;
 }
 
 Q_DECL_EXPORT int cf_Asc(const QString &string)
 {
     if (string.isEmpty())
-	{
-		return 0;
-	}
+    {
+        return 0;
+    }
 
     return string[0].unicode();
 }
@@ -589,14 +589,14 @@ Q_DECL_EXPORT int cf_BitAnd(int number1, int number2)
 Q_DECL_EXPORT int cf_BitMaskClear(int number, int start, int length)
 {
     if((start < 0)||(start > 31))
-	{
+    {
         throw QMKFusionInvalidArgumentException("BitMaskClear", 2, start, 0, 31);
-	}
+    }
 
     if((length < 0)||(length > 31))
-	{
+    {
         throw QMKFusionInvalidArgumentException("BitMaskClear", 3, length, 0, 31);
-	}
+    }
 
     return number & ~(((1 << length) - 1) << start);
 }
@@ -605,14 +605,14 @@ Q_DECL_EXPORT int cf_BitMaskRead(int number, int start, int length)
 {
 
     if((start < 0)||(start > 31))
-	{
+    {
         throw QMKFusionInvalidArgumentException("BitMaskRead", 2, start, 0, 31);
-	}
+    }
 
     if((length < 0)||(length > 31))
-	{
+    {
         throw QMKFusionInvalidArgumentException("BitMaskRead", 3, length, 0, 31);
-	}
+    }
 
     return (number >> start) & ((1 << length) - 1);
 }
@@ -620,14 +620,14 @@ Q_DECL_EXPORT int cf_BitMaskRead(int number, int start, int length)
 Q_DECL_EXPORT int cf_BitMaskSet(int number, int mask, int start, int length)
 {
     if((start < 0)||(start > 31))
-	{
+    {
         throw QMKFusionInvalidArgumentException("BitMaskSet", 2, start, 0, 31);
-	}
+    }
 
     if((length < 0)||(length > 31))
-	{
+    {
         throw QMKFusionInvalidArgumentException("BitMaskSet", 3, length, 0, 31);
-	}
+    }
 
     mask &= (1 << length) - 1;
     return number & ~((((1 << length) - 1) << start) | mask) << start;
@@ -646,9 +646,9 @@ Q_DECL_EXPORT int cf_BitOr(int number1, int number2)
 Q_DECL_EXPORT int cf_BitSHLN(int number, int count)
 {
     if ((count < 0)||(count > 31))
-	{
+    {
         throw QMKFusionInvalidArgumentException("BitSHLN", 2, count, 0, 31);
-	}
+    }
 
     return number << count;
 }
@@ -656,9 +656,9 @@ Q_DECL_EXPORT int cf_BitSHLN(int number, int count)
 Q_DECL_EXPORT int cf_BitSHRN(int number, int count)
 {
     if ((count < 0)||(count > 31))
-	{
+    {
         throw QMKFusionInvalidArgumentException("BitSHRN", 2, count, 0, 31);
-	}
+    }
 
     return number >> count;
 }
@@ -670,7 +670,7 @@ Q_DECL_EXPORT int cf_BitXor(int number1, int number2)
 
 Q_DECL_EXPORT double cf_Ceiling(double number)
 {
-	return ceil(number);
+    return ceil(number);
 }
 
 Q_DECL_EXPORT QString cf_CharsetDecode(const QString &string, const QString &encoding)
@@ -691,33 +691,33 @@ Q_DECL_EXPORT QString cf_CharsetEncode(const QString &binaryobject, const QStrin
 
 Q_DECL_EXPORT QString cf_Chr(int number)
 {
-	return QString(QChar(number));
+    return QString(QChar(number));
 }
 
 Q_DECL_EXPORT QString cf_CJustify(const QString &string, int length)
 {
-	QString ret;
+    QString ret;
 
     if (length < 0)
-	{
+    {
         throw QMKFusionInvalidArgumentException("CJustify", 2, length, "positive integer");
-	}
+    }
 
     if (length <= string.length())
-	{
+    {
         return string;
-	}
+    }
 
     ret = string;
 
     int start = (length - string.length()) / 2;
 
-	for(int c = 0; c < start; c++)
-	{
-		ret = ' ' + ret;
-	}
+    for(int c = 0; c < start; c++)
+    {
+        ret = ' ' + ret;
+    }
 
-	return ret;
+    return ret;
 }
 
 Q_DECL_EXPORT int cf_Compare(const QString &string1, const QString &string2)
@@ -732,20 +732,20 @@ Q_DECL_EXPORT int cf_CompareNoCase(const QString &string1, const QString &string
 
 Q_DECL_EXPORT double cf_Cos(double number)
 {
-	return cos(number);
+    return cos(number);
 }
 
 Q_DECL_EXPORT QWDDX cf_CreateDate(int year, int month, int day)
 {
     if ((month < 1)||(month > 12))
-	{
+    {
         throw QMKFusionInvalidArgumentException("CreateDate", 2, month, 1, 12);
-	}
+    }
 
     if ((day < 1)||(day > 31))
-	{
+    {
         throw QMKFusionInvalidArgumentException("CreateDate", 3, day, 1, 31);
-	}
+    }
 
     return QDateTime(QDate(year, month, day));
 }
@@ -780,31 +780,31 @@ Q_DECL_EXPORT QWDDX cf_CreateODBCTime(const QDateTime &date)
 Q_DECL_EXPORT QWDDX cf_CreateTime(int hour, int minute, int second)
 {
     if ((hour < 0)||(hour > 23))
-	{
+    {
         throw QMKFusionInvalidArgumentException("CreateTime", 1, hour, 0, 23);
-	}
+    }
 
     if ((minute < 0)||(minute > 59))
-	{
+    {
         throw QMKFusionInvalidArgumentException("CreateTime", 2, minute, 0, 59);
-	}
+    }
 
     if ((second < 0)||(second > 59))
-	{
+    {
         throw QMKFusionInvalidArgumentException("CreateTime", 3, second, 0, 59);
-	}
+    }
 
     return QDateTime(QDate(1899, 12, 30), QTime(hour, minute, second));
 }
 
 Q_DECL_EXPORT QWDDX cf_CreateTimeSpan(int days, int hours, int minutes, int seconds)
 {
-	QDateTime ret = QDateTime(QDate(1899, 12, 30));
+    QDateTime ret = QDateTime(QDate(1899, 12, 30));
 
     ret.addDays(days);
     ret.addSecs((hours * 60 * 60) + (minutes * 60) + seconds);
 
-	return ret;
+    return ret;
 }
 
 Q_DECL_EXPORT QString cf_CreateUUID()
@@ -817,58 +817,58 @@ Q_DECL_EXPORT QDateTime cf_DateAdd(const QString &datepart, int number, QDateTim
     throw QMKFusionException("Not Implemented", "DateAdd is not Implemented (yet:))");
 
     QWDDX temp = date;
-	QDateTime ret = temp.toDateTime();
+    QDateTime ret = temp.toDateTime();
 
     if(datepart.compare("yyyy", Qt::CaseInsensitive) == 0)
-	{
+    {
         ret.addYears(number);
-	}
+    }
     else if(datepart.compare("q", Qt::CaseInsensitive) == 0)
-	{
+    {
 
-	}
+    }
     else if(datepart.compare("m", Qt::CaseInsensitive) == 0)
-	{
+    {
 
-	}
+    }
     else if(datepart.compare("y", Qt::CaseInsensitive) == 0)
-	{
+    {
 
-	}
+    }
     else if(datepart.compare("d", Qt::CaseInsensitive) == 0)
-	{
+    {
 
-	}
+    }
     else if(datepart.compare("w", Qt::CaseInsensitive) == 0)
-	{
+    {
 
-	}
+    }
     else if(datepart.compare("ww", Qt::CaseInsensitive) == 0)
-	{
+    {
 
-	}
+    }
     else if(datepart.compare("h", Qt::CaseInsensitive) == 0)
-	{
+    {
 
-	}
+    }
     else if(datepart.compare("n", Qt::CaseInsensitive) == 0)
-	{
+    {
 
-	}
+    }
     else if(datepart.compare("s", Qt::CaseInsensitive) == 0)
-	{
+    {
 
-	}
+    }
     else if(datepart.compare("l", Qt::CaseInsensitive) == 0)
-	{
+    {
 
-	}
-	else
-	{
+    }
+    else
+    {
 
-	}
+    }
 
-	return ret;
+    return ret;
 }
 
 Q_DECL_EXPORT int cf_DateCompare(const QDateTime &date1, const QDateTime &date2, const QString &datePart)
@@ -1566,14 +1566,14 @@ Q_DECL_EXPORT int cf_FirstDayOfMonth(const QDateTime &date)
 
 Q_DECL_EXPORT int cf_Fix(double value)
 {
-	if (value >= 0)
-	{
-		return floor(value);
-	}
-	else
-	{
-		return ceil(value);
-	}
+    if (value >= 0)
+    {
+        return floor(value);
+    }
+    else
+    {
+        return ceil(value);
+    }
 }
 
 Q_DECL_EXPORT QString cf_FormatBaseN(int number, int radix)

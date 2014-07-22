@@ -10,10 +10,10 @@
 #include <QDir>
 
 CFTest1::CFTest1(QWidget *parent, Qt::WindowFlags flags)
-	: QDialog(parent, flags)
+    : QDialog(parent, flags)
 {
-	ui.setupUi(this);
-	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+    ui.setupUi(this);
+    setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 }
 
 CFTest1::~CFTest1()
@@ -36,71 +36,71 @@ void CFTest1::findFunctionsRecursive(const QCFParserElement &parserElement)
 
 void CFTest1::parseDir(const QString &p_dir)
 {
-	QDir dir(p_dir);
+    QDir dir(p_dir);
 
-	dir.setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
-	dir.setSorting(QDir::DirsFirst | QDir::Name);
-	QStringList filters;
-	filters << "*.cfm" << "*.cfc";
+    dir.setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
+    dir.setSorting(QDir::DirsFirst | QDir::Name);
+    QStringList filters;
+    filters << "*.cfm" << "*.cfc";
     dir.setNameFilters(filters);
-	QFileInfoList files = dir.entryInfoList();
+    QFileInfoList files = dir.entryInfoList();
 
-	for (int c = 0; c < files.size(); c++)
-	{
-		QFileInfo item = files.at(c);
-		if (item.isDir() == true)
-		{
-			parseDir(item.absoluteFilePath());
-		}
-		else
-		{
-			QString itemFileName = QDir::toNativeSeparators(item.filePath());
-			QListWidgetItem* lastItem = new QListWidgetItem(itemFileName);
+    for (int c = 0; c < files.size(); c++)
+    {
+        QFileInfo item = files.at(c);
+        if (item.isDir() == true)
+        {
+            parseDir(item.absoluteFilePath());
+        }
+        else
+        {
+            QString itemFileName = QDir::toNativeSeparators(item.filePath());
+            QListWidgetItem* lastItem = new QListWidgetItem(itemFileName);
 
-			QFile file(itemFileName);
-			file.open(QIODevice::ReadOnly);
-			QString fileContent = file.readAll();
-			file.close();
+            QFile file(itemFileName);
+            file.open(QIODevice::ReadOnly);
+            QString fileContent = file.readAll();
+            file.close();
 
-			QList<QCFParserTag> l_tags;
-			QCFParser parser;
+            QList<QCFParserTag> l_tags;
+            QCFParser parser;
 
-			this->setWindowTitle("CFTest1 - " + item.fileName());qApp->processEvents();
+            this->setWindowTitle("CFTest1 - " + item.fileName()); qApp->processEvents();
 
-			if (parser.Parse(fileContent) != NoError)
-			{
-				this->setWindowTitle("CFTest1");qApp->processEvents();
+            if (parser.Parse(fileContent) != NoError)
+            {
+                this->setWindowTitle("CFTest1"); qApp->processEvents();
 
-				lastItem->setText(lastItem->text() + " error: " + parser.getError() + ", at position: " + QString::number(parser.getErrorPosition()));
-				lastItem->setBackgroundColor(QColor(255, 0, 0));
-			}
-			else
-			{
-				this->setWindowTitle("CFTest1");qApp->processEvents();
+                lastItem->setText(lastItem->text() + " error: " + parser.getError() + ", at position: " + QString::number(parser.getErrorPosition()));
+                lastItem->setBackgroundColor(QColor(255, 0, 0));
+            }
+            else
+            {
+                this->setWindowTitle("CFTest1"); qApp->processEvents();
 
-				if (parser.BuildTagTree() != NoError)
-				{
-				lastItem->setText(lastItem->text() + " error: " + parser.getError() + ", at position: " + QString::number(parser.getErrorPosition()));
-				lastItem->setBackgroundColor(QColor(0, 255, 255));
-				}
-				else
-				{
-					l_tags = parser.getTags();
+                if (parser.BuildTagTree() != NoError)
+                {
+                    lastItem->setText(lastItem->text() + " error: " + parser.getError() + ", at position: " + QString::number(parser.getErrorPosition()));
+                    lastItem->setBackgroundColor(QColor(0, 255, 255));
+                }
+                else
+                {
+                    l_tags = parser.getTags();
                     for(const QCFParserTag &l_tag : l_tags)
-					{
+                    {
                         if (l_tag.m_TagType == CFTagType)
-						{
+                        {
                             m_tagsHash[l_tag.m_Name.toLower()]++;
 
                             findFunctionsRecursive(l_tag.m_Arguments);
                         }
-					}
-				}
-			}
+                    }
+                }
+            }
 
-			ui.listWidget->addItem(lastItem);
-		}
-	}
+            ui.listWidget->addItem(lastItem);
+        }
+    }
 }
 
 void CFTest1::on_pushButton_clicked()
@@ -153,24 +153,24 @@ void CFTest1::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
     }
 
 #ifdef Q_OS_WIN
-	if ((file.count() > 3)&&(file.at(1) == ':')&&(file.at(2) == QDir::separator()))
-	{
-		QDetail detailForm(this);
+    if ((file.count() > 3)&&(file.at(1) == ':')&&(file.at(2) == QDir::separator()))
+    {
+        QDetail detailForm(this);
 
-		detailForm.setFileForParsing(file);
-		detailForm.setModal(true);
+        detailForm.setFileForParsing(file);
+        detailForm.setModal(true);
 
-		detailForm.exec();
-	}
+        detailForm.exec();
+    }
 #else
-	if (file.at(0) == QDir::separator())
-	{
-		QDetail detailForm(this);
+    if (file.at(0) == QDir::separator())
+    {
+        QDetail detailForm(this);
 
-		detailForm.setFileForParsing(file);
-		detailForm.setModal(true);
+        detailForm.setFileForParsing(file);
+        detailForm.setModal(true);
 
-		detailForm.exec();
-	}
+        detailForm.exec();
+    }
 #endif
 }

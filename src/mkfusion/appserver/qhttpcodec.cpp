@@ -113,7 +113,8 @@ QHttpCodec QHttpCodec::decodeFromByteArray(const QByteArray &source)
 
                     sep1 = line.indexOf(';');
 
-                } while(!line.isEmpty());
+                }
+                while(!line.isEmpty());
 
                 codecKey.values.push_front(codecValue);
                 ret.m_HeaderKeys.insert(key, codecKey);

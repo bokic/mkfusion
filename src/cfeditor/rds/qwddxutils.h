@@ -11,13 +11,13 @@
 class QWDDXUtils
 {
 public:
-	QWDDXUtils();
-	QString serialize(QWDDX);
-	QWDDX deserialize(QString);
-	QString getLastError();
+    QWDDXUtils();
+    QString serialize(QWDDX);
+    QWDDX deserialize(QString);
+    QString getLastError();
 protected:
 private:
-	QString m_Error;
+    QString m_Error;
 };
 
 #endif // QWDDXUTILS_H

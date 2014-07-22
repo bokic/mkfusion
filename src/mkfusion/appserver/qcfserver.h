@@ -13,19 +13,20 @@
 #include <QList>
 #include <QHash>
 
-struct QCFCompiledTemplateItem {
-	QString m_CompiledFileName;
-	QIsTemplateModified m_ModifiedInfo;
+struct QCFCompiledTemplateItem
+{
+    QString m_CompiledFileName;
+    QIsTemplateModified m_ModifiedInfo;
 };
 
 class QCFServer : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	QCFServer();
-	virtual ~QCFServer();
-	void start();
-	void stop();
+    QCFServer();
+    virtual ~QCFServer();
+    void start();
+    void stop();
     void readConfig();
     QSqlDatabase *getDBConnection(const QString &datasource);
     QString compileTemplate(const QString&, const QString&);
@@ -36,8 +37,8 @@ protected:
     virtual void timerEvent(QTimerEvent*);
 
 private slots:
-	void on_newConnection();
-	void on_workerTerminated();
+    void on_newConnection();
+    void on_workerTerminated();
 
 public:
     QHash<QString, QCFCompiledTemplateItem> m_CompiledTemplates;

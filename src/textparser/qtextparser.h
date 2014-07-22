@@ -51,7 +51,8 @@ public:
 
     typedef QList<QTextParserElement> QTextParserElements;
 
-    struct QTextParserLine {
+    struct QTextParserLine
+    {
         QString Content;
         QTextParserEndLineType EndLine;
         QTextParserLine() : EndLine(EndLineTypeNoEndLine) {}

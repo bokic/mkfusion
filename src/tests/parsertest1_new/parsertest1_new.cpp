@@ -9,10 +9,10 @@
 #include <QDir>
 
 CFTest1::CFTest1(QWidget *parent, Qt::WindowFlags flags)
-	: QDialog(parent, flags)
+    : QDialog(parent, flags)
 {
-	ui.setupUi(this);
-	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+    ui.setupUi(this);
+    setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 
     QTextParser::loadParserDefinitionsFromDir(".");
 }
@@ -24,25 +24,25 @@ CFTest1::~CFTest1()
 
 void CFTest1::parseDir(QString p_dir)
 {
-	QDir dir(p_dir);
+    QDir dir(p_dir);
 
-	dir.setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
-	dir.setSorting(QDir::DirsFirst | QDir::Name);
-	QStringList filters;
-	filters << "*.cfm" << "*.cfc";
+    dir.setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot);
+    dir.setSorting(QDir::DirsFirst | QDir::Name);
+    QStringList filters;
+    filters << "*.cfm" << "*.cfc";
     dir.setNameFilters(filters);
-	QFileInfoList files = dir.entryInfoList();
+    QFileInfoList files = dir.entryInfoList();
 
-	for (int c = 0; c < files.size(); c++)
-	{
+    for (int c = 0; c < files.size(); c++)
+    {
         QFileInfo file = files.at(c);
 
         if (file.isDir() == true)
-		{
+        {
             parseDir(file.absoluteFilePath());
-		}
-		else
-		{
+        }
+        else
+        {
             QString itemFileName = QDir::toNativeSeparators(file.filePath());
             QListWidgetItem *lastItem = new QListWidgetItem(itemFileName);
 
@@ -50,8 +50,8 @@ void CFTest1::parseDir(QString p_dir)
             qApp->processEvents();
 
             ui.listWidget->addItem(lastItem);
-		}
-	}
+        }
+    }
 }
 
 void CFTest1::on_pushButton_clicked()

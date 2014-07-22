@@ -3,10 +3,10 @@
 
 int main()
 {
-	QTextParser parser;
+    QTextParser parser;
 
     parser.setTextTypeByFileExtension("cfm");
     QTextParser::QTextParserElements elements = parser.parseFile("site/pi.cfm");
 
-	return 0;
+    return 0;
 }

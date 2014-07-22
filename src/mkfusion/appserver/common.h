@@ -35,23 +35,23 @@ struct QCFFileUpload
 
 struct QCFRunningTemplate_Request
 {
-	QString m_AuthType;
-	QString m_User;
-	QString m_Filename;
-	QString m_Accept;
-	QString m_AcceptEncoding;
-	QString m_AcceptLanguage;
-	QString m_Connection;
+    QString m_AuthType;
+    QString m_User;
+    QString m_Filename;
+    QString m_Accept;
+    QString m_AcceptEncoding;
+    QString m_AcceptLanguage;
+    QString m_Connection;
     QString m_ContentType;
-	QString m_RemoteHost;
-	QString m_Referer;
-	QString m_UserAgent;
+    QString m_RemoteHost;
+    QString m_Referer;
+    QString m_UserAgent;
     QString m_Cookie;
-	QString m_Args;
-	QString m_Method;
-	QString m_Protocol;
-	QString m_Host;
-	QString m_URI;
+    QString m_Args;
+    QString m_Method;
+    QString m_Protocol;
+    QString m_Host;
+    QString m_URI;
 };
 
 #ifdef Q_OS_WIN

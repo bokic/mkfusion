@@ -2,7 +2,7 @@
 
 void QAdvancedTreeWidget::keyPressEvent(QKeyEvent *e)
 {
-	QTreeWidget::keyPressEvent(e);
+    QTreeWidget::keyPressEvent(e);
 
-	emit keyPress(this, e);
+    emit keyPress(this, e);
 }

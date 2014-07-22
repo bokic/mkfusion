@@ -27,18 +27,18 @@ class QCFGeneratedTemplateOpt : public QCFTemplate
 {
 public:
     QCFGeneratedTemplateOpt()
-	{
-		m_isModified.m_Filename = QString::fromWCharArray(L"/var/www/pi.cfm");
-		m_isModified.m_Size = 2081;
-		m_isModified.m_Modified = 1374408058;
-	}
-	
+    {
+        m_isModified.m_Filename = QString::fromWCharArray(L"/var/www/pi.cfm");
+        m_isModified.m_Size = 2081;
+        m_isModified.m_Modified = 1374408058;
+    }
+
     virtual ~QCFGeneratedTemplateOpt()
-	{
-	}
-	
+    {
+    }
+
     virtual void run(QCFRunningTemplate *p_TemplateInstance)
-	{
+    {
         QWDDX *c_VARIABLES_FINAL = 0;
         QWDDX *c_VARIABLES_TMP = 0;
         QWDDX *c_VARIABLES_PRECISION = 0;
@@ -53,7 +53,7 @@ public:
         QWDDX *c_VARIABLES_TMP_VAL = 0;
         QWDDX *c_VARIABLES_PI = 0;
 
-		QCFTemplate::run(p_TemplateInstance);
+        QCFTemplate::run(p_TemplateInstance);
 
         //m_TemplateInstance->m_VARIABLES["FINAL"] = cf_ArrayNew(QWDDX(1));
         QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_FINAL, "FINAL");
@@ -80,7 +80,7 @@ public:
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TMP, "TMP");
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
             (*c_VARIABLES_TMP)[*c_VARIABLES_I] = 0;
-		}
+        }
 
         //m_TemplateInstance->m_VARIABLES["KEEPLOOPING"] = QWDDX(true);
         QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_KEEPLOOPING, "KEEPLOOPING");
@@ -181,7 +181,9 @@ public:
                             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TRANSFER, "TRANSFER");
                             (*c_VARIABLES_TRANSFER) = 1;
 
-                        } else {
+                        }
+                        else
+                        {
                             //m_TemplateInstance->m_VARIABLES["FINAL"][m_TemplateInstance->m_VARIABLES["I"]] = m_TemplateInstance->m_VARIABLES["TMP_VAL"];
                             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_FINAL, "FINAL");
                             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
@@ -194,7 +196,9 @@ public:
                         }
                     }
 
-                } else {
+                }
+                else
+                {
 
                     //m_TemplateInstance->m_VARIABLES["TRANSFER"] = QWDDX(0);
                     QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TRANSFER, "TRANSFER");
@@ -228,7 +232,9 @@ public:
                             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TRANSFER, "TRANSFER");
                             (*c_VARIABLES_TRANSFER) = 1;
 
-                        } else {
+                        }
+                        else
+                        {
                             //m_TemplateInstance->m_VARIABLES["FINAL"][m_TemplateInstance->m_VARIABLES["I"]] = m_TemplateInstance->m_VARIABLES["TMP_VAL"];
                             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_FINAL, "FINAL");
                             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
@@ -282,7 +288,7 @@ public:
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_I, "I");
             QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_TMP_VAL, "TMP_VAL");
             (*c_VARIABLES_FINAL)[(*c_VARIABLES_I)] = (*c_VARIABLES_TMP_VAL) % 10;
-		}
+        }
 
         //m_TemplateInstance->m_VARIABLES["PI"] = QString("");
         QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_PI, "PI");
@@ -307,14 +313,14 @@ public:
                 QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_PI, "PI");
                 (*c_VARIABLES_PI) = (*c_VARIABLES_PI) & QString(".");
             }
-		}
+        }
 
-		p_TemplateInstance->m_CFOutput++;
+        p_TemplateInstance->m_CFOutput++;
 
         //f_WriteOutput(m_TemplateInstance->m_VARIABLES["PI"]);
         QCHECK_QWDDX_VAR_CACHE(c_VARIABLES_PI, "PI");
         f_WriteOutput((*c_VARIABLES_PI));
 
-		p_TemplateInstance->m_CFOutput--;
-	}
+        p_TemplateInstance->m_CFOutput--;
+    }
 };

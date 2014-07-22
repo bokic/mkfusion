@@ -8,14 +8,16 @@
 
 #include <functional>
 
-struct QIsTemplateModified {
-	QString m_Filename;
-	qint64 m_Size;
-	uint m_Modified;
-	QIsTemplateModified() {
-		m_Size = 0;
-		m_Modified = 0;
-	}
+struct QIsTemplateModified
+{
+    QString m_Filename;
+    qint64 m_Size;
+    uint m_Modified;
+    QIsTemplateModified()
+    {
+        m_Size = 0;
+        m_Modified = 0;
+    }
 };
 
 class Q_DECL_EXPORT QCFTemplate : public QObject
@@ -24,7 +26,7 @@ public:
     enum QCustomTagType {QCustomTagTypeModuleName, QCustomTagTypeModuleTemplate, QCustomTagType_, QCustomTagTypeImport};
 
     QCFTemplate();
-	virtual ~QCFTemplate();
+    virtual ~QCFTemplate();
     virtual void run(QCFRunningTemplate *p_TemplateInstance);
 
     void f_WriteOutput(const QString &p_Text);
@@ -46,9 +48,9 @@ public:
     bool endCustomTag(const QString &path, const QString &name, QCustomTagType type);
     void f_cfAssociate(const QString &baseTagName, const QString &keyName);
 
-	QCFRunningTemplate *m_TemplateInstance;
+    QCFRunningTemplate *m_TemplateInstance;
     QList<QWDDX> m_CustomTags;
-	QIsTemplateModified m_isModified;
+    QIsTemplateModified m_isModified;
     QHash<QString, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)>> m_TemplateCustomFunctions;
 };
 

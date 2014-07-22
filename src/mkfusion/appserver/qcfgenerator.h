@@ -10,7 +10,7 @@
 class QCFGenerator
 {
 public:
-	QCFGenerator();
+    QCFGenerator();
     static QString toCPPEncodeStr(const QString &str);
     QString compile(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath);
     QString GenerateVariable(const QString &p_Variable, const QString &p_Funct_params = "", const QString &p_Funct_local_vars = "");
@@ -24,10 +24,10 @@ public:
     QString CFTagGetArgumentAsBool(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag);
 private:
-	QHash<QString, QCFTag> m_CFTagsDef;
-	QHash<QString, QCFFunction> m_CFFunctionsDef;
+    QHash<QString, QCFTag> m_CFTagsDef;
+    QHash<QString, QCFFunction> m_CFFunctionsDef;
     QHash<QString, QString> m_CustomTagsPrefixes;
-	bool m_EnableCFOutputOnly;
+    bool m_EnableCFOutputOnly;
     QString m_Tabs;
     QList<const QCFParserTag *> m_SwitchTags;
     QList<const QCFParserTag *> m_NestedTags;

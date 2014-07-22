@@ -9,22 +9,23 @@
 class Q_DECL_EXPORT QWDDX
 {
 public:
-	enum QWDDXType {
-		Null,
-		Boolean,
-		Number,
-		String,
-		DateTime,
-		Array,
-		Struct,
-		Binary,
+    enum QWDDXType
+    {
+        Null,
+        Boolean,
+        Number,
+        String,
+        DateTime,
+        Array,
+        Struct,
+        Binary,
         Query,
-		NotImplemented,
-		Error
-	};
+        NotImplemented,
+        Error
+    };
 
 public:
-	QWDDX();
+    QWDDX();
     virtual ~QWDDX();
 
     QWDDX(bool);
@@ -41,11 +42,11 @@ public:
     QWDDX &operator=(QWDDX &&other);
 #endif
 
-	operator bool();
-	operator int();
-	operator double();
-	operator QString();
-	operator QDateTime();
+    operator bool();
+    operator int();
+    operator double();
+    operator QString();
+    operator QDateTime();
 
     QWDDX operator+(bool);
     QWDDX operator+(int);
@@ -156,27 +157,27 @@ public:
     friend QWDDX operator!(const QWDDX &);
 
     bool operator!=(int);
-	bool operator!=(double);
+    bool operator!=(double);
     bool operator!=(const QString &);
     bool operator!=(const QWDDX &);
 
-	bool operator<=(int);
-	bool operator<=(double);
+    bool operator<=(int);
+    bool operator<=(double);
     bool operator<=(const QString &);
     bool operator<=(const QWDDX &);
 
-	bool operator>=(int);
-	bool operator>=(double);
+    bool operator>=(int);
+    bool operator>=(double);
     bool operator>=(const QString &);
     bool operator>=(const QWDDX &);
 
-	bool operator<(int);
-	bool operator<(double);
+    bool operator<(int);
+    bool operator<(double);
     bool operator<(const QString &);
     bool operator<(const QWDDX &);
 
-	bool operator>(int);
-	bool operator>(double);
+    bool operator>(int);
+    bool operator>(double);
     bool operator>(const QString &);
     bool operator>(const QWDDX &);
 
@@ -192,8 +193,8 @@ public:
     QWDDX join(const QWDDX &);
     void setType(QWDDXType);
     QWDDXType type() const;
-	int size();
-	QString StructKeyAt(const int);
+    int size();
+    QString StructKeyAt(const int);
     QString toString() const;
     QByteArray toBinary() const;
     double toNumber() const;
@@ -204,15 +205,15 @@ public:
     bool toBool() const;
 
 
-	// Member Variables
+    // Member Variables
     QVector<QWDDX> *m_Array;
     QMap<QString, QWDDX> *m_Struct;
     QString *m_String;
     QByteArray *m_ByteArray;
-	double m_Number;
-	bool m_Bool;
+    double m_Number;
+    bool m_Bool;
     QDateTime *m_DateTime;
-	QWDDXType m_Type;
+    QWDDXType m_Type;
     quint32 m_ArrayDimension;
     QWDDX *m_HiddenScopeFirst;
     QWDDX *m_HiddenScopeLast1;

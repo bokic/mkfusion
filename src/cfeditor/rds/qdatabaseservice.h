@@ -11,7 +11,8 @@
 class QDatabaseService : public QAbstractRDSService
 {
 public:
-    enum Command {
+    enum Command
+    {
         GetDataSource,
         GetTablesForDS,
         GetColumnsForTable,
@@ -19,20 +20,20 @@ public:
         ExecuteSQLStatement,
         GetSQLMetadata,
         GetSQLSupportedCommands
-	};
+    };
 
-	QDatabaseService();
-	virtual ~QDatabaseService();
-	virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
+    QDatabaseService();
+    virtual ~QDatabaseService();
+    virtual QByteArray ExecuteRDSCommand(QRDSServer, quint8, QMap<QString, QString>);
 protected:
 private:
-	QByteArray GetDSNs(QRDSServer);
-	QByteArray GetTables(QRDSServer, QMap<QString, QString>);
-	QByteArray GetColumns(QRDSServer, QMap<QString, QString>);
-	QByteArray GetPrimaryKeys(QRDSServer, QMap<QString, QString>);
-	QByteArray ExecuteStatement(QRDSServer, QMap<QString, QString>);
-	QByteArray GetMetaData(QRDSServer, QMap<QString, QString>);
-	QByteArray GetSupportedCommands(QRDSServer);
+    QByteArray GetDSNs(QRDSServer);
+    QByteArray GetTables(QRDSServer, QMap<QString, QString>);
+    QByteArray GetColumns(QRDSServer, QMap<QString, QString>);
+    QByteArray GetPrimaryKeys(QRDSServer, QMap<QString, QString>);
+    QByteArray ExecuteStatement(QRDSServer, QMap<QString, QString>);
+    QByteArray GetMetaData(QRDSServer, QMap<QString, QString>);
+    QByteArray GetSupportedCommands(QRDSServer);
 };
 
 #endif // QDATABASESERVICE_H

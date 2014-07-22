@@ -8,8 +8,9 @@
 #include <QColor>
 #include <QList>
 
-namespace Ui {
-    class QDetail;
+namespace Ui
+{
+class QDetail;
 }
 
 class QDetail : public QDialog

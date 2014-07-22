@@ -10,17 +10,17 @@
 class QRDSProject: public QProject
 {
 public:
-	explicit QRDSProject(const QHash<QString, QString> &);
-	virtual ~QRDSProject();
-	virtual char getDirSeparator();
-	virtual QByteArray ReadFile(const QString &);
-	virtual void WriteFile(const QString &, const QByteArray &);
-	virtual void DeleteFile(const QString &);
-	virtual void RenameFile(const QString &, const QString &);
-	virtual QList<QProjectFile> getFolderItems(const QString &);
-	virtual void CreateDir(const QString &);
-	virtual void DeleteDir(const QString &, bool);
-	virtual void RenameDir(const QString &, const QString &);
+    explicit QRDSProject(const QHash<QString, QString> &);
+    virtual ~QRDSProject();
+    virtual char getDirSeparator();
+    virtual QByteArray ReadFile(const QString &);
+    virtual void WriteFile(const QString &, const QByteArray &);
+    virtual void DeleteFile(const QString &);
+    virtual void RenameFile(const QString &, const QString &);
+    virtual QList<QProjectFile> getFolderItems(const QString &);
+    virtual void CreateDir(const QString &);
+    virtual void DeleteDir(const QString &, bool);
+    virtual void RenameDir(const QString &, const QString &);
     const QString &getHostName();
     quint16 getPort();
     const QString &getUsername();
@@ -31,8 +31,8 @@ protected:
     QString m_Username;
     QString m_Password;
 private:
-	QRDSServer m_Server;
-	char m_DirSeparator;
+    QRDSServer m_Server;
+    char m_DirSeparator;
 };
 
 #endif // QRDSPROJECT_H

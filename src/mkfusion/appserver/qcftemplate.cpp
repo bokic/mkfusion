@@ -25,13 +25,13 @@ QCFTemplate::~QCFTemplate()
 
 void QCFTemplate::run(QCFRunningTemplate *p_TemplateInstance)
 {
-	m_TemplateInstance = p_TemplateInstance;
+    m_TemplateInstance = p_TemplateInstance;
 }
 
 void QCFTemplate::f_WriteOutput(const QString &p_Text)
 {
     if (m_TemplateInstance)
-	{
+    {
         switch(m_TemplateInstance->m_OutputType)
         {
         case QCFRunningTemplate::OutputTypeContent:
@@ -43,15 +43,15 @@ void QCFTemplate::f_WriteOutput(const QString &p_Text)
         default:
             break;
         }
-	}
+    }
 }
 
 void QCFTemplate::f_WriteOutput(const QWDDX &p_Wddx)
 {
-	QWDDX l_temp = p_Wddx;
+    QWDDX l_temp = p_Wddx;
 
     if (m_TemplateInstance)
-	{
+    {
         switch(m_TemplateInstance->m_OutputType)
         {
         case QCFRunningTemplate::OutputTypeContent:
@@ -63,7 +63,7 @@ void QCFTemplate::f_WriteOutput(const QWDDX &p_Wddx)
         default:
             break;
         }
-	}
+    }
 }
 
 void QCFTemplate::f_Location(const QString &p_URL, int p_StatusCode)
@@ -130,20 +130,20 @@ void QCFTemplate::f_Param(const QString &name)
     if(name.length() == 0)
     {
         throw QMKFusionException(
-                    tr("Attribute validation error for CFPARAM."),
-                    tr("The value of the NAME attribute is invalid."
-                       "The length of the string, 0 character(s), must be greater than or equal to 1 character(s).")
-                    );
+            tr("Attribute validation error for CFPARAM."),
+            tr("The value of the NAME attribute is invalid."
+               "The length of the string, 0 character(s), must be greater than or equal to 1 character(s).")
+        );
     }
 
     if (!cf_IsDefined(m_TemplateInstance, name))
     {
         throw QMKFusionException(
-                    tr("The required parameter '%1' was not provided.").arg(name.toUpper()),
-                    tr("This page uses the cfparam tag to declare the parameter '%1' as required for this template."
-                       "The parameter is not available. Ensure that you have passed or initialized the parameter correctly."
-                       "To set a default value for the parameter, use the default attribute of the cfparam tag.").arg(name.toUpper())
-                    );
+            tr("The required parameter '%1' was not provided.").arg(name.toUpper()),
+            tr("This page uses the cfparam tag to declare the parameter '%1' as required for this template."
+               "The parameter is not available. Ensure that you have passed or initialized the parameter correctly."
+               "To set a default value for the parameter, use the default attribute of the cfparam tag.").arg(name.toUpper())
+        );
     }
 }
 
@@ -154,10 +154,10 @@ void QCFTemplate::f_Param(const QString &name, const QWDDX &p_default)
     if(name.length() == 0)
     {
         throw QMKFusionException(
-                    tr("Attribute validation error for CFPARAM."),
-                    tr("The value of the NAME attribute is invalid."
-                       "The length of the string, 0 character(s), must be greater than or equal to 1 character(s).")
-                    );
+            tr("Attribute validation error for CFPARAM."),
+            tr("The value of the NAME attribute is invalid."
+               "The length of the string, 0 character(s), must be greater than or equal to 1 character(s).")
+        );
     }
 
 
@@ -388,7 +388,7 @@ void QCFTemplate::f_FileUploadMove(const QString &destination, const QString &fi
 #elif defined Q_OS_LINUX
     Q_UNUSED(attributes);
 #else
-    #error Windows and Linux OSs are currently supported.
+#error Windows and Linux OSs are currently supported.
 #endif
     QString tmp;
     QDir destinationDir(destination);
@@ -494,7 +494,8 @@ void QCFTemplate::f_FileUploadMove(const QString &destination, const QString &fi
 
                 index++;
 
-            } while(newFile.exists());
+            }
+            while(newFile.exists());
 
             destinationFile.setFileName(newFile.fileName());
         }
@@ -518,13 +519,13 @@ void QCFTemplate::f_FileUploadMove(const QString &destination, const QString &fi
 
     if ((copied)&&(!mode.isEmpty()))
     {
-/*#ifdef Q_OS_WIN
-        ::SetFileAttributes();
-#elif defined Q_OS_LINUX
-        destinationFile.setPermissions();
-#else
-    #error Windows and Linux OSs are currently supported.
-#endif*/
+        /*#ifdef Q_OS_WIN
+                ::SetFileAttributes();
+        #elif defined Q_OS_LINUX
+                destinationFile.setPermissions();
+        #else
+            #error Windows and Linux OSs are currently supported.
+        #endif*/
     }
 
     updateVariableQStr(m_TemplateInstance->m_VARIABLES, result, cffile);
@@ -726,55 +727,55 @@ void QCFTemplate::startCustomTag(const QString &path, const QString &name, const
     switch(type)
     {
     case QCustomTagTypeModuleName: // Only search in app defined custom tag dir.
+    {
+        QStringList path;
+        path = name.split(".");
+        file = path.takeLast().trimmed();
+
+        if (file.isEmpty())
         {
-            QStringList path;
-            path = name.split(".");
-            file = path.takeLast().trimmed();
-
-            if (file.isEmpty())
-            {
-                throw QMKFusionException(QString("cfmodule invalid parameter name. Empty filename is not supported. [%1].").arg(name));
-            }
-
-            target_file = ((QCFServer *)m_TemplateInstance->m_CFServer)->m_CustomTagsPath + QDir::separator();
-
-            for(int c = 0; c < path.count(); c++)
-            {
-                const QString subDir = path.at(c).trimmed();
-
-                if (subDir.isEmpty())
-                {
-                    throw QMKFusionException(QString("cfmodule invalid parameter name. Empty subdirs are not supported. [%1].").arg(name));
-                }
-
-                target_file.append(path.at(c) + QDir::separator());
-            }
+            throw QMKFusionException(QString("cfmodule invalid parameter name. Empty filename is not supported. [%1].").arg(name));
         }
 
-        target_file.append(file + ".cfm"); // TODO: custom tag with lower case extension is currently supported.
+        target_file = ((QCFServer *)m_TemplateInstance->m_CFServer)->m_CustomTagsPath + QDir::separator();
 
-        if (!QFile::exists(target_file))
+        for(int c = 0; c < path.count(); c++)
         {
-            throw QMKFusionException(QString("cfmodule attribute name. Custom tag [%1] is not found.").arg(name));
+            const QString subDir = path.at(c).trimmed();
+
+            if (subDir.isEmpty())
+            {
+                throw QMKFusionException(QString("cfmodule invalid parameter name. Empty subdirs are not supported. [%1].").arg(name));
+            }
+
+            target_file.append(path.at(c) + QDir::separator());
         }
-        break;
+    }
+
+    target_file.append(file + ".cfm"); // TODO: custom tag with lower case extension is currently supported.
+
+    if (!QFile::exists(target_file))
+    {
+        throw QMKFusionException(QString("cfmodule attribute name. Custom tag [%1] is not found.").arg(name));
+    }
+    break;
     case QCustomTagTypeModuleTemplate: // Only search in path relative from caller template.
-        {
-            QFileInfo fi(this->m_isModified.m_Filename);
+    {
+        QFileInfo fi(this->m_isModified.m_Filename);
 
-            QString tmpStr = fi.absolutePath();
-            QString targetPath = QDir(tmpStr + QDir::separator() + QFileInfo(name).path()).absolutePath();
+        QString tmpStr = fi.absolutePath();
+        QString targetPath = QDir(tmpStr + QDir::separator() + QFileInfo(name).path()).absolutePath();
 
-            // TODO: Somehow check if targetPath goes outside app dir.
+        // TODO: Somehow check if targetPath goes outside app dir.
 
-            target_file = targetPath + QDir::separator() + QFileInfo(name).fileName();
-        }
+        target_file = targetPath + QDir::separator() + QFileInfo(name).fileName();
+    }
 
-        if (!QFile::exists(target_file))
-        {
-            throw QMKFusionException(QString("cfmodule attribute template. Custom tag [%1] is not found.").arg(name));
-        }
-        break;
+    if (!QFile::exists(target_file))
+    {
+        throw QMKFusionException(QString("cfmodule attribute template. Custom tag [%1] is not found.").arg(name));
+    }
+    break;
     case QCustomTagType_: // Search caller template path first, and if not found, search app defined custom tag dir.
 
         target_file = QFileInfo(this->m_isModified.m_Filename).absolutePath() + QDir::separator() + name + ".cfm";
@@ -888,55 +889,55 @@ bool QCFTemplate::endCustomTag(const QString &path, const QString &name, QCustom
     switch(type)
     {
     case QCustomTagTypeModuleName: // Only search in app defined custom tag dir.
+    {
+        QStringList path;
+        path = name.split(".");
+        file = path.takeLast().trimmed();
+
+        if (file.isEmpty())
         {
-            QStringList path;
-            path = name.split(".");
-            file = path.takeLast().trimmed();
-
-            if (file.isEmpty())
-            {
-                throw QMKFusionException(QString("cfmodule invalid parameter name. Empty filename is not supported. [%1].").arg(name));
-            }
-
-            target_file = ((QCFServer *)m_TemplateInstance->m_CFServer)->m_CustomTagsPath + QDir::separator();
-
-            for(int c = 0; c < path.count(); c++)
-            {
-                const QString subDir = path.at(c).trimmed();
-
-                if (subDir.isEmpty())
-                {
-                    throw QMKFusionException(QString("cfmodule invalid parameter name. Empty subdirs are not supported. [%1].").arg(name));
-                }
-
-                target_file.append(path.at(c) + QDir::separator());
-            }
+            throw QMKFusionException(QString("cfmodule invalid parameter name. Empty filename is not supported. [%1].").arg(name));
         }
 
-        target_file.append(file + ".cfm"); // TODO: custom tag with lower case extension is currently supported.
+        target_file = ((QCFServer *)m_TemplateInstance->m_CFServer)->m_CustomTagsPath + QDir::separator();
 
-        if (!QFile::exists(target_file))
+        for(int c = 0; c < path.count(); c++)
         {
-            throw QMKFusionException(QString("cfmodule attribute name. Custom tag [%1] is not found.").arg(name));
+            const QString subDir = path.at(c).trimmed();
+
+            if (subDir.isEmpty())
+            {
+                throw QMKFusionException(QString("cfmodule invalid parameter name. Empty subdirs are not supported. [%1].").arg(name));
+            }
+
+            target_file.append(path.at(c) + QDir::separator());
         }
-        break;
+    }
+
+    target_file.append(file + ".cfm"); // TODO: custom tag with lower case extension is currently supported.
+
+    if (!QFile::exists(target_file))
+    {
+        throw QMKFusionException(QString("cfmodule attribute name. Custom tag [%1] is not found.").arg(name));
+    }
+    break;
     case QCustomTagTypeModuleTemplate: // Only search in path relative from caller template.
-        {
-            QFileInfo fi(this->m_isModified.m_Filename);
+    {
+        QFileInfo fi(this->m_isModified.m_Filename);
 
-            QString tmpStr = fi.absolutePath();
-            QString targetPath = QDir(tmpStr + QDir::separator() + QFileInfo(name).path()).absolutePath();
+        QString tmpStr = fi.absolutePath();
+        QString targetPath = QDir(tmpStr + QDir::separator() + QFileInfo(name).path()).absolutePath();
 
-            // TODO: Somehow check if targetPath goes outside app dir.
+        // TODO: Somehow check if targetPath goes outside app dir.
 
-            target_file = targetPath + QDir::separator() + QFileInfo(name).fileName();
-        }
+        target_file = targetPath + QDir::separator() + QFileInfo(name).fileName();
+    }
 
-        if (!QFile::exists(target_file))
-        {
-            throw QMKFusionException(QString("cfmodule attribute template. Custom tag [%1] is not found.").arg(name));
-        }
-        break;
+    if (!QFile::exists(target_file))
+    {
+        throw QMKFusionException(QString("cfmodule attribute template. Custom tag [%1] is not found.").arg(name));
+    }
+    break;
     case QCustomTagType_: // Search caller template path first, and if not found, search app defined custom tag dir.
 
         target_file = QFileInfo(this->m_isModified.m_Filename).absolutePath() + QDir::separator() + name + ".cfm";

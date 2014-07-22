@@ -3,6 +3,6 @@
 
 int main(int argc, char **argv)
 {
-	QMKFusionService service(argc, argv);
-	return service.exec();
+    QMKFusionService service(argc, argv);
+    return service.exec();
 }
