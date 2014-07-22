@@ -11,6 +11,8 @@
 #include <QSqlError>
 #include <QDir>
 
+#include <functional>
+
 
 QCFTemplate::QCFTemplate()
     : m_TemplateInstance(nullptr)

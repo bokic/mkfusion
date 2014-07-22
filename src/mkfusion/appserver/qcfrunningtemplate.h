@@ -9,6 +9,8 @@
 #include <QLibrary>
 #include <QHash>
 
+#include <functional>
+
 class QCFRunningTemplate : public QObject
 {
 	Q_OBJECT

@@ -6,6 +6,8 @@
 #include <QObject>
 #include <QString>
 
+#include <functional>
+
 struct QIsTemplateModified {
 	QString m_Filename;
 	qint64 m_Size;
