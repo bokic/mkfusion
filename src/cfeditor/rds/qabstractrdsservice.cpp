@@ -57,9 +57,7 @@ QByteArray QAbstractRDSService::generateRDSCommandSocketOutput(QString url, QByt
     if (port == -1)
         port = 80;
 
-    if (port == 80)
-        l_Port = "";
-    else
+    if (port != 80)
         l_Port = ":" + QString::number(port);
 
     QString path = url.right(url.size() - url.indexOf(l_url.host()) - l_url.host().size());

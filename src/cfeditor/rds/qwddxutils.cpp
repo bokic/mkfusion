@@ -177,7 +177,6 @@ QWDDX DecodeRecursive(QDomNode node)
 
 QWDDX QWDDXUtils::deserialize(QString txt)
 {
-    QString error = "";
     QDomDocument domdoc;
     if (domdoc.setContent(txt, false) == true)
     {
