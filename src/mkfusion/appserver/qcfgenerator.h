@@ -23,7 +23,9 @@ public:
     QString CFTagGetArgumentAsNumber(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString CFTagGetArgumentAsBool(const QCFParserTag &p_CFTag, const QString &p_Argument);
     QString GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag);
+    static void rebuildPrecompiledHeader(const QString &p_MKFusionPath);
 private:
+    static QStringList commonCompileSwitches(const QString &p_MKFusionPath);
     QHash<QString, QCFTag> m_CFTagsDef;
     QHash<QString, QCFFunction> m_CFFunctionsDef;
     QHash<QString, QString> m_CustomTagsPrefixes;

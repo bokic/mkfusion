@@ -13,7 +13,7 @@ SolidCompression=yes
 OutputBaseFilename=MKFusion_{#PACKAGE_VERSION}
 OutputDir=.
 VersionInfoVersion={#PACKAGE_VERSION}
-VersionInfoDescription=MKFusion is free ColdFusion application server(Qt 5.1.1)
+VersionInfoDescription=MKFusion is free ColdFusion application server(Qt 5.3.1)
 
 [Dirs]
 Name: "{app}\bin";
@@ -28,20 +28,20 @@ Name: "{app}\CustomTags";
 
 [Files]
 ; MinGW runtime
-Source: "C:\Qt\5.1.1\mingw48_32\bin\libwinpthread-1.dll"; DestDir: "{app}\bin";
-Source: "C:\Qt\5.1.1\mingw48_32\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}\bin";
-Source: "C:\Qt\5.1.1\mingw48_32\bin\libstdc++-6.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.3\mingw482_32\bin\libwinpthread-1.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.3\mingw482_32\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.3\mingw482_32\bin\libstdc++-6.dll"; DestDir: "{app}\bin";
 
 ; ICU unicode/utf conversion tables
-Source: "C:\Qt\5.1.1\mingw48_32\bin\icudt51.dll"; DestDir: "{app}\bin";
-Source: "C:\Qt\5.1.1\mingw48_32\bin\icuin51.dll"; DestDir: "{app}\bin";
-Source: "C:\Qt\5.1.1\mingw48_32\bin\icuuc51.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.3\mingw482_32\bin\icudt52.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.3\mingw482_32\bin\icuin52.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.3\mingw482_32\bin\icuuc52.dll"; DestDir: "{app}\bin";
 
 ; Qt library
-Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Core.dll"; DestDir: "{app}\bin";
-Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Network.dll"; DestDir: "{app}\bin";
-Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Sql.dll"; DestDir: "{app}\bin";
-Source: "C:\Qt\5.1.1\mingw48_32\bin\Qt5Xml.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.3\mingw482_32\bin\Qt5Core.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.3\mingw482_32\bin\Qt5Network.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.3\mingw482_32\bin\Qt5Sql.dll"; DestDir: "{app}\bin";
+Source: "C:\Qt\5.3\mingw482_32\bin\Qt5Xml.dll"; DestDir: "{app}\bin";
 
 ; MKFusion service app
 Source: "..\..\bin\mkfusion.exe"; DestDir: "{app}\bin"; Flags: ignoreversion;
@@ -58,14 +58,14 @@ Source: "uninstall.dll"; DestDir: "{app}"; Flags: ignoreversion;
 ; MinGW 4.8
 Source: "..\..\bin\mingw\*"; DestDir: "{app}\bin\mingw"; Flags: recursesubdirs;
 
-; Qt 5.1.1 include and lib files
+; Qt 5.3.1 include and lib files
 Source: "..\..\bin\qt\*"; DestDir: "{app}\bin\qt"; Flags: recursesubdirs;
 
 ; Qt Database modules
-Source: "C:\Qt\5.1.1\mingw48_32\plugins\sqldrivers\qsqlite.dll"; DestDir: "{app}\bin\sqldrivers";
-Source: "C:\Qt\5.1.1\mingw48_32\plugins\sqldrivers\qsqlodbc.dll"; DestDir: "{app}\bin\sqldrivers";
-;Source: "C:\Qt\5.1.1\mingw48_32\plugins\sqldrivers\qsqlmysql.dll"; DestDir: "{app}\bin\sqldrivers";
-;Source: "C:\Qt\5.1.1\mingw48_32\plugins\sqldrivers\qsqlpsql.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "C:\Qt\5.3\mingw482_32\plugins\sqldrivers\qsqlite.dll"; DestDir: "{app}\bin\sqldrivers";
+Source: "C:\Qt\5.3\mingw482_32\plugins\sqldrivers\qsqlodbc.dll"; DestDir: "{app}\bin\sqldrivers";
+;Source: "C:\Qt\5.3\mingw482_32\plugins\sqldrivers\qsqlmysql.dll"; DestDir: "{app}\bin\sqldrivers";
+;Source: "C:\Qt\5.3\mingw482_32\plugins\sqldrivers\qsqlpsql.dll"; DestDir: "{app}\bin\sqldrivers";
 
 ; MKFusion uninstall dll(forgot why is here)
 Source: "uninstall.dll"; Flags: dontcopy;
@@ -74,6 +74,7 @@ Source: "uninstall.dll"; Flags: dontcopy;
 Source: "..\..\lib\mkfusion.a"; DestDir: "{app}\lib"; Flags: ignoreversion;
 
 ; MKFusion support headers for template compiling
+Source: "..\..\src\mkfusion\appserver\mkfusion.h"; DestDir: "{app}\include"; Flags: ignoreversion;
 Source: "..\..\src\mkfusion\appserver\cffunctions.h"; DestDir: "{app}\include"; Flags: ignoreversion;
 Source: "..\..\src\mkfusion\appserver\common.h"; DestDir: "{app}\include"; Flags: ignoreversion;
 Source: "..\..\src\mkfusion\appserver\qcfrunningtemplate.h"; DestDir: "{app}\include"; Flags: ignoreversion;
@@ -200,9 +201,9 @@ begin
     ConfContent := 'LoadFile  "' + ExpandConstant('{app}\bin\libwinpthread-1.dll') + '"' + Chr(13) + Chr(10) +
                    'LoadFile  "' + ExpandConstant('{app}\bin\libgcc_s_dw2-1.dll') + '"' + Chr(13) + Chr(10) +
                    'LoadFile  "' + ExpandConstant('{app}\bin\libstdc++-6.dll') + '"' + Chr(13) + Chr(10) +
-                   'LoadFile  "' + ExpandConstant('{app}\bin\icudt51.dll') + '"' + Chr(13) + Chr(10) +
-                   'LoadFile  "' + ExpandConstant('{app}\bin\icuuc51.dll') + '"' + Chr(13) + Chr(10) +
-                   'LoadFile  "' + ExpandConstant('{app}\bin\icuin51.dll') + '"' + Chr(13) + Chr(10) +
+                   'LoadFile  "' + ExpandConstant('{app}\bin\icudt52.dll') + '"' + Chr(13) + Chr(10) +
+                   'LoadFile  "' + ExpandConstant('{app}\bin\icuuc52.dll') + '"' + Chr(13) + Chr(10) +
+                   'LoadFile  "' + ExpandConstant('{app}\bin\icuin52.dll') + '"' + Chr(13) + Chr(10) +
                    'LoadFile  "' + ExpandConstant('{app}\bin\Qt5Core.dll') + '"' + Chr(13) + Chr(10) +
                    'LoadFile  "' + ExpandConstant('{app}\bin\Qt5Network.dll') + '"' + Chr(13) + Chr(10) +
                    'LoadModule mkfusion_module "' + ExpandConstant('{app}\bin\mod_mkfusion.dll') + '"' + Chr(13) + Chr(10) +

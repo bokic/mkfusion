@@ -175,13 +175,12 @@ void QCFServer::start()
     ::chmod("/tmp/mkfusion", S_IRUSR|S_IRGRP|S_IROTH|S_IWUSR|S_IWGRP|S_IWOTH);
 #endif
 
-
-    m_mainTimer = startTimer(1000);
-
     QFileInfo fi(getCurrentExecutableFileName());
     QDir fi_dir = fi.absoluteDir();
     fi_dir.cdUp();
     m_MKFusionPath = fi_dir.absolutePath() + "/";
+
+    QCFGenerator::rebuildPrecompiledHeader(m_MKFusionPath);
 
     readConfig();
 
@@ -245,6 +244,8 @@ void QCFServer::start()
             m_CompiledTemplates.insert(l_TemplateModifyInfo.m_Filename, l_TemplateItem);
         }
     }
+
+    m_mainTimer = startTimer(1000);
 }
 
 void QCFServer::stop()
