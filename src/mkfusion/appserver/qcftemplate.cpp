@@ -345,6 +345,7 @@ void QCFTemplate::f_Application(QString name, bool sessionManagement, bool setCl
             {
                 updateVariable(m_TemplateInstance->m_COOKIE, L"CFID", CFID);
                 updateVariable(m_TemplateInstance->m_COOKIE, L"CFTOKEN", CFTOKEN);
+                m_TemplateInstance->m_CFServer->createSessonStrings(CFID, CFTOKEN);
                 m_TemplateInstance->m_CFServer->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
                 qDebug() << "New session created.";
             }
