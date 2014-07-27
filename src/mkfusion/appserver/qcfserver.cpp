@@ -5,7 +5,8 @@
 #include "qcftemplate.h"
 #include "qcfparser.h"
 
-//#include <QCoreApplication>
+#include <QProcessEnvironment>
+#include <QCoreApplication>
 #include <QTextCodec>
 #include <QLocalSocket>
 #include <QWriteLocker>
@@ -25,43 +26,6 @@
 #error Windows and Linux OSs are currently supported.
 #endif
 
-
-QString getCurrentExecutableFileName()
-{
-    QString ret;
-#ifdef Q_OS_WIN
-    static volatile int dummy = 0;
-
-    tagMODULEENTRY32W l_moduleEntry;
-    l_moduleEntry.dwSize = sizeof(tagMODULEENTRY32W);
-    bool l_MoreModules;
-
-    HANDLE l_handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
-    if (l_handle != INVALID_HANDLE_VALUE)
-    {
-        for(l_MoreModules = Module32FirstW(l_handle, &l_moduleEntry); l_MoreModules == true; l_MoreModules = Module32NextW(l_handle, &l_moduleEntry))
-        {
-            if ((((quint32)&dummy) >= (((quint32)l_moduleEntry.modBaseAddr)))&&(((quint32)&dummy) < (((quint32)l_moduleEntry.modBaseAddr + l_moduleEntry.modBaseSize))))
-            {
-                ret = QString::fromWCharArray(l_moduleEntry.szExePath);
-                break;
-            }
-        }
-
-        CloseHandle(l_handle);
-    }
-#elif defined Q_OS_LINUX
-
-    QFile filename("/proc/" + QString::number(getpid()) + "/cmdline");
-    filename.open(QFile::ReadOnly);
-
-    ret = filename.readLine();
-#else
-#error Windows and Linux OSs are currently supported.
-#endif
-
-    return ret;
-}
 
 QCFServer::QCFServer()
     : m_mainTimer(0)
@@ -175,18 +139,37 @@ void QCFServer::start()
     ::chmod("/tmp/mkfusion", S_IRUSR|S_IRGRP|S_IROTH|S_IWUSR|S_IWGRP|S_IWOTH);
 #endif
 
-    QFileInfo fi(getCurrentExecutableFileName());
-    QDir fi_dir = fi.absoluteDir();
+    QDir fi_dir(QCoreApplication::applicationDirPath());
     fi_dir.cdUp();
     m_MKFusionPath = fi_dir.absolutePath() + "/";
 
-    QCFGenerator::rebuildPrecompiledHeader(m_MKFusionPath);
+#ifdef Q_OS_WIN
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    if (env.contains("APPDATA"))
+    {
+        m_TemplatesPath = env.value("APPDATA") + "\\MKFusion\\templates\\";
+    }
+    else
+    {
+        m_TemplatesPath = QDir::toNativeSeparators(QDir::tempPath()) + "\\";
+    }
+#elif defined Q_OS_LINUX
+    m_TemplatesPath = "/var/cache/mkfusion/templates/";
+
+#else
+#error Windows and Linux OSs are currently supported.
+#endif
+
+    if (!QDir(m_TemplatesPath).exists())
+    {
+        QDir().mkpath(m_TemplatesPath);
+    }
 
     readConfig();
 
     QLibrary l_TemplateLib;
 
-    QDir l_TemplatesDir(m_MKFusionPath + "templates");
+    QDir l_TemplatesDir(m_TemplatesPath);
 #ifdef Q_OS_WIN
     QStringList l_Templates = l_TemplatesDir.entryList(QStringList() << "*.dll", QDir::Files, QDir::Name);
 #elif defined Q_OS_LINUX
@@ -198,7 +181,7 @@ void QCFServer::start()
     for(const QString &l_Template: l_Templates)
     {
         bool l_DeleteTemplate = true;
-        l_TemplateLib.setFileName(m_MKFusionPath + "templates/" + l_Template);
+        l_TemplateLib.setFileName(m_TemplatesPath + l_Template);
         QIsTemplateModified l_TemplateModifyInfo;
 
         if (l_TemplateLib.load() == true)
@@ -229,13 +212,13 @@ void QCFServer::start()
 
         if (l_DeleteTemplate == true)
         {
-            QFile::remove(m_MKFusionPath + "templates/" + l_Template);
+            QFile::remove(m_TemplatesPath + l_Template);
         }
         else
         {
             if (m_CompiledTemplates.contains(l_TemplateModifyInfo.m_Filename) == true)
             {
-                QFile::remove(m_MKFusionPath + "templates/" + m_CompiledTemplates[l_TemplateModifyInfo.m_Filename].m_CompiledFileName);
+                QFile::remove(m_TemplatesPath + m_CompiledTemplates[l_TemplateModifyInfo.m_Filename].m_CompiledFileName);
             }
 
             QCFCompiledTemplateItem l_TemplateItem;
@@ -413,7 +396,7 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 #endif
 
     QCFGenerator l_generator;
-    QString ret = l_generator.compile(l_parser, m_MKFusionPath + "templates/" + l_NewTemplateFile, m_MKFusionPath);
+    QString ret = l_generator.compile(l_parser, m_TemplatesPath + l_NewTemplateFile, m_MKFusionPath);
 
     if (ret.isEmpty())
     {

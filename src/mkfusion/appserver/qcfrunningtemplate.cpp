@@ -70,14 +70,14 @@ void * QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const
         return (void *)m_LoadedTemplates[filename]->resolve("createCFMTemplate");
     }
 
-    QReadLocker lock(&((QCFServer*)m_CFServer)->m_runningTemplatesLock);
+    QReadLocker lock(&m_CFServer->m_runningTemplatesLock);
 
-    QString err = ((QCFServer*)m_CFServer)->compileTemplate(filename, uri);
+    QString err = m_CFServer->compileTemplate(filename, uri);
     if (err.isEmpty())
     {
         QLibrary *templateLib = new QLibrary();
 
-        templateLib->setFileName(((QCFServer*)m_CFServer)->m_MKFusionPath + "templates/" + ((QCFServer*)m_CFServer)->m_CompiledTemplates[filename].m_CompiledFileName);
+        templateLib->setFileName(m_CFServer->m_TemplatesPath + m_CFServer->m_CompiledTemplates[filename].m_CompiledFileName);
         if (templateLib->load() != false)
         {
             m_LoadedTemplates.insert(filename, templateLib);
@@ -486,7 +486,7 @@ void QCFRunningTemplate::worker()
                 l_page = createCFMTemplate();
                 if (l_page)
                 {
-                    ((QCFServer*)m_CFServer)->m_RunnuingTemplatesByThreadId.insert(QThread::currentThreadId(), this);
+                    m_CFServer->m_RunnuingTemplatesByThreadId.insert(QThread::currentThreadId(), this);
 
                     m_SERVER.setType(QWDDX::Struct);
                     m_COOKIE.setType(QWDDX::Struct);
@@ -542,7 +542,7 @@ void QCFRunningTemplate::worker()
                     cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("PRODUCTLEVEL"), QStringLiteral("Free"));
                     cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("PRODUCTNAME"), QStringLiteral("MKFusion Server"));
                     cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("PRODUCTVERSION"), QStringLiteral("0.5.0"));
-                    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("ROOTDIR"), ((QCFServer*)m_CFServer)->m_MKFusionPath.left(-1));
+                    cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("ROOTDIR"), m_CFServer->m_MKFusionPath.left(-1));
                     cf_StructUpdate(m_SERVER[QStringLiteral("COLDFUSION")], QStringLiteral("SUPPORTEDLOCALES"), QStringLiteral("English (US),en,en_US"));
                     cf_StructUpdate(m_SERVER, QStringLiteral("OS"), QWDDX(QWDDX::Struct));
 #ifdef Q_OS_WIN
@@ -728,9 +728,9 @@ void QCFRunningTemplate::worker()
         }
 #endif
 
-        if (((QCFServer*)m_CFServer)->m_RunnuingTemplatesByThreadId.contains(QThread::currentThreadId()))
+        if (m_CFServer->m_RunnuingTemplatesByThreadId.contains(QThread::currentThreadId()))
         {
-            ((QCFServer*)m_CFServer)->m_RunnuingTemplatesByThreadId.remove(QThread::currentThreadId());
+            m_CFServer->m_RunnuingTemplatesByThreadId.remove(QThread::currentThreadId());
         }
 
         delete l_page;

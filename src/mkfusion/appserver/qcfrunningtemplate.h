@@ -11,6 +11,8 @@
 
 #include <functional>
 
+class QCFServer;
+
 class QCFRunningTemplate : public QObject
 {
     Q_OBJECT
@@ -41,7 +43,7 @@ public:
     QMultiHash<QString, QString> m_Header;
     bool m_HeadersSent;
     QLocalSocket *m_Socket;
-    QObject *m_CFServer;
+    QCFServer *m_CFServer;
     QCFRunningTemplate_Request m_Request;
     OutputType m_OutputType;
     QWDDX m_SetCookies;

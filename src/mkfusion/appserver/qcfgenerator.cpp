@@ -83,11 +83,19 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
     qint64 elapsedMS, startMS, endMS;
 
     QFileInfo file(p_Target);
-    QString l_NewTarget = file.baseName();
+
+    QString l_CPP_Target = QDir::toNativeSeparators(file.path() + "/" + file.baseName() + ".cpp");
+    QString l_OBJ_Target = QDir::toNativeSeparators(file.path() + "/" + file.baseName() + ".o");
+
+#ifdef Q_OS_WIN
+    QString l_LIB_Target = QDir::toNativeSeparators(file.path() + "/" + file.baseName() + ".dll");
+#elif defined Q_OS_LINUX
+    QString l_LIB_Target = QDir::toNativeSeparators(file.path() + "/" + file.baseName() + ".so");
+#endif
 
     QHash<QString, QCFTag> l_cf8tags = QCF8::generateCFTags();
 
-    QFile l_cppFile(p_MKFusionPath+"templates/"+ l_NewTarget + ".cpp");
+    QFile l_cppFile(l_CPP_Target);
     l_cppFile.open(QIODevice::WriteOnly);
     l_cppFile.write("#include <mkfusion.h>\n");
     l_cppFile.write("\n");
@@ -406,8 +414,8 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
-                  << "-o" << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".o")
-                  << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".cpp")
+                  << "-o" << (l_OBJ_Target)
+                  << (l_CPP_Target)
                  );
 
     bool finished = process.waitForFinished(-1);
@@ -416,12 +424,19 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
     qDebug() << "Compiling" << p_Target << "took" << elapsedMS << "miliseconds.";
 
 #ifdef QT_NO_DEBUG
-    //QFile::remove(p_MKFusionPath+"templates/"+l_NewTarget+".cpp");
+    //QFile::remove(l_CPP_Target);
 #endif
 
     if ((finished == false)||(process.exitCode() != 0))
     {
-        return "compile error: " + QString::fromUtf8(process.readAllStandardError()) + QString::fromUtf8(process.readAllStandardOutput());
+        QString errorString = QString::fromUtf8(process.readAllStandardError()) + QString::fromUtf8(process.readAllStandardOutput());
+
+        if (errorString.isEmpty())
+        {
+            errorString = process.exitStatus();
+        }
+
+        return "compile error: " + errorString;
     }
 
     // Link
@@ -451,14 +466,8 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 #endif
 
                   << "-shared"
-
-#ifdef Q_OS_WIN
-                  << "-o" << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
-#else
-                  << "-o" << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".so")
-#endif
-
-                  << (p_MKFusionPath + "templates" + QDir::separator() + l_NewTarget + ".o")
+                  << "-o" << (l_LIB_Target)
+                  << (l_OBJ_Target)
 
 #ifdef Q_OS_WIN
                   << "-L" << (l_QtPath + "lib") << (p_MKFusionPath + "lib\\mkfusion.a")
@@ -478,11 +487,18 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
     elapsedMS = endMS - startMS;
     qDebug() << "Linking" << p_Target << "took" << elapsedMS << "miliseconds.";
 
-    QFile::remove(p_MKFusionPath+"templates/"+l_NewTarget+".o");
+    QFile::remove(l_OBJ_Target);
 
     if ((finished == false)||(process.exitCode() != 0))
     {
-        return "link error: " + process.readAllStandardError() + process.readAllStandardOutput();
+        QString errorString = QString::fromUtf8(process.readAllStandardError()) + QString::fromUtf8(process.readAllStandardOutput());
+
+        if (errorString.isEmpty())
+        {
+            errorString = process.exitStatus();
+        }
+
+        return "link error: " + errorString;
     }
 
     return "";
@@ -2197,8 +2213,8 @@ void QCFGenerator::rebuildPrecompiledHeader(const QString &p_MKFusionPath)
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
-        << headerFile
-    );
+                  << headerFile
+                 );
 
     process.waitForFinished(-1);
 }
@@ -2210,85 +2226,85 @@ QStringList QCFGenerator::commonCompileSwitches(const QString &p_MKFusionPath)
     QString l_MingwPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\mingw\\";
 #endif
     return QStringList()
-            << "-c"
+           << "-c"
 
 #ifdef __x86_64__
-            << "-m64"
+           << "-m64"
 #endif
 
 #ifdef Q_OS_LINUX
-            << "-pipe"
+           << "-pipe"
 #endif
 
 #ifdef __arm__
-            << "-march=armv6" << "-mfloat-abi=hard" << "-mfpu=vfp"
+           << "-march=armv6" << "-mfloat-abi=hard" << "-mfpu=vfp"
 #endif
 
 #ifdef QT_NO_DEBUG
-            << "-O2"
+           << "-O2"
 #else
-            << "-g"
+           << "-g"
 #endif
 
 #ifdef __arm__
-            << "-pipe" << "-fstack-protector" << "--param=ssp-buffer-size=4"
+           << "-pipe" << "-fstack-protector" << "--param=ssp-buffer-size=4"
 #endif
 
-            << "-std=c++0x"
+           << "-std=c++0x"
 
 #ifdef Q_OS_WIN
-            << "-frtti" << "-fexceptions" << "-mthreads"
+           << "-frtti" << "-fexceptions" << "-mthreads"
 #endif
 
-            << "-Wall"
+           << "-Wall"
 
 #ifdef Q_OS_LINUX
-            << "-Wall" << "-W" << "-D_REENTRANT" << "-fPIE"
+           << "-Wall" << "-W" << "-D_REENTRANT" << "-fPIE"
 #endif
 
 #ifdef Q_OS_WIN
-            << "-DQT_LARGEFILE_SUPPORT" << "-DQT_DLL"
+           << "-DQT_LARGEFILE_SUPPORT" << "-DQT_DLL"
 #endif
 
 #ifdef QT_NO_DEBUG
-            << "-DQT_NO_DEBUG"
+           << "-DQT_NO_DEBUG"
 #endif
 
-            << "-DQT_CORE_LIB"
+           << "-DQT_CORE_LIB"
 
 #ifdef Q_OS_LINUX
-            << "-DQT_SHARED"
+           << "-DQT_SHARED"
 #endif
 
 #ifdef Q_OS_WIN
-            << "-DQT_THREAD_SUPPORT"
+           << "-DQT_THREAD_SUPPORT"
 #endif
 
 #ifdef Q_OS_WIN
-            << "-I" << (l_MingwPath + "include")
-            << "-I" << (l_QtPath + "include" + QDir::separator() + "QtCore")
-            << "-I" << (l_QtPath + "include" + QDir::separator() + "QtNetwork")
-            << "-I" << (l_QtPath + "include" + QDir::separator() + "QtConcurrent")
-            << "-I" << (l_QtPath + "include")
-            << "-I" << (p_MKFusionPath + "include")
+           << "-I" << (l_MingwPath + "include")
+           << "-I" << (l_QtPath + "include" + QDir::separator() + "QtCore")
+           << "-I" << (l_QtPath + "include" + QDir::separator() + "QtNetwork")
+           << "-I" << (l_QtPath + "include" + QDir::separator() + "QtConcurrent")
+           << "-I" << (l_QtPath + "include")
+           << "-I" << (p_MKFusionPath + "include")
 #elif defined Q_OS_LINUX
 #ifdef __x86_64__
-            << "-I" << "/usr/share/qt5/mkspecs/linux-g++-64"
-            << "-I" << "/usr/lib/qt/mkspecs/linux-g++-64" // Arch linux uses this path
+           << "-I" << "/usr/share/qt5/mkspecs/linux-g++-64"
+           << "-I" << "/usr/lib/qt/mkspecs/linux-g++-64" // Arch linux uses this path
 #else
-            << "-I" << "/usr/share/qt5/mkspecs/linux-g++"
-            << "-I" << "/usr/lib/qt/mkspecs/linux-g++" // Arch linux uses this path
+           << "-I" << "/usr/share/qt5/mkspecs/linux-g++"
+           << "-I" << "/usr/lib/qt/mkspecs/linux-g++" // Arch linux uses this path
 #endif
-            << "-I" << "."
-            << "-I" << "/usr/include/qt5/QtCore"
-            << "-I" << "/usr/include/qt5/QtNetwork"
-            << "-I" << "/usr/include/qt5/QtConcurrent"
-            << "-I" << "/usr/include/qt5"
-            << "-I" << "/usr/include/qt/QtCore" // Arch linux uses this path
-            << "-I" << "/usr/include/qt/QtNetwork" // Arch linux uses this path
-            << "-I" << "/usr/include/qt/QtConcurrent" // Arch linux uses this path
-            << "-I" << "/usr/include/qt" // Arch linux uses this path
-            << "-I" << (p_MKFusionPath + "include")
+           << "-I" << "."
+           << "-I" << "/usr/include/qt5/QtCore"
+           << "-I" << "/usr/include/qt5/QtNetwork"
+           << "-I" << "/usr/include/qt5/QtConcurrent"
+           << "-I" << "/usr/include/qt5"
+           << "-I" << "/usr/include/qt/QtCore" // Arch linux uses this path
+           << "-I" << "/usr/include/qt/QtNetwork" // Arch linux uses this path
+           << "-I" << "/usr/include/qt/QtConcurrent" // Arch linux uses this path
+           << "-I" << "/usr/include/qt" // Arch linux uses this path
+           << "-I" << (p_MKFusionPath + "include")
 #endif
-    ;
+           ;
 }

@@ -50,6 +50,7 @@ public:
     QReadWriteLock m_runningTemplatesLock;
     QString m_CustomTagsPath;
     QString m_MKFusionPath;
+    QString m_TemplatesPath;
     int m_mainTimer;
     int m_MaxSimulRunningTemplates;
 };

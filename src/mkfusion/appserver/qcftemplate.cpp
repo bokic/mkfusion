@@ -303,15 +303,15 @@ void QCFTemplate::f_Application(QString name, bool sessionManagement, bool setCl
 {
     name = name.toUpper();
 
-    if(!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications.contains(name))
+    if(!m_TemplateInstance->m_CFServer->m_Applications.contains(name))
     {
-        ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications.insert(name, QCFApplication());
+        m_TemplateInstance->m_CFServer->m_Applications.insert(name, QCFApplication());
     }
 
-    ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications[name].SessionManagement = sessionManagement;
-    ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications[name].SetClientCookies = setClientCookies;
+    m_TemplateInstance->m_CFServer->m_Applications[name].SessionManagement = sessionManagement;
+    m_TemplateInstance->m_CFServer->m_Applications[name].SetClientCookies = setClientCookies;
 
-    m_TemplateInstance->m_APPLICATION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Applications[name].data;
+    m_TemplateInstance->m_APPLICATION = &m_TemplateInstance->m_CFServer->m_Applications[name].data;
 
     if (sessionManagement)
     {
@@ -320,16 +320,16 @@ void QCFTemplate::f_Application(QString name, bool sessionManagement, bool setCl
             QString CFID = m_TemplateInstance->m_COOKIE[L"CFID"];
             QString CFTOKEN = m_TemplateInstance->m_COOKIE[L"CFTOKEN"];
 
-            if (!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN.toUpper()))
+            if (!m_TemplateInstance->m_CFServer->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN.toUpper()))
             {
-                ((QCFServer*)m_TemplateInstance->m_CFServer)->createSessonStrings(CFID, CFTOKEN);
+                m_TemplateInstance->m_CFServer->createSessonStrings(CFID, CFTOKEN);
                 updateVariable(m_TemplateInstance->m_COOKIE, L"CFID", CFID);
                 updateVariable(m_TemplateInstance->m_COOKIE, L"CFTOKEN", CFTOKEN);
-                ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
+                m_TemplateInstance->m_CFServer->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
                 qDebug() << "New session created.";
             }
 
-            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()];
+            m_TemplateInstance->m_SESSION = &m_TemplateInstance->m_CFServer->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()];
 
             updateVariable(*(m_TemplateInstance->m_SESSION), L"CFID", CFID);
             updateVariable(*(m_TemplateInstance->m_SESSION), L"CFTOKEN", CFTOKEN);
@@ -341,16 +341,15 @@ void QCFTemplate::f_Application(QString name, bool sessionManagement, bool setCl
             QString CFID = m_TemplateInstance->m_URL[L"CFID"];
             QString CFTOKEN = m_TemplateInstance->m_URL[L"CFTOKEN"];
 
-            if (!((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN.toUpper()))
+            if (!m_TemplateInstance->m_CFServer->m_Sessions.contains(name + "," + CFID + "," + CFTOKEN.toUpper()))
             {
                 updateVariable(m_TemplateInstance->m_COOKIE, L"CFID", CFID);
                 updateVariable(m_TemplateInstance->m_COOKIE, L"CFTOKEN", CFTOKEN);
-                ((QCFServer*)m_TemplateInstance->m_CFServer)->createSessonStrings(CFID, CFTOKEN);
-                ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
+                m_TemplateInstance->m_CFServer->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
                 qDebug() << "New session created.";
             }
 
-            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()];
+            m_TemplateInstance->m_SESSION = &m_TemplateInstance->m_CFServer->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()];
 
             updateVariable(*(m_TemplateInstance->m_SESSION), L"CFID", CFID);
             updateVariable(*(m_TemplateInstance->m_SESSION), L"CFTOKEN", CFTOKEN);
@@ -362,10 +361,10 @@ void QCFTemplate::f_Application(QString name, bool sessionManagement, bool setCl
             QString CFID;
             QString CFTOKEN;
 
-            ((QCFServer*)m_TemplateInstance->m_CFServer)->createSessonStrings(CFID, CFTOKEN);
+            m_TemplateInstance->m_CFServer->createSessonStrings(CFID, CFTOKEN);
 
-            ((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
-            m_TemplateInstance->m_SESSION = &((QCFServer*)m_TemplateInstance->m_CFServer)->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()];
+            m_TemplateInstance->m_CFServer->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()] = QWDDX(QWDDX::Struct);
+            m_TemplateInstance->m_SESSION = &m_TemplateInstance->m_CFServer->m_Sessions[name + "," + CFID + "," + CFTOKEN.toUpper()];
 
             if (setClientCookies)
             {
@@ -547,7 +546,7 @@ QWDDX QCFTemplate::endQuery(const QString &p_DataSource)
     timer.start();
 
     //Get dbconnection object
-    QSqlDatabase *conn = ((QCFServer*)m_TemplateInstance->m_CFServer)->getDBConnection(p_DataSource);
+    QSqlDatabase *conn = m_TemplateInstance->m_CFServer->getDBConnection(p_DataSource);
 
     if (!conn->isOpen())
     {
@@ -616,7 +615,7 @@ void QCFTemplate::endQueryNoReturn(const QString &p_DataSource)
     timer.start();
 
     //Get dbconnection object
-    QSqlDatabase *conn = ((QCFServer*)m_TemplateInstance->m_CFServer)->getDBConnection(p_DataSource);
+    QSqlDatabase *conn = m_TemplateInstance->m_CFServer->getDBConnection(p_DataSource);
 
     if (!conn->isOpen())
     {
@@ -737,7 +736,7 @@ void QCFTemplate::startCustomTag(const QString &path, const QString &name, const
             throw QMKFusionException(QString("cfmodule invalid parameter name. Empty filename is not supported. [%1].").arg(name));
         }
 
-        target_file = ((QCFServer *)m_TemplateInstance->m_CFServer)->m_CustomTagsPath + QDir::separator();
+        target_file = m_TemplateInstance->m_CFServer->m_CustomTagsPath + QDir::separator();
 
         for(int c = 0; c < path.count(); c++)
         {
@@ -782,7 +781,7 @@ void QCFTemplate::startCustomTag(const QString &path, const QString &name, const
 
         if (!QFile::exists(target_file))
         {
-            target_file = ((QCFServer *)m_TemplateInstance->m_CFServer)->m_CustomTagsPath + QDir::separator() + name + ".cfm";
+            target_file = m_TemplateInstance->m_CFServer->m_CustomTagsPath + QDir::separator() + name + ".cfm";
 
             if (!QFile::exists(target_file))
             {
@@ -899,7 +898,7 @@ bool QCFTemplate::endCustomTag(const QString &path, const QString &name, QCustom
             throw QMKFusionException(QString("cfmodule invalid parameter name. Empty filename is not supported. [%1].").arg(name));
         }
 
-        target_file = ((QCFServer *)m_TemplateInstance->m_CFServer)->m_CustomTagsPath + QDir::separator();
+        target_file = m_TemplateInstance->m_CFServer->m_CustomTagsPath + QDir::separator();
 
         for(int c = 0; c < path.count(); c++)
         {
@@ -944,7 +943,7 @@ bool QCFTemplate::endCustomTag(const QString &path, const QString &name, QCustom
 
         if (!QFile::exists(target_file))
         {
-            target_file = ((QCFServer *)m_TemplateInstance->m_CFServer)->m_CustomTagsPath + QDir::separator() + name + ".cfm";
+            target_file = m_TemplateInstance->m_CFServer->m_CustomTagsPath + QDir::separator() + name + ".cfm";
 
             if (!QFile::exists(target_file))
             {
