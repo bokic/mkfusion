@@ -3,6 +3,7 @@
 #include "qcfparser.h"
 #include "qcf8.h"
 
+#include <QCoreApplication>
 #include <QDateTime>
 #include <QProcess>
 #include <QList>
@@ -402,6 +403,10 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
     l_cppFile.close();
 
     QProcess process;
+
+#ifdef Q_OS_WIN
+    process.setWorkingDirectory(QCoreApplication::applicationDirPath());
+#endif
 
     // Compile
     startMS = QDateTime::currentMSecsSinceEpoch();
