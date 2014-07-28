@@ -1845,5 +1845,9 @@ QHash<QString, QCFFunction> QCF8::generateCFFunctions()
     ret["valuelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeAny));
     ret["valuelist"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, false, QCFFunctionArgument::TypeAny));
 
+    ret.insert("serializejson", QCFFunction("SerializeJSON", QCFFunction::ReturnString));
+    ret["serializejson"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQWDDX, true, QCFFunctionArgument::TypeVariable));
+    ret["serializejson"].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
+
     return ret;
 }

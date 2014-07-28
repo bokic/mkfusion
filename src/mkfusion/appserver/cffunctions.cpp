@@ -1,6 +1,9 @@
 #include "qcftemplate.h"
 #include "cffunctions.h"
 #include "qmkfusionexception.h"
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #include <QStringList>
 #include <QDateTime>
 #include <QThread>
@@ -3404,9 +3407,128 @@ Q_DECL_EXPORT QString cf_SendGatewayMessage(const QString &gatewayID, const QWDD
     throw QMKFusionException("Not Implemented", "SendGatewayMessage is not Implemented (yet:))");
 }
 
+QJsonValue cf_SerializeJSON_Int(const QWDDX &var, bool serializeQueryByColumns)
+{
+    QJsonValue ret;
+    QJsonArray array;
+    QJsonObject hash;
+
+    switch(var.type())
+    {
+    case QWDDX::Null:
+        ret = QJsonValue();
+        break;
+    case QWDDX::Boolean:
+        ret = QJsonValue(var.m_Bool);
+        break;
+    case QWDDX::Number:
+        ret = QJsonValue(var.m_Number);
+        break;
+    case QWDDX::String:
+        ret = QJsonValue(*var.m_String);
+        break;
+    case QWDDX::DateTime:
+        ret = QJsonValue(var.DateTime);
+        break;
+    case QWDDX::Array:
+        for(int c = 0; c < var.m_Array->count(); c++)
+        {
+            array.push_back(cf_SerializeJSON_Int(var.m_Array->at(c), serializeQueryByColumns));
+        }
+
+        ret = QJsonValue(array);
+        break;
+    case QWDDX::Struct:
+        for(int c = 0; c < var.m_Struct->keys().count(); c++)
+        {
+            QString key = var.m_Struct->keys().at(c);
+
+            hash[key] = cf_SerializeJSON_Int(var.m_Struct->value(key), serializeQueryByColumns);
+        }
+        ret = QJsonValue(hash);
+        break;
+    case QWDDX::Binary:
+        throw QMKFusionException("Unsupported type(QWDDX::Binary)", "SerializeJSON was passed variable that has unsupported type.");
+        break;
+    case QWDDX::Query:
+        if (serializeQueryByColumns)
+        {
+            int rows = var.m_Struct->value("RECORDCOUNT").toInt();
+            hash.insert("ROWCOUNT", rows);
+
+            array = QJsonArray();
+            QStringList columns = var.m_Struct->value("RESULTSET").m_Struct->keys();
+            foreach(QString column, columns)
+            {
+                array.append(column);
+            }
+            hash.insert("COLUMNS", array);
+
+            QJsonObject data;
+            const QWDDX resultset = var.m_Struct->value("RESULTSET");
+            foreach(QString column, columns)
+            {
+                QJsonArray row;
+
+                for (int r = 0; r < rows; r++)
+                {
+                    row.append(cf_SerializeJSON_Int(resultset.m_Struct->value(column).m_Array->at(r), false));
+                }
+
+                data.insert(column,row);
+            }
+            hash.insert("DATA", data);
+
+
+            ret = QJsonValue(hash);
+        }
+        else
+        {
+            array = QJsonArray();
+            QStringList columns = var.m_Struct->value("RESULTSET").m_Struct->keys();
+            foreach(QString column, columns)
+            {
+                array.append(column);
+            }
+
+            hash.insert("COLUMNS", array);
+
+            array = QJsonArray();
+            const QWDDX resultset = var.m_Struct->value("RESULTSET");
+            for(int r = 0; r < var.m_Struct->value("RECORDCOUNT").toInt(); r++)
+            {
+                QJsonArray row;
+
+                foreach(QString column, columns)
+                {
+                    row.append(cf_SerializeJSON_Int(resultset.m_Struct->value(column).m_Array->at(r), false));
+                }
+
+                array.append(row);
+            }
+            hash.insert("DATA", array);
+
+            ret = QJsonValue(hash);
+        }
+        break;
+    case QWDDX::NotImplemented:
+        throw QMKFusionException("Unsupported type(QWDDX::NotImplemented)", "SerializeJSON was passed variable that has unsupported type.");
+        break;
+    case QWDDX::Error:
+        throw QMKFusionException("Unsupported type(QWDDX::Error)", "SerializeJSON was passed variable that has unsupported type.");
+        break;
+    }
+
+    return ret;
+}
+
 Q_DECL_EXPORT QString cf_SerializeJSON(const QWDDX &var, bool serializeQueryByColumns)
 {
-    throw QMKFusionException("Not Implemented", "SerializeJSON is not Implemented (yet:))");
+    QJsonDocument doc;
+
+    doc.setObject(cf_SerializeJSON_Int(var, serializeQueryByColumns).toObject());
+
+    return QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
 }
 
 Q_DECL_EXPORT void cf_SetEncoding(const QString &scope_name, const QString &charset)
