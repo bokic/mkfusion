@@ -3528,7 +3528,11 @@ Q_DECL_EXPORT QString cf_SerializeJSON(const QWDDX &var, bool serializeQueryByCo
 
     doc.setObject(cf_SerializeJSON_Int(var, serializeQueryByColumns).toObject());
 
+#if QT_VERSION < QT_VERSION_CHECK(5,1,0)
+    return QString::fromUtf8(doc.toJson());
+#else
     return QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+#endif
 }
 
 Q_DECL_EXPORT void cf_SetEncoding(const QString &scope_name, const QString &charset)
