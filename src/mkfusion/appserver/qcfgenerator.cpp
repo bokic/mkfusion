@@ -2207,8 +2207,13 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 void QCFGenerator::rebuildPrecompiledHeader(const QString &p_MKFusionPath)
 {
     QProcess process;
+#ifdef Q_OS_WIN
+    QString headerFile = p_MKFusionPath + "include/mkfusion.h";
+#elif defined Q_OS_LINUX
     QString headerFile = p_MKFusionPath + "include/mkfusion/mkfusion.h";
-
+#else
+#error Windows and Linux OSs are currently supported.
+#endif
 
 #ifdef Q_OS_WIN
     QString l_MingwPath = QDir::toNativeSeparators(p_MKFusionPath) + "bin\\mingw\\";
