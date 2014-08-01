@@ -2207,7 +2207,7 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
 void QCFGenerator::rebuildPrecompiledHeader(const QString &p_MKFusionPath)
 {
     QProcess process;
-    QString headerFile = p_MKFusionPath + "include/mkfusion.h";
+    QString headerFile = p_MKFusionPath + "include/mkfusion/mkfusion.h";
 
 
 #ifdef Q_OS_WIN
