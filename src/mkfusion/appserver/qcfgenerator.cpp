@@ -2309,7 +2309,7 @@ QStringList QCFGenerator::commonCompileSwitches(const QString &p_MKFusionPath)
            << "-I" << "/usr/include/qt/QtNetwork" // Arch linux uses this path
            << "-I" << "/usr/include/qt/QtConcurrent" // Arch linux uses this path
            << "-I" << "/usr/include/qt" // Arch linux uses this path
-           << "-I" << (p_MKFusionPath + "include")
+           << "-I" << (p_MKFusionPath + "include/mkfusion")
 #endif
            ;
 }
