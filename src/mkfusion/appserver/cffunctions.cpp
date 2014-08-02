@@ -1,12 +1,15 @@
 #include "qcftemplate.h"
 #include "cffunctions.h"
 #include "qmkfusionexception.h"
+
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QMutexLocker>
 #include <QStringList>
 #include <QDateTime>
 #include <QThread>
+#include <QMutex>
 #include <QDate>
 #include <QFile>
 #include <QDir>
@@ -805,7 +808,36 @@ Q_DECL_EXPORT QWDDX cf_CreateTimeSpan(int days, int hours, int minutes, int seco
 
 Q_DECL_EXPORT QString cf_CreateUUID()
 {
-    throw QMKFusionException("Not Implemented", "CreateUUID is not Implemented (yet:))");
+    QString ret;
+
+    static qint64 startTime = QDateTime::currentMSecsSinceEpoch();
+    static QString str = "1234567890ABCDEF";
+    static qint64 lastTime = 0;
+    static QMutex mutex;
+
+    QMutexLocker locker(&mutex);
+
+    qint64 curTime = (startTime * 10) + QDateTime::currentMSecsSinceEpoch();
+    if (curTime <= lastTime)
+    {
+        curTime = lastTime + 1;
+    }
+    lastTime = curTime;
+
+    ret = QString::number(curTime, 16).toUpper();
+
+    ret.append(str.at((rand() % 16) | 0x08));
+
+    while(ret.length() < 32)
+    {
+        ret.append(str.at(rand() % 16));
+    }
+
+    ret.insert(8, '-');
+    ret.insert(13, '-');
+    ret.insert(18, '-');
+
+    return ret;
 }
 
 Q_DECL_EXPORT QDateTime cf_DateAdd(const QString &datepart, int number, QDateTime &date)
@@ -3999,8 +4031,8 @@ Q_DECL_EXPORT QString cf_TimeFormat(const QDateTime &time, const QString &mask)
         if (type == "m") ret.replace(pos, 1, time.toString("m"));
         if (type == "HH") ret.replace(pos, 2, time.toString("hh"));
         if (type == "H") ret.replace(pos, 1, time.toString("h"));
-        if (type == "hh") ret.replace(pos, 2, time.toString("hh")); // TODO: 12h format is not implemented.
-        if (type == "h") ret.replace(pos, 1, time.toString("h")); // TODO: 12h format is not implemented.
+        if (type == "hh") ret.replace(pos, 2, time.toString("hh")); // TODO: cf_TimeFormat 12h format is not implemented.
+        if (type == "h") ret.replace(pos, 1, time.toString("h")); // TODO: cf_TimeFormat 12h format is not implemented.
     }
 
     return ret;
