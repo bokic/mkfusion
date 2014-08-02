@@ -250,7 +250,7 @@ static void mkfusion_register_hooks(apr_pool_t *p)
 {
 #ifdef QT_DEBUG
 #if AP_SERVER_MINORVERSION_NUMBER > 2
-    ap_log_perror(__FILE__, __LINE__, 0, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
+    ap_log_perror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
 #else
     ap_log_perror(__FILE__, __LINE__, APLOG_NOTICE, 0, p, "mod_mkfusion: init.");
 #endif
