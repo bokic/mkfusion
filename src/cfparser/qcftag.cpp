@@ -33,6 +33,18 @@ QCFTagArgument& QCFTagArgument::operator=(const QCFTagArgument &p_TagArgument)
     return *this;
 }
 
+#ifdef Q_COMPILER_RVALUE_REFS
+QCFTagArgument &QCFTagArgument::operator=(QCFTagArgument &&other)
+{
+    qSwap(m_Name, other.m_Name);
+    qSwap(m_Required, other.m_Required);
+    qSwap(m_Type, other.m_Type);
+    qSwap(m_MustBeValue, other.m_MustBeValue);
+
+    return *this;
+}
+#endif
+
 
 QCFTag::QCFTag():QObject()
 {
@@ -71,3 +83,17 @@ QCFTag& QCFTag::operator=(const QCFTag &other)
 
     return *this;
 }
+
+#ifdef Q_COMPILER_RVALUE_REFS
+QCFTag &QCFTag::operator=(QCFTag &&other)
+{
+    qSwap(m_Name, other.m_Name);
+    qSwap(m_CloseTagType, other.m_CloseTagType);
+    qSwap(m_ArgumentsType, other.m_ArgumentsType);
+    qSwap(m_ExpressionInside, other.m_ExpressionInside);
+    qSwap(m_AnyParam, other.m_AnyParam);
+    qSwap(m_ArgumentVariants, other.m_ArgumentVariants);
+
+    return *this;
+}
+#endif
