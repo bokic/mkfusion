@@ -29,7 +29,7 @@ public:
     void setPromptForPassword(bool);
     QByteArray getPromptedPassword();
     void setPromptedPassword(QByteArray);
-    QVector<QMap<QString, QString> > getMapping();
+    QVector<QMap<QString, QString>> getMapping();
     void updateMapping(quint32, QMap<QString, QString>);
     void addMapping(QMap<QString, QString>);
     void clearMappings();
@@ -49,7 +49,7 @@ private:
     bool m_PromptForPassword;
     QByteArray m_PromptedPassword;
     bool m_Authenticated;
-    QVector<QMap<QString, QString> > m_Mappings;
+    QVector<QMap<QString, QString>> m_Mappings;
 };
 
 #endif // QRDSSERVER_H

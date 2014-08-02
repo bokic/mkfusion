@@ -42,7 +42,7 @@ public:
     enum ArgumentsType m_ArgumentsType;
     enum ExpressionInside m_ExpressionInside;
     bool m_AnyParam;
-    QList<QList<QCFTagArgument> > m_ArgumentVariants;
+    QList<QList<QCFTagArgument>> m_ArgumentVariants;
 };
 
 #endif // QCFTAG_H
