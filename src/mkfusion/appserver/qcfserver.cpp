@@ -239,12 +239,30 @@ void QCFServer::stop()
 
 void QCFServer::readConfig()
 {
-    QSettings iniFile("mkfusion.ini", QSettings::IniFormat);
+#ifdef Q_OS_WIN
+    QSettings iniFile(QCoreApplication::applicationDirPath() + QDir::separator() + "mkfusion.ini", QSettings::IniFormat);
+#elif defined Q_OS_LINUX
+    QSettings iniFile("/etc/mkfusion.conf", QSettings::IniFormat);
+#else
+#error Windows and Linux OSs are currently supported.
+#endif
 
     iniFile.beginGroup("Setup");
 
-    QString path = iniFile.value("CustomTagsDir", "../CustomTags").toString();
-    path = QDir(m_MKFusionPath + QDir::separator() + path).absolutePath();
+    QString path = iniFile.value("CustomTagsDir").toString();
+
+    if (path.isEmpty())
+    {
+#ifdef Q_OS_WIN
+        path = QDir(m_MKFusionPath + QDir::separator() + "../CustomTags").absolutePath();
+#elif defined Q_OS_LINUX
+        path = "/var/mkfusion/CustomTags";
+#else
+#error Windows and Linux OSs are currently supported.
+#endif
+
+    }
+
     m_CustomTagsPath = path;
 
     iniFile.beginGroup("Database");
