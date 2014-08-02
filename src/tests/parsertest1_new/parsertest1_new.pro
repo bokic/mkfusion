@@ -9,19 +9,6 @@ DESTDIR  = ../../../bin
 
 DEFINES  += DEBUG_QTEXTPARSER
 
-debug {
-	OBJECTS_DIR = ../../../obj/tests/parsertest1_new/debug
-	MOC_DIR     = ../../../obj/tests/parsertest1_new/debug
-	RCC_DIR     = ../../../obj/tests/parsertest1_new/debug
-	UI_DIR      = ../../../obj/tests/parsertest1_new/debug
-}
-release {
-	OBJECTS_DIR = ../../../obj/tests/parsertest1_new/release
-	MOC_DIR     = ../../../obj/tests/parsertest1_new/release
-	RCC_DIR     = ../../../obj/tests/parsertest1_new/release
-	UI_DIR      = ../../../obj/tests/parsertest1_new/release
-}
-
 DEPENDPATH  = . ../../textparser/
 INCLUDEPATH = . ../../textparser/
 
