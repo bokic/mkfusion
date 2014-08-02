@@ -2292,9 +2292,9 @@ QStringList QCFGenerator::commonCompileSwitches(const QString &p_MKFusionPath)
 
 #ifdef Q_OS_WIN
            << "-I" << (l_MingwPath + "include")
-           << "-I" << (l_QtPath + "include" + QDir::separator() + "QtCore")
-           << "-I" << (l_QtPath + "include" + QDir::separator() + "QtNetwork")
-           << "-I" << (l_QtPath + "include" + QDir::separator() + "QtConcurrent")
+           << "-I" << (l_QtPath + "include\\QtCore")
+           << "-I" << (l_QtPath + "include\\QtNetwork")
+           << "-I" << (l_QtPath + "include\\QtConcurrent")
            << "-I" << (l_QtPath + "include")
            << "-I" << (p_MKFusionPath + "include")
 #elif defined Q_OS_LINUX
