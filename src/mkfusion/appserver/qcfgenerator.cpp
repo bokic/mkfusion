@@ -896,7 +896,16 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
 
                     if (key.m_Type == VariableMember)
                     {
-                        key.m_Type = Expression;
+                        if ((key.m_ChildElements.count() == 1)||(key.m_ChildElements.at(0).m_Type == Variable))
+                        {
+                            key = key.m_ChildElements.at(0);
+                            key.m_Type = String;
+                        }
+                        else
+                        {
+                            key.m_Type = Expression;
+                        }
+
                         ret += "updateVariable(" + GenerateCFExpressionToCExpression(tmp, funct_params, funct_local_vars) + ", " + GenerateCFExpressionToCExpression(key, funct_params, funct_local_vars) + ", ";
 
                     }
