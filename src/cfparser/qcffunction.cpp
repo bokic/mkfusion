@@ -27,7 +27,7 @@ QCFFunctionArgument::QCFFunctionArgument(QCFFunctionArgumentDataType p_DataType,
     m_Type = p_Type;
 }
 
-QCFFunctionArgument& QCFFunctionArgument::operator=(const QCFFunctionArgument &other)
+QCFFunctionArgument &QCFFunctionArgument::operator=(const QCFFunctionArgument &other)
 {
     if (this != &other)
     {
@@ -75,7 +75,7 @@ QCFFunction::QCFFunction(const QString &p_FunctionName, QCFFunctionReturnType p_
 {
 }
 
-QCFFunction& QCFFunction::operator=(const QCFFunction &other)
+QCFFunction &QCFFunction::operator=(const QCFFunction &other)
 {
     if (this != &other)
     {
@@ -105,7 +105,7 @@ void QCFFunction::setName(const QString &p_FunctionName)
     m_Name = p_FunctionName;
 }
 
-const QString& QCFFunction::getName()
+const QString &QCFFunction::getName()
 {
     return m_Name;
 }

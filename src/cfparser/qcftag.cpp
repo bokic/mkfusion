@@ -20,7 +20,7 @@ QCFTagArgument::QCFTagArgument(const QString &p_Name, bool p_Required, ArgumentT
     m_MustBeValue = p_MustBeValue;
 }
 
-QCFTagArgument& QCFTagArgument::operator=(const QCFTagArgument &p_TagArgument)
+QCFTagArgument &QCFTagArgument::operator=(const QCFTagArgument &p_TagArgument)
 {
     if (this != &p_TagArgument)
     {
@@ -69,7 +69,7 @@ QCFTag::QCFTag(const QString &p_TagName, CloseTagType p_CloseTagType, ArgumentsT
     m_AnyParam = p_AnyParam;
 }
 
-QCFTag& QCFTag::operator=(const QCFTag &other)
+QCFTag &QCFTag::operator=(const QCFTag &other)
 {
     if (this != &other)
     {
