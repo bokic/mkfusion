@@ -413,7 +413,7 @@ void QAppMainWindow::on_m_ProjectTree_itemExpanded(QTreeWidgetItem *item)
 {
     if (item->data(0, Qt::UserRole) == true)
     {
-        QString path = "";
+        QString path;
         QTreeWidgetItem *currentitem = item;
 
         item->setIcon(0, QIcon(":/CFEditor/dir_open.gif"));
@@ -667,4 +667,3 @@ void QAppMainWindow::recolor()
 
     edit->update();
 }
-
