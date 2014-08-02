@@ -100,7 +100,7 @@ void QLocalProject::DeleteDir(const QString &p_Dir, bool p_Recursive)
 
     if (p_Recursive)
     {
-        // TODO: Implement recursive.
+        // TODO: Implement recursive DeleteDir.
     }
 
     l_dir.rmdir(m_Path + p_Dir);
