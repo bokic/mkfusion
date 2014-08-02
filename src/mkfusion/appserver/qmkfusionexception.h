@@ -27,12 +27,18 @@ public:
         , m_Message(message)
         , m_Detail(detail)
     {
-	}
+    }
 
     ~QMKFusionException() throw() {}
 
-	void raise() const { throw *this; }
-    QException *clone() const { return new QMKFusionException(*this); }
+    void raise() const
+    {
+        throw *this;
+    }
+    QException *clone() const
+    {
+        return new QMKFusionException(*this);
+    }
 
     QString m_Message;
     QString m_Detail;
@@ -131,7 +137,7 @@ public:
         m_Value = value;
         m_minValue = minValue;
         m_maxValue = maxValue;
-	}
+    }
 
     double m_Value;
     double m_minValue;
@@ -165,7 +171,7 @@ public:
     {
         m_Size = size;
         m_Index = index;
-	}
+    }
 
     int m_Size;
     int m_Index;
@@ -176,9 +182,9 @@ class Q_DECL_EXPORT QMKFusionBadArrayDimensionException : public QMKFusionExcept
 public:
     explicit QMKFusionBadArrayDimensionException(int dimension)
         : QMKFusionException("", "")
-	{
+    {
         m_Dimension = dimension;
-	}
+    }
 
     int m_Dimension;
 };
@@ -191,7 +197,7 @@ public:
     {
         m_Start = start;
         m_End = end;
-	}
+    }
 
     int m_Start;
     int m_End;
@@ -216,21 +222,21 @@ class Q_DECL_EXPORT QMKFusionInvalidArgumentException : public QMKFusionExceptio
 public:
     QMKFusionInvalidArgumentException(QString p_Function, int p_argument, double p_argumentValue, double p_minValue, double p_maxValue)
         : QMKFusionException("", "")
-	{
+    {
         Q_UNUSED(p_Function);
         Q_UNUSED(p_argument);
         Q_UNUSED(p_argumentValue);
         Q_UNUSED(p_minValue);
         Q_UNUSED(p_maxValue);
-	}
+    }
     QMKFusionInvalidArgumentException(QString p_Function, int p_argument, double p_argumentValue, QString p_Error)
         : QMKFusionException("", "")
-	{
+    {
         Q_UNUSED(p_Function);
         Q_UNUSED(p_argument);
         Q_UNUSED(p_argumentValue);
         Q_UNUSED(p_Error);
-	}
+    }
 };
 
 class Q_DECL_EXPORT QMKFusionCustomException : public QMKFusionException

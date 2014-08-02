@@ -25,19 +25,19 @@ enum QCFParserFileType {QCFParserTemplateFile, QCFParserComponentFile};
 struct QCFParserElement
 {
     QCFParserElementType m_Type;
-	QString m_Text;
-	int m_Position;
-	int m_Size;
-	QList<QCFParserElement> m_ChildElements;
+    QString m_Text;
+    int m_Position;
+    int m_Size;
+    QList<QCFParserElement> m_ChildElements;
     bool operator==(const struct QCFParserElement &other) const
     {
         if (
-                (m_Type == other.m_Type)&&
-                (m_Text == other.m_Text)&&
-                (m_Position == other.m_Position)&&
-                (m_Size == other.m_Size)&&
-                (m_ChildElements == other.m_ChildElements)
-           )
+            (m_Type == other.m_Type)&&
+            (m_Text == other.m_Text)&&
+            (m_Position == other.m_Position)&&
+            (m_Size == other.m_Size)&&
+            (m_ChildElements == other.m_ChildElements)
+        )
         {
             return true;
         }
@@ -48,24 +48,24 @@ struct QCFParserElement
 
 struct QCFParserTag
 {
-	int m_Start;
-	int m_Length;
-	QString m_Name;
+    int m_Start;
+    int m_Length;
+    QString m_Name;
     QCFParserTagType m_TagType;
-	QCFParserElement m_Arguments;
-	bool m_InlineClosedTag;
+    QCFParserElement m_Arguments;
+    bool m_InlineClosedTag;
     struct QCFParserTag *m_OtherTag;
     bool operator==(const struct QCFParserTag &other) const
     {
         if (
-                (m_Start == other.m_Start)&&
-                (m_Length == other.m_Length)&&
-                (m_Name == other.m_Name)&&
-                (m_TagType == other.m_TagType)&&
-                (m_Arguments == other.m_Arguments)&&
-                (m_InlineClosedTag == other.m_InlineClosedTag)&&
-                (m_OtherTag == other.m_OtherTag)
-           )
+            (m_Start == other.m_Start)&&
+            (m_Length == other.m_Length)&&
+            (m_Name == other.m_Name)&&
+            (m_TagType == other.m_TagType)&&
+            (m_Arguments == other.m_Arguments)&&
+            (m_InlineClosedTag == other.m_InlineClosedTag)&&
+            (m_OtherTag == other.m_OtherTag)
+        )
         {
             return true;
         }
@@ -101,13 +101,13 @@ public:
     QCFParserFileType m_FileType;
 
 private:
-	QList<QCFParserTag> m_Tags;
+    QList<QCFParserTag> m_Tags;
     const QHash<QString, QCFTag> &m_CFTagsDef;
     const QHash<QString, QCFFunction> &m_CFFunctionsDef;
-	quint32 m_ErrorPosition;
-	QString m_Error;
-	QString m_Text;
-	QCFParserMode m_Mode;
+    quint32 m_ErrorPosition;
+    QString m_Error;
+    QString m_Text;
+    QCFParserMode m_Mode;
     static bool TrimCFCode(const QString &p_Text, int &p_Offset);
     bool isValidVarChar(const QString &p_Text, int index);
     QCFParserElement ParseCFCode(const QString &p_Text, const qint32 p_Offset, const QCFParserElementType p_ElementType, QCFParserElement *parent);

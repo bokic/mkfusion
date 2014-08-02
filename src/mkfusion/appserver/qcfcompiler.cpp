@@ -43,90 +43,90 @@ QString QCFCompiler::compile(const QString &cppFile, QString &libFile)
 #error Windows and Linux OSs are currently supported.
 #endif
 
-        << "-c"
+                  << "-c"
 
 #ifdef __x86_64__
-        << "-m64"
+                  << "-m64"
 #endif
 
 #ifdef Q_OS_LINUX
-        << "-pipe"
+                  << "-pipe"
 #endif
 
 #ifdef __arm__
-        << "-march=armv6" << "-mfloat-abi=hard" << "-mfpu=vfp"
+                  << "-march=armv6" << "-mfloat-abi=hard" << "-mfpu=vfp"
 #endif
 
 #ifdef QT_NO_DEBUG
-        << "-O2"
+                  << "-O2"
 #else
-    << "-g"
+                  << "-g"
 #endif
 
 #ifdef __arm__
-        << "-pipe" << "-fstack-protector" << "--param=ssp-buffer-size=4"
+                  << "-pipe" << "-fstack-protector" << "--param=ssp-buffer-size=4"
 #endif
 
-        << "-std=c++0x"
+                  << "-std=c++0x"
 
 #ifdef Q_OS_WIN
-        << "-frtti" << "-fexceptions" << "-mthreads"
+                  << "-frtti" << "-fexceptions" << "-mthreads"
 #endif
 
-        << "-Wall"
+                  << "-Wall"
 
 #ifdef Q_OS_LINUX
-        << "-Wall" << "-W" << "-D_REENTRANT" << "-fPIE"
+                  << "-Wall" << "-W" << "-D_REENTRANT" << "-fPIE"
 #endif
 
 #ifdef Q_OS_WIN
-        << "-DQT_LARGEFILE_SUPPORT" << "-DQT_DLL"
+                  << "-DQT_LARGEFILE_SUPPORT" << "-DQT_DLL"
 #endif
 
 #ifdef QT_NO_DEBUG
-    << "-DQT_NO_DEBUG"
+                  << "-DQT_NO_DEBUG"
 #endif
 
-    << "-DQT_CORE_LIB"
+                  << "-DQT_CORE_LIB"
 
 #ifdef Q_OS_LINUX
-        << "-DQT_SHARED"
+                  << "-DQT_SHARED"
 #endif
 
 #ifdef Q_OS_WIN
-        << "-DQT_THREAD_SUPPORT"
+                  << "-DQT_THREAD_SUPPORT"
 #endif
 
 #ifdef Q_OS_WIN
-        << "-I" << (l_MingwPath + "include")
-        << "-I" << (l_QtPath + "include" + QDir::separator() + "QtCore")
-        << "-I" << (l_QtPath + "include" + QDir::separator() + "QtNetwork")
-        << "-I" << (l_QtPath + "include" + QDir::separator() + "QtConcurrent")
-        << "-I" << (l_QtPath + "include")
-        << "-I" << (m_TargetPath + "include")
+                  << "-I" << (l_MingwPath + "include")
+                  << "-I" << (l_QtPath + "include" + QDir::separator() + "QtCore")
+                  << "-I" << (l_QtPath + "include" + QDir::separator() + "QtNetwork")
+                  << "-I" << (l_QtPath + "include" + QDir::separator() + "QtConcurrent")
+                  << "-I" << (l_QtPath + "include")
+                  << "-I" << (m_TargetPath + "include")
 #elif defined Q_OS_LINUX
-    #ifdef __x86_64__
-        << "-I" << "/usr/share/qt5/mkspecs/linux-g++-64"
-        << "-I" << "/usr/lib/qt/mkspecs/linux-g++-64" // Arch linux uses this path
-    #else
-        << "-I" << "/usr/share/qt5/mkspecs/linux-g++"
-        << "-I" << "/usr/lib/qt/mkspecs/linux-g++" // Arch linux uses this path
-    #endif
-        << "-I" << "."
-        << "-I" << "/usr/include/qt5/QtCore"
-        << "-I" << "/usr/include/qt5/QtNetwork"
-        << "-I" << "/usr/include/qt5/QtConcurrent"
-        << "-I" << "/usr/include/qt5"
-        << "-I" << "/usr/include/qt/QtCore" // Arch linux uses this path
-        << "-I" << "/usr/include/qt/QtNetwork" // Arch linux uses this path
-        << "-I" << "/usr/include/qt/QtConcurrent" // Arch linux uses this path
-        << "-I" << "/usr/include/qt" // Arch linux uses this path
-        << "-I" << (m_TargetPath + "include")
+#ifdef __x86_64__
+                  << "-I" << "/usr/share/qt5/mkspecs/linux-g++-64"
+                  << "-I" << "/usr/lib/qt/mkspecs/linux-g++-64" // Arch linux uses this path
+#else
+                  << "-I" << "/usr/share/qt5/mkspecs/linux-g++"
+                  << "-I" << "/usr/lib/qt/mkspecs/linux-g++" // Arch linux uses this path
+#endif
+                  << "-I" << "."
+                  << "-I" << "/usr/include/qt5/QtCore"
+                  << "-I" << "/usr/include/qt5/QtNetwork"
+                  << "-I" << "/usr/include/qt5/QtConcurrent"
+                  << "-I" << "/usr/include/qt5"
+                  << "-I" << "/usr/include/qt/QtCore" // Arch linux uses this path
+                  << "-I" << "/usr/include/qt/QtNetwork" // Arch linux uses this path
+                  << "-I" << "/usr/include/qt/QtConcurrent" // Arch linux uses this path
+                  << "-I" << "/usr/include/qt" // Arch linux uses this path
+                  << "-I" << (m_TargetPath + "include")
 #endif
 
-        << "-o" << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".o")
-        << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".cpp")
-    );
+                  << "-o" << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".o")
+                  << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".cpp")
+                 );
 
     bool finished = process.waitForFinished(-1);
 
@@ -149,43 +149,43 @@ QString QCFCompiler::compile(const QString &cppFile, QString &libFile)
 #endif
 
 #ifdef __x86_64__
-        << "-m64"
+                  << "-m64"
 #endif
 
 #if defined Q_OS_LINUX && defined QT_NO_DEBUG
-        << "-Wl,-O1"
+                  << "-Wl,-O1"
 #endif
 
 #ifdef Q_OS_WIN
-        << "-Wl,-enable-stdcall-fixup" << "-Wl,-enable-auto-import" << "-Wl,-enable-runtime-pseudo-reloc"
-    #ifdef QT_NO_DEBUG
-        << "-Wl,-s"
-    #endif
-        << "-mthreads"
+                  << "-Wl,-enable-stdcall-fixup" << "-Wl,-enable-auto-import" << "-Wl,-enable-runtime-pseudo-reloc"
+#ifdef QT_NO_DEBUG
+                  << "-Wl,-s"
+#endif
+                  << "-mthreads"
 #endif
 
-        << "-shared"
+                  << "-shared"
 
 #ifdef Q_OS_WIN
-        << "-o" << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
+                  << "-o" << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
 #else
-        << "-o" << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".so")
+                  << "-o" << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".so")
 #endif
 
-        << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".o")
+                  << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".o")
 
 #ifdef Q_OS_WIN
-        << "-L" << (l_QtPath + "lib") << (m_TargetPath + "lib\\mkfusion.a")
+                  << "-L" << (l_QtPath + "lib") << (m_TargetPath + "lib\\mkfusion.a")
 #else
-        << "-L/usr/lib/x86_64-linux-gnu" << "-lrt" << "-lpthread"
+                  << "-L/usr/lib/x86_64-linux-gnu" << "-lrt" << "-lpthread"
 #endif
 
 #if defined Q_OS_WIN && !defined QT_NO_DEBUG
-        << "-lQt5Concurrentd" << "-lQt5Cored"
+                  << "-lQt5Concurrentd" << "-lQt5Cored"
 #else
-        << "-lQt5Concurrent" << "-lQt5Core"
+                  << "-lQt5Concurrent" << "-lQt5Core"
 #endif
-    );
+                 );
 
     finished = process.waitForFinished(-1);
 
@@ -200,11 +200,11 @@ QString QCFCompiler::compile(const QString &cppFile, QString &libFile)
     {
         process.start("strip", QStringList()
 #ifdef Q_OS_WIN
-          << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
+                      << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".dll")
 #else
-          << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".so")
+                      << (m_TargetPath + "templates" + QDir::separator() + l_NewTarget + ".so")
 #endif
-        );
+                     );
 
         process.waitForFinished(-1);
     }

@@ -34,46 +34,46 @@ QFileIOService::~QFileIOService()
 
 QByteArray QFileIOService::ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
 {
-	QByteArray ret;
+    QByteArray ret;
 
-	switch (command)
-	{
+    switch (command)
+    {
     case QBrowseDirCommand:
-		return BrowseDir(rdsserver, map);
-		break;
+        return BrowseDir(rdsserver, map);
+        break;
     case QFileReadCommand:
-		return FileRead(rdsserver, map);
-		break;
+        return FileRead(rdsserver, map);
+        break;
     case QFileWriteCommand:
-		return FileWrite(rdsserver, map);
-		break;
+        return FileWrite(rdsserver, map);
+        break;
     case QFileRenameCommand:
-		return FileRename(rdsserver, map);
-		break;
+        return FileRename(rdsserver, map);
+        break;
     case QFileRemoveFileCommand:
-		return FileRemove(rdsserver, map, true);
-		break;
+        return FileRemove(rdsserver, map, true);
+        break;
     case QFileRemoveDirectoryCommand:
-		return FileRemove(rdsserver, map, false);
-		break;
+        return FileRemove(rdsserver, map, false);
+        break;
     case QFileExistCommand:
-		return Existence(rdsserver, map);
-		break;
+        return Existence(rdsserver, map);
+        break;
     case QFileCreateDirCommand:
-		return CreateDir(rdsserver, map);
-		break;
+        return CreateDir(rdsserver, map);
+        break;
     case QFileGetRootDirCommand:
-		return GetRootDir(rdsserver);
-		break;	
-	}
-	
-	return ret;
+        return GetRootDir(rdsserver);
+        break;
+    }
+
+    return ret;
 }
 
 QByteArray QFileIOService::BrowseDir(const QRDSServer &rdsserver, const QMap<QString, QString> &map)
 {
-	QVector<QString> vector;
-	
+    QVector<QString> vector;
+
     vector.append(map[NAME]);
     if (!map[MASK].isEmpty())
         vector.append(map[MASK]);
@@ -83,7 +83,7 @@ QByteArray QFileIOService::BrowseDir(const QRDSServer &rdsserver, const QMap<QSt
 
 QByteArray QFileIOService::FileRead(const QRDSServer &rdsserver, const QMap<QString, QString> &map)
 {
-	QVector<QString> vector;
+    QVector<QString> vector;
     vector.append(map[NAME]);
     vector.append(READ);
     vector.append(EMPTY_STR);
@@ -92,7 +92,7 @@ QByteArray QFileIOService::FileRead(const QRDSServer &rdsserver, const QMap<QStr
 
 QByteArray QFileIOService::FileWrite(const QRDSServer &rdsserver, const QMap<QString, QString> &map)
 {
-	QVector<QString> vector;
+    QVector<QString> vector;
     vector.append(map[NAME]);
     vector.append(WRITE);
     vector.append(EMPTY_STR);
@@ -102,7 +102,7 @@ QByteArray QFileIOService::FileWrite(const QRDSServer &rdsserver, const QMap<QSt
 
 QByteArray QFileIOService::FileRename(const QRDSServer &rdsserver, const QMap<QString, QString> &map)
 {
-	QVector<QString> vector;
+    QVector<QString> vector;
     vector.append(map[NAME]);
     vector.append(RENAME);
     vector.append(EMPTY_STR);
@@ -113,14 +113,14 @@ QByteArray QFileIOService::FileRename(const QRDSServer &rdsserver, const QMap<QS
 
 QByteArray QFileIOService::FileRemove(const QRDSServer &rdsserver, const QMap<QString, QString> &map, bool isFile)
 {
-	QVector<QString> vector;
+    QVector<QString> vector;
 
     vector.append(map[NAME]);
     vector.append(REMOVE);
     vector.append(EMPTY_STR);
-	if (isFile)
+    if (isFile)
         vector.append(F);
-	else
+    else
         vector.append(D);
 
     return executeRDSCommandForByteArray(FILEIO, rdsserver, vector);
@@ -128,32 +128,32 @@ QByteArray QFileIOService::FileRemove(const QRDSServer &rdsserver, const QMap<QS
 
 QByteArray QFileIOService::Existence(const QRDSServer &rdsserver, const QMap<QString, QString> &map)
 {
-	QVector<QString> vector;
+    QVector<QString> vector;
 
     vector.append(map[NAME]);
     vector.append(EXISTENCE);
     vector.append(EMPTY_STR);
     vector.append(EMPTY_STR);
-	
+
     return executeRDSCommandForByteArray(FILEIO, rdsserver, vector);
 }
 
 QByteArray QFileIOService::CreateDir(const QRDSServer &rdsserver, const QMap<QString, QString> &map)
 {
-	QVector<QString> vector;
-	
+    QVector<QString> vector;
+
     vector.append(map[NAME]);
     vector.append(CREATE);
     vector.append(EMPTY_STR);
     vector.append(EMPTY_STR);
-	
+
     return executeRDSCommandForByteArray(FILEIO, rdsserver, vector);
 }
 
 QByteArray QFileIOService::GetRootDir(const QRDSServer &rdsserver)
 {
-	QVector<QString> vector;
-	
+    QVector<QString> vector;
+
     vector.append(EMPTY_STR);
     vector.append(CF_DIRECTORY);
 

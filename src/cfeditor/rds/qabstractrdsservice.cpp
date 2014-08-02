@@ -37,42 +37,42 @@ QByteArray QAbstractRDSService::EncodePassword(const QByteArray &value)
 
 QVector<QByteArray> QAbstractRDSService::BreakByteArrayIntoVector(const QByteArray &value)
 {
-	QVector<QByteArray> ret;
-	QByteArray str;
+    QVector<QByteArray> ret;
+    QByteArray str;
 
     int pos = readToColumn(str, value, 0);
-	int count = str.toInt();
-	for(int c = 0; c < count; c++)
-	{
+    int count = str.toInt();
+    for(int c = 0; c < count; c++)
+    {
         pos = readToColumn(str, value, pos + 1);
 
-		if (pos <= 0)
-			break;
+        if (pos <= 0)
+            break;
 
-		int count2 = str.toInt();
+        int count2 = str.toInt();
         ret.append(value.mid(pos + 1, count2));
-		pos += count2;
-	}
+        pos += count2;
+    }
 
-	return ret;
+    return ret;
 }
 
 QByteArray QAbstractRDSService::generateRDSCommandSocketOutput(const QString &url, const QByteArray &post)
 {
-	QUrl l_url(url);
+    QUrl l_url(url);
     QString portStr;
 
-	int port = l_url.port();
+    int port = l_url.port();
     if ((port < 0x0000)||(port > 0xffff))
-		port = 80;
+        port = 80;
 
-	if (port == 80)
+    if (port == 80)
         portStr = "";
-	else
+    else
         portStr = ":" + QString::number(port);
 
-	QString path = url.right(url.size() - url.indexOf(l_url.host()) - l_url.host().size());
-	path = path.right(path.size() - path.indexOf('/'));
+    QString path = url.right(url.size() - url.indexOf(l_url.host()) - l_url.host().size());
+    path = path.right(path.size() - path.indexOf('/'));
 
     QString toSend = "POST " + path + " HTTP/1.0\r\nHost: " + l_url.host() + portStr + "\r\nConnection: close\r\nUser-Agent: Mozilla/3.0 (compatible; Macromedia RDS Client)\r\nAccept: text/html, */*\r\nAccept-Encoding: deflate\r\nContent-type: text/html\r\nContent-length: " + QString::number(post.size()) + "\r\n\r\n";
 
@@ -81,40 +81,41 @@ QByteArray QAbstractRDSService::generateRDSCommandSocketOutput(const QString &ur
 
 QByteArray QAbstractRDSService::executeRDSCommandURL(const QString &url, const QByteArray &post)
 {
-	QTcpSocket socket;
-	QUrl l_url(url);
-	QByteArray ret;
+    QTcpSocket socket;
+    QUrl l_url(url);
+    QByteArray ret;
 
-	int port = l_url.port();
-	if (port == -1)
-		port = 80;
+    int port = l_url.port();
+    if (port == -1)
+        port = 80;
 
-	socket.connectToHost(l_url.host(), port);
+    socket.connectToHost(l_url.host(), port);
 
     if (!socket.waitForConnected(5000))
-	{
+    {
         //emit error(socket.error(), socket.errorString());
-		//QAbstractSocket::SocketError err = socket.error();
+        //QAbstractSocket::SocketError err = socket.error();
         return ret;
     }
 
-	socket.write(generateRDSCommandSocketOutput(url, post));
+    socket.write(generateRDSCommandSocketOutput(url, post));
 
-	socket.waitForBytesWritten(5000);
-	do
-	{
-		socket.waitForReadyRead(5000);
+    socket.waitForBytesWritten(5000);
+    do
+    {
+        socket.waitForReadyRead(5000);
 
-		ret += socket.readAll();
-	} while(socket.state() == QAbstractSocket::ConnectedState);
+        ret += socket.readAll();
+    }
+    while(socket.state() == QAbstractSocket::ConnectedState);
 
-	int retHeader = ret.indexOf("\r\n\r\n");
-	if (retHeader > 0)
-	{
-		ret = ret.right(ret.size() - retHeader - 4);
-	}
+    int retHeader = ret.indexOf("\r\n\r\n");
+    if (retHeader > 0)
+    {
+        ret = ret.right(ret.size() - retHeader - 4);
+    }
 
-	return ret;
+    return ret;
 }
 
 QByteArray QAbstractRDSService::generatePostFromVector(const QRDSServer &rdsserver, const QVector<QString> &map)
@@ -126,20 +127,20 @@ QByteArray QAbstractRDSService::generatePostFromVector(const QRDSServer &rdsserv
     password = rdsserver.promptedPassword();
 
     if(password.isEmpty())
-	{
-		password = rdsserver.password().toUtf8();
-	}
+    {
+        password = rdsserver.password().toUtf8();
+    }
 
     for(const QString &item : map)
-	{
+    {
         // TODO: Missing file types(for file upload) but I don't know where it is used!
         ret.append(StringToSTR(item));
-	}
+    }
 
     ret.append(StringToSTR(rdsserver.username()));
     ret.append(StringToSTR(EncodePassword(password)));
 
-	return ret;
+    return ret;
 }
 
 QByteArray QAbstractRDSService::executeRDSCommandForByteArray(const QString &command, const QRDSServer &rdsserver, const QVector<QString> &map, quint16 port)
@@ -159,7 +160,7 @@ QString QAbstractRDSService::prepareURL(const QRDSServer &rdsserver, const QStri
 
     ret = "http://" + rdsserver.hostname();
 
-	if (port != 80)
+    if (port != 80)
     {
         ret.append(":" + QString::number(port));
     }
@@ -167,35 +168,35 @@ QString QAbstractRDSService::prepareURL(const QRDSServer &rdsserver, const QStri
     content = rdsserver.contextRoot().trimmed();
 
     if((!content.isEmpty())&&(content != "/")&&(content != "\\"))
-	{
-		if(!content.startsWith("/") && !content.startsWith("\\"))
+    {
+        if(!content.startsWith("/") && !content.startsWith("\\"))
         {
             ret.append('/');
         }
         ret.append(content);
-	}
-	
+    }
+
     ret.append("/CFIDE/main/ide.cfm?CFSRV=IDE&ACTION=" + command);
 
-	return ret;
+    return ret;
 }
 
 // Protected Members:
 QByteArray QAbstractRDSService::ArgumentsToString(const QVector<QString> &args)
 {
-	QByteArray ret;
+    QByteArray ret;
 
     for(const QString &item: args)
-	{
+    {
         ret.append(StringToSTR(item));
-	}
+    }
 
-	return ret;
+    return ret;
 }
 
 QByteArray QAbstractRDSService::executeRDSCommandForByteArray(const QString &command, const QRDSServer &rdsserver, const QVector<QString> &map)
 {
-	return executeRDSCommandForByteArray(command, rdsserver, map, rdsserver.port());
+    return executeRDSCommandForByteArray(command, rdsserver, map, rdsserver.port());
 }
 
 // Private:
@@ -229,31 +230,31 @@ QByteArray QAbstractRDSService::XORString(const QByteArray &value)
         ret.append(value.at(c) ^ tmp.at(c));
     }
 
-	return ret;
+    return ret;
 }
 
 int QAbstractRDSService::readToColumn(QByteArray &str, const QByteArray &buf, int offset)
 {
-	str = "";
+    str = "";
 
-	int c = offset;
-	int ret = -1;
+    int c = offset;
+    int ret = -1;
 
     forever
-	{
-		if (c >= buf.size())
-			break;
+    {
+        if (c >= buf.size())
+            break;
 
-		if (buf.at(c) == ':')
-		{
-			ret = c;
-			break;
-		}
+        if (buf.at(c) == ':')
+        {
+            ret = c;
+            break;
+        }
 
         str.append(buf.at(c));
 
-		c++;
-	}
+        c++;
+    }
 
-	return ret;
+    return ret;
 }

@@ -13,9 +13,9 @@ const int TIMEOUT = 100;
 
 static void writeError(request_rec *r, const char *error)
 {
-	r->status = 500;
-	r->content_type = "text/html; charset=utf-8";
-	ap_rputs(error, r);
+    r->status = 500;
+    r->content_type = "text/html; charset=utf-8";
+    ap_rputs(error, r);
 }
 
 #ifdef QT_DEBUG
@@ -27,57 +27,57 @@ int iterate_func(void *req, const char *key, const char *value)
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, (request_rec *)req, "New Key/Value pair:[%s], [%s]", key, value);
 #endif
 
-	return 1;
+    return 1;
 }
 #endif
 
 static int mkfusion_handler(request_rec *r)
 {
-	if (strcmp(r->handler, "application/x-httpd-mkfusion"))
-	{
-		return DECLINED;
-	}
+    if (strcmp(r->handler, "application/x-httpd-mkfusion"))
+    {
+        return DECLINED;
+    }
 
 #ifdef QT_DEBUG
     apr_table_do(iterate_func, r, r->headers_in, nullptr);
 
- #if AP_SERVER_MINORVERSION_NUMBER > 2
+#if AP_SERVER_MINORVERSION_NUMBER > 2
     ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
     ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
     ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
- #else
+#else
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "Template: %s.", r->filename);
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: Before QCoreApplication app();.");
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: After QCoreApplication app();.");
- #endif
 #endif
-	QSimplifiedLocalSocket l_localSocket;
+#endif
+    QSimplifiedLocalSocket l_localSocket;
 #ifdef QT_DEBUG
- #if AP_SERVER_MINORVERSION_NUMBER > 2
+#if AP_SERVER_MINORVERSION_NUMBER > 2
     ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
- #else
+#else
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: Before l_localSocket.connectToServer(\"mkfusion\");.");
- #endif
 #endif
-	l_localSocket.connectToServer("mkfusion", TIMEOUT);
+#endif
+    l_localSocket.connectToServer("mkfusion", TIMEOUT);
 #ifdef QT_DEBUG
- #if AP_SERVER_MINORVERSION_NUMBER > 2
+#if AP_SERVER_MINORVERSION_NUMBER > 2
     ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
- #else
+#else
     ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: After l_localSocket.connectToServer(\"mkfusion\");.");
- #endif
+#endif
 #endif
 
-	if (l_localSocket.waitForConnected())
-	{
+    if (l_localSocket.waitForConnected())
+    {
 #ifdef QT_DEBUG
- #if AP_SERVER_MINORVERSION_NUMBER > 2
+#if AP_SERVER_MINORVERSION_NUMBER > 2
         ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnected() == true.");
- #else
+#else
         ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, r, "mod_mkfusion: WaitForConnected() == true.");
- #endif
 #endif
-		QByteArray l_Send;
+#endif
+        QByteArray l_Send;
         QDataStream stream(&l_Send, QIODevice::WriteOnly);
         stream.setVersion(QDataStream::Qt_5_0);
 
@@ -139,101 +139,101 @@ static int mkfusion_handler(request_rec *r)
         stream.device()->seek(chunk_pos);
         stream << (qint64)l_Send.size() - chunk_pos;
 
-		if (l_localSocket.write(l_Send) == -1)
-		{
-			writeError(r, "Can\'t write to mkfusion.<br />\nMake sure mkfusion server is running.");
-			return OK;
-		}
+        if (l_localSocket.write(l_Send) == -1)
+        {
+            writeError(r, "Can\'t write to mkfusion.<br />\nMake sure mkfusion server is running.");
+            return OK;
+        }
 
-		bool l_HeadersWritten = false;
-		qint32 l_HeaderSize = 0;
-		QByteArray l_ReadBuf;
+        bool l_HeadersWritten = false;
+        qint32 l_HeaderSize = 0;
+        QByteArray l_ReadBuf;
 
-		while(l_localSocket.isValid())
-		{
+        while(l_localSocket.isValid())
+        {
 #ifndef Q_OS_WIN
-			if (l_localSocket.waitForReadyRead())
+            if (l_localSocket.waitForReadyRead())
 #endif
-			{
-				l_ReadBuf = l_localSocket.readAll();
+            {
+                l_ReadBuf = l_localSocket.readAll();
 
-				if (l_HeadersWritten == false)
-				{
-					if (l_HeaderSize == 0)
-					{
-						if (l_ReadBuf.size() >= 4)
-						{
-							QDataStream l_HeadersDataStream(&l_ReadBuf, QIODevice::ReadOnly);
+                if (l_HeadersWritten == false)
+                {
+                    if (l_HeaderSize == 0)
+                    {
+                        if (l_ReadBuf.size() >= 4)
+                        {
+                            QDataStream l_HeadersDataStream(&l_ReadBuf, QIODevice::ReadOnly);
                             l_HeadersDataStream.setVersion(QDataStream::Qt_5_0);
-							l_HeadersDataStream >> l_HeaderSize;
-							if ((l_HeaderSize <= 0)||(l_HeaderSize > 0x01000000))
-							{
+                            l_HeadersDataStream >> l_HeaderSize;
+                            if ((l_HeaderSize <= 0)||(l_HeaderSize > 0x01000000))
+                            {
 #if AP_SERVER_MINORVERSION_NUMBER > 2
                                 ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_ERR, 0, r, "mod_mkfusion: Invalid header length.");
 #else
                                 ap_log_rerror(__FILE__, __LINE__, APLOG_ERR, 0, r, "mod_mkfusion: Invalid header length.");
 #endif
-								writeError(r, "Invalid header length.");
-								return OK;
-							}
-						}
-					}
+                                writeError(r, "Invalid header length.");
+                                return OK;
+                            }
+                        }
+                    }
 
-					if ((l_HeaderSize < 4)||(l_ReadBuf.size() < l_HeaderSize))
-					{
-						continue;
-					}
+                    if ((l_HeaderSize < 4)||(l_ReadBuf.size() < l_HeaderSize))
+                    {
+                        continue;
+                    }
 
-					QByteArray l_Header = l_ReadBuf.left(l_HeaderSize);
-					l_ReadBuf = l_ReadBuf.right(l_ReadBuf.size() - l_HeaderSize);
+                    QByteArray l_Header = l_ReadBuf.left(l_HeaderSize);
+                    l_ReadBuf = l_ReadBuf.right(l_ReadBuf.size() - l_HeaderSize);
 
-					QDataStream l_HeadersDataStream(&l_Header, QIODevice::ReadOnly);
+                    QDataStream l_HeadersDataStream(&l_Header, QIODevice::ReadOnly);
                     l_HeadersDataStream.setVersion(QDataStream::Qt_5_0);
-					l_HeadersDataStream >> l_HeaderSize;
+                    l_HeadersDataStream >> l_HeaderSize;
 
-					QString l_tempStr;
-					l_HeadersDataStream >> l_tempStr;
-					QByteArray l_tempByte = l_tempStr.toUtf8();
-					char *l_content_type = (char *)apr_palloc(r->pool, l_tempByte.size() + 1);
-					memcpy(l_content_type, l_tempByte.constData(), l_tempByte.size() + 1);
-					r->content_type = l_content_type;
+                    QString l_tempStr;
+                    l_HeadersDataStream >> l_tempStr;
+                    QByteArray l_tempByte = l_tempStr.toUtf8();
+                    char *l_content_type = (char *)apr_palloc(r->pool, l_tempByte.size() + 1);
+                    memcpy(l_content_type, l_tempByte.constData(), l_tempByte.size() + 1);
+                    r->content_type = l_content_type;
 
-					l_HeadersDataStream >> r->status;
+                    l_HeadersDataStream >> r->status;
 
-					qint32 l_HeaderLen;
-					l_HeadersDataStream >> l_HeaderLen;
-					for (qint32 c = 0; c < l_HeaderLen; c++)
-					{
-						QString key, val;
+                    qint32 l_HeaderLen;
+                    l_HeadersDataStream >> l_HeaderLen;
+                    for (qint32 c = 0; c < l_HeaderLen; c++)
+                    {
+                        QString key, val;
 
-						l_HeadersDataStream >> key;
-						l_HeadersDataStream >> val;
+                        l_HeadersDataStream >> key;
+                        l_HeadersDataStream >> val;
 
-						apr_table_add(r->headers_out, key.toUtf8().constData(), val.toUtf8().constData());
-					}
-					l_HeadersWritten = true;
-				}
+                        apr_table_add(r->headers_out, key.toUtf8().constData(), val.toUtf8().constData());
+                    }
+                    l_HeadersWritten = true;
+                }
 
-				if (l_ReadBuf.size() > 0)
-				{
-					ap_rwrite(l_ReadBuf.constData(), l_ReadBuf.size(), r);
-				}
+                if (l_ReadBuf.size() > 0)
+                {
+                    ap_rwrite(l_ReadBuf.constData(), l_ReadBuf.size(), r);
+                }
 
-				l_ReadBuf.clear();
-			}
-		}
-	}
-	else
-	{
+                l_ReadBuf.clear();
+            }
+        }
+    }
+    else
+    {
 #if AP_SERVER_MINORVERSION_NUMBER > 2
         ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_ERR, 0, r, "mod_mkfusion: Can\'t connect to mkfusion. Make sure mkfusion server is running.");
 #else
         ap_log_rerror(__FILE__, __LINE__, APLOG_ERR, 0, r, "mod_mkfusion: Can\'t connect to mkfusion. Make sure mkfusion server is running.");
 #endif
-		writeError(r, "Can\'t connect to mkfusion.<br />\nMake sure mkfusion server is running.");
-	}
+        writeError(r, "Can\'t connect to mkfusion.<br />\nMake sure mkfusion server is running.");
+    }
 
-	return OK;
+    return OK;
 }
 
 static void mkfusion_register_hooks(apr_pool_t *p)
@@ -250,18 +250,19 @@ static void mkfusion_register_hooks(apr_pool_t *p)
 #ifdef Q_OS_WIN
     ap_add_version_component(p, "MKFusion/0.5.0 (Win32)");
 #elif defined Q_OS_LINUX
-	ap_add_version_component(p, "MKFusion/0.5.0 (Linux)");
+    ap_add_version_component(p, "MKFusion/0.5.0 (Linux)");
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
 }
 
-module AP_MODULE_DECLARE_DATA mkfusion_module = {
-	STANDARD20_MODULE_STUFF,
+module AP_MODULE_DECLARE_DATA mkfusion_module =
+{
+    STANDARD20_MODULE_STUFF,
     nullptr,                 /* create per-dir    config structures */
     nullptr,                 /* merge  per-dir    config structures */
     nullptr,                 /* create per-server config structures */
     nullptr,                 /* merge  per-server config structures */
     nullptr,                 /* table of config file commands       */
-	mkfusion_register_hooks  /* register hooks                      */
+    mkfusion_register_hooks  /* register hooks                      */
 };

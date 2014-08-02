@@ -23,19 +23,19 @@ QCFVariantFunction::QCFVariantFunction(const QCFVariantFunction &other)
 }
 
 QCFVariantFunction::QCFVariantFunction(
-        const QString &name,
-        const QString &access,
-        const QString &desc,
-        const QString &dispName,
-        const QString &hint,
-        const QString &output,
-        const QString &returnFormat,
-        const QString &returnType,
-        const QString &roles,
-        const QString &secureJSON,
-        const QString &verifyClients,
-        const QCFVariantArgumentList &args,
-        QCFVariantFunctor function
+    const QString &name,
+    const QString &access,
+    const QString &desc,
+    const QString &dispName,
+    const QString &hint,
+    const QString &output,
+    const QString &returnFormat,
+    const QString &returnType,
+    const QString &roles,
+    const QString &secureJSON,
+    const QString &verifyClients,
+    const QCFVariantArgumentList &args,
+    QCFVariantFunctor function
 )
     : m_Name(name)
     , m_Access(access)

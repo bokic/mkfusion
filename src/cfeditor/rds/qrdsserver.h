@@ -10,7 +10,7 @@
 class QRDSServer
 {
 public:
-	QRDSServer();
+    QRDSServer();
     QString description() const;
     void setDescription(const QString &desctription);
     QString hostname() const;
@@ -24,28 +24,28 @@ public:
     QString password() const;
     void setPassword(const QString &password);
     bool authenticated() const;
-	void setAuthenticated(bool);
+    void setAuthenticated(bool);
     bool promptForPassword() const;
-	void setPromptForPassword(bool);
+    void setPromptForPassword(bool);
     QByteArray promptedPassword() const;
     void setPromptedPassword(const QByteArray &PromptedPassword);
     QVector<QMap<QString, QString>> mapping() const;
     void updateMapping(quint32, const QMap<QString, QString> &item);
     void addMapping(const QMap<QString, QString> &item);
-	void clearMappings();
+    void clearMappings();
     int mappingCount() const;
 protected:
     bool validateMap(const QMap<QString, QString> &map) const;
 private:
-	QString m_Description;
-	QString m_HostName;
-	quint16 m_Port;
-	QString m_ContextRoot;
-	QString m_UserName;
-	QString m_Password;
-	bool m_PromptForPassword;
-	QByteArray m_PromptedPassword;
-	bool m_Authenticated;
+    QString m_Description;
+    QString m_HostName;
+    quint16 m_Port;
+    QString m_ContextRoot;
+    QString m_UserName;
+    QString m_Password;
+    bool m_PromptForPassword;
+    QByteArray m_PromptedPassword;
+    bool m_Authenticated;
     QVector<QMap<QString, QString>> m_Mappings;
 };
 

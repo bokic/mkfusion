@@ -14,11 +14,11 @@ Q_DECL_EXPORT QCFVariant::QCFVariant()
     , m_String(nullptr)
     , m_ByteArray(nullptr)
     , m_Number(0)
-	, m_Bool(false)
+    , m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
     , m_Function(nullptr)
-	, m_Type(Null)
+    , m_Type(Null)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
@@ -45,7 +45,7 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(bool value)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
     , m_Function(nullptr)
-	, m_Type(Boolean)
+    , m_Type(Boolean)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
@@ -60,11 +60,11 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(int value)
     , m_String(nullptr)
     , m_ByteArray(nullptr)
     , m_Number(value)
-	, m_Bool(false)
+    , m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
     , m_Function(nullptr)
-	, m_Type(Number)
+    , m_Type(Number)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
@@ -79,11 +79,11 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(double value)
     , m_String(nullptr)
     , m_ByteArray(nullptr)
     , m_Number(value)
-	, m_Bool(false)
+    , m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
     , m_Function(nullptr)
-	, m_Type(Number)
+    , m_Type(Number)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
@@ -97,12 +97,12 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const char *value)
     , m_Struct(nullptr)
     , m_String(new QString(value))
     , m_ByteArray(nullptr)
-	, m_Number(0)
-	, m_Bool(false)
+    , m_Number(0)
+    , m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
     , m_Function(nullptr)
-	, m_Type(String)
+    , m_Type(String)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
@@ -117,12 +117,12 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const wchar_t *value)
     , m_Struct(nullptr)
     , m_String(new QString(QString::fromWCharArray(value)))
     , m_ByteArray(nullptr)
-	, m_Number(0)
-	, m_Bool(false)
+    , m_Number(0)
+    , m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
     , m_Function(nullptr)
-	, m_Type(String)
+    , m_Type(String)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
@@ -136,12 +136,12 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QString &value)
     , m_Struct(nullptr)
     , m_String(new QString(value))
     , m_ByteArray(nullptr)
-	, m_Number(0)
-	, m_Bool(false)
+    , m_Number(0)
+    , m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
     , m_Function(nullptr)
-	, m_Type(String)
+    , m_Type(String)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
@@ -155,12 +155,12 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QDateTime &value)
     , m_Struct(nullptr)
     , m_String(nullptr)
     , m_ByteArray(nullptr)
-	, m_Number(0)
-	, m_Bool(false)
+    , m_Number(0)
+    , m_Bool(false)
     , m_DateTime(new QDateTime(value))
     , m_Component(nullptr)
     , m_Function(nullptr)
-	, m_Type(DateTime)
+    , m_Type(DateTime)
     , m_ArrayDimension(1)
     , m_HiddenScopeFirst(nullptr)
     , m_HiddenScopeLast1(nullptr)
@@ -279,8 +279,8 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariantType type)
     , m_Struct(nullptr)
     , m_String(nullptr)
     , m_ByteArray(nullptr)
-	, m_Number(0)
-	, m_Bool(false)
+    , m_Number(0)
+    , m_Bool(false)
     , m_DateTime(nullptr)
     , m_Component(nullptr)
     , m_Type(Null)
@@ -435,7 +435,7 @@ Q_DECL_EXPORT void QCFVariant::setType(QCFVariantType type)
 
 Q_DECL_EXPORT QCFVariant::QCFVariantType QCFVariant::type() const
 {
-	return m_Type;
+    return m_Type;
 }
 
 Q_DECL_EXPORT QCFVariant::operator bool()
@@ -455,35 +455,35 @@ Q_DECL_EXPORT QCFVariant::operator bool()
 
 Q_DECL_EXPORT QCFVariant::operator int()
 {
-	return (int)toNumber();
+    return (int)toNumber();
 }
 
 Q_DECL_EXPORT QCFVariant::operator double()
 {
-	return toNumber();
+    return toNumber();
 }
 
 Q_DECL_EXPORT QCFVariant::operator QString()
 {
-	return toString();
+    return toString();
 }
 
 Q_DECL_EXPORT QCFVariant::operator QDateTime()
 {
-	return toDateTime();
+    return toDateTime();
 }
 
 Q_DECL_EXPORT int QCFVariant::size()
 {
-	switch(m_Type)
-	{
+    switch(m_Type)
+    {
     case QCFVariant::Array:
         return m_Array->size();
     case QCFVariant::Struct:
         return m_Struct->size();
-	default:
-		return 1;
-	}
+    default:
+        return 1;
+    }
 }
 
 Q_DECL_EXPORT QCFVariant &QCFVariant::_()
@@ -1031,15 +1031,15 @@ Q_DECL_EXPORT bool QCFVariant::operator==(bool p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator==(int p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number == (double)p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number == (double)p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return toNumber() == (double)p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return toNumber() == (double)p_Value;
+    }
 
     if ((m_Type == Array))
     {
@@ -1054,30 +1054,30 @@ Q_DECL_EXPORT bool QCFVariant::operator==(int p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator==(double p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number == p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number == p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return toNumber() == p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return toNumber() == p_Value;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator==(const QString &p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return toString() == p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return toString() == p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return m_String == p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return m_String == p_Value;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
@@ -1089,23 +1089,23 @@ Q_DECL_EXPORT bool QCFVariant::operator==(const QCFVariant &p_Value)
         return m_Bool == p_Value.m_Bool;
     }
 
-	if ((m_Type == Number)&&(p_Value.m_Type == Number))
-	{
-		return m_Number == p_Value.m_Number;
-	}
+    if ((m_Type == Number)&&(p_Value.m_Type == Number))
+    {
+        return m_Number == p_Value.m_Number;
+    }
 
-	if ((m_Type == String)&&(p_Value.m_Type == String))
-	{
+    if ((m_Type == String)&&(p_Value.m_Type == String))
+    {
         return *m_String == *p_Value.m_String;
-	}
+    }
 
-	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
-	{
+    if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
+    {
         QCFVariant l_temp1 = *this;
         QCFVariant l_temp2 = p_Value;
 
         return l_temp1.toNumber() == l_temp2.toNumber();
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
@@ -1127,68 +1127,68 @@ Q_DECL_EXPORT QCFVariant operator!(const QCFVariant &operand)
 
 Q_DECL_EXPORT bool QCFVariant::operator!=(int p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number != (double)p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number != (double)p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return toNumber() != (double)p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return toNumber() != (double)p_Value;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator!=(double p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number != p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number != p_Value;
+    }
 
-	if ((m_Type == String))
-	{
+    if ((m_Type == String))
+    {
         return toNumber() != p_Value;
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator!=(const QString &p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return toString() != p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return toString() != p_Value;
+    }
 
-	if ((m_Type == String))
-	{
+    if ((m_Type == String))
+    {
         return *m_String != p_Value;
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator!=(const QCFVariant &p_Value)
 {
-	if ((m_Type == Number)&&(p_Value.m_Type == Number))
-	{
-		return m_Number != p_Value.m_Number;
-	}
+    if ((m_Type == Number)&&(p_Value.m_Type == Number))
+    {
+        return m_Number != p_Value.m_Number;
+    }
 
-	if ((m_Type == String)&&(p_Value.m_Type == String))
-	{
+    if ((m_Type == String)&&(p_Value.m_Type == String))
+    {
         return *m_String != *p_Value.m_String;
-	}
+    }
 
-	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
-	{
+    if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
+    {
         QCFVariant l_temp1 = *this;
         QCFVariant l_temp2 = p_Value;
 
         return l_temp1.toNumber() != l_temp2.toNumber();
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
@@ -1210,68 +1210,68 @@ Q_DECL_EXPORT bool operator!=(const QString &p_Value1, const QCFVariant &p_Value
 
 Q_DECL_EXPORT bool QCFVariant::operator<=(int p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number <= (double)p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number <= (double)p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return toNumber() <=(double)p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return toNumber() <=(double)p_Value;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<=(double p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number <= p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number <= p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return toNumber() <= p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return toNumber() <= p_Value;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<=(const QString &p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return toString() <= p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return toString() <= p_Value;
+    }
 
-	if ((m_Type == String))
-	{
+    if ((m_Type == String))
+    {
         return *m_String <= p_Value;
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<=(const QCFVariant &p_Value)
 {
-	if ((m_Type == Number)&&(p_Value.m_Type == Number))
-	{
-		return m_Number <= p_Value.m_Number;
-	}
+    if ((m_Type == Number)&&(p_Value.m_Type == Number))
+    {
+        return m_Number <= p_Value.m_Number;
+    }
 
-	if ((m_Type == String)&&(p_Value.m_Type == String))
-	{
+    if ((m_Type == String)&&(p_Value.m_Type == String))
+    {
         return *m_String <= *p_Value.m_String;
-	}
+    }
 
-	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
-	{
+    if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
+    {
         QCFVariant l_temp1 = *this;
         QCFVariant l_temp2 = p_Value;
 
         return l_temp1.toNumber() <= l_temp2.toNumber();
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
@@ -1293,68 +1293,68 @@ Q_DECL_EXPORT bool operator<=(const QString &p_Value1, const QCFVariant &p_Value
 
 Q_DECL_EXPORT bool QCFVariant::operator>=(int p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number >= (double)p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number >= (double)p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return toNumber() >= (double)p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return toNumber() >= (double)p_Value;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>=(double p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number >= p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number >= p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return toNumber() >= p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return toNumber() >= p_Value;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>=(const QString &p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return toString() >= p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return toString() >= p_Value;
+    }
 
-	if ((m_Type == String))
-	{
+    if ((m_Type == String))
+    {
         return *m_String >= p_Value;
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>=(const QCFVariant &p_Value)
 {
-	if ((m_Type == Number)&&(p_Value.m_Type == Number))
-	{
-		return m_Number >= p_Value.m_Number;
-	}
+    if ((m_Type == Number)&&(p_Value.m_Type == Number))
+    {
+        return m_Number >= p_Value.m_Number;
+    }
 
-	if ((m_Type == String)&&(p_Value.m_Type == String))
-	{
+    if ((m_Type == String)&&(p_Value.m_Type == String))
+    {
         return *m_String >= *p_Value.m_String;
-	}
+    }
 
-	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
-	{
+    if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
+    {
         QCFVariant l_temp1 = *this;
         QCFVariant l_temp2 = p_Value;
 
         return l_temp1.toNumber() >= l_temp2.toNumber();
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
@@ -1376,68 +1376,68 @@ Q_DECL_EXPORT bool operator>=(const QString &p_Value1, const QCFVariant &p_Value
 
 Q_DECL_EXPORT bool QCFVariant::operator<(int p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number < (double)p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number < (double)p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return toNumber() < (double)p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return toNumber() < (double)p_Value;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<(double p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number < p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number < p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return toNumber() < p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return toNumber() < p_Value;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<(const QString &p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return toString() < p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return toString() < p_Value;
+    }
 
-	if ((m_Type == String))
-	{
+    if ((m_Type == String))
+    {
         return *m_String < p_Value;
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator<(const QCFVariant &p_Value)
 {
-	if ((m_Type == Number)&&(p_Value.m_Type == Number))
-	{
-		return m_Number < p_Value.m_Number;
-	}
+    if ((m_Type == Number)&&(p_Value.m_Type == Number))
+    {
+        return m_Number < p_Value.m_Number;
+    }
 
-	if ((m_Type == String)&&(p_Value.m_Type == String))
-	{
+    if ((m_Type == String)&&(p_Value.m_Type == String))
+    {
         return *m_String < *p_Value.m_String;
-	}
+    }
 
-	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
-	{
+    if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
+    {
         QCFVariant l_temp1 = *this;
         QCFVariant l_temp2 = p_Value;
 
         return l_temp1.toNumber() < l_temp2.toNumber();
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
@@ -1459,68 +1459,68 @@ Q_DECL_EXPORT bool operator<(const QString &p_Value1, const QCFVariant &p_Value2
 
 Q_DECL_EXPORT bool QCFVariant::operator>(int p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number > (double)p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number > (double)p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return toNumber() > (double)p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return toNumber() > (double)p_Value;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>(double p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return m_Number > p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return m_Number > p_Value;
+    }
 
-	if ((m_Type == String))
-	{
-		return toNumber() > p_Value;
-	}
+    if ((m_Type == String))
+    {
+        return toNumber() > p_Value;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>(const QString &p_Value)
 {
-	if ((m_Type == Number))
-	{
-		return toString() > p_Value;
-	}
+    if ((m_Type == Number))
+    {
+        return toString() > p_Value;
+    }
 
-	if ((m_Type == String))
-	{
+    if ((m_Type == String))
+    {
         return *m_String > p_Value;
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
 
 Q_DECL_EXPORT bool QCFVariant::operator>(const QCFVariant &p_Value)
 {
-	if ((m_Type == Number)&&(p_Value.m_Type == Number))
-	{
-		return m_Number > p_Value.m_Number;
-	}
+    if ((m_Type == Number)&&(p_Value.m_Type == Number))
+    {
+        return m_Number > p_Value.m_Number;
+    }
 
-	if ((m_Type == String)&&(p_Value.m_Type == String))
-	{
+    if ((m_Type == String)&&(p_Value.m_Type == String))
+    {
         return *m_String > *p_Value.m_String;
-	}
+    }
 
-	if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
-	{
+    if (((m_Type == Number)||(m_Type == String))&&((p_Value.m_Type == Number)||(p_Value.m_Type == String)))
+    {
         QCFVariant l_temp1 = *this;
         QCFVariant l_temp2 = p_Value;
 
         return l_temp1.toNumber() > l_temp2.toNumber();
-	}
+    }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));
 }
@@ -1584,17 +1584,17 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const bool p_newValue)
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const int p_newValue)
 {
     setType(Number);
-	m_Number = p_newValue;
+    m_Number = p_newValue;
 
-	return *this;
+    return *this;
 }
 
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const double p_newValue)
 {
     setType(Number);
-	m_Number = p_newValue;
+    m_Number = p_newValue;
 
-	return *this;
+    return *this;
 }
 
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const char *p_newValue)
@@ -1612,7 +1612,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const wchar_t *p_newValue)
     setType(String);
     *m_String = QString::fromWCharArray(p_newValue);
 
-	return *this;
+    return *this;
 }
 
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QString &p_newValue)
@@ -1620,7 +1620,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QString &p_newValue)
     setType(String);
     *m_String = p_newValue;
 
-	return *this;
+    return *this;
 }
 
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QDateTime &p_newValue)
@@ -1628,7 +1628,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QDateTime &p_newValue)
     setType(DateTime);
     *m_DateTime = p_newValue;
 
-	return *this;
+    return *this;
 }
 
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariantComponent &p_newValue)
@@ -1650,25 +1650,25 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariantFunction &p_newV
 Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariant &p_newValue)
 {
     if (this != &p_newValue)
-	{
-		setType(p_newValue.type());
+    {
+        setType(p_newValue.type());
 
-		switch(type())
-		{
-		case Null:
-			break;
-		case Boolean:
-			m_Bool = p_newValue.m_Bool;
-			break;
-		case Number:
-			m_Number = p_newValue.m_Number;
-			break;
-		case String:
-			*m_String = *p_newValue.m_String;
-			break;
-		case DateTime:
-			*m_DateTime = *p_newValue.m_DateTime;
-			break;
+        switch(type())
+        {
+        case Null:
+            break;
+        case Boolean:
+            m_Bool = p_newValue.m_Bool;
+            break;
+        case Number:
+            m_Number = p_newValue.m_Number;
+            break;
+        case String:
+            *m_String = *p_newValue.m_String;
+            break;
+        case DateTime:
+            *m_DateTime = *p_newValue.m_DateTime;
+            break;
         case Component:
             *m_Component = *p_newValue.m_Component;
             break;
@@ -1676,30 +1676,30 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(const QCFVariant &p_newValue)
             *m_Function = *p_newValue.m_Function;
             break;
         case Array:
-			*m_Array = *p_newValue.m_Array;
-			m_ArrayDimension = p_newValue.m_ArrayDimension;
+            *m_Array = *p_newValue.m_Array;
+            m_ArrayDimension = p_newValue.m_ArrayDimension;
             m_Number = p_newValue.m_Number;
-			break;
-		case Struct:
-			*m_Struct = *p_newValue.m_Struct;
+            break;
+        case Struct:
+            *m_Struct = *p_newValue.m_Struct;
             m_HiddenScopeFirst = p_newValue.m_HiddenScopeFirst;
             m_HiddenScopeLast1 = p_newValue.m_HiddenScopeLast1;
             m_HiddenScopeLast2 = p_newValue.m_HiddenScopeLast2;
-			break;
-		case Binary:
-			*m_ByteArray = *p_newValue.m_ByteArray;
-			break;
+            break;
+        case Binary:
+            *m_ByteArray = *p_newValue.m_ByteArray;
+            break;
         case Query:
             *m_Struct = *p_newValue.m_Struct;
-			break;
+            break;
         case NotImplemented:
-			break;
-		case Error:
-			break;
-		}
-	}
+            break;
+        case Error:
+            break;
+        }
+    }
 
-	return *this;
+    return *this;
 }
 
 Q_DECL_EXPORT QCFVariant QCFVariant::operator+(bool p_Value)
@@ -1711,66 +1711,66 @@ Q_DECL_EXPORT QCFVariant QCFVariant::operator+(bool p_Value)
 
 Q_DECL_EXPORT QCFVariant QCFVariant::operator+(int p_Value)
 {
-	if (m_Type == Number)
-	{
+    if (m_Type == Number)
+    {
         return QCFVariant(m_Number + p_Value);
-	}
-	else
-	{
+    }
+    else
+    {
         return QCFVariant(toNumber() + p_Value);
-	}
+    }
 }
 
 Q_DECL_EXPORT QCFVariant QCFVariant::operator+(double p_Value)
 {
-	if (m_Type == Number)
-	{
+    if (m_Type == Number)
+    {
         return QCFVariant(m_Number + p_Value);
-	}
-	else
-	{
+    }
+    else
+    {
         return QCFVariant(toNumber() + p_Value);
-	}
+    }
 }
 
 Q_DECL_EXPORT QCFVariant QCFVariant::operator+(const wchar_t *p_Value)
 {
     QCFVariant tmp = QCFVariant(p_Value);
 
-	if (m_Type == Number)
-	{
+    if (m_Type == Number)
+    {
         return QCFVariant(m_Number + tmp.toNumber());
-	}
-	else
-	{
+    }
+    else
+    {
         return QCFVariant(toNumber() + tmp.toNumber());
-	}
+    }
 }
 
 Q_DECL_EXPORT QCFVariant QCFVariant::operator+(const QString &p_Value)
 {
     QCFVariant tmp = QCFVariant(p_Value);
 
-	if (m_Type == Number)
-	{
+    if (m_Type == Number)
+    {
         return QCFVariant(m_Number + tmp.toNumber());
-	}
-	else
-	{
+    }
+    else
+    {
         return QCFVariant(toNumber() + tmp.toNumber());
-	}
+    }
 }
 
 Q_DECL_EXPORT QCFVariant QCFVariant::operator+(const QCFVariant &p_Value)
 {
-	if (m_Type == Number)
-	{
+    if (m_Type == Number)
+    {
         return QCFVariant(m_Number + p_Value.toNumber());
-	}
-	else
-	{
+    }
+    else
+    {
         return QCFVariant(this->toNumber() + p_Value.toNumber());
-	}
+    }
 }
 
 Q_DECL_EXPORT QCFVariant operator+(bool p_Value1, const QCFVariant &p_Value2)
@@ -1857,24 +1857,24 @@ Q_DECL_EXPORT QCFVariant QCFVariant::operator++(int tmp)
 
 Q_DECL_EXPORT QCFVariant QCFVariant::operator-(int p_Value)
 {
-	if (m_Type == Number)
-	{
+    if (m_Type == Number)
+    {
         return QCFVariant(m_Number - p_Value);
-	}
-	else
-	{
+    }
+    else
+    {
         return QCFVariant(toNumber() - p_Value);
     }
 }
 
 Q_DECL_EXPORT QCFVariant QCFVariant::operator-(double p_Value)
 {
-	if (m_Type == Number)
-	{
+    if (m_Type == Number)
+    {
         return QCFVariant(m_Number - p_Value);
-	}
-	else
-	{
+    }
+    else
+    {
         return QCFVariant(toNumber() - p_Value);
     }
 }
@@ -2090,82 +2090,82 @@ Q_DECL_EXPORT QString QCFVariant::StructKeyAt(const int p_Index)
 
 Q_DECL_EXPORT QString QCFVariant::toString() const
 {
-	switch(m_Type)
-	{
+    switch(m_Type)
+    {
     case QCFVariant::Null:
-            return "";
+        return "";
     case QCFVariant::String:
-		break;
+        break;
 
     case QCFVariant::Number:
-		if (fabs(m_Number) >= 1000000000000.0)
-		{
+        if (fabs(m_Number) >= 1000000000000.0)
+        {
             QString temp;
 
             temp = QString::number(m_Number, 'E', 11);
 
             if ((temp.length() > 3)&&(temp.at(temp.length() - 3) == QChar('+')))
-			{
-				temp.insert(temp.length() - 2, '0');
-			}
+            {
+                temp.insert(temp.length() - 2, '0');
+            }
 
-			return temp;
-		}
-		else
-		{
+            return temp;
+        }
+        else
+        {
             QString temp;
 
             temp = QString::number(fabs(m_Number), 'f', 0);
-			if (temp.length() > 11)
-			{
-				return QString::number(m_Number, 'f', 0);
-			}
-			else
-			{
-				temp = QString::number(m_Number, 'f', 13 - temp.length());
+            if (temp.length() > 11)
+            {
+                return QString::number(m_Number, 'f', 0);
+            }
+            else
+            {
+                temp = QString::number(m_Number, 'f', 13 - temp.length());
 
-				if (temp.indexOf('.') >= 0)
-				{
+                if (temp.indexOf('.') >= 0)
+                {
                     forever
-					{
-						if ((temp.length() == 0)||(temp[temp.length() - 1] != '0'))
-						{
-							break;
-						}
+                    {
+                        if ((temp.length() == 0)||(temp[temp.length() - 1] != '0'))
+                        {
+                            break;
+                        }
 
-						temp = temp.left(temp.length() - 1);
-					}
-				}
+                        temp = temp.left(temp.length() - 1);
+                    }
+                }
 
-				if ((temp.length() > 0)&&(temp[temp.length() - 1] == '.'))
-				{
-					temp = temp.left(temp.length() - 1);
-				}
+                if ((temp.length() > 0)&&(temp[temp.length() - 1] == '.'))
+                {
+                    temp = temp.left(temp.length() - 1);
+                }
 
-				return temp;
-			}
-		}
-		break;
+                return temp;
+            }
+        }
+        break;
 
     case QCFVariant::DateTime:
         return m_DateTime->toString("MMMM, dd yyyy hh:mm:ss");
-		break;
+        break;
 
     case QCFVariant::Boolean:
-		if (m_Bool == true)
-			return "true";
-		else
-			return "false";
-		break;
+        if (m_Bool == true)
+            return "true";
+        else
+            return "false";
+        break;
     case QCFVariant::Array:
         if (m_Number > 0)
         {
             return m_Array->at(m_Number - 1).toString();
         }
-        default:
-            throw QMKFusionExpressionException(QObject::tr("Complex object types cannot be converted to simple values.", "The expression has requested a variable or an intermediate expression result as a simple value, however, the result cannot be converted to a simple value. Simple values are strings, numbers, boolean values, and date/time values. Queries, arrays, and COM objects are examples of complex values. <p> The most likely cause of the error is that you are trying to use a complex value as a simple one. For example, you might be trying to use a query variable in a cfif tag."));
-		break;
-	}
+    default:
+        throw QMKFusionExpressionException(QObject::tr("Complex object types cannot be converted to simple values.", "The expression has requested a variable or an intermediate expression result as a simple value, however, the result cannot be converted to a simple value. Simple values are strings, numbers, boolean values, and date/time values. Queries, arrays, and COM objects are examples of complex values. <p> The most likely cause of the error is that you are trying to use a complex value as a simple one. For example, you might be trying to use a query variable in a cfif tag."));
+        break;
+    }
 
     return *m_String;
 }
@@ -2183,24 +2183,24 @@ Q_DECL_EXPORT QByteArray QCFVariant::toBinary() const
 
 Q_DECL_EXPORT double QCFVariant::toNumber() const
 {
-	double ret;
+    double ret;
     int diff;
-	bool ok;
+    bool ok;
 
-	switch(m_Type)
-	{
+    switch(m_Type)
+    {
     case QCFVariant::Number:
         return m_Number;
         break;
     case QCFVariant::String:
         ret = m_String->toDouble(&ok);
-		if (ok == false)
-		{
+        if (ok == false)
+        {
             throw QMKFusionExpressionException(QObject::tr("The value %1 cannot be converted to a number.").arg(*m_String));
-		}
+        }
 
-		return ret;
-		break;
+        return ret;
+        break;
     case QCFVariant::DateTime:
         diff = QDateTime(QDate(1899, 12, 29), QTime(0, 0)).secsTo(*m_DateTime);
         return diff / (60 * 60 * 24);
@@ -2210,9 +2210,9 @@ Q_DECL_EXPORT double QCFVariant::toNumber() const
         {
             return m_Array->at(m_Number - 1).toNumber();
         }
-	default:
+    default:
         throw QMKFusionExpressionException(QObject::tr("The value cannot be converted to a number."));
-	}
+    }
 }
 
 Q_DECL_EXPORT int QCFVariant::toInt() const
@@ -2251,25 +2251,25 @@ Q_DECL_EXPORT int QCFVariant::toInt() const
 
 Q_DECL_EXPORT bool QCFVariant::canConvertToNumber()
 {
-	if (m_Type == Number)
-	{
-		return true;
-	}
+    if (m_Type == Number)
+    {
+        return true;
+    }
 
-	if (m_Type == String)
-	{
+    if (m_Type == String)
+    {
         if (m_String->isEmpty())
-		{
-			return false;
-		}
+        {
+            return false;
+        }
 
-		bool ok;
+        bool ok;
         m_String->toDouble(&ok);
 
-		return ok;
-	}
+        return ok;
+    }
 
-	return false;
+    return false;
 }
 
 Q_DECL_EXPORT bool QCFVariant::canConvertToDate()
@@ -2300,37 +2300,37 @@ Q_DECL_EXPORT QDateTime QCFVariant::toDateTime() const
 
 Q_DECL_EXPORT bool QCFVariant::toBool() const
 {
-	switch(m_Type)
-	{
-        case QCFVariant::Boolean:
-			return m_Bool;
-        case QCFVariant::String:
-            if (m_String->compare("true", Qt::CaseInsensitive) == 0)
-			{
-				return true;
-			}
-            else if (m_String->compare("false", Qt::CaseInsensitive) == 0)
-			{
-				return false;
-			}
-			else
-			{
-                return toInt() != 0;
-			}
+    switch(m_Type)
+    {
+    case QCFVariant::Boolean:
+        return m_Bool;
+    case QCFVariant::String:
+        if (m_String->compare("true", Qt::CaseInsensitive) == 0)
+        {
+            return true;
+        }
+        else if (m_String->compare("false", Qt::CaseInsensitive) == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return toInt() != 0;
+        }
 
-			break;
-        case QCFVariant::Number:
-			if (m_Number == 0)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-			break;
-		default:;
-	}
+        break;
+    case QCFVariant::Number:
+        if (m_Number == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+        break;
+    default:;
+    }
 
     throw QMKFusionExpressionException(QObject::tr("The value cannot be converted to a boolean."));
 }

@@ -8,10 +8,10 @@
 class QProjectFile
 {
 public:
-	//QProjectFile();
-	QString m_FileName;
-	bool m_IsFolder;
-	qint64 m_FileSize;
+    //QProjectFile();
+    QString m_FileName;
+    bool m_IsFolder;
+    qint64 m_FileSize;
 protected:
 private:
 };

@@ -73,14 +73,14 @@ void QCFTemplateGenerator::generateCpp(const QString &dstFilePath)
         }
 
         if (
-                (function.m_ChildElements.at(pos).m_Type == Variable)&&
-                (
+            (function.m_ChildElements.at(pos).m_Type == Variable)&&
+            (
                 (function.m_ChildElements.at(pos).m_Text.compare("public", Qt::CaseInsensitive) == 0)||
                 (function.m_ChildElements.at(pos).m_Text.compare("private", Qt::CaseInsensitive) == 0)||
                 (function.m_ChildElements.at(pos).m_Text.compare("package", Qt::CaseInsensitive) == 0)||
                 (function.m_ChildElements.at(pos).m_Text.compare("remote", Qt::CaseInsensitive) == 0)
-                )
             )
+        )
         {
             f_access = function.m_ChildElements.at(pos).m_Text.toLower();
 

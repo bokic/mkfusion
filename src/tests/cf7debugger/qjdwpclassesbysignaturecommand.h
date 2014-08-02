@@ -12,14 +12,14 @@ struct QJDWPClassesBySignature
         status = 0;
     }
 
-	quint32 refTypeTag;
-	quint64 typeID;
-	qint32 status;
+    quint32 refTypeTag;
+    quint64 typeID;
+    qint32 status;
 };
 
 class QJDWPClassesBySignatureCommand : public QJDWPCommand
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
     explicit QJDWPClassesBySignatureCommand(QObject * = 0);
     virtual ~QJDWPClassesBySignatureCommand();

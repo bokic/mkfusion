@@ -13,24 +13,25 @@ class QCFWorkerThread;
 class Q_DECL_EXPORT QCFVariant
 {
 public:
-	enum QCFVariantType {
-		Null,
-		Boolean,
-		Number,
-		String,
-		DateTime,
-		Array,
-		Struct,
-		Binary,
+    enum QCFVariantType
+    {
+        Null,
+        Boolean,
+        Number,
+        String,
+        DateTime,
+        Array,
+        Struct,
+        Binary,
         Query,
         Component,
         Function,
-		NotImplemented,
-		Error
-	};
+        NotImplemented,
+        Error
+    };
 
 public:
-	QCFVariant();
+    QCFVariant();
     virtual ~QCFVariant();
 
     QCFVariant(bool value);
@@ -49,11 +50,11 @@ public:
     QCFVariant &operator=(QCFVariant &&other);
 #endif
 
-	operator bool();
-	operator int();
-	operator double();
-	operator QString();
-	operator QDateTime();
+    operator bool();
+    operator int();
+    operator double();
+    operator QString();
+    operator QDateTime();
 
     QCFVariant operator+(bool);
     QCFVariant operator+(int);
@@ -167,27 +168,27 @@ public:
     friend QCFVariant operator!(const QCFVariant &);
 
     bool operator!=(int);
-	bool operator!=(double);
+    bool operator!=(double);
     bool operator!=(const QString &);
     bool operator!=(const QCFVariant &);
 
-	bool operator<=(int);
-	bool operator<=(double);
+    bool operator<=(int);
+    bool operator<=(double);
     bool operator<=(const QString &);
     bool operator<=(const QCFVariant &);
 
-	bool operator>=(int);
-	bool operator>=(double);
+    bool operator>=(int);
+    bool operator>=(double);
     bool operator>=(const QString &);
     bool operator>=(const QCFVariant &);
 
-	bool operator<(int);
-	bool operator<(double);
+    bool operator<(int);
+    bool operator<(double);
     bool operator<(const QString &);
     bool operator<(const QCFVariant &);
 
-	bool operator>(int);
-	bool operator>(double);
+    bool operator>(int);
+    bool operator>(double);
     bool operator>(const QString &);
     bool operator>(const QCFVariant &);
 
@@ -205,8 +206,8 @@ public:
     QCFVariant join(const QCFVariant &);
     void setType(QCFVariantType);
     QCFVariantType type() const;
-	int size();
-	QString StructKeyAt(const int);
+    int size();
+    QString StructKeyAt(const int);
     QString toString() const;
     QByteArray toBinary() const;
     double toNumber() const;
@@ -220,17 +221,17 @@ public:
     QCFVariant call(QCFWorkerThread &worker, const QString &function, QHash<QString, QCFVariant> params);
 
 
-	// Member Variables
+    // Member Variables
     QVector<QCFVariant> *m_Array;
     QMap<QString, QCFVariant> *m_Struct;
     QString *m_String;
     QByteArray *m_ByteArray;
-	double m_Number;
-	bool m_Bool;
+    double m_Number;
+    bool m_Bool;
     QDateTime *m_DateTime;
     QCFVariantComponent *m_Component;
     QCFVariantFunction *m_Function;
-	QCFVariantType m_Type;
+    QCFVariantType m_Type;
     quint32 m_ArrayDimension;
     QCFVariant *m_HiddenScopeFirst;
     QCFVariant *m_HiddenScopeLast1;

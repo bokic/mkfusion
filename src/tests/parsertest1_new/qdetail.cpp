@@ -14,7 +14,7 @@ QDetail::QDetail(QWidget *parent) :
 {
     ui->setupUi(this);
 
-	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+    setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 
 #ifdef Q_OS_WIN
     QFont l_Font = QFont("Courier", 10, 0, false);
@@ -27,7 +27,7 @@ QDetail::QDetail(QWidget *parent) :
 QDetail::~QDetail()
 {
     delete ui;
-	ui = 0;
+    ui = 0;
 }
 
 void QDetail::setFileForParsing(const QString &p_File)

@@ -1,9 +1,9 @@
 #include "qjdwpcommand.h"
 
 QJDWPCommand::QJDWPCommand(QObject *parent)
-	: QObject(parent)
-	, m_CommandID(0)
-{	
+    : QObject(parent)
+    , m_CommandID(0)
+{
 }
 
 QJDWPCommand::~QJDWPCommand()
@@ -12,5 +12,5 @@ QJDWPCommand::~QJDWPCommand()
 
 quint32 QJDWPCommand::getCommandID() const
 {
-	return this->m_CommandID;
+    return this->m_CommandID;
 }

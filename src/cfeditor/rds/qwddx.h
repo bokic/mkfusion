@@ -10,22 +10,23 @@
 class QWDDX
 {
 public:
-	enum QWDDXType {
-		Null,
-		Boolean,
-		Number,
-		String,
-		DateTime,
-		Array,
-		Struct,
-		Binary,
-		Recordset,
-		NotImplemented,
-		Error
-	};
+    enum QWDDXType
+    {
+        Null,
+        Boolean,
+        Number,
+        String,
+        DateTime,
+        Array,
+        Struct,
+        Binary,
+        Recordset,
+        NotImplemented,
+        Error
+    };
 
 public:
-	QWDDX();
+    QWDDX();
     QWDDX(QWDDXType type);
     QWDDX &operator=(const QString &value);
     QWDDX &operator=(const char *value);
@@ -47,14 +48,14 @@ public:
     bool toBool() const;
 protected:
 private:
-	QVector<QWDDX> m_Array;
-	QHash<QString, QWDDX> m_Struct;
-	QString m_String;
-	QByteArray m_ByteArray;
-	double m_Number;
-	bool m_Bool;
-	QDateTime m_DateTime;
-	QWDDXType m_Type;
+    QVector<QWDDX> m_Array;
+    QHash<QString, QWDDX> m_Struct;
+    QString m_String;
+    QByteArray m_ByteArray;
+    double m_Number;
+    bool m_Bool;
+    QDateTime m_DateTime;
+    QWDDXType m_Type;
 };
 
 #endif // QWDDX_H

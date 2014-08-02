@@ -1,0 +1,29 @@
+astyle miss-formating
+1. namespace UI
+  - should be
+    * namespace UI {
+  - but generates as
+    * namespace UI
+    * {
+
+2. struct
+  - should be
+    * struct xxx {
+  - but generates as
+    * struct xxx
+    * {
+
+3. while(post check)
+  - should be
+    * } while (xxx);
+  - but generates as
+    * }
+    * while (xxx);
+
+4. enum
+  - should be
+    * enum xxx {
+  - but generates as
+    * enum xxx
+    * {
+

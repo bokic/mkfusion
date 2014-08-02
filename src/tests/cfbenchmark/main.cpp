@@ -13,7 +13,7 @@
 
 class TestCases : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 private slots:
     //void origPI();
     //void optPI();
@@ -51,7 +51,8 @@ void TestCases::optPI()
 
 void TestCases::optPI2()
 {
-    QBENCHMARK {
+    QBENCHMARK
+    {
         QCFGeneratedWorkerThreadOpt2 optTemplate;
 
         optTemplate.executePage();

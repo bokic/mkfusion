@@ -28,18 +28,18 @@ class QCFGeneratedWorkerThreadOpt2 : public QCFWorkerThread
 {
 public:
     QCFGeneratedWorkerThreadOpt2()
-	{
+    {
         //m_isModified.m_Filename = QStringLiteral("/var/www/pi.cfm");
         //m_isModified.m_Size = 2081;
         //m_isModified.m_Modified = 1374408058;
-	}
-	
+    }
+
     virtual ~QCFGeneratedWorkerThreadOpt2()
-	{
-	}
-	
+    {
+    }
+
     virtual void executePage() override
-	{
+    {
         QCFVariant *c_VARIABLES_FINAL = 0;
         QCFVariant *c_VARIABLES_TMP = 0;
         QCFVariant *c_VARIABLES_PRECISION = 0;
@@ -79,7 +79,7 @@ public:
             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_TMP, QStringLiteral("TMP"));
             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_I, QStringLiteral("I"));
             (*c_VARIABLES_TMP)[*c_VARIABLES_I] = 0;
-		}
+        }
 
         //m_VARIABLES["KEEPLOOPING"] = QCFVariant(true);
         QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_KEEPLOOPING, QStringLiteral("KEEPLOOPING"));
@@ -180,7 +180,9 @@ public:
                             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_TRANSFER, QStringLiteral("TRANSFER"));
                             (*c_VARIABLES_TRANSFER) = 1;
 
-                        } else {
+                        }
+                        else
+                        {
                             //m_VARIABLES["FINAL"][m_VARIABLES["I"]] = m_VARIABLES["TMP_VAL"];
                             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_FINAL, QStringLiteral("FINAL"));
                             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_I, QStringLiteral("I"));
@@ -193,7 +195,9 @@ public:
                         }
                     }
 
-                } else {
+                }
+                else
+                {
 
                     //m_VARIABLES["TRANSFER"] = QCFVariant(0);
                     QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_TRANSFER, QStringLiteral("TRANSFER"));
@@ -227,7 +231,9 @@ public:
                             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_TRANSFER, QStringLiteral("TRANSFER"));
                             (*c_VARIABLES_TRANSFER) = 1;
 
-                        } else {
+                        }
+                        else
+                        {
                             //m_VARIABLES["FINAL"][m_VARIABLES["I"]] = m_VARIABLES["TMP_VAL"];
                             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_FINAL, QStringLiteral("FINAL"));
                             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_I, QStringLiteral("I"));
@@ -281,7 +287,7 @@ public:
             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_I, QStringLiteral("I"));
             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_TMP_VAL, QStringLiteral("TMP_VAL"));
             (*c_VARIABLES_FINAL)[(*c_VARIABLES_I)] = (*c_VARIABLES_TMP_VAL) % 10;
-		}
+        }
 
         //m_VARIABLES["PI"] = QString("");
         QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_PI, QStringLiteral("PI"));
@@ -306,7 +312,7 @@ public:
                 QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_PI, QStringLiteral("PI"));
                 (*c_VARIABLES_PI) = (*c_VARIABLES_PI) & QStringLiteral(".");
             }
-		}
+        }
 
         m_CFOutput++;
 
@@ -315,5 +321,5 @@ public:
         f_WriteOutput((*c_VARIABLES_PI));
 
         m_CFOutput--;
-	}
+    }
 };

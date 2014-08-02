@@ -97,5 +97,5 @@ int main(int argc, char **argv)
         puts(fileContent.toUtf8().constData());
     }
 
-	return 0;
+    return 0;
 }

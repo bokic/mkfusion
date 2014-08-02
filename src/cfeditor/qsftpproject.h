@@ -16,17 +16,17 @@ QT_BEGIN_NAMESPACE
 class QSFTPProject: public QProject
 {
 public:
-	QSFTPProject(const QHash<QString, QString> &);
+    QSFTPProject(const QHash<QString, QString> &);
     virtual ~QSFTPProject();
-	virtual char getDirSeparator();
-	virtual QByteArray ReadFile(const QString &);
-	virtual void WriteFile(const QString &, const QByteArray &);
-	virtual void DeleteFile(const QString &);
-	virtual void RenameFile(const QString &, const QString &);
-	virtual QList<QProjectFile> getFolderItems(const QString &);
-	virtual void CreateDir(const QString &);
-	virtual void DeleteDir(const QString &, bool);
-	virtual void RenameDir(const QString &, const QString &);
+    virtual char getDirSeparator();
+    virtual QByteArray ReadFile(const QString &);
+    virtual void WriteFile(const QString &, const QByteArray &);
+    virtual void DeleteFile(const QString &);
+    virtual void RenameFile(const QString &, const QString &);
+    virtual QList<QProjectFile> getFolderItems(const QString &);
+    virtual void CreateDir(const QString &);
+    virtual void DeleteDir(const QString &, bool);
+    virtual void RenameDir(const QString &, const QString &);
     const QString &getHostName();
     quint16 getPort();
     const QString &getUsername();
@@ -37,8 +37,8 @@ protected:
     QString m_Username;
     QString m_Password;
 private:
-	ssh_session m_SSHSession;
-	sftp_session m_SFTPSession;
+    ssh_session m_SSHSession;
+    sftp_session m_SFTPSession;
 };
 
 QT_END_NAMESPACE

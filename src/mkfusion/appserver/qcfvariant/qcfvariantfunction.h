@@ -17,19 +17,19 @@ public:
     QCFVariantFunction();
     QCFVariantFunction(const QCFVariantFunction &other);
     QCFVariantFunction(
-            const QString &name,
-            const QString &access,
-            const QString &desc,
-            const QString &dispName,
-            const QString &hint,
-            const QString &output,
-            const QString &returnFormat,
-            const QString &returnType,
-            const QString &roles,
-            const QString &secureJSON,
-            const QString &verifyClients,
-            const QCFVariantArgumentList &args,
-            QCFVariantFunctor function
+        const QString &name,
+        const QString &access,
+        const QString &desc,
+        const QString &dispName,
+        const QString &hint,
+        const QString &output,
+        const QString &returnFormat,
+        const QString &returnType,
+        const QString &roles,
+        const QString &secureJSON,
+        const QString &verifyClients,
+        const QCFVariantArgumentList &args,
+        QCFVariantFunctor function
     );
 #ifdef Q_COMPILER_RVALUE_REFS
     QCFVariantFunction &operator=(QCFVariantFunction &&other);

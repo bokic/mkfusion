@@ -28,7 +28,10 @@ class QCFVariantArgumentList : public QList<QCFVariantArgument>
 {
 public:
     inline QCFVariantArgumentList() { }
-    inline explicit QCFVariantArgumentList(const QCFVariantArgument &i) { append(i); }
+    inline explicit QCFVariantArgumentList(const QCFVariantArgument &i)
+    {
+        append(i);
+    }
     inline QCFVariantArgumentList(const QCFVariantArgumentList &l) : QList<QCFVariantArgument>(l) { }
     inline QCFVariantArgumentList(const QList<QCFVariantArgument> &l) : QList<QCFVariantArgument>(l) { }
 #ifdef Q_COMPILER_INITIALIZER_LISTS
@@ -36,7 +39,10 @@ public:
 #endif
 
     inline QCFVariantArgumentList &operator<<(const QCFVariantArgument &arg)
-    { append(arg); return *this; }
+    {
+        append(arg);
+        return *this;
+    }
 };
 
 #endif // QCFVARIANTARGUMENT_H

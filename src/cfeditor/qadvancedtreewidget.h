@@ -6,14 +6,14 @@
 
 class QAdvancedTreeWidget: public QTreeWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
 protected:
-	virtual void keyPressEvent(QKeyEvent*); 
+    virtual void keyPressEvent(QKeyEvent*);
 private:
 public:
 signals:
-	void keyPress(QAdvancedTreeWidget*, QKeyEvent*);
+    void keyPress(QAdvancedTreeWidget*, QKeyEvent*);
 };
 
 #endif // QADVANCEDTREEWIDGET_H

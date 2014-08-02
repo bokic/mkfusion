@@ -12,7 +12,7 @@ QDetail::QDetail(QWidget *parent) :
 {
     ui->setupUi(this);
 
-	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+    setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 
 #ifdef Q_OS_WIN
     QFont l_Font = QFont("Courier", 10, 0, false);
@@ -25,7 +25,7 @@ QDetail::QDetail(QWidget *parent) :
 QDetail::~QDetail()
 {
     delete ui;
-	ui = 0;
+    ui = 0;
 }
 
 void QDetail::setFileForParsing(const QString &p_File)
@@ -36,7 +36,7 @@ void QDetail::setFileForParsing(const QString &p_File)
     fileContent.replace("\r\n", "\n"); // TODO: Investigate this when possible.
     file.close();
 
-	ui->textEdit->setPlainText(fileContent);
+    ui->textEdit->setPlainText(fileContent);
 
     if (m_Parser.parse(fileContent) == NoError)
     {
@@ -227,7 +227,9 @@ void QDetail::recolor()
         if (tag.m_TagType == CommentTagType)
         {
             ui->textEdit->setTextColor(QColor(128, 128, 128));
-        } else {
+        }
+        else
+        {
             ui->textEdit->setTextColor(QColor(128, 0, 0));
         }
 
@@ -266,35 +268,35 @@ void QDetail::colorElement(const QCFParserElement &p_Element, const QString &p_E
 
     switch (p_Element.m_Type)
     {
-        case CFTagArguments:
-            //ui->textEdit->setTextColor(QColor(255, 128, 0));
-            break;
-        case CFTagArgument:
-            ui->textEdit->setTextColor(QColor(255, 255, 0));
-            break;
-        case Variable:
-            ui->textEdit->setTextColor(QColor(128, 128, 0));
-            break;
-        case Operator:
-            ui->textEdit->setTextColor(QColor(0, 0, 0));
-            break;
-        case Number:
-            ui->textEdit->setTextColor(QColor(0, 255, 0));
-            break;
-        case String:
-            ui->textEdit->setTextColor(QColor(0, 0, 255));
-            break;
-        case SharpExpression:
-            ui->textEdit->setTextColor(QColor(72, 72, 0));
-            break;
-        case Expression:
-            ui->textEdit->setTextColor(QColor(92, 92, 0));
-            break;
-        case CFComment:
-            ui->textEdit->setTextColor(QColor(128, 128, 128));
-            break;
-        default:
-            break;
+    case CFTagArguments:
+        //ui->textEdit->setTextColor(QColor(255, 128, 0));
+        break;
+    case CFTagArgument:
+        ui->textEdit->setTextColor(QColor(255, 255, 0));
+        break;
+    case Variable:
+        ui->textEdit->setTextColor(QColor(128, 128, 0));
+        break;
+    case Operator:
+        ui->textEdit->setTextColor(QColor(0, 0, 0));
+        break;
+    case Number:
+        ui->textEdit->setTextColor(QColor(0, 255, 0));
+        break;
+    case String:
+        ui->textEdit->setTextColor(QColor(0, 0, 255));
+        break;
+    case SharpExpression:
+        ui->textEdit->setTextColor(QColor(72, 72, 0));
+        break;
+    case Expression:
+        ui->textEdit->setTextColor(QColor(92, 92, 0));
+        break;
+    case CFComment:
+        ui->textEdit->setTextColor(QColor(128, 128, 128));
+        break;
+    default:
+        break;
     }
 
     ushort c = 0;

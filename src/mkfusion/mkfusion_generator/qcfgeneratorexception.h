@@ -20,12 +20,18 @@ public:
         , m_Message(message)
         , m_pos(pos)
     {
-	}
+    }
 
     ~QCFGeneratorException() throw() {}
 
-	void raise() const { throw *this; }
-    QException *clone() const { return new QCFGeneratorException(*this); }
+    void raise() const
+    {
+        throw *this;
+    }
+    QException *clone() const
+    {
+        return new QCFGeneratorException(*this);
+    }
 
     QString m_Message;
     int m_pos;

@@ -8,31 +8,31 @@ QByteArray QDefaultService::ExecuteRDSCommand(const QRDSServer &rdsserver, quint
 {
     Q_UNUSED(map);
 
-	QByteArray ret;
+    QByteArray ret;
 
     switch (command)
-	{
-	case 0:
+    {
+    case 0:
         return IdeDefault(rdsserver);
-		break;
-	}
-	
-	return ret;
+        break;
+    }
+
+    return ret;
 }
 
 QByteArray QDefaultService::IdeDefault(QRDSServer rdsserver)
 {
-	QVector<QString> vector;
-	
-	vector.append("Configurations");
-	vector.append("7, 0, 0, 0");
-	
-	QByteArray ba = executeRDSCommandForByteArray("IDE_DEFAULT", rdsserver, vector);
+    QVector<QString> vector;
 
-	if (BreakByteArrayIntoVector(ba).size() >= 3)
-		rdsserver.setAuthenticated(true);
-	else
-		rdsserver.setAuthenticated(false);
+    vector.append("Configurations");
+    vector.append("7, 0, 0, 0");
 
-	return ba;
+    QByteArray ba = executeRDSCommandForByteArray("IDE_DEFAULT", rdsserver, vector);
+
+    if (BreakByteArrayIntoVector(ba).size() >= 3)
+        rdsserver.setAuthenticated(true);
+    else
+        rdsserver.setAuthenticated(false);
+
+    return ba;
 }

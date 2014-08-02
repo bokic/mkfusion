@@ -7,30 +7,30 @@
 
 class QCFDebugger: public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	QCFDebugger(QRDSServer);
-	quint16 getDebuggerPort();
-	QString getSessionID();
-	bool StartDebugger();
-	bool StopDebugger();
-	bool SetMonitorScopes(QString);
-	bool BreakOnException(bool);
-	bool SetBreakpoint(QString, int, bool, int = 1);
+    QCFDebugger(QRDSServer);
+    quint16 getDebuggerPort();
+    QString getSessionID();
+    bool StartDebugger();
+    bool StopDebugger();
+    bool SetMonitorScopes(QString);
+    bool BreakOnException(bool);
+    bool SetBreakpoint(QString, int, bool, int = 1);
 protected:
 private:
-	QRDSServer m_RDSServer;
-	quint16 m_ServerPort;
-	QString m_SessionID;
-	QTcpSocket m_EventSocket;
-	bool m_EventReconect;
-	QByteArray m_EventReadData;
+    QRDSServer m_RDSServer;
+    quint16 m_ServerPort;
+    QString m_SessionID;
+    QTcpSocket m_EventSocket;
+    bool m_EventReconect;
+    QByteArray m_EventReadData;
 private slots:
     void onEventConnected();
     void onEventDisconnected();
     void onEventError(QAbstractSocket::SocketError);
     void onEventReadyRead();
-	void onEventBytesWritten(qint64);
+    void onEventBytesWritten(qint64);
 };
 
 #endif // QCFDEBUGGER_H

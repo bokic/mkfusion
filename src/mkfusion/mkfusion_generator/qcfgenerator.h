@@ -40,7 +40,7 @@ protected:
 
     QCFParser m_Parser;
     QHash<QString, QString> m_CustomTagsPrefixes;
-	bool m_EnableCFOutputOnly;
+    bool m_EnableCFOutputOnly;
     int m_Tabs;
     QList<const QCFParserTag *> m_SwitchTags;
     QList<const QCFParserTag *> m_NestedTags;

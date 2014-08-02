@@ -6,8 +6,9 @@
 #include <QMainWindow>
 #include "qadvancedtreewidget.h"
 
-namespace Ui {
-    class QAppMainWindow;
+namespace Ui
+{
+class QAppMainWindow;
 }
 
 class QAppMainWindow : public QMainWindow
@@ -19,7 +20,7 @@ public:
     virtual ~QAppMainWindow();
 
 private slots:
-	void on_m_Browser_titleChanged(QString title);
+    void on_m_Browser_titleChanged(QString title);
 
     void on_action_New_triggered();
     void on_action_Open_triggered();
@@ -48,13 +49,13 @@ private slots:
     void on_action_Hide_Everything_triggered();
     void on_action_ColdFusion_Help_triggered();
     void on_action_About_triggered();
-	void on_m_ProjectTree_itemExpanded(QTreeWidgetItem*);
-	void on_m_ProjectTree_itemCollapsed(QTreeWidgetItem*);
-	void on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem*, int);
-	void on_m_ProjectTree_keyPress(QAdvancedTreeWidget*, QKeyEvent*);
+    void on_m_ProjectTree_itemExpanded(QTreeWidgetItem*);
+    void on_m_ProjectTree_itemCollapsed(QTreeWidgetItem*);
+    void on_m_ProjectTree_itemDoubleClicked(QTreeWidgetItem*, int);
+    void on_m_ProjectTree_keyPress(QAdvancedTreeWidget*, QKeyEvent*);
     //void on_centralwidget_Item_textChanged();
-	void on_centralwidget_currentChanged(int);
-	void on_centralwidget_tabCloseRequested(int);
+    void on_centralwidget_currentChanged(int);
+    void on_centralwidget_tabCloseRequested(int);
     void onmy_textedit_key_press(QKeyEvent*);
     void onmy_textedit_text_change();
     void onmy_textedit_breakpoint_change(int);
@@ -62,11 +63,11 @@ private slots:
 private:
     void LoadProject(const QString &);
     void UpdateProjectFileList(const QString & = "", QTreeWidgetItem * = nullptr);
-	void recolor();
+    void recolor();
 //	void colorElement(const QCFParserElement &);
-	Ui::QAppMainWindow *ui;
-	QProject *m_Project;
-	QString m_ProjectFileName;
+    Ui::QAppMainWindow *ui;
+    QProject *m_Project;
+    QString m_ProjectFileName;
 };
 
 #endif // QAPPMAINWINDOW_H

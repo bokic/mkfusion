@@ -19,8 +19,8 @@ public:
     QCFServer();
     virtual ~QCFServer();
 
-	void start();
-	void stop();
+    void start();
+    void stop();
     QString MKFusionPath() const;
     static QCFServer * instance();
     QString osName() const;

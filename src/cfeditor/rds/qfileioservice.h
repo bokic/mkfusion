@@ -13,7 +13,8 @@
 class QFileIOService : public QAbstractRDSService
 {
 public:
-    enum QFileIOCommand {
+    enum QFileIOCommand
+    {
         QBrowseDirCommand,
         QFileReadCommand,
         QFileWriteCommand,

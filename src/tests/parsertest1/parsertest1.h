@@ -10,7 +10,7 @@
 
 class CFTest1 : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
     CFTest1(QWidget *parent = 0, Qt::WindowFlags flags = 0);
