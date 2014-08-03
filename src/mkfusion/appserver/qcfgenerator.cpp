@@ -14,6 +14,7 @@ QCFGenerator::QCFGenerator()
     : m_CFTagsDef(QCF8::generateCFTags())
     , m_CFFunctionsDef(QCF8::generateCFFunctions())
     , m_EnableCFOutputOnly(false)
+    , m_InsideCFQueryTag(false)
     , m_Tabs("\t\t")
 {
 }
@@ -297,7 +298,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
                         l_tmpStr.replace("##", "#");
                     }
 
-                    if (!m_EnableCFOutputOnly)
+                    if ((m_EnableCFOutputOnly == false)||(m_InsideCFQueryTag))
                     {
                         l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
                     }
@@ -314,7 +315,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
                         l_tmpStr.replace("##", "#");
                     }
 
-                    if (!m_EnableCFOutputOnly)
+                    if ((m_EnableCFOutputOnly == false)||(m_InsideCFQueryTag))
                     {
                         l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
                     }
@@ -362,7 +363,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
             l_tmpStr.replace("##", "#");
         }
 
-        if (!m_EnableCFOutputOnly)
+        if ((m_EnableCFOutputOnly == false)||(m_InsideCFQueryTag))
         {
             l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
         }
@@ -378,7 +379,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
                 l_tmpStr.replace("##", "#");
             }
 
-            if (!m_EnableCFOutputOnly)
+            if ((m_EnableCFOutputOnly == false)||(m_InsideCFQueryTag))
             {
                 l_cppFile.write(QString(m_Tabs + "f_WriteOutput(QString::fromWCharArray(L\"" + toCPPEncodeStr(l_tmpStr) + "\", " + QString::number(l_tmpStr.length()) + "));\n").toUtf8());
             }
@@ -2040,11 +2041,13 @@ QString QCFGenerator::GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag)
             l_queryType = CFTagGetArgumentPlain(p_CFTag, "type");
             l_queryName = CFTagGetArgumentPlain(p_CFTag, "name");
             l_queryDataSource = CFTagGetArgument(p_CFTag, "datasource");
+            m_InsideCFQueryTag = true;
             break;
         case EndCFTagType:
             l_queryType = CFTagGetArgumentPlain(*p_CFTag.m_OtherTag, "type");
             l_queryName = CFTagGetArgumentPlain(*p_CFTag.m_OtherTag, "name");
             l_queryDataSource = CFTagGetArgument(*p_CFTag.m_OtherTag, "datasource");
+            m_InsideCFQueryTag = false;
             break;
         default:
             break;
