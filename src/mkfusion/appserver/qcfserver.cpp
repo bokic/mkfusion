@@ -248,8 +248,8 @@ void QCFServer::readConfig()
 #endif
 
     iniFile.beginGroup("Setup");
-
     QString path = iniFile.value("CustomTagsDir").toString();
+    iniFile.endGroup();
 
     if (path.isEmpty())
     {
@@ -336,6 +336,7 @@ void QCFServer::readConfig()
             qDebug() << "Unsupported database connection(" << connectionDriver << ")";
         }
     }
+    iniFile.endGroup();
 }
 
 QSqlDatabase *QCFServer::getDBConnection(const QString &datasource)
