@@ -30,6 +30,7 @@ private:
     QHash<QString, QCFFunction> m_CFFunctionsDef;
     QHash<QString, QString> m_CustomTagsPrefixes;
     bool m_EnableCFOutputOnly;
+    int m_InsideCFOutputTag;
     bool m_InsideCFQueryTag;
     QString m_Tabs;
     QList<const QCFParserTag *> m_SwitchTags;
