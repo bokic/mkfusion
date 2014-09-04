@@ -81,7 +81,7 @@ QString QCFGenerator::toCPPEncodeStr(const QString &str)
     return ret;
 }
 
-QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath)
+QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, const QString &p_MKFusionPath, const QString &p_CopyGeneratedFilesToPath)
 {
     qint64 elapsedMS, startMS, endMS;
 
@@ -430,8 +430,14 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
     elapsedMS = endMS - startMS;
     qDebug() << "Compiling" << p_Target << "took" << elapsedMS << "miliseconds.";
 
+    if (!p_CopyGeneratedFilesToPath.isEmpty())
+    {
+        QFile::copy(l_CPP_Target, p_CopyGeneratedFilesToPath + "/" + QFileInfo(l_CPP_Target).fileName());
+        QFile::copy(l_OBJ_Target, p_CopyGeneratedFilesToPath + "/" + QFileInfo(l_OBJ_Target).fileName());
+    }
+
 #ifdef QT_NO_DEBUG
-    //QFile::remove(l_CPP_Target);
+    QFile::remove(l_CPP_Target);
 #endif
 
     if ((finished == false)||(process.exitCode() != 0))
@@ -506,6 +512,11 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
         }
 
         return "link error: " + errorString;
+    }
+
+    if (!p_CopyGeneratedFilesToPath.isEmpty())
+    {
+        QFile::copy(l_LIB_Target, p_CopyGeneratedFilesToPath + "/" + QFileInfo(l_LIB_Target).fileName());
     }
 
     return "";

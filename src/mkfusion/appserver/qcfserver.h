@@ -48,6 +48,7 @@ public:
     QHash<QString, QSqlDatabase> m_DatabasePool;
     QLocalServer m_LocalServer;
     QReadWriteLock m_runningTemplatesLock;
+    QString m_LeaveGeneratedFilesPath;
     QString m_CustomTagsPath;
     QString m_MKFusionPath;
     QString m_TemplatesPath;

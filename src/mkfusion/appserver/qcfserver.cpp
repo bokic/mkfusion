@@ -265,6 +265,8 @@ void QCFServer::readConfig()
 
     m_CustomTagsPath = path;
 
+    m_LeaveGeneratedFilesPath = iniFile.value("LeaveGeneratedFilesPath").toString();
+
     iniFile.beginGroup("Database");
     for(const QString &group : iniFile.childKeys())
     {
@@ -415,7 +417,14 @@ QString QCFServer::compileTemplate(const QString &p_Filename, const QString &p_U
 #endif
 
     QCFGenerator l_generator;
-    QString ret = l_generator.compile(l_parser, m_TemplatesPath + l_NewTemplateFile, m_MKFusionPath);
+    QString l_CopyGeneratedFilesToDir;
+
+    if (p_Filename.indexOf(m_LeaveGeneratedFilesPath) == 0)
+    {
+        l_CopyGeneratedFilesToDir = QFileInfo(p_Filename).absolutePath();
+    }
+
+    QString ret = l_generator.compile(l_parser, m_TemplatesPath + l_NewTemplateFile, m_MKFusionPath, l_CopyGeneratedFilesToDir);
 
     if (ret.isEmpty())
     {
