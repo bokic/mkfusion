@@ -3802,7 +3802,7 @@ Q_DECL_EXPORT bool cf_StructKeyExists(const QWDDX &structure, const QString &key
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
 
-    return structure.m_Struct->contains(key);
+    return structure.m_Struct->contains(key.toUpper());
 }
 
 Q_DECL_EXPORT QString cf_StructKeyList(const QWDDX &structure, const QString &delimiter)
