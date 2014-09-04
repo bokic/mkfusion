@@ -4,7 +4,7 @@
 
 
 QMKFusionService::QMKFusionService(int argc, char **argv)
-    : QtService<QCoreApplication>(argc, argv, "MKFusion")
+    : QtService<QCoreApplication>(argc, argv, "mkfusion-service")
 {
     setStartupType(QtServiceController::AutoStartup);
     setServiceDescription("MKFusion application server.");

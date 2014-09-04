@@ -447,16 +447,13 @@ int QtServiceBasePrivate::run(bool asService, const QStringList &argList)
     for (int i = 0; i < argc; ++i)
         argv[i] = argvData[i].data();
 
-    if (asService && !sysInit())
-        return -1;
-
     q_ptr->createApplication(argc, argv.data());
     QCoreApplication *app = QCoreApplication::instance();
     if (!app)
         return -1;
 
-    if (asService)
-        sysSetPath();
+    if (asService && !sysInit())
+        return -1;
 
     QtServiceStarter starter(this);
     QTimer::singleShot(0, &starter, SLOT(slotStart()));

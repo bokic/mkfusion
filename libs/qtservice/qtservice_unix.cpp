@@ -40,9 +40,9 @@
 
 #include "qtservice.h"
 #include "qtservice_p.h"
-#include "qtunixsocket.h"
-#include "qtunixserversocket.h"
 #include <QCoreApplication>
+#include <QLocalServer>
+#include <QLocalSocket>
 #include <QStringList>
 #include <QFile>
 #include <QTimer>
@@ -75,30 +75,16 @@ static QString encodeName(const QString &name, bool allowUpper = false)
     return n;
 }
 
-static QString login()
-{
-    QString l;
-    uid_t uid = getuid();
-    passwd *pw = getpwuid(uid);
-    if (pw)
-        l = QString(pw->pw_name);
-    return l;
-}
-
-static QString socketPath(const QString &serviceName)
-{
-    QString sn = encodeName(serviceName);
-    return QString(QLatin1String("/var/tmp/") + sn + QLatin1String(".") + login());
-}
-
 static bool sendCmd(const QString &serviceName, const QString &cmd)
 {
     bool retValue = false;
-    QtUnixSocket sock;
-    if (sock.connectTo(socketPath(serviceName))) {
+    QLocalSocket sock;
+    sock.connectToServer(serviceName);
+    sock.open();
+    if (sock.isOpen()) {
         sock.write(QString(cmd+"\r\n").toLatin1().constData());
-	sock.flush();
-        sock.waitForReadyRead(-1);
+        sock.waitForBytesWritten();
+        sock.waitForReadyRead();
         QString reply = sock.readAll();
         if (reply == QLatin1String("true"))
             retValue = true;
@@ -258,10 +244,10 @@ bool QtServiceController::isInstalled() const
 
 bool QtServiceController::isRunning() const
 {
-    QtUnixSocket sock;
-    if (sock.connectTo(socketPath(serviceName())))
-	return true;
-    return false;
+    QLocalSocket sock;
+    sock.connectToServer(serviceName());
+    sock.open();
+    return sock.isOpen();
 }
 
 
@@ -269,7 +255,7 @@ bool QtServiceController::isRunning() const
 
 ///////////////////////////////////
 
-class QtServiceSysPrivate : public QtUnixServerSocket
+class QtServiceSysPrivate : public QLocalServer
 {
     Q_OBJECT
 public:
@@ -281,19 +267,19 @@ public:
     QtServiceBase::ServiceFlags serviceFlags;
 
 protected:
-    void incomingConnection(int socketDescriptor);
+    void incomingConnection(quintptr socketDescriptor);
 
 private slots:
     void slotReady();
     void slotClosed();
 
 private:
-    QString getCommand(const QTcpSocket *socket);
-    QMap<const QTcpSocket *, QString> cache;
+    QString getCommand(const QLocalSocket *socket);
+    QMap<const QLocalSocket *, QString> cache;
 };
 
 QtServiceSysPrivate::QtServiceSysPrivate()
-    : QtUnixServerSocket(), ident(0), serviceFlags(0)
+    : QLocalServer(), ident(0), serviceFlags(0)
 {
 }
 
@@ -303,17 +289,17 @@ QtServiceSysPrivate::~QtServiceSysPrivate()
 	delete[] ident;
 }
 
-void QtServiceSysPrivate::incomingConnection(int socketDescriptor)
+void QtServiceSysPrivate::incomingConnection(quintptr socketDescriptor)
 {
-    QTcpSocket *s = new QTcpSocket(this);
+    QLocalSocket *s = new QLocalSocket(this);
     s->setSocketDescriptor(socketDescriptor);
-    connect(s, &QTcpSocket::readyRead, this, &QtServiceSysPrivate::slotReady);
-    connect(s, &QTcpSocket::disconnected, this, &QtServiceSysPrivate::slotClosed);
+    connect(s, &QLocalSocket::readyRead, this, &QtServiceSysPrivate::slotReady);
+    connect(s, &QLocalSocket::disconnected, this, &QtServiceSysPrivate::slotClosed);
 }
 
 void QtServiceSysPrivate::slotReady()
 {
-    QTcpSocket *s = (QTcpSocket *)sender();
+    QLocalSocket *s = (QLocalSocket *)sender();
     cache[s] += QString(s->readAll());
     QString cmd = getCommand(s);
     while (!cmd.isEmpty()) {
@@ -354,11 +340,11 @@ void QtServiceSysPrivate::slotReady()
 
 void QtServiceSysPrivate::slotClosed()
 {
-    QTcpSocket *s = (QTcpSocket *)sender();
+    QLocalSocket *s = (QLocalSocket *)sender();
     s->deleteLater();
 }
 
-QString QtServiceSysPrivate::getCommand(const QTcpSocket *socket)
+QString QtServiceSysPrivate::getCommand(const QLocalSocket *socket)
 {
     int pos = cache[socket].indexOf("\r\n");
     if (pos >= 0) {
@@ -375,16 +361,8 @@ bool QtServiceBasePrivate::sysInit()
 {
     sysd = new QtServiceSysPrivate;
     sysd->serviceFlags = serviceFlags;
-    // Restrict permissions on files that are created by the service
-    ::umask(027);
 
-    return true;
-}
-
-void QtServiceBasePrivate::sysSetPath()
-{
-    if (sysd)
-        sysd->setPath(socketPath(controller.serviceName()));
+    return sysd->listen(controller.serviceName());
 }
 
 void QtServiceBasePrivate::sysCleanup()

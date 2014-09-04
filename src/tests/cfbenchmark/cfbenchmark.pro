@@ -15,5 +15,5 @@ HEADERS =          pi_orig.h  pi_opt.h ../../mkfusion/appserver/qcfapplication.h
 # QtService
 SOURCES       += ../../../libs/qtservice/qtservice.cpp
 win32:SOURCES += ../../../libs/qtservice/qtservice_win.cpp
-unix:SOURCES  += ../../../libs/qtservice/qtservice_unix.cpp ../../../libs/qtservice/qtunixsocket.cpp ../../../libs/qtservice/qtunixserversocket.cpp
-unix:HEADERS +=                                             ../../../libs/qtservice/qtunixsocket.h   ../../../libs/qtservice/qtunixserversocket.h
+unix:SOURCES  += ../../../libs/qtservice/qtservice_unix.cpp
+HEADERS       += ../../../libs/qtservice/qtservice.h        ../../../libs/qtservice/qtservice_p.h
