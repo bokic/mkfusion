@@ -265,7 +265,9 @@ void QCFServer::readConfig()
 
     m_CustomTagsPath = path;
 
+    iniFile.beginGroup("Setup");
     m_LeaveGeneratedFilesPath = iniFile.value("LeaveGeneratedFilesPath").toString();
+    iniFile.endGroup();
 
     iniFile.beginGroup("Database");
     for(const QString &group : iniFile.childKeys())
