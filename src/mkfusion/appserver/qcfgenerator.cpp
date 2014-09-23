@@ -432,8 +432,27 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
     if (!p_CopyGeneratedFilesToPath.isEmpty())
     {
-        QFile::copy(l_CPP_Target, p_CopyGeneratedFilesToPath + "/" + QFileInfo(l_CPP_Target).fileName());
-        QFile::copy(l_OBJ_Target, p_CopyGeneratedFilesToPath + "/" + QFileInfo(l_OBJ_Target).fileName());
+        QFileInfo cppFilename, objFilename;
+        QString tmp;
+        int i;
+
+        cppFilename = QFileInfo(l_CPP_Target);
+        tmp = cppFilename.baseName();
+        i = tmp.lastIndexOf('_');
+        if (i > 0) {
+            tmp = tmp.left(i);
+            cppFilename = QFileInfo(tmp + "." + cppFilename.suffix());
+        }
+        QFile::copy(l_CPP_Target, p_CopyGeneratedFilesToPath + "/" + cppFilename.fileName());
+
+        objFilename = QFileInfo(l_OBJ_Target);
+        tmp = objFilename.baseName();
+        i = tmp.lastIndexOf('_');
+        if (i > 0) {
+            tmp = tmp.left(i);
+            objFilename = QFileInfo(tmp + "." + objFilename.suffix());
+        }
+        QFile::copy(l_OBJ_Target, p_CopyGeneratedFilesToPath + "/" + objFilename.fileName());
     }
 
 #ifdef QT_NO_DEBUG
@@ -516,7 +535,18 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
 
     if (!p_CopyGeneratedFilesToPath.isEmpty())
     {
-        QFile::copy(l_LIB_Target, p_CopyGeneratedFilesToPath + "/" + QFileInfo(l_LIB_Target).fileName());
+        QFileInfo libFilename;
+        QString tmp;
+        int i;
+
+        libFilename = QFileInfo(l_LIB_Target);
+        tmp = libFilename.baseName();
+        i = tmp.lastIndexOf('_');
+        if (i > 0) {
+            tmp = tmp.left(i);
+            libFilename = QFileInfo(tmp + "." + libFilename.suffix());
+        }
+        QFile::copy(l_LIB_Target, p_CopyGeneratedFilesToPath + "/" + libFilename.fileName());
     }
 
     return "";
