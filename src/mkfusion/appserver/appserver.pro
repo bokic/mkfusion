@@ -8,7 +8,7 @@ TARGET   = mkfusion
 DESTDIR  = ../../../bin
 
 GIT_DESCRIBE = $$system(git describe)
-DEFINES += BUILDNUMBER=\\\"$$GIT_DESCRIBE\\\"
+DEFINES += MKFUSION_BUILD_STRING=\\\"$$GIT_DESCRIBE\\\"
 
 DEPENDPATH  += . ../../../libs/qtservice ../../cfparser
 INCLUDEPATH += . ../../../libs/qtservice ../../cfparser
