@@ -48,7 +48,7 @@ public:
     OutputType m_OutputType;
     QWDDX m_SetCookies;
     QHash<QString, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)>> m_CustomFunctions;
-    QHash<QString, QLibrary*> m_LoadedTemplates;
+    QHash<QString, QLibrary *> m_LoadedTemplates;
     QHash<QString, QCFFileUpload> m_FileUpload;
 
 signals:
@@ -57,7 +57,7 @@ signals:
 public slots:
     void worker();
 private:
-    void * compileAndLoadTemplate(const QString &filename, const QString &uri);
+    void *compileAndLoadTemplate(const QString &filename, const QString &uri);
     void runApplicationTemplate();
     void processPostData(QByteArray post);
 };

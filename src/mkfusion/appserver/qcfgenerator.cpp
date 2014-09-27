@@ -392,16 +392,16 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
     l_cppFile.write("\n");
 
 #ifdef Q_OS_WIN
-    l_cppFile.write("extern \"C\" __declspec(dllexport) QCFTemplate* createCFMTemplate()\n");
+    l_cppFile.write("extern \"C\" __declspec(dllexport) QCFTemplate *createCFMTemplate()\n");
 #elif defined Q_OS_LINUX
-    l_cppFile.write("extern \"C\" QCFTemplate* createCFMTemplate()\n");
+    l_cppFile.write("extern \"C\" QCFTemplate *createCFMTemplate()\n");
 #else
 #error Windows and Linux OSs are currently supported.
 #endif
 
     l_cppFile.write("{\n");
     l_cppFile.write("	return new QCFGeneratedTemplate();\n");
-    l_cppFile.write("};\n");
+    l_cppFile.write("}\n");
     l_cppFile.close();
 
     QProcess process;
