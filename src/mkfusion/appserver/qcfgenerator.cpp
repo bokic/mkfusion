@@ -2397,6 +2397,10 @@ QStringList QCFGenerator::commonCompileSwitches(const QString &p_MKFusionPath)
 #ifdef __x86_64__
            << "-I" << "/usr/share/qt5/mkspecs/linux-g++-64"
            << "-I" << "/usr/lib/qt/mkspecs/linux-g++-64" // Arch linux uses this path
+           << "-I" << "/usr/include/x86_64-linux-gnu/qt5" // Ubuntu 14.10 uses this path
+           << "-I" << "/usr/include/x86_64-linux-gnu/qt5/QtCore" // Ubuntu 14.10 uses this path
+           << "-I" << "/usr/include/x86_64-linux-gnu/qt5/QtNetwork" // Ubuntu 14.10 uses this path
+           << "-I" << "/usr/include/x86_64-linux-gnu/qt5/QtConcurrent" // Ubuntu 14.10 uses this path
 #else
            << "-I" << "/usr/share/qt5/mkspecs/linux-g++"
            << "-I" << "/usr/lib/qt/mkspecs/linux-g++" // Arch linux uses this path
