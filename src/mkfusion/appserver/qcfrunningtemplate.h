@@ -24,6 +24,7 @@ public:
     QCFRunningTemplate();
     virtual ~QCFRunningTemplate();
     void cf_WriteOutput(const QString &string);
+    void setExecutionPositionTo(int row, int column);
 
     // Class members
     QWDDX m_CGI;
@@ -50,6 +51,7 @@ public:
     QHash<QString, std::function<QWDDX (QCFRunningTemplate *, const QList<QWDDX> &arguments)>> m_CustomFunctions;
     QHash<QString, QLibrary *> m_LoadedTemplates;
     QHash<QString, QCFFileUpload> m_FileUpload;
+    bool m_Timeout;
 
 signals:
     void finished();

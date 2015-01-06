@@ -32,6 +32,7 @@ QCFRunningTemplate::QCFRunningTemplate()
     , m_Socket(nullptr)
     , m_CFServer(nullptr)
     , m_OutputType(OutputTypeContent)
+    , m_Timeout(false)
 {
 }
 
@@ -57,6 +58,17 @@ QCFRunningTemplate::~QCFRunningTemplate()
 void QCFRunningTemplate::cf_WriteOutput(const QString &string)
 {
     m_Output.append(string);
+}
+
+void QCFRunningTemplate::setExecutionPositionTo(int row, int column)
+{
+    Q_UNUSED(row);
+    Q_UNUSED(column);
+
+    if (m_Timeout)
+    {
+        throw QMKFusionTemplateException("Template timeout.", "Template didn't finish in time.");
+    }
 }
 
 void *QCFRunningTemplate::compileAndLoadTemplate(const QString &filename, const QString &uri)

@@ -327,7 +327,7 @@ QString QCFGenerator::compile(QCFParser &p_Parser, const QString &p_Target, cons
         QString l_CFromCFTag = GenerateCCodeFromCFTag(l_Tags[c]);
         if (!l_CFromCFTag.isEmpty())
         {
-            l_cppFile.write(QString("\n" + m_Tabs + "// Line %1.\n").arg(l_Tags[c].m_Start).toUtf8());
+            l_cppFile.write(QString("\n" + m_Tabs + "m_TemplateInstance->setExecutionPositionTo(%1, %2);\n").arg(getTextRowFromIndex(l_Text, l_Tags[c].m_Start)).arg(getTextColumnFromIndex(l_Text, l_Tags[c].m_Start)).toUtf8());
             l_cppFile.write(QString(l_CFromCFTag + "\n").toUtf8());
         }
 
@@ -2285,6 +2285,44 @@ void QCFGenerator::rebuildPrecompiledHeader(const QString &p_MKFusionPath)
                  );
 
     process.waitForFinished(-1);
+}
+
+int QCFGenerator::getTextRowFromIndex(const QString &text, int pos)
+{
+    int ret = 1;
+    int cur_pos = 0;
+    int tmp = 0;
+
+    while((tmp = text.indexOf("\n", cur_pos)) >= 0)
+    {
+        if (tmp > pos)
+        {
+            break;
+        }
+
+        cur_pos = tmp + 1;
+        ret++;
+    }
+
+    return ret;
+}
+
+int QCFGenerator::getTextColumnFromIndex(const QString &text, int pos)
+{
+    int cur_pos = 0;
+    int tmp = 0;
+
+    while((tmp = text.indexOf("\n", cur_pos)) >= 0)
+    {
+        if (tmp > pos)
+        {
+            break;
+        }
+
+        cur_pos = tmp + 1;
+    }
+
+    return pos - cur_pos + 1;
 }
 
 QStringList QCFGenerator::commonCompileSwitches(const QString &p_MKFusionPath)

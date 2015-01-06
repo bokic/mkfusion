@@ -25,6 +25,8 @@ public:
     QString GenerateCCodeFromCFTag(const QCFParserTag &p_CFTag);
     static void rebuildPrecompiledHeader(const QString &p_MKFusionPath);
 private:
+    static int getTextRowFromIndex(const QString &text, int pos);
+    static int getTextColumnFromIndex(const QString &text, int pos);
     static QStringList commonCompileSwitches(const QString &p_MKFusionPath);
     QHash<QString, QCFTag> m_CFTagsDef;
     QHash<QString, QCFFunction> m_CFFunctionsDef;
