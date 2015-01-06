@@ -399,16 +399,18 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                     ret.m_ChildElements.append(child);
                 }
 
-                reg = QRegExp(language.tokens.values()[nToken].endString, language.caseSensitivity);
+                reg = QRegExp(token.endString, language.caseSensitivity);
 
                 int index = reg.indexIn(lines.at(start_line).Content, start_column);
-                if (index == start_column)
+                if (index > -1)
                 {
-                    start_column += reg.cap().count();
-
                     ret.m_EndLine = start_line;
-                    ret.m_EndColumn = start_column;
+                    ret.m_EndColumn = index;
                     ret.m_Type = nToken;
+                    if (ret.m_StartLine == ret.m_EndLine)
+                    {
+                        ret.m_Text = lines.at(start_line).Content.mid(ret.m_StartColumn + 1, ret.m_EndColumn - ret.m_StartColumn - 1);
+                    }
 #ifdef DEBUG_QTEXTPARSER
                     ret.m_Debug = language.tokens.keys()[nToken];
 #endif
@@ -544,7 +546,28 @@ bool QTextParser::findFirstElement(const QTextParserLines &lines, int &cur_line,
             col = 0;
         }
 
-        found = findFirstElement(lines.at(line).Content, col, tokens, end_token);
+        QTextParser::QTextParserFindFirstElement element = findFirstElement(lines.at(line).Content, col, tokens, end_token);
+
+        switch(element)
+        {
+        case NoElement:
+            return false;
+            break;
+        case FoundElement:
+            found = true;
+            break;
+        default:
+            break;
+        }
+
+        if (element == NoElement)
+        {
+            return false;
+        }
+        else if (FoundElement)
+        {
+
+        }
 
         if (found)
         {
@@ -558,7 +581,7 @@ bool QTextParser::findFirstElement(const QTextParserLines &lines, int &cur_line,
     return false;
 }
 
-bool QTextParser::findFirstElement(const QString &line, int &cur_column, const QVector<int> &tokens, int end_token)
+QTextParser::QTextParserFindFirstElement QTextParser::findFirstElement(const QString &line, int &cur_column, const QVector<int> &tokens, int end_token)
 {
     bool ret = false;
 
@@ -576,8 +599,13 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
                 break;
             }
 
-            reg = QRegExp(language.tokens.values()[end_token].endString, language.caseSensitivity);
+            QTextParserLanguageDefinitionToken token = language.tokens.values()[end_token];
+            if (token.endString.isEmpty())
+            {
+                break;
+            }
 
+            reg = QRegExp(token.endString, language.caseSensitivity);
             int index = reg.indexIn(line, cur_column);
 
             if (index < 0)
@@ -586,8 +614,6 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
             }
 
             closest_index = index;
-            ret = true;
-
             break;
         }
     }
@@ -602,9 +628,11 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
             continue;
         }
 
-        if (!language.tokens.values()[nToken].tokenString.isEmpty())
+        QTextParserLanguageDefinitionToken token = language.tokens.values()[nToken];
+
+        if (!token.tokenString.isEmpty())
         {
-            reg = QRegExp(language.tokens.values()[nToken].tokenString, language.caseSensitivity);
+            reg = QRegExp(token.tokenString, language.caseSensitivity);
             int index = reg.indexIn(line, cur_column);
 
             if ((index > -1)&&(index < closest_index))
@@ -613,9 +641,9 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
                 ret = true;
             }
         }
-        else if (!language.tokens.values()[nToken].startString.isEmpty())
+        else if (!token.startString.isEmpty())
         {
-            reg = QRegExp(language.tokens.values()[nToken].startString, language.caseSensitivity);
+            reg = QRegExp(token.startString, language.caseSensitivity);
             int index = reg.indexIn(line, cur_column);
 
             if ((index > -1)&&(index < closest_index))
@@ -624,11 +652,11 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
                 ret = true;
             }
         }
-        else if (language.tokens.values()[nToken].nestedTokens.count() > 0)
+        else if (token.nestedTokens.count() > 0)
         {
             int tmp_col = cur_column;
 
-            if (findFirstElement(line, tmp_col, language.tokens.values()[nToken].nestedTokens, -1))
+            if (findFirstElement(line, tmp_col, token.nestedTokens, -1) == FoundElement)
             {
                 if ((tmp_col > -1)&&(tmp_col < closest_index))
                 {
@@ -647,7 +675,14 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
     if (ret)
     {
         cur_column = closest_index;
+
+        return FoundElement;
     }
 
-    return ret;
+    if (closest_index < INT_MAX)
+    {
+        return NoElement;
+    }
+
+    return TryNextLine;
 }

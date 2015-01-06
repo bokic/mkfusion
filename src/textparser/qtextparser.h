@@ -32,6 +32,7 @@
 class QTextParser
 {
 public:
+    enum QTextParserFindFirstElement {NoElement, TryNextLine, FoundElement};
     enum QTextParserEndLineType {EndLineTypeNoEndLine, EndLineTypeCREndLine, EndLineTypeLFEndLine, EndLineTypeCRLFEndLine, EndLineTypeLFCREndLine};
 
     struct QTextParserElement
@@ -94,7 +95,7 @@ public:
 private:
     QTextParserElement parseElement(const QTextParserLines &lines, const QVector<int> &tokens, int &start_line, int &start_column, int end_line, int end_column, int end_token = -1);
     bool findFirstElement(const QTextParserLines &lines, int &cur_line, int &cur_column, const QVector<int> &tokens, int end_token);
-    bool findFirstElement(const QString &line, int &cur_column, const QVector<int> &tokens, int end_token);
+    QTextParserFindFirstElement findFirstElement(const QString &line, int &cur_column, const QVector<int> &tokens, int end_token);
     QTextParserLanguageDefinition language;
 };
 
