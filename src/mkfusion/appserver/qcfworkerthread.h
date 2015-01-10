@@ -9,6 +9,8 @@
 #include <QThread>
 #include <QList>
 
+#include <functional>
+
 
 struct QCFFileUpload
 {

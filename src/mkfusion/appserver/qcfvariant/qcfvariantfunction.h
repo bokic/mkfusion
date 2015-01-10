@@ -8,6 +8,8 @@
 #include <QString>
 #include <QHash>
 
+#include <functional>
+
 
 #define QCFVariantFunctor std::function<QCFVariant (QCFVariant &, QCFWorkerThread &, QCFVariant &)>
 

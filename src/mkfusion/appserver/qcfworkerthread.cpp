@@ -17,6 +17,8 @@
 #include <QPair>
 #include <QDir>
 
+#include <functional>
+
 
 QCFWorkerThread::QCFWorkerThread(QObject *parent)
     : QThread(parent)
