@@ -2370,5 +2370,9 @@ Q_DECL_EXPORT QCFVariant QCFVariant::call(QCFWorkerThread &worker, const QString
 
 Q_DECL_EXPORT QCFVariant QCFVariant::call(QCFWorkerThread &worker, const QString &function, QHash<QString, QCFVariant> params)
 {
+    Q_UNUSED(worker);
+    Q_UNUSED(function);
+    Q_UNUSED(params);
+
     return QCFVariant();
 }

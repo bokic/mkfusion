@@ -23,6 +23,9 @@
 #error Windows and Linux OSs are currently supported.
 #endif
 
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
 
 Q_DECL_EXPORT double cf_Abs(double number)
 {

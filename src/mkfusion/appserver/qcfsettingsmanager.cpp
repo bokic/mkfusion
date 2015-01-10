@@ -23,6 +23,7 @@ QCFSettings QCFSettingsManager::readSettings() const
 
 void QCFSettingsManager::writeSettings(const QCFSettings &settings)
 {
+    Q_UNUSED(settings);
 }
 
 void QCFSettingsManager::loadFromFile()

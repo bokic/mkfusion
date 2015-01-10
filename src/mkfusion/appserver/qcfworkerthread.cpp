@@ -813,6 +813,8 @@ void QCFWorkerThread::f_Location(const QString &p_URL, bool p_AddToken, int p_St
 
 void QCFWorkerThread::f_Include(const QString &p_template)
 {
+    Q_UNUSED(p_template);
+
     // TODO: Implement f_Include
 }
 
@@ -1299,11 +1301,21 @@ void QCFWorkerThread::f_SetCookie(const QString &name, const QString &value, con
 
 void QCFWorkerThread::startCustomTag(const QString &path, const QString &name, const QCFVariant &attributes, bool hasEndTag, QCustomTagType type)
 {
+    Q_UNUSED(path);
+    Q_UNUSED(name);
+    Q_UNUSED(attributes);
+    Q_UNUSED(hasEndTag);
+    Q_UNUSED(type);
+
     // TODO: Implement startCustomTag.
 }
 
 bool QCFWorkerThread::endCustomTag(const QString &path, const QString &name, QCustomTagType type)
 {
+    Q_UNUSED(path);
+    Q_UNUSED(name);
+    Q_UNUSED(type);
+
     // TODO: Implement endCustomTag.
 
     return false;

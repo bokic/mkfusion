@@ -12,6 +12,11 @@ QCFSessionManager::QCFSessionManager()
 
 QCFVariant * QCFSessionManager::getSession(QCFWorkerThread *worker, const QString &name, bool sessionManagement, bool setClientCookies)
 {
+    Q_UNUSED(worker);
+    Q_UNUSED(name);
+    Q_UNUSED(sessionManagement);
+    Q_UNUSED(setClientCookies);
+
     /*
         worker->m_SESSION->_()[L"CFID"] = CFID;
         worker->m_SESSION->_()[L"CFTOKEN"] = CFTOKEN;
