@@ -101,6 +101,8 @@ void QCFServer::start()
     }
 #endif
 
+    m_LocalServer.setSocketOptions(QLocalServer::WorldAccessOption);
+
     if (m_LocalServer.listen("mkfusion") == false)
     {
         QCFLOG(QCFLOG_DAEMON, QCFLOG_CRITICAL, "MKFusion failed to listen for connections(another instance is running maybe?).");
