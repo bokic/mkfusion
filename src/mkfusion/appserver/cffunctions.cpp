@@ -9,6 +9,7 @@
 #include <QJsonArray>
 #include <QStringList>
 #include <QDateTime>
+#include <QThread>
 #include <QDebug>
 #include <QMutex>
 #include <QDate>
@@ -17,14 +18,6 @@
 
 #include <math.h>
 
-#ifdef Q_OS_WIN
-#include <windows.h>
-#elif defined Q_OS_LINUX
-#include <unistd.h>
-#include <time.h>
-#else
-#error Windows and Linux OSs are currently supported.
-#endif
 
 #ifdef __GNUC__
 #pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -3624,13 +3617,7 @@ Q_DECL_EXPORT double cf_Sin(double number)
 
 Q_DECL_EXPORT void cf_Sleep(int duration)
 {
-#ifdef Q_OS_WIN
-#elif defined Q_OS_LINUX
-    usleep(duration * 1000);
-#else
-    Sleep(duration);
-#error Windows and Linux OSs are currently supported.
-#endif
+    QThread::msleep(duration);
 }
 
 Q_DECL_EXPORT QString cf_SpanExcluding(const QString &string, const QCFVariant &set)
