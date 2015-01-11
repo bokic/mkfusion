@@ -176,6 +176,8 @@ QCFVariant QCFTemplatesManager::getComponent(const QString &sourceFile, QCFWorke
             {
                 if (m_templates[sourceFile].isCompiling())
                 {
+                    lock.unlock();
+
                     QThread::msleep(1);
 
                     continue;
