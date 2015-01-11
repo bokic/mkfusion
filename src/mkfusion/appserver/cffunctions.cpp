@@ -3497,7 +3497,7 @@ QJsonValue cf_SerializeJSON_Int(const QCFVariant &var, bool serializeQueryByColu
 
             array = QJsonArray();
             QStringList columns = var.m_Struct->value("RESULTSET").m_Struct->keys();
-            foreach(QString column, columns)
+            for(const QString &column: columns)
             {
                 array.append(column);
             }
@@ -3505,7 +3505,7 @@ QJsonValue cf_SerializeJSON_Int(const QCFVariant &var, bool serializeQueryByColu
 
             QJsonObject data;
             const QCFVariant resultset = var.m_Struct->value("RESULTSET");
-            foreach(QString column, columns)
+            for(const QString &column: columns)
             {
                 QJsonArray row;
 
@@ -3525,7 +3525,7 @@ QJsonValue cf_SerializeJSON_Int(const QCFVariant &var, bool serializeQueryByColu
         {
             array = QJsonArray();
             QStringList columns = var.m_Struct->value("RESULTSET").m_Struct->keys();
-            foreach(QString column, columns)
+            for(const QString &column: columns)
             {
                 array.append(column);
             }
@@ -3538,7 +3538,7 @@ QJsonValue cf_SerializeJSON_Int(const QCFVariant &var, bool serializeQueryByColu
             {
                 QJsonArray row;
 
-                foreach(QString column, columns)
+                for(const QString &column: columns)
                 {
                     row.append(cf_SerializeJSON_Int(resultset.m_Struct->value(column).m_Array->at(r), false));
                 }
