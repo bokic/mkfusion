@@ -7,6 +7,9 @@ CONFIG  += debug_and_release c++11
 TARGET   = mkfusion
 DESTDIR  = ../../../bin
 
+GIT_DESCRIBE = $$system(git describe)
+DEFINES += BUILDNUMBER=\\\"$$GIT_DESCRIBE\\\"
+
 DEPENDPATH  += . ../../../libs/qtservice ../../cfparser qcfvariant
 INCLUDEPATH += . ../../../libs/qtservice ../../cfparser qcfvariant
 
