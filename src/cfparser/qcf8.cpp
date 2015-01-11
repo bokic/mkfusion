@@ -1757,6 +1757,10 @@ const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
         m_generateCFFunctions[QStringLiteral("right")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeString, true, QCFFunctionArgument::TypeAny));
         m_generateCFFunctions[QStringLiteral("right")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeInt, true, QCFFunctionArgument::TypeAny));
 
+        m_generateCFFunctions.insert(QStringLiteral("serializejson)"), QCFFunction("SerializeJSON", QCFFunction::ReturnString));
+        m_generateCFFunctions[QStringLiteral("serializejson")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
+        m_generateCFFunctions[QStringLiteral("serializejson")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeBool, false, QCFFunctionArgument::TypeAny));
+
         m_generateCFFunctions.insert(QStringLiteral("structappend"), QCFFunction("StructAppend", QCFFunction::ReturnBool));
         m_generateCFFunctions[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
         m_generateCFFunctions[QStringLiteral("structappend")].m_Arguments.append(QCFFunctionArgument(QCFFunctionArgument::ArgumentDataTypeQCFVariant, true, QCFFunctionArgument::TypeVariable));
