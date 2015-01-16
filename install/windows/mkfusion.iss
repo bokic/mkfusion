@@ -23,7 +23,6 @@ Name: "{app}\bin\qt";
 Name: "{app}\include";
 Name: "{app}\lib";
 Name: "{app}\logs";
-Name: "{app}\templates";
 Name: "{app}\CustomTags";
 
 [Files]
@@ -231,7 +230,7 @@ begin
       MsgBox('Coulnd''t setup mkfusion apache module. Please add it manually.', mbError, MB_OK);
     end;
 
-    DelTree(ExpandConstant('{app}\templates\*'), False, True, True);
+    DeleteFile(ExpandConstant('{app}\bin\mkfusion.conf'));
 
     if (GetWinServiceStatus('Apache2.2', SERVICE_RUNNING) = True)Then
     begin
@@ -244,7 +243,9 @@ begin
 
       StartWinService('Apache2.2')
     end;
-    
+
+    Exec(ExpandConstant('{app}\bin\mkfusion.exe'), '-precompile', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+
     if Exec(ExpandConstant('{app}\bin\mkfusion.exe'), '-i', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
     begin
       StartWinService('mkfusion');
