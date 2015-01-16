@@ -17,6 +17,7 @@
 QCFGenerator::QCFGenerator()
     : m_Parser(CompilerMode, QCFParserTemplateFile)
     , m_EnableCFOutputOnly(false)
+    , m_InsideCFQueryTag(false)
     , m_Tabs(2)
 {
 }

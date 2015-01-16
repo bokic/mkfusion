@@ -20,20 +20,7 @@ void QCFComponentGenerator::generateCpp(const QString &dstFilePath)
 {
     QFile l_cppFile(dstFilePath);
     l_cppFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
-    l_cppFile.write("#include <qcfvariantcomponent.h>\n");
-    l_cppFile.write("#include <qcfvariantfunction.h>\n");
-    l_cppFile.write("#include <qmkfusionexception.h>\n");
-    l_cppFile.write("#include <qcfworkerthread.h>\n");
-    l_cppFile.write("#include <qcftemplateinfo.h>\n");
-    l_cppFile.write("#include <cffunctions.h>\n");
-    l_cppFile.write("#include <qcfvariant.h>\n");
-    l_cppFile.write("\n");
-    l_cppFile.write("\n");
-    l_cppFile.write("#ifdef Q_OS_WIN\n");
-    l_cppFile.write("#define MY_EXPORT __declspec(dllexport)\n");
-    l_cppFile.write("#else\n");
-    l_cppFile.write("#define MY_EXPORT\n");
-    l_cppFile.write("#endif\n");
+    l_cppFile.write("#include <mkfusion.h>\n");
     l_cppFile.write("\n");
     l_cppFile.write("class QCFGeneratedComponent : public QCFVariantComponent\n");
     l_cppFile.write("{\n");
