@@ -2,6 +2,7 @@
 #include <pi_opt.h>
 #include <pi_opt2.h>
 
+#include "qtextparser.h"
 #include <qcfvariant.h>
 #include <qcfparser.h>
 #include <qcfserver.h>
@@ -17,7 +18,9 @@ class TestCases : public QObject
 private slots:
     //void origPI();
     //void optPI();
-    void optPI2();
+    //void optPI2();
+    void benchOldParser();
+    void benchNewParser();
 };
 
 /*void TestCases::origPI()
@@ -47,7 +50,7 @@ void TestCases::optPI()
         delete m_TemplateInstance;
         m_TemplateInstance = nullptr;
     }
-}*/
+}
 
 void TestCases::optPI2()
 {
@@ -56,6 +59,41 @@ void TestCases::optPI2()
         QCFGeneratedWorkerThreadOpt2 optTemplate;
 
         optTemplate.executePage();
+    }
+}*/
+
+void TestCases::benchOldParser()
+{
+    QCFParser parser(CompilerMode, QCFParserTemplateFile);
+
+    QBENCHMARK
+    {
+        QCFParserErrorType err = parser.parse(QFileInfo("site/pi.cfm"));
+
+        if (err == NoError)
+        {
+            const QList<QCFParserTag> &tags = parser.getTags();
+
+            //qDebug() << tags.count();
+        }
+        else
+        {
+            qDebug() << "Parsing error!";
+        }
+    }
+}
+
+void TestCases::benchNewParser()
+{
+    QTextParser parser;
+
+    parser.setTextTypeByFileExtension("cfm");
+
+    QBENCHMARK
+    {
+        QTextParser::QTextParserElements elements = parser.parseFile("site/pi.cfm");
+
+        //qDebug() << elements.count();
     }
 }
 
