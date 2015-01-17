@@ -23,6 +23,8 @@
 #ifndef QTEXTPARSER_H
 #define QTEXTPARSER_H
 
+#include "qtextparserelement.h"
+
 #include <QStringList>
 #include <QString>
 #include <QVector>
@@ -34,23 +36,6 @@ class QTextParser
 {
 public:
     enum QTextParserEndLineType {EndLineTypeNoEndLine, EndLineTypeCREndLine, EndLineTypeLFEndLine, EndLineTypeCRLFEndLine, EndLineTypeLFCREndLine};
-
-    struct QTextParserElement
-    {
-        int m_Type;
-#ifdef DEBUG_QTEXTPARSER
-        QString m_TypeDebug;
-#endif
-        QString m_Text;
-        int m_StartLine;
-        int m_StartColumn;
-        int m_EndLine;
-        int m_EndColumn;
-        QList<QTextParserElement> m_ChildElements;
-        QTextParserElement() : m_Type(-1), m_StartLine(-1), m_StartColumn(-1), m_EndLine(-1), m_EndColumn(-1) {}
-    };
-
-    typedef QList<QTextParserElement> QTextParserElements;
 
     struct QTextParserLine
     {

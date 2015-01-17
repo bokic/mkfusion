@@ -99,7 +99,7 @@ void QDetail::setFileForParsing(const QString &p_File)
     {
         QTextParserCompat newParser;
 
-        QTextParser::QTextParserElements elements = newParser.parseText(fileContent, "cfm");
+        QTextParserElements elements = newParser.parseText(fileContent, "cfm");
 
         m_NewParserTags = newParser.toOldParser(elements);
 

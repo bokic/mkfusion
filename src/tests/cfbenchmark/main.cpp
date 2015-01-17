@@ -91,7 +91,7 @@ void TestCases::benchNewParser()
 
     QBENCHMARK
     {
-        QTextParser::QTextParserElements elements = parser.parseFile("site/pi.cfm");
+        QTextParserElements elements = parser.parseFile("site/pi.cfm");
 
         //qDebug() << elements.count();
     }

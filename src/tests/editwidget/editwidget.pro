@@ -10,6 +10,9 @@ DESTDIR  = ../../../bin
 DEPENDPATH  += . ../../cfeditor/codeeditwidget ../../textparser
 INCLUDEPATH += . ../../cfeditor/codeeditwidget ../../textparser
 
-SOURCES = main.cpp qappmaindialog.cpp ../../cfeditor/codeeditwidget/qcodeeditwidget.cpp ../../textparser/qtextparser.cpp
-HEADERS =          qappmaindialog.h   ../../cfeditor/codeeditwidget/qcodeeditwidget.h   ../../textparser/qtextparser.h
+SOURCES = main.cpp qappmaindialog.cpp ../../cfeditor/codeeditwidget/qcodeeditwidget.cpp
+HEADERS =          qappmaindialog.h   ../../cfeditor/codeeditwidget/qcodeeditwidget.h
 FORMS   =          qappmaindialog.ui
+
+SOURCES += ../../textparser/qtextparser.cpp ../../textparser/qtextparserelement.cpp
+HEADERS += ../../textparser/qtextparser.h   ../../textparser/qtextparserelement.h

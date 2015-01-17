@@ -11,5 +11,7 @@ DEFINES  += DEBUG_QTEXTPARSER
 DEPENDPATH  += . ../../textparser
 INCLUDEPATH += . ../../textparser
 
-SOURCES += main.cpp ../../textparser/qtextparser.cpp
-HEADERS +=          ../../textparser/qtextparser.h
+SOURCES += main.cpp
+
+SOURCES += ../../textparser/qtextparser.cpp ../../textparser/qtextparserelement.cpp
+HEADERS += ../../textparser/qtextparser.h   ../../textparser/qtextparserelement.h
