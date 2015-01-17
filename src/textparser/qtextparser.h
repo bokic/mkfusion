@@ -29,6 +29,10 @@
 #include <QList>
 #include <QHash>
 
+#ifdef QCFPARSER_H
+#define QTEXTPARSER_COMPATIBILITY
+#endif
+
 class QTextParser
 {
 public:
@@ -91,7 +95,7 @@ public:
     QTextParserElements parseTextLines(const QTextParserLines &lines);
     const QTextParserLanguageDefinition &getLanguage() const;
 
-private:
+protected:
     QTextParserElement parseElement(const QTextParserLines &lines, const QVector<int> &tokens, int &start_line, int &start_column, int end_line, int end_column, int end_token = -1);
     bool findFirstElement(const QTextParserLines &lines, int &cur_line, int &cur_column, const QVector<int> &tokens, int end_token);
     bool findFirstElement(const QString &line, int &cur_column, const QVector<int> &tokens, int end_token);

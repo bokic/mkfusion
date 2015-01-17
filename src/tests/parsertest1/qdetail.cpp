@@ -1,6 +1,7 @@
 #include "qdetail.h"
 #include "ui_qdetail.h"
 #include "qcfparser.h"
+#include "qtextparsercompat.h"
 
 #include <QFile>
 #include <QList>
@@ -30,63 +31,123 @@ QDetail::~QDetail()
 
 void QDetail::setFileForParsing(const QString &p_File)
 {
-    QFile file(p_File);
-    file.open(QIODevice::ReadOnly);
-    QString fileContent = file.readAll();
-    fileContent.replace("\r\n", "\n"); // TODO: Investigate this when possible.
-    file.close();
+    QString fileContent;
+
+    // Read file from file
+    {
+        QFile file(p_File);
+        file.open(QIODevice::ReadOnly);
+        fileContent = file.readAll();
+        fileContent.replace("\r\n", "\n"); // TODO: Investigate this when possible.
+        file.close();
+    }
 
     ui->textEdit->setPlainText(fileContent);
 
-    if (m_Parser.parse(fileContent) == NoError)
+    // Setup old parser
     {
-        m_Parser.prioritizeOperators();
-    }
+        QCFParser oldParser;
 
-    ui->label->setText(m_Parser.error());
-
-    ushort c = 0;
-
-    for(const QCFParserTag &tag: m_Parser.getTags())
-    {
-        QString name;
-
-        switch(tag.m_TagType)
+        if (oldParser.parse(fileContent) == NoError)
         {
-        case UnknownTagType:
-            name = "UnknownCFTag";
-            break;
-        case CFTagType:
-            name = "BeginCFTag(" + tag.m_Name + ")";
-            break;
-        case EndCFTagType:
-            name = "EndCFTag(" + tag.m_Name + ")";
-            break;
-        case CommentTagType:
-            name = "CFComment";
-            break;
-        case ExpressionTagType:
-            name = "CFExpression";
-            break;
+            oldParser.prioritizeOperators();
         }
 
-        QTreeWidgetItem *widgetItem = new QTreeWidgetItem();
+        ui->status_label->setText(oldParser.error());
 
-        widgetItem->setText(0, name);
-        widgetItem->setText(1, QChar(c));
+        m_OldParserTags = oldParser.getTags();
 
-        addSubTrees(tag.m_Arguments, widgetItem);
+        ushort c = 0;
 
-        ui->treeWidget->addTopLevelItem(widgetItem);
+        for(const QCFParserTag &tag: m_OldParserTags)
+        {
+            QString name;
 
-        c++;
+            switch(tag.m_TagType)
+            {
+            case UnknownTagType:
+                name = "UnknownCFTag";
+                break;
+            case CFTagType:
+                name = "BeginCFTag(" + tag.m_Name + ")";
+                break;
+            case EndCFTagType:
+                name = "EndCFTag(" + tag.m_Name + ")";
+                break;
+            case CommentTagType:
+                name = "CFComment";
+                break;
+            case ExpressionTagType:
+                name = "CFExpression";
+                break;
+            }
+
+            QTreeWidgetItem *widgetItem = new QTreeWidgetItem();
+
+            widgetItem->setText(0, name);
+            widgetItem->setText(1, QChar(c));
+
+            addSubTrees(tag.m_Arguments, widgetItem);
+
+            ui->old_parser_treeWidget->addTopLevelItem(widgetItem);
+
+            c++;
+        }
     }
 
-    ui->treeWidget->expandAll();
+    // Setup new parser
+    {
+        QTextParserCompat newParser;
+
+        QTextParser::QTextParserElements elements = newParser.parseText(fileContent, "cfm");
+
+        m_NewParserTags = newParser.toOldParser(elements);
+
+        ushort c = 0;
+
+        for(const QCFParserTag &tag: m_NewParserTags)
+        {
+            QString name;
+
+            switch(tag.m_TagType)
+            {
+            case UnknownTagType:
+                name = "UnknownCFTag";
+                break;
+            case CFTagType:
+                name = "BeginCFTag(" + tag.m_Name + ")";
+                break;
+            case EndCFTagType:
+                name = "EndCFTag(" + tag.m_Name + ")";
+                break;
+            case CommentTagType:
+                name = "CFComment";
+                break;
+            case ExpressionTagType:
+                name = "CFExpression";
+                break;
+            }
+
+            QTreeWidgetItem *widgetItem = new QTreeWidgetItem();
+
+            widgetItem->setText(0, name);
+            widgetItem->setText(1, QChar(c));
+
+            addSubTrees(tag.m_Arguments, widgetItem);
+
+            ui->new_parser_treeWidget->addTopLevelItem(widgetItem);
+
+            c++;
+        }
+    }
+
+    ui->old_parser_treeWidget->expandAll();
+    ui->new_parser_treeWidget->expandAll();
 
     recolor();
 
-    ui->treeWidget->setFocus();
+    // Set focus to old_parser tree widget
+    ui->old_parser_treeWidget->setFocus();
 }
 
 void QDetail::addSubTrees(const QCFParserElement &p_ParserElement, QTreeWidgetItem *p_WidgetItem)
@@ -185,13 +246,11 @@ void QDetail::addSubTrees(const QCFParserElement &p_ParserElement, QTreeWidgetIt
 
 void QDetail::recolor()
 {
-    const QList<QCFParserTag> &tags = m_Parser.getTags();
-
     QTextCursor cursor = ui->textEdit->textCursor();
 
     ushort c = 0;
 
-    for(const QCFParserTag &tag: tags)
+    for(const QCFParserTag &tag: m_OldParserTags)
     {
         QString TagString = QChar(c);
 
@@ -309,7 +368,7 @@ void QDetail::colorElement(const QCFParserElement &p_Element, const QString &p_E
     }
 }
 
-void QDetail::on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+void QDetail::on_old_parser_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
     if (previous)
     {

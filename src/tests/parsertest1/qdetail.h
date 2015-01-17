@@ -27,12 +27,13 @@ private:
     void addSubTrees(const QCFParserElement&, QTreeWidgetItem*);
     void recolor();
     void colorElement(const QCFParserElement&, const QString&);
-    QCFParser m_Parser;
     QString m_CurrentTextSegment;
+    QList<QCFParserTag> m_OldParserTags;
+    QList<QCFParserTag> m_NewParserTags;
     bool m_IsCurrentSelect;
 
 private slots:
-    void on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+    void on_old_parser_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
 };
 
 #endif // QDETAIL_H
