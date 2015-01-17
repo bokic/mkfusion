@@ -34,7 +34,7 @@
 #include <QList>
 #include <QDir>
 
-QList<QTextParser::QTextParserLanguageDefinition> languageDefinitions;
+QList<QTextParserLanguageDefinition> languageDefinitions;
 
 QTextParser::QTextParser():
     language()
@@ -319,7 +319,7 @@ QTextParserElements QTextParser::parseTextLines(const QTextParserLines &lines)
     return ret;
 }
 
-const QTextParser::QTextParserLanguageDefinition &QTextParser::getLanguage() const
+const QTextParserLanguageDefinition &QTextParser::getLanguage() const
 {
     return language;
 }

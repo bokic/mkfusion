@@ -24,6 +24,7 @@
 #define QTEXTPARSER_H
 
 #include "qtextparserlanguagedefinitiontoken.h"
+#include "qtextparserlanguagedefinition.h"
 #include "qtextparserelement.h"
 #include "qtextparserline.h"
 
@@ -37,16 +38,6 @@
 class QTextParser
 {
 public:
-    struct QTextParserLanguageDefinition
-    {
-        QString languageName;
-        Qt::CaseSensitivity caseSensitivity;
-        QStringList defaultExtensions;
-        QVector<int> startsWith;
-        QHash<QString, QTextParserLanguageDefinitionToken> tokens;
-        QTextParserLanguageDefinition() : languageName(), caseSensitivity(Qt::CaseInsensitive), defaultExtensions(), startsWith(), tokens() {}
-    };
-
     QTextParser();
     static void loadParserDefinitionsFromDir(const QString &dir);
     void setTextTypeByFileExtension(const QString &fileExt);
