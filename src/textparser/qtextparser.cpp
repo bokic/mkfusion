@@ -298,7 +298,6 @@ QTextParser::QTextParserElements QTextParser::parseTextLines(const QTextParserLi
     int end_lines = lines.count() - 1;
     int end_column = lines.at(0).Content.length();
 
-
     while(true)
     {
         if (!findFirstElement(lines, cur_lines, cur_column, language.startsWith, -1))
