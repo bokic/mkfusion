@@ -7,6 +7,8 @@ QT       = core network sql concurrent xml testlib
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../../bin
 
+DEFINES  += DEBUG_QTEXTPARSER
+
 DEPENDPATH  += . ../../cfparser ../../textparser ../../mkfusion/appserver ../../mkfusion/appserver/qcfvariant ../../../libs/qtservice ../../mkfusion/mkfusion_generator
 INCLUDEPATH += . ../../cfparser ../../textparser ../../mkfusion/appserver ../../mkfusion/appserver/qcfvariant ../../../libs/qtservice ../../mkfusion/mkfusion_generator
 
