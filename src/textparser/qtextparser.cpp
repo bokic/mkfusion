@@ -361,17 +361,20 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
         return ret;
     }
 
+    const QHash<QString, QTextParserLanguageDefinitionToken> &tokenList = language.tokens;
+    const QList<QString> &tokenKeyList = tokenList.keys();
+
     if (end_token >= 0)
     {
-        if (language.tokens.keys().count() <= end_token)
+        if (tokenKeyList.count() <= end_token)
         {
-            qDebug() << "tokens.key count("<< language.tokens.keys().count() << ") is too low. At least" << (end_token + 1) << "needed. File:" << __FILE__ << ", line:" << __LINE__;
+            qDebug() << "tokens.key count("<< tokenKeyList.count() << ") is too low. At least" << (end_token + 1) << "needed. File:" << __FILE__ << ", line:" << __LINE__;
             return ret;
         }
 
-        if (language.tokens.values()[end_token].searchEndStringLast == false)
+        if (tokenList.values()[end_token].searchEndStringLast == false)
         {
-            const QRegExp &reg = QRegExpCache(language.tokens.values()[end_token].endString, language.caseSensitivity);
+            const QRegExp &reg = QRegExpCache(tokenList.values()[end_token].endString, language.caseSensitivity);
             int index = reg.indexIn(lines.at(start_line).Content, start_column);
 
             if (index == start_column)
@@ -383,7 +386,8 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
 
     for(const int &nToken: tokens) // debug when start_column == 10
     {
-        const QTextParserLanguageDefinitionToken token = language.tokens.values().at(nToken);
+        const QString &tokenName = tokenKeyList.at(nToken);
+        const QTextParserLanguageDefinitionToken &token = tokenList[tokenName];
 
         if ((!token.startString.isEmpty())&&(!token.endString.isEmpty())&&(token.tokenString.isEmpty()))
         {
@@ -417,7 +421,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                     ret.m_ChildElements.append(child);
                 }
 
-                const QRegExp &reg = QRegExpCache(language.tokens.values()[nToken].endString, language.caseSensitivity);
+                const QRegExp &reg = QRegExpCache(tokenList.values()[nToken].endString, language.caseSensitivity);
                 int index = reg.indexIn(lines.at(start_line).Content, start_column);
 
                 if (index == start_column)
@@ -428,7 +432,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                     ret.m_EndColumn = start_column;
                     ret.m_Type = nToken;
 #ifdef DEBUG_QTEXTPARSER
-                    ret.m_TypeDebug = language.tokens.keys()[nToken];
+                    ret.m_TypeDebug = tokenList.keys()[nToken];
 #endif
                 }
                 else
@@ -467,7 +471,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                 ret.m_ChildElements.append(child);
             }
 
-            const QRegExp &reg = QRegExpCache(language.tokens.values()[nToken].endString, language.caseSensitivity);
+            const QRegExp &reg = QRegExpCache(tokenList.values()[nToken].endString, language.caseSensitivity);
             int index = reg.indexIn(lines.at(start_line).Content, start_column);
 
             if (index == start_column)
@@ -478,7 +482,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                 ret.m_EndColumn = start_column;
                 ret.m_Type = nToken;
 #ifdef DEBUG_QTEXTPARSER
-                ret.m_TypeDebug = language.tokens.keys()[nToken];
+                ret.m_TypeDebug = tokenList.keys()[nToken];
 #endif
                 break;
             }
@@ -493,7 +497,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
         }
         else if ((token.startString.isEmpty())&&(token.endString.isEmpty())&&(!token.tokenString.isEmpty())&&(token.nestedTokens.count() == 0))
         {
-            const QRegExp &reg = QRegExpCache(language.tokens.values()[nToken].tokenString, language.caseSensitivity);
+            const QRegExp &reg = QRegExpCache(tokenList.values()[nToken].tokenString, language.caseSensitivity);
             int index = reg.indexIn(lines.at(start_line).Content, start_column);
 
             if (index == start_column)
@@ -516,7 +520,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                 ret.m_EndColumn = start_column;
                 ret.m_Type = nToken;
 #ifdef DEBUG_QTEXTPARSER
-                ret.m_TypeDebug = language.tokens.keys()[nToken];
+                ret.m_TypeDebug = tokenList.keys()[nToken];
 #endif
                 break;
             }
@@ -529,9 +533,9 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
 
     if (end_token >= 0)
     {
-        if (language.tokens.values()[end_token].searchEndStringLast == true)
+        if (tokenList.values()[end_token].searchEndStringLast == true)
         {
-            const QRegExp &reg = QRegExpCache(language.tokens.values()[end_token].endString, language.caseSensitivity);
+            const QRegExp &reg = QRegExpCache(tokenList.values()[end_token].endString, language.caseSensitivity);
             int index = reg.indexIn(lines.at(start_line).Content, start_column);
 
             if (index == start_column)
