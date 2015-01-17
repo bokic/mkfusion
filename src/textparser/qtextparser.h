@@ -29,9 +29,6 @@
 #include <QList>
 #include <QHash>
 
-#ifdef QCFPARSER_H
-#define QTEXTPARSER_COMPATIBILITY
-#endif
 
 class QTextParser
 {
