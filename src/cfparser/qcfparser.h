@@ -15,7 +15,7 @@ class QCFParser;
 #include <QList>
 #include <QHash>
 
-enum QCFParserElementType {Boolean, Number, String, Variable, Function, Operator, SharpExpression, CodeBlock, Expression, SubExpression, Parameters, Parameter, CFScript, CFComment, CFTagExpression, CFTagArguments, CFTagArgument, ObjectFunction, VariableMember, Keyword, Error};
+enum QCFParserElementType {Boolean, Number, String, Variable, Function, Operator, SharpExpression, CodeBlock, Expression, SubExpression, Parameters, Parameter, CFScript, CFComment, CFTagExpression, CFTagArguments, CFTagArgument, ObjectFunction, VariableMember, Keyword, Error, Null};
 enum QCFParserErrorType {NoError, ForcedTerminationError, ParsingError, InvalidCloseTagError, InvalidCFTagError, InvalidArgumentError, InvalidArgumentTypeError, InvalidNestedTagPositionError};
 enum QCFParserTagType {UnknownTagType, CFTagType, EndCFTagType, CommentTagType, ExpressionTagType};
 enum QCFParserMode {FullParseMode, CompilerMode};
@@ -29,6 +29,13 @@ struct QCFParserElement
     int m_Position;
     int m_Size;
     QList<QCFParserElement> m_ChildElements;
+    QCFParserElement()
+        : m_Type(Null)
+        , m_Position(0)
+        , m_Size(0)
+    {
+    }
+
     bool operator==(const struct QCFParserElement &other) const
     {
         if (
@@ -55,6 +62,15 @@ struct QCFParserTag
     QCFParserElement m_Arguments;
     bool m_InlineClosedTag;
     struct QCFParserTag *m_OtherTag;
+    QCFParserTag()
+        : m_Start(0)
+        , m_Length(0)
+        , m_TagType(UnknownTagType)
+        , m_InlineClosedTag(false)
+        , m_OtherTag(nullptr)
+    {
+    }
+
     bool operator==(const struct QCFParserTag &other) const
     {
         if (
