@@ -56,7 +56,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
         QDomDocument doc(l_file);
         QHash<QString, QString> tmpNestedTokens;
 
-        QFile file(l_file);
+        QFile file((dir) + "/" + l_file);
 
         if (!file.open(QIODevice::ReadOnly))
         {
