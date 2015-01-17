@@ -85,6 +85,7 @@ void TestCases::benchOldParser()
 
 void TestCases::benchNewParser()
 {
+    QTextParser::loadParserDefinitionsFromDir("../src/textparser");
     QTextParser parser;
 
     parser.setTextTypeByFileExtension("cfm");
