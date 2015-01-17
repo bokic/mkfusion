@@ -3,7 +3,7 @@
 ** Author: Boris Barbulovski(bbarbulovski@gmail.com)
 **
 ** This file is part of the MKFusion(http://mkfusion.bokicsoft.com/ or
-** https://sourceforge.net/projects/mkfusion/) project.
+** https://github.com/bokic/mkfusion/) project.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 **
