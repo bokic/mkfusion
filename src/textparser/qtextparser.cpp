@@ -409,7 +409,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                     ret.m_EndColumn = start_column;
                     ret.m_Type = nToken;
 #ifdef DEBUG_QTEXTPARSER
-                    ret.m_Debug = language.tokens.keys()[nToken];
+                    ret.m_TypeDebug = language.tokens.keys()[nToken];
 #endif
                 }
                 else
@@ -417,7 +417,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                     ret.m_Text = "End segment NOT found!";
                     ret.m_Type = -1;
 #ifdef DEBUG_QTEXTPARSER
-                    ret.m_Debug = "Error -1";
+                    ret.m_TypeDebug = "Error -1";
 #endif
                 }
                 break;
@@ -459,7 +459,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                 ret.m_EndColumn = start_column;
                 ret.m_Type = nToken;
 #ifdef DEBUG_QTEXTPARSER
-                ret.m_Debug = language.tokens.keys()[nToken];
+                ret.m_TypeDebug = language.tokens.keys()[nToken];
 #endif
                 break;
             }
@@ -468,7 +468,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                 ret.m_Text = "End segment NOT found!";
                 ret.m_Type = -1;
 #ifdef DEBUG_QTEXTPARSER
-                ret.m_Debug = "Error -1";
+                ret.m_TypeDebug = "Error -1";
 #endif
             }
         }
@@ -498,7 +498,7 @@ QTextParser::QTextParserElement QTextParser::parseElement(const QTextParserLines
                 ret.m_EndColumn = start_column;
                 ret.m_Type = nToken;
 #ifdef DEBUG_QTEXTPARSER
-                ret.m_Debug = language.tokens.keys()[nToken];
+                ret.m_TypeDebug = language.tokens.keys()[nToken];
 #endif
                 break;
             }
