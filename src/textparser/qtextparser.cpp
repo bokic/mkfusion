@@ -246,8 +246,8 @@ QTextParserElements QTextParser::parseFile(const QString &fileName)
         while(!ts.atEnd())
         {
             QTextParserLine line;
-            line.Content = ts.readLine();
-            line.EndLine = EndLineTypeCRLFEndLine;
+            line.text = ts.readLine();
+            line.type = QTextParserLine::QTextParserLineTypeCRLFEndLine;
             fileLines.append(line);
         }
 
@@ -273,8 +273,8 @@ QTextParserElements QTextParser::parseText(const QString &text, const QString &f
     for(const QString &curline: text.split(QRegExpCache("(\r\n|\n\r|\r|\n)")))
     {
         QTextParserLine line;
-        line.Content = curline;
-        line.EndLine = EndLineTypeCRLFEndLine;
+        line.text = curline;
+        line.type = QTextParserLine::QTextParserLineTypeCRLFEndLine;
         fileLines.append(line);
     }
 
@@ -296,7 +296,7 @@ QTextParserElements QTextParser::parseTextLines(const QTextParserLines &lines)
     int cur_column = 0;
 
     int end_lines = lines.count() - 1;
-    int end_column = lines.at(0).Content.length();
+    int end_column = lines.at(0).text.length();
 
     while(true)
     {
@@ -375,7 +375,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
         if (tokenList[tokenKeyList.at(end_token)].searchEndStringLast == false)
         {
             const QRegExp &reg = QRegExpCache(tokenList[tokenKeyList.at(end_token)].endString, language.caseSensitivity);
-            int index = reg.indexIn(lines.at(start_line).Content, start_column);
+            int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
             {
@@ -392,7 +392,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
         if ((!token.startString.isEmpty())&&(!token.endString.isEmpty())&&(token.tokenString.isEmpty()))
         {
             const QRegExp &reg = QRegExpCache(token.startString, language.caseSensitivity);
-            int index = reg.indexIn(lines.at(start_line).Content, start_column);
+            int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
             {
@@ -422,7 +422,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                 }
 
                 const QRegExp &reg = QRegExpCache(tokenList[tokenKeyList.at(nToken)].endString, language.caseSensitivity);
-                int index = reg.indexIn(lines.at(start_line).Content, start_column);
+                int index = reg.indexIn(lines.at(start_line).text, start_column);
 
                 if (index == start_column)
                 {
@@ -472,7 +472,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
             }
 
             const QRegExp &reg = QRegExpCache(tokenList[tokenKeyList.at(nToken)].endString, language.caseSensitivity);
-            int index = reg.indexIn(lines.at(start_line).Content, start_column);
+            int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
             {
@@ -498,7 +498,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
         else if ((token.startString.isEmpty())&&(token.endString.isEmpty())&&(!token.tokenString.isEmpty())&&(token.nestedTokens.count() == 0))
         {
             const QRegExp &reg = QRegExpCache(tokenList[tokenKeyList.at(nToken)].tokenString, language.caseSensitivity);
-            int index = reg.indexIn(lines.at(start_line).Content, start_column);
+            int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
             {
@@ -536,7 +536,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
         if (tokenList[tokenKeyList.at(end_token)].searchEndStringLast == true)
         {
             const QRegExp &reg = QRegExpCache(tokenList[tokenKeyList.at(end_token)].endString, language.caseSensitivity);
-            int index = reg.indexIn(lines.at(start_line).Content, start_column);
+            int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
             {
@@ -564,7 +564,7 @@ bool QTextParser::findFirstElement(const QTextParserLines &lines, int &cur_line,
             col = 0;
         }
 
-        found = findFirstElement(lines.at(line).Content, col, tokens, end_token);
+        found = findFirstElement(lines.at(line).text, col, tokens, end_token);
 
         if (found)
         {

@@ -18,8 +18,8 @@ HEADERS =          pi_orig.h  pi_opt.h ../../mkfusion/appserver/qcfvariant/qcfva
 SOURCES += ../../mkfusion/appserver/qcfapplication.cpp
 HEADERS += ../../mkfusion/appserver/qcfapplication.h   ../../mkfusion/appserver/qcfsession.h ../../mkfusion/appserver/qmkfusionexception.h
 
-SOURCES += ../../textparser/qtextparser.cpp ../../textparser/qtextparserelement.cpp
-HEADERS += ../../textparser/qtextparser.h   ../../textparser/qtextparserelement.h
+SOURCES += ../../textparser/qtextparser.cpp ../../textparser/qtextparserelement.cpp ../../textparser/qtextparserline.cpp
+HEADERS += ../../textparser/qtextparser.h   ../../textparser/qtextparserelement.h   ../../textparser/qtextparserline.h
 
 
 # QtService

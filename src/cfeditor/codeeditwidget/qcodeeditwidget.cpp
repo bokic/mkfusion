@@ -311,12 +311,12 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
     case KBD_END:
         if (l_Modifiers == Qt::NoModifier)
         {
-            m_CarretPosition.m_Column = m_Lines.at(m_CarretPosition.m_Row - 1).Content.length() + 1;
+            m_CarretPosition.m_Column = m_Lines.at(m_CarretPosition.m_Row - 1).text.length() + 1;
         }
         else if (l_Modifiers == Qt::ControlModifier)
         {
             m_CarretPosition.m_Row = m_Lines.count();
-            m_CarretPosition.m_Column = m_Lines.at(m_CarretPosition.m_Row - 1).Content.length() + 1;
+            m_CarretPosition.m_Column = m_Lines.at(m_CarretPosition.m_Row - 1).text.length() + 1;
         }
         break;
 
@@ -342,7 +342,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
             if (m_CarretPosition.m_Row > 1)
             {
                 m_CarretPosition.m_Row--;
-                m_CarretPosition.m_Column = m_Lines.at(m_CarretPosition.m_Row - 1).Content.length() + 1;
+                m_CarretPosition.m_Column = m_Lines.at(m_CarretPosition.m_Row - 1).text.length() + 1;
             }
             else
             {
@@ -356,7 +356,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
         break;
 
     case KBD_RIGHT:
-        if (m_CarretPosition.m_Column <= m_Lines.at(m_CarretPosition.m_Row - 1).Content.length())
+        if (m_CarretPosition.m_Column <= m_Lines.at(m_CarretPosition.m_Row - 1).text.length())
         {
             m_CarretPosition.m_Column++;
         }
@@ -399,7 +399,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
                 {
                     QCodeEditWidgetLine line = m_Lines.takeAt(m_CarretPosition.m_Row - 1);
 
-                    line.Content = line.Content.left(m_CarretPosition.m_Column - 2) + line.Content.right(line.Content.length() - m_CarretPosition.m_Column + 1);
+                    line.text = line.text.left(m_CarretPosition.m_Column - 2) + line.text.right(line.text.length() - m_CarretPosition.m_Column + 1);
 
                     m_Lines.insert(m_CarretPosition.m_Row - 1, line);
 
@@ -411,9 +411,9 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
                     QCodeEditWidgetLine line = m_Lines.takeAt(m_CarretPosition.m_Row - 1);
                     QCodeEditWidgetLine line2 = m_Lines.takeAt(m_CarretPosition.m_Row - 2);
 
-                    int l_oldPos = line2.Content.length();
+                    int l_oldPos = line2.text.length();
 
-                    line2.Content.append(line.Content);
+                    line2.text.append(line.text);
 
                     m_Lines.insert(m_CarretPosition.m_Row - 2, line2);
 
@@ -428,17 +428,17 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
             case KBD_ENTER:
             {
                 QCodeEditWidgetLine line = m_Lines.takeAt(m_CarretPosition.m_Row - 1);
-                QString l_NewLineText = line.Content.right(line.Content.length() - m_CarretPosition.m_Column + 1);
-                line.Content.remove(m_CarretPosition.m_Column - 1, line.Content.length() - m_CarretPosition.m_Column + 1);
+                QString l_NewLineText = line.text.right(line.text.length() - m_CarretPosition.m_Column + 1);
+                line.text.remove(m_CarretPosition.m_Column - 1, line.text.length() - m_CarretPosition.m_Column + 1);
                 line.LineStatus = LineStatusTypeLineModified;
 
                 QCodeEditWidgetLine line2;
-                line2.Content = l_NewLineText;
-                line2.EndLine = line.EndLine;
+                line2.text = l_NewLineText;
+                line2.type = line.type;
                 line2.LineStatus = LineStatusTypeLineModified;
                 line2.Breakpoint = BreakpointTypeNoBreakpoint;
 
-                line.EndLine = QTextParser::EndLineTypeLFEndLine;
+                line.type = QTextParserLine::QTextParserLineTypeLFEndLine;
 
                 m_Lines.insert(m_CarretPosition.m_Row - 1, line);
                 m_Lines.insert(m_CarretPosition.m_Row, line2);
@@ -452,21 +452,21 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
             {
                 QCodeEditWidgetLine line = m_Lines.at(m_CarretPosition.m_Row - 1);
 
-                if (m_CarretPosition.m_Column - 1 == line.Content.length())
+                if (m_CarretPosition.m_Column - 1 == line.text.length())
                 {
                     if (m_Lines.length() > m_CarretPosition.m_Row)
                     {
                         QCodeEditWidgetLine line2 = m_Lines.takeAt(m_CarretPosition.m_Row);
 
                         m_CarretPosition.m_Row--;
-                        m_CarretPosition.m_Column = line.Content.length();
+                        m_CarretPosition.m_Column = line.text.length();
 
-                        line.Content.append(line2.Content);
+                        line.text.append(line2.text);
                     }
                 }
                 else
                 {
-                    line.Content.remove(m_CarretPosition.m_Column - 1, 1);
+                    line.text.remove(m_CarretPosition.m_Column - 1, 1);
                 }
 
                 m_Lines.replace(m_CarretPosition.m_Row - 1, line);
@@ -477,7 +477,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
             {
                 QCodeEditWidgetLine line = m_Lines.at(m_CarretPosition.m_Row - 1);
 
-                line.Content.insert(m_CarretPosition.m_Column - 1, l_EventText);
+                line.text.insert(m_CarretPosition.m_Column - 1, l_EventText);
                 line.LineStatus = LineStatusTypeLineModified;
 
                 m_Lines.replace(m_CarretPosition.m_Row - 1, line);
@@ -862,7 +862,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
     int max_LineSize = 0;
     for(const QCodeEditWidgetLine &l_Line: m_Lines)
     {
-        int l_CurrentLineSize = l_Line.Content.count();
+        int l_CurrentLineSize = l_Line.text.count();
 
         if (l_CurrentLineSize > max_LineSize)
         {
@@ -915,9 +915,9 @@ void QCodeEditWidget::mouseMoveEvent(QMouseEvent *event)
                 m_CarretPosition.m_Column = 1;
             }
 
-            if (m_CarretPosition.m_Column > m_Lines[m_CarretPosition.m_Row - 1].Content.count() + 1)
+            if (m_CarretPosition.m_Column > m_Lines[m_CarretPosition.m_Row - 1].text.count() + 1)
             {
-                m_CarretPosition.m_Column = m_Lines[m_CarretPosition.m_Row - 1].Content.count() + 1;
+                m_CarretPosition.m_Column = m_Lines[m_CarretPosition.m_Row - 1].text.count() + 1;
             }
 
             viewport()->update();
@@ -945,9 +945,9 @@ void QCodeEditWidget::mousePressEvent(QMouseEvent *event)
 
         m_CarretPosition.m_Column = (event->x() - 30 + (l_fontWidth / 2)) / l_fontWidth;
 
-        if (m_CarretPosition.m_Column > m_Lines[m_CarretPosition.m_Row - 1].Content.count() + 1)
+        if (m_CarretPosition.m_Column > m_Lines[m_CarretPosition.m_Row - 1].text.count() + 1)
         {
-            m_CarretPosition.m_Column = m_Lines[m_CarretPosition.m_Row - 1].Content.count() + 1;
+            m_CarretPosition.m_Column = m_Lines[m_CarretPosition.m_Row - 1].text.count() + 1;
         }
 
         if (m_CarretPosition.m_Column < 1)
@@ -988,19 +988,19 @@ QString QCodeEditWidget::getText()
 
     for(const QCodeEditWidgetLine &l_Line: m_Lines)
     {
-        ret.append(l_Line.Content);
-        switch(l_Line.EndLine)
+        ret.append(l_Line.text);
+        switch(l_Line.type)
         {
-        case QTextParser::EndLineTypeCREndLine:
+        case QTextParserLine::QTextParserLineTypeCREndLine:
             ret.append('\r');
             break;
-        case QTextParser::EndLineTypeLFEndLine:
+        case QTextParserLine::QTextParserLineTypeLFEndLine:
             ret.append('\n');
             break;
-        case QTextParser::EndLineTypeCRLFEndLine:
+        case QTextParserLine::QTextParserLineTypeCRLFEndLine:
             ret.append("\r\n");
             break;
-        case QTextParser::EndLineTypeLFCREndLine:
+        case QTextParserLine::QTextParserLineTypeLFCREndLine:
             ret.append("\n\r");
             break;
         default:
@@ -1038,8 +1038,8 @@ void QCodeEditWidget::setText(const QString &text)
         {
             if(pos < text.length() - 1)
             {
-                l_Line.Content = text.right(text.length() - pos);
-                l_Line.EndLine = QTextParser::EndLineTypeNoEndLine;
+                l_Line.text = text.right(text.length() - pos);
+                l_Line.type = QTextParserLine::QTextParserLineTypeNoEndLine;
 
                 m_Lines.push_back(l_Line);
             }
@@ -1049,25 +1049,25 @@ void QCodeEditWidget::setText(const QString &text)
 
         if ((crindex < lfindex)&&(crindex > -1))
         {
-            l_Line.Content = text.mid(pos, crindex - pos);
-            l_Line.EndLine = QTextParser::EndLineTypeCREndLine;
+            l_Line.text = text.mid(pos, crindex - pos);
+            l_Line.type = QTextParserLine::QTextParserLineTypeCREndLine;
             pos = crindex + 1;
 
             if((text.length() > pos)&&(text.at(pos) == '\n'))
             {
-                l_Line.EndLine = QTextParser::EndLineTypeCRLFEndLine;
+                l_Line.type = QTextParserLine::QTextParserLineTypeCRLFEndLine;
                 pos++;
             }
         }
         else
         {
-            l_Line.Content = text.mid(pos, lfindex - pos);
-            l_Line.EndLine = QTextParser::EndLineTypeLFEndLine;
+            l_Line.text = text.mid(pos, lfindex - pos);
+            l_Line.type = QTextParserLine::QTextParserLineTypeLFEndLine;
             pos = lfindex + 1;
 
             if((text.length() > pos)&&(text.at(pos) == '\t'))
             {
-                l_Line.EndLine = QTextParser::EndLineTypeLFCREndLine;
+                l_Line.type = QTextParserLine::QTextParserLineTypeLFCREndLine;
                 pos++;
             }
         }
@@ -1075,16 +1075,16 @@ void QCodeEditWidget::setText(const QString &text)
         m_Lines.push_back(l_Line);
     }
 
-    if ((m_Lines.isEmpty())||(m_Lines.last().EndLine != QTextParser::EndLineTypeNoEndLine))
+    if ((m_Lines.isEmpty())||(m_Lines.last().type != QTextParserLine::QTextParserLineTypeNoEndLine))
     {
-        l_Line.Content = "";
-        l_Line.EndLine = QTextParser::EndLineTypeNoEndLine;
+        l_Line.text = "";
+        l_Line.type = QTextParserLine::QTextParserLineTypeNoEndLine;
         m_Lines.push_back(l_Line);
     }
 
     updatePanelWidth();
 
-    QList<QTextParser::QTextParserLine> *lines = (QList<QTextParser::QTextParserLine> *)&m_Lines;
+    QList<QTextParserLine> *lines = (QList<QTextParserLine> *)&m_Lines;
 
     m_Parser.parseTextLines(*lines);
 

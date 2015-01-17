@@ -19,7 +19,7 @@ public:
     enum LineStatusType {LineStatusTypeLineNotModified, LineStatusTypeLineSaved, LineStatusTypeLineModified};
     enum BreakpointType {BreakpointTypeNoBreakpoint, BreakpointTypeBreakpoint, BreakpointTypeBreakpointPending, BreakpointTypeDisabled};
 
-    struct QCodeEditWidgetLine : QTextParser::QTextParserLine
+    struct QCodeEditWidgetLine : QTextParserLine
     {
         BreakpointType Breakpoint;
         LineStatusType LineStatus;

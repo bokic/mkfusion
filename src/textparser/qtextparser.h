@@ -24,6 +24,7 @@
 #define QTEXTPARSER_H
 
 #include "qtextparserelement.h"
+#include "qtextparserline.h"
 
 #include <QStringList>
 #include <QString>
@@ -35,17 +36,6 @@
 class QTextParser
 {
 public:
-    enum QTextParserEndLineType {EndLineTypeNoEndLine, EndLineTypeCREndLine, EndLineTypeLFEndLine, EndLineTypeCRLFEndLine, EndLineTypeLFCREndLine};
-
-    struct QTextParserLine
-    {
-        QString Content;
-        QTextParserEndLineType EndLine;
-        QTextParserLine() : EndLine(EndLineTypeNoEndLine) {}
-    };
-
-    typedef QList<QTextParserLine> QTextParserLines;
-
     struct QTextParserLanguageDefinitionToken
     {
         QString name;
