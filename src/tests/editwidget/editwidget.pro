@@ -14,5 +14,5 @@ SOURCES = main.cpp qappmaindialog.cpp ../../cfeditor/codeeditwidget/qcodeeditwid
 HEADERS =          qappmaindialog.h   ../../cfeditor/codeeditwidget/qcodeeditwidget.h
 FORMS   =          qappmaindialog.ui
 
-SOURCES += ../../textparser/qtextparser.cpp ../../textparser/qtextparserelement.cpp ../../textparser/qtextparserline.cpp
-HEADERS += ../../textparser/qtextparser.h   ../../textparser/qtextparserelement.h   ../../textparser/qtextparserline.h
+SOURCES += ../../textparser/qtextparser.cpp ../../textparser/qtextparserelement.cpp ../../textparser/qtextparserline.cpp ../../textparser/qtextparserlanguagedefinitiontoken.cpp
+HEADERS += ../../textparser/qtextparser.h   ../../textparser/qtextparserelement.h   ../../textparser/qtextparserline.h   ../../textparser/qtextparserlanguagedefinitiontoken.h

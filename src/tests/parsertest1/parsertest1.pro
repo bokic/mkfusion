@@ -16,5 +16,5 @@ SOURCES     = main.cpp parsertest1.cpp qdetail.cpp ../../textparser/qtextparserc
 HEADERS     =          parsertest1.h   qdetail.h   ../../textparser/qtextparsercompat.h ../../cfparser/qcfparser.h   ../../cfparser/qcffunction.h   ../../cfparser/qcftag.h   ../../cfparser/qcf8.h
 FORMS       =          parsertest1.ui  qdetail.ui
 
-SOURCES += ../../textparser/qtextparser.cpp ../../textparser/qtextparserelement.cpp ../../textparser/qtextparserline.cpp
-HEADERS += ../../textparser/qtextparser.h   ../../textparser/qtextparserelement.h   ../../textparser/qtextparserline.h
+SOURCES += ../../textparser/qtextparser.cpp ../../textparser/qtextparserelement.cpp ../../textparser/qtextparserline.cpp ../../textparser/qtextparserlanguagedefinitiontoken.cpp
+HEADERS += ../../textparser/qtextparser.h   ../../textparser/qtextparserelement.h   ../../textparser/qtextparserline.h   ../../textparser/qtextparserlanguagedefinitiontoken.h

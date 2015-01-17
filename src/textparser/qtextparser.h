@@ -23,6 +23,7 @@
 #ifndef QTEXTPARSER_H
 #define QTEXTPARSER_H
 
+#include "qtextparserlanguagedefinitiontoken.h"
 #include "qtextparserelement.h"
 #include "qtextparserline.h"
 
@@ -36,18 +37,6 @@
 class QTextParser
 {
 public:
-    struct QTextParserLanguageDefinitionToken
-    {
-        QString name;
-        QString startString;
-        QString endString;
-        QString tokenString;
-        bool searchEndStringLast; // TODO: Unimplemented yet(greedy/lazy??)
-        bool immediateStartString;
-        QVector<int> nestedTokens;
-        QTextParserLanguageDefinitionToken() : searchEndStringLast(false), immediateStartString(false) {}
-    };
-
     struct QTextParserLanguageDefinition
     {
         QString languageName;
