@@ -16,7 +16,7 @@ QCFParserTag QTextParserCompat::convertElement(const QTextParserElement &element
 {
     QCFParserTag ret;
 
-    QString elementType = language.tokens.keys().at(element.m_Type);
+    QString elementType = language.tokens[element.m_Type].name;
 
     if (elementType == "CFScript")
     {

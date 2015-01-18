@@ -6,7 +6,6 @@
 #include <QFileInfoList>
 #include <QFileDialog>
 #include <QColor>
-#include <QHash>
 #include <QDir>
 
 CFTest1::CFTest1(QWidget *parent, Qt::WindowFlags flags)

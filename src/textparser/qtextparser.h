@@ -32,7 +32,6 @@
 #include <QString>
 #include <QVector>
 #include <QList>
-#include <QHash>
 
 
 class QTextParser
@@ -48,13 +47,10 @@ public:
     const QTextParserLanguageDefinition &getLanguage() const;
 
 protected:
-    const QRegExp & QRegExpCache(const QString &pattern, Qt::CaseSensitivity cs = Qt::CaseSensitive);
     QTextParserElement parseElement(const QTextParserLines &lines, const QVector<int> &tokens, int &start_line, int &start_column, int end_line, int end_column, int end_token = -1);
     bool findFirstElement(const QTextParserLines &lines, int &cur_line, int &cur_column, const QVector<int> &tokens, int end_token);
     bool findFirstElement(const QString &line, int &cur_column, const QVector<int> &tokens, int end_token);
     QTextParserLanguageDefinition language;
-    QHash<QString, QRegExp> m_regExpCacheInsensitive;
-    QHash<QString, QRegExp> m_regExpCacheSensitive;
 };
 
 #endif // QTEXTPARSER_H

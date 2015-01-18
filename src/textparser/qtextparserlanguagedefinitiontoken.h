@@ -25,6 +25,7 @@
 
 #include <QString>
 #include <QVector>
+#include <QRegExp>
 
 
 class QTextParserLanguageDefinitionToken
@@ -39,9 +40,9 @@ public:
     QTextParserLanguageDefinitionToken operator=(const QTextParserLanguageDefinitionToken &other);
 
     QString name;
-    QString startString;
-    QString endString;
-    QString tokenString;
+    QRegExp startString;
+    QRegExp endString;
+    QRegExp tokenString;
     bool searchEndStringLast; // TODO: Unimplemented yet(greedy/lazy??)
     bool immediateStartString;
     QVector<int> nestedTokens;

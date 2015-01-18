@@ -28,7 +28,6 @@
 #include <QStringList>
 #include <QString>
 #include <QVector>
-#include <QHash>
 
 
 class QTextParserLanguageDefinition
@@ -45,8 +44,8 @@ public:
     QString languageName;
     Qt::CaseSensitivity caseSensitivity;
     QStringList defaultExtensions;
+    QVector<QTextParserLanguageDefinitionToken> tokens;
     QVector<int> startsWith;
-    QHash<QString, QTextParserLanguageDefinitionToken> tokens;
 };
 
 #endif // QTEXTPARSERLANGUAGEDEFINITION_H
