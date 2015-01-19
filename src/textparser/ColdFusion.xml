@@ -1,38 +1,38 @@
-<language Name="ColdFusion" EmptySegmentsLanguage="HTML" CaseSensitivity="false" DefaultFileExtensions="cfm,cfc" StartsWith="CFScript,CFOutput,CFTag,CFEndTag,CFComment">
+<language Name="ColdFusion" EmptySegmentsLanguage="HTML" CaseSensitivity="false" DefaultFileExtensions="cfm,cfc" StartsWith="StartTag,EndTag,Comment">
 	<tokens>
-		<token Name="CFScript" StartString="&lt;cfscript&gt;" EndString="&lt;/cfscript&gt;">
+		<!--<token Name="StartTag" StartString="&lt;cfscript&gt;" EndString="&lt;/cfscript&gt;" ExcludeEndString="true">
 			<nested_tokens names="ScriptExpression" />
 		</token>
-		<token Name="CFOutput" StartString="&lt;cfoutput&gt;" EndString="&lt;/cfoutput&gt;">
+		<token Name="StartTag" StartString="&lt;cfoutput&gt;" EndString="&lt;/cfoutput&gt;" ExcludeEndString="true">
 			<nested_tokens names="OutputExpression" />
-		</token>
-		<token Name="CFTag" StartString="&lt;cf[a-z0-9_]+" EndString="\/?&gt;">
+		</token>-->
+		<token Name="StartTag" StartString="&lt;cf[a-z0-9_]+" EndString="\/?&gt;" MultiLine="true">
 			<nested_tokens names="Expression" />
 		</token>
-		<token Name="CFEndTag" StartString="&lt;/cf" EndString="&gt;" />
-		<token Name="CFComment" StartString="&lt;!---" EndString="---&gt;">
-			<nested_tokens names="CFComment" />
+		<token Name="EndTag" StartString="&lt;/cf" EndString="&gt;" />
+		<token Name="Comment" StartString="&lt;!---" EndString="---&gt;" MultiLine="true">
+			<nested_tokens names="Comment" />
 		</token>
 		<token Name="SingleString" StartString="&apos;" EndString="&apos;" IgnoreParentTokenEndString="true" SearchEndStringLast="true">
-			<nested_tokens names="SharpExpression,SharpChar,SingleChar" />
+			<nested_tokens names="SharpChar,SharpExpression,SingleChar" />
 		</token>
 		<token Name="DoubleString" StartString="&quot;" EndString="&quot;" IgnoreParentTokenEndString="true" SearchEndStringLast="true">
-			<nested_tokens names="SharpExpression,SharpChar,DoubleChar" />
+			<nested_tokens names="SharpChar,SharpExpression,DoubleChar" />
 		</token>
 		<token Name="SingleChar" TokenString="&apos;&apos;"/>
 		<token Name="DoubleChar" TokenString="&quot;&quot;"/>
 		<token Name="SharpChar" TokenString="##"/>
-		<token Name="SharpExpression" StartString="#" EndString="#">
+		<token Name="SharpExpression" StartString="#" EndString="#" MultiLine="true">
 			<nested_tokens names="Expression" />
 		</token>
-		<token Name="Expression">
+		<token Name="Expression" MultiLine="true">
 			<nested_tokens names="SingleString,DoubleString,Assigment,Separator,ExpressionEnd,Number,Boolean,Operator,ObjectMember,Keyword,Function,Object,Variable,SubExpression,VariableIndex" />
 		</token>
-		<token Name="ScriptExpression" ImmediateStart="true">
+		<token Name="ScriptExpression" ImmediateStart="true" MultiLine="true">
 			<nested_tokens names="SingleString,DoubleString,Assigment,Separator,ScriptComment,ExpressionEnd,Number,Boolean,Operator,ObjectMember,Keyword,Function,Object,Variable,SubExpression,VariableIndex" />
 		</token>
-		<token Name="OutputExpression" ImmediateStart="true">
-			<nested_tokens names="CFScript,CFTag,CFEndTag,CFComment,SharpExpression" />
+		<token Name="OutputExpression" ImmediateStart="true" MultiLine="true">
+			<nested_tokens names="Tag,EndTag,Comment,SharpExpression" />
 		</token>
 		<token Name="ScriptComment" TokenString="//.*"/>
 		<token Name="ExpressionEnd" TokenString=";" />
@@ -47,13 +47,13 @@
 		<token Name="Object" TokenString="[a-z_]+[a-z0-9_]*\." />
 		<token Name="Assigment" TokenString="(=|\+=|\-=|\*=|/=|%=|&amp;=)" />
 		<token Name="Operator" TokenString="(\bgreater\s+than\s+or\s+equal\s+to\b|\bless\s+than\s+or\s+equal\s+to\b|\bdoes\s+not\s+contain\b|\bgreater\s+than\b|\bnot\s+equal\b|\bless\s+than\b|\bcontains\b|\bis\s+not\b|\bequal\b|\+\+|\bmod\b|\bnot\b|\band\b|\bxor\b|\beqv\b|\bgte\b|\blte\b|\bimp\b|\bneq\b|\bis\b|\bor\b|\bgt\b|\bge\b|\blt\b|\ble\b|--|\+|\*|\\|\^|&amp;&amp;|\|\|\beq\b|\?|-|/|&amp;|%|:|!)" />
-		<token Name="SubExpression" StartString="(" EndString=")">
+		<token Name="SubExpression" StartString="(" EndString=")" MultiLine="true">
 			<nested_tokens names="Expression" />
 		</token>
-		<token Name="VariableIndex" StartString="[" EndString="]">
+		<token Name="VariableIndex" StartString="[" EndString="]" MultiLine="true">
 			<nested_tokens names="Expression" />
 		</token>
-		<token Name="CodeBlock" StartString="{" EndString="}">
+		<token Name="CodeBlock" StartString="{" EndString="}" MultiLine="true">
 			<nested_tokens names="Expression" />
 		</token>
 		<token Name="Keyword" TokenString="(\bvar\b|\bfunction\b|\bthis\b)" />
