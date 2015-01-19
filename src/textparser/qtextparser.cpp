@@ -303,6 +303,8 @@ QTextParserElements QTextParser::parseText(const QString &text, const QString &f
         fileLines.append(line);
     }
 
+    fileLines.last().type = QTextParserLine::QTextParserLineTypeNoEndLine;
+
     ret = parseTextLines(fileLines);
 
     return ret;
