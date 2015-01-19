@@ -60,12 +60,16 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
 
         if (!file.open(QIODevice::ReadOnly))
         {
+            qDebug() << "Could not open" << l_file << "file.";
+
             continue;
         }
 
         if (!doc.setContent(&file))
         {
             file.close();
+
+            qDebug() << "Invalid XML file" << l_file;
 
             continue;
         }
@@ -185,6 +189,14 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
 
                 languageDefinitions.append(def);
             }
+            else
+            {
+                qDebug() << "XML root tag is not language, but" << ("[" + language_node.nodeName() + "]") << "for file" << l_file;
+            }
+        }
+        else
+        {
+            qDebug() << "There are" << doc.childNodes().count() << "tags in XML root. There should be only 1. For file" << l_file;
         }
     }
 }
