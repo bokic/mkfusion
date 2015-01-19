@@ -12,6 +12,11 @@ public:
 
 protected:
     QCFParserTag convertElement(const QTextParserElement &element) const;
+    QCFParserElement convertChildElement(const QTextParserElement &element) const;
+    int convertPosition(int line, int column) const;
+    void convertLinesToText() const;
+
+    mutable QString text;
 };
 
 #endif // QTEXTPARSERCOMPAT_H

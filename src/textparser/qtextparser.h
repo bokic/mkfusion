@@ -51,6 +51,7 @@ protected:
     bool findFirstElement(const QTextParserLines &lines, int &cur_line, int &cur_column, const QVector<int> &tokens, int end_token);
     bool findFirstElement(const QString &line, int &cur_column, const QVector<int> &tokens, int end_token);
     QTextParserLanguageDefinition language;
+    QTextParserLines lines;
 };
 
 #endif // QTEXTPARSER_H

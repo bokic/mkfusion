@@ -314,6 +314,8 @@ QTextParserElements QTextParser::parseTextLines(const QTextParserLines &lines)
 {
     QTextParserElements ret;
 
+    this->lines = lines;
+
     if (lines.count() <= 0)
     {
         return ret;
