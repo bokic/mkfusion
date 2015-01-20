@@ -100,11 +100,9 @@ int QTextParserCompat::convertPosition(int line, int column) const
             break;
         case QTextParserLine::QTextParserLineTypeCREndLine:
         case QTextParserLine::QTextParserLineTypeLFEndLine:
-            ret += 1;
-            break;
         case QTextParserLine::QTextParserLineTypeCRLFEndLine:
         case QTextParserLine::QTextParserLineTypeLFCREndLine:
-            ret += 2;
+            ret += 1;
             break;
         }
     }
