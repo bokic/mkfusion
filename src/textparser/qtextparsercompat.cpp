@@ -1,4 +1,5 @@
 #include "qtextparsercompat.h"
+#include <QRegExp>
 #include <QDebug>
 
 
@@ -34,6 +35,13 @@ QCFParserTag QTextParserCompat::convertElement(const QTextParserElement &element
     {
         ret.m_TagType = CFTagType;
 
+        QRegExp reg("cf[a-z0-9_]+", language.caseSensitivity);
+        int offset = reg.indexIn(text, ret.m_Start);
+        if (offset > ret.m_Start)
+        {
+            ret.m_Name = reg.cap().toLower();
+        }
+
         if (text.at(ret.m_Start + ret.m_Length - 1) == '/')
         {
             ret.m_InlineClosedTag = true;
@@ -42,6 +50,13 @@ QCFParserTag QTextParserCompat::convertElement(const QTextParserElement &element
     else if (elementType == "EndTag")
     {
         ret.m_TagType = EndCFTagType;
+
+        QRegExp reg("cf[a-z0-9_]+", language.caseSensitivity);
+        int offset = reg.indexIn(text, ret.m_Start);
+        if (offset > ret.m_Start)
+        {
+            ret.m_Name = reg.cap().toLower();
+        }
     }
     else if (elementType == "Comment")
     {
@@ -60,7 +75,105 @@ QCFParserElement QTextParserCompat::convertChildElement(const QTextParserElement
 {
     QCFParserElement ret;
 
-    Q_UNIMPLEMENTED();
+    const QString &elementType = language.tokens[element.m_Type].name;
+
+    if (elementType == "Boolean")
+    {
+        ret.m_Type = Boolean;
+    }
+    else if (elementType == "Number")
+    {
+        ret.m_Type = Number;
+    }
+    else if (elementType == "String")
+    {
+        ret.m_Type = String;
+    }
+    else if (elementType == "Variable")
+    {
+        ret.m_Type = Variable;
+    }
+    else if (elementType == "Function")
+    {
+        ret.m_Type = Function;
+    }
+    else if (elementType == "Operator")
+    {
+        ret.m_Type = Operator;
+    }
+    else if (elementType == "SharpExpression")
+    {
+        ret.m_Type = SharpExpression;
+    }
+    else if (elementType == "CodeBlock")
+    {
+        ret.m_Type = CodeBlock;
+    }
+    else if (elementType == "Expression")
+    {
+        ret.m_Type = Expression;
+    }
+    else if (elementType == "SubExpression")
+    {
+        ret.m_Type = SubExpression;
+    }
+    else if (elementType == "Parameters")
+    {
+        ret.m_Type = Parameters;
+    }
+    else if (elementType == "Parameter")
+    {
+        ret.m_Type = Parameter;
+    }
+    else if (elementType == "CFScript")
+    {
+        ret.m_Type = CFScript;
+    }
+    else if (elementType == "CFComment")
+    {
+        ret.m_Type = CFComment;
+    }
+    else if (elementType == "CFTagExpression")
+    {
+        ret.m_Type = CFTagExpression;
+    }
+    else if (elementType == "CFTagArguments")
+    {
+        ret.m_Type = CFTagArguments;
+    }
+    else if (elementType == "CFTagArgument")
+    {
+        ret.m_Type = CFTagArgument;
+    }
+    else if (elementType == "ObjectFunction")
+    {
+        ret.m_Type = ObjectFunction;
+    }
+    else if (elementType == "VariableMember")
+    {
+        ret.m_Type = VariableMember;
+    }
+    else if (elementType == "Keyword")
+    {
+        ret.m_Type = Keyword;
+    }
+    else if (elementType == "Error")
+    {
+        ret.m_Type = Error;
+    }
+    else if (elementType == "Null")
+    {
+        ret.m_Type = Null;
+    }
+
+    ret.m_Text = element.m_Text;
+    ret.m_Position = convertPosition(element.m_StartLine, element.m_StartColumn);
+    ret.m_Size = convertPosition(element.m_EndLine, element.m_EndColumn) - ret.m_Position;
+
+    for(const QTextParserElement &child: element.m_ChildElements)
+    {
+        ret.m_ChildElements.append(convertChildElement(child));
+    }
 
     return ret;
 }

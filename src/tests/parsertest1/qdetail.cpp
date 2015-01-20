@@ -38,7 +38,6 @@ void QDetail::setFileForParsing(const QString &p_File)
         QFile file(p_File);
         file.open(QIODevice::ReadOnly);
         fileContent = file.readAll();
-        fileContent.replace("\r\n", "\n"); // TODO: Investigate this when possible.
         file.close();
     }
 
@@ -250,54 +249,109 @@ void QDetail::recolor()
 
     ushort c = 0;
 
-    for(const QCFParserTag &tag: m_OldParserTags)
+    if (ui->old_parser_treeWidget->hasFocus())
     {
-        QString TagString = QChar(c);
-
-        if ((!m_CurrentTextSegment.isEmpty())&&(m_CurrentTextSegment.left(1) != TagString))
+        for(const QCFParserTag &tag: m_OldParserTags)
         {
-            c++;
+            QString TagString = QChar(c);
 
-            continue;
-        }
-
-        cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
-        ui->textEdit->setTextCursor(cursor);
-        cursor.setPosition(tag.m_Start + tag.m_Length, QTextCursor::KeepAnchor);
-        ui->textEdit->setTextCursor(cursor);
-
-        if ((TagString == m_CurrentTextSegment))
-        {
-            if (m_IsCurrentSelect)
+            if ((!m_CurrentTextSegment.isEmpty())&&(m_CurrentTextSegment.left(1) != TagString))
             {
-                ui->textEdit->setTextBackgroundColor(QColor(255, 128, 128));
-            }
-            else
-            {
-                ui->textEdit->setTextBackgroundColor(QColor(255, 255, 255));
+                c++;
+
+                continue;
             }
 
             cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
             ui->textEdit->setTextCursor(cursor);
+            cursor.setPosition(tag.m_Start + tag.m_Length, QTextCursor::KeepAnchor);
+            ui->textEdit->setTextCursor(cursor);
 
-            break;
+            if ((TagString == m_CurrentTextSegment))
+            {
+                if (m_IsCurrentSelect)
+                {
+                    ui->textEdit->setTextBackgroundColor(QColor(255, 128, 128));
+                }
+                else
+                {
+                    ui->textEdit->setTextBackgroundColor(QColor(255, 255, 255));
+                }
+
+                cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
+                ui->textEdit->setTextCursor(cursor);
+
+                break;
+            }
+
+            if (tag.m_TagType == CommentTagType)
+            {
+                ui->textEdit->setTextColor(QColor(128, 128, 128));
+            }
+            else
+            {
+                ui->textEdit->setTextColor(QColor(128, 0, 0));
+            }
+
+            colorElement(tag.m_Arguments, TagString);
+
+            cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
+            ui->textEdit->setTextCursor(cursor);
+
+            c++;
         }
-
-        if (tag.m_TagType == CommentTagType)
+    }
+    else if (ui->new_parser_treeWidget->hasFocus())
+    {
+        for(const QCFParserTag &tag: m_NewParserTags)
         {
-            ui->textEdit->setTextColor(QColor(128, 128, 128));
+            QString TagString = QChar(c);
+
+            if ((!m_CurrentTextSegment.isEmpty())&&(m_CurrentTextSegment.left(1) != TagString))
+            {
+                c++;
+
+                continue;
+            }
+
+            cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
+            ui->textEdit->setTextCursor(cursor);
+            cursor.setPosition(tag.m_Start + tag.m_Length, QTextCursor::KeepAnchor);
+            ui->textEdit->setTextCursor(cursor);
+
+            if ((TagString == m_CurrentTextSegment))
+            {
+                if (m_IsCurrentSelect)
+                {
+                    ui->textEdit->setTextBackgroundColor(QColor(255, 128, 128));
+                }
+                else
+                {
+                    ui->textEdit->setTextBackgroundColor(QColor(255, 255, 255));
+                }
+
+                cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
+                ui->textEdit->setTextCursor(cursor);
+
+                break;
+            }
+
+            if (tag.m_TagType == CommentTagType)
+            {
+                ui->textEdit->setTextColor(QColor(128, 128, 128));
+            }
+            else
+            {
+                ui->textEdit->setTextColor(QColor(128, 0, 0));
+            }
+
+            colorElement(tag.m_Arguments, TagString);
+
+            cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
+            ui->textEdit->setTextCursor(cursor);
+
+            c++;
         }
-        else
-        {
-            ui->textEdit->setTextColor(QColor(128, 0, 0));
-        }
-
-        colorElement(tag.m_Arguments, TagString);
-
-        cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
-        ui->textEdit->setTextCursor(cursor);
-
-        c++;
     }
 }
 
@@ -369,6 +423,23 @@ void QDetail::colorElement(const QCFParserElement &p_Element, const QString &p_E
 }
 
 void QDetail::on_old_parser_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+{
+    if (previous)
+    {
+        m_CurrentTextSegment = previous->text(1);
+        m_IsCurrentSelect = false;
+        recolor();
+    }
+
+    if (current)
+    {
+        m_CurrentTextSegment = current->text(1);
+        m_IsCurrentSelect = true;
+        recolor();
+    }
+}
+
+void QDetail::on_new_parser_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
     if (previous)
     {
