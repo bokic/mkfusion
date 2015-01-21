@@ -392,7 +392,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
         }
     }
 
-    for(const int &nToken: tokens) // debug when start_column == 10
+    for(const int &nToken: tokens)
     {
         const QTextParserLanguageDefinitionToken &token = tokenList.at(nToken);
 
