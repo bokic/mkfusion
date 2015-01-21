@@ -26,6 +26,7 @@
 QTextParserLanguageDefinitionToken::QTextParserLanguageDefinitionToken()
     : searchEndStringLast(false)
     , immediateStartString(false)
+    , onlyStartTag(false)
 {
 }
 
@@ -37,6 +38,7 @@ QTextParserLanguageDefinitionToken::QTextParserLanguageDefinitionToken(const QTe
     tokenString = other.tokenString;
     searchEndStringLast = other.searchEndStringLast;
     immediateStartString = other.immediateStartString;
+    onlyStartTag = other.onlyStartTag;
     nestedTokens = other.nestedTokens;
 }
 
@@ -49,6 +51,7 @@ QTextParserLanguageDefinitionToken &QTextParserLanguageDefinitionToken::operator
     qSwap(tokenString, other.tokenString);
     qSwap(searchEndStringLast, other.searchEndStringLast);
     qSwap(immediateStartString, other.immediateStartString);
+    qSwap(onlyStartTag, other.onlyStartTag);
     qSwap(nestedTokens, other.nestedTokens);
 
     return *this;
@@ -63,6 +66,7 @@ QTextParserLanguageDefinitionToken QTextParserLanguageDefinitionToken::operator=
     tokenString = other.tokenString;
     searchEndStringLast = other.searchEndStringLast;
     immediateStartString = other.immediateStartString;
+    onlyStartTag = other.onlyStartTag;
     nestedTokens = other.nestedTokens;
 
     return *this;

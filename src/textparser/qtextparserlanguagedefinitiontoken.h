@@ -45,6 +45,7 @@ public:
     QRegExp tokenString;
     bool searchEndStringLast;
     bool immediateStartString;
+    bool onlyStartTag;
     QVector<int> nestedTokens;
 };
 

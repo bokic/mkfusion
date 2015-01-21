@@ -115,6 +115,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             const QString tokenTokenString = token_node.attributes().namedItem("TokenString").nodeValue();
                             const QString searchEndStringLast = token_node.attributes().namedItem("SearchEndStringLast").nodeValue();
                             const QString tokenImmediateStart = token_node.attributes().namedItem("ImmediateStart").nodeValue();
+                            const QString tokenOnlyStartTag = token_node.attributes().namedItem("OnlyStartTag").nodeValue();
                             QString tokenNestedTokens;
                             QString tokenNestedTokensRequireAll;
                             QString tokenNestedTokensInSameOrder;
@@ -135,6 +136,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             token.tokenString = QRegExp(tokenTokenString, def.caseSensitivity);
                             token.searchEndStringLast = (searchEndStringLast.compare("true", Qt::CaseInsensitive) == 0);
                             token.immediateStartString = (tokenImmediateStart.compare("true", Qt::CaseInsensitive) == 0);
+                            token.onlyStartTag = (tokenOnlyStartTag.compare("true", Qt::CaseInsensitive) == 0);
 
                             tmpNestedTokens.append(tokenNestedTokens);
                             def.tokens.append(token);
@@ -414,6 +416,12 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
                 start_column += reg.cap().length();
 
+                if (tokenList[nToken].onlyStartTag == true)
+                {
+                    ret.m_EndLine = start_line;
+                    ret.m_EndColumn = start_column;
+                }
+
                 while(1)
                 {
                     QTextParserElement child = parseElement(lines, token.nestedTokens, start_line, start_column, end_line, end_column, nToken);
@@ -431,10 +439,13 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
                 if (index == start_column)
                 {
-                    start_column += reg.cap().count();
+                    if (tokenList[nToken].onlyStartTag == false)
+                    {
+                        start_column += reg.cap().count();
+                        ret.m_EndLine = start_line;
+                        ret.m_EndColumn = start_column;
+                    }
 
-                    ret.m_EndLine = start_line;
-                    ret.m_EndColumn = start_column;
                     ret.m_Type = nToken;
 #ifdef DEBUG_QTEXTPARSER
                     ret.m_TypeDebug = tokenList[nToken].name;
