@@ -37,19 +37,6 @@ QTextParserLanguageDefinition::QTextParserLanguageDefinition(const QTextParserLa
     tokens = other.tokens;
 }
 
-#ifdef Q_COMPILER_RVALUE_REFS
-QTextParserLanguageDefinition &QTextParserLanguageDefinition::operator=(QTextParserLanguageDefinition &&other)
-{
-    qSwap(languageName, other.languageName);
-    qSwap(caseSensitivity, other.caseSensitivity);
-    qSwap(defaultExtensions, other.defaultExtensions);
-    qSwap(startsWith, other.startsWith);
-    qSwap(tokens, other.tokens);
-
-    return *this;
-}
-#endif
-
 QTextParserLanguageDefinition QTextParserLanguageDefinition::operator=(const QTextParserLanguageDefinition &other)
 {
     languageName = other.languageName;

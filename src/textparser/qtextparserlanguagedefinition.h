@@ -37,7 +37,16 @@ public:
     QTextParserLanguageDefinition(const QTextParserLanguageDefinition &other);
 
 #ifdef Q_COMPILER_RVALUE_REFS
-    QTextParserLanguageDefinition &operator=(QTextParserLanguageDefinition &&other);
+    inline QTextParserLanguageDefinition &operator=(QTextParserLanguageDefinition &&other)
+    {
+        qSwap(languageName, other.languageName);
+        qSwap(caseSensitivity, other.caseSensitivity);
+        qSwap(defaultExtensions, other.defaultExtensions);
+        qSwap(startsWith, other.startsWith);
+        qSwap(tokens, other.tokens);
+
+        return *this;
+    }
 #endif
     QTextParserLanguageDefinition operator=(const QTextParserLanguageDefinition &other);
 

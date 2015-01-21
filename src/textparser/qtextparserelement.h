@@ -34,7 +34,21 @@ public:
     QTextParserElement(const QTextParserElement &other);
 
 #ifdef Q_COMPILER_RVALUE_REFS
-    QTextParserElement &operator=(QTextParserElement &&other);
+    inline QTextParserElement &operator=(QTextParserElement &&other)
+    {
+        qSwap(m_Type, other.m_Type);
+ #ifdef DEBUG_QTEXTPARSER
+        qSwap(m_TypeDebug, other.m_TypeDebug);
+ #endif
+        qSwap(m_Text, other.m_Text);
+        qSwap(m_StartLine, other.m_StartLine);
+        qSwap(m_StartColumn, other.m_StartColumn);
+        qSwap(m_EndLine, other.m_EndLine);
+        qSwap(m_EndColumn, other.m_EndColumn);
+        qSwap(m_ChildElements, other.m_ChildElements);
+
+        return *this;
+    }
 #endif
     QTextParserElement operator=(const QTextParserElement &other);
 

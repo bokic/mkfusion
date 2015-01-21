@@ -34,16 +34,6 @@ QTextParserLine::QTextParserLine(const QTextParserLine &other)
     type = other.type;
 }
 
-#ifdef Q_COMPILER_RVALUE_REFS
-QTextParserLine &QTextParserLine::operator=(QTextParserLine &&other)
-{
-    qSwap(text, other.text);
-    qSwap(type, other.type);
-
-    return *this;
-}
-#endif
-
 QTextParserLine QTextParserLine::operator=(const QTextParserLine &other)
 {
     text = other.text;

@@ -35,7 +35,20 @@ public:
     QTextParserLanguageDefinitionToken(const QTextParserLanguageDefinitionToken &other);
 
 #ifdef Q_COMPILER_RVALUE_REFS
-    QTextParserLanguageDefinitionToken &operator=(QTextParserLanguageDefinitionToken &&other);
+    inline QTextParserLanguageDefinitionToken &operator=(QTextParserLanguageDefinitionToken &&other)
+    {
+        qSwap(name, other.name);
+        qSwap(startString, other.startString);
+        qSwap(endString, other.endString);
+        qSwap(tokenString, other.tokenString);
+        qSwap(searchEndStringLast, other.searchEndStringLast);
+        qSwap(immediateStartString, other.immediateStartString);
+        qSwap(onlyStartTag, other.onlyStartTag);
+        qSwap(excludeTopLevelChild, other.excludeTopLevelChild);
+        qSwap(nestedTokens, other.nestedTokens);
+
+        return *this;
+    }
 #endif
     QTextParserLanguageDefinitionToken operator=(const QTextParserLanguageDefinitionToken &other);
 

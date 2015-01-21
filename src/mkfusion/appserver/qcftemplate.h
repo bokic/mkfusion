@@ -16,7 +16,20 @@ public:
     QCFTemplate(const QString &filePath, const QCFTemplateInfo &templateInfo = QCFTemplateInfo(),bool compiling = true);
     QCFTemplate(const QCFTemplate &other);
 #ifdef Q_COMPILER_RVALUE_REFS
-    QCFTemplate &operator=(QCFTemplate &&other);
+    inline QCFTemplate &operator=(QCFTemplate &&other)
+    {
+        qSwap(m_pathName, other.m_pathName);
+        qSwap(m_library, other.m_library);
+        qSwap(m_modified, other.m_modified);
+        qSwap(m_fileSize, other.m_fileSize);
+        qSwap(m_error, other.m_error);
+        qSwap(m_usage, other.m_usage);
+        qSwap(m_valid, other.m_valid);
+        qSwap(m_compiling, other.m_compiling);
+        qSwap(m_lastAccess, other.m_lastAccess);
+
+        return *this;
+    }
 #endif
     QCFTemplate &operator=(const QCFTemplate &other);
     virtual ~QCFTemplate();

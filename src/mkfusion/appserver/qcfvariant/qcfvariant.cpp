@@ -293,59 +293,6 @@ Q_DECL_EXPORT QCFVariant::QCFVariant(const QCFVariantType type)
     setType(type);
 }
 
-#ifdef Q_COMPILER_RVALUE_REFS
-Q_DECL_EXPORT QCFVariant &QCFVariant::operator=(QCFVariant &&other)
-{
-    switch(other.m_Type)
-    {
-    case Null:
-        break;
-    case Boolean:
-        qSwap(m_Bool, other.m_Bool);
-        break;
-    case Number:
-        qSwap(m_Number, other.m_Number);
-        break;
-    case String:
-        qSwap(m_String, other.m_String);
-        break;
-    case DateTime:
-        qSwap(m_DateTime, other.m_DateTime);
-        break;
-    case Component:
-        qSwap(m_Component, other.m_Component);
-    case Function:
-        qSwap(m_Function, other.m_Function);
-    case Array:
-        qSwap(m_Array, other.m_Array);
-        qSwap(m_ArrayDimension, other.m_ArrayDimension);
-        qSwap(m_Number, other.m_Number);
-        break;
-    case Struct:
-        qSwap(m_Struct, other.m_Struct);
-        qSwap(m_HiddenScopeFirst, other.m_HiddenScopeFirst);
-        qSwap(m_HiddenScopeLast1, other.m_HiddenScopeLast1);
-        qSwap(m_HiddenScopeLast2, other.m_HiddenScopeLast2);
-        break;
-    case Binary:
-        qSwap(m_ByteArray, other.m_ByteArray);
-        break;
-    case Query:
-        qSwap(m_Struct, other.m_Struct);
-        break;
-    case NotImplemented:
-        break;
-    case Error:
-        break;
-    }
-
-    qSwap(m_Type, other.m_Type);
-    qSwap(m_AddMissingMember, other.m_AddMissingMember);
-
-    return *this;
-}
-#endif
-
 Q_DECL_EXPORT void QCFVariant::setType(QCFVariantType type)
 {
     if (m_Type == type)

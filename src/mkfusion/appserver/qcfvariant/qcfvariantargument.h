@@ -12,7 +12,17 @@ public:
     QCFVariantArgument(const QString &name, const QString &required, const QString &type, const QString &def, const QString &displayName, const QString &hint);
     QCFVariantArgument(const QCFVariantArgument &other);
 #ifdef Q_COMPILER_RVALUE_REFS
-    QCFVariantArgument &operator=(QCFVariantArgument &&other);
+    inline QCFVariantArgument &operator=(QCFVariantArgument &&other)
+    {
+        qSwap(m_Name, other.m_Name);
+        qSwap(m_Required, other.m_Required);
+        qSwap(m_Type, other.m_Type);
+        qSwap(m_Default, other.m_Default);
+        qSwap(m_DisplayName, other.m_DisplayName);
+        qSwap(m_Hint, other.m_Hint);
+
+        return *this;
+    }
 #endif
     QCFVariantArgument &operator=(const QCFVariantArgument &other);
 

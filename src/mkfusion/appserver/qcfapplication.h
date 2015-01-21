@@ -14,7 +14,21 @@ public:
     QCFApplication();
     QCFApplication(const QCFApplication &other);
 #ifdef Q_COMPILER_RVALUE_REFS
-    QCFApplication &operator=(QCFApplication &&other);
+    inline QCFApplication &operator=(QCFApplication &&other)
+    {
+        qSwap(m_name, other.m_name);
+        qSwap(m_path, other.m_path);
+        qSwap(m_applicationTemplate, other.m_applicationTemplate);
+        qSwap(m_sessionManagement, other.m_sessionManagement);
+        qSwap(m_setClientCookies, other.m_setClientCookies);
+        qSwap(m_callOnApplicationEnd, other.m_callOnApplicationEnd);
+        qSwap(m_data, other.m_data);
+        //qSwap(m_mutexHash, other.m_mutexHash);
+        qSwap(m_timeout, other.m_timeout);
+        //qSwap(m_mutex, other.m_mutex);
+
+        return *this;
+    }
 #endif
     QCFApplication &operator=(const QCFApplication &other);
 

@@ -42,7 +42,13 @@ public:
     QTextParserLine(const QTextParserLine &other);
 
 #ifdef Q_COMPILER_RVALUE_REFS
-    QTextParserLine &operator=(QTextParserLine &&other);
+    inline QTextParserLine &operator=(QTextParserLine &&other)
+    {
+        qSwap(text, other.text);
+        qSwap(type, other.type);
+
+        return *this;
+    }
 #endif
     QTextParserLine operator=(const QTextParserLine &other);
 
