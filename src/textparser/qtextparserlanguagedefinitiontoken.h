@@ -43,7 +43,7 @@ public:
     QRegExp startString;
     QRegExp endString;
     QRegExp tokenString;
-    bool searchEndStringLast; // TODO: Unimplemented yet(greedy/lazy??)
+    bool searchEndStringLast;
     bool immediateStartString;
     QVector<int> nestedTokens;
 };
