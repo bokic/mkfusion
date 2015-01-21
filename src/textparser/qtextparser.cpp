@@ -382,7 +382,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
         if (tokenList[end_token].searchEndStringLast == false)
         {
-            QRegExp reg = tokenList[end_token].endString;
+            const QRegExp &reg = tokenList[end_token].endString;
             int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
@@ -398,7 +398,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
         if ((!token.startString.isEmpty())&&(!token.endString.isEmpty())&&(token.tokenString.isEmpty()))
         {
-            QRegExp reg = token.startString;
+            const QRegExp &reg = token.startString;
             int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
@@ -434,7 +434,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                     ret.m_ChildElements.append(child);
                 }
 
-                QRegExp reg = tokenList[nToken].endString;
+                const QRegExp &reg = tokenList[nToken].endString;
                 int index = reg.indexIn(lines.at(start_line).text, start_column);
 
                 if (index == start_column)
@@ -487,7 +487,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                 ret.m_ChildElements.append(child);
             }
 
-            QRegExp reg = tokenList[nToken].endString;
+            const QRegExp &reg = tokenList[nToken].endString;
             int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
@@ -513,7 +513,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
         }
         else if ((token.startString.isEmpty())&&(token.endString.isEmpty())&&(!token.tokenString.isEmpty())&&(token.nestedTokens.count() == 0))
         {
-            QRegExp reg = tokenList[nToken].tokenString;
+            const QRegExp &reg = tokenList[nToken].tokenString;
             int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
@@ -551,7 +551,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
     {
         if (tokenList[end_token].searchEndStringLast == true)
         {
-            QRegExp reg = tokenList[end_token].endString;
+            const QRegExp &reg = tokenList[end_token].endString;
             int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
