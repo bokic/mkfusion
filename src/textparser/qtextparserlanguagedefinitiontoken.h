@@ -59,6 +59,7 @@ public:
     bool searchEndStringLast;
     bool immediateStartString;
     bool onlyStartTag;
+    bool excludeTopLevelChild;
     QVector<int> nestedTokens;
 };
 

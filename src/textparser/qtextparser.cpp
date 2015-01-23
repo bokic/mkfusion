@@ -116,6 +116,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             const QString searchEndStringLast = token_node.attributes().namedItem("SearchEndStringLast").nodeValue();
                             const QString tokenImmediateStart = token_node.attributes().namedItem("ImmediateStart").nodeValue();
                             const QString tokenOnlyStartTag = token_node.attributes().namedItem("OnlyStartTag").nodeValue();
+                            const QString tokenExcludeTopLevelChild = token_node.attributes().namedItem("ExcludeTopLevelChild").nodeValue();
                             QString tokenNestedTokens;
                             QString tokenNestedTokensRequireAll;
                             QString tokenNestedTokensInSameOrder;
@@ -137,6 +138,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             token.searchEndStringLast = (searchEndStringLast.compare("true", Qt::CaseInsensitive) == 0);
                             token.immediateStartString = (tokenImmediateStart.compare("true", Qt::CaseInsensitive) == 0);
                             token.onlyStartTag = (tokenOnlyStartTag.compare("true", Qt::CaseInsensitive) == 0);
+                            token.excludeTopLevelChild = (tokenExcludeTopLevelChild.compare("true", Qt::CaseInsensitive) == 0);
 
                             tmpNestedTokens.append(tokenNestedTokens);
                             def.tokens.append(token);
@@ -432,6 +434,21 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                     }
 
                     ret.m_ChildElements.append(child);
+                }
+
+                if (tokenList[nToken].excludeTopLevelChild)
+                {
+                    QList<QTextParserElement> oldChildrens = ret.m_ChildElements;
+
+                    ret.m_ChildElements.clear();
+
+                    for(QTextParserElement oldChild: oldChildrens)
+                    {
+                       for(QTextParserElement oldGrandChild: oldChild.m_ChildElements)
+                       {
+                           ret.m_ChildElements.append(oldGrandChild);
+                       }
+                    }
                 }
 
                 const QRegExp &reg = tokenList[nToken].endString;
