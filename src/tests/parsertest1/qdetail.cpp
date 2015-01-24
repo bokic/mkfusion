@@ -65,19 +65,19 @@ void QDetail::setFileForParsing(const QString &p_File)
             switch(tag.m_TagType)
             {
             case UnknownTagType:
-                name = "UnknownCFTag";
+                name = "UnknownTag";
                 break;
             case CFTagType:
-                name = "BeginCFTag(" + tag.m_Name + ")";
+                name = "CFTag(" + tag.m_Name + ")";
                 break;
             case EndCFTagType:
                 name = "EndCFTag(" + tag.m_Name + ")";
                 break;
             case CommentTagType:
-                name = "CFComment";
+                name = "CommentTag";
                 break;
             case ExpressionTagType:
-                name = "CFExpression";
+                name = "ExpressionTag";
                 break;
             }
 
@@ -111,19 +111,19 @@ void QDetail::setFileForParsing(const QString &p_File)
             switch(tag.m_TagType)
             {
             case UnknownTagType:
-                name = "UnknownCFTag";
+                name = "UnknownTag";
                 break;
             case CFTagType:
-                name = "BeginCFTag(" + tag.m_Name + ")";
+                name = "CFTag(" + tag.m_Name + ")";
                 break;
             case EndCFTagType:
                 name = "EndCFTag(" + tag.m_Name + ")";
                 break;
             case CommentTagType:
-                name = "CFComment";
+                name = "CommentTag";
                 break;
             case ExpressionTagType:
-                name = "CFExpression";
+                name = "ExpressionTag";
                 break;
             }
 
