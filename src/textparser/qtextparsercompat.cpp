@@ -62,6 +62,10 @@ QCFParserTag QTextParserCompat::convertElement(const QTextParserElement &element
     {
         ret.m_TagType = CommentTagType;
     }
+    else if (elementType == "SharpExpression")
+    {
+        ret.m_TagType = ExpressionTagType;
+    }
 
     for(const QTextParserElement &child: element.m_ChildElements)
     {
