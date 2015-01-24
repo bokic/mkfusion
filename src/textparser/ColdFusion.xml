@@ -25,7 +25,7 @@
 		<token Name="SharpExpression" StartString="#" EndString="#" MultiLine="true">
 			<nested_tokens names="Expression" />
 		</token>
-		<token Name="Expression" MultiLine="true">
+		<token Name="Expression" MultiLine="true" IgnoreIfOnlyOneChild="true">
 			<nested_tokens names="SingleString,DoubleString,Separator,ExpressionEnd,Number,Boolean,Operator,ObjectMember,Keyword,Function,Object,Variable,SubExpression,VariableIndex" />
 		</token>
 		<token Name="ScriptExpression" ImmediateStart="true" MultiLine="true">

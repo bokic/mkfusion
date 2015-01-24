@@ -45,6 +45,7 @@ public:
         qSwap(immediateStartString, other.immediateStartString);
         qSwap(onlyStartTag, other.onlyStartTag);
         qSwap(excludeTopLevelChild, other.excludeTopLevelChild);
+        qSwap(IgnoreIfOnlyOneChild, other.IgnoreIfOnlyOneChild);
         qSwap(nestedTokens, other.nestedTokens);
 
         return *this;
@@ -60,6 +61,7 @@ public:
     bool immediateStartString;
     bool onlyStartTag;
     bool excludeTopLevelChild;
+    bool IgnoreIfOnlyOneChild;
     QVector<int> nestedTokens;
 };
 

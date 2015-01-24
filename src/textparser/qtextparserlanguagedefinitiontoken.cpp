@@ -28,6 +28,7 @@ QTextParserLanguageDefinitionToken::QTextParserLanguageDefinitionToken()
     , immediateStartString(false)
     , onlyStartTag(false)
     , excludeTopLevelChild(false)
+    , IgnoreIfOnlyOneChild(false)
 {
 }
 
@@ -41,6 +42,7 @@ QTextParserLanguageDefinitionToken::QTextParserLanguageDefinitionToken(const QTe
     immediateStartString = other.immediateStartString;
     onlyStartTag = other.onlyStartTag;
     excludeTopLevelChild = other.excludeTopLevelChild;
+    IgnoreIfOnlyOneChild = other.IgnoreIfOnlyOneChild;
     nestedTokens = other.nestedTokens;
 }
 
@@ -54,6 +56,7 @@ QTextParserLanguageDefinitionToken QTextParserLanguageDefinitionToken::operator=
     immediateStartString = other.immediateStartString;
     onlyStartTag = other.onlyStartTag;
     excludeTopLevelChild = other.excludeTopLevelChild;
+    IgnoreIfOnlyOneChild = other.IgnoreIfOnlyOneChild;
     nestedTokens = other.nestedTokens;
 
     return *this;

@@ -117,6 +117,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             const QString tokenImmediateStart = token_node.attributes().namedItem("ImmediateStart").nodeValue();
                             const QString tokenOnlyStartTag = token_node.attributes().namedItem("OnlyStartTag").nodeValue();
                             const QString tokenExcludeTopLevelChild = token_node.attributes().namedItem("ExcludeTopLevelChild").nodeValue();
+                            const QString tokenIgnoreIfOnlyOneChild = token_node.attributes().namedItem("IgnoreIfOnlyOneChild").nodeValue();
                             QString tokenNestedTokens;
                             QString tokenNestedTokensRequireAll;
                             QString tokenNestedTokensInSameOrder;
@@ -139,6 +140,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             token.immediateStartString = (tokenImmediateStart.compare("true", Qt::CaseInsensitive) == 0);
                             token.onlyStartTag = (tokenOnlyStartTag.compare("true", Qt::CaseInsensitive) == 0);
                             token.excludeTopLevelChild = (tokenExcludeTopLevelChild.compare("true", Qt::CaseInsensitive) == 0);
+                            token.IgnoreIfOnlyOneChild = (tokenIgnoreIfOnlyOneChild.compare("true", Qt::CaseInsensitive) == 0);
 
                             tmpNestedTokens.append(tokenNestedTokens);
                             def.tokens.append(token);
@@ -450,6 +452,13 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                        }
                     }
                 }
+                else if (tokenList[nToken].IgnoreIfOnlyOneChild)
+                {
+                    if (ret.m_ChildElements.count() == 1)
+                    {
+                        ret.m_ChildElements = ret.m_ChildElements.at(0).m_ChildElements;
+                    }
+                }
 
                 const QRegExp &reg = tokenList[nToken].endString;
                 int index = reg.indexIn(lines.at(start_line).text, start_column);
@@ -517,6 +526,13 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 #ifdef DEBUG_QTEXTPARSER
                 ret.m_TypeDebug = tokenList[nToken].name;
 #endif
+                if (tokenList[nToken].IgnoreIfOnlyOneChild)
+                {
+                    if (ret.m_ChildElements.count() == 1)
+                    {
+                        ret = ret.m_ChildElements.at(0);
+                    }
+                }
                 break;
             }
             else
