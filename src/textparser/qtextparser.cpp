@@ -420,7 +420,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
                 start_column += reg.cap().length();
 
-                if (tokenList[nToken].onlyStartTag == true)
+                if (token.onlyStartTag == true)
                 {
                     ret.m_EndLine = start_line;
                     ret.m_EndColumn = start_column;
@@ -438,7 +438,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                     ret.m_ChildElements.append(child);
                 }
 
-                if (tokenList[nToken].excludeTopLevelChild)
+                if (token.excludeTopLevelChild)
                 {
                     QList<QTextParserElement> oldChildrens = ret.m_ChildElements;
 
@@ -452,7 +452,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                        }
                     }
                 }
-                else if (tokenList[nToken].IgnoreIfOnlyOneChild)
+                else if (token.IgnoreIfOnlyOneChild)
                 {
                     if (ret.m_ChildElements.count() == 1)
                     {
@@ -460,12 +460,12 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                     }
                 }
 
-                const QRegExp &reg = tokenList[nToken].endString;
+                const QRegExp &reg = token.endString;
                 int index = reg.indexIn(lines.at(start_line).text, start_column);
 
                 if (index == start_column)
                 {
-                    if (tokenList[nToken].onlyStartTag == false)
+                    if (token.onlyStartTag == false)
                     {
                         start_column += reg.cap().count();
                         ret.m_EndLine = start_line;
@@ -474,7 +474,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
                     ret.m_Type = nToken;
 #ifdef DEBUG_QTEXTPARSER
-                    ret.m_TypeDebug = tokenList[nToken].name;
+                    ret.m_TypeDebug = token.name;
 #endif
                 }
                 else
@@ -513,7 +513,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                 ret.m_ChildElements.append(child);
             }
 
-            const QRegExp &reg = tokenList[nToken].endString;
+            const QRegExp &reg = token.endString;
             int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
@@ -524,9 +524,9 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                 ret.m_EndColumn = start_column;
                 ret.m_Type = nToken;
 #ifdef DEBUG_QTEXTPARSER
-                ret.m_TypeDebug = tokenList[nToken].name;
+                ret.m_TypeDebug = token.name;
 #endif
-                if (tokenList[nToken].IgnoreIfOnlyOneChild)
+                if (token.IgnoreIfOnlyOneChild)
                 {
                     if (ret.m_ChildElements.count() == 1)
                     {
@@ -546,7 +546,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
         }
         else if ((token.startString.isEmpty())&&(token.endString.isEmpty())&&(!token.tokenString.isEmpty())&&(token.nestedTokens.count() == 0))
         {
-            const QRegExp &reg = tokenList[nToken].tokenString;
+            const QRegExp &reg = token.tokenString;
             int index = reg.indexIn(lines.at(start_line).text, start_column);
 
             if (index == start_column)
@@ -569,7 +569,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                 ret.m_EndColumn = start_column;
                 ret.m_Type = nToken;
 #ifdef DEBUG_QTEXTPARSER
-                ret.m_TypeDebug = tokenList[nToken].name;
+                ret.m_TypeDebug = token.name;
 #endif
                 break;
             }
