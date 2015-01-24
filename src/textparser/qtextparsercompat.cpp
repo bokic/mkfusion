@@ -9,9 +9,26 @@ QList<QCFParserTag> QTextParserCompat::toOldParser(const QTextParserElements &ne
 
     convertLinesToText();
 
-    for(const QTextParserElement &element: newParser)
+    for(const QTextParserElement &newElement: newParser)
     {
-        ret.append(convertElement(element));
+        QCFParserTag oldElement = convertElement(newElement);
+
+        if ((oldElement.m_TagType == CFTagType)&&(oldElement.m_Name == "cfoutput"))
+        {
+            oldElement.m_Arguments.m_ChildElements.clear();
+
+            ret.append(oldElement);
+
+            for(QTextParserElement child: newElement.m_ChildElements)
+            {
+                ret.append(convertElement(child));
+            }
+        }
+        else
+        {
+            ret.append(oldElement);
+        }
+
     }
 
     return ret;
