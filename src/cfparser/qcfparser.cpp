@@ -1868,7 +1868,7 @@ QCFParserErrorType QCFParser::parse(const QString &p_Text, bool *p_Terminate)
             commentTag.m_Arguments.m_Position = 0;
             commentTag.m_Arguments.m_Size = 0;
             commentTag.m_Arguments.m_Text = "";
-            commentTag.m_Arguments.m_Type = Error;
+            commentTag.m_Arguments.m_Type = Null;
             commentTag.m_InlineClosedTag = false;
             commentTag.m_OtherTag = nullptr;
 
