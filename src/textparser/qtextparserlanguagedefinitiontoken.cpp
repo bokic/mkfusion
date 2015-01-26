@@ -29,6 +29,7 @@ QTextParserLanguageDefinitionToken::QTextParserLanguageDefinitionToken()
     , onlyStartTag(false)
     , excludeTopLevelChild(false)
     , IgnoreIfOnlyOneChild(false)
+    , MultiLine(false)
 {
 }
 
@@ -44,6 +45,7 @@ QTextParserLanguageDefinitionToken::QTextParserLanguageDefinitionToken(const QTe
     excludeTopLevelChild = other.excludeTopLevelChild;
     IgnoreIfOnlyOneChild = other.IgnoreIfOnlyOneChild;
     nestedTokens = other.nestedTokens;
+    MultiLine = other.MultiLine;
 }
 
 QTextParserLanguageDefinitionToken QTextParserLanguageDefinitionToken::operator=(const QTextParserLanguageDefinitionToken &other)
@@ -58,6 +60,7 @@ QTextParserLanguageDefinitionToken QTextParserLanguageDefinitionToken::operator=
     excludeTopLevelChild = other.excludeTopLevelChild;
     IgnoreIfOnlyOneChild = other.IgnoreIfOnlyOneChild;
     nestedTokens = other.nestedTokens;
+    MultiLine = other.MultiLine;
 
     return *this;
 }

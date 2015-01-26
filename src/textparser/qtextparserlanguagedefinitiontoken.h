@@ -47,6 +47,7 @@ public:
         qSwap(excludeTopLevelChild, other.excludeTopLevelChild);
         qSwap(IgnoreIfOnlyOneChild, other.IgnoreIfOnlyOneChild);
         qSwap(nestedTokens, other.nestedTokens);
+        qSwap(MultiLine, other.MultiLine);
 
         return *this;
     }
@@ -62,6 +63,7 @@ public:
     bool onlyStartTag;
     bool excludeTopLevelChild;
     bool IgnoreIfOnlyOneChild;
+    bool MultiLine;
     QVector<int> nestedTokens;
 };
 

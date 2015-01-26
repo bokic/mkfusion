@@ -118,6 +118,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             const QString tokenOnlyStartTag = token_node.attributes().namedItem("OnlyStartTag").nodeValue();
                             const QString tokenExcludeTopLevelChild = token_node.attributes().namedItem("ExcludeTopLevelChild").nodeValue();
                             const QString tokenIgnoreIfOnlyOneChild = token_node.attributes().namedItem("IgnoreIfOnlyOneChild").nodeValue();
+                            const QString tokenMultiLine = token_node.attributes().namedItem("MultiLine").nodeValue();
                             QString tokenNestedTokens;
                             QString tokenNestedTokensRequireAll;
                             QString tokenNestedTokensInSameOrder;
@@ -141,6 +142,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                             token.onlyStartTag = (tokenOnlyStartTag.compare("true", Qt::CaseInsensitive) == 0);
                             token.excludeTopLevelChild = (tokenExcludeTopLevelChild.compare("true", Qt::CaseInsensitive) == 0);
                             token.IgnoreIfOnlyOneChild = (tokenIgnoreIfOnlyOneChild.compare("true", Qt::CaseInsensitive) == 0);
+                            token.MultiLine = (tokenMultiLine.compare("true", Qt::CaseInsensitive) == 0);
 
                             tmpNestedTokens.append(tokenNestedTokens);
                             def.tokens.append(token);
@@ -428,14 +430,33 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
                 while(1)
                 {
-                    QTextParserElement child = parseElement(lines, token.nestedTokens, start_line, start_column, end_line, end_column, nToken);
+                    while(1)
+                    {
+                        QTextParserElement child = parseElement(lines, token.nestedTokens, start_line, start_column, end_line, end_column, nToken);
 
-                    if (child.m_Type == -1)
+                        if (child.m_Type == -1)
+                        {
+                            break;
+                        }
+
+                        ret.m_ChildElements.append(child);
+                    }
+
+                    if (token.MultiLine == false)
                     {
                         break;
                     }
 
-                    ret.m_ChildElements.append(child);
+                    const QRegExp &reg = token.endString;
+                    int index = reg.indexIn(lines.at(start_line).text, start_column);
+
+                    if (index == start_column)
+                    {
+                        break;
+                    }
+
+                    start_line++;
+                    start_column = 0;
                 }
 
                 if (token.excludeTopLevelChild)
