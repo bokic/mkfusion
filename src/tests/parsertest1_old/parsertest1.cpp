@@ -1,4 +1,6 @@
 #include "parsertest1.h"
+#include "qtextparsercompat.h"
+#include "qtextparser.h"
 #include "qcfparser.h"
 #include "qdetail.h"
 
@@ -83,6 +85,15 @@ void CFTest1::parseDir(const QString &dir)
                 }
                 else
                 {
+                    QTextParserCompat newParser;
+
+                    const QList<QCFParserTag> &convertedTags = newParser.toOldParser(newParser.parseText(fileContent, "cfm"));
+                    if (QTextParserCompat::areParsersEqual(parser.getTags(), convertedTags) == false)
+                    {
+                        lastItem->setText(lastItem->text() + " error: new parser didn't parse the file correctly.");
+                        lastItem->setBackgroundColor(QColor(0, 255, 255));
+                    }
+
                     for(const QCFParserTag &l_tag : parser.getTags())
                     {
                         if (l_tag.m_TagType == CFTagType)
