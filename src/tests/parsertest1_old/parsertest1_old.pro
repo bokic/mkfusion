@@ -9,12 +9,9 @@ DESTDIR  = ../../../bin
 
 DEFINES  += DEBUG_QTEXTPARSER
 
-DEPENDPATH  += . ../../textparser ../../cfparser ../../mkfusion/appserver
-INCLUDEPATH += . ../../textparser ../../cfparser ../../mkfusion/appserver
+DEPENDPATH  += . ../../cfparser ../../mkfusion/appserver
+INCLUDEPATH += . ../../cfparser ../../mkfusion/appserver
 
-SOURCES     = main.cpp parsertest1.cpp qdetail.cpp ../../textparser/qtextparsercompat.cpp ../../cfparser/qcfparser.cpp ../../cfparser/qcffunction.cpp ../../cfparser/qcftag.cpp ../../cfparser/qcf8.cpp
-HEADERS     =          parsertest1.h   qdetail.h   ../../textparser/qtextparsercompat.h ../../cfparser/qcfparser.h   ../../cfparser/qcffunction.h   ../../cfparser/qcftag.h   ../../cfparser/qcf8.h
+SOURCES     = main.cpp parsertest1.cpp qdetail.cpp ../../cfparser/qcfparser.cpp ../../cfparser/qcffunction.cpp ../../cfparser/qcftag.cpp ../../cfparser/qcf8.cpp
+HEADERS     =          parsertest1.h   qdetail.h   ../../cfparser/qcfparser.h   ../../cfparser/qcffunction.h   ../../cfparser/qcftag.h   ../../cfparser/qcf8.h
 FORMS       =          parsertest1.ui  qdetail.ui
-
-SOURCES += ../../textparser/qtextparser.cpp ../../textparser/qtextparserelement.cpp ../../textparser/qtextparserline.cpp ../../textparser/qtextparserlanguagedefinitiontoken.cpp ../../textparser/qtextparserlanguagedefinition.cpp
-HEADERS += ../../textparser/qtextparser.h   ../../textparser/qtextparserelement.h   ../../textparser/qtextparserline.h   ../../textparser/qtextparserlanguagedefinitiontoken.h   ../../textparser/qtextparserlanguagedefinition.h

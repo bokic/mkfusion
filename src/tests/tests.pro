@@ -4,4 +4,4 @@ lessThan(QT_MAJOR_VERSION, 5) {
 
 TEMPLATE = subdirs
 CONFIG  += debug_and_release c++11
-SUBDIRS  = cfbenchmark cf7debugger editwidget parsertest1_old parsertest2 rdstest sftptest textparser testcasetester
+SUBDIRS  = cfbenchmark cf7debugger editwidget parsertest1_old parsertest1_new parsertest2 rdstest sftptest textparser testcasetester

@@ -3,8 +3,9 @@
 
 #include "qcfparser.h"
 
-#include <QDialog>
 #include <QTreeWidgetItem>
+#include <QDialog>
+#include <QList>
 
 namespace Ui
 {
@@ -19,22 +20,22 @@ public:
     explicit QDetail(QWidget *parent = 0);
     virtual ~QDetail();
 
-    void setFileForParsing(const QString&);
+    void setFileForParsing(const QString &file);
+
+private slots:
+    void on_parser_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
 
 private:
     Ui::QDetail *ui;
 
-    void addSubTrees(const QCFParserElement&, QTreeWidgetItem*);
+    void addSubTrees(const QCFParserElement &element, QTreeWidgetItem *widgetItem);
     void recolor();
-    void colorElement(const QCFParserElement&, const QString&);
+    void colorElement(const QCFParserElement &element, const QString &idString);
+
     QString m_CurrentTextSegment;
-    QList<QCFParserTag> m_OldParserTags;
-    QList<QCFParserTag> m_NewParserTags;
+    QList<QCFParserTag> m_ParserTags;
     bool m_IsCurrentSelect;
 
-private slots:
-    void on_old_parser_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
-    void on_new_parser_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
 };
 
 #endif // QDETAIL_H

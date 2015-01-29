@@ -1,8 +1,6 @@
 #ifndef PARSERTEST1_H
 #define PARSERTEST1_H
 
-#include "qcfparser.h"
-
 #include <QDialog>
 #include <QHash>
 
@@ -14,9 +12,8 @@ class CFTest1 : public QDialog
 
 public:
     CFTest1(QWidget *parent = 0, Qt::WindowFlags flags = 0);
-    virtual ~CFTest1();
+
 private:
-    void findFunctionsRecursive(const QCFParserElement &parserElement);
     void parseDir(const QString &dir);
 
 private slots:

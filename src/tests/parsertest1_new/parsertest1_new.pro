@@ -12,6 +12,9 @@ DEFINES  += DEBUG_QTEXTPARSER
 DEPENDPATH  = . ../../textparser/
 INCLUDEPATH = . ../../textparser/
 
-SOURCES     = main.cpp parsertest1_new.cpp qdetail.cpp ../../textparser/qtextparser.cpp
-HEADERS     =          parsertest1_new.h   qdetail.h   ../../textparser/qtextparser.h
-FORMS       =          parsertest1_new.ui  qdetail.ui
+SOURCES     = main.cpp parsertest1.cpp qdetail.cpp
+HEADERS     =          parsertest1.h   qdetail.h
+FORMS       =          parsertest1.ui  qdetail.ui
+
+SOURCES += ../../textparser/qtextparser.cpp ../../textparser/qtextparserelement.cpp ../../textparser/qtextparserline.cpp ../../textparser/qtextparserlanguagedefinitiontoken.cpp ../../textparser/qtextparserlanguagedefinition.cpp
+HEADERS += ../../textparser/qtextparser.h   ../../textparser/qtextparserelement.h   ../../textparser/qtextparserline.h   ../../textparser/qtextparserlanguagedefinitiontoken.h   ../../textparser/qtextparserlanguagedefinition.h

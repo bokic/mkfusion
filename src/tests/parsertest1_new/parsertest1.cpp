@@ -1,5 +1,5 @@
 #include "parsertest1.h"
-#include "qcfparser.h"
+#include "qtextparser.h"
 #include "qdetail.h"
 
 #include <QListWidgetItem>
@@ -13,6 +13,8 @@ CFTest1::CFTest1(QWidget *parent, Qt::WindowFlags flags)
 {
     ui.setupUi(this);
     setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+
+    QTextParser::loadParserDefinitionsFromDir("../src/textparser");
 }
 
 void CFTest1::parseDir(const QString &dir)
@@ -38,33 +40,13 @@ void CFTest1::parseDir(const QString &dir)
         {
             QString itemFileName = QDir::toNativeSeparators(fileinfo.filePath());
             QListWidgetItem *lastItem = new QListWidgetItem(itemFileName);
-
-            QFile file(itemFileName);
-            file.open(QIODevice::ReadOnly);
-            QString fileContent = file.readAll();
-            file.close();
-
-            QCFParser parser;
+            QTextParser parser;
 
             this->setWindowTitle("CFTest1 - " + fileinfo.fileName()); qApp->processEvents();
 
-            QCFParserErrorType parseError = parser.parse(fileContent);
+            parser.parseFile(fileinfo.absoluteFilePath());
 
             this->setWindowTitle("CFTest1"); qApp->processEvents();
-
-            if (parseError != NoError)
-            {
-                lastItem->setText(lastItem->text() + " error: " + parser.error() + ", at position: " + QString::number(parser.getErrorPosition()));
-                lastItem->setBackgroundColor(QColor(255, 0, 0));
-            }
-            else
-            {
-                if (parser.buildTagTree() != NoError)
-                {
-                    lastItem->setText(lastItem->text() + " error: " + parser.error() + ", at position: " + QString::number(parser.getErrorPosition()));
-                    lastItem->setBackgroundColor(QColor(0, 255, 255));
-                }
-            }
 
             ui.listWidget->addItem(lastItem);
         }

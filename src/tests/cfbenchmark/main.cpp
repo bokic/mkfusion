@@ -21,6 +21,7 @@ private slots:
     //void optPI2();
     void benchOldParser();
     void benchNewParser();
+    //void tmp();
 };
 
 /*void TestCases::origPI()
@@ -97,6 +98,24 @@ void TestCases::benchNewParser()
         //qDebug() << elements.count();
     }
 }
+
+/*void TestCases::tmp()
+{
+    QCFParser parser_old(CompilerMode, QCFParserTemplateFile);
+    QCFParserErrorType err = parser_old.parse(QFileInfo("site/pi.cfm"));
+    if (err != NoError)
+    {
+        return;
+    }
+
+    const QList<QCFParserTag> &tags = parser_old.getTags();
+
+    QTextParser parser_new;
+    parser_new.setTextTypeByFileExtension("cfm");
+    QTextParser::QTextParserElements elements = parser_new.parseFile("site/pi.cfm");
+
+    return;
+}*/
 
 QTEST_MAIN(TestCases)
 #include "main.moc"

@@ -88,6 +88,33 @@ struct QCFParserTag
 
         return false;
     }
+
+    bool operator!=(const struct QCFParserTag &other) const
+    {
+        QString thisName;
+        QString otherName;
+
+        if (m_TagType != CommentTagType)
+        {
+            thisName = m_Name;
+            otherName = other.m_Name;
+        }
+
+        if (
+            (m_Start == other.m_Start)&&
+            (m_Length == other.m_Length)&&
+            (thisName == otherName)&&
+            (m_TagType == other.m_TagType)&&
+            (m_Arguments == other.m_Arguments)&&
+            (m_InlineClosedTag == other.m_InlineClosedTag)//&&
+            //(m_OtherTag == other.m_OtherTag)
+        )
+        {
+            return false;
+        }
+
+        return true;
+    }
 };
 
 class QCFParser : public QObject

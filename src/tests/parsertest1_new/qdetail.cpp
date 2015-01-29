@@ -30,23 +30,23 @@ QDetail::~QDetail()
     ui = 0;
 }
 
-void QDetail::setFileForParsing(const QString &p_File)
+void QDetail::setFileForParsing(const QString &file)
 {
     m_Parser = QTextParser();
 
-    elements = m_Parser.parseFile(p_File);
+    elements = m_Parser.parseFile(file);
 
     m_ElementTextColors.clear();
     m_ElementBackgroundColors.clear();
 
-    for(const QTextParser::QTextParserLanguageDefinitionToken &token: m_Parser.getLanguage().tokens)
+    for(const QTextParserLanguageDefinitionToken &token: m_Parser.getLanguage().tokens)
     {
-        if ((token.name == "CFTag")||(token.name == "CFEndTag")||(token.name == "CFScript")||(token.name == "CFOutput"))
+        if ((token.name == "StartTag")||(token.name == "EndTag"))
         {
             m_ElementTextColors.append(QColor());
             m_ElementBackgroundColors.append(QColor());
         }
-        else if ((token.name == "CFComment")||(token.name == "ScriptComment"))
+        else if ((token.name == "Comment")||(token.name == "ScriptComment"))
         {
             m_ElementTextColors.append(QColor());
             m_ElementBackgroundColors.append(QColor(Qt::lightGray));
@@ -159,51 +159,65 @@ void QDetail::setFileForParsing(const QString &p_File)
         }
     }
 
-    QFile file(p_File);
-    file.open(QIODevice::ReadOnly);
-    QString fileContent = file.readAll();
+    QFile f(file);
+    f.open(QIODevice::ReadOnly);
+    QString fileContent = f.readAll();
     fileContent = fileContent.replace("\r\n", "\n");
     m_FileLines = fileContent.split('\n');
-    file.close();
+    f.close();
 
     ui->textEdit->setPlainText(fileContent);
 
 
     for(int c = 0; c < elements.count(); c++)
     {
-        const QTextParser::QTextParserElement &element = elements.at(c);
+        const QTextParserElement &element = elements.at(c);
 
         QTreeWidgetItem *widgetItem = new QTreeWidgetItem();
 
-        widgetItem->setText(0, element.m_Debug);
+        QString text = m_Parser.getLanguage().tokens.at(element.m_Type).name;
+
+        if (!element.m_Text.isEmpty())
+        {
+            text.append(QString("(%1)").arg(element.m_Text));
+        }
+
+        widgetItem->setText(0, text);
         widgetItem->setText(1, QChar(c));
 
         addSubTrees(element, widgetItem);
 
-        ui->treeWidget->addTopLevelItem(widgetItem);
+        ui->parser_treeWidget->addTopLevelItem(widgetItem);
     }
 
-    ui->treeWidget->expandAll();
+    ui->parser_treeWidget->expandAll();
 
     recolor();
 
-    ui->treeWidget->setFocus();
+    ui->parser_treeWidget->setFocus();
 }
 
-void QDetail::addSubTrees(const QTextParser::QTextParserElement &p_ParserElement, QTreeWidgetItem *p_WidgetItem)
+void QDetail::addSubTrees(const QTextParserElement &element, QTreeWidgetItem *widgetItem)
 {
-    for(int c = 0; c < p_ParserElement.m_ChildElements.count(); c++)
+    for(int c = 0; c < element.m_ChildElements.count(); c++)
     {
-        const QTextParser::QTextParserElement &child = p_ParserElement.m_ChildElements.at(c);
+        const QTextParserElement &childElement = element.m_ChildElements.at(c);
 
-        QTreeWidgetItem *widgetItem = new QTreeWidgetItem();
+        QTreeWidgetItem *child = new QTreeWidgetItem();
 
-        widgetItem->setText(0, child.m_Debug);
-        widgetItem->setText(1, p_WidgetItem->text(1) + QChar(c));
+        QString text = m_Parser.getLanguage().tokens.at(childElement.m_Type).name;
 
-        addSubTrees(child, widgetItem);
+        if (!childElement.m_Text.isEmpty())
+        {
+            text.append(QString("(%1)").arg(childElement.m_Text));
+        }
 
-        p_WidgetItem->addChild(widgetItem);
+        child->setText(0, text);
+        child->setText(1, child->text(1) + QChar(c));
+
+        addSubTrees(childElement, child);
+
+        widgetItem->addChild(child);
     }
 }
 
@@ -215,7 +229,7 @@ void QDetail::recolor()
 
     for(int c = 0; c < elements.count(); c++)
     {
-        QTextParser::QTextParserElement element = elements.at(c);
+        const QTextParserElement &element = elements.at(c);
 
         colorElement(element, QChar(c));
     }
@@ -233,31 +247,31 @@ int QDetail::getTextPos(int line, int column)
     return pos + column;
 }
 
-void QDetail::colorElement(const QTextParser::QTextParserElement &p_Element, const QString &p_ElementIDString)
+void QDetail::colorElement(const QTextParserElement &element, const QString &idString)
 {
     QTextCursor cursor = ui->textEdit->textCursor();
-    cursor.setPosition(getTextPos(p_Element.m_StartLine, p_Element.m_StartColumn), QTextCursor::MoveAnchor);
+    cursor.setPosition(getTextPos(element.m_StartLine, element.m_StartColumn), QTextCursor::MoveAnchor);
     ui->textEdit->setTextCursor(cursor);
-    cursor.setPosition(getTextPos(p_Element.m_EndLine, p_Element.m_EndColumn), QTextCursor::KeepAnchor);
+    cursor.setPosition(getTextPos(element.m_EndLine, element.m_EndColumn), QTextCursor::KeepAnchor);
     ui->textEdit->setTextCursor(cursor);
 
-    if (m_ElementTextColors.at(p_Element.m_Type).isValid())
+    if (m_ElementTextColors.at(element.m_Type).isValid())
     {
-        ui->textEdit->setTextColor(m_ElementTextColors.at(p_Element.m_Type));
+        ui->textEdit->setTextColor(m_ElementTextColors.at(element.m_Type));
     }
-    if(m_ElementBackgroundColors.at(p_Element.m_Type).isValid())
+    if(m_ElementBackgroundColors.at(element.m_Type).isValid())
     {
-        ui->textEdit->setTextBackgroundColor(m_ElementBackgroundColors.at(p_Element.m_Type));
+        ui->textEdit->setTextBackgroundColor(m_ElementBackgroundColors.at(element.m_Type));
     }
 
     if (!m_CurrentTextSegment.isEmpty())
     {
-        if ((p_ElementIDString.left(m_CurrentTextSegment.length()) == m_CurrentTextSegment))
+        if ((idString.left(m_CurrentTextSegment.length()) == m_CurrentTextSegment))
         {
             QTextCursor cursor = ui->textEdit->textCursor();
-            cursor.setPosition(getTextPos(p_Element.m_StartLine, p_Element.m_StartColumn), QTextCursor::MoveAnchor);
+            cursor.setPosition(getTextPos(element.m_StartLine, element.m_StartColumn), QTextCursor::MoveAnchor);
             ui->textEdit->setTextCursor(cursor);
-            cursor.setPosition(getTextPos(p_Element.m_EndLine, p_Element.m_EndColumn), QTextCursor::KeepAnchor);
+            cursor.setPosition(getTextPos(element.m_EndLine, element.m_EndColumn), QTextCursor::KeepAnchor);
             ui->textEdit->setTextCursor(cursor);
 
             if (m_IsCurrentSelect)
@@ -271,18 +285,18 @@ void QDetail::colorElement(const QTextParser::QTextParserElement &p_Element, con
         }
     }
 
-    cursor.setPosition(getTextPos(p_Element.m_StartLine, p_Element.m_StartColumn), QTextCursor::MoveAnchor);
+    cursor.setPosition(getTextPos(element.m_StartLine, element.m_StartColumn), QTextCursor::MoveAnchor);
     ui->textEdit->setTextCursor(cursor);
 
-    for(int c = 0; c < p_Element.m_ChildElements.count(); c++)
+    for(int c = 0; c < element.m_ChildElements.count(); c++)
     {
-        const QTextParser::QTextParserElement &child = p_Element.m_ChildElements.at(c);
+        const QTextParserElement &child = element.m_ChildElements.at(c);
 
-        colorElement(child, p_ElementIDString + QChar(c));
+        colorElement(child, idString + QChar(c));
     }
 }
 
-void QDetail::on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+void QDetail::on_parser_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
     if (previous)
     {

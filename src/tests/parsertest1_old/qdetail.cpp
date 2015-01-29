@@ -1,7 +1,6 @@
 #include "qdetail.h"
 #include "ui_qdetail.h"
 #include "qcfparser.h"
-#include "qtextparsercompat.h"
 
 #include <QFile>
 #include <QList>
@@ -29,156 +28,106 @@ QDetail::~QDetail()
     ui = 0;
 }
 
-void QDetail::setFileForParsing(const QString &p_File)
+void QDetail::setFileForParsing(const QString &file)
 {
     QString fileContent;
 
     // Read file from file
     {
-        QFile file(p_File);
-        file.open(QIODevice::ReadOnly);
-        fileContent = file.readAll();
-        file.close();
+        QFile f(file);
+        f.open(QIODevice::ReadOnly);
+        fileContent = f.readAll();
+        f.close();
     }
 
     ui->textEdit->setPlainText(fileContent);
 
-    // Setup old parser
+    QCFParser oldParser;
+
+    if (oldParser.parse(fileContent) == NoError)
     {
-        QCFParser oldParser;
-
-        if (oldParser.parse(fileContent) == NoError)
-        {
-            oldParser.prioritizeOperators();
-        }
-
-        ui->status_label->setText(oldParser.error());
-
-        m_OldParserTags = oldParser.getTags();
-
-        ushort c = 0;
-
-        for(const QCFParserTag &tag: m_OldParserTags)
-        {
-            QString name;
-
-            switch(tag.m_TagType)
-            {
-            case UnknownTagType:
-                name = "UnknownTag";
-                break;
-            case CFTagType:
-                name = "CFTag(" + tag.m_Name + ")";
-                break;
-            case EndCFTagType:
-                name = "EndCFTag(" + tag.m_Name + ")";
-                break;
-            case CommentTagType:
-                name = "CommentTag";
-                break;
-            case ExpressionTagType:
-                name = "ExpressionTag";
-                break;
-            }
-
-            QTreeWidgetItem *widgetItem = new QTreeWidgetItem();
-
-            widgetItem->setText(0, name);
-            widgetItem->setText(1, QChar(c));
-
-            addSubTrees(tag.m_Arguments, widgetItem);
-
-            ui->old_parser_treeWidget->addTopLevelItem(widgetItem);
-
-            c++;
-        }
+        oldParser.prioritizeOperators();
     }
 
-    // Setup new parser
+    ui->status_label->setText(oldParser.error());
+
+    m_ParserTags = oldParser.getTags();
+
+    ushort c = 0;
+
+    for(const QCFParserTag &tag: m_ParserTags)
     {
-        QTextParserCompat newParser;
+        QString name;
 
-        QTextParserElements elements = newParser.parseText(fileContent, "cfm");
-
-        m_NewParserTags = newParser.toOldParser(elements);
-
-        ushort c = 0;
-
-        for(const QCFParserTag &tag: m_NewParserTags)
+        switch(tag.m_TagType)
         {
-            QString name;
-
-            switch(tag.m_TagType)
-            {
-            case UnknownTagType:
-                name = "UnknownTag";
-                break;
-            case CFTagType:
-                name = "CFTag(" + tag.m_Name + ")";
-                break;
-            case EndCFTagType:
-                name = "EndCFTag(" + tag.m_Name + ")";
-                break;
-            case CommentTagType:
-                name = "CommentTag";
-                break;
-            case ExpressionTagType:
-                name = "ExpressionTag";
-                break;
-            }
-
-            QTreeWidgetItem *widgetItem = new QTreeWidgetItem();
-
-            widgetItem->setText(0, name);
-            widgetItem->setText(1, QChar(c));
-
-            addSubTrees(tag.m_Arguments, widgetItem);
-
-            ui->new_parser_treeWidget->addTopLevelItem(widgetItem);
-
-            c++;
+        case UnknownTagType:
+            name = "UnknownTag";
+            break;
+        case CFTagType:
+            name = "CFTag(" + tag.m_Name + ")";
+            break;
+        case EndCFTagType:
+            name = "EndCFTag(" + tag.m_Name + ")";
+            break;
+        case CommentTagType:
+            name = "CommentTag";
+            break;
+        case ExpressionTagType:
+            name = "ExpressionTag";
+            break;
         }
+
+        QTreeWidgetItem *widgetItem = new QTreeWidgetItem();
+
+        widgetItem->setText(0, name);
+        widgetItem->setText(1, QChar(c));
+
+        addSubTrees(tag.m_Arguments, widgetItem);
+
+        ui->parser_treeWidget->addTopLevelItem(widgetItem);
+
+        c++;
     }
 
-    ui->old_parser_treeWidget->expandAll();
-    ui->new_parser_treeWidget->expandAll();
+    ui->parser_treeWidget->expandAll();
 
     recolor();
 
     // Set focus to old_parser tree widget
-    ui->old_parser_treeWidget->setFocus();
+    ui->parser_treeWidget->setFocus();
 }
 
-void QDetail::addSubTrees(const QCFParserElement &p_ParserElement, QTreeWidgetItem *p_WidgetItem)
+void QDetail::addSubTrees(const QCFParserElement &element, QTreeWidgetItem *widgetItem)
 {
     ushort c = 0;
 
-    for(const QCFParserElement &element: p_ParserElement.m_ChildElements)
+    for(const QCFParserElement &child: element.m_ChildElements)
     {
         QString name;
 
         //enum QCFParserElementType {Boolean, Number, String, Variable, Function, Operator, SharpExpression
         //Expression, SubExpression, Parameters, Parameter, CFScript, CFComment, CFTagExpression, CFTagArguments, CFTagArgument, ObjectFunction, VariableMember, Error};
 
-        switch(element.m_Type)
+        switch(child.m_Type)
         {
         case Boolean:
-            name = "Boolean(" + element.m_Text + ")";
+            name = "Boolean(" + child.m_Text + ")";
             break;
         case Number:
-            name = "Number(" + element.m_Text + ")";
+            name = "Number(" + child.m_Text + ")";
             break;
         case String:
-            name = "String(" + element.m_Text + ")";
+            name = "String(" + child.m_Text + ")";
             break;
         case Variable:
-            name = "Variable(" + element.m_Text + ")";
+            name = "Variable(" + child.m_Text + ")";
             break;
         case Function:
-            name = "Function(" + element.m_Text + ")";
+            name = "Function(" + child.m_Text + ")";
             break;
         case Operator:
-            name = "Operator(" + element.m_Text + ")";
+            name = "Operator(" + child.m_Text + ")";
             break;
         case SharpExpression:
             name = "SharpExpression";
@@ -214,30 +163,30 @@ void QDetail::addSubTrees(const QCFParserElement &p_ParserElement, QTreeWidgetIt
             name = "CFTagArgument";
             break;
         case ObjectFunction:
-            name = "ObjectFunction(" + element.m_Text + ")";
+            name = "ObjectFunction(" + child.m_Text + ")";
             break;
         case VariableMember:
-            name = "VariableMember(" + element.m_Text + ")";
+            name = "VariableMember(" + child.m_Text + ")";
             break;
         case Keyword:
-            name = "Keyword(" + element.m_Text + ")";
+            name = "Keyword(" + child.m_Text + ")";
             break;
         case Error:
-            name = "Error(" + element.m_Text + ")";
+            name = "Error(" + child.m_Text + ")";
             break;
         default:
-            name = "[Unknown](" + element.m_Text + ")";
+            name = "[Unknown](" + child.m_Text + ")";
             break;
         }
 
-        QTreeWidgetItem *widgetItem = new QTreeWidgetItem();
+        QTreeWidgetItem *childItem = new QTreeWidgetItem();
 
-        widgetItem->setText(0, name);
-        widgetItem->setText(1, p_WidgetItem->text(1) + QChar(c));
+        childItem->setText(0, name);
+        childItem->setText(1, childItem->text(1) + QChar(c));
 
-        addSubTrees(element, widgetItem);
+        addSubTrees(child, childItem);
 
-        p_WidgetItem->addChild(widgetItem);
+        widgetItem->addChild(childItem);
 
         c++;
     }
@@ -249,124 +198,69 @@ void QDetail::recolor()
 
     ushort c = 0;
 
-    if (ui->old_parser_treeWidget->hasFocus())
+    for(const QCFParserTag &tag: m_ParserTags)
     {
-        for(const QCFParserTag &tag: m_OldParserTags)
+        QString TagString = QChar(c);
+
+        if ((!m_CurrentTextSegment.isEmpty())&&(m_CurrentTextSegment.left(1) != TagString))
         {
-            QString TagString = QChar(c);
+            c++;
 
-            if ((!m_CurrentTextSegment.isEmpty())&&(m_CurrentTextSegment.left(1) != TagString))
+            continue;
+        }
+
+        cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
+        ui->textEdit->setTextCursor(cursor);
+        cursor.setPosition(tag.m_Start + tag.m_Length, QTextCursor::KeepAnchor);
+        ui->textEdit->setTextCursor(cursor);
+
+        if ((TagString == m_CurrentTextSegment))
+        {
+            if (m_IsCurrentSelect)
             {
-                c++;
-
-                continue;
-            }
-
-            cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
-            ui->textEdit->setTextCursor(cursor);
-            cursor.setPosition(tag.m_Start + tag.m_Length, QTextCursor::KeepAnchor);
-            ui->textEdit->setTextCursor(cursor);
-
-            if ((TagString == m_CurrentTextSegment))
-            {
-                if (m_IsCurrentSelect)
-                {
-                    ui->textEdit->setTextBackgroundColor(QColor(255, 128, 128));
-                }
-                else
-                {
-                    ui->textEdit->setTextBackgroundColor(QColor(255, 255, 255));
-                }
-
-                cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
-                ui->textEdit->setTextCursor(cursor);
-
-                break;
-            }
-
-            if (tag.m_TagType == CommentTagType)
-            {
-                ui->textEdit->setTextColor(QColor(128, 128, 128));
+                ui->textEdit->setTextBackgroundColor(QColor(255, 128, 128));
             }
             else
             {
-                ui->textEdit->setTextColor(QColor(128, 0, 0));
+                ui->textEdit->setTextBackgroundColor(QColor(255, 255, 255));
             }
-
-            colorElement(tag.m_Arguments, TagString);
 
             cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
             ui->textEdit->setTextCursor(cursor);
 
-            c++;
+            break;
         }
-    }
-    else if (ui->new_parser_treeWidget->hasFocus())
-    {
-        for(const QCFParserTag &tag: m_NewParserTags)
+
+        if (tag.m_TagType == CommentTagType)
         {
-            QString TagString = QChar(c);
-
-            if ((!m_CurrentTextSegment.isEmpty())&&(m_CurrentTextSegment.left(1) != TagString))
-            {
-                c++;
-
-                continue;
-            }
-
-            cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
-            ui->textEdit->setTextCursor(cursor);
-            cursor.setPosition(tag.m_Start + tag.m_Length, QTextCursor::KeepAnchor);
-            ui->textEdit->setTextCursor(cursor);
-
-            if ((TagString == m_CurrentTextSegment))
-            {
-                if (m_IsCurrentSelect)
-                {
-                    ui->textEdit->setTextBackgroundColor(QColor(255, 128, 128));
-                }
-                else
-                {
-                    ui->textEdit->setTextBackgroundColor(QColor(255, 255, 255));
-                }
-
-                cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
-                ui->textEdit->setTextCursor(cursor);
-
-                break;
-            }
-
-            if (tag.m_TagType == CommentTagType)
-            {
-                ui->textEdit->setTextColor(QColor(128, 128, 128));
-            }
-            else
-            {
-                ui->textEdit->setTextColor(QColor(128, 0, 0));
-            }
-
-            colorElement(tag.m_Arguments, TagString);
-
-            cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
-            ui->textEdit->setTextCursor(cursor);
-
-            c++;
+            ui->textEdit->setTextColor(QColor(128, 128, 128));
         }
+        else
+        {
+            ui->textEdit->setTextColor(QColor(128, 0, 0));
+        }
+
+        colorElement(tag.m_Arguments, TagString);
+
+        cursor.setPosition(tag.m_Start, QTextCursor::MoveAnchor);
+        ui->textEdit->setTextCursor(cursor);
+
+        c++;
     }
 }
 
-void QDetail::colorElement(const QCFParserElement &p_Element, const QString &p_ElementIDString)
+void QDetail::colorElement(const QCFParserElement &element, const QString &idString)
 {
     QTextCursor cursor = ui->textEdit->textCursor();
 
-    cursor.setPosition(p_Element.m_Position, QTextCursor::MoveAnchor);
+    cursor.setPosition(element.m_Position, QTextCursor::MoveAnchor);
     ui->textEdit->setTextCursor(cursor);
-    cursor.setPosition(p_Element.m_Position + p_Element.m_Size, QTextCursor::KeepAnchor);
+    cursor.setPosition(element.m_Position + element.m_Size, QTextCursor::KeepAnchor);
     ui->textEdit->setTextCursor(cursor);
 
     if (!m_CurrentTextSegment.isEmpty())
     {
-        if ((p_ElementIDString.left(m_CurrentTextSegment.length()) == m_CurrentTextSegment))
+        if ((idString.left(m_CurrentTextSegment.length()) == m_CurrentTextSegment))
         {
             if (m_IsCurrentSelect)
             {
@@ -379,7 +273,7 @@ void QDetail::colorElement(const QCFParserElement &p_Element, const QString &p_E
         }
     }
 
-    switch (p_Element.m_Type)
+    switch (element.m_Type)
     {
     case CFTagArguments:
         //ui->textEdit->setTextColor(QColor(255, 128, 0));
@@ -414,20 +308,21 @@ void QDetail::colorElement(const QCFParserElement &p_Element, const QString &p_E
 
     ushort c = 0;
 
-    for(const QCFParserElement &l_ChildElement: p_Element.m_ChildElements)
+    for(const QCFParserElement &child: element.m_ChildElements)
     {
-        colorElement(l_ChildElement, p_ElementIDString + QChar(c));
+        colorElement(child, idString + QChar(c));
 
         c++;
     }
 }
 
-void QDetail::on_old_parser_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+void QDetail::on_parser_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
 {
     if (previous)
     {
         m_CurrentTextSegment = previous->text(1);
         m_IsCurrentSelect = false;
+
         recolor();
     }
 
@@ -435,23 +330,7 @@ void QDetail::on_old_parser_treeWidget_currentItemChanged(QTreeWidgetItem *curre
     {
         m_CurrentTextSegment = current->text(1);
         m_IsCurrentSelect = true;
-        recolor();
-    }
-}
 
-void QDetail::on_new_parser_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
-{
-    if (previous)
-    {
-        m_CurrentTextSegment = previous->text(1);
-        m_IsCurrentSelect = false;
-        recolor();
-    }
-
-    if (current)
-    {
-        m_CurrentTextSegment = current->text(1);
-        m_IsCurrentSelect = true;
         recolor();
     }
 }
