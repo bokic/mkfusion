@@ -700,6 +700,11 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
             {
                 closest_index = index;
                 ret = true;
+
+                if (closest_index == cur_column)
+                {
+                    break;
+                }
             }
         }
         else if (!token.startString.isEmpty())
@@ -711,6 +716,11 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
             {
                 closest_index = index;
                 ret = true;
+
+                if (closest_index == cur_column)
+                {
+                    break;
+                }
             }
         }
         else if (token.nestedTokens.count() > 0)
@@ -723,6 +733,11 @@ bool QTextParser::findFirstElement(const QString &line, int &cur_column, const Q
                 {
                     closest_index = tmp_col;
                     ret = true;
+
+                    if (closest_index == cur_column)
+                    {
+                        break;
+                    }
                 }
             }
         }
