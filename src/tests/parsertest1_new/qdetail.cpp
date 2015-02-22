@@ -213,7 +213,7 @@ void QDetail::addSubTrees(const QTextParserElement &element, QTreeWidgetItem *wi
         }
 
         child->setText(0, text);
-        child->setText(1, child->text(1) + QChar(c));
+        child->setText(1, widgetItem->text(1) + QChar(c));
 
         addSubTrees(childElement, child);
 
