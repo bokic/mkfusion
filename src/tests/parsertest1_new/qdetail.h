@@ -34,7 +34,7 @@ private:
     void recolor();
     int getTextPos(int line, int column);
     void colorElement(const QTextParserElement &element, const QString &idString);
-	
+
     QTextParser m_Parser;
     QStringList m_FileLines;
     QString m_CurrentTextSegment;

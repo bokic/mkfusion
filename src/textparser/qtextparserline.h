@@ -30,7 +30,8 @@
 class QTextParserLine
 {
 public:
-    enum QTextParserLineType {
+    enum QTextParserLineType
+    {
         QTextParserLineTypeNoEndLine,
         QTextParserLineTypeCREndLine,
         QTextParserLineTypeLFEndLine,

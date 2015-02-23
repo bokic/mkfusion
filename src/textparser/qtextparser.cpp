@@ -467,10 +467,10 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
                     for(QTextParserElement oldChild: oldChildrens)
                     {
-                       for(QTextParserElement oldGrandChild: oldChild.m_ChildElements)
-                       {
-                           ret.m_ChildElements.append(oldGrandChild);
-                       }
+                        for(QTextParserElement oldGrandChild: oldChild.m_ChildElements)
+                        {
+                            ret.m_ChildElements.append(oldGrandChild);
+                        }
                     }
                 }
                 else if (token.IgnoreIfOnlyOneChild)

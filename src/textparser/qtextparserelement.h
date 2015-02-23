@@ -37,9 +37,9 @@ public:
     inline QTextParserElement &operator=(QTextParserElement &&other)
     {
         qSwap(m_Type, other.m_Type);
- #ifdef DEBUG_QTEXTPARSER
+#ifdef DEBUG_QTEXTPARSER
         qSwap(m_TypeDebug, other.m_TypeDebug);
- #endif
+#endif
         qSwap(m_Text, other.m_Text);
         qSwap(m_StartLine, other.m_StartLine);
         qSwap(m_StartColumn, other.m_StartColumn);
