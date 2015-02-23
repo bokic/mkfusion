@@ -20,7 +20,12 @@ unix {
     contains(LSB_RELEASE, Arch Linux) {
         INCLUDEPATH  += /usr/include/httpd /usr/include/apr-1
     }
-    !contains(LSB_RELEASE, Arch Linux) {
+
+    contains(LSB_RELEASE, Fedora) {
+        INCLUDEPATH  += /usr/include/httpd /usr/include/apr-1
+    }
+
+    contains(LSB_RELEASE, Ubuntu) {
         INCLUDEPATH  += /usr/include/apache2 /usr/include/apr-1.0
     }
 }
