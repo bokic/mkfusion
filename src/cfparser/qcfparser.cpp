@@ -285,7 +285,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
 
             if ((index + l_NotOperatorFirst) % 2 == 0)
             {
-                if ((ch == '\"')||(ch == '\"'))
+                if ((ch == '\'')||(ch == '\"'))
                     child = ParseCFCode(p_Text, c, String, &ret);
                 else if (((ch >= '0')&&(ch <= '9'))||(ch == '-')||(ch == '+'))
                     child = ParseCFCode(p_Text, c, Number, &ret);
