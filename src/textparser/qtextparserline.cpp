@@ -34,7 +34,7 @@ QTextParserLine::QTextParserLine(const QTextParserLine &other)
     type = other.type;
 }
 
-QTextParserLine QTextParserLine::operator=(const QTextParserLine &other)
+QTextParserLine &QTextParserLine::operator=(const QTextParserLine &other)
 {
     text = other.text;
     type = other.type;

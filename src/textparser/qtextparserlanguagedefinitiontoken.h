@@ -52,7 +52,7 @@ public:
         return *this;
     }
 #endif
-    QTextParserLanguageDefinitionToken operator=(const QTextParserLanguageDefinitionToken &other);
+    QTextParserLanguageDefinitionToken &operator=(const QTextParserLanguageDefinitionToken &other);
 
     QString name;
     QRegExp startString;

@@ -48,7 +48,7 @@ public:
         return *this;
     }
 #endif
-    QTextParserLanguageDefinition operator=(const QTextParserLanguageDefinition &other);
+    QTextParserLanguageDefinition &operator=(const QTextParserLanguageDefinition &other);
 
     QString languageName;
     Qt::CaseSensitivity caseSensitivity;

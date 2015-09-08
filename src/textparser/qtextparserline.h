@@ -51,7 +51,7 @@ public:
         return *this;
     }
 #endif
-    QTextParserLine operator=(const QTextParserLine &other);
+    QTextParserLine &operator=(const QTextParserLine &other);
 
     QString text;
     QTextParserLineType type;

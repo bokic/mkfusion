@@ -37,7 +37,7 @@ QTextParserLanguageDefinition::QTextParserLanguageDefinition(const QTextParserLa
     tokens = other.tokens;
 }
 
-QTextParserLanguageDefinition QTextParserLanguageDefinition::operator=(const QTextParserLanguageDefinition &other)
+QTextParserLanguageDefinition &QTextParserLanguageDefinition::operator=(const QTextParserLanguageDefinition &other)
 {
     languageName = other.languageName;
     caseSensitivity = other.caseSensitivity;

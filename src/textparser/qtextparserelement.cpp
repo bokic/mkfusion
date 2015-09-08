@@ -46,7 +46,7 @@ QTextParserElement::QTextParserElement(const QTextParserElement &other)
     m_ChildElements = other.m_ChildElements;
 }
 
-QTextParserElement QTextParserElement::operator=(const QTextParserElement &other)
+QTextParserElement &QTextParserElement::operator=(const QTextParserElement &other)
 {
     m_Type = other.m_Type;
 #ifdef DEBUG_QTEXTPARSER

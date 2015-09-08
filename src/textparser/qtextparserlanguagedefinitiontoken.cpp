@@ -48,7 +48,7 @@ QTextParserLanguageDefinitionToken::QTextParserLanguageDefinitionToken(const QTe
     MultiLine = other.MultiLine;
 }
 
-QTextParserLanguageDefinitionToken QTextParserLanguageDefinitionToken::operator=(const QTextParserLanguageDefinitionToken &other)
+QTextParserLanguageDefinitionToken &QTextParserLanguageDefinitionToken::operator=(const QTextParserLanguageDefinitionToken &other)
 {
     name = other.name;
     startString = other.startString;

@@ -50,7 +50,7 @@ public:
         return *this;
     }
 #endif
-    QTextParserElement operator=(const QTextParserElement &other);
+    QTextParserElement &operator=(const QTextParserElement &other);
 
     int m_Type;
 #ifdef DEBUG_QTEXTPARSER
