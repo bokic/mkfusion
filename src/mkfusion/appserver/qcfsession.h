@@ -10,6 +10,7 @@
 
 class QCFSession
 {
+    QCFSession() : m_callOnSessionEnd(false) {}
     QString m_name;
     QString m_application;
     bool m_callOnSessionEnd;
