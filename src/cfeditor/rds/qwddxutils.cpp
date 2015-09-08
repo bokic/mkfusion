@@ -92,14 +92,13 @@ QString QWDDXUtils::serialize(const QWDDX &node)
 
 QWDDX DecodeRecursive(const QDomNode &node)
 {
-    int c;
     QString nodeName = node.nodeName();
 
     if (nodeName == "struct")
     {
         QWDDX ret(QWDDX::Struct);
 
-        for(c = 0; c < node.childNodes().count(); c++)
+        for(int c = 0; c < node.childNodes().count(); c++)
         {
             if (node.childNodes().at(c).nodeName() != "var")
                 return QWDDX(QWDDX::Error);

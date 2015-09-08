@@ -30,12 +30,14 @@ QCFVariant * QCFSessionManager::getSession(QCFWorkerThread *worker, const QStrin
 void QCFSessionManager::createSessonStrings(QString &cfid, QString &cftoken)
 {
     static QMutex global_cfid_lock;
-    static int global_cfid = 1000;
 
     int local_cfid;
 
     {
+        static int global_cfid = 1000;
+
         QMutexLocker lock(&global_cfid_lock);
+
         local_cfid = ++global_cfid;
     }
 

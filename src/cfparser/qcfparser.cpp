@@ -2008,13 +2008,11 @@ QCFParserErrorType QCFParser::validate()
             continue;
         }
 
-        bool l_variantFound = true;
-
         for (int c2 = 0; c2 < l_tagDef.m_ArgumentVariants.count(); c2++)
         {
             QList<QCFTagArgument> l_argumentVariant = l_tagDef.m_ArgumentVariants[c2];
             QList<QString> l_requiredArgs;
-            l_variantFound = true;
+            bool l_variantFound = true;
 
             // Get all required parametars
             for(int c3 = 0; c3 < l_argumentVariant.length(); c3++)

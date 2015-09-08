@@ -171,12 +171,11 @@ QString QCFServer::getProcessExecutableFileName()
 
     tagMODULEENTRY32W l_moduleEntry;
     l_moduleEntry.dwSize = sizeof(tagMODULEENTRY32W);
-    bool l_MoreModules;
 
     HANDLE l_handle = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
     if (l_handle != INVALID_HANDLE_VALUE)
     {
-        for(l_MoreModules = Module32FirstW(l_handle, &l_moduleEntry); l_MoreModules == true; l_MoreModules = Module32NextW(l_handle, &l_moduleEntry))
+        for(bool l_MoreModules = Module32FirstW(l_handle, &l_moduleEntry); l_MoreModules == true; l_MoreModules = Module32NextW(l_handle, &l_moduleEntry))
         {
             if ((((quint32)&dummy) >= (((quint32)l_moduleEntry.modBaseAddr)))&&(((quint32)&dummy) < (((quint32)l_moduleEntry.modBaseAddr + l_moduleEntry.modBaseSize))))
             {
