@@ -42,7 +42,7 @@ QByteArray CompareDialog::filterChars(const QByteArray &text)
 
     for (int c = 0; c < text.length(); c++)
     {
-        if ((text[c] < 32)||(text[c] < 0))
+        if (text[c] < 32)
         {
             ret += '.';
         }

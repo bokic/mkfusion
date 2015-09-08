@@ -494,7 +494,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                 }
             }
 
-            if ((ch == ' ')||(ch == '\r')||(ch == '\n')||(ch == '\'')||(ch == '\"')||(ch == '=')||(ch == '&')||(ch == '#')||(ch == '>')||(ch == '/')||(ch == ')')||(ch == ']')||(ch == ',')||(ch == '+')||(ch == '-')||(ch == '*')||(ch == '<')||(ch == '>')||(ch == ';')) // TODO: Add other operators
+            if ((ch == ' ')||(ch == '\r')||(ch == '\n')||(ch == '\'')||(ch == '\"')||(ch == '=')||(ch == '&')||(ch == '#')||(ch == '/')||(ch == ')')||(ch == ']')||(ch == ',')||(ch == '+')||(ch == '-')||(ch == '*')||(ch == '<')||(ch == '>')||(ch == ';')) // TODO: Add other operators
             {
                 if (c - l_Offset == 0)
                 {
