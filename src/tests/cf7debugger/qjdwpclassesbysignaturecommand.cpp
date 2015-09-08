@@ -19,7 +19,7 @@ quint32 QJDWPClassesBySignatureCommand::sendCommand(const QString &p_ClassName) 
         return 0;
     }
 
-    m_CommandID = ((QJDWPDebugger *)parent())->sendCommand(1, 2, QJDWPSocket::encodeString(p_ClassName));
+    m_CommandID = static_cast<QJDWPDebugger *>(parent())->sendCommand(1, 2, QJDWPSocket::encodeString(p_ClassName));
 
     return m_CommandID;
 }

@@ -119,7 +119,7 @@ void QCFWorkersManager::on_workerTerminated()
 {
     QCFLOG(CFLOG_WORKER, QCFLOG_INFO, "void QCFWorkersManager::on_workerTerminated()");
 
-    QCFWorkerThread *l_sender = (QCFWorkerThread *)sender();
+    QCFWorkerThread *l_sender = static_cast<QCFWorkerThread *>(sender());
 
     {
         QMutexLocker lock(&m_mutex);

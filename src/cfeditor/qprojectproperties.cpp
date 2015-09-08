@@ -38,28 +38,28 @@ void QProjectProperties::fillDialog(QProject *project)
             break;
         case QProject::FTPProject:
             ui.tabWidget->setCurrentIndex(1);
-            ui.ftp_Host_lineEdit->setText(((QFTPProject*)project)->getPath());
-            ui.ftp_Port_spinBox->setValue(((QFTPProject*)project)->getPort());
-            ui.ftp_Username_lineEdit->setText(((QFTPProject*)project)->getUsername());
-            ui.ftp_Password_lineEdit->setText(((QFTPProject*)project)->getPassword());
+            ui.ftp_Host_lineEdit->setText(static_cast<QFTPProject *>(project)->getPath());
+            ui.ftp_Port_spinBox->setValue(static_cast<QFTPProject *>(project)->getPort());
+            ui.ftp_Username_lineEdit->setText(static_cast<QFTPProject *>(project)->getUsername());
+            ui.ftp_Password_lineEdit->setText(static_cast<QFTPProject *>(project)->getPassword());
             ui.ftp_ProjectPath_lineEdit->setText(project->getPath());
             ui.ftp_URL_lineEdit->setText(project->getUrl());
             break;
         case QProject::SFTPProject:
             ui.tabWidget->setCurrentIndex(2);
-            ui.sftp_Host_lineEdit->setText(((QFTPProject*)project)->getPath());
-            ui.sftp_Port_spinBox->setValue(((QFTPProject*)project)->getPort());
-            ui.sftp_Username_lineEdit->setText(((QFTPProject*)project)->getUsername());
-            ui.sftp_Password_lineEdit->setText(((QFTPProject*)project)->getPassword());
+            ui.sftp_Host_lineEdit->setText(static_cast<QSFTPProject *>(project)->getPath());
+            ui.sftp_Port_spinBox->setValue(static_cast<QSFTPProject *>(project)->getPort());
+            ui.sftp_Username_lineEdit->setText(static_cast<QSFTPProject *>(project)->getUsername());
+            ui.sftp_Password_lineEdit->setText(static_cast<QSFTPProject *>(project)->getPassword());
             ui.sftp_ProjectPath_lineEdit->setText(project->getPath());
             ui.sftp_URL_lineEdit->setText(project->getUrl());
             break;
         case QProject::RDSProject:
             ui.tabWidget->setCurrentIndex(3);
-            ui.rds_Host_lineEdit->setText(((QFTPProject*)project)->getPath());
-            ui.rds_Port_spinBox->setValue(((QFTPProject*)project)->getPort());
-            ui.rds_Username_lineEdit->setText(((QFTPProject*)project)->getUsername());
-            ui.rds_Password_lineEdit->setText(((QFTPProject*)project)->getPassword());
+            ui.rds_Host_lineEdit->setText(static_cast<QRDSProject *>(project)->getPath());
+            ui.rds_Port_spinBox->setValue(static_cast<QRDSProject *>(project)->getPort());
+            ui.rds_Username_lineEdit->setText(static_cast<QRDSProject *>(project)->getUsername());
+            ui.rds_Password_lineEdit->setText(static_cast<QRDSProject *>(project)->getPassword());
             ui.rds_ProjectPath_lineEdit->setText(project->getPath());
             ui.rds_URL_lineEdit->setText(project->getUrl());
             break;

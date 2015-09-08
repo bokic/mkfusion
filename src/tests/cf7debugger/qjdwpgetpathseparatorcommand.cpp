@@ -6,7 +6,7 @@ QJDWPGetPathSeparatorCommand::QJDWPGetPathSeparatorCommand(QJDWPDebugger *parent
 {
     m_Progress = CLASSES_BY_SIGNATURE;
     m_SubCommand = new QJDWPClassesBySignatureCommand(parent);
-    ((QJDWPClassesBySignatureCommand*)m_SubCommand)->sendCommand("Ljava/io/File;");
+    static_cast<QJDWPClassesBySignatureCommand *>(m_SubCommand)->sendCommand("Ljava/io/File;");
     m_CommandID = m_SubCommand->getCommandID();
     //parent->
 }

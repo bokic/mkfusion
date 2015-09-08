@@ -87,7 +87,7 @@ void QJDWPDebugger::on_m_JDWP_gotPacket(quint32 p_Id, quint8 p_Flags, quint16 p_
         {
             if ((m_PathSeparator == 0)&&(strcmp(l_Command->metaObject()->className(), "QJDWPGetPathSeparatorCommand") == 0))
             {
-                m_PathSeparator = ((QJDWPGetPathSeparatorCommand*)l_Command)->getPathSeparator();
+                m_PathSeparator = static_cast<QJDWPGetPathSeparatorCommand *>(l_Command)->getPathSeparator();
             }
             else
             {
