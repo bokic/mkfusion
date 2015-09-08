@@ -398,40 +398,40 @@ QString QCFGenerator::GenerateCFExpressionToCExpression(const QCFParserElement &
         ret += ")";
         break;
     case Operator:
-        if ((l_ElementName.compare(l_ElementName, "eq", Qt::CaseInsensitive) == 0)
-                ||(l_ElementName.compare(l_ElementName, "is", Qt::CaseInsensitive) == 0))
+        if ((QString::compare(l_ElementName, "eq", Qt::CaseInsensitive) == 0)
+                ||(QString::compare(l_ElementName, "is", Qt::CaseInsensitive) == 0))
         {
             ret = " == ";
         }
-        else if (l_ElementName.compare(l_ElementName, "gt", Qt::CaseInsensitive) == 0)
+        else if (QString::compare(l_ElementName, "gt", Qt::CaseInsensitive) == 0)
         {
             ret = " > ";
         }
-        else if (l_ElementName.compare(l_ElementName, "gte", Qt::CaseInsensitive) == 0)
+        else if (QString::compare(l_ElementName, "gte", Qt::CaseInsensitive) == 0)
         {
             ret = " >= ";
         }
-        else if (l_ElementName.compare(l_ElementName, "lt", Qt::CaseInsensitive) == 0)
+        else if (QString::compare(l_ElementName, "lt", Qt::CaseInsensitive) == 0)
         {
             ret = " < ";
         }
-        else if (l_ElementName.compare(l_ElementName, "lte", Qt::CaseInsensitive) == 0)
+        else if (QString::compare(l_ElementName, "lte", Qt::CaseInsensitive) == 0)
         {
             ret = " <= ";
         }
-        else if (l_ElementName.compare(l_ElementName, "neq", Qt::CaseInsensitive) == 0)
+        else if (QString::compare(l_ElementName, "neq", Qt::CaseInsensitive) == 0)
         {
             ret = " != ";
         }
-        else if (l_ElementName.compare(l_ElementName, "and", Qt::CaseInsensitive) == 0)
+        else if (QString::compare(l_ElementName, "and", Qt::CaseInsensitive) == 0)
         {
             ret = " && ";
         }
-        else if (l_ElementName.compare(l_ElementName, "or", Qt::CaseInsensitive) == 0)
+        else if (QString::compare(l_ElementName, "or", Qt::CaseInsensitive) == 0)
         {
             ret = " || ";
         }
-        else if (l_ElementName.compare(l_ElementName, "not", Qt::CaseInsensitive) == 0)
+        else if (QString::compare(l_ElementName, "not", Qt::CaseInsensitive) == 0)
         {
             ret = " !";
         }
