@@ -34,18 +34,26 @@
 
 QCFParser::QCFParser()
     : QObject()
+    , m_FileSize(0)
+    , m_FileModifyDateTime(0)
+    , m_InsideCFScript(false)
     , m_FileType(QCFParserTemplateFile)
     , m_CFTagsDef(QCF8::generateCFTags())
     , m_CFFunctionsDef(QCF8::generateCFFunctions())
+    , m_ErrorPosition(0)
     , m_Mode(FullParseMode)
 {
 }
 
 QCFParser::QCFParser(QCFParserMode mode, QCFParserFileType filetype)
     : QObject()
+    , m_FileSize(0)
+    , m_FileModifyDateTime(0)
+    , m_InsideCFScript(false)
     , m_FileType(filetype)
     , m_CFTagsDef(QCF8::generateCFTags())
     , m_CFFunctionsDef(QCF8::generateCFFunctions())
+    , m_ErrorPosition(0)
     , m_Mode(mode)
 {
 }

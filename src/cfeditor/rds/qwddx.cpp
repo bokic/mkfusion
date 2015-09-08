@@ -1,13 +1,17 @@
 #include "qwddx.h"
 
 QWDDX::QWDDX()
+    : m_Number(0)
+    , m_Bool(false)
+    , m_Type(Null)
 {
-    m_Type = QWDDX::Null;
 }
 
 QWDDX::QWDDX(QWDDXType type)
+    : m_Number(0)
+    , m_Bool(false)
+    , m_Type(type)
 {
-    m_Type = type;
 }
 
 QWDDX &QWDDX::operator=(const QString &value)

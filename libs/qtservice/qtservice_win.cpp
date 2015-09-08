@@ -520,6 +520,7 @@ QCoreApplication::EventFilter QtServiceSysPrivate::nextFilter = 0;
 #endif
 
 QtServiceSysPrivate::QtServiceSysPrivate()
+    : controllerHandler(NULL)
 {
     instance = this;
 }

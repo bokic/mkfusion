@@ -2,6 +2,8 @@
 
 QCFTagArgument::QCFTagArgument()
     : QObject()
+    , m_Required(false)
+    , m_Type(TypeAny)
 {
 }
 
@@ -39,6 +41,10 @@ QCFTagArgument &QCFTagArgument::operator=(const QCFTagArgument &p_TagArgument)
 
 QCFTag::QCFTag()
     : QObject()
+    , m_CloseTagType(TagTypeNoRestriction)
+    , m_ArgumentsType(ArgumentsTypeArguments)
+    , m_ExpressionInside(WithoutExpressionInside)
+    , m_AnyParam(true)
 {
 }
 

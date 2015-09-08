@@ -3,13 +3,12 @@
 #include "qdefaultservice.h"
 #include "qwddxutils.h"
 
-QCFDebugger::QCFDebugger(QRDSServer rdsServer):QObject()
+QCFDebugger::QCFDebugger(QRDSServer rdsServer)
+    : QObject()
+    , m_RDSServer(rdsServer)
+    , m_ServerPort(0)
+    , m_EventReconect(false)
 {
-    m_RDSServer = rdsServer;
-    m_ServerPort = 0;
-    m_SessionID = "";
-    m_EventReconect = false;
-
     connect(&m_EventSocket, &QTcpSocket::connected, this, &QCFDebugger::onEventConnected);
     connect(&m_EventSocket, &QTcpSocket::disconnected, this, &QCFDebugger::onEventDisconnected);
     connect(&m_EventSocket, static_cast<void (QTcpSocket::*)(QAbstractSocket::SocketError)>(&QAbstractSocket::error), this, &QCFDebugger::onEventError);

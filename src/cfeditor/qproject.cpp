@@ -7,7 +7,8 @@
 #include <QFile>
 
 QProject::QProject() :
-    m_Type(BlankProject)
+    m_Type(BlankProject),
+    m_ProjectFileSaved(false)
 {
 }
 

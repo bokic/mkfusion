@@ -422,7 +422,7 @@ private:
 QtServiceBase *QtServiceBasePrivate::instance = 0;
 
 QtServiceBasePrivate::QtServiceBasePrivate(const QString &name)
-    : startupType(QtServiceController::ManualStartup), serviceFlags(0), controller(name)
+    : q_ptr(NULL), startupType(QtServiceController::ManualStartup), serviceFlags(0), controller(name), sysd(NULL)
 {
 
 }
