@@ -75,7 +75,7 @@ void TestCases::benchOldParser()
         {
             const QList<QCFParserTag> &tags = parser.getTags();
 
-            //qDebug() << tags.count();
+            qDebug() << tags.count();
         }
         else
         {
