@@ -45,18 +45,21 @@ QCFTemplate::QCFTemplate(const QCFTemplate &other)
 
 QCFTemplate &QCFTemplate::operator=(const QCFTemplate &other)
 {
-    m_pathName = other.m_pathName;
+    if (&other != this)
+    {
+        m_pathName = other.m_pathName;
 
-    if (m_library) delete m_library;
-    m_library = new QLibrary(other.m_library->fileName());
+        if (m_library) delete m_library;
+        m_library = new QLibrary(other.m_library->fileName());
 
-    m_modified = other.m_modified;
-    m_fileSize = other.m_fileSize;
-    m_error = other.m_error;
-    m_usage = other.m_usage;
-    m_valid = other.m_valid;
-    m_compiling = other.m_compiling;
-    m_lastAccess = other.m_lastAccess;
+        m_modified = other.m_modified;
+        m_fileSize = other.m_fileSize;
+        m_error = other.m_error;
+        m_usage = other.m_usage;
+        m_valid = other.m_valid;
+        m_compiling = other.m_compiling;
+        m_lastAccess = other.m_lastAccess;
+    }
 
     return *this;
 }
