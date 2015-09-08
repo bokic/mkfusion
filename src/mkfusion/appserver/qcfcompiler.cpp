@@ -41,7 +41,7 @@ QString QCFCompiler::compile(const QString &cppFile, QString &libFile)
 #ifdef Q_OS_WIN
     QString l_QtPath = QDir::toNativeSeparators(m_TargetPath) + "bin\\qt\\";
     QString l_MingwPath = QDir::toNativeSeparators(m_TargetPath) + "bin\\mingw\\";
-    process.start(l_MingwPath + "bin\\g++.exe", QStringList()
+    //process.start(l_MingwPath + "bin\\g++.exe", commonCompileSwitches(p_MKFusionPath));
 #elif defined Q_OS_LINUX
     //process.start("g++", commonCompileSwitches(p_MKFusionPath));
 #endif
