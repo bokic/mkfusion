@@ -322,6 +322,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_AuthType = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -329,6 +330,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_User = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     //l_ds >> tempba;
@@ -343,6 +345,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_Accept = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -350,6 +353,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_AcceptEncoding = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -357,6 +361,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_AcceptLanguage = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -364,6 +369,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_Connection = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -371,6 +377,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_ContentType = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -378,6 +385,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_RemoteHost = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -385,6 +393,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_Referer = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -392,6 +401,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_UserAgent = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -399,6 +409,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_Cookie = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempint;
@@ -419,6 +430,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_Args = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -426,6 +438,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_Method = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -433,6 +446,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_Protocol = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -440,6 +454,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_Host = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_ds >> tempstr;
@@ -447,6 +462,7 @@ bool QCFWorkerThread::readRequest()
     {
         m_Request.m_URI = QString::fromUtf8(tempstr);
         delete[] tempstr;
+        tempstr = nullptr;
     }
 
     l_RecievedBuffer.clear();
