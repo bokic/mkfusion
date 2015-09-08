@@ -164,7 +164,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
         //l_Offset = child.m_Position + child.m_Size;
         break;
     case CFTagArguments:
-        for (l_Offset = l_Offset; l_Offset < p_Text.length(); )
+        while ( l_Offset < p_Text.length() )
         {
             if (TrimCFCode(p_Text, l_Offset))
             {
