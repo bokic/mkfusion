@@ -131,7 +131,7 @@ public:
     void setStartupType(QtServiceController::StartupType startupType);
 
     QStringList DependsOnServices();
-    void setDependsOnServices(const QStringList dependsOnServices);
+    void setDependsOnServices(const QStringList &dependsOnServices);
     QString serviceGroup();
     void setServiceGroup(const QString& ServiceGroup);
 

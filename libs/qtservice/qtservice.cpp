@@ -720,7 +720,7 @@ void QtServiceBase::setStartupType(QtServiceController::StartupType type)
 /*!
 	Returns service dependancy of other services
 
-	\sa QtServiceBase::setDependsOnServices(const QStringList dependsOnServices)
+	\sa QtServiceBase::setDependsOnServices(const QStringList &dependsOnServices)
 */
 QStringList QtServiceBase::DependsOnServices()
 {
@@ -732,7 +732,7 @@ QStringList QtServiceBase::DependsOnServices()
 
 	\sa QtServiceBase::DependsOnServices()
 */
-void QtServiceBase::setDependsOnServices(const QStringList dependsOnServices)
+void QtServiceBase::setDependsOnServices(const QStringList &dependsOnServices)
 {
 	d_ptr->dependsOnServices = dependsOnServices;
 }
