@@ -156,8 +156,8 @@ private:
     QCFParserElement ParseCFCode(const QString &p_Text, const qint32 p_Offset, const QCFParserElementType p_ElementType, QCFParserElement *parent);
     quint32 FindCFCommentSize(const QString &p_Text, quint32 p_Position);
     QCFParserErrorType prioritizeOperatorsRecursive(QCFParserElement &element, const QList<QStringList> &priorities);
-    static quint32 GetLineNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset);
-    static quint32 GetColumnNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset);
+    static quint32 GetLineNumberFromPosition(const QString &p_FileContent, int p_FileOffset);
+    static quint32 GetColumnNumberFromPosition(const QString &p_FileContent, int p_FileOffset);
 };
 
 #endif // QCFPARSER_H

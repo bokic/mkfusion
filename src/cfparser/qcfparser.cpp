@@ -1486,8 +1486,6 @@ quint32 QCFParser::FindCFCommentSize(const QString &p_Text, const quint32 p_Posi
     }
     else
     {
-        quint32 begCFComment, endCFComment, reqPos;
-
         if (p_Text.mid(pos, 5) != "<!---")
             return 0;
 
@@ -1495,10 +1493,12 @@ quint32 QCFParser::FindCFCommentSize(const QString &p_Text, const quint32 p_Posi
 
         forever
         {
+            int begCFComment, endCFComment, reqPos;
+
             begCFComment = p_Text.indexOf("<!---", pos, Qt::CaseInsensitive);
             endCFComment = p_Text.indexOf("--->", pos, Qt::CaseInsensitive);
 
-            if ((begCFComment == 0xFFFFFFFF)&&(endCFComment == 0xFFFFFFFF))
+            if ((begCFComment == -1)&&(endCFComment == -1))
                 return begCFComment;
 
             if (endCFComment < begCFComment)
@@ -1506,7 +1506,7 @@ quint32 QCFParser::FindCFCommentSize(const QString &p_Text, const quint32 p_Posi
 
             reqPos = FindCFCommentSize(p_Text, begCFComment);
 
-            if (reqPos == 0xFFFFFFFF)
+            if (reqPos == -1)
                 return reqPos;
 
             pos = begCFComment + reqPos;
@@ -1559,8 +1559,8 @@ QCFParserErrorType QCFParser::parse(const QString &p_Text, bool *p_Terminate)
     m_InsideCFScript = false;
     m_TagPrefixes.clear();
 
-    qint32 l_CodeInside = 0;
-    quint32 pos = 0, cf_pos = 0, cf_epos = 0, cf_comment = 0, cf_expression = 0;
+    int l_CodeInside = 0;
+    int pos = 0, cf_pos = 0, cf_epos = 0, cf_comment = 0, cf_expression = 0;
 
     forever
     {
@@ -1583,20 +1583,20 @@ QCFParserErrorType QCFParser::parse(const QString &p_Text, bool *p_Terminate)
 
             tmp_pos = p_Text.indexOf("<" + prefix + ":", pos, Qt::CaseInsensitive);
 
-            if ((tmp_pos >= 0)&&((tmp_pos < (int)cf_pos)||(cf_pos == 0xFFFFFFFF)))
+            if ((tmp_pos >= 0)&&((tmp_pos < (int)cf_pos)||(cf_pos == -1)))
             {
                 cf_pos = tmp_pos;
             }
 
             tmp_pos = p_Text.indexOf("</" + prefix + ":", pos, Qt::CaseInsensitive);
 
-            if ((tmp_pos >= 0)&&((tmp_pos < (int)cf_epos)||(cf_epos == 0xFFFFFFFF)))
+            if ((tmp_pos >= 0)&&((tmp_pos < (int)cf_epos)||(cf_epos == -1)))
             {
                 cf_epos = tmp_pos;
             }
         }
 
-        if ((cf_pos == 0xFFFFFFFF) && (cf_epos == 0xFFFFFFFF) && (cf_comment == 0xFFFFFFFF) && ((cf_expression == 0xFFFFFFFF)||(l_CodeInside <= 0)))
+        if ((cf_pos == -1) && (cf_epos == -1) && (cf_comment == -1) && ((cf_expression == -1)||(l_CodeInside <= 0)))
             break; // No more ColdFusion tags remaining.
 
         if ((l_CodeInside > 0)&&(cf_expression < cf_pos)&&(cf_expression < cf_epos)&&(cf_expression < cf_comment))
@@ -1629,7 +1629,7 @@ QCFParserErrorType QCFParser::parse(const QString &p_Text, bool *p_Terminate)
         if ((cf_pos < cf_epos)&&(cf_pos < cf_comment)) // If <cf tag is the closes one.
         {
 
-            quint32 endName, endNameTemp;
+            int endName, endNameTemp;
 
             endName = p_Text.indexOf(' ', cf_pos + 3, Qt::CaseInsensitive);
 
@@ -1657,7 +1657,7 @@ QCFParserErrorType QCFParser::parse(const QString &p_Text, bool *p_Terminate)
             if (endNameTemp < endName)
                 endName = endNameTemp;
 
-            if (endName == 0xFFFFFFFF)
+            if (endName == -1)
             {
                 m_Error = tr("ColdFusion tag not closed.");
                 m_ErrorPosition = cf_pos;
@@ -1817,7 +1817,7 @@ QCFParserErrorType QCFParser::parse(const QString &p_Text, bool *p_Terminate)
         }
         else if ((cf_epos < cf_pos)&&(cf_epos < cf_comment)) // If </cf tag is the closes one.
         {
-            qint32 cf_endtag = p_Text.indexOf('>', cf_epos, Qt::CaseSensitive);
+            int cf_endtag = p_Text.indexOf('>', cf_epos, Qt::CaseSensitive);
             if (cf_endtag == -1)
             {
                 m_Error = tr("Tag not closed. Missing '>'");
@@ -2280,11 +2280,11 @@ QCFParserErrorType QCFParser::prioritizeOperatorsRecursive(QCFParserElement &ele
     return NoError;
 }
 
-quint32 QCFParser::GetLineNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset)
+quint32 QCFParser::GetLineNumberFromPosition(const QString &p_FileContent, int p_FileOffset)
 {
     quint32 ret = 1;
 
-    for(qint32 offset = p_FileContent.indexOf('\n', 0, Qt::CaseInsensitive); offset != -1; offset = p_FileContent.indexOf('\n', offset + 1, Qt::CaseInsensitive))
+    for(int offset = p_FileContent.indexOf('\n', 0, Qt::CaseInsensitive); offset != -1; offset = p_FileContent.indexOf('\n', offset + 1, Qt::CaseInsensitive))
     {
         if (offset > p_FileOffset)
         {
@@ -2297,9 +2297,9 @@ quint32 QCFParser::GetLineNumberFromPosition(const QString &p_FileContent, const
     return ret;
 }
 
-quint32 QCFParser::GetColumnNumberFromPosition(const QString &p_FileContent, const qint32 p_FileOffset)
+quint32 QCFParser::GetColumnNumberFromPosition(const QString &p_FileContent, int p_FileOffset)
 {
-    qint32 offset = 0;
+    int offset = 0;
 
     for(offset = p_FileContent.indexOf('\n', 0, Qt::CaseInsensitive); offset != -1; offset = p_FileContent.indexOf('\n', offset + 1, Qt::CaseInsensitive))
     {
