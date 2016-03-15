@@ -20,8 +20,8 @@ public:
         doDebugEvents
     };
 
-    QDebuggerService() : QAbstractRDSService() {};
-    virtual ~QDebuggerService() {};
+    QDebuggerService() : QAbstractRDSService() {}
+    virtual ~QDebuggerService() {}
 
     virtual QByteArray ExecuteRDSCommand(QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map);
 protected:
