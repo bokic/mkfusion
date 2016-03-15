@@ -12,7 +12,7 @@ QDatabaseService::~QDatabaseService()
 {
 }
 
-QByteArray QDatabaseService::ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
+QByteArray QDatabaseService::ExecuteRDSCommand(QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
 {
     QByteArray ret;
 

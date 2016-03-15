@@ -20,7 +20,7 @@ public:
     static QByteArray executeRDSCommandURL(const QString &url, const QByteArray &post);
     static QByteArray generatePostFromVector(const QRDSServer &rdsserver, const QVector<QString> &map);
     static QByteArray executeRDSCommandForByteArray(const QString &command, const QRDSServer &rdsserver, const QVector<QString> &map, quint16 port);
-    virtual QByteArray ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map) = 0;
+    virtual QByteArray ExecuteRDSCommand(QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map) = 0;
     static QString prepareURL(const QRDSServer &rdsserver, const QString &command, quint16 port);
 protected:
     static QByteArray ArgumentsToString(const QVector<QString> &args);

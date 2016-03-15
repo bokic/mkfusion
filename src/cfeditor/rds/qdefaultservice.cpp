@@ -4,7 +4,7 @@
 #include <QString>
 #include <QMap>
 
-QByteArray QDefaultService::ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
+QByteArray QDefaultService::ExecuteRDSCommand(QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
 {
     Q_UNUSED(map);
 
@@ -20,7 +20,7 @@ QByteArray QDefaultService::ExecuteRDSCommand(const QRDSServer &rdsserver, quint
     return ret;
 }
 
-QByteArray QDefaultService::IdeDefault(QRDSServer rdsserver)
+QByteArray QDefaultService::IdeDefault(QRDSServer &rdsserver)
 {
     QVector<QString> vector;
 

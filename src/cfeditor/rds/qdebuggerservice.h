@@ -23,7 +23,7 @@ public:
     QDebuggerService() : QAbstractRDSService() {};
     virtual ~QDebuggerService() {};
 
-    virtual QByteArray ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map);
+    virtual QByteArray ExecuteRDSCommand(QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map);
 protected:
 private:
     QByteArray GetServerInfo(QRDSServer);

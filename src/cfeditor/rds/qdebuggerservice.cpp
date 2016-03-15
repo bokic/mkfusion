@@ -4,7 +4,7 @@
 #include <QString>
 #include <QMap>
 
-QByteArray QDebuggerService::ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
+QByteArray QDebuggerService::ExecuteRDSCommand(QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
 {
     QByteArray ret;
 

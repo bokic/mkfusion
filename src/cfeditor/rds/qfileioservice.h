@@ -29,7 +29,7 @@ public:
     QFileIOService();
     virtual ~QFileIOService();
 
-    virtual QByteArray ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map) override;
+    virtual QByteArray ExecuteRDSCommand(QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map) override;
 private:
     QByteArray BrowseDir(const QRDSServer &rdsserver, const QMap<QString, QString> &map);
     QByteArray FileRead(const QRDSServer &rdsserver, const QMap<QString, QString> &map);

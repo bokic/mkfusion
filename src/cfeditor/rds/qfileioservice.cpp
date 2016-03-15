@@ -32,7 +32,7 @@ QFileIOService::~QFileIOService()
 
 }
 
-QByteArray QFileIOService::ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
+QByteArray QFileIOService::ExecuteRDSCommand(QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map)
 {
     QByteArray ret;
 

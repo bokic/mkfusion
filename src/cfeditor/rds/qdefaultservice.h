@@ -18,10 +18,10 @@ public:
 
     QDefaultService() : QAbstractRDSService() {}
     virtual ~QDefaultService() {}
-    virtual QByteArray ExecuteRDSCommand(const QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map);
+    virtual QByteArray ExecuteRDSCommand(QRDSServer &rdsserver, quint8 command, const QMap<QString, QString> &map);
 protected:
 private:
-    QByteArray IdeDefault(QRDSServer);
+    QByteArray IdeDefault(QRDSServer &);
 };
 
 #endif // QDEFAULTSERVICE_H
