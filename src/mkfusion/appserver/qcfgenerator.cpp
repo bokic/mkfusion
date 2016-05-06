@@ -2342,6 +2342,8 @@ QStringList QCFGenerator::commonCompileSwitches(const QString &p_MKFusionPath)
            << "-pipe"
 #endif
 
+           << "-fPIC"
+
 #ifdef __arm__
            << "-march=armv6" << "-mfloat-abi=hard" << "-mfpu=vfp"
 #endif
