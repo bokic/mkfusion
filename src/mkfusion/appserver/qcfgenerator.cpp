@@ -2342,8 +2342,6 @@ QStringList QCFGenerator::commonCompileSwitches(const QString &p_MKFusionPath)
            << "-pipe"
 #endif
 
-           << "-fPIC"
-
 #ifdef __arm__
            << "-march=armv6" << "-mfloat-abi=hard" << "-mfpu=vfp"
 #endif
@@ -2367,7 +2365,7 @@ QStringList QCFGenerator::commonCompileSwitches(const QString &p_MKFusionPath)
            << "-Wall"
 
 #ifdef Q_OS_LINUX
-           << "-Wall" << "-W" << "-D_REENTRANT" << "-fPIE"
+           << "-Wall" << "-W" << "-D_REENTRANT" << "-fPIC"
 #endif
 
 #ifdef Q_OS_WIN
