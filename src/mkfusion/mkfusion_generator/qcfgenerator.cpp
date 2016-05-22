@@ -185,7 +185,7 @@ QString QCFGenerator::GenerateVariable(const QString &p_Variable, const QString 
     }
     else
     {
-        if ((l_StrList.first() == "SESSION")|(l_StrList.first() == "APPLICATION"))
+        if ((l_StrList.first() == "SESSION")||(l_StrList.first() == "APPLICATION"))
         {
             ret = "(*m_" + l_StrList.first() + ")";
         }
