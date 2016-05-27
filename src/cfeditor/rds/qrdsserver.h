@@ -12,7 +12,7 @@ class QRDSServer
 public:
     QRDSServer();
     QString description() const;
-    void setDescription(const QString &desctription);
+    void setDescription(const QString &description);
     QString hostname() const;
     void setHostname(const QString &hostname);
     quint16 port() const;

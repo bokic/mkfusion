@@ -21,9 +21,9 @@ QString QRDSServer::description() const
     return m_Description;
 }
 
-void QRDSServer::setDescription(const QString &desctription)
+void QRDSServer::setDescription(const QString &description)
 {
-    m_Description = desctription;
+    m_Description = description;
 }
 
 QString QRDSServer::hostname() const
