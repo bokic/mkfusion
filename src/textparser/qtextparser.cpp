@@ -356,7 +356,7 @@ QTextParserElements QTextParser::parseTextLines(const QTextParserLines &lines)
     return ret;
 }
 
-const QTextParserLanguageDefinition &QTextParser::getLanguage() const
+QTextParserLanguageDefinition QTextParser::getLanguage() const
 {
     return language;
 }

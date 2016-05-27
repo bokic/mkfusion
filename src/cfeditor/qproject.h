@@ -30,8 +30,8 @@ public:
     virtual void CreateDir(const QString &) = 0;
     virtual void DeleteDir(const QString &, bool) = 0;
     virtual void RenameDir(const QString &, const QString &) = 0;
-    const QString & getUrl();
-    const QString & getPath();
+    QString getUrl();
+    QString getPath();
 protected:
     QString m_Url;
     QString m_Path;

@@ -55,17 +55,17 @@ struct QHttpCodecValue
 
 struct QHttpCodecKey
 {
-    const QHttpCodecValue * getValue(const QString &name) const
+    QHttpCodecValue getValue(const QString &name) const
     {
         for(int c = 0; c < values.count(); c++)
         {
             if (values.at(c).value == name)
             {
-                return &values.at(c);
+                return values.at(c);
             }
         }
 
-        return nullptr;
+        return QHttpCodecValue();
     }
 
     QList<QHttpCodecValue> values;
@@ -78,7 +78,7 @@ public:
     QHttpCodec();
     static QHttpCodec decodeFromByteArray(const QByteArray &source);
     bool contansHeaderKey(const QString &keyName);
-    const QHttpCodecKey * getHeaderKey(const QString &keyName);
+    QHttpCodecKey getHeaderKey(const QString &keyName);
     bool isValid();
     QByteArray getBody();
 

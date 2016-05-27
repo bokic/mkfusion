@@ -141,9 +141,9 @@ bool QHttpCodec::contansHeaderKey(const QString &keyName)
     return m_HeaderKeys.contains(keyName);
 }
 
-const QHttpCodecKey * QHttpCodec::getHeaderKey(const QString &keyName)
+QHttpCodecKey QHttpCodec::getHeaderKey(const QString &keyName)
 {
-    return &m_HeaderKeys[keyName];
+    return m_HeaderKeys[keyName];
 }
 
 bool QHttpCodec::isValid()

@@ -231,7 +231,7 @@ void QSFTPProject::RenameDir(const QString &p_FromFolder, const QString &p_ToFol
     sftp_rename(m_SFTPSession, m_Path.toUtf8() + p_FromFolder.toUtf8(), m_Path.toUtf8() + p_ToFolder.toUtf8());
 }
 
-const QString &QSFTPProject::getHostName()
+QString QSFTPProject::getHostName()
 {
     return m_HostName;
 }
@@ -241,12 +241,12 @@ quint16 QSFTPProject::getPort()
     return m_Port;
 }
 
-const QString &QSFTPProject::getUsername()
+QString QSFTPProject::getUsername()
 {
     return m_Username;
 }
 
-const QString &QSFTPProject::getPassword()
+QString QSFTPProject::getPassword()
 {
     return m_Password;
 }

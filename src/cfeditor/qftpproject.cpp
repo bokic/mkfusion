@@ -164,7 +164,7 @@ void QFTPProject::RenameDir(const QString &p_FromDir, const QString &p_ToDir)
     }*/
 }
 
-const QString & QFTPProject::getHostName()
+QString QFTPProject::getHostName()
 {
     return m_HostName;
 }
@@ -174,12 +174,12 @@ quint16 QFTPProject::getPort()
     return m_Port;
 }
 
-const QString & QFTPProject::getUsername()
+QString QFTPProject::getUsername()
 {
     return m_Username;
 }
 
-const QString & QFTPProject::getPassword()
+QString QFTPProject::getPassword()
 {
     return m_Password;
 }

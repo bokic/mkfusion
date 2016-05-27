@@ -11,8 +11,8 @@
 class QCF8
 {
 public:
-    static const QHash<QString, QCFTag> & generateCFTags();
-    static const QHash<QString, QCFFunction> & generateCFFunctions();
+    static QHash<QString, QCFTag> generateCFTags();
+    static QHash<QString, QCFFunction> generateCFFunctions();
 
 private:
     static QHash<QString, QCFTag> m_generateCFTags;

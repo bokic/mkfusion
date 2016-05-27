@@ -125,14 +125,14 @@ public:
     QCFParser();
     explicit QCFParser(QCFParserMode mode, QCFParserFileType filetype);
     QString error();
-    const QString &getText() const;
+    QString getText() const;
     quint32 getErrorPosition();
     QCFParserErrorType parse(const QFileInfo &p_File, bool *p_Terminate = nullptr);
     QCFParserErrorType parse(const QString &p_Text, bool *p_Terminate = nullptr);
     QCFParserErrorType buildTagTree();
     QCFParserErrorType validate();
     QCFParserErrorType prioritizeOperators();
-    const QList<QCFParserTag> & getTags() const;
+    QList<QCFParserTag> getTags() const;
     QList<QCFParserElement> getScriptFunctions(QList<QCFParserTag> const p_Tags) const;
     QList<QCFParserTag> getTagFunctions(QList<QCFParserTag> const p_Tags) const;
     QList<QCFParserTag> getFunctionArguments(const QCFParserTag &p_Function) const;
@@ -145,8 +145,8 @@ public:
 
 private:
     QList<QCFParserTag> m_Tags;
-    const QHash<QString, QCFTag> &m_CFTagsDef;
-    const QHash<QString, QCFFunction> &m_CFFunctionsDef;
+    QHash<QString, QCFTag> m_CFTagsDef;
+    QHash<QString, QCFFunction> m_CFFunctionsDef;
     quint32 m_ErrorPosition;
     QString m_Error;
     QString m_Text;

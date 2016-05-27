@@ -1421,7 +1421,7 @@ QString QCFParser::error()
     return m_Error;
 }
 
-const QString &QCFParser::getText() const
+QString QCFParser::getText() const
 {
     return m_Text;
 }
@@ -2108,7 +2108,7 @@ QCFParserErrorType QCFParser::validate()
     return NoError;
 }
 
-const QList<QCFParserTag> & QCFParser::getTags() const
+QList<QCFParserTag> QCFParser::getTags() const
 {
     return m_Tags;
 }

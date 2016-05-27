@@ -9,7 +9,7 @@
 QHash<QString, QCFTag> QCF8::m_generateCFTags;
 QHash<QString, QCFFunction> QCF8::m_generateCFFunctions;
 
-const QHash<QString, QCFTag> & QCF8::generateCFTags()
+QHash<QString, QCFTag> QCF8::generateCFTags()
 {
     if (m_generateCFTags.count() == 0)
     {
@@ -1307,7 +1307,7 @@ const QHash<QString, QCFTag> & QCF8::generateCFTags()
     return m_generateCFTags;
 }
 
-const QHash<QString, QCFFunction> & QCF8::generateCFFunctions()
+QHash<QString, QCFFunction> QCF8::generateCFFunctions()
 {
     if (m_generateCFFunctions.count() == 0)
     {

@@ -206,14 +206,14 @@ void QCFWorkerThread::processPostData(QByteArray post)
                     throw QMKFusionException(QObject::tr("Corrupted POST method(Content-Disposition is missing)."));
                 }
 
-                const QHttpCodecValue *headerKeyValue = codec.getHeaderKey("Content-Disposition")->getValue("form-data");
+                QHttpCodecValue headerKeyValue = codec.getHeaderKey("Content-Disposition").getValue("form-data");
 
                 if (codec.contansHeaderKey("Content-Type"))
                 {
                     // file upload.
-                    QString key = headerKeyValue->getParameterValue("name").toUpper();
+                    QString key = headerKeyValue.getParameterValue("name").toUpper();
 
-                    if (!headerKeyValue->getParameterValue("filename").isEmpty())
+                    if (!headerKeyValue.getParameterValue("filename").isEmpty())
                     {
                         m_FileUpload[key] = QCFFileUpload();
                         QCFFileUpload *item = &m_FileUpload[key];
@@ -232,8 +232,8 @@ void QCFWorkerThread::processPostData(QByteArray post)
 
                         item->m_File->close();
 
-                        item->m_ContentType = codec.getHeaderKey("Content-Type")->values.at(0).value;
-                        item->m_Filename = headerKeyValue->getParameterValue("filename");
+                        item->m_ContentType = codec.getHeaderKey("Content-Type").values.at(0).value;
+                        item->m_Filename = headerKeyValue.getParameterValue("filename");
 
                         m_FORM.m_Struct->insert(key, QDir::toNativeSeparators(item->m_File->fileName()));
                     }
@@ -244,7 +244,7 @@ void QCFWorkerThread::processPostData(QByteArray post)
                 }
                 else
                 {
-                    QString key = headerKeyValue->getParameterValue("name").toUpper();
+                    QString key = headerKeyValue.getParameterValue("name").toUpper();
                     QString value = QString::fromUtf8(codec.getBody());
 
                     m_FORM.m_Struct->insert(key, value);

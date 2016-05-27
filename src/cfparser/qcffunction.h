@@ -53,7 +53,7 @@ public:
     }
 #endif
     void setName(const QString &p_FunctionName);
-    const QString &getName();
+    QString getName();
 
     // Class members
     QString m_Name;
