@@ -1,5 +1,4 @@
-#ifndef QCFCOMPILER_H
-#define QCFCOMPILER_H
+#pragma once
 
 #include <QString>
 #include <QHash>
@@ -22,5 +21,3 @@ private:
     QString m_TargetPath;
     bool m_Strip;
 };
-
-#endif // QCFCOMPILER_H

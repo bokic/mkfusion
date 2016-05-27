@@ -1,5 +1,4 @@
-#ifndef QCFAPPLICATIONMANAGER_H
-#define QCFAPPLICATIONMANAGER_H
+#pragma once
 
 #include "qcfworkerthread.h"
 #include "qcfapplication.h"
@@ -22,5 +21,3 @@ private:
     QHash<QString, QCFApplication> m_applications;
     QReadWriteLock *m_lock;
 };
-
-#endif // QCFAPPLICATIONMANAGER_H

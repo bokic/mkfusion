@@ -1,5 +1,4 @@
-#ifndef QDATABASESERVICE_H
-#define QDATABASESERVICE_H
+#pragma once
 
 #include "qabstractrdsservice.h"
 #include <QObject>
@@ -35,5 +34,3 @@ private:
     QByteArray GetMetaData(QRDSServer, QMap<QString, QString>);
     QByteArray GetSupportedCommands(QRDSServer);
 };
-
-#endif // QDATABASESERVICE_H

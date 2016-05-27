@@ -1,5 +1,4 @@
-#ifndef QPROJECTPROPERTIES_H
-#define QPROJECTPROPERTIES_H
+#pragma once
 
 #include "ui_qprojectproperties.h"
 
@@ -34,5 +33,3 @@ private:
     Ui::Dialog ui;
     QString m_ConnectionString;
 };
-
-#endif // QPROJECTPROPERTIES_H

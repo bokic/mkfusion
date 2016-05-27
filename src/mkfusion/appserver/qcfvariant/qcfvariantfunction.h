@@ -1,5 +1,4 @@
-#ifndef QCFVARIANTFUNCTION_H
-#define QCFVARIANTFUNCTION_H
+#pragma once
 
 #include "qcfvariantargument.h"
 #include "qcfworkerthread.h"
@@ -69,5 +68,3 @@ public:
     QCFVariantArgumentList m_Arguments;
     QCFVariantFunctor m_Functor;
 };
-
-#endif // QCFVARIANTFUNCTION_H

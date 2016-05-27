@@ -1,5 +1,4 @@
-#ifndef QADVANCEDTREEWIDGET_H
-#define QADVANCEDTREEWIDGET_H
+#pragma once
 
 #include <QTreeWidget>
 #include <QKeyEvent>
@@ -15,5 +14,3 @@ public:
 signals:
     void keyPress(QAdvancedTreeWidget*, QKeyEvent*);
 };
-
-#endif // QADVANCEDTREEWIDGET_H

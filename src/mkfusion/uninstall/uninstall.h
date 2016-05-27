@@ -1,5 +1,4 @@
-#ifndef UNINSTALL_H
-#define UNINSTALL_H
+#pragma once
 
 #include <windows.h>
 
@@ -10,5 +9,3 @@ extern "C" bool StopWinService(char *);
 extern "C" char *GetWinServiceExeFilename(char *);
 extern "C" bool AddMKFusionToApacheConfig(char *, char *);
 extern "C" bool RemoveMKFusionFromApacheConfig(char *);
-
-#endif // UNINSTALL_H

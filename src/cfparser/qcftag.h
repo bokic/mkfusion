@@ -1,5 +1,4 @@
-#ifndef QCFTAG_H
-#define QCFTAG_H
+#pragma once
 
 #include <QObject>
 #include <QString>
@@ -62,5 +61,3 @@ public:
     bool m_AnyParam;
     QList<QList<QCFTagArgument>> m_ArgumentVariants;
 };
-
-#endif // QCFTAG_H

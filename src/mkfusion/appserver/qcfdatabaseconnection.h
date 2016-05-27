@@ -1,5 +1,4 @@
-#ifndef QCFDATABASECONNECTION_H
-#define QCFDATABASECONNECTION_H
+#pragma once
 
 #include <QSqlDatabase>
 #include <QString>
@@ -16,5 +15,3 @@ public:
     QString m_connectionDriver;
     QString m_connectionString;
 };
-
-#endif // QCFDATABASECONNECTION_H

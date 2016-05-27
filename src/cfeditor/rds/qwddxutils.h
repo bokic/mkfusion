@@ -1,5 +1,4 @@
-#ifndef QWDDXUTILS_H
-#define QWDDXUTILS_H
+#pragma once
 
 #include "qwddx.h"
 
@@ -18,5 +17,3 @@ protected:
 private:
     QString m_Error;
 };
-
-#endif // QWDDXUTILS_H

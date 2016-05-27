@@ -1,5 +1,4 @@
-#ifndef QSIMPLIFIEDLOCALSOCKET_H
-#define QSIMPLIFIEDLOCALSOCKET_H
+#pragma once
 
 #include <qglobal.h>
 #ifdef Q_OS_WIN
@@ -29,5 +28,3 @@ private:
     int m_Timeout;
 #endif
 };
-
-#endif // QSIMPLIFIEDLOCALSOCKET_H

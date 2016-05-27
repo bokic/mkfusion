@@ -1,5 +1,4 @@
-#ifndef QCFVARIANT_H
-#define QCFVARIANT_H
+#pragma once
 
 #include <QDateTime>
 #include <QVector>
@@ -320,5 +319,3 @@ Q_DECL_EXPORT double operator/(const QCFVariant &, const QCFVariant &);
 Q_DECL_EXPORT QCFVariant operator&(int, const QCFVariant &);
 Q_DECL_EXPORT QCFVariant operator&(double, const QCFVariant &);
 Q_DECL_EXPORT QCFVariant operator&(const QString &, const QCFVariant &);
-
-#endif // QCFVARIANT_H

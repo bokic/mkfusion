@@ -20,8 +20,7 @@
 **
 ****************************************************************************/
 
-#ifndef QTEXTPARSERLANGUAGEDEFINITIONTOKEN_H
-#define QTEXTPARSERLANGUAGEDEFINITIONTOKEN_H
+#pragma once
 
 #include <QString>
 #include <QVector>
@@ -66,5 +65,3 @@ public:
     bool MultiLine;
     QVector<int> nestedTokens;
 };
-
-#endif // QTEXTPARSERLANGUAGEDEFINITIONTOKEN_H

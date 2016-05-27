@@ -1,5 +1,4 @@
-#ifndef QCFVARIANTCOMPONENT_H
-#define QCFVARIANTCOMPONENT_H
+#pragma once
 
 #include "qcfvariant.h"
 
@@ -62,5 +61,3 @@ public:
     qint64 m_TemplateFileSize;
     uint m_TemplateFileModified;
 };
-
-#endif // QCFVARIANTCOMPONENT_H

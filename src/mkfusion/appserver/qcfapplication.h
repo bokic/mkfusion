@@ -1,5 +1,4 @@
-#ifndef QCFAPPLICATION_H
-#define QCFAPPLICATION_H
+#pragma once
 
 #include "qcfvariant.h"
 
@@ -43,5 +42,3 @@ public:
     QDateTime m_timeout;
     QMutex m_mutex;
 };
-
-#endif // QCFAPPLICATION_H

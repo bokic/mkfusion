@@ -1,6 +1,4 @@
-#ifndef QCFSETTINGS_H
-#define QCFSETTINGS_H
-
+#pragma once
 
 #include "qcfdatabaseconnection.h"
 
@@ -24,5 +22,3 @@ private:
     QList<QCFDatabaseConnection> m_databaseConnections;
     int m_schedulerThreadIntervalMS;
 };
-
-#endif // QCFSETTINGS_H

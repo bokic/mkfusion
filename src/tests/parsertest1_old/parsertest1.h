@@ -1,5 +1,4 @@
-#ifndef PARSERTEST1_H
-#define PARSERTEST1_H
+#pragma once
 
 #include <QDialog>
 #include <QHash>
@@ -25,5 +24,3 @@ private:
     QHash<QString, int> m_functionsHash;
     Ui::CFTest1Class ui;
 };
-
-#endif // CFTEST1_H

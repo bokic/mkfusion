@@ -1,5 +1,4 @@
-#ifndef QJDWPCOMMAND_H
-#define QJDWPCOMMAND_H
+#pragma once
 
 #include <QByteArray>
 #include <QObject>
@@ -16,5 +15,3 @@ public:
 protected:
     quint32 m_CommandID;
 };
-
-#endif // QJDWPCOMMAND_H

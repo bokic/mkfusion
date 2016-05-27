@@ -1,5 +1,4 @@
-#ifndef QCFTEMPLATEGENERATOR_H
-#define QCFTEMPLATEGENERATOR_H
+#pragma once
 
 #include "qcfgenerator.h"
 #include "qcfparser.h"
@@ -14,5 +13,3 @@ public:
     QCFTemplateGenerator();
     virtual void generateCpp(const QString &dstFilePath) override;
 };
-
-#endif // QCFTEMPLATEGENERATOR_H

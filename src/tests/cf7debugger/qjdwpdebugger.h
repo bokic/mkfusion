@@ -1,5 +1,4 @@
-#ifndef QJDWPDEBUGGER_H
-#define QJDWPDEBUGGER_H
+#pragma once
 
 #include <QObject>
 #include "qjdwpsocket.h"
@@ -26,5 +25,3 @@ private slots:
     void on_m_JDWP_ready();
     void on_m_JDWP_gotPacket(quint32, quint8, quint16, QByteArray);
 };
-
-#endif // QJDWPDEBUGGER_H

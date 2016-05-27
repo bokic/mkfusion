@@ -1,5 +1,4 @@
-#ifndef CFFUNCTIONS_H
-#define CFFUNCTIONS_H
+#pragma once
 
 #include "qmkfusionexception.h"
 #include "qcfworkerthread.h"
@@ -395,5 +394,3 @@ Q_DECL_EXPORT QString cf_XmlTransform(QCFVariant &xml, const QString &xsl, const
 Q_DECL_EXPORT QCFVariant cf_XmlValidate(const QCFVariant &xmlDoc, const QString &validator = "");
 Q_DECL_EXPORT int cf_Year(const QDateTime &date);
 Q_DECL_EXPORT bool cf_YesNoFormat(const QCFVariant &value);
-
-#endif // CFFUNCTIONS_H

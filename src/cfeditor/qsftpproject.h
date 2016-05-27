@@ -1,5 +1,4 @@
-#ifndef QSFTPPROJECT_H
-#define QSFTPPROJECT_H
+#pragma once
 
 #include "qprojectfile.h"
 #include "qproject.h"
@@ -42,5 +41,3 @@ private:
 };
 
 QT_END_NAMESPACE
-
-#endif // QSFTPPROJECT_H

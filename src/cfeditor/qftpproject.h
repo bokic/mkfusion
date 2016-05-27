@@ -1,5 +1,4 @@
-#ifndef QFTPPROJECT_H
-#define QFTPPROJECT_H
+#pragma once
 
 #include "qproject.h"
 #include <QNetworkAccessManager>
@@ -32,5 +31,3 @@ protected:
 private:
     QNetworkAccessManager m_Network;
 };
-
-#endif // QFTPPROJECT_H

@@ -1,5 +1,4 @@
-#ifndef QDETAIL_H
-#define QDETAIL_H
+#pragma once
 
 #include "qcfparser.h"
 
@@ -37,5 +36,3 @@ private:
     bool m_IsCurrentSelect;
 
 };
-
-#endif // QDETAIL_H

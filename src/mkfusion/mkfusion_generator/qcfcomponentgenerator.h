@@ -1,5 +1,4 @@
-#ifndef QCFCOMPONENTGENERATOR_H
-#define QCFCOMPONENTGENERATOR_H
+#pragma once
 
 #include "qcfgenerator.h"
 #include "qcfparser.h"
@@ -18,5 +17,3 @@ private:
     bool m_EnableComponentOutput;
     bool m_EnableFunctionOutput;
 };
-
-#endif // QCFCOMPONENTGENERATOR_H

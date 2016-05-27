@@ -1,5 +1,4 @@
-#ifndef QCFTEMPLATEINFO_H
-#define QCFTEMPLATEINFO_H
+#pragma once
 
 #include <QString>
 
@@ -26,5 +25,3 @@ public:
     qint64 m_FileSize;
     uint m_FileModified;
 };
-
-#endif // QCFTEMPLATEINFO_H

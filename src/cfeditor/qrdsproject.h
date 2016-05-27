@@ -1,5 +1,4 @@
-#ifndef QRDSPROJECT_H
-#define QRDSPROJECT_H
+#pragma once
 
 #include "qrdsserver.h"
 #include "qprojectfile.h"
@@ -34,5 +33,3 @@ private:
     QRDSServer m_Server;
     char m_DirSeparator;
 };
-
-#endif // QRDSPROJECT_H

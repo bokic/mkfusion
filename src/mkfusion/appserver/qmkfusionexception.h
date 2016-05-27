@@ -1,5 +1,4 @@
-#ifndef QMKFUSIONEXCEPTION_H
-#define QMKFUSIONEXCEPTION_H
+#pragma once
 
 #include <qtconcurrentexception.h>
 #include <QDateTime>
@@ -247,5 +246,3 @@ public:
     {
     }
 };
-
-#endif // QMKFUSIONEXCEPTION_H

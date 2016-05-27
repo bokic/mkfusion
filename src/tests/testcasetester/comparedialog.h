@@ -1,5 +1,4 @@
-#ifndef COMPAREDIALOG_H
-#define COMPAREDIALOG_H
+#pragma once
 
 #include <QPlainTextEdit>
 #include <QDialog>
@@ -31,5 +30,3 @@ private:
     QByteArray m_RightText;
 private slots:
 };
-
-#endif // COMPAREDIALOG_H

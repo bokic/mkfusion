@@ -1,5 +1,4 @@
-#ifndef QFILEIOSERVICE_H
-#define QFILEIOSERVICE_H
+#pragma once
 
 #include "qabstractrdsservice.h"
 
@@ -40,5 +39,3 @@ private:
     QByteArray CreateDir(const QRDSServer &rdsserver, const QMap<QString, QString> &map);
     QByteArray GetRootDir(const QRDSServer &rdsserver);
 };
-
-#endif // QFILEIOSERVICE_H

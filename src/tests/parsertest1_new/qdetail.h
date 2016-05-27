@@ -1,5 +1,4 @@
-#ifndef QDETAIL_H
-#define QDETAIL_H
+#pragma once
 
 #include "qtextparserelement.h"
 #include "qtextparser.h"
@@ -44,5 +43,3 @@ private:
     QList<QColor> m_ElementTextColors;
     QList<QColor> m_ElementBackgroundColors;
 };
-
-#endif // QDETAIL_H

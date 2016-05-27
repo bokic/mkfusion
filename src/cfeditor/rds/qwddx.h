@@ -1,5 +1,4 @@
-#ifndef QWDDX_H
-#define QWDDX_H
+#pragma once
 
 #include <QDateTime>
 #include <QVariant>
@@ -57,5 +56,3 @@ private:
     QDateTime m_DateTime;
     QWDDXType m_Type;
 };
-
-#endif // QWDDX_H

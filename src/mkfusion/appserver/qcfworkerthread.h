@@ -1,5 +1,4 @@
-#ifndef QCFWORKERTHREAD_H
-#define QCFWORKERTHREAD_H
+#pragma once
 
 #include "qmkfusionexception.h"
 #include "qcfvariant.h"
@@ -138,5 +137,3 @@ private:
 
     bool m_CFDump;
 };
-
-#endif // QCFWORKERTHREAD_H

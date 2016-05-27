@@ -1,5 +1,4 @@
-#ifndef MAINDIALOG_H
-#define MAINDIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QListWidgetItem>
@@ -26,5 +25,3 @@ private slots:
     void on_urlslist_itemDoubleClicked(QListWidgetItem *item);
     void on_start_clicked();
 };
-
-#endif // MAINDIALOG_H

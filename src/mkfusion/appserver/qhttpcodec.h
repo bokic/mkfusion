@@ -1,5 +1,4 @@
-#ifndef QHTTPCODEC_H
-#define QHTTPCODEC_H
+#pragma once
 
 #include <QByteArray>
 #include <QString>
@@ -88,5 +87,3 @@ private:
     QByteArray m_Body;
     bool m_Valid;
 };
-
-#endif // QHTTPCODEC_H

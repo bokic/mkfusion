@@ -1,5 +1,4 @@
-#ifndef QCFSCHEDULERTHREAD_H
-#define QCFSCHEDULERTHREAD_H
+#pragma once
 
 #include <QThread>
 #include <QObject>
@@ -16,5 +15,3 @@ protected:
 private slots:
     void task();
 };
-
-#endif // QCFSCHEDULERTHREAD_H

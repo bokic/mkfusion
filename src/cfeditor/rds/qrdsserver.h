@@ -1,5 +1,4 @@
-#ifndef QRDSSERVER_H
-#define QRDSSERVER_H
+#pragma once
 
 #include <QObject>
 #include <QString>
@@ -48,5 +47,3 @@ private:
     bool m_Authenticated;
     QVector<QMap<QString, QString>> m_Mappings;
 };
-
-#endif // QRDSSERVER_H

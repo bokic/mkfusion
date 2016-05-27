@@ -1,5 +1,4 @@
-#ifndef QCFDEBUGGER_H
-#define QCFDEBUGGER_H
+#pragma once
 
 #include "qrdsserver.h"
 #include <QTcpSocket>
@@ -32,5 +31,3 @@ private slots:
     void onEventReadyRead();
     void onEventBytesWritten(qint64);
 };
-
-#endif // QCFDEBUGGER_H

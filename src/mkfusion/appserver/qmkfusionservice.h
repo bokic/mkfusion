@@ -1,5 +1,4 @@
-#ifndef QMKFUSIONSERVICE_H
-#define QMKFUSIONSERVICE_H
+#pragma once
 
 #include <QCoreApplication>
 #include "qtservice.h"
@@ -17,5 +16,3 @@ protected:
     virtual void start();
     virtual void stop();
 };
-
-#endif // QMKFUSIONSERVICE_H

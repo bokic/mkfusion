@@ -20,8 +20,7 @@
 **
 ****************************************************************************/
 
-#ifndef QTEXTPARSERLANGUAGEDEFINITION_H
-#define QTEXTPARSERLANGUAGEDEFINITION_H
+#pragma once
 
 #include "qtextparserlanguagedefinitiontoken.h"
 
@@ -56,5 +55,3 @@ public:
     QVector<QTextParserLanguageDefinitionToken> tokens;
     QVector<int> startsWith;
 };
-
-#endif // QTEXTPARSERLANGUAGEDEFINITION_H

@@ -1,5 +1,4 @@
-#ifndef QCTEMPLATESMANAGER_H
-#define QCTEMPLATESMANAGER_H
+#pragma once
 
 #include "qcfworkerthread.h"
 #include "qcftemplate.h"
@@ -25,5 +24,3 @@ private:
     QReadWriteLock m_lock;
     QString m_cachePath;
 };
-
-#endif // QCTEMPLATESMANAGER_H

@@ -1,5 +1,4 @@
-#ifndef QDEBUGGERSERVICE_H
-#define QDEBUGGERSERVICE_H
+#pragma once
 
 #include "qabstractrdsservice.h"
 #include <QObject>
@@ -32,5 +31,3 @@ private:
     QByteArray DoDebugRequest(QRDSServer, QMap<QString, QString>);
     QByteArray DoDebugEvents(QRDSServer, QMap<QString, QString>);
 };
-
-#endif // QDEBUGGERSERVICE_H

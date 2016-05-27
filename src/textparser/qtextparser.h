@@ -20,8 +20,7 @@
 **
 ****************************************************************************/
 
-#ifndef QTEXTPARSER_H
-#define QTEXTPARSER_H
+#pragma once
 
 #include "qtextparserlanguagedefinitiontoken.h"
 #include "qtextparserlanguagedefinition.h"
@@ -53,5 +52,3 @@ protected:
     QTextParserLanguageDefinition language;
     QTextParserLines lines;
 };
-
-#endif // QTEXTPARSER_H

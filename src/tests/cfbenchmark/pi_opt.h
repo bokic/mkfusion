@@ -1,3 +1,5 @@
+#pragma once
+
 #include "qmkfusionexception.h"
 #include "qcfworkerthread.h"
 #include "qcftemplate.h"

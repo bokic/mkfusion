@@ -1,5 +1,4 @@
-#ifndef QCF8_H
-#define QCF8_H
+#pragma once
 
 #include "qcftag.h"
 #include "qcffunction.h"
@@ -18,5 +17,3 @@ private:
     static QHash<QString, QCFTag> m_generateCFTags;
     static QHash<QString, QCFFunction> m_generateCFFunctions;
 };
-
-#endif // QCF8_H

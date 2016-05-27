@@ -1,5 +1,4 @@
-#ifndef QJDWPCLASSESBYSIGNATURECOMMAND_H
-#define QJDWPCLASSESBYSIGNATURECOMMAND_H
+#pragma once
 
 #include "qjdwpcommand.h"
 
@@ -30,5 +29,3 @@ public:
 private:
     QList<QJDWPClassesBySignature> m_Result;
 };
-
-#endif // QJDWPCLASSESBYSIGNATURECOMMAND_H

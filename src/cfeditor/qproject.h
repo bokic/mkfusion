@@ -1,5 +1,4 @@
-#ifndef QPROJECT_H
-#define QPROJECT_H
+#pragma once
 
 #include <libssh/libssh.h>
 #include <libssh/sftp.h>
@@ -43,5 +42,3 @@ private:
 };
 
 QT_END_NAMESPACE
-
-#endif // QPROJECT_H

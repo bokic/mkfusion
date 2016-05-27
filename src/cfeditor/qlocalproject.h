@@ -1,5 +1,4 @@
-#ifndef QLOCALPROJECT_H
-#define QLOCALPROJECT_H
+#pragma once
 
 #include "qproject.h"
 #include <QString>
@@ -24,5 +23,3 @@ public:
 protected:
 private:
 };
-
-#endif // QLOCALPROJECT_H

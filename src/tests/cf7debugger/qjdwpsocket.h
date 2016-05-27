@@ -1,5 +1,4 @@
-#ifndef QJDWPSOCKET_H
-#define QJDWPSOCKET_H
+#pragma once
 
 #include <QTcpSocket>
 #include <QByteArray>
@@ -63,5 +62,3 @@ signals:
     void ready();
     void gotPacket(quint32, quint8, quint16, QByteArray);
 };
-
-#endif // QJDWPSOCKET_H

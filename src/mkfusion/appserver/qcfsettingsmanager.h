@@ -1,5 +1,4 @@
-#ifndef QCFSETTINGSMANAGER_H
-#define QCFSETTINGSMANAGER_H
+#pragma once
 
 #include "qcfsettings.h"
 
@@ -18,5 +17,3 @@ private:
 
     QCFSettings m_settings;
 };
-
-#endif // QCFSETTINGSMANAGER_H

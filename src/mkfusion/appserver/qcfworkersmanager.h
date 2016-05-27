@@ -1,5 +1,4 @@
-#ifndef QCFWORKERSMANAGER_H
-#define QCFWORKERSMANAGER_H
+#pragma once
 
 #include "qcfworkerthread.h"
 
@@ -26,5 +25,3 @@ private:
     QList<QCFWorkerThread *> m_workers;
     QMutex m_mutex;
 };
-
-#endif // QCFWORKERSMANAGER_H

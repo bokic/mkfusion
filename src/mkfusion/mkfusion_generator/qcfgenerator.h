@@ -1,5 +1,4 @@
-#ifndef QCFGENERATOR_H
-#define QCFGENERATOR_H
+#pragma once
 
 #include "qcffunction.h"
 #include "qcfparser.h"
@@ -48,5 +47,3 @@ protected:
     QList<int> m_SwitchCaseCount;
     QString m_Error;
 };
-
-#endif // QCFGENERATOR_H

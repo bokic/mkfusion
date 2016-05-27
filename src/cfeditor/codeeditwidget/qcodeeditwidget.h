@@ -1,5 +1,4 @@
-#ifndef QCODEEDITWIDGET_H
-#define QCODEEDITWIDGET_H
+#pragma once
 
 #include "qtextparser.h"
 
@@ -92,5 +91,3 @@ signals:
 public slots:
     void setText(const QString &text);
 };
-
-#endif // QCODEEDITWIDGET_H

@@ -20,8 +20,7 @@
 **
 ****************************************************************************/
 
-#ifndef QTEXTPARSERELEMENT_H
-#define QTEXTPARSERELEMENT_H
+#pragma once
 
 #include <QString>
 #include <QList>
@@ -65,5 +64,3 @@ public:
 };
 
 typedef QList<QTextParserElement> QTextParserElements;
-
-#endif // QTEXTPARSERELEMENT_H

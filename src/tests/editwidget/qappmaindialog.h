@@ -1,5 +1,4 @@
-#ifndef QAPPMAINDIALOG_H
-#define QAPPMAINDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -21,5 +20,3 @@ protected:
 private:
     Ui::QAppMainDialog *ui;
 };
-
-#endif // QAPPMAINDIALOG_H

@@ -1,5 +1,4 @@
-#ifndef QAPPMAINWINDOW_H
-#define QAPPMAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include <QListView>
@@ -14,5 +13,3 @@ private:
     QListView *m_Edit;
     QJDWPDebugger *m_jdwpsocket;
 };
-
-#endif // QAPPMAINWINDOW_H

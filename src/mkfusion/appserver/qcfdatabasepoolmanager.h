@@ -1,5 +1,4 @@
-#ifndef QCFDATABASEPOOLMANAGER_H
-#define QCFDATABASEPOOLMANAGER_H
+#pragma once
 
 #include "qcfdatabaseconnection.h"
 
@@ -23,5 +22,3 @@ private:
     QList<QCFDatabaseConnection> m_connectionDefinition;
     QReadWriteLock m_lock;
 };
-
-#endif // QCFDATABASEPOOLMANAGER_H

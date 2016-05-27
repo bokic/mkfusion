@@ -1,5 +1,4 @@
-#ifndef QABSTRACTRDSSERVICE_H
-#define QABSTRACTRDSSERVICE_H
+#pragma once
 
 #include "qrdsserver.h"
 #include <QByteArray>
@@ -30,5 +29,3 @@ private:
     static QByteArray XORString(const QByteArray &value);
     static int readToColumn(QByteArray &str, const QByteArray &buf, int offset);
 };
-
-#endif // QABSTRACTRDSSERVICE_H

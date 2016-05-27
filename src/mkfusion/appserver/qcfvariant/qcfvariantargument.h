@@ -1,5 +1,4 @@
-#ifndef QCFVARIANTARGUMENT_H
-#define QCFVARIANTARGUMENT_H
+#pragma once
 
 #include <QString>
 #include <QList>
@@ -54,5 +53,3 @@ public:
         return *this;
     }
 };
-
-#endif // QCFVARIANTARGUMENT_H

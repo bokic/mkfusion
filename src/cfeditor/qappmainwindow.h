@@ -1,5 +1,4 @@
-#ifndef QAPPMAINWINDOW_H
-#define QAPPMAINWINDOW_H
+#pragma once
 
 #include <qproject.h>
 
@@ -69,5 +68,3 @@ private:
     QProject *m_Project;
     QString m_ProjectFileName;
 };
-
-#endif // QAPPMAINWINDOW_H

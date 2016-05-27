@@ -1,5 +1,4 @@
-#ifndef QCFPARSER_H
-#define QCFPARSER_H
+#pragma once
 
 struct QCFParserElement;
 struct QCFParserTag;
@@ -159,5 +158,3 @@ private:
     static quint32 GetLineNumberFromPosition(const QString &p_FileContent, int p_FileOffset);
     static quint32 GetColumnNumberFromPosition(const QString &p_FileContent, int p_FileOffset);
 };
-
-#endif // QCFPARSER_H

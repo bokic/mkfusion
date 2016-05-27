@@ -1,5 +1,4 @@
-#ifndef QJDWPGETPATHSEPARATORCOMMAND_H
-#define QJDWPGETPATHSEPARATORCOMMAND_H
+#pragma once
 
 #include "qjdwpcommand.h"
 #include "qjdwpdebugger.h"
@@ -17,5 +16,3 @@ private:
     QJDWPCommand *m_SubCommand;
     enum { CLASSES_BY_SIGNATURE, BETA, GAMMA } m_Progress;
 };
-
-#endif // QJDWPGETPATHSEPARATORCOMMAND_H

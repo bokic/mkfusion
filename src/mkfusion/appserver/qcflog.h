@@ -1,5 +1,4 @@
-#ifndef QCFLOG_H
-#define QCFLOG_H
+#pragma once
 
 #include <QString>
 
@@ -35,5 +34,3 @@ private:
     static QString m_logPath;
     static int m_level;
 };
-
-#endif // QCFLOG_H

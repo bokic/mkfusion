@@ -1,5 +1,4 @@
-#ifndef QCFTEMPLATE_H
-#define QCFTEMPLATE_H
+#pragma once
 
 #include "qcftemplateinfo.h"
 #include "qcfworkerthread.h"
@@ -61,5 +60,3 @@ private:
     bool m_compiling;
     QDateTime m_lastAccess;
 };
-
-#endif // QCFTEMPLATE_H

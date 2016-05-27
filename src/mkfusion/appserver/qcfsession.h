@@ -1,5 +1,4 @@
-#ifndef QCFSESSION_H
-#define QCFSESSION_H
+#pragma once
 
 #include "qcfvariant.h"
 
@@ -19,5 +18,3 @@ class QCFSession
     QDateTime m_timeout;
     QReadWriteLock m_lock;
 };
-
-#endif // QCFSESSION_H

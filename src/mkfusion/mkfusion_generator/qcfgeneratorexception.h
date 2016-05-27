@@ -1,5 +1,4 @@
-#ifndef QCFGENERATOREXCEPTION_H
-#define QCFGENERATOREXCEPTION_H
+#pragma once
 
 #include <qtconcurrentexception.h>
 #include <QString>
@@ -36,6 +35,3 @@ public:
     QString m_Message;
     int m_pos;
 };
-
-#endif // QCFGENERATOREXCEPTION_H
-

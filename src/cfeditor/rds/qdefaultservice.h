@@ -1,5 +1,4 @@
-#ifndef QDEFAULTSERVICE_H
-#define QDEFAULTSERVICE_H
+#pragma once
 
 #include "qabstractrdsservice.h"
 #include <QObject>
@@ -23,5 +22,3 @@ protected:
 private:
     QByteArray IdeDefault(QRDSServer &);
 };
-
-#endif // QDEFAULTSERVICE_H

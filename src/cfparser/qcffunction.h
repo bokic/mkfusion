@@ -1,5 +1,4 @@
-#ifndef QCFFUNCTION_H
-#define QCFFUNCTION_H
+#pragma once
 
 #include <QString>
 #include <QObject>
@@ -61,5 +60,3 @@ public:
     QCFFunctionReturnType m_ReturnType;
     QList<QCFFunctionArgument> m_Arguments;
 };
-
-#endif // QCFFUNCTION_H

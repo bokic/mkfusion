@@ -1,5 +1,4 @@
-#ifndef QCFSESSIONMANAGER_H
-#define QCFSESSIONMANAGER_H
+#pragma once
 
 #include "qcfsession.h"
 #include "qcfworkerthread.h"
@@ -20,5 +19,3 @@ private:
     QHash<QString, QCFSession> m_applications;
     QReadWriteLock m_lock;
 };
-
-#endif // QCFSESSIONMANAGER_H

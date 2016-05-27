@@ -1,5 +1,4 @@
-#ifndef QCFSERVER_H
-#define QCFSERVER_H
+#pragma once
 
 #include "qcfapplicationmanager.h"
 #include "qcfsessionmanager.h"
@@ -45,5 +44,3 @@ private:
     QString m_osName;
     QString m_osVersion;
 };
-
-#endif // QCFSERVER_H

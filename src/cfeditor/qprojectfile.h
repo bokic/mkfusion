@@ -1,5 +1,4 @@
-#ifndef QPROJECTFILE_H
-#define QPROJECTFILE_H
+#pragma once
 
 #include <QString>
 #include <QHash>
@@ -17,5 +16,3 @@ private:
 };
 
 bool operator<(const QProjectFile&, const QProjectFile&);
-
-#endif // QPROJECTFILE_H
