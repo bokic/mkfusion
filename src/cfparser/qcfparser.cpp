@@ -1562,7 +1562,7 @@ QCFParserErrorType QCFParser::parse(const QString &p_Text, bool *p_Terminate)
     int l_CodeInside = 0;
     int pos = 0, cf_pos = 0, cf_epos = 0, cf_comment = 0, cf_expression = 0;
 
-    forever
+    while(1)
     {
         // For multithread applications. Set p_Terminate to true to stop parsing.
         if ((p_Terminate)&&(*p_Terminate == true))

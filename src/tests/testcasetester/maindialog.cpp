@@ -103,7 +103,7 @@ void Dialog::on_start_clicked()
     {
         int l_pos = 0;
 
-        forever
+        while(1)
         {
             int l_trfrom = l_buf.indexOf("<tr", l_pos, Qt::CaseInsensitive);
             if (l_trfrom < 0)
