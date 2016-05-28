@@ -971,7 +971,7 @@ void QCodeEditWidget::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-QString QCodeEditWidget::getText() const
+QString QCodeEditWidget::text() const
 {
     QString ret;
 

@@ -577,7 +577,7 @@ void QAppMainWindow::on_centralwidget_tabCloseRequested(int index)
             QString l_Filename = ui->centralwidget->tabText(index);
             l_Filename = l_Filename.left(l_Filename.length() - 1);
 
-            QByteArray l_FileContent = ((QCodeEditWidget*)ui->centralwidget->currentWidget())->getText().toUtf8();
+            QByteArray l_FileContent = ((QCodeEditWidget*)ui->centralwidget->currentWidget())->text().toUtf8();
 
             statusBar()->showMessage(tr("Saving file.")); QApplication::processEvents();
             m_Project->WriteFile(l_Filename, l_FileContent);
@@ -622,7 +622,7 @@ void QAppMainWindow::onmy_textedit_key_press(QKeyEvent *event)
                 statusBar()->showMessage(tr("Saving file.")); QApplication::processEvents();
 
                 panelText = panelText.left(panelText.size() - 1);
-                m_Project->WriteFile(panelText, ((QCodeEditWidget*)sender())->getText().toUtf8()); // Todo: needs complex-dynamic charset conversation
+                m_Project->WriteFile(panelText, ((QCodeEditWidget*)sender())->text().toUtf8()); // Todo: needs complex-dynamic charset conversation
                 ui->centralwidget->setTabText(index, panelText);
 
                 statusBar()->clearMessage(); QApplication::processEvents();
@@ -663,7 +663,7 @@ void QAppMainWindow::onmy_textedit_breakpoint_change(int line)
 void QAppMainWindow::recolor()
 {
     QCodeEditWidget *edit = ((QCodeEditWidget*) ui->centralwidget->currentWidget());
-    QString panelText = edit->getText();
+    QString panelText = edit->text();
 
     edit->update();
 }

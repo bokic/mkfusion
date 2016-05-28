@@ -12,7 +12,7 @@
 class QCodeEditWidget : public QAbstractScrollArea
 {
     Q_OBJECT
-    Q_PROPERTY(QString Text READ getText WRITE setText DESIGNABLE false)
+    Q_PROPERTY(QString Text READ text WRITE setText DESIGNABLE false)
 public:
     enum QLineStatusType {QLineStatusTypeLineNotModified, QLineStatusTypeLineSaved, QLineStatusTypeLineModified};
     enum QBreakpointType {QBreakpointTypeNoBreakpoint, QBreakpointTypeBreakpoint, QBreakpointTypeBreakpointPending, QBreakpointTypeDisabled};
@@ -25,7 +25,7 @@ public:
 
     explicit QCodeEditWidget(QWidget *parent = 0);
     virtual ~QCodeEditWidget() override;
-    QString getText() const;
+    QString text() const;
     void setFileExtension(const QString &extension);
     void clearFormatting();
     //void addFormat(int p_line, const QTextParser::QTextParserColorItem &p_item);
