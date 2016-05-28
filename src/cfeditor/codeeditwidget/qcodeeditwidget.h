@@ -14,37 +14,50 @@ class QCodeEditWidget : public QAbstractScrollArea
     Q_OBJECT
     Q_PROPERTY(QString Text READ getText WRITE setText DESIGNABLE false)
 public:
-
-    enum LineStatusType {LineStatusTypeLineNotModified, LineStatusTypeLineSaved, LineStatusTypeLineModified};
-    enum BreakpointType {BreakpointTypeNoBreakpoint, BreakpointTypeBreakpoint, BreakpointTypeBreakpointPending, BreakpointTypeDisabled};
+    enum QLineStatusType {QLineStatusTypeLineNotModified, QLineStatusTypeLineSaved, QLineStatusTypeLineModified};
+    enum QBreakpointType {QBreakpointTypeNoBreakpoint, QBreakpointTypeBreakpoint, QBreakpointTypeBreakpointPending, QBreakpointTypeDisabled};
 
     struct QCodeEditWidgetLine : QTextParserLine
     {
-        BreakpointType Breakpoint = BreakpointTypeNoBreakpoint;
-        LineStatusType LineStatus = LineStatusTypeLineNotModified;
+        QBreakpointType breakpointType = QBreakpointTypeNoBreakpoint;
+        QLineStatusType lineStatus = QLineStatusTypeLineNotModified;
     };
 
     explicit QCodeEditWidget(QWidget *parent = 0);
-    virtual ~QCodeEditWidget();
-    QString getText();
-    void setFileExtension(const QString &Extension);
+    virtual ~QCodeEditWidget() override;
+    QString getText() const;
+    void setFileExtension(const QString &extension);
     void clearFormatting();
     //void addFormat(int p_line, const QTextParser::QTextParserColorItem &p_item);
-    void setBreakpoint(int line, BreakpointType newBreakpoint);
-    BreakpointType breakpoint(int line);
+    void setBreakpoint(int line, QBreakpointType type);
+    QBreakpointType breakpoint(int line) const;
+
+signals:
+    void on_key_press(QKeyEvent *event);
+    void on_text_change();
+    void on_breakpoint_change(int line);
+
+public slots:
+    void setText(QString text);
 
 protected:
-    void paintEvent(QPaintEvent *event);
-    void timerEvent(QTimerEvent *event);
-    void keyPressEvent(QKeyEvent *event);
-    void updatePanelWidth();
-    void ensureCaretIsVisible();
-    void scrollContentsBy(int dx , int dy);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent *event) override;
+    void timerEvent(QTimerEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void scrollContentsBy(int dx , int dy) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
+    void updatePanelWidth();
+    void ensureCaretIsVisible();
+
+    typedef struct {
+        int m_Row = 1;
+        int m_Column = 1;
+    } QCodeEditWidgetTextPosition;
+
     QBrush m_LineNumbersBackground;
     QPen m_LineNumbersNormal;
     QPen m_LineNumbersCurrent;
@@ -58,35 +71,16 @@ private:
     QList<QCodeEditWidgetLine> m_Lines;
     QTextParser m_Parser;
 
-    int m_ScrollXCharPos;
-    int m_ScrollYLinePos;
-    int m_LineNumbersPanelWidth;
-    int m_currentlyBlinkCursorShowen;
-    int m_CursorTimerID;
-    int m_FontHeight;
-    int m_LineHeight;
-    int m_LineYOffset;
-    bool m_SelectMouseDown;
+    int m_ScrollXCharPos = 0;
+    int m_ScrollYLinePos = 0;
+    int m_LineNumbersPanelWidth = 3;
+    int m_currentlyBlinkCursorShowen = 1;
+    int m_CursorTimerID = 0;
+    int m_FontHeight = 0;
+    int m_LineHeight = 0;
+    int m_LineYOffset = 0;
+    bool m_SelectMouseDown = false;
 
-    struct CarretPosition
-    {
-        int m_Row;
-        int m_Column;
-        CarretPosition() : m_Row(1), m_Column(1) {}
-    } m_CarretPosition;
-
-    struct SelectionPosition
-    {
-        int m_Row;
-        int m_Column;
-        SelectionPosition() : m_Row(1), m_Column(1) {}
-    } m_SelectionPosition;
-
-signals:
-    void on_key_press(QKeyEvent *);
-    void on_text_change();
-    void on_breakpoint_change(int);
-
-public slots:
-    void setText(const QString &text);
+    QCodeEditWidgetTextPosition m_CarretPosition;
+    QCodeEditWidgetTextPosition m_SelectionPosition;
 };

@@ -233,18 +233,7 @@ QCodeEditWidget::QCodeEditWidget(QWidget *parent)
 #else
 #error Unsupported OS.
 #endif
-    , m_ScrollXCharPos(0)
-    , m_ScrollYLinePos(0)
-    , m_LineNumbersPanelWidth(3)
-    , m_currentlyBlinkCursorShowen(1)
-    , m_SelectMouseDown(false)
 {
-    m_CarretPosition.m_Row = 1;
-    m_CarretPosition.m_Column = 1;
-
-    m_SelectionPosition.m_Row = 1;
-    m_SelectionPosition.m_Column = 1;
-
     QPalette l_Palette;
     QFontMetrics l_fm = QFontMetrics(m_TextFont);
     m_LineNumbersBackground = QBrush(l_Palette.color(QPalette::Window), Qt::SolidPattern);
@@ -430,13 +419,13 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
                 QCodeEditWidgetLine line = m_Lines.takeAt(m_CarretPosition.m_Row - 1);
                 QString l_NewLineText = line.text.right(line.text.length() - m_CarretPosition.m_Column + 1);
                 line.text.remove(m_CarretPosition.m_Column - 1, line.text.length() - m_CarretPosition.m_Column + 1);
-                line.LineStatus = LineStatusTypeLineModified;
+                line.lineStatus = QLineStatusTypeLineModified;
 
                 QCodeEditWidgetLine line2;
                 line2.text = l_NewLineText;
                 line2.type = line.type;
-                line2.LineStatus = LineStatusTypeLineModified;
-                line2.Breakpoint = BreakpointTypeNoBreakpoint;
+                line2.lineStatus = QLineStatusTypeLineModified;
+                line2.breakpointType = QBreakpointTypeNoBreakpoint;
 
                 line.type = QTextParserLine::QTextParserLineTypeLFEndLine;
 
@@ -478,7 +467,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
                 QCodeEditWidgetLine line = m_Lines.at(m_CarretPosition.m_Row - 1);
 
                 line.text.insert(m_CarretPosition.m_Column - 1, l_EventText);
-                line.LineStatus = LineStatusTypeLineModified;
+                line.lineStatus = QLineStatusTypeLineModified;
 
                 m_Lines.replace(m_CarretPosition.m_Row - 1, line);
                 m_CarretPosition.m_Column += l_EventText.size();
@@ -982,7 +971,7 @@ void QCodeEditWidget::mouseReleaseEvent(QMouseEvent *event)
     }
 }
 
-QString QCodeEditWidget::getText()
+QString QCodeEditWidget::getText() const
 {
     QString ret;
 
@@ -1011,12 +1000,12 @@ QString QCodeEditWidget::getText()
     return ret;
 }
 
-void QCodeEditWidget::setFileExtension(const QString &Extension)
+void QCodeEditWidget::setFileExtension(const QString &extension)
 {
-    m_Parser.setTextTypeByFileExtension(Extension);
+    m_Parser.setTextTypeByFileExtension(extension);
 }
 
-void QCodeEditWidget::setText(const QString &text)
+void QCodeEditWidget::setText(QString text)
 {
     QCodeEditWidgetLine l_Line;
 
@@ -1026,8 +1015,8 @@ void QCodeEditWidget::setText(const QString &text)
 
     int pos = 0;
 
-    l_Line.LineStatus = QCodeEditWidget::LineStatusTypeLineNotModified;
-    l_Line.Breakpoint = QCodeEditWidget::BreakpointTypeNoBreakpoint;
+    l_Line.lineStatus = QCodeEditWidget::QLineStatusTypeLineNotModified;
+    l_Line.breakpointType = QCodeEditWidget::QBreakpointTypeNoBreakpoint;
 
     forever
     {
@@ -1107,18 +1096,18 @@ void QCodeEditWidget::clearFormatting()
     m_Lines[p_line].ColorItems.append(p_item);
 }*/
 
-void QCodeEditWidget::setBreakpoint(int line, BreakpointType newBreakpoint)
+void QCodeEditWidget::setBreakpoint(int line, QBreakpointType type)
 {
     QCodeEditWidgetLine l_line = m_Lines.at(line);
 
-    l_line.Breakpoint = newBreakpoint;
+    l_line.breakpointType = type;
 
     m_Lines.replace(line, l_line);
 
     viewport()->update();
 }
 
-QCodeEditWidget::BreakpointType QCodeEditWidget::breakpoint(int line)
+QCodeEditWidget::QBreakpointType QCodeEditWidget::breakpoint(int line) const
 {
-    return m_Lines.at(line).Breakpoint;
+    return m_Lines.at(line).breakpointType;
 }

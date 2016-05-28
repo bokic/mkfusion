@@ -650,13 +650,13 @@ void QAppMainWindow::onmy_textedit_breakpoint_change(int line)
 {
     QCodeEditWidget *edit = ((QCodeEditWidget*) sender());
 
-    if (edit->breakpoint(line) != QCodeEditWidget::BreakpointTypeBreakpoint)
+    if (edit->breakpoint(line) != QCodeEditWidget::QBreakpointTypeBreakpoint)
     {
-        edit->setBreakpoint(line, QCodeEditWidget::BreakpointTypeBreakpoint);
+        edit->setBreakpoint(line, QCodeEditWidget::QBreakpointTypeBreakpoint);
     }
     else
     {
-        edit->setBreakpoint(line, QCodeEditWidget::BreakpointTypeNoBreakpoint);
+        edit->setBreakpoint(line, QCodeEditWidget::QBreakpointTypeNoBreakpoint);
     }
 }
 
