@@ -28,5 +28,4 @@ private:
 
     QByteArray m_LeftText;
     QByteArray m_RightText;
-private slots:
 };

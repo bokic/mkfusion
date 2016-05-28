@@ -3,16 +3,6 @@
 #include <QMap>
 
 QRDSServer::QRDSServer()
-    : m_Description("localhost")
-    , m_HostName("127.0.0.1")
-    , m_Port(80)
-    //, m_ContextRoot("")
-    //, m_UserName("")
-    //, m_Password("")
-    , m_PromptForPassword(false)
-    //, m_PromptedPassword("")
-    , m_Authenticated(false)
-    //, m_Mappings()
 {
 }
 

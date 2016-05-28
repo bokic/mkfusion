@@ -4,16 +4,9 @@
 
 struct QJDWPClassesBySignature
 {
-    QJDWPClassesBySignature()
-    {
-        refTypeTag = 0;
-        typeID = 0;
-        status = 0;
-    }
-
-    quint32 refTypeTag;
-    quint64 typeID;
-    qint32 status;
+    quint32 refTypeTag = 0;
+    quint64 typeID = 0;
+    qint32 status = 0;
 };
 
 class QJDWPClassesBySignatureCommand : public QJDWPCommand

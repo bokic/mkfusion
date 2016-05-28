@@ -20,6 +20,4 @@ public:
     virtual void CreateDir(const QString&);
     virtual void DeleteDir(const QString&, bool);
     virtual void RenameDir(const QString&, const QString&);
-protected:
-private:
 };

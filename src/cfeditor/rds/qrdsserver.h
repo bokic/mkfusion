@@ -34,14 +34,14 @@ public:
 protected:
     bool validateMap(const QMap<QString, QString> &map) const;
 private:
-    QString m_Description;
-    QString m_HostName;
-    quint16 m_Port;
+    QString m_Description = QStringLiteral("localhost");
+    QString m_HostName = QStringLiteral("127.0.0.1");
+    quint16 m_Port = 80;
     QString m_ContextRoot;
     QString m_UserName;
     QString m_Password;
-    bool m_PromptForPassword;
+    bool m_PromptForPassword = false;
     QByteArray m_PromptedPassword;
-    bool m_Authenticated;
+    bool m_Authenticated = false;
     QVector<QMap<QString, QString>> m_Mappings;
 };

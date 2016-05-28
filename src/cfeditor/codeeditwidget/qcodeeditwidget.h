@@ -20,9 +20,8 @@ public:
 
     struct QCodeEditWidgetLine : QTextParserLine
     {
-        BreakpointType Breakpoint;
-        LineStatusType LineStatus;
-        QCodeEditWidgetLine() : QTextParserLine(), Breakpoint(BreakpointTypeNoBreakpoint), LineStatus(LineStatusTypeLineNotModified) {}
+        BreakpointType Breakpoint = BreakpointTypeNoBreakpoint;
+        LineStatusType LineStatus = LineStatusTypeLineNotModified;
     };
 
     explicit QCodeEditWidget(QWidget *parent = 0);

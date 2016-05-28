@@ -51,15 +51,15 @@ public:
 #endif
     QTextParserElement &operator=(const QTextParserElement &other);
 
-    int m_Type;
+    int m_Type = -1;
 #ifdef DEBUG_QTEXTPARSER
     QString m_TypeDebug;
 #endif
     QString m_Text;
-    int m_StartLine;
-    int m_StartColumn;
-    int m_EndLine;
-    int m_EndColumn;
+    int m_StartLine = -1;
+    int m_StartColumn = -1;
+    int m_EndLine = -1;
+    int m_EndColumn = -1;
     QList<QTextParserElement> m_ChildElements;
 };
 

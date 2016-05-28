@@ -24,12 +24,8 @@
 
 
 QTextParserElement::QTextParserElement()
-    : m_Type(-1)
-    , m_StartLine(-1)
-    , m_StartColumn(-1)
-    , m_EndLine(-1)
-    , m_EndColumn(-1)
 {
+
 }
 
 QTextParserElement::QTextParserElement(const QTextParserElement &other)

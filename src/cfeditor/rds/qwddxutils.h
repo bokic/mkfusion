@@ -13,7 +13,7 @@ public:
     QString serialize(const QWDDX &node);
     QWDDX deserialize(const QString &txt);
     QString getLastError();
-protected:
+
 private:
     QString m_Error;
 };
