@@ -59,24 +59,31 @@ QVector<QByteArray> QAbstractRDSService::BreakByteArrayIntoVector(const QByteArr
 
 QByteArray QAbstractRDSService::generateRDSCommandSocketOutput(const QString &url, const QByteArray &post)
 {
+    QByteArray ret;
     QUrl l_url(url);
-    QString portStr;
+    QByteArray portStr;
 
     int port = l_url.port();
     if ((port < 0x0000)||(port > 0xffff))
         port = 80;
 
-    if (port == 80)
-        portStr = "";
-    else
-        portStr = ":" + QString::number(port);
+    if (port != 80)
+        portStr = ":" + QByteArray::number(port);
 
     QString path = url.right(url.size() - url.indexOf(l_url.host()) - l_url.host().size());
     path = path.right(path.size() - path.indexOf('/'));
 
-    QString toSend = "POST " + path + " HTTP/1.0\r\nHost: " + l_url.host() + portStr + "\r\nConnection: close\r\nUser-Agent: Mozilla/3.0 (compatible; Macromedia RDS Client)\r\nAccept: text/html, */*\r\nAccept-Encoding: deflate\r\nContent-type: text/html\r\nContent-length: " + QString::number(post.size()) + "\r\n\r\n";
+    ret = QByteArray("POST ")
+            .append(path.toUtf8())
+            .append(" HTTP/1.0\r\nHost: ")
+            .append(l_url.host().toUtf8())
+            .append(portStr)
+            .append("\r\nConnection: close\r\nUser-Agent: Mozilla/3.0 (compatible; Macromedia RDS Client)\r\nAccept: text/html, */*\r\nAccept-Encoding: deflate\r\nContent-type: text/html\r\nContent-length: ")
+            .append(QByteArray::number(post.size()))
+            .append("\r\n\r\n")
+            .append(post);
 
-    return toSend.toLatin1() + post; // TODO: toLatin1()
+    return ret;
 }
 
 QByteArray QAbstractRDSService::executeRDSCommandURL(const QString &url, const QByteArray &post)
