@@ -16,3 +16,5 @@ SOURCES      = main.cpp
 
 SOURCES     += qcfgenerator.cpp qcftemplategenerator.cpp qcfcomponentgenerator.cpp ../../cfparser/qcfparser.cpp ../../cfparser/qcf8.cpp ../../cfparser/qcffunction.cpp ../../cfparser/qcftag.cpp
 HEADERS     += qcfgenerator.h   qcftemplategenerator.h   qcfcomponentgenerator.h   ../../cfparser/qcfparser.h   ../../cfparser/qcf8.h   ../../cfparser/qcffunction.h   ../../cfparser/qcftag.h
+
+HEADERS     += qcfgeneratorexception.h

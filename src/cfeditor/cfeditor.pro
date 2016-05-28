@@ -27,8 +27,8 @@ HEADERS =          qappmainwindow.h   qprojectproperties.h
 FORMS   =          qappmainwindow.ui  qprojectproperties.ui
 
 # RDS
-SOURCES += rds/qabstractrdsservice.cpp rds/qrdsserver.cpp rds/qfileioservice.cpp rds/qdatabaseservice.cpp
-HEADERS += rds/qabstractrdsservice.h   rds/qrdsserver.h   rds/qfileioservice.h   rds/qdatabaseservice.h
+SOURCES += rds/qabstractrdsservice.cpp rds/qrdsserver.cpp rds/qdefaultservice.cpp rds/qcfdebugger.cpp rds/qdebuggerservice.cpp rds/qfileioservice.cpp rds/qdatabaseservice.cpp rds/qwddx.cpp rds/qwddxutils.cpp
+HEADERS += rds/qabstractrdsservice.h   rds/qrdsserver.h   rds/qdefaultservice.h   rds/qcfdebugger.h   rds/qdebuggerservice.h   rds/qfileioservice.h   rds/qdatabaseservice.h   rds/qwddx.h   rds/qwddxutils.h
 
 # Project Loader abstraction and implementation.
 SOURCES += qproject.cpp qlocalproject.cpp qrdsproject.cpp qftpproject.cpp qsftpproject.cpp
