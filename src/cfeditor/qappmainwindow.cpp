@@ -29,11 +29,11 @@ QAppMainWindow::~QAppMainWindow()
     if (m_Project)
     {
         delete m_Project;
-        m_Project = 0;
+        m_Project = nullptr;
     }
 
     delete ui;
-    ui = 0;
+    ui = nullptr;
 }
 
 void QAppMainWindow::on_m_Browser_titleChanged(QString title)
