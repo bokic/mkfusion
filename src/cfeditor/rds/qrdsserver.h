@@ -1,9 +1,7 @@
 #pragma once
 
-#include <QObject>
 #include <QString>
 #include <QVector>
-#include <QHash>
 #include <QMap>
 
 class QRDSServer
