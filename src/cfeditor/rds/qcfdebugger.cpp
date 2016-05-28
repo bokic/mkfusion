@@ -222,8 +222,6 @@ void QCFDebugger::onEventConnected()
     //ba.insert(ba.indexOf("Connection: close") + 17, ", TE\r\nTE: trailers, deflate, gzip, compress");
     //ba.insert(ba.indexOf("Accept-Encoding:") + 24, ", gzip, x-gzip, compress, x-compress");
 
-    QString ttt = ba;
-
     m_EventSocket.write(ba);
 }
 
