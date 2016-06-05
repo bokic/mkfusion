@@ -20,7 +20,7 @@ QByteArray QAbstractRDSService::StringToSTR(const QString &value)
 {
     QByteArray ret, tmp;
 
-    tmp = value.toUtf8(); // TODO: hardcoded utf-8
+    tmp = value.toUtf8();
 
     ret.append("STR:");
     ret.append(QByteArray::number(tmp.length()));
@@ -165,11 +165,13 @@ QString QAbstractRDSService::prepareURL(const QRDSServer &rdsserver, const QStri
 {
     QString ret, content;
 
-    ret = "http://" + rdsserver.hostname();
+    ret = QStringLiteral("http://");
+    ret.append(rdsserver.hostname());
 
     if (port != 80)
     {
-        ret.append(":" + QString::number(port));
+        ret.append(':');
+        ret.append(QString::number(port));
     }
 
     content = rdsserver.contextRoot().trimmed();
@@ -180,10 +182,12 @@ QString QAbstractRDSService::prepareURL(const QRDSServer &rdsserver, const QStri
         {
             ret.append('/');
         }
+
         ret.append(content);
     }
 
-    ret.append("/CFIDE/main/ide.cfm?CFSRV=IDE&ACTION=" + command);
+    ret.append(QStringLiteral("/CFIDE/main/ide.cfm?CFSRV=IDE&ACTION="));
+    ret.append(command);
 
     return ret;
 }
@@ -206,10 +210,9 @@ QByteArray QAbstractRDSService::executeRDSCommandForByteArray(const QString &com
     return executeRDSCommandForByteArray(command, rdsserver, map, rdsserver.port());
 }
 
-// Private:
 QByteArray QAbstractRDSService::GetKeyForLength(int len)
 {
-    static const char *fillup = "4p0L@r1$";
+    static const char * const fillup = "4p0L@r1$";
 
     QByteArray ret;
     int segments;

@@ -117,11 +117,11 @@ int main(int argc, char *argv[])
     QCFDebugger dbg(rs);
     dbg.setParent(&app);
 
-    dbg.StartDebugger();
+    dbg.startDebugger();
 
     app.exec();
 
-    dbg.StopDebugger();
+    dbg.stopDebugger();
 
     // <wddxPacket version='1.0'><header/><data><array length='1'><struct type='java.util.HashMap'><var name='DEBUG_SERVER_PORT'><number>47660.0</number></var><var name='STATUS'><string>RDS_OK</string></var></struct></array></data></wddxPacket>
 

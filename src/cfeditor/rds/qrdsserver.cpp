@@ -123,7 +123,7 @@ int QRDSServer::mappingCount() const
 
 bool QRDSServer::validateMap(const QMap<QString, QString> &map) const
 {
-    if ((!map.contains("CLIENT_VIEW"))||(!map.contains("SERVER_VIEW")))
+    if ((!map.contains(QStringLiteral("CLIENT_VIEW")))||(!map.contains(QStringLiteral("SERVER_VIEW"))))
     {
         return false;
     }

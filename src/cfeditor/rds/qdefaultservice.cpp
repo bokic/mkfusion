@@ -24,10 +24,10 @@ QByteArray QDefaultService::IdeDefault(QRDSServer &rdsserver)
 {
     QVector<QString> vector;
 
-    vector.append("Configurations");
-    vector.append("7, 0, 0, 0");
+    vector.append(QStringLiteral("Configurations"));
+    vector.append(QStringLiteral("7, 0, 0, 0"));
 
-    QByteArray ba = executeRDSCommandForByteArray("IDE_DEFAULT", rdsserver, vector);
+    QByteArray ba = executeRDSCommandForByteArray(QStringLiteral("IDE_DEFAULT"), rdsserver, vector);
 
     if (BreakByteArrayIntoVector(ba).size() >= 3)
         rdsserver.setAuthenticated(true);

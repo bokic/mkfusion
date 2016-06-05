@@ -34,48 +34,48 @@ QByteArray QDebuggerService::GetServerInfo(QRDSServer rdsserver)
 {
     QVector<QString> vector;
 
-    vector.append("DBG_GET_DEBUG_SERVER_INFO");
+    vector.append(QStringLiteral("DBG_GET_DEBUG_SERVER_INFO"));
 
-    return executeRDSCommandForByteArray("DBGREQUEST", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBGREQUEST"), rdsserver, vector);
 }
 
 QByteArray QDebuggerService::DoDebugStart(QRDSServer rdsserver, QMap<QString, QString> map)
 {
     QVector<QString> vector;
 
-    vector.append("DBG_START");
-    vector.append(map["WDDX"]);
+    vector.append(QStringLiteral("DBG_START"));
+    vector.append(map[QStringLiteral("WDDX")]);
 
-    return executeRDSCommandForByteArray("DBGREQUEST", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBGREQUEST"), rdsserver, vector);
 }
 
 QByteArray QDebuggerService::DoDebugStop(QRDSServer rdsserver, QMap<QString, QString> map)
 {
     QVector<QString> vector;
 
-    vector.append("DBG_STOP");
-    vector.append(map["SESSION"]);
+    vector.append(QStringLiteral("DBG_STOP"));
+    vector.append(map[QStringLiteral("SESSION")]);
 
-    return executeRDSCommandForByteArray("DBGREQUEST", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBGREQUEST"), rdsserver, vector);
 }
 
 QByteArray QDebuggerService::DoDebugRequest(QRDSServer rdsserver, QMap<QString, QString> map)
 {
     QVector<QString> vector;
 
-    vector.append("DBG_REQUEST");
-    vector.append(map["SESSION"]);
-    vector.append(map["WDDX"]);
+    vector.append(QStringLiteral("DBG_REQUEST"));
+    vector.append(map[QStringLiteral("SESSION")]);
+    vector.append(map[QStringLiteral("WDDX")]);
 
-    return executeRDSCommandForByteArray("DBGREQUEST", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBGREQUEST"), rdsserver, vector);
 }
 
 QByteArray QDebuggerService::DoDebugEvents(QRDSServer rdsserver, QMap<QString, QString> map)
 {
     QVector<QString> vector;
 
-    vector.append("DBG_EVENTS");
-    vector.append(map["SESSION"]);
+    vector.append(QStringLiteral("DBG_EVENTS"));
+    vector.append(map[QStringLiteral("SESSION")]);
 
-    return executeRDSCommandForByteArray("DBGREQUEST", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBGREQUEST"), rdsserver, vector);
 }

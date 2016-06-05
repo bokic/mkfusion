@@ -175,9 +175,9 @@ QString QWDDX::toString() const
 
     case QWDDX::Boolean:
         if (m_Bool == true)
-            return "true";
+            return QStringLiteral("true");
         else
-            return "false";
+            return QStringLiteral("false");
         break;
     default:
         break;

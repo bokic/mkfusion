@@ -3,9 +3,9 @@
 #include "qdefaultservice.h"
 #include "qwddxutils.h"
 
-QCFDebugger::QCFDebugger(QRDSServer rdsServer)
+QCFDebugger::QCFDebugger(const QRDSServer &server)
     : QObject()
-    , m_RDSServer(rdsServer)
+    , m_RDSServer(server)
     , m_ServerPort(0)
     , m_EventReconect(false)
 {
@@ -16,7 +16,7 @@ QCFDebugger::QCFDebugger(QRDSServer rdsServer)
     connect(&m_EventSocket, &QTcpSocket::bytesWritten, this, &QCFDebugger::onEventBytesWritten);
 }
 
-quint16 QCFDebugger::getDebuggerPort()
+quint16 QCFDebugger::debuggerPort()
 {
     if (m_ServerPort == 0)
     {
@@ -34,19 +34,19 @@ quint16 QCFDebugger::getDebuggerPort()
             return m_ServerPort;
 
         QWDDX result = wddxUtils.deserialize(vec[0]);
-        m_ServerPort = result[0]["DEBUG_SERVER_PORT"].toNumber();
+        m_ServerPort = result[0][QStringLiteral("DEBUG_SERVER_PORT")].toNumber();
     }
     return m_ServerPort;
 }
 
-QString QCFDebugger::getSessionID()
+QString QCFDebugger::sessionID() const
 {
-    return "";
+    return QString();
 }
 
-bool QCFDebugger::StartDebugger()
+bool QCFDebugger::startDebugger()
 {
-    if (m_SessionID != "")
+    if (!m_SessionID.isEmpty())
         return false;
 
     QMap<QString, QString> map;
@@ -56,15 +56,15 @@ bool QCFDebugger::StartDebugger()
     if (m_RDSServer.authenticated() == false)
         return false;
 
-    m_RDSServer.setPort(getDebuggerPort());
+    m_RDSServer.setPort(debuggerPort());
 
     QDebuggerService debuggerService;
 
     QWDDXUtils wddxUtils;
     QWDDX wddx(QWDDX::Array);
 
-    wddx[0]["REMOTE_SESSION"] = true;
-    map.insert("WDDX", wddxUtils.serialize(wddx));
+    wddx[0][QStringLiteral("REMOTE_SESSION")] = true;
+    map.insert(QStringLiteral("WDDX"), wddxUtils.serialize(wddx));
     ba = debuggerService.ExecuteRDSCommand(m_RDSServer, QDebuggerService::doDebugStart, map);
     QVector<QByteArray> vec = debuggerService.BreakByteArrayIntoVector(ba);
 
@@ -73,14 +73,14 @@ bool QCFDebugger::StartDebugger()
 
     QWDDX result = wddxUtils.deserialize(vec[1]);
 
-    if ((result[0]["COMMAND"].toString() != "DBG_START")||(result[0]["SESSION"].toString() != vec[0])||(result[0]["STATUS"].toString() != "RDS_OK"))
+    if ((result[0][QStringLiteral("COMMAND")].toString() != QStringLiteral("DBG_START"))||(result[0][QStringLiteral("SESSION")].toString() != vec[0])||(result[0][QStringLiteral("STATUS")].toString() != QStringLiteral("RDS_OK")))
         return false;
 
     m_SessionID = vec[0];
 
-    BreakOnException(true);
-    SetMonitorScopes("VARIABLES");
-    SetBreakpoint("/home/projects/boro_test/test.cfm", 1, true);
+    breakOnException(true);
+    setMonitorScopes(QStringLiteral("VARIABLES"));
+    setBreakpoint(QStringLiteral("/home/projects/boro_test/test.cfm"), 1, true);
 
     m_EventReconect = true;
     m_EventSocket.connectToHost(m_RDSServer.hostname(), m_ServerPort);
@@ -88,7 +88,7 @@ bool QCFDebugger::StartDebugger()
     return true;
 }
 
-bool QCFDebugger::StopDebugger()
+bool QCFDebugger::stopDebugger()
 {
     if (m_EventSocket.isOpen())
     {
@@ -102,8 +102,8 @@ bool QCFDebugger::StopDebugger()
     QMap<QString, QString> map;
     QByteArray ba;
 
-    map["DEBUG_SERVER_PORT"] = QString(m_ServerPort);
-    map["SESSION"] = m_SessionID;
+    map[QStringLiteral("DEBUG_SERVER_PORT")] = QString(m_ServerPort);
+    map[QStringLiteral("SESSION")] = m_SessionID;
 
     QDebuggerService dbgService;
     ba = dbgService.ExecuteRDSCommand(m_RDSServer, QDebuggerService::doDebugStop, map);
@@ -114,7 +114,7 @@ bool QCFDebugger::StopDebugger()
 
     QWDDXUtils wddxUtils;
     QWDDX result = wddxUtils.deserialize(vec[0]);
-    if ((result[0]["SESSION"].toString() != m_SessionID)||(result[0]["STATUS"].toString() != "RDS_OK")||(result[0]["COMMAND"].toString() != "DBG_STOP"))
+    if ((result[0][QStringLiteral("SESSION")].toString() != m_SessionID)||(result[0][QStringLiteral("STATUS")].toString() != QStringLiteral("RDS_OK"))||(result[0][QStringLiteral("COMMAND")].toString() != QStringLiteral("DBG_STOP")))
         return false;
 
     m_SessionID = "";
@@ -122,7 +122,7 @@ bool QCFDebugger::StopDebugger()
     return true;
 }
 
-bool QCFDebugger::SetMonitorScopes(QString scopes)
+bool QCFDebugger::setMonitorScopes(const QString &scopes)
 {
     if ((m_ServerPort == 0)||(m_SessionID == ""))
         return false;
@@ -133,11 +133,11 @@ bool QCFDebugger::SetMonitorScopes(QString scopes)
     QWDDX wddx(QWDDX::Array);
     QWDDXUtils wddxUtils;
 
-    wddx[0]["COMMAND"] = "SET_SCOPE_FILTER";
-    wddx[0]["FILTER"] = scopes;
+    wddx[0][QStringLiteral("COMMAND")] = QStringLiteral("SET_SCOPE_FILTER");
+    wddx[0][QStringLiteral("FILTER")] = scopes;
 
-    map["SESSION"] = m_SessionID;
-    map["WDDX"] = wddxUtils.serialize(wddx);
+    map[QStringLiteral("SESSION")] = m_SessionID;
+    map[QStringLiteral("WDDX")] = wddxUtils.serialize(wddx);
 
     ba = dbgService.ExecuteRDSCommand(m_RDSServer, QDebuggerService::doDebugRequest, map);
     QVector<QByteArray> vec = dbgService.BreakByteArrayIntoVector(ba);
@@ -148,7 +148,7 @@ bool QCFDebugger::SetMonitorScopes(QString scopes)
     return true;
 }
 
-bool QCFDebugger::BreakOnException(bool Break)
+bool QCFDebugger::breakOnException(bool brk)
 {
     if ((m_ServerPort == 0)||(m_SessionID == ""))
         return false;
@@ -159,11 +159,11 @@ bool QCFDebugger::BreakOnException(bool Break)
     QWDDX wddx(QWDDX::Array);
     QWDDXUtils wddxUtils;
 
-    wddx[0]["COMMAND"] = "SESSION_BREAK_ON_EXCEPTION";
-    wddx[0]["BREAK_ON_EXCEPTION"] = Break;
+    wddx[0][QStringLiteral("COMMAND")] = QStringLiteral("SESSION_BREAK_ON_EXCEPTION");
+    wddx[0][QStringLiteral("BREAK_ON_EXCEPTION")] = brk;
 
-    map["SESSION"] = m_SessionID;
-    map["WDDX"] = wddxUtils.serialize(wddx);
+    map[QStringLiteral("SESSION")] = m_SessionID;
+    map[QStringLiteral("WDDX")] = wddxUtils.serialize(wddx);
 
     ba = dbgService.ExecuteRDSCommand(m_RDSServer, QDebuggerService::doDebugRequest, map);
     QVector<QByteArray> vec = dbgService.BreakByteArrayIntoVector(ba);
@@ -174,7 +174,7 @@ bool QCFDebugger::BreakOnException(bool Break)
     return true;
 }
 
-bool QCFDebugger::SetBreakpoint(QString file, int line, bool State, int Sequence)
+bool QCFDebugger::setBreakpoint(const QString &file, int line, bool state, int sequence)
 {
     if ((m_ServerPort == 0)||(m_SessionID == ""))
         return false;
@@ -185,17 +185,17 @@ bool QCFDebugger::SetBreakpoint(QString file, int line, bool State, int Sequence
     QWDDX wddx(QWDDX::Array);
     QWDDXUtils wddxUtils;
 
-    if (State == true)
-        wddx[0]["COMMAND"] = "SET_BREAKPOINT";
+    if (state == true)
+        wddx[0][QStringLiteral("COMMAND")] = QStringLiteral("SET_BREAKPOINT");
     else
-        wddx[0]["COMMAND"] = "UNSET_BREAKPOINT";
+        wddx[0][QStringLiteral("COMMAND")] = QStringLiteral("UNSET_BREAKPOINT");
 
-    wddx[0]["SEQ"] = (double)Sequence; // Todo: Yet don't know what is this, maybe hit at number(SEQ) of passes.
-    wddx[0]["FILE"] = file;
-    wddx[0]["Y"] = (double)line;
+    wddx[0][QStringLiteral("SEQ")] = (double)sequence; // Todo: Yet don't know what is this, maybe hit at number(SEQ) of passes.
+    wddx[0][QStringLiteral("FILE")] = file;
+    wddx[0][QStringLiteral("Y")] = (double)line;
 
-    map["SESSION"] = m_SessionID;
-    map["WDDX"] = wddxUtils.serialize(wddx);
+    map[QStringLiteral("SESSION")] = m_SessionID;
+    map[QStringLiteral("WDDX")] = wddxUtils.serialize(wddx);
 
     ba = dbgService.ExecuteRDSCommand(m_RDSServer, QDebuggerService::doDebugRequest, map);
     QVector<QByteArray> vec = dbgService.BreakByteArrayIntoVector(ba);
@@ -213,10 +213,10 @@ void QCFDebugger::onEventConnected()
 
     QVector<QString> map;
 
-    map.append("DBG_EVENTS");
+    map.append(QStringLiteral("DBG_EVENTS"));
     map.append(m_SessionID);
 
-    QByteArray ba = dbgService.generateRDSCommandSocketOutput(dbgService.prepareURL(m_RDSServer, "DBGREQUEST", m_RDSServer.port()), dbgService.generatePostFromVector(m_RDSServer, map));
+    QByteArray ba = dbgService.generateRDSCommandSocketOutput(dbgService.prepareURL(m_RDSServer, QStringLiteral("DBGREQUEST"), m_RDSServer.port()), dbgService.generatePostFromVector(m_RDSServer, map));
 
     //ba[ba.indexOf("HTTP/1.0") + 7] = '1';
     //ba.insert(ba.indexOf("Connection: close") + 17, ", TE\r\nTE: trailers, deflate, gzip, compress");
@@ -233,9 +233,9 @@ void QCFDebugger::onEventDisconnected()
         m_EventSocket.connectToHost(m_RDSServer.hostname(), m_ServerPort);
 }
 
-void QCFDebugger::onEventError(QAbstractSocket::SocketError p_Error)
+void QCFDebugger::onEventError(QAbstractSocket::SocketError error)
 {
-    Q_UNUSED(p_Error);
+    Q_UNUSED(error);
 
     qDebug("QCFDebugger::onEventError");
     m_EventReconect = false;
@@ -251,6 +251,9 @@ void QCFDebugger::onEventReadyRead()
     m_EventSocket.disconnectFromHost();
 }
 
-void QCFDebugger::onEventBytesWritten(qint64)
+void QCFDebugger::onEventBytesWritten(qint64 bytes)
 {
+    Q_UNUSED(bytes);
+
+    qDebug("QCFDebugger::onEventBytesWritten");
 }

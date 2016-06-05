@@ -12,9 +12,9 @@ QDomNode EncodeRecursive(QDomDocument &doc, const QWDDX &node)
     switch(node.type())
     {
     case QWDDX::Array:
-        ret = doc.createElement("array");
+        ret = doc.createElement(QStringLiteral("array"));
         len = node.size();
-        ret.setAttribute("length", QString::number(len));
+        ret.setAttribute(QStringLiteral("length"), QString::number(len));
 
         for (int c = 0; c < len; c++)
         {
@@ -23,13 +23,13 @@ QDomNode EncodeRecursive(QDomDocument &doc, const QWDDX &node)
         break;
 
     case QWDDX::Struct:
-        ret = doc.createElement("struct");
+        ret = doc.createElement(QStringLiteral("struct"));
         len = node.size();
 
         for (int c = 0; c < len; c++)
         {
-            QDomElement var = doc.createElement("var");
-            var.setAttribute("name", node.StructKeyAt(c));
+            QDomElement var = doc.createElement(QStringLiteral("var"));
+            var.setAttribute(QStringLiteral("name"), node.StructKeyAt(c));
 
             var.appendChild(EncodeRecursive(doc, node.at(c)));
             ret.appendChild(var);
@@ -37,35 +37,35 @@ QDomNode EncodeRecursive(QDomDocument &doc, const QWDDX &node)
         break;
 
     case QWDDX::DateTime:
-        ret = doc.createElement("dateTime");
-        content = doc.createTextNode(node.toDateTime().toString("yyyy-MM-dd'T'hh:mm:ss"));
+        ret = doc.createElement(QStringLiteral("dateTime"));
+        content = doc.createTextNode(node.toDateTime().toString(QStringLiteral("yyyy-MM-dd'T'hh:mm:ss")));
         ret.appendChild(content);
         break;
 
     case QWDDX::String:
-        ret = doc.createElement("string");
+        ret = doc.createElement(QStringLiteral("string"));
         content = doc.createTextNode(node.toString()); // Todo: <char implementation is not done
         ret.appendChild(content);
         break;
 
     case QWDDX::Number:
-        ret = doc.createElement("number");
+        ret = doc.createElement(QStringLiteral("number"));
         content = doc.createTextNode(QString::number(node.toNumber()));
         ret.appendChild(content);
         break;
 
     case QWDDX::Boolean:
-        ret = doc.createElement("boolean");
-        ret.setAttribute("value", node.toString());
+        ret = doc.createElement(QStringLiteral("boolean"));
+        ret.setAttribute(QStringLiteral("value"), node.toString());
         ret.appendChild(content);
         break;
 
     case QWDDX::Null:
-        ret = doc.createElement("null");
+        ret = doc.createElement(QStringLiteral("null"));
         break;
 
     default:
-        ret = doc.createElement("error");
+        ret = doc.createElement(QStringLiteral("error"));
     }
 
     return ret;
@@ -75,15 +75,15 @@ QString QWDDXUtils::serialize(const QWDDX &node)
 {
     QDomDocument doc;
 
-    QDomElement wddxPacketNode = doc.createElement("wddxPacket");
-    QDomElement headerNode = doc.createElement("header");
-    QDomElement dataNode = doc.createElement("data");
+    QDomElement wddxPacketNode = doc.createElement(QStringLiteral("wddxPacket"));
+    QDomElement headerNode = doc.createElement(QStringLiteral("header"));
+    QDomElement dataNode = doc.createElement(QStringLiteral("data"));
 
     dataNode.appendChild(EncodeRecursive(doc, node));
 
     wddxPacketNode.appendChild(headerNode);
     wddxPacketNode.appendChild(dataNode);
-    wddxPacketNode.setAttribute("version", "1.0");
+    wddxPacketNode.setAttribute(QStringLiteral("version"), QStringLiteral("1.0"));
 
     doc.appendChild(wddxPacketNode);
 
@@ -94,27 +94,27 @@ QWDDX DecodeRecursive(const QDomNode &node)
 {
     QString nodeName = node.nodeName();
 
-    if (nodeName == "struct")
+    if (nodeName == QStringLiteral("struct"))
     {
         QWDDX ret(QWDDX::Struct);
 
         for(int c = 0; c < node.childNodes().count(); c++)
         {
-            if (node.childNodes().at(c).nodeName() != "var")
+            if (node.childNodes().at(c).nodeName() != QStringLiteral("var"))
                 return QWDDX(QWDDX::Error);
 
-            if (node.childNodes().at(c).attributes().contains("name") == false)
+            if (node.childNodes().at(c).attributes().contains(QStringLiteral("name")) == false)
                 return QWDDX(QWDDX::Error);
 
-            QString key = node.childNodes().at(c).attributes().namedItem("name").nodeValue();
+            QString key = node.childNodes().at(c).attributes().namedItem(QStringLiteral("name")).nodeValue();
             ret[key] = DecodeRecursive(node.childNodes().at(c).childNodes().at(0));
         }
         return ret;
     }
-    else if (nodeName == "array")
+    else if (nodeName == QStringLiteral("array"))
     {
         QWDDX ret(QWDDX::Array);
-        int count = node.attributes().namedItem("length").nodeValue().toInt();
+        int count = node.attributes().namedItem(QStringLiteral("length")).nodeValue().toInt();
 
         for (int c = 0; c < count; c++)
         {
@@ -123,44 +123,44 @@ QWDDX DecodeRecursive(const QDomNode &node)
 
         return ret;
     }
-    else if (nodeName == "binary")
+    else if (nodeName == QStringLiteral("binary"))
     {
         return QWDDX(QWDDX::NotImplemented);
     }
-    else if (nodeName == "recordset")
+    else if (nodeName == QStringLiteral("recordset"))
     {
         return QWDDX(QWDDX::NotImplemented);
     }
-    else if (nodeName == "number")
+    else if (nodeName == QStringLiteral("number"))
     {
         QWDDX ret;
 
         ret = node.childNodes().at(0).nodeValue().toDouble(); // Todo: Reimplements with for loop
         return ret;
     }
-    else if (nodeName == "string")
+    else if (nodeName == QStringLiteral("string"))
     {
         QWDDX ret;
 
         ret = node.childNodes().at(0).nodeValue(); // Todo: Reimplements with for loop, adds <char /> items
         return ret;
     }
-    else if (nodeName == "null")
+    else if (nodeName == QStringLiteral("null"))
     {
         return QWDDX(QWDDX::Null);
     }
-    else if (nodeName == "dateTime")
+    else if (nodeName == QStringLiteral("dateTime"))
     {
         QWDDX ret;
 
-        ret = QDateTime::fromString(node.childNodes().at(0).nodeValue(), "yyyy-MM-dd'T'hh:mm:ss"); // Todo: Reimplements with for loop
+        ret = QDateTime::fromString(node.childNodes().at(0).nodeValue(), QStringLiteral("yyyy-MM-dd'T'hh:mm:ss")); // Todo: Reimplements with for loop
         return ret;
     }
-    else if (nodeName == "boolean")
+    else if (nodeName == QStringLiteral("boolean"))
     {
         QWDDX ret;
 
-        if (node.childNodes().at(0).nodeValue() == "false") // Todo: Reimplements with for loop
+        if (node.childNodes().at(0).nodeValue() == QStringLiteral("false")) // Todo: Reimplements with for loop
             ret = false;
         else
             ret = true;
@@ -178,9 +178,9 @@ QWDDX QWDDXUtils::deserialize(const QString &txt)
         if (domdoc.childNodes().count() > 0)
         {
             QDomNode mainNode = domdoc.firstChild();
-            if (mainNode.nodeName() == "wddxPacket")
+            if (mainNode.nodeName() == QStringLiteral("wddxPacket"))
             {
-                if (mainNode.attributes().namedItem("version").nodeValue() == "1.0")
+                if (mainNode.attributes().namedItem(QStringLiteral("version")).nodeValue() == QStringLiteral("1.0"))
                 {
                     if (mainNode.childNodes().count() == 2)
                     {
@@ -192,22 +192,22 @@ QWDDX QWDDXUtils::deserialize(const QString &txt)
                             return DecodeRecursive(data.childNodes().at(0));
                         }
                         else
-                            m_Error = "Wrong number of children in data.";
+                            m_Error = QStringLiteral("Wrong number of children in data.");
                     }
                     else
-                        m_Error = "Wrong number of children in root.";
+                        m_Error = QStringLiteral("Wrong number of children in root.");
                 }
                 else
-                    m_Error = "Wrong version.";
+                    m_Error = QStringLiteral("Wrong version.");
             }
             else
-                m_Error = "wddxPacket not found";
+                m_Error = QStringLiteral("wddxPacket not found");
         }
         else
-            m_Error = "No Nodes";
+            m_Error = QStringLiteral("No Nodes");
     }
     else
-        m_Error = "Parsing Error.";
+        m_Error = QStringLiteral("Parsing Error.");
 
     return QWDDX(QWDDX::Error);
 }

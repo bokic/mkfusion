@@ -8,14 +8,14 @@ class QCFDebugger: public QObject
 {
     Q_OBJECT
 public:
-    QCFDebugger(QRDSServer);
-    quint16 getDebuggerPort();
-    QString getSessionID();
-    bool StartDebugger();
-    bool StopDebugger();
-    bool SetMonitorScopes(QString);
-    bool BreakOnException(bool);
-    bool SetBreakpoint(QString, int, bool, int = 1);
+    QCFDebugger(const QRDSServer &server);
+    quint16 debuggerPort();
+    QString sessionID() const;
+    bool startDebugger();
+    bool stopDebugger();
+    bool setMonitorScopes(const QString &scopes);
+    bool breakOnException(bool brk);
+    bool setBreakpoint(const QString &file, int line, bool state, int sequence = 1);
 protected:
 private:
     QRDSServer m_RDSServer;
@@ -27,7 +27,7 @@ private:
 private slots:
     void onEventConnected();
     void onEventDisconnected();
-    void onEventError(QAbstractSocket::SocketError);
+    void onEventError(QAbstractSocket::SocketError error);
     void onEventReadyRead();
-    void onEventBytesWritten(qint64);
+    void onEventBytesWritten(qint64 bytes);
 };

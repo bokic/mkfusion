@@ -41,82 +41,82 @@ QByteArray QDatabaseService::GetDSNs(QRDSServer rdsserver)
 {
     QVector<QString> vector;
 
-    vector.append("X");
-    vector.append("DSNINFO");
-    vector.append("X");
-    vector.append("X");
+    vector.append(QStringLiteral("X"));
+    vector.append(QStringLiteral("DSNINFO"));
+    vector.append(QStringLiteral("X"));
+    vector.append(QStringLiteral("X"));
 
-    return executeRDSCommandForByteArray("DBFUNCS", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBFUNCS"), rdsserver, vector);
 }
 
 QByteArray QDatabaseService::GetTables(QRDSServer rdsserver, QMap<QString, QString> map)
 {
     QVector<QString> vector;
 
-    vector.append(map["DATASOURCE_NAME"] + ";;;");
-    vector.append("TABLEINFO");
-    vector.append("");
-    vector.append("");
+    vector.append(map[QStringLiteral("DATASOURCE_NAME")] + QStringLiteral(";;;"));
+    vector.append(QStringLiteral("TABLEINFO"));
+    vector.append(QStringLiteral(""));
+    vector.append(QStringLiteral(""));
 
-    return executeRDSCommandForByteArray("DBFUNCS", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBFUNCS"), rdsserver, vector);
 }
 
 QByteArray QDatabaseService::GetColumns(QRDSServer rdsserver, QMap<QString, QString> map)
 {
     QVector<QString> vector;
 
-    vector.append(map["DATASOURCE_NAME"] + ";;;");
-    vector.append("COLUMNINFO");
-    vector.append(map["TABLE_NAME"]);
+    vector.append(map[QStringLiteral("DATASOURCE_NAME")] + QStringLiteral(";;;"));
+    vector.append(QStringLiteral("COLUMNINFO"));
+    vector.append(map[QStringLiteral("TABLE_NAME")]);
     vector.append("");
 
-    return executeRDSCommandForByteArray("DBFUNCS", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBFUNCS"), rdsserver, vector);
 }
 
 QByteArray QDatabaseService::GetPrimaryKeys(QRDSServer rdsserver, QMap<QString, QString> map)
 {
     QVector<QString> vector;
 
-    vector.append(map["DATASOURCE_NAME"] + ";;;");
-    vector.append("PRIMARYKEYS");
-    vector.append(map["TABLE_NAME"]);
-    vector.append("");
+    vector.append(map[QStringLiteral("DATASOURCE_NAME")] + QStringLiteral(";;;"));
+    vector.append(QStringLiteral("PRIMARYKEYS"));
+    vector.append(map[QStringLiteral("TABLE_NAME")]);
+    vector.append(QStringLiteral(""));
 
-    return executeRDSCommandForByteArray("DBFUNCS", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBFUNCS"), rdsserver, vector);
 }
 
 QByteArray QDatabaseService::ExecuteStatement(QRDSServer rdsserver, QMap<QString, QString> map)
 {
     QVector<QString> vector;
 
-    vector.append(map["DATASOURCE_NAME"] + ";;;");
-    vector.append("SQLSTMNT");
-    vector.append(map["SQL_STATEMENT"]);
-    vector.append("SELECT");
+    vector.append(map[QStringLiteral("DATASOURCE_NAME")] + QStringLiteral(";;;"));
+    vector.append(QStringLiteral("SQLSTMNT"));
+    vector.append(map[QStringLiteral("SQL_STATEMENT")]);
+    vector.append(QStringLiteral("SELECT"));
 
-    return executeRDSCommandForByteArray("DBFUNCS", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBFUNCS"), rdsserver, vector);
 }
 
 QByteArray QDatabaseService::GetMetaData(QRDSServer rdsserver, QMap<QString, QString> map)
 {
     QVector<QString> vector;
 
-    vector.append(map["DATASOURCE_NAME"] + ";;;");
-    vector.append("SQLMETADATA");
-    vector.append(map["SQL_STATEMENT"]);
-    vector.append("SELECT");
+    vector.append(map[QStringLiteral("DATASOURCE_NAME")] + QStringLiteral(";;;"));
+    vector.append(QStringLiteral("SQLMETADATA"));
+    vector.append(map[QStringLiteral("SQL_STATEMENT")]);
+    vector.append(QStringLiteral("SELECT"));
 
-    return executeRDSCommandForByteArray("DBFUNCS", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBFUNCS"), rdsserver, vector);
 }
 
 QByteArray QDatabaseService::GetSupportedCommands(QRDSServer rdsserver)
 {
     QVector<QString> vector;
 
-    vector.append("X");
-    vector.append("SUPPORTEDCOMMANDS");
-    vector.append("X");
-    vector.append("X");
+    vector.append(QStringLiteral("X"));
+    vector.append(QStringLiteral("SUPPORTEDCOMMANDS"));
+    vector.append(QStringLiteral("X"));
+    vector.append(QStringLiteral("X"));
 
-    return executeRDSCommandForByteArray("DBFUNCS", rdsserver, vector);
+    return executeRDSCommandForByteArray(QStringLiteral("DBFUNCS"), rdsserver, vector);
 }
