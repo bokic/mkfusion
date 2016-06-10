@@ -597,7 +597,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
     painter.fillRect(QRect(0, 0, l_LineNumbersPanelWidth, viewport()->height()), m_LineNumbersBackground);
 
-    /*for(int l_line = 0; l_line < l_LinesToDraw; l_line++)
+    for(int l_line = 0; l_line < l_LinesToDraw; l_line++)
     {
     	if (m_ScrollYLinePos + l_line >= m_Lines.count())
     	{
@@ -637,28 +637,28 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
     		int l_HorizontalValue = horizontalScrollBar()->value();
 
-    		QString l_Line = m_Lines.at(m_ScrollYLinePos + l_line).Content;
+            QString l_Line = m_Lines.at(m_ScrollYLinePos + l_line).text;
 
-    		switch(m_Lines.at(m_ScrollYLinePos + l_line).LineStatus)
+            switch(m_Lines.at(m_ScrollYLinePos + l_line).lineStatus)
     		{
-    		case QCodeEditWidget::LineStatusTypeLineModified:
+            case QLineStatusTypeLineModified:
     			painter.fillRect(l_LineNumbersPanelWidth - 2, l_fontHeight * l_line, 2, l_fontHeight, QColor(Qt::red));
     			break;
-    		case QCodeEditWidget::LineStatusTypeLineSaved:
+            case QLineStatusTypeLineSaved:
     			painter.fillRect(l_LineNumbersPanelWidth - 2, l_fontHeight * l_line, 2, l_fontHeight, QColor(Qt::green));
     			break;
     		default:;
     		}
 
-    		switch(m_Lines.at(m_ScrollYLinePos + l_line).Breakpoint)
+            switch(m_Lines.at(m_ScrollYLinePos + l_line).breakpointType)
     		{
-    		case BreakpointTypeBreakpoint:
+            case QBreakpointTypeBreakpoint:
     			painter.drawPixmap(0, (l_line * l_fontHeight), m_BreakPointPixmap);
     			break;
-    		case BreakpointTypeBreakpointPending:
+            case QBreakpointTypeBreakpointPending:
     			painter.drawPixmap(0, (l_line * l_fontHeight), m_BreakPointPixmapPending);
     			break;
-    		case BreakpointTypeDisabled:
+            case QBreakpointTypeDisabled:
     			painter.drawPixmap(0, (l_line * l_fontHeight), m_BreakPointPixmapDisabled);
     			break;
     		default:;
@@ -748,7 +748,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
     		l_Line = l_Line.left(l_HorizontalValue + l_CharsToDraw);
 
-    		l_Line = l_Line.replace("\t", "    "); // TODO: Tab hardcoded to 4 spaces.
+            l_Line = l_Line.replace("\t", QString(m_tabSize, ' ')); // TODO: Properly align tabs.
 
     		if (l_HorizontalValue > 0)
     		{
@@ -764,9 +764,9 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
     		l_Line = l_Line.left(l_CharsToDraw);
 
-    		if (!l_Line.isEmpty())
+            if (!l_Line.isEmpty())
     		{
-                QList<QTextParser::QTextParserColorItem> colorItems = m_Lines.at(m_ScrollYLinePos + l_line).ColorItems;
+                QList<QTextParserColorItem> colorItems = m_Lines.at(m_ScrollYLinePos + l_line).colors;
                 if (colorItems.count() == 0)
                 {
                     int x = l_LineNumbersPanelWidth;
@@ -782,7 +782,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
                     for(int c = 0; c < colorItems.count(); c++)
                     {
-                        QTextParser::QTextParserColorItem colorItem = colorItems.at(c);
+                        QTextParserColorItem colorItem = colorItems.at(c);
 
                         if ((colorItem.index <= cur_pos)&&(colorItem.index + colorItem.length >= cur_pos))
                         {
@@ -825,9 +825,9 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
                         }
                     }
                 }
-    		}
+            }
     	}
-    }*/
+    }
 
     setFont(m_TextFont);
 
@@ -1000,6 +1000,11 @@ QString QCodeEditWidget::text() const
     return ret;
 }
 
+int QCodeEditWidget::tabSize() const
+{
+    return m_tabSize;
+}
+
 void QCodeEditWidget::setFileExtension(const QString &extension)
 {
     m_Parser.setTextTypeByFileExtension(extension);
@@ -1080,21 +1085,30 @@ void QCodeEditWidget::setText(QString text)
     viewport()->update();
 }
 
+void QCodeEditWidget::setTabSize(int size)
+{
+    if ((size > 1)&&(m_tabSize != size))
+    {
+        m_tabSize = size;
+
+        viewport()->update();
+    }
+}
+
 void QCodeEditWidget::clearFormatting()
 {
     for(int c = 0; c < m_Lines.count(); c++)
     {
-        //m_Lines[c].ColorItems.clear();
+        m_Lines[c].colors.clear();
     }
 
     viewport()->update();
 }
 
-/*void QCodeEditWidget::addFormat(int p_line, const QTextParser::QTextParserColorItem &p_item)
+void QCodeEditWidget::addFormat(int p_line, const QTextParserColorItem &p_item)
 {
-    // TODO: Add more.
-    m_Lines[p_line].ColorItems.append(p_item);
-}*/
+    m_Lines[p_line].colors.append(p_item);
+}
 
 void QCodeEditWidget::setBreakpoint(int line, QBreakpointType type)
 {

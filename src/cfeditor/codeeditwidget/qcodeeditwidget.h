@@ -13,22 +13,32 @@ class QCodeEditWidget : public QAbstractScrollArea
 {
     Q_OBJECT
     Q_PROPERTY(QString Text READ text WRITE setText DESIGNABLE false)
+    Q_PROPERTY(int TabSize READ tabSize WRITE setTabSize DESIGNABLE true)
 public:
     enum QLineStatusType {QLineStatusTypeLineNotModified, QLineStatusTypeLineSaved, QLineStatusTypeLineModified};
     enum QBreakpointType {QBreakpointTypeNoBreakpoint, QBreakpointTypeBreakpoint, QBreakpointTypeBreakpointPending, QBreakpointTypeDisabled};
+
+    struct QTextParserColorItem
+    {
+        int index = -1;
+        int length = -1;
+        QColor foregroundColor;
+    };
 
     struct QCodeEditWidgetLine : QTextParserLine
     {
         QBreakpointType breakpointType = QBreakpointTypeNoBreakpoint;
         QLineStatusType lineStatus = QLineStatusTypeLineNotModified;
+        QList<QTextParserColorItem> colors;
     };
 
     explicit QCodeEditWidget(QWidget *parent = 0);
     virtual ~QCodeEditWidget() override;
     QString text() const;
+    int tabSize() const;
     void setFileExtension(const QString &extension);
     void clearFormatting();
-    //void addFormat(int p_line, const QTextParser::QTextParserColorItem &p_item);
+    void addFormat(int p_line, const QTextParserColorItem &p_item);
     void setBreakpoint(int line, QBreakpointType type);
     QBreakpointType breakpoint(int line) const;
 
@@ -39,6 +49,7 @@ signals:
 
 public slots:
     void setText(QString text);
+    void setTabSize(int size);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -80,6 +91,7 @@ private:
     int m_LineHeight = 0;
     int m_LineYOffset = 0;
     bool m_SelectMouseDown = false;
+    int m_tabSize = 4;
 
     QCodeEditWidgetTextPosition m_CarretPosition;
     QCodeEditWidgetTextPosition m_SelectionPosition;
