@@ -229,7 +229,7 @@ QCodeEditWidget::QCodeEditWidget(QWidget *parent)
 #ifdef Q_OS_WIN
     , m_TextFont(QFont("Courier", 10, 0, false))
 #elif defined Q_OS_LINUX
-    , m_TextFont(QFont("Monospace", 9, 0, false))
+    , m_TextFont(QFont("DejaVu Sans Mono", 9, 0, false))
 #else
 #error Unsupported OS.
 #endif
@@ -287,7 +287,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
     switch(l_ScanCode)
     {
     case KBD_HOME:
-        if (l_Modifiers == Qt::NoModifier)
+        if ((l_Modifiers == Qt::NoModifier)||(l_Modifiers == Qt::ShiftModifier))
         {
             m_CarretPosition.m_Column = 1;
         }
@@ -298,7 +298,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
         }
         break;
     case KBD_END:
-        if (l_Modifiers == Qt::NoModifier)
+        if ((l_Modifiers == Qt::NoModifier)||(l_Modifiers == Qt::ShiftModifier))
         {
             m_CarretPosition.m_Column = m_Lines.at(m_CarretPosition.m_Row - 1).text.length() + 1;
         }
@@ -833,9 +833,12 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
     if ((m_currentlyBlinkCursorShowen == 1)&&((int)m_CarretPosition.m_Column - (int)m_ScrollXCharPos - 1 >= 0))
     {
+        int xpos = l_LineNumbersPanelWidth + l_fm.width(m_Lines.at(m_CarretPosition.m_Row - 1).text.left(m_CarretPosition.m_Column - 1)) - (m_ScrollXCharPos * l_fontWidth);
         const QBrush oldBrush = painter.brush();
+
         painter.setBrush(QColor(Qt::black));
-        painter.drawRect(l_LineNumbersPanelWidth + ((m_CarretPosition.m_Column - m_ScrollXCharPos - 1) * l_fontWidth), ((m_CarretPosition.m_Row - m_ScrollYLinePos - 1) * l_fontHeight), ceil(m_LineHeight * 0.05), l_fontHeight - 1);
+
+        painter.drawRect(xpos, ((m_CarretPosition.m_Row - m_ScrollYLinePos - 1) * l_fontHeight), ceil(m_LineHeight * 0.05), l_fontHeight - 1);
         painter.setBrush(oldBrush);
     }
 
