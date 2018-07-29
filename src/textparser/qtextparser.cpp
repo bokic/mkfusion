@@ -34,7 +34,7 @@
 #include <QList>
 #include <QDir>
 
-QList<QTextParserLanguageDefinition> languageDefinitions;
+static QList<QTextParserLanguageDefinition> languageDefinitions;
 
 QTextParser::QTextParser():
     language()
