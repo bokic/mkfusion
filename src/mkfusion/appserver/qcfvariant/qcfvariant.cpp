@@ -968,7 +968,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QCFVariant &key)
 
 Q_DECL_EXPORT bool QCFVariant::operator==(bool p_Value)
 {
-    if ((m_Type == Boolean))
+    if (m_Type == Boolean)
     {
         return m_Bool == p_Value;
     }
@@ -978,17 +978,17 @@ Q_DECL_EXPORT bool QCFVariant::operator==(bool p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator==(int p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number == (double)p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() == (double)p_Value;
     }
 
-    if ((m_Type == Array))
+    if (m_Type == Array)
     {
         if (m_Array->count() > 0)
         {
@@ -1001,12 +1001,12 @@ Q_DECL_EXPORT bool QCFVariant::operator==(int p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator==(double p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number == p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() == p_Value;
     }
@@ -1016,12 +1016,12 @@ Q_DECL_EXPORT bool QCFVariant::operator==(double p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator==(const QString &p_Value)
 {
-    if ((m_Type == Number))
+    if(m_Type == Number)
     {
         return toString() == p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return m_String == p_Value;
     }
@@ -1074,12 +1074,12 @@ Q_DECL_EXPORT QCFVariant operator!(const QCFVariant &operand)
 
 Q_DECL_EXPORT bool QCFVariant::operator!=(int p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number != (double)p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() != (double)p_Value;
     }
@@ -1089,12 +1089,12 @@ Q_DECL_EXPORT bool QCFVariant::operator!=(int p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator!=(double p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number != p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() != p_Value;
     }
@@ -1104,12 +1104,12 @@ Q_DECL_EXPORT bool QCFVariant::operator!=(double p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator!=(const QString &p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return toString() != p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return *m_String != p_Value;
     }
@@ -1157,12 +1157,12 @@ Q_DECL_EXPORT bool operator!=(const QString &p_Value1, const QCFVariant &p_Value
 
 Q_DECL_EXPORT bool QCFVariant::operator<=(int p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number <= (double)p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() <=(double)p_Value;
     }
@@ -1172,12 +1172,12 @@ Q_DECL_EXPORT bool QCFVariant::operator<=(int p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator<=(double p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number <= p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() <= p_Value;
     }
@@ -1187,12 +1187,12 @@ Q_DECL_EXPORT bool QCFVariant::operator<=(double p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator<=(const QString &p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return toString() <= p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return *m_String <= p_Value;
     }
@@ -1240,12 +1240,12 @@ Q_DECL_EXPORT bool operator<=(const QString &p_Value1, const QCFVariant &p_Value
 
 Q_DECL_EXPORT bool QCFVariant::operator>=(int p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number >= (double)p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() >= (double)p_Value;
     }
@@ -1255,12 +1255,12 @@ Q_DECL_EXPORT bool QCFVariant::operator>=(int p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator>=(double p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number >= p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() >= p_Value;
     }
@@ -1270,12 +1270,12 @@ Q_DECL_EXPORT bool QCFVariant::operator>=(double p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator>=(const QString &p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return toString() >= p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return *m_String >= p_Value;
     }
@@ -1323,12 +1323,12 @@ Q_DECL_EXPORT bool operator>=(const QString &p_Value1, const QCFVariant &p_Value
 
 Q_DECL_EXPORT bool QCFVariant::operator<(int p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number < (double)p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() < (double)p_Value;
     }
@@ -1338,12 +1338,12 @@ Q_DECL_EXPORT bool QCFVariant::operator<(int p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator<(double p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number < p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() < p_Value;
     }
@@ -1353,12 +1353,12 @@ Q_DECL_EXPORT bool QCFVariant::operator<(double p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator<(const QString &p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return toString() < p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return *m_String < p_Value;
     }
@@ -1406,12 +1406,12 @@ Q_DECL_EXPORT bool operator<(const QString &p_Value1, const QCFVariant &p_Value2
 
 Q_DECL_EXPORT bool QCFVariant::operator>(int p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number > (double)p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() > (double)p_Value;
     }
@@ -1421,12 +1421,12 @@ Q_DECL_EXPORT bool QCFVariant::operator>(int p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator>(double p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return m_Number > p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return toNumber() > p_Value;
     }
@@ -1436,12 +1436,12 @@ Q_DECL_EXPORT bool QCFVariant::operator>(double p_Value)
 
 Q_DECL_EXPORT bool QCFVariant::operator>(const QString &p_Value)
 {
-    if ((m_Type == Number))
+    if (m_Type == Number)
     {
         return toString() > p_Value;
     }
 
-    if ((m_Type == String))
+    if (m_Type == String)
     {
         return *m_String > p_Value;
     }

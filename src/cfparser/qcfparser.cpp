@@ -935,7 +935,7 @@ QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Of
                 ret.m_Size = c - p_Offset;
                 break;
             }
-            else if ((ch == ']'))
+            else if (ch == ']')
             {
                 ret.m_Size = c - p_Offset;
                 break;
