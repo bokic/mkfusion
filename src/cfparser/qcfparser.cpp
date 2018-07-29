@@ -99,7 +99,7 @@ bool QCFParser::isValidVarChar(const QString &p_Text, int index)
     return false;
 }
 
-QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Offset, const QCFParserElementType p_ElementType, QCFParserElement *parent = 0)
+QCFParserElement QCFParser::ParseCFCode(const QString &p_Text, const qint32 p_Offset, const QCFParserElementType p_ElementType, QCFParserElement *parent = nullptr)
 {
     QCFParserElement ret;
     QCFParserElement child;

@@ -12,7 +12,7 @@ class CompareDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit CompareDialog(QWidget *parent = 0);
+    explicit CompareDialog(QWidget *parent = nullptr);
     virtual ~CompareDialog();
 
     void setLeftText(const QByteArray &text);

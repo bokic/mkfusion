@@ -63,7 +63,7 @@ class QCFWorkerThread : public QThread
 public:
     enum QCustomTagType {QCustomTagTypeModuleName, QCustomTagTypeModuleTemplate, QCustomTagType_, QCustomTagTypeImport};
 
-    explicit QCFWorkerThread(QObject *parent = 0);
+    explicit QCFWorkerThread(QObject *parent = nullptr);
     virtual ~QCFWorkerThread();
 
     void setSocket(QLocalSocket *socket);

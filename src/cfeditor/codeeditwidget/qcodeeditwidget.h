@@ -32,7 +32,7 @@ public:
         QList<QTextParserColorItem> colors;
     };
 
-    explicit QCodeEditWidget(QWidget *parent = 0);
+    explicit QCodeEditWidget(QWidget *parent = nullptr);
     virtual ~QCodeEditWidget() override;
     QString text() const;
     int tabSize() const;

@@ -16,7 +16,7 @@ class QProjectProperties : public QDialog
     Q_OBJECT
 
 public:
-    QProjectProperties(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    QProjectProperties(QWidget *parent = nullptr, Qt::WindowFlags flags = 0);
     QString getConnectionString();
     void fillDialog(QProject *project);
 private slots:
