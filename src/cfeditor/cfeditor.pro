@@ -7,13 +7,10 @@ QT       = core gui network xml widgets webkit webkitwidgets
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../bin
 
-win32 {
-    DEPENDPATH  += . codeeditwidget/ rds/ ../textparser/ ../../libs/libssh/include/
-    INCLUDEPATH += . codeeditwidget/ rds/ ../textparser/ ../../libs/libssh/include/
-} else {
-    DEPENDPATH  += . codeeditwidget/ rds/ ../textparser/
-    INCLUDEPATH += . codeeditwidget/ rds/ ../textparser/
-}
+DEPENDPATH  += . codeeditwidget rds ../textparser
+INCLUDEPATH += . codeeditwidget rds ../textparser
+win32:DEPENDPATH  += ../../libs/libssh/include
+win32:INCLUDEPATH += ../../libs/libssh/include
 
 win32: {
 	LIBS += ../../libs/libssh/lib/libssh.dll.a

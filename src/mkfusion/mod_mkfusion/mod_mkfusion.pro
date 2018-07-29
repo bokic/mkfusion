@@ -11,27 +11,13 @@ DESTDIR   = ../../../bin
 DEPENDPATH  += . ../simplifiedlocalsocket
 INCLUDEPATH += . ../simplifiedlocalsocket
 
+
+unix:CONFIG += link_pkgconfig
+unix:PKGCONFIG += apr-1
+
 win32:INCLUDEPATH += ../../../libs/apache2/include
-unix {
-    LSB_RELEASE = $$system(lsb_release -d)
-
-    message( LSB_RELEASE: ($$LSB_RELEASE))
-
-    contains(LSB_RELEASE, Arch Linux) {
-        INCLUDEPATH  += /usr/include/httpd /usr/include/apr-1
-    }
-
-    contains(LSB_RELEASE, Fedora) {
-        INCLUDEPATH  += /usr/include/httpd /usr/include/apr-1
-    }
-
-    contains(LSB_RELEASE, Ubuntu) {
-        INCLUDEPATH  += /usr/include/apache2 /usr/include/apr-1.0
-    }
-}
-
+unix:INCLUDEPATH  += /usr/include/httpd /usr/include/apache2
 win32:LIBS += "-L../../../libs/apache2/lib" -llibhttpd -llibapr-1 libpsapi
-unix:LIBS += -L/usr/lib/
 
 # Input
 SOURCES        = mod_mkfusion.cpp
