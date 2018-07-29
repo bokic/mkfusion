@@ -807,8 +807,8 @@ Q_DECL_EXPORT QCFVariant cf_CreateTimeSpan(int days, int hours, int minutes, int
 {
     QDateTime ret = QDateTime(QDate(1899, 12, 30));
 
-    ret.addDays(days);
-    ret.addSecs((hours * 60 * 60) + (minutes * 60) + seconds);
+    ret = ret.addDays(days);
+    ret = ret.addSecs((hours * 60 * 60) + (minutes * 60) + seconds);
 
     return ret;
 }
@@ -856,7 +856,7 @@ Q_DECL_EXPORT QDateTime cf_DateAdd(const QString &datepart, int number, QDateTim
 
     if(datepart.compare("yyyy", Qt::CaseInsensitive) == 0)
     {
-        ret.addYears(number);
+        ret = ret.addYears(number);
     }
     else if(datepart.compare("q", Qt::CaseInsensitive) == 0)
     {
