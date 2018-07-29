@@ -2149,6 +2149,7 @@ Q_DECL_EXPORT double QCFVariant::toNumber() const
         {
             return m_Array->at(m_Number - 1).toNumber();
         }
+        throw QMKFusionExpressionException(QObject::tr("Illegal array size."));
     default:
         throw QMKFusionExpressionException(QObject::tr("The value cannot be converted to a number."));
     }
@@ -2180,6 +2181,7 @@ Q_DECL_EXPORT int QCFVariant::toInt() const
         {
             return m_Array->at(m_Number - 1).toInt();
         }
+        throw QMKFusionExpressionException(QObject::tr("Illegal array size."));
     default:
         throw QMKFusionExpressionException(QObject::tr("The value cannot be converted to a int."));
     }
