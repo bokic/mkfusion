@@ -66,8 +66,10 @@ public:
             break;
         case Component:
             qSwap(m_Component, other.m_Component);
+            break;
         case Function:
             qSwap(m_Function, other.m_Function);
+            break;
         case Array:
             qSwap(m_Array, other.m_Array);
             qSwap(m_ArrayDimension, other.m_ArrayDimension);

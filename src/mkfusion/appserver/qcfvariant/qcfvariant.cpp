@@ -332,9 +332,11 @@ Q_DECL_EXPORT void QCFVariant::setType(QCFVariantType type)
     case Component:
         delete m_Component;
         m_Component = nullptr;
+        break;
     case Function:
         delete m_Function;
         m_Function = nullptr;
+        break;
     case NotImplemented:
         break;
     case Error:
@@ -369,8 +371,10 @@ Q_DECL_EXPORT void QCFVariant::setType(QCFVariantType type)
         break;
     case Component:
         m_Component = new QCFVariantComponent();
+        break;
     case Function:
         m_Function = new QCFVariantFunction();
+        break;
     case NotImplemented:
         break;
     case Error:
@@ -462,7 +466,6 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](int index)
         }
 
         return (*m_Array)[index - 1];
-        break;
 
     case QCFVariant::Struct:
         key = QString::number(index);
@@ -505,7 +508,6 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](int index)
         }
 
         return (*m_Struct)[key];
-        break;
 
     default:
         break;
@@ -536,7 +538,6 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const double index)
         }
 
         return (*m_Array)[(int)index - 1];
-        break;
 
     case QCFVariant::Struct:
         key = QString::number(index);
@@ -579,7 +580,6 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const double index)
         }
 
         return (*m_Struct)[key];
-        break;
 
     default:
         break;
@@ -623,7 +623,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QString &key)
         }
 
         return (*m_Array)[val - 1];
-        break;
+
     case QCFVariant::Struct:
         if (m_HiddenScopeFirst)
         {
@@ -662,7 +662,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QString &key)
         }
 
         return (*m_Struct)[key];
-        break;
+
     case QCFVariant::Query:
         if (!m_Struct->contains(key))
         {
@@ -676,7 +676,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QString &key)
         }
 
         return (*m_Struct)[key];
-        break;
+
     default:
         break;
     }
@@ -718,7 +718,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const char *key)
         }
 
         return (*m_Array)[val - 1];
-        break;
+
     case QCFVariant::Struct:
         if (m_HiddenScopeFirst)
         {
@@ -757,7 +757,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const char *key)
         }
 
         return (*m_Struct)[l_key];
-        break;
+
     case QCFVariant::Query:
         if (!m_Struct->contains(l_key))
         {
@@ -771,7 +771,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const char *key)
         }
 
         return (*m_Struct)[l_key];
-        break;
+
     default:
         break;
     }
@@ -811,7 +811,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const wchar_t *key)
         }
 
         return (*m_Array)[val - 1];
-        break;
+
     case QCFVariant::Struct:
         if (m_HiddenScopeFirst)
         {
@@ -850,7 +850,7 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const wchar_t *key)
         }
 
         return (*m_Struct)[l_key];
-        break;
+
     case QCFVariant::Query:
         if (!m_Struct->contains(l_key))
         {
@@ -864,10 +864,9 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const wchar_t *key)
         }
 
         return (*m_Struct)[l_key];
-        break;
+
     default:
         throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class wchar_t* as a structure with members.");
-        break;
     }
 }
 
@@ -902,7 +901,6 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QCFVariant &key)
         }
 
         return (*m_Array)[l_keyInt - 1];
-        break;
     case QCFVariant::Struct:
         l_keyStr = key.toString();
 
@@ -943,7 +941,6 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QCFVariant &key)
         }
 
         return (*m_Struct)[l_keyStr];
-        break;
     case QCFVariant::Query:
         l_keyStr = key.toString();
 
@@ -959,10 +956,8 @@ Q_DECL_EXPORT QCFVariant &QCFVariant::operator[](const QCFVariant &key)
         }
 
         return (*m_Struct)[l_keyStr];
-        break;
     default:
         throw QMKFusionExpressionException("You have attempted to dereference a scalar variable of type class java.lang.String as a structure with members.");
-        break;
     }
 }
 
@@ -2103,15 +2098,14 @@ Q_DECL_EXPORT QString QCFVariant::toString() const
             return "true";
         else
             return "false";
-        break;
     case QCFVariant::Array:
         if (m_Number > 0)
         {
             return m_Array->at(m_Number - 1).toString();
         }
+        break;
     default:
         throw QMKFusionExpressionException(QObject::tr("Complex object types cannot be converted to simple values.", "The expression has requested a variable or an intermediate expression result as a simple value, however, the result cannot be converted to a simple value. Simple values are strings, numbers, boolean values, and date/time values. Queries, arrays, and COM objects are examples of complex values. <p> The most likely cause of the error is that you are trying to use a complex value as a simple one. For example, you might be trying to use a query variable in a cfif tag."));
-        break;
     }
 
     return *m_String;
@@ -2147,11 +2141,9 @@ Q_DECL_EXPORT double QCFVariant::toNumber() const
         }
 
         return ret;
-        break;
     case QCFVariant::DateTime:
         diff = QDateTime(QDate(1899, 12, 29), QTime(0, 0)).secsTo(*m_DateTime);
         return diff / (60 * 60 * 24);
-        break;
     case QCFVariant::Array:
         if (m_Number > 0)
         {
@@ -2172,7 +2164,6 @@ Q_DECL_EXPORT int QCFVariant::toInt() const
     {
     case QCFVariant::Number:
         return (int)m_Number;
-        break;
     case QCFVariant::String:
         ret = m_String->toInt(&ok);
         if (ok == false)
@@ -2181,11 +2172,9 @@ Q_DECL_EXPORT int QCFVariant::toInt() const
         }
 
         return ret;
-        break;
     case QCFVariant::DateTime:
         diff = QDateTime(QDate(1899, 12, 29), QTime(0, 0)).secsTo(*m_DateTime);
         return diff / (60 * 60 * 24);
-        break;
     case QCFVariant::Array:
         if (m_Number > 0)
         {
