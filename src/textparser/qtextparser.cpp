@@ -430,9 +430,17 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
                 while(1)
                 {
+                    QTextParserElement child;
+
                     while(1)
                     {
-                        QTextParserElement child = parseElement(lines, token.nestedTokens, start_line, start_column, end_line, end_column, nToken);
+                        if (start_line >= lines.count())
+                        {
+                            start_line = lines.count() - 1;
+                            return QTextParserElement();
+                        }
+
+                        child = parseElement(lines, token.nestedTokens, start_line, start_column, end_line, end_column, nToken);
 
                         if (child.m_Type == -1)
                         {
@@ -442,7 +450,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                         ret.m_ChildElements.append(child);
                     }
 
-                    if (token.MultiLine == false)
+                    if ((token.MultiLine == false)||(child.m_Type == -1))
                     {
                         break;
                     }
