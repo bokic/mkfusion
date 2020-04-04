@@ -50,7 +50,7 @@
 		<token Name="SubExpression" StartString="(" EndString=")" MultiLine="true">
 			<nested_tokens names="Expression" />
 		</token>
-		<token Name="VariableIndex" StartString="[" EndString="]" MultiLine="true">
+		<token Name="VariableIndex" StartString="\[" EndString="\]" MultiLine="true">
 			<nested_tokens names="Expression" />
 		</token>
 		<token Name="CodeBlock" StartString="\{" EndString="\}" MultiLine="true">
