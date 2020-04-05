@@ -47,6 +47,12 @@ public:
     inline QCFVariantArgumentList(std::initializer_list<QCFVariantArgument> args) : QList<QCFVariantArgument>(args) { }
 #endif
 
+    inline QCFVariantArgumentList &operator=(const QCFVariantArgumentList &arg)
+    {
+        this->clear();
+        this->append(arg);
+        return *this;
+    }
     inline QCFVariantArgumentList &operator<<(const QCFVariantArgument &arg)
     {
         append(arg);
