@@ -26,7 +26,7 @@
 			<nested_tokens names="Expression" />
 		</token>
 		<token Name="Expression" MultiLine="true" IgnoreIfOnlyOneChild="true">
-			<nested_tokens names="SingleString,DoubleString,Separator,CodeBlock,ScriptComment,ExpressionEnd,Number,Boolean,Operator,ObjectMember,Keyword,Function,Object,Variable,SubExpression,VariableIndex" />
+			<nested_tokens names="SingleString,DoubleString,Separator,ScriptComment,ExpressionEnd,Number,Boolean,Operator,ObjectMember,Keyword,Function,Object,Variable,SubExpression,VariableIndex" />
 		</token>
 		<token Name="ScriptExpression" ImmediateStart="true" MultiLine="true">
 			<nested_tokens names="SingleString,DoubleString,Separator,CodeBlock,BlockComment,ScriptComment,ExpressionEnd,Number,Boolean,Operator,ObjectMember,Keyword,Function,Object,Variable,SubExpression,VariableIndex" />
@@ -55,7 +55,7 @@
 			<nested_tokens names="Expression" />
 		</token>
 		<token Name="CodeBlock" StartString="\{" EndString="\}" MultiLine="true">
-			<nested_tokens names="Expression" />
+			<nested_tokens names="ScriptExpression" />
 		</token>
 		<token Name="Keyword" TokenString="(\bvar\b|\bfunction\b|\bthis\b)" />
 	</tokens>
