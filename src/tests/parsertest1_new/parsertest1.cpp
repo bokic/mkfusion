@@ -42,15 +42,24 @@ void CFTest1::parseDir(const QString &dir)
             QListWidgetItem *lastItem = new QListWidgetItem(itemFileName);
             QTextParser parser;
 
-            this->setWindowTitle("CFTest1 - " + fileinfo.fileName()); qApp->processEvents();
+            setWindowTitle("CFTest1(new) - " + fileinfo.fileName());
+            qApp->processEvents();
 
-            parser.parseFile(fileinfo.absoluteFilePath());
+            auto tokens = parser.parseFile(fileinfo.absoluteFilePath());
 
-            this->setWindowTitle("CFTest1"); qApp->processEvents();
+            if ((tokens.count() > 0)&&(tokens.last().m_Type < 0))
+            {
+                lastItem->setToolTip(tokens.last().m_Text);
+                lastItem->setBackground(Qt::red);
+            }
 
             ui.listWidget->addItem(lastItem);
+
+             qApp->processEvents();
         }
     }
+
+    setWindowTitle("CFTest1(new)");
 }
 
 void CFTest1::on_pushButton_clicked()

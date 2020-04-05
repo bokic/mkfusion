@@ -175,19 +175,22 @@ void QDetail::setFileForParsing(const QString &file)
 
         QTreeWidgetItem *widgetItem = new QTreeWidgetItem();
 
-        QString text = m_Parser.getLanguage().tokens.at(element.m_Type).name;
-
-        if (!element.m_Text.isEmpty())
+        if (element.m_Type >= 0)
         {
-            text.append(QString("(%1)").arg(element.m_Text));
+            QString text = m_Parser.getLanguage().tokens.at(element.m_Type).name;
+
+            if (!element.m_Text.isEmpty())
+            {
+                text.append(QString("(%1)").arg(element.m_Text));
+            }
+
+            widgetItem->setText(0, text);
+            widgetItem->setText(1, QChar(c));
+
+            addSubTrees(element, widgetItem);
+
+            ui->parser_treeWidget->addTopLevelItem(widgetItem);
         }
-
-        widgetItem->setText(0, text);
-        widgetItem->setText(1, QChar(c));
-
-        addSubTrees(element, widgetItem);
-
-        ui->parser_treeWidget->addTopLevelItem(widgetItem);
     }
 
     ui->parser_treeWidget->expandAll();
@@ -231,7 +234,10 @@ void QDetail::recolor()
     {
         const QTextParserElement &element = elements.at(c);
 
-        colorElement(element, QChar(c));
+        if (element.m_Type >= 0)
+        {
+            colorElement(element, QChar(c));
+        }
     }
 }
 
