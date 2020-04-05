@@ -1147,7 +1147,7 @@ void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString
         cffile.m_Struct->insert("SERVERFILE", QFileInfo(destinationFile).fileName());
         cffile.m_Struct->insert("SERVERFILENAME", QFileInfo(destinationFile).completeBaseName());
         cffile.m_Struct->insert("SERVERFILEEXT", QFileInfo(destinationFile).completeSuffix());
-        cffile.m_Struct->insert("TIMECREATED", QFileInfo(destinationFile).created());
+        cffile.m_Struct->insert("TIMECREATED", QFileInfo(destinationFile).birthTime());
         cffile.m_Struct->insert("TIMELASTMODIFIED", QFileInfo(destinationFile).lastModified());
     }
     else
