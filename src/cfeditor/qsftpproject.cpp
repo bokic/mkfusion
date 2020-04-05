@@ -194,7 +194,7 @@ QList<QProjectFile> QSFTPProject::getFolderItems(const QString &p_Folder)
         sftp_closedir(dir);
     }
 
-    qSort(ret);
+    std::sort(ret.begin(), ret.end());
 
     return ret;
 }

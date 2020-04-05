@@ -410,7 +410,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QCFVariant &array, const QString &sort_type, con
 
     if ((sort_type.compare("Numeric", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Asc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
+        std::stable_sort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toNumber() < s2.toNumber();
         });
@@ -419,7 +419,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QCFVariant &array, const QString &sort_type, con
     }
     else if ((sort_type.compare("Numeric", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Desc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
+        std::stable_sort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toNumber() > s2.toNumber();
         });
@@ -428,7 +428,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QCFVariant &array, const QString &sort_type, con
     }
     else if ((sort_type.compare("Text", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Asc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
+        std::stable_sort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toString() < s2.toString();
         });
@@ -437,7 +437,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QCFVariant &array, const QString &sort_type, con
     }
     else if ((sort_type.compare("Text", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Desc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
+        std::stable_sort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toString() > s2.toString();
         });
@@ -446,7 +446,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QCFVariant &array, const QString &sort_type, con
     }
     else if ((sort_type.compare("TextNoCase", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Asc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
+        std::stable_sort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toString().compare(s2.toString(), Qt::CaseInsensitive) < 0;
         });
@@ -455,7 +455,7 @@ Q_DECL_EXPORT bool cf_ArraySort(QCFVariant &array, const QString &sort_type, con
     }
     else if ((sort_type.compare("TextNoCase", Qt::CaseInsensitive) == 0)&&(sort_order.compare("Desc", Qt::CaseInsensitive) == 0))
     {
-        qStableSort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
+        std::stable_sort(array.m_Array->begin(), array.m_Array->end(), [](const QCFVariant &s1, const QCFVariant &s2)
         {
             return s1.toString().compare(s2.toString(), Qt::CaseInsensitive) > 0;
         });

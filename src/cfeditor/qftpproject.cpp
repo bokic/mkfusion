@@ -121,7 +121,7 @@ QList<QProjectFile> QFTPProject::getFolderItems(const QString &p_Folder)
 
     // TODO: Missing code
 
-    qSort(ret);*/
+    std::sort(ret.begin(), ret.end());*/
 
     return ret;
 }

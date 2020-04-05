@@ -83,7 +83,7 @@ QList<QProjectFile> QLocalProject::getFolderItems(const QString &p_Folder)
         ret.append(file);
     }
 
-    qSort(ret);
+    std::sort(ret.begin(), ret.end());
 
     return ret;
 }
