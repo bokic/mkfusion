@@ -150,6 +150,12 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                     }
                 }
 
+                QStringList defTokens;
+                for(const auto &token: def.tokens)
+                {
+                    defTokens.append(token.name);
+                }
+
                 for(int target = 0; target < def.tokens.count(); target++)
                 {
                     QStringList nestedTokens = tmpNestedTokens[target].split(",", QString::SkipEmptyParts);
@@ -159,14 +165,16 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                         continue;
                     }
 
-                    for(int source = 0; source < def.tokens.count(); source++)
+                    for(const auto &nestedToken: nestedTokens)
                     {
+                        int source = defTokens.indexOf(nestedToken);
+
                         if (source == target)
                         {
                             continue;
                         }
 
-                        if (nestedTokens.contains(def.tokens[source].name))
+                        if (source >= 0)
                         {
                             def.tokens[target].nestedTokens.append(source);
                         }
