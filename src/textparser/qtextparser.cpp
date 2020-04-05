@@ -341,7 +341,6 @@ QTextParserElements QTextParser::parseTextLines(const QTextParserLines &lines)
     int cur_column = 0;
 
     int end_lines = lines.count() - 1;
-    int end_column = lines.at(0).text.length();
 
     while(true)
     {
@@ -350,15 +349,16 @@ QTextParserElements QTextParser::parseTextLines(const QTextParserLines &lines)
             break;
         }
 
+        int end_column = lines.at(cur_lines).text.length();
+
         QTextParserElement token = parseElement(lines, language.startsWith, cur_lines, cur_column, end_lines, end_column);
+
+        ret.append(token);
 
         if (token.m_Type < 0)
         {
-            qDebug("Parser error. File: %s, line: %u", __FILE__, __LINE__);
             break;
         }
-
-        ret.append(token);
     }
 
     return ret;
@@ -388,12 +388,6 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
     if (end_token >= 0)
     {
-        /*if (tokenKeyList.count() <= end_token)
-        {
-            qDebug() << "tokens.key count("<< tokenKeyList.count() << ") is too low. At least" << (end_token + 1) << "needed. File:" << __FILE__ << ", line:" << __LINE__;
-            return ret;
-        }*/
-
         if (tokenList[end_token].searchEndStringLast == false)
         {
             const QRegExp &reg = tokenList[end_token].endString;
