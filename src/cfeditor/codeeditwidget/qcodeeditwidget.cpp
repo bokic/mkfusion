@@ -590,9 +590,9 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
     QFontMetrics l_fm(m_TextFont);
     int l_fontHeight = l_fm.height();
-    int l_fontWidth = l_fm.width(' ');
+    int l_fontWidth = l_fm.horizontalAdvance(' ');
     int l_LinesToDraw = (viewport()->height() / l_fontHeight) + 1;
-    int l_LineNumbersPanelWidth = 16 + (l_fm.width(" ") * m_LineNumbersPanelWidth) + 4;
+    int l_LineNumbersPanelWidth = 16 + (l_fm.horizontalAdvance(" ") * m_LineNumbersPanelWidth) + 4;
     int l_CharsToDraw = (((viewport()->width() - l_LineNumbersPanelWidth) / l_fontWidth) + 1);
 
     painter.fillRect(QRect(0, 0, l_LineNumbersPanelWidth, viewport()->height()), m_LineNumbersBackground);
@@ -796,7 +796,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
                             painter.drawText(x, y, text);
 
                             QFontMetrics fm(painter.font());
-                            Xcoord += fm.width(text);
+                            Xcoord += fm.horizontalAdvance(text);
                             cur_pos += text.length();
                             painter.setPen(oldPen);
                         }
@@ -808,7 +808,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
                             QFontMetrics fm(painter.font());
 
                             painter.drawText(x, y, text);
-                            Xcoord += fm.width(text);
+                            Xcoord += fm.horizontalAdvance(text);
                             cur_pos += text.length();
 
                             QPen oldPen = painter.pen();
@@ -819,7 +819,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
                             painter.drawText(x, y, text);
 
-                            Xcoord += fm.width(text);
+                            Xcoord += fm.horizontalAdvance(text);
                             cur_pos += text.length();
                             painter.setPen(oldPen);
                         }
@@ -833,7 +833,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
 
     if ((m_currentlyBlinkCursorShowen == 1)&&((int)m_CarretPosition.m_Column - (int)m_ScrollXCharPos - 1 >= 0))
     {
-        int xpos = l_LineNumbersPanelWidth + l_fm.width(m_Lines.at(m_CarretPosition.m_Row - 1).text.left(m_CarretPosition.m_Column - 1)) - (m_ScrollXCharPos * l_fontWidth);
+        int xpos = l_LineNumbersPanelWidth + l_fm.horizontalAdvance(m_Lines.at(m_CarretPosition.m_Row - 1).text.left(m_CarretPosition.m_Column - 1)) - (m_ScrollXCharPos * l_fontWidth);
         const QBrush oldBrush = painter.brush();
 
         painter.setBrush(QColor(Qt::black));
@@ -886,7 +886,7 @@ void QCodeEditWidget::mouseMoveEvent(QMouseEvent *event)
 
             QFontMetrics l_fm(m_TextFont);
             int l_fontHeight = l_fm.height();
-            int l_fontWidth = l_fm.width(' ');
+            int l_fontWidth = l_fm.horizontalAdvance(' ');
 
             m_CarretPosition.m_Row = m_ScrollYLinePos + (event->y() / l_fontHeight) + 1;
 
@@ -926,7 +926,7 @@ void QCodeEditWidget::mousePressEvent(QMouseEvent *event)
 
         QFontMetrics l_fm(m_TextFont);
         int l_fontHeight = l_fm.height();
-        int l_fontWidth = l_fm.width(' ');
+        int l_fontWidth = l_fm.horizontalAdvance(' ');
 
         m_CarretPosition.m_Row = m_ScrollYLinePos + (event->y() / l_fontHeight) + 1;
 
