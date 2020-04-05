@@ -191,7 +191,7 @@ void Dialog::on_start_clicked()
 
             if (l_cf != l_mf)
             {
-                ui->urlslist->item(ui->urlslist->count() - 1)->setBackgroundColor(Qt::red);
+                ui->urlslist->item(ui->urlslist->count() - 1)->setBackground(Qt::red);
             }
         }
     }

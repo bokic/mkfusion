@@ -55,14 +55,14 @@ void CFTest1::parseDir(const QString &dir)
             if (parseError != NoError)
             {
                 lastItem->setText(lastItem->text() + " error: " + parser.error() + ", at position: " + QString::number(parser.getErrorPosition()));
-                lastItem->setBackgroundColor(QColor(255, 0, 0));
+                lastItem->setBackground(QColor(255, 0, 0));
             }
             else
             {
                 if (parser.buildTagTree() != NoError)
                 {
                     lastItem->setText(lastItem->text() + " error: " + parser.error() + ", at position: " + QString::number(parser.getErrorPosition()));
-                    lastItem->setBackgroundColor(QColor(0, 255, 255));
+                    lastItem->setBackground(QColor(0, 255, 255));
                 }
             }
 
