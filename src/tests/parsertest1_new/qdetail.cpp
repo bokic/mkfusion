@@ -46,7 +46,7 @@ void QDetail::setFileForParsing(const QString &file)
             m_ElementTextColors.append(QColor());
             m_ElementBackgroundColors.append(QColor());
         }
-        else if ((token.name == "Comment")||(token.name == "ScriptComment"))
+        else if ((token.name == "Comment")||(token.name == "ScriptComment")||(token.name == "BlockComment"))
         {
             m_ElementTextColors.append(QColor());
             m_ElementBackgroundColors.append(QColor(Qt::lightGray));
@@ -148,7 +148,7 @@ void QDetail::setFileForParsing(const QString &file)
         }
         else if (token.name == "Keyword")
         {
-            m_ElementTextColors.append(QColor());
+            m_ElementTextColors.append(QColor(92, 92, 92));
             m_ElementBackgroundColors.append(QColor());
         }
         else
