@@ -12,23 +12,27 @@ QJDWPSocket::~QJDWPSocket()
 {
 }
 
-void QJDWPSocket::connectToHost(const QString &p_Host, quint16 p_Port)
+void QJDWPSocket::connectToHost(const QString &host, quint16 port)
 {
-    m_Socket.disconnectFromHost();
+    if (m_Socket.isOpen())
+        m_Socket.disconnectFromHost();
 
-    m_Socket.connectToHost(p_Host, p_Port, QIODevice::ReadWrite);
+    m_Socket.connectToHost(host, port, QIODevice::ReadWrite);
 
     if (m_InitTimer != 0)
     {
         killTimer(m_InitTimer);
     }
+
     m_InitTimer = startTimer(5000);
 }
 
-quint32 QJDWPSocket::sendCommand(quint8 p_CommandSet, quint8 p_Command, const QByteArray &p_Data)
+quint32 QJDWPSocket::sendCommand(quint8 commandSet, quint8 command, const QByteArray &data)
 {
     QByteArray l_Packet;
-    int l_PacketSize = p_Data.length() + 11;
+
+    int l_PacketSize = data.length() + 11;
+
     m_CommandCounter++;
 
     l_Packet.append((char)(l_PacketSize >> 24));
@@ -42,9 +46,9 @@ quint32 QJDWPSocket::sendCommand(quint8 p_CommandSet, quint8 p_Command, const QB
     l_Packet.append((char)(m_CommandCounter));
 
     l_Packet.append('\0');
-    l_Packet.append(p_CommandSet);
-    l_Packet.append(p_Command);
-    l_Packet.append(p_Data);
+    l_Packet.append(commandSet);
+    l_Packet.append(command);
+    l_Packet.append(data);
 
     m_Socket.write(l_Packet);
     m_Socket.flush();
@@ -58,14 +62,12 @@ void QJDWPSocket::on_m_Socket_connected()
 
     m_Initialized = false;
     m_CommandCounter = 0;
+
     m_Socket.write(QByteArray("JDWP-Handshake"));
 }
 
 void QJDWPSocket::on_m_Socket_readyRead()
 {
-    quint32 l_Id;
-    quint16 l_Error;
-
     qDebug("readyRead");
 
     m_reciveBuf.append(m_Socket.readAll());
@@ -82,10 +84,9 @@ void QJDWPSocket::on_m_Socket_readyRead()
 
             if (m_reciveBuf.length() >= l_BufSize)
             {
-                l_Id = ((quint8)m_reciveBuf[4] << 24) + ((quint8)m_reciveBuf[5] << 16) + ((quint8)m_reciveBuf[6] << 8) + ((quint8)m_reciveBuf[7]);
-                l_Error = ((quint8)m_reciveBuf[9] << 24) + ((quint8)m_reciveBuf[10] << 16);
+                quint32 id = ((quint8)m_reciveBuf[4] << 24) + ((quint8)m_reciveBuf[5] << 16) + ((quint8)m_reciveBuf[6] << 8) + ((quint8)m_reciveBuf[7]);
 
-                if (l_Id == 1)
+                if (id == 1)
                 {
                     m_IDSizes = decodeCommandIDSizes(m_reciveBuf.mid(11, l_BufSize - 11));
                     m_reciveBuf = m_reciveBuf.right(m_reciveBuf.length() - l_BufSize);
@@ -93,7 +94,9 @@ void QJDWPSocket::on_m_Socket_readyRead()
                 }
                 else
                 {
-                    emit gotPacket(l_Id, (quint8)m_reciveBuf[8], l_Error, m_reciveBuf.mid(11, l_BufSize - 11));
+                    quint16 error = ((quint8)m_reciveBuf[9] << 24) + ((quint8)m_reciveBuf[10] << 16);
+
+                    emit gotPacket(id, (quint8)m_reciveBuf[8], error, m_reciveBuf.mid(11, l_BufSize - 11));
                     m_reciveBuf = m_reciveBuf.right(m_reciveBuf.length() - l_BufSize);
                 }
             }
@@ -126,6 +129,7 @@ void QJDWPSocket::on_m_Socket_readyRead()
 void QJDWPSocket::timerEvent(QTimerEvent *event)
 {
     qDebug("timerEvent");
+
     if (event->timerId() == m_InitTimer)
     {
         qDebug("m_InitTimer hit");
@@ -133,82 +137,85 @@ void QJDWPSocket::timerEvent(QTimerEvent *event)
     }
 }
 
-int QJDWPSocket::decodeInt(QByteArray p_Data, int p_Offset)
+int QJDWPSocket::decodeInt(const QByteArray &data, int offset)
 {
-    if (p_Data.length() < p_Offset + 4)
+    if (data.length() < offset + 4)
     {
         return -1;
     }
 
-    return ((qint8)p_Data[p_Offset + 0] << 24) + ((quint8)p_Data[p_Offset + 1] << 16) + ((quint8)p_Data[p_Offset + 2] << 8) + ((quint8)p_Data[p_Offset + 3]);
+    return ((qint8)data[offset + 0] << 24) + ((quint8)data[offset + 1] << 16) + ((quint8)data[offset + 2] << 8) + ((quint8)data[offset + 3]);
 }
 
-qint64 QJDWPSocket::decodeInt(QByteArray p_Data, int p_Offset, int p_Size)
+qint64 QJDWPSocket::decodeInt(const QByteArray &data, int offset, int size)
 {
-    if ((p_Size != 1)&&(p_Size != 2)&&(p_Size != 4)&&(p_Size != 8))
+    if ((size != 1)&&(size != 2)&&(size != 4)&&(size != 8))
     {
         return -1;
     }
 
-    if (p_Data.length() < p_Offset + p_Size)
+    if (data.length() < offset + size)
     {
         return -1;
     }
 
-    return ((qint8)p_Data[p_Offset + 0] << 24) + ((quint8)p_Data[p_Offset + 1] << 16) + ((quint8)p_Data[p_Offset + 2] << 8) + ((quint8)p_Data[p_Offset + 3]);
+    return ((qint8)data[offset + 0] << 24) + ((quint8)data[offset + 1] << 16) + ((quint8)data[offset + 2] << 8) + ((quint8)data[offset + 3]);
 }
 
 
-QByteArray QJDWPSocket::encodeInt(int p_Integer)
+QByteArray QJDWPSocket::encodeInt(int value)
 {
     QByteArray ret;
 
-    ret.append((char)(p_Integer >> 24));
-    ret.append((char)(p_Integer >> 16));
-    ret.append((char)(p_Integer >> 8));
-    ret.append((char)p_Integer);
+    ret.append((char)(value >> 24));
+    ret.append((char)(value >> 16));
+    ret.append((char)(value >> 8));
+    ret.append((char)value);
+
     return ret;
 }
 
-QString QJDWPSocket::decodeString(QByteArray p_Data, int p_Offset)
+QString QJDWPSocket::decodeString(const QByteArray &data, int offset)
 {
-    int l_Size = decodeInt(p_Data, p_Offset + 4);
+    int l_Size = decodeInt(data, offset + 4);
 
-    if (l_Size <=0)
+    if (l_Size <= 0)
     {
-        return "";
+        return QString();
     }
 
-    return QString::fromUtf8(p_Data.mid(p_Offset + 4, l_Size));
+    return QString::fromUtf8(data.mid(offset + 4, l_Size));
 }
 
-QByteArray QJDWPSocket::encodeString(QString p_String)
+QByteArray QJDWPSocket::encodeString(const QString &value)
 {
-    QByteArray l_Temp = p_String.toUtf8();
+    QByteArray l_Temp = value.toUtf8();
+
     return encodeInt(l_Temp.length()) + l_Temp;
 }
 
-QJDWPCommandVersion QJDWPSocket::decodeCommandVersion(QByteArray p_Data)
+QJDWPCommandVersion QJDWPSocket::decodeCommandVersion(const QByteArray &data)
 {
     QJDWPCommandVersion ret;
-    int l_DescriptionSize = decodeInt(p_Data);
-    int l_Version = decodeInt(p_Data, l_DescriptionSize + 12);
+
+    int l_DescriptionSize = decodeInt(data);
+    int l_Version = decodeInt(data, l_DescriptionSize + 12);
 
     ret.m_Error = false;
-    ret.m_Description = decodeString(p_Data);
-    ret.m_jdwpMajor = decodeInt(p_Data, l_DescriptionSize + 4);
-    ret.m_jdwpMinor = decodeInt(p_Data, l_DescriptionSize + 8);
-    ret.m_vmVersion = decodeString(p_Data, l_DescriptionSize + 12);
-    ret.m_vmName = decodeString(p_Data, l_DescriptionSize + l_Version + 16);
+    ret.m_Description = decodeString(data);
+    ret.m_jdwpMajor = decodeInt(data, l_DescriptionSize + 4);
+    ret.m_jdwpMinor = decodeInt(data, l_DescriptionSize + 8);
+    ret.m_vmVersion = decodeString(data, l_DescriptionSize + 12);
+    ret.m_vmName = decodeString(data, l_DescriptionSize + l_Version + 16);
 
     return ret;
 }
 
-QJDWPCommandIDSizes QJDWPSocket::decodeCommandIDSizes(QByteArray p_Data)
+QJDWPCommandIDSizes QJDWPSocket::decodeCommandIDSizes(const QByteArray &data)
 {
     QJDWPCommandIDSizes ret;
 
-    if (p_Data.length() != 20)
+    if (data.length() != 20)
     {
         ret.m_Error = true;
         ret.m_fieldIDSize = 0;
@@ -220,11 +227,11 @@ QJDWPCommandIDSizes QJDWPSocket::decodeCommandIDSizes(QByteArray p_Data)
     }
 
     ret.m_Error = false;
-    ret.m_fieldIDSize = decodeInt(p_Data, 0);
-    ret.m_methodIDSize = decodeInt(p_Data, 4);
-    ret.m_objectIDSize = decodeInt(p_Data, 8);
-    ret.m_referenceTypeIDSize = decodeInt(p_Data, 12);
-    ret.m_frameIDSize = decodeInt(p_Data, 16);
+    ret.m_fieldIDSize = decodeInt(data, 0);
+    ret.m_methodIDSize = decodeInt(data, 4);
+    ret.m_objectIDSize = decodeInt(data, 8);
+    ret.m_referenceTypeIDSize = decodeInt(data, 12);
+    ret.m_frameIDSize = decodeInt(data, 16);
 
     return ret;
 }

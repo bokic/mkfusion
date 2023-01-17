@@ -11,7 +11,7 @@ QJDWPClassesBySignatureCommand::~QJDWPClassesBySignatureCommand()
 {
 }
 
-quint32 QJDWPClassesBySignatureCommand::sendCommand(const QString &p_ClassName) // "Ljava/io/File;"
+quint32 QJDWPClassesBySignatureCommand::sendCommand(const QString &className) // "Ljava/io/File;"
 {
     if (strcmp(parent()->metaObject()->className(), "QJDWPDebugger") != 0)
     {
@@ -19,20 +19,20 @@ quint32 QJDWPClassesBySignatureCommand::sendCommand(const QString &p_ClassName) 
         return 0;
     }
 
-    m_CommandID = static_cast<QJDWPDebugger *>(parent())->sendCommand(1, 2, QJDWPSocket::encodeString(p_ClassName));
+    m_CommandID = static_cast<QJDWPDebugger *>(parent())->sendCommand(1, 2, QJDWPSocket::encodeString(className));
 
     return m_CommandID;
 }
 
-void QJDWPClassesBySignatureCommand::processRecivedCommand(const QByteArray &p_Data)
+void QJDWPClassesBySignatureCommand::processRecivedCommand(const QByteArray &data)
 {
-    if (p_Data.length() < 4)
+    if (data.length() < 4)
     {
         qDebug("Packet size should be >= 4");
         return;
     }
 
-    int l_Size = QJDWPSocket::decodeInt(p_Data);
+    int l_Size = QJDWPSocket::decodeInt(data);
 
     for(int c = 0; c <  l_Size; c++)
     {

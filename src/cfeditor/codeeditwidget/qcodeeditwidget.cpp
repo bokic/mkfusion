@@ -852,7 +852,7 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
     }
 
     int max_LineSize = 0;
-    for(const QCodeEditWidgetLine &l_Line: m_Lines)
+    for(const QCodeEditWidgetLine &l_Line: qAsConst(m_Lines))
     {
         int l_CurrentLineSize = l_Line.text.count();
 

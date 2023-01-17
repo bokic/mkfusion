@@ -3,7 +3,6 @@
 #include "qwddx.h"
 
 #include <QVariant>
-#include <QDomNode>
 #include <QVector>
 #include <QString>
 

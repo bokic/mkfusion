@@ -1,6 +1,6 @@
 #pragma once
 
-#include <qtconcurrentexception.h>
+#include <QException>
 #include <QDateTime>
 #include <QString>
 

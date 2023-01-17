@@ -44,7 +44,7 @@ SOURCES += codeeditwidget/qcodeeditwidget.cpp
 HEADERS += codeeditwidget/qcodeeditwidget.h
 
 # TextParser
-SOURCES += ../textparser/qtextparser.cpp ../textparser/qtextparserelement.cpp ../textparser/qtextparserline.cpp ../textparser/qtextparserlanguagedefinitiontoken.cpp ../textparser/qtextparserlanguagedefinition.cpp
+SOURCES += ../textparser/qtextparser.cpp
 HEADERS += ../textparser/qtextparser.h   ../textparser/qtextparserelement.h   ../textparser/qtextparserline.h   ../textparser/qtextparserlanguagedefinitiontoken.h   ../textparser/qtextparserlanguagedefinition.h
 
 # Resources

@@ -58,6 +58,8 @@ int QWDDX::size() const
 
 QWDDX & QWDDX::operator[](int index)
 {
+    QList<QString> keys;
+
     if (m_Type == QWDDX::Null)
         m_Type = QWDDX::Array;
 
@@ -74,7 +76,8 @@ QWDDX & QWDDX::operator[](int index)
         if (m_Struct.size() <= index)
             return *(new QWDDX(QWDDX::Error));
 
-        return m_Struct[m_Struct.keys().at(index)];
+        keys = m_Struct.keys();
+        return m_Struct[keys.at(index)];
 
     default:
         return *(new QWDDX(QWDDX::Error));
@@ -154,7 +157,8 @@ QString QWDDX::StructKeyAt(int index) const
     if (m_Struct.size() <= index)
         return "";
 
-    return m_Struct.keys().at(index);
+    auto keys = m_Struct.keys();
+    return keys.at(index);
 }
 
 QString QWDDX::toString() const

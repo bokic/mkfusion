@@ -55,8 +55,8 @@ QByteArray QDatabaseService::GetTables(QRDSServer rdsserver, QMap<QString, QStri
 
     vector.append(map[QStringLiteral("DATASOURCE_NAME")] + QStringLiteral(";;;"));
     vector.append(QStringLiteral("TABLEINFO"));
-    vector.append(QStringLiteral(""));
-    vector.append(QStringLiteral(""));
+    vector.append("");
+    vector.append("");
 
     return executeRDSCommandForByteArray(QStringLiteral("DBFUNCS"), rdsserver, vector);
 }
@@ -80,7 +80,7 @@ QByteArray QDatabaseService::GetPrimaryKeys(QRDSServer rdsserver, QMap<QString, 
     vector.append(map[QStringLiteral("DATASOURCE_NAME")] + QStringLiteral(";;;"));
     vector.append(QStringLiteral("PRIMARYKEYS"));
     vector.append(map[QStringLiteral("TABLE_NAME")]);
-    vector.append(QStringLiteral(""));
+    vector.append("");
 
     return executeRDSCommandForByteArray(QStringLiteral("DBFUNCS"), rdsserver, vector);
 }

@@ -2,7 +2,7 @@
 
 #include "qrdsserver.h"
 #include <QTcpSocket>
-#include <QDomNode>
+
 
 class QCFDebugger: public QObject
 {

@@ -14,23 +14,14 @@ const int TIMEOUT = 100;
 #ifdef QT_DEBUG
     #if AP_SERVER_MINORVERSION_NUMBER > 2
         #define AP_LOG_RERROR(TEXT...) ap_log_rerror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, req, TEXT);
+        #define AP_LOG_PERROR(TEXT...) ap_log_perror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, p, TEXT);
     #else
         #define AP_LOG_RERROR(TEXT...) ap_log_rerror(__FILE__, __LINE__, APLOG_NOTICE, 0, req, TEXT);
+        #define AP_LOG_PERROR(TEXT...) ap_log_perror(__FILE__, __LINE__, APLOG_NOTICE, 0, p, TEXT);
     #endif
 #else
 #define AP_LOG_RERROR(TEXT...)
 #endif
-
-#ifdef QT_DEBUG
-    #if AP_SERVER_MINORVERSION_NUMBER > 2
-        #define AP_LOG_PERROR(TEXT...) ap_log_perror(__FILE__, __LINE__, ap_default_loglevel, APLOG_NOTICE, 0, p, TEXT);
-    #else
-        #define AP_LOG_PERROR(TEXT...) ap_log_perror(__FILE__, __LINE__, APLOG_NOTICE, 0, p, TEXT);
-    #endif
-#else
-#define AP_LOG_PERROR(TEXT...)
-#endif
-
 
 #ifdef Q_OS_WIN
     #define OS_STR "Win32"

@@ -38,19 +38,11 @@ public:
         QTextParserLineTypeLFCREndLine
     };
 
-    QTextParserLine();
-    QTextParserLine(const QTextParserLine &other);
+    QTextParserLine() = default;
+    QTextParserLine(const QTextParserLine &other) = default;
 
-#ifdef Q_COMPILER_RVALUE_REFS
-    inline QTextParserLine &operator=(QTextParserLine &&other)
-    {
-        qSwap(text, other.text);
-        qSwap(type, other.type);
-
-        return *this;
-    }
-#endif
-    QTextParserLine &operator=(const QTextParserLine &other);
+    inline QTextParserLine &operator=(QTextParserLine &&other) = default;
+    inline QTextParserLine &operator=(const QTextParserLine &other) = default;
 
     QString text;
     QTextParserLineType type;

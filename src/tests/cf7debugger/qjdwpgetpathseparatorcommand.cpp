@@ -20,9 +20,9 @@ char QJDWPGetPathSeparatorCommand::getPathSeparator()
     return this->m_PathSeparator;
 }
 
-void QJDWPGetPathSeparatorCommand::processRecivedCommand(const QByteArray &p_Data)
+void QJDWPGetPathSeparatorCommand::processRecivedCommand(const QByteArray &data)
 {
-    Q_UNUSED(p_Data);
+    Q_UNUSED(data);
 
     switch (m_Progress)
     {

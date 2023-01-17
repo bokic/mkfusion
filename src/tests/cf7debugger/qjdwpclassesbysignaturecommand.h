@@ -2,6 +2,7 @@
 
 #include "qjdwpcommand.h"
 
+
 struct QJDWPClassesBySignature
 {
     quint32 refTypeTag = 0;
@@ -13,10 +14,10 @@ class QJDWPClassesBySignatureCommand : public QJDWPCommand
 {
     Q_OBJECT
 public:
-    explicit QJDWPClassesBySignatureCommand(QObject * = 0);
+    explicit QJDWPClassesBySignatureCommand(QObject *parent = nullptr);
     virtual ~QJDWPClassesBySignatureCommand();
-    quint32 sendCommand(const QString &p_ClassName);
-    virtual void processRecivedCommand(const QByteArray &p_Data);
+    quint32 sendCommand(const QString &className);
+    virtual void processRecivedCommand(const QByteArray &data) override;
     QList<QJDWPClassesBySignature> result() const;
 
 private:

@@ -1,8 +1,9 @@
 #include <QMainWindow>
 #include "qappmainwindow.h"
 
-QAppMainWindow::QAppMainWindow(QWidget *parent, Qt::WindowFlags flags)
-    : QMainWindow(parent, flags)
+
+QAppMainWindow::QAppMainWindow(QWidget *parent)
+    : QMainWindow(parent)
     , m_Edit(new QListView(this))
     , m_jdwpsocket(new QJDWPDebugger(this))
 {

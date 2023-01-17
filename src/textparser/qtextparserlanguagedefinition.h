@@ -32,22 +32,11 @@
 class QTextParserLanguageDefinition
 {
 public:
-    QTextParserLanguageDefinition();
-    QTextParserLanguageDefinition(const QTextParserLanguageDefinition &other);
+    QTextParserLanguageDefinition() = default;
+    QTextParserLanguageDefinition(const QTextParserLanguageDefinition &other) = default;
 
-#ifdef Q_COMPILER_RVALUE_REFS
-    inline QTextParserLanguageDefinition &operator=(QTextParserLanguageDefinition &&other)
-    {
-        qSwap(languageName, other.languageName);
-        qSwap(caseSensitivity, other.caseSensitivity);
-        qSwap(defaultExtensions, other.defaultExtensions);
-        qSwap(startsWith, other.startsWith);
-        qSwap(tokens, other.tokens);
-
-        return *this;
-    }
-#endif
-    QTextParserLanguageDefinition &operator=(const QTextParserLanguageDefinition &other);
+    inline QTextParserLanguageDefinition &operator=(QTextParserLanguageDefinition &&other) = default;
+    inline QTextParserLanguageDefinition &operator=(const QTextParserLanguageDefinition &other) = default;
 
     QString languageName;
     Qt::CaseSensitivity caseSensitivity;

@@ -1,4 +1,6 @@
 #include "qwddxutils.h"
+#include <QDomDocument>
+#include <QDomNode>
 #include <QHash>
 
 

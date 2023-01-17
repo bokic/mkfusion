@@ -5,7 +5,7 @@
 #include <QMap>
 
 #define FILE_CONTENTS QStringLiteral("FILE_CONTENTS")
-#define EMPTY_STR QStringLiteral("")
+#define EMPTY_STR ""
 #define BROWSEDIR QStringLiteral("BROWSEDIR")
 #define NEW_NAME QStringLiteral("NEW_NAME")
 #define EXISTENCE QStringLiteral("EXISTENCE")

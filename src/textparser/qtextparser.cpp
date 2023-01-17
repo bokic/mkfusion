@@ -22,7 +22,7 @@
 
 #include "qtextparser.h"
 
-#include <limits.h>
+#include <climits>
 
 #include <QDomDocument>
 #include <QStringList>
@@ -34,12 +34,8 @@
 #include <QList>
 #include <QDir>
 
-static QList<QTextParserLanguageDefinition> languageDefinitions;
 
-QTextParser::QTextParser():
-    language()
-{
-}
+Q_GLOBAL_STATIC(QList<QTextParserLanguageDefinition>, languageDefinitions);
 
 void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
 {
@@ -49,7 +45,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
 
     QStringList l_files = l_dir.entryList(QStringList() << "*.xml");
 
-    languageDefinitions.clear();
+    languageDefinitions->clear();
 
     for(const QString &l_file: l_files)
     {
@@ -151,7 +147,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                 }
 
                 QStringList defTokens;
-                for(const auto &token: def.tokens)
+                for(const auto &token: qAsConst(def.tokens))
                 {
                     defTokens.append(token.name);
                 }
@@ -181,7 +177,8 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                     }
                 }
 
-                for(const QString &tokenStr: startsWith.split(','))
+                auto tokensStartsWith = startsWith.split(',');
+                for(const QString &tokenStr: qAsConst(tokensStartsWith))
                 {
                     bool found = false;
 
@@ -203,7 +200,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                     }
                 }
 
-                languageDefinitions.append(def);
+                languageDefinitions->append(def);
             }
             else
             {
@@ -219,20 +216,20 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
 
 void QTextParser::setTextTypeByFileExtension(const QString &fileExt)
 {
-    if (languageDefinitions.count() == 0)
+    if (languageDefinitions->count() == 0)
     {
         QTextParser::loadParserDefinitionsFromDir(".");
     }
 
     bool found = false;
 
-    for(int c = 0; c < languageDefinitions.count(); c++)
+    for(int c = 0; c < languageDefinitions->count(); c++)
     {
-        QStringList exts = languageDefinitions.at(c).defaultExtensions;
+        QStringList exts = languageDefinitions->at(c).defaultExtensions;
 
         if (exts.contains(fileExt))
         {
-            language = languageDefinitions.at(c);
+            language = languageDefinitions->at(c);
             found = true;
             break;
         }
@@ -246,18 +243,18 @@ void QTextParser::setTextTypeByFileExtension(const QString &fileExt)
 
 void QTextParser::setTextTypeByLanguageName(const QString &langName)
 {
-    if (languageDefinitions.count() == 0)
+    if (languageDefinitions->count() == 0)
     {
         QTextParser::loadParserDefinitionsFromDir(".");
     }
 
     bool found = false;
 
-    for(int c = 0; c < languageDefinitions.count(); c++)
+    for(int c = 0; c < languageDefinitions->count(); c++)
     {
-        if (languageDefinitions.at(c).languageName.compare(langName, Qt::CaseInsensitive) == 0)
+        if (languageDefinitions->at(c).languageName.compare(langName, Qt::CaseInsensitive) == 0)
         {
-            language = languageDefinitions.at(c);
+            language = languageDefinitions->at(c);
             found = true;
             break;
         }
@@ -311,7 +308,8 @@ QTextParserElements QTextParser::parseText(const QString &text, const QString &f
 
     setTextTypeByFileExtension(fileExt);
 
-    for(const QString &curline: text.split(QRegExp("(\r\n|\n\r|\r|\n)")))
+    auto lines = text.split(QRegExp("(\r\n|\n\r|\r|\n)"));
+    for(const QString &curline: qAsConst(lines))
     {
         QTextParserLine line;
         line.text = curline;
@@ -475,9 +473,9 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
                     ret.m_ChildElements.clear();
 
-                    for(QTextParserElement oldChild: oldChildrens)
+                    for(const QTextParserElement &oldChild: qAsConst(oldChildrens))
                     {
-                        for(QTextParserElement oldGrandChild: oldChild.m_ChildElements)
+                        for(const QTextParserElement &oldGrandChild: qAsConst(oldChild.m_ChildElements))
                         {
                             ret.m_ChildElements.append(oldGrandChild);
                         }

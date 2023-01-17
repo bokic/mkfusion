@@ -1,12 +1,21 @@
 #include "qtextparser.h"
 
 
-int main()
+int main(int argc, char *argv[])
 {
+    printf("start\n");
     QTextParser parser;
 
-    parser.setTextTypeByFileExtension("cfm");
-    QTextParserElements elements = parser.parseFile("site/pi.cfm");
+    if (argc != 2)
+    {
+        printf("Usage textparser <file to parse>\n");
+        return 1;
+    }
+
+    QTextParser::loadParserDefinitionsFromDir("../src/textparser");
+    QTextParserElements elements = parser.parseFile(argv[1]);
+
+    printf("Found tokens: %d\n", elements.count());
 
     return 0;
 }

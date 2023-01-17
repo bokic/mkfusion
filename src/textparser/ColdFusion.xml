@@ -57,6 +57,6 @@
 		<token Name="CodeBlock" StartString="\{" EndString="\}" MultiLine="true">
 			<nested_tokens names="ScriptExpression" />
 		</token>
-		<token Name="Keyword" TokenString="(\bvar\b|\bfunction\b|\bthis\b)" />
+		<token Name="Keyword" TokenString="(\bvar\b|\bfunction\b|\bthis\b|try\b|\bcatch\b|\bif\b|\bthen\b|\belse\b)" />
 	</tokens>
 </language>

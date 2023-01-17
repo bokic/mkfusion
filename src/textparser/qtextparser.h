@@ -36,7 +36,12 @@
 class QTextParser
 {
 public:
-    QTextParser();
+    QTextParser() = default;
+    QTextParser(const QTextParser &other) = default;
+
+    inline QTextParser &operator=(QTextParser &&other) = default;
+    inline QTextParser &operator=(const QTextParser &other) = default;
+
     static void loadParserDefinitionsFromDir(const QString &dir);
     void setTextTypeByFileExtension(const QString &fileExt);
     void setTextTypeByLanguageName(const QString &langName);

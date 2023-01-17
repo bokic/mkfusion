@@ -11,21 +11,21 @@ QJDWPDebugger::QJDWPDebugger(QObject *parent)
     connect(&m_JDWP, &QJDWPSocket::gotPacket, this, &QJDWPDebugger::on_m_JDWP_gotPacket);
 }
 
-void QJDWPDebugger::connectToHost(QString p_Host, quint16 p_Port)
+void QJDWPDebugger::connectToHost(const QString &host, quint16 port)
 {
-    m_JDWP.connectToHost(p_Host, p_Port);
+    m_JDWP.connectToHost(host, port);
 }
 
-void QJDWPDebugger::addCommand(QJDWPCommand *p_Command)
+void QJDWPDebugger::addCommand(QJDWPCommand *command)
 {
-    p_Command->setParent(this);
-    m_Commands.append(p_Command);
+    command->setParent(this);
+    m_Commands.append(command);
     //m_Command->se
 }
 
-quint32 QJDWPDebugger::sendCommand(quint8 p_CommandSet, quint8 p_Command, const QByteArray &p_Data)
+quint32 QJDWPDebugger::sendCommand(quint8 commandSet, quint8 command, const QByteArray &data)
 {
-    return m_JDWP.sendCommand(p_CommandSet, p_Command, p_Data);
+    return m_JDWP.sendCommand(commandSet, command, data);
 }
 
 void QJDWPDebugger::on_m_JDWP_ready()
@@ -41,59 +41,60 @@ void QJDWPDebugger::on_m_JDWP_ready()
     //m_TempCommand1 = m_JDWP.sendCommand(1, 2, QJDWPSocket::encodeString("Ljava/io/File;"));
 }
 
-void QJDWPDebugger::on_m_JDWP_gotPacket(quint32 p_Id, quint8 p_Flags, quint16 p_ErrorCode, QByteArray p_Data)
+void QJDWPDebugger::on_m_JDWP_gotPacket(quint32 id, quint8 flags, quint16 errorCode, const QByteArray &data)
 {
     qDebug("gotPacket");
 
-    if (p_Flags != 0x80)
+    if (flags != 0x80)
     {
-        qDebug() << QString("Bad JDWP Flag got. It should be 0x80, but it\'s 0x%1").arg(QString::number(p_Flags, 16));
+        qDebug() << QString("Bad JDWP Flag got. It should be 0x80, but it\'s 0x%1").arg(QString::number(flags, 16));
         return;
     }
 
-    if (p_ErrorCode != 0)
+    if (errorCode != 0)
     {
-        qDebug() << QString("JDWP Error code 0x%1").arg(QString::number(p_ErrorCode, 16));
+        qDebug() << QString("JDWP Error code 0x%1").arg(QString::number(errorCode, 16));
         return;
     }
 
-    QJDWPCommand *l_Command = 0;
+    QJDWPCommand *command = nullptr;
 
-    for(QJDWPCommand *l_Item: m_Commands)
+    for(QJDWPCommand *item: qAsConst(m_Commands))
     {
-        if (l_Item->getCommandID() == p_Id)
+        if (item->getCommandID() == id)
         {
-            l_Command = l_Item;
+            command = item;
             break;
         }
     }
 
-    if (l_Command == nullptr)
+    if (command == nullptr)
     {
         qDebug("Unknown command ID arrived.");
         return;
     }
 
-    l_Command->processRecivedCommand(p_Data);
+    command->processRecivedCommand(data);
 
-    if (l_Command->getCommandID() == 0)
+    if (command->getCommandID() == 0)
     {
-        m_Commands.removeOne(l_Command);
+        m_Commands.removeOne(command);
         if (m_Initialized)
         {
-            emit recieveCommand(l_Command);
+            emit recieveCommand(command);
         }
         else
         {
-            if ((m_PathSeparator == 0)&&(strcmp(l_Command->metaObject()->className(), "QJDWPGetPathSeparatorCommand") == 0))
+            if ((m_PathSeparator == 0)&&(strcmp(command->metaObject()->className(), "QJDWPGetPathSeparatorCommand") == 0))
             {
-                m_PathSeparator = static_cast<QJDWPGetPathSeparatorCommand *>(l_Command)->getPathSeparator();
+                m_PathSeparator = static_cast<QJDWPGetPathSeparatorCommand *>(command)->getPathSeparator();
             }
             else
             {
                 emit connected();
             }
         }
-        l_Command->deleteLater();
+
+        command->deleteLater();
     }
 }

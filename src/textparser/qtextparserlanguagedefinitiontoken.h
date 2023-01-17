@@ -30,28 +30,11 @@
 class QTextParserLanguageDefinitionToken
 {
 public:
-    QTextParserLanguageDefinitionToken();
-    QTextParserLanguageDefinitionToken(const QTextParserLanguageDefinitionToken &other);
+    QTextParserLanguageDefinitionToken() = default;
+    QTextParserLanguageDefinitionToken(const QTextParserLanguageDefinitionToken &other) = default;
 
-#ifdef Q_COMPILER_RVALUE_REFS
-    inline QTextParserLanguageDefinitionToken &operator=(QTextParserLanguageDefinitionToken &&other)
-    {
-        qSwap(name, other.name);
-        qSwap(startString, other.startString);
-        qSwap(endString, other.endString);
-        qSwap(tokenString, other.tokenString);
-        qSwap(searchEndStringLast, other.searchEndStringLast);
-        qSwap(immediateStartString, other.immediateStartString);
-        qSwap(onlyStartTag, other.onlyStartTag);
-        qSwap(excludeTopLevelChild, other.excludeTopLevelChild);
-        qSwap(IgnoreIfOnlyOneChild, other.IgnoreIfOnlyOneChild);
-        qSwap(nestedTokens, other.nestedTokens);
-        qSwap(MultiLine, other.MultiLine);
-
-        return *this;
-    }
-#endif
-    QTextParserLanguageDefinitionToken &operator=(const QTextParserLanguageDefinitionToken &other);
+    inline QTextParserLanguageDefinitionToken &operator=(QTextParserLanguageDefinitionToken &&other) = default;
+    inline QTextParserLanguageDefinitionToken &operator=(const QTextParserLanguageDefinitionToken &other) = default;
 
     QString name;
     QRegExp startString;

@@ -16,5 +16,5 @@ SOURCES     = main.cpp parsertest1.cpp qdetail.cpp
 HEADERS     =          parsertest1.h   qdetail.h
 FORMS       =          parsertest1.ui  qdetail.ui
 
-SOURCES += ../../textparser/qtextparser.cpp ../../textparser/qtextparserelement.cpp ../../textparser/qtextparserline.cpp ../../textparser/qtextparserlanguagedefinitiontoken.cpp ../../textparser/qtextparserlanguagedefinition.cpp
+SOURCES += ../../textparser/qtextparser.cpp
 HEADERS += ../../textparser/qtextparser.h   ../../textparser/qtextparserelement.h   ../../textparser/qtextparserline.h   ../../textparser/qtextparserlanguagedefinitiontoken.h   ../../textparser/qtextparserlanguagedefinition.h
