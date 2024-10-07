@@ -100,12 +100,6 @@ QString QCFCompiler::compile(const QString &cppFile, QString &libFile)
 #else
                   << "-L/usr/lib/x86_64-linux-gnu" << "-lrt" << "-lpthread"
 #endif
-
-#if defined Q_OS_WIN && !defined QT_NO_DEBUG
-                  << "-lQt6Concurrentd" << "-lQt6Cored"
-#else
-                  << "-lQt6Concurrent" << "-lQt6Core"
-#endif
                  );
 
     finished = process.waitForFinished(-1);
@@ -236,7 +230,6 @@ QStringList QCFCompiler::commonCompileSwitches(const QString &p_MKFusionPath)
         << "-I" << (l_MingwPath + "include")
         << "-I" << (l_QtPath + "include" + QDir::separator() + "QtCore")
         << "-I" << (l_QtPath + "include" + QDir::separator() + "QtNetwork")
-        << "-I" << (l_QtPath + "include" + QDir::separator() + "QtConcurrent")
         << "-I" << (l_QtPath + "include")
         << "-I" << (p_MKFusionPath + "include")
 #elif defined Q_OS_LINUX
@@ -250,11 +243,9 @@ QStringList QCFCompiler::commonCompileSwitches(const QString &p_MKFusionPath)
         << "-I" << "."
         << "-I" << "/usr/include/qt6/QtCore"
         << "-I" << "/usr/include/qt6/QtNetwork"
-        << "-I" << "/usr/include/qt6/QtConcurrent"
         << "-I" << "/usr/include/qt6"
         << "-I" << "/usr/include/qt/QtCore" // Arch linux uses this path
         << "-I" << "/usr/include/qt/QtNetwork" // Arch linux uses this path
-        << "-I" << "/usr/include/qt/QtConcurrent" // Arch linux uses this path
         << "-I" << "/usr/include/qt" // Arch linux uses this path
         << "-I" << (p_MKFusionPath + "include")
 #endif

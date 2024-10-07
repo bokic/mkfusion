@@ -3,7 +3,7 @@ lessThan(QT_MAJOR_VERSION, 6) {
 }
 
 TEMPLATE     = app
-QT           = core concurrent
+QT           = core
 CONFIG      += debug_and_release c++11
 TARGET       = mkfusion-generator
 DESTDIR      = ../../../bin

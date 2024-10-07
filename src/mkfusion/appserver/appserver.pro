@@ -2,7 +2,7 @@ lessThan(QT_MAJOR_VERSION, 6) {
     error("Unsupported Qt version(Needs Qt6).")
 }
 
-QT       = core network sql concurrent xml
+QT       = core network sql xml
 CONFIG  += debug_and_release c++11
 TARGET   = mkfusion
 DESTDIR  = ../../../bin
