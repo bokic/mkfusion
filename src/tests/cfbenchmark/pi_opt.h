@@ -1,8 +1,6 @@
 #pragma once
 
-#include "qmkfusionexception.h"
 #include "qcfworkerthread.h"
-#include "qcftemplate.h"
 #include "cffunctions.h"
 #include "qcfvariant.h"
 
@@ -138,7 +136,7 @@ public:
                 //m_TemplateInstance->m_VARIABLES["VALUE"] = cf_Fix(( m_TemplateInstance->m_VARIABLES["VALUE"] % m_TemplateInstance->m_VARIABLES["DIVIDER"] ) * QCFVariant(10));
                 QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_VALUE, "VALUE");
                 QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_DIVIDER, "DIVIDER");
-                *c_VARIABLES_VALUE = cf_Fix(( (*c_VARIABLES_VALUE) % (*c_VARIABLES_DIVIDER) ) * 10);
+                *c_VARIABLES_VALUE = cf_Fix(( (*c_VARIABLES_VALUE).toInt() % (*c_VARIABLES_DIVIDER).toInt() ) * 10);
             }
 
             //if (m_TemplateInstance->m_VARIABLES["KEEPLOOPING"] == QCFVariant(true))
@@ -288,7 +286,7 @@ public:
             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_FINAL, "FINAL");
             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_I, "I");
             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_TMP_VAL, "TMP_VAL");
-            (*c_VARIABLES_FINAL)[(*c_VARIABLES_I)] = (*c_VARIABLES_TMP_VAL) % 10;
+            (*c_VARIABLES_FINAL)[(*c_VARIABLES_I)] = (*c_VARIABLES_TMP_VAL).toInt() % 10;
         }
 
         //m_TemplateInstance->m_VARIABLES["PI"] = QString("");

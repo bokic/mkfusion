@@ -24,6 +24,7 @@
 
 #include <climits>
 
+#include <QRegularExpression>
 #include <QDomDocument>
 #include <QStringList>
 #include <QTextStream>
@@ -147,14 +148,14 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                 }
 
                 QStringList defTokens;
-                for(const auto &token: qAsConst(def.tokens))
+                for(const auto &token: std::as_const(def.tokens))
                 {
                     defTokens.append(token.name);
                 }
 
                 for(int target = 0; target < def.tokens.count(); target++)
                 {
-                    QStringList nestedTokens = tmpNestedTokens[target].split(",", QString::SkipEmptyParts);
+                    QStringList nestedTokens = tmpNestedTokens[target].split(",", Qt::SkipEmptyParts);
 
                     if (nestedTokens.isEmpty())
                     {
@@ -178,7 +179,7 @@ void QTextParser::loadParserDefinitionsFromDir(const QString &dir)
                 }
 
                 auto tokensStartsWith = startsWith.split(',');
-                for(const QString &tokenStr: qAsConst(tokensStartsWith))
+                for(const QString &tokenStr: std::as_const(tokensStartsWith))
                 {
                     bool found = false;
 
@@ -278,7 +279,7 @@ QTextParserElements QTextParser::parseFile(const QString &fileName)
         QTextParserLines fileLines;
 
         ts.setDevice(&file);
-        ts.setCodec("UTF-8");
+        //ts.setCodec("UTF-8");
         ts.setAutoDetectUnicode(true);
 
         while(!ts.atEnd())
@@ -308,8 +309,8 @@ QTextParserElements QTextParser::parseText(const QString &text, const QString &f
 
     setTextTypeByFileExtension(fileExt);
 
-    auto lines = text.split(QRegExp("(\r\n|\n\r|\r|\n)"));
-    for(const QString &curline: qAsConst(lines))
+    auto lines = text.split(QRegularExpression("(\r\n|\n\r|\r|\n)"));
+    for(const QString &curline: std::as_const(lines))
     {
         QTextParserLine line;
         line.text = curline;
@@ -473,9 +474,9 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
                     ret.m_ChildElements.clear();
 
-                    for(const QTextParserElement &oldChild: qAsConst(oldChildrens))
+                    for(const QTextParserElement &oldChild: std::as_const(oldChildrens))
                     {
-                        for(const QTextParserElement &oldGrandChild: qAsConst(oldChild.m_ChildElements))
+                        for(const QTextParserElement &oldGrandChild: std::as_const(oldChild.m_ChildElements))
                         {
                             ret.m_ChildElements.append(oldGrandChild);
                         }
@@ -496,7 +497,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                 {
                     if (token.onlyStartTag == false)
                     {
-                        start_column += reg.cap().count();
+                        start_column += reg.cap().size();
                         ret.m_EndLine = start_line;
                         ret.m_EndColumn = start_column;
                     }
@@ -547,7 +548,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
 
             if (index == start_column)
             {
-                start_column += reg.cap().count();
+                start_column += reg.cap().size();
 
                 ret.m_EndLine = start_line;
                 ret.m_EndColumn = start_column;
@@ -592,7 +593,7 @@ QTextParserElement QTextParser::parseElement(const QTextParserLines &lines, cons
                 }
                 ret.m_Text = reg.cap();
 
-                start_column += reg.cap().count();
+                start_column += reg.cap().size();
 
                 ret.m_EndLine = start_line;
                 ret.m_EndColumn = start_column;

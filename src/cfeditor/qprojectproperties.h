@@ -3,9 +3,6 @@
 #include "ui_qprojectproperties.h"
 
 #include "qproject.h"
-#include "qftpproject.h"
-#include "qsftpproject.h"
-#include "qrdsproject.h"
 
 #include <QDialog>
 #include <QWidget>
@@ -16,7 +13,7 @@ class QProjectProperties : public QDialog
     Q_OBJECT
 
 public:
-    QProjectProperties(QWidget *parent = nullptr, Qt::WindowFlags flags = 0);
+    QProjectProperties(QWidget *parent = nullptr, Qt::WindowFlags flags = Qt::Widget);
     QString getConnectionString();
     void fillDialog(QProject *project);
 private slots:

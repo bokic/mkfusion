@@ -6,7 +6,6 @@
 
 QCFSettings::QCFSettings()
     : m_customTagsPath()
-    , m_schedulerThreadIntervalMS(5000)
 {
 }
 

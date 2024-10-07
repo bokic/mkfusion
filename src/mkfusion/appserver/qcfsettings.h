@@ -20,5 +20,5 @@ public:
 private:
     QString m_customTagsPath;
     QList<QCFDatabaseConnection> m_databaseConnections;
-    int m_schedulerThreadIntervalMS;
+    //int m_schedulerThreadIntervalMS = 5000;
 };

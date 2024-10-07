@@ -11,7 +11,7 @@ QCFDebugger::QCFDebugger(const QRDSServer &server)
 {
     connect(&m_EventSocket, &QTcpSocket::connected, this, &QCFDebugger::onEventConnected);
     connect(&m_EventSocket, &QTcpSocket::disconnected, this, &QCFDebugger::onEventDisconnected);
-    connect(&m_EventSocket, static_cast<void (QTcpSocket::*)(QAbstractSocket::SocketError)>(&QAbstractSocket::error), this, &QCFDebugger::onEventError);
+    connect(&m_EventSocket, &QTcpSocket::errorOccurred, this, &QCFDebugger::onEventError);
     connect(&m_EventSocket, &QTcpSocket::readyRead, this, &QCFDebugger::onEventReadyRead);
     connect(&m_EventSocket, &QTcpSocket::bytesWritten, this, &QCFDebugger::onEventBytesWritten);
 }

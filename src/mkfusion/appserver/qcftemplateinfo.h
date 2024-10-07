@@ -23,5 +23,5 @@ public:
 
     QString m_FilePath;
     qint64 m_FileSize;
-    uint m_FileModified;
+    qint64 m_FileModified;
 };

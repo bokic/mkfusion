@@ -1018,7 +1018,7 @@ Q_DECL_EXPORT bool QCFVariant::operator==(const QString &p_Value)
 
     if (m_Type == String)
     {
-        return m_String == p_Value;
+        return *m_String == p_Value;
     }
 
     throw QMKFusionExpressionException(QObject::tr("Unsupported compare(%1).").arg(__PRETTY_FUNCTION__));

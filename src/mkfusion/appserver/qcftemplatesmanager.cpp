@@ -63,7 +63,7 @@ void QCFTemplatesManager::init()
             {
                 QFileInfo fi(l_page.m_FilePath);
 
-                if ((fi.lastModified().toTime_t() == l_page.m_FileModified)&&(fi.size() == l_page.m_FileSize))
+                if ((fi.lastModified().toSecsSinceEpoch() == l_page.m_FileModified)&&(fi.size() == l_page.m_FileSize))
                 {
                     m_templates.insert(l_page.m_FilePath, QCFTemplate(templateFilePath, l_page, false));
 

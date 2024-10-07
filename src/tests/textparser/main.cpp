@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     QTextParser::loadParserDefinitionsFromDir("../src/textparser");
     QTextParserElements elements = parser.parseFile(argv[1]);
 
-    printf("Found tokens: %d\n", elements.count());
+    printf("Found tokens: %lld\n", elements.count());
 
     return 0;
 }

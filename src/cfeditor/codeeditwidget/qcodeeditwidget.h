@@ -9,6 +9,12 @@
 #include <QList>
 #include <QPen>
 
+
+struct QCodeEditWidgetTextPosition {
+    int m_Row = 1;
+    int m_Column = 1;
+};
+
 class QCodeEditWidget : public QAbstractScrollArea
 {
     Q_OBJECT
@@ -63,11 +69,6 @@ protected:
 private:
     void updatePanelWidth();
     void ensureCaretIsVisible();
-
-    typedef struct {
-        int m_Row = 1;
-        int m_Column = 1;
-    } QCodeEditWidgetTextPosition;
 
     QBrush m_LineNumbersBackground;
     QPen m_LineNumbersNormal;

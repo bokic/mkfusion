@@ -38,6 +38,8 @@ void QCFLog::write(const QString &filename, int level, const QString &text)
         return;
     }
 
+    QTextStream out(&file);
+
     QString timeStamp = QDateTime::currentDateTime().toString("ddd MMMM d yy hh:mm:ss.zzz");
     QString type;
     QString processID = QString::number(QCoreApplication::applicationPid(), 16);
@@ -72,11 +74,7 @@ void QCFLog::write(const QString &filename, int level, const QString &text)
         type = QObject::tr("UNKNOWN(%1)").arg(QString::number(level, 16));
     }
 
-#ifdef Q_OS_WIN
-    file.write(QByteArray(timeStamp.toUtf8()).append('\t').append(processID).append('\t').append(threadID).append('\t').append(type).append('\t').append(text.toUtf8()).append('\r').append('\n'));
-#else
-    file.write(QByteArray(timeStamp.toUtf8()).append('\t').append(processID).append('\t').append(threadID).append('\t').append(type).append('\t').append(text.toUtf8()).append('\n'));
-#endif
+    out << timeStamp << '\t' << processID << '\t' << threadID << '\t' << type << '\t' << text; Qt::endl(out);
 
     file.close();
 }

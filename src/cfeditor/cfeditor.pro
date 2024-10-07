@@ -2,7 +2,7 @@ lessThan(QT_MAJOR_VERSION, 6) {
     error("Unsupported Qt version(Needs Qt6).")
 }
 
-QT       = core gui network xml widgets webkit webkitwidgets
+QT       = core gui network xml widgets webview webenginewidgets core5compat
 
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../bin

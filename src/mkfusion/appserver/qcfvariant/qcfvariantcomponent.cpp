@@ -72,7 +72,7 @@ bool QCFVariantComponent::isComponentLatest()
         return false;
     }
 
-    if ((fi.lastModified().toTime_t() == m_TemplateFileModified)&&(fi.size() == m_TemplateFileSize))
+    if ((fi.lastModified().toSecsSinceEpoch() == m_TemplateFileModified)&&(fi.size() == m_TemplateFileSize))
     {
         return true;
     }

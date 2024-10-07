@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>867</width>
-    <height>489</height>
+    <width>868</width>
+    <height>561</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>867</width>
+     <width>868</width>
      <height>23</height>
     </rect>
    </property>
@@ -188,15 +188,6 @@
     </column>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="m_BrowserDock">
-   <property name="windowTitle">
-    <string>Browser</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>8</number>
-   </attribute>
-   <widget class="QWebView" name="m_Browser"/>
-  </widget>
   <widget class="QToolBar" name="project_toolBar">
    <property name="windowTitle">
     <string>toolBar_2</string>
@@ -225,6 +216,27 @@
    </attribute>
    <addaction name="action_Full_Screen"/>
    <addaction name="action_Hide_Everything"/>
+  </widget>
+  <widget class="QDockWidget" name="m_BrowserDock">
+   <property name="windowTitle">
+    <string>Browser</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="m_Browser2">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QWebEngineView" name="m_Browser">
+       <property name="url">
+        <url>
+         <string>about:blank</string>
+        </url>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <action name="action_New">
    <property name="enabled">
@@ -615,9 +627,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
+   <class>QWebEngineView</class>
    <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
+   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
   </customwidget>
   <customwidget>
    <class>QAdvancedTreeWidget</class>

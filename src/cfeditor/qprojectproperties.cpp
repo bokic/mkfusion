@@ -7,6 +7,10 @@
 #include <QDebug>
 #include <QDir>
 
+#include "qftpproject.h"
+#include "qsftpproject.h"
+#include "qrdsproject.h"
+
 // SFTP
 #include <libssh/libssh.h>
 #include <libssh/sftp.h>

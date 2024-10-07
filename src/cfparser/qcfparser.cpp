@@ -1529,7 +1529,7 @@ QCFParserErrorType QCFParser::parse(const QFileInfo &p_File, bool *p_Terminate)
 
     m_FileName = p_File.filePath();
     m_FileSize = p_File.size();
-    m_FileModifyDateTime = p_File.lastModified().toTime_t();
+    m_FileModifyDateTime = p_File.lastModified().toSecsSinceEpoch();
 
     if (!file.open(QIODevice::ReadOnly))
     {

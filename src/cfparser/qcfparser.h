@@ -137,7 +137,7 @@ public:
     QList<QCFParserTag> getFunctionArguments(const QCFParserTag &p_Function) const;
     QString m_FileName;
     qint64 m_FileSize;
-    uint m_FileModifyDateTime;
+    qint64 m_FileModifyDateTime;
     bool m_InsideCFScript;
     QStringList m_TagPrefixes;
     QCFParserFileType m_FileType;

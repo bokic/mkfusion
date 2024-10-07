@@ -38,7 +38,7 @@ void QCFDatabasePoolManager::setConnectionDefinition(const QList<QCFDatabaseConn
         {
             QSqlDatabase db = QSqlDatabase::addDatabase(connection.m_connectionDriver, connection.m_connectionName.toUpper());
 
-            for(const QString item : connection.m_connectionString.split(';'))
+            for(const QString &item : connection.m_connectionString.split(';'))
             {
                 QStringList key_value = item.split(':');
 

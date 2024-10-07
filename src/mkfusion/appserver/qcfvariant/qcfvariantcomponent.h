@@ -59,5 +59,5 @@ public:
 
     QString m_TemplateFilePath;
     qint64 m_TemplateFileSize;
-    uint m_TemplateFileModified;
+    qint64 m_TemplateFileModified;
 };

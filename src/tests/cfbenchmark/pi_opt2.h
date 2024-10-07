@@ -136,7 +136,7 @@ public:
                 //m_VARIABLES["VALUE"] = cf_Fix(( m_VARIABLES["VALUE"] % m_VARIABLES["DIVIDER"] ) * QCFVariant(10));
                 QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_VALUE, QStringLiteral("VALUE"));
                 QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_DIVIDER, QStringLiteral("DIVIDER"));
-                *c_VARIABLES_VALUE = cf_Fix(( (*c_VARIABLES_VALUE) % (*c_VARIABLES_DIVIDER) ) * 10);
+                *c_VARIABLES_VALUE = cf_Fix(( (*c_VARIABLES_VALUE).toInt() % (*c_VARIABLES_DIVIDER).toInt() ) * 10);
             }
 
             //if (m_VARIABLES["KEEPLOOPING"] == QCFVariant(true))
@@ -286,7 +286,7 @@ public:
             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_FINAL, QStringLiteral("FINAL"));
             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_I, QStringLiteral("I"));
             QCHECK_QCFVARIANT_VAR_CACHE(c_VARIABLES_TMP_VAL, QStringLiteral("TMP_VAL"));
-            (*c_VARIABLES_FINAL)[(*c_VARIABLES_I)] = (*c_VARIABLES_TMP_VAL) % 10;
+            (*c_VARIABLES_FINAL)[(*c_VARIABLES_I)] = (*c_VARIABLES_TMP_VAL).toInt() % 10;
         }
 
         //m_VARIABLES["PI"] = QString("");

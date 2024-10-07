@@ -748,7 +748,7 @@ Q_DECL_EXPORT QCFVariant cf_CreateDate(int year, int month, int day)
         throw QMKFusionInvalidArgumentException("CreateDate", 3, day, 1, 31);
     }
 
-    return QDateTime(QDate(year, month, day));
+    return QDateTime(QDate(year, month, day), QTime());
 }
 
 Q_DECL_EXPORT QCFVariant cf_CreateDateTime(int year, int month, int day, int hour, int minute, int second)
@@ -770,7 +770,7 @@ Q_DECL_EXPORT QCFVariant cf_CreateObject(QCFWorkerThread *thisTemplate, const QS
 
 Q_DECL_EXPORT QCFVariant cf_CreateODBCDate(const QDateTime &date)
 {
-    return QDateTime(QDate(date.date().year(), date.date().month(), date.date().day()));
+    return QDateTime(QDate(date.date().year(), date.date().month(), date.date().day()), QTime());
 }
 
 Q_DECL_EXPORT QCFVariant cf_CreateODBCDateTime(const QDateTime &date)
@@ -805,7 +805,7 @@ Q_DECL_EXPORT QCFVariant cf_CreateTime(int hour, int minute, int second)
 
 Q_DECL_EXPORT QCFVariant cf_CreateTimeSpan(int days, int hours, int minutes, int seconds)
 {
-    QDateTime ret = QDateTime(QDate(1899, 12, 30));
+    QDateTime ret = QDateTime(QDate(1899, 12, 30), QTime());
 
     ret = ret.addDays(days);
     ret = ret.addSecs((hours * 60 * 60) + (minutes * 60) + seconds);
@@ -3796,7 +3796,7 @@ Q_DECL_EXPORT QCFVariant cf_StructKeyArray(const QCFVariant &structure)
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
 
-    for(const QString key : structure.m_Struct->keys())
+    for(const QString &key : structure.m_Struct->keys())
     {
         ret.m_Array->append(key);
     }
@@ -3823,7 +3823,7 @@ Q_DECL_EXPORT QString cf_StructKeyList(const QCFVariant &structure, const QStrin
         throw QMKFusionException("Not Struct", "structure is not a struct");
     }
 
-    for(const QString key : structure.m_Struct->keys())
+    for(const QString &key : structure.m_Struct->keys())
     {
         ret.append(key);
     }

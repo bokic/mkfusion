@@ -59,7 +59,7 @@ void QJDWPDebugger::on_m_JDWP_gotPacket(quint32 id, quint8 flags, quint16 errorC
 
     QJDWPCommand *command = nullptr;
 
-    for(QJDWPCommand *item: qAsConst(m_Commands))
+    for(QJDWPCommand *item: std::as_const(m_Commands))
     {
         if (item->getCommandID() == id)
         {

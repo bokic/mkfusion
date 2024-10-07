@@ -371,7 +371,7 @@ void QCodeEditWidget::keyPressEvent(QKeyEvent *event)
 
     if ((!l_EventText.isEmpty())&&((event->modifiers() & (Qt::ControlModifier | Qt::AltModifier)) == 0))
     {
-        for(int c = 0; c < l_EventText.count(); c++)
+        for(int c = 0; c < l_EventText.size(); c++)
         {
             QChar l_Char = l_EventText.at(c);
 
@@ -852,9 +852,9 @@ void QCodeEditWidget::paintEvent(QPaintEvent *event)
     }
 
     int max_LineSize = 0;
-    for(const QCodeEditWidgetLine &l_Line: qAsConst(m_Lines))
+    for(const QCodeEditWidgetLine &l_Line: std::as_const(m_Lines))
     {
-        int l_CurrentLineSize = l_Line.text.count();
+        int l_CurrentLineSize = l_Line.text.size();
 
         if (l_CurrentLineSize > max_LineSize)
         {
@@ -888,7 +888,7 @@ void QCodeEditWidget::mouseMoveEvent(QMouseEvent *event)
             int l_fontHeight = l_fm.height();
             int l_fontWidth = l_fm.horizontalAdvance(' ');
 
-            m_CarretPosition.m_Row = m_ScrollYLinePos + (event->y() / l_fontHeight) + 1;
+            m_CarretPosition.m_Row = m_ScrollYLinePos + (event->position().y() / l_fontHeight) + 1;
 
             if (m_CarretPosition.m_Row < 1)
             {
@@ -900,16 +900,16 @@ void QCodeEditWidget::mouseMoveEvent(QMouseEvent *event)
                 m_CarretPosition.m_Row = m_Lines.count();
             }
 
-            m_CarretPosition.m_Column = (event->x() - 30 + (l_fontWidth / 2)) / l_fontWidth;
+            m_CarretPosition.m_Column = (event->position().x() - 30 + (l_fontWidth / 2)) / l_fontWidth;
 
             if (m_CarretPosition.m_Column < 1)
             {
                 m_CarretPosition.m_Column = 1;
             }
 
-            if (m_CarretPosition.m_Column > m_Lines[m_CarretPosition.m_Row - 1].text.count() + 1)
+            if (m_CarretPosition.m_Column > m_Lines[m_CarretPosition.m_Row - 1].text.size() + 1)
             {
-                m_CarretPosition.m_Column = m_Lines[m_CarretPosition.m_Row - 1].text.count() + 1;
+                m_CarretPosition.m_Column = m_Lines[m_CarretPosition.m_Row - 1].text.size() + 1;
             }
 
             viewport()->update();
@@ -920,7 +920,7 @@ void QCodeEditWidget::mouseMoveEvent(QMouseEvent *event)
 void QCodeEditWidget::mousePressEvent(QMouseEvent *event)
 {
     // TODO: unhardcode 30
-    if (event->x() > 30)
+    if (event->position().x() > 30)
     {
         m_SelectMouseDown = true;
 
@@ -928,18 +928,18 @@ void QCodeEditWidget::mousePressEvent(QMouseEvent *event)
         int l_fontHeight = l_fm.height();
         int l_fontWidth = l_fm.horizontalAdvance(' ');
 
-        m_CarretPosition.m_Row = m_ScrollYLinePos + (event->y() / l_fontHeight) + 1;
+        m_CarretPosition.m_Row = m_ScrollYLinePos + (event->position().y() / l_fontHeight) + 1;
 
         if (m_CarretPosition.m_Row > (m_Lines.count()))
         {
             m_CarretPosition.m_Row = m_Lines.count();
         }
 
-        m_CarretPosition.m_Column = (event->x() - 30 + (l_fontWidth / 2)) / l_fontWidth;
+        m_CarretPosition.m_Column = (event->position().x() - 30 + (l_fontWidth / 2)) / l_fontWidth;
 
-        if (m_CarretPosition.m_Column > m_Lines[m_CarretPosition.m_Row - 1].text.count() + 1)
+        if (m_CarretPosition.m_Column > m_Lines[m_CarretPosition.m_Row - 1].text.size() + 1)
         {
-            m_CarretPosition.m_Column = m_Lines[m_CarretPosition.m_Row - 1].text.count() + 1;
+            m_CarretPosition.m_Column = m_Lines[m_CarretPosition.m_Row - 1].text.size() + 1;
         }
 
         if (m_CarretPosition.m_Column < 1)
@@ -958,12 +958,12 @@ void QCodeEditWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     m_SelectMouseDown = false;
 
-    if ((event->button() == Qt::LeftButton)&&(event->x() < 16))
+    if ((event->button() == Qt::LeftButton)&&(event->position().x() < 16))
     {
         QFontMetrics l_fm(m_TextFont);
         int l_fontHeight = l_fm.height();
 
-        int l_LineHited = m_ScrollYLinePos + (event->y() / l_fontHeight);
+        int l_LineHited = m_ScrollYLinePos + (event->position().y() / l_fontHeight);
 
         if (l_LineHited < m_Lines.count())
         {

@@ -80,7 +80,7 @@ int QCFTemplate::usageCount() const
     return m_usage;
 }
 
-uint QCFTemplate::modified() const
+qint64 QCFTemplate::modified() const
 {
     return m_modified;
 }

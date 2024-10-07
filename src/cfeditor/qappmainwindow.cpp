@@ -7,7 +7,7 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QFileDialog>
-#include <QtWebKit>
+#include <QtWebEngineWidgets>
 
 
 QAppMainWindow::QAppMainWindow(QWidget *parent)

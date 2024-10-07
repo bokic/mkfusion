@@ -67,7 +67,7 @@ void CFTest1::on_pushButton_clicked()
     QFileDialog dialog(this);
     QStringList keys;
 
-    dialog.setFileMode(QFileDialog::DirectoryOnly);
+    dialog.setFileMode(QFileDialog::Directory);
 
     if (dialog.exec() == QDialog::Accepted)
     {

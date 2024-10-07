@@ -94,7 +94,7 @@ public:
                 }
 
 // Line 697.
-                m_VARIABLES[L"VALUE"] = cf_Fix(( m_VARIABLES[L"VALUE"]%m_VARIABLES[L"DIVIDER"] ) * QCFVariant(10));
+                m_VARIABLES[L"VALUE"] = cf_Fix(( m_VARIABLES[L"VALUE"].toInt()%m_VARIABLES[L"DIVIDER"].toInt() ) * QCFVariant(10));
 
 // Line 749.
             }
@@ -218,7 +218,7 @@ public:
             m_VARIABLES[L"TRANSFER"] = cf_Fix(m_VARIABLES[L"TMP_VAL"] / QCFVariant(10));
 
 // Line 1805.
-            m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]] = m_VARIABLES[L"TMP_VAL"]%QCFVariant(10);
+            m_VARIABLES[L"FINAL"][m_VARIABLES[L"I"]] = m_VARIABLES[L"TMP_VAL"].toInt()%QCFVariant(10).toInt();
 
 // Line 1841.
         }

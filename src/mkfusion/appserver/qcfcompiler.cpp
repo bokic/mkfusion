@@ -140,7 +140,7 @@ QString QCFCompiler::generateCpp(const QString &cfmlFilePath, QString &cppFilePa
 {
     QProcess process;
 
-    cppFilePath = m_TargetPath + "templates" + QDir::separator() + QFileInfo(cfmlFilePath).baseName() + "_" + QString::number(QDateTime::currentDateTime().toTime_t()) + ".cpp";
+    cppFilePath = m_TargetPath + "templates" + QDir::separator() + QFileInfo(cfmlFilePath).baseName() + "_" + QString::number(QDateTime::currentDateTime().toSecsSinceEpoch()) + ".cpp";
 
     int ret = process.execute("mkfusion-generator", QStringList() << cfmlFilePath << cppFilePath);
 

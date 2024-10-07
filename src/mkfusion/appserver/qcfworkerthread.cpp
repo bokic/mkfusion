@@ -1054,7 +1054,7 @@ void QCFWorkerThread::f_FileUploadMove(const QString &destination, const QString
         QString contentType = m_FileUpload[tmp].m_ContentType.trimmed();
         bool found = false;
 
-        for(const QString item : acceptList)
+        for(const QString &item : acceptList)
         {
             if (item.trimmed().compare(contentType, Qt::CaseInsensitive) == 0)
             {

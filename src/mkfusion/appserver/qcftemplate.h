@@ -33,7 +33,7 @@ public:
     QCFTemplate &operator=(const QCFTemplate &other);
     virtual ~QCFTemplate();
     int usageCount() const;
-    uint modified() const;
+    qint64 modified() const;
     bool load();
     bool unload();
     bool isLoaded() const;
@@ -52,7 +52,7 @@ public:
 private:
     QString m_pathName;
     QLibrary *m_library;
-    uint m_modified;
+    qint64 m_modified;
     volatile qint64 m_fileSize;
     QString m_error;
     volatile int m_usage;

@@ -2,7 +2,7 @@ lessThan(QT_MAJOR_VERSION, 6) {
     error("Unsupported Qt version(Needs Qt6).")
 }
 
-QT       = core gui widgets network
+QT       = core gui widgets network core5compat
 
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../../bin

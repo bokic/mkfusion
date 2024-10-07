@@ -9,10 +9,10 @@
 
 class QCFSession
 {
-    QCFSession() : m_callOnSessionEnd(false) {}
+    QCFSession() {}
     QString m_name;
     QString m_application;
-    bool m_callOnSessionEnd;
+    //bool m_callOnSessionEnd = false;
     QCFVariant m_data;
     QHash<QString, QReadWriteLock> m_lockHash;
     QDateTime m_timeout;
