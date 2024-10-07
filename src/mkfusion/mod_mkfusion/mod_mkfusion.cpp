@@ -24,9 +24,7 @@ const int TIMEOUT = 100;
 #define AP_LOG_RERROR(TEXT...)
 #endif
 
-#ifdef Q_OS_WIN
-    #define OS_STR "Win32"
-#elif defined Q_OS_LINUX
+#if defined Q_OS_LINUX
     #define OS_STR "Linux"
 #else
     #define OS_STR "Unknown"
@@ -148,9 +146,6 @@ static int mkfusion_handler(request_rec *req)
 
         while(l_localSocket.isValid())
         {
-#ifndef Q_OS_WIN
-            if (l_localSocket.waitForReadyRead())
-#endif
             {
                 l_ReadBuf = l_localSocket.readAll();
 

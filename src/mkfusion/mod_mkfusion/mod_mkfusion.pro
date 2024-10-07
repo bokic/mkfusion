@@ -12,15 +12,12 @@ DEPENDPATH  += . ../simplifiedlocalsocket
 INCLUDEPATH += . ../simplifiedlocalsocket
 
 
-unix:CONFIG += link_pkgconfig
-unix:PKGCONFIG += apr-1
+CONFIG += link_pkgconfig
+PKGCONFIG += apr-1
 
-win32:INCLUDEPATH += ../../../libs/apache2/include
-unix:INCLUDEPATH  += /usr/include/httpd /usr/include/apache2
-win32:LIBS += "-L../../../libs/apache2/lib" -llibhttpd -llibapr-1 libpsapi
+INCLUDEPATH  += /usr/include/httpd /usr/include/apache2
 
 # Input
 SOURCES        = mod_mkfusion.cpp
-win32:SOURCES += ../simplifiedlocalsocket/qsimplifiedlocalsocket_win.cpp
-unix:SOURCES  += ../simplifiedlocalsocket/qsimplifiedlocalsocket_unix.cpp
+SOURCES       += ../simplifiedlocalsocket/qsimplifiedlocalsocket_unix.cpp
 HEADERS        = ../simplifiedlocalsocket/qsimplifiedlocalsocket.h

@@ -11,5 +11,4 @@ INCLUDEPATH += . ../../../libs/libssh/include
 
 SOURCES += main.cpp
 
-win32:LIBS += ../../../libs/libssh/lib/libssh.dll.a
-unix:LIBS += -lssh
+LIBS += -lssh

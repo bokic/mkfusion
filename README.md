@@ -5,7 +5,6 @@ MKFusion is a free opensource CFML application server.
 Utilizing C++ to convert cfm/cfc files to dll/so dynamic libraries, MKFusion is able to achieve incredible performance while keeping memory usage to minimum.
 
 Precompiled packages:
-Windows - http://sourceforge.net/projects/mkfusion/files/
 Ubuntu 15.04, 14.10 are supported from repository(see below for more details).
 Older Ubuntu versions need to compile from sources.
 

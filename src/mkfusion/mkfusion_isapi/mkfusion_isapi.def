@@ -1,4 +1,0 @@
-LIBRARY   mkfusion_isapi.dll
-EXPORTS
-   GetExtensionVersion	@1
-   HttpExtensionProc	@2
