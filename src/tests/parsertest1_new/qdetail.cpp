@@ -247,7 +247,7 @@ int QDetail::getTextPos(int line, int column)
 
     for(int c = 0; c < line; c++)
     {
-        pos += m_FileLines.at(c).count() + 1;
+        pos += m_FileLines.at(c).size() + 1;
     }
 
     return pos + column;
