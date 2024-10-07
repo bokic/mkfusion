@@ -102,9 +102,9 @@ QString QCFCompiler::compile(const QString &cppFile, QString &libFile)
 #endif
 
 #if defined Q_OS_WIN && !defined QT_NO_DEBUG
-                  << "-lQt5Concurrentd" << "-lQt5Cored"
+                  << "-lQt6Concurrentd" << "-lQt6Cored"
 #else
-                  << "-lQt5Concurrent" << "-lQt5Core"
+                  << "-lQt6Concurrent" << "-lQt6Core"
 #endif
                  );
 
@@ -241,17 +241,17 @@ QStringList QCFCompiler::commonCompileSwitches(const QString &p_MKFusionPath)
         << "-I" << (p_MKFusionPath + "include")
 #elif defined Q_OS_LINUX
 #ifdef __x86_64__
-        << "-I" << "/usr/share/qt5/mkspecs/linux-g++-64"
+        << "-I" << "/usr/share/qt6/mkspecs/linux-g++-64"
         << "-I" << "/usr/lib/qt/mkspecs/linux-g++-64" // Arch linux uses this path
 #else
-        << "-I" << "/usr/share/qt5/mkspecs/linux-g++"
+        << "-I" << "/usr/share/qt6/mkspecs/linux-g++"
         << "-I" << "/usr/lib/qt/mkspecs/linux-g++" // Arch linux uses this path
 #endif
         << "-I" << "."
-        << "-I" << "/usr/include/qt5/QtCore"
-        << "-I" << "/usr/include/qt5/QtNetwork"
-        << "-I" << "/usr/include/qt5/QtConcurrent"
-        << "-I" << "/usr/include/qt5"
+        << "-I" << "/usr/include/qt6/QtCore"
+        << "-I" << "/usr/include/qt6/QtNetwork"
+        << "-I" << "/usr/include/qt6/QtConcurrent"
+        << "-I" << "/usr/include/qt6"
         << "-I" << "/usr/include/qt/QtCore" // Arch linux uses this path
         << "-I" << "/usr/include/qt/QtNetwork" // Arch linux uses this path
         << "-I" << "/usr/include/qt/QtConcurrent" // Arch linux uses this path

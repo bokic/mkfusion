@@ -11,8 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/../bin)
 
-find_package(QT NAMES Qt5 COMPONENTS Core Gui Network Xml Widgets WebKit WebKitWidgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Network Xml Widgets WebKit WebKitWidgets REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS Core Gui Network Xml Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Network Xml Widgets REQUIRED)
 
 include_directories(
     .
@@ -21,7 +21,7 @@ include_directories(
     ../textparser
 )
 
-include_directories(${Qt5Core_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5WebKit_INCLUDE_DIRS})
+include_directories(${Qt6Core_INCLUDE_DIRS} ${Qt6Network_INCLUDE_DIRS} ${Qt6Xml_INCLUDE_DIRS} ${Qt6Widgets_INCLUDE_DIRS})
 
 set(PROJECT_SOURCES
 
@@ -58,4 +58,4 @@ add_executable(cfeditor
     ${PROJECT_SOURCES}
 )
 
-target_link_libraries(cfeditor PRIVATE Qt5::Core Qt5::Network Qt5::Xml Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets -lssh)
+target_link_libraries(cfeditor PRIVATE Qt6::Core Qt6::Network Qt6::Xml Qt6::Widgets -lssh)

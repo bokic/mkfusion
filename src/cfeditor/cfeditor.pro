@@ -1,5 +1,5 @@
-lessThan(QT_MAJOR_VERSION, 5) {
-    error("Unsupported Qt version(Needs Qt5).")
+lessThan(QT_MAJOR_VERSION, 6) {
+    error("Unsupported Qt version(Needs Qt6).")
 }
 
 QT       = core gui network xml widgets webkit webkitwidgets
