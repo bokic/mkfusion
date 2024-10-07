@@ -2,6 +2,7 @@
 #include <QCoreApplication>
 #include <QDataStream>
 #include <QByteArray>
+#include <QIODevice>
 
 #include <httpd.h>
 #include <http_config.h>
