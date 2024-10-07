@@ -127,7 +127,7 @@ void QSFTPProject::WriteFile(const QString &p_File, const QByteArray &p_FileCont
         return;
     }
 
-    sftp_write(l_file, p_FileContent.data(), p_FileContent.count());
+    sftp_write(l_file, p_FileContent.data(), p_FileContent.size());
 
     sftp_close(l_file);
 }

@@ -2877,7 +2877,7 @@ Q_DECL_EXPORT QCFVariant cf_ListToArray(const QString &list, const QString &deli
 {
     QCFVariant ret(QCFVariant::Array);
 
-    if (delimiters.count() == 0)
+    if (delimiters.size() == 0)
     {
         ret.m_Array->append(list);
     }
@@ -2887,7 +2887,7 @@ Q_DECL_EXPORT QCFVariant cf_ListToArray(const QString &list, const QString &deli
 
         for (int c = 0; c < list.length(); c++)
         {
-            for(int dc = 0; dc < delimiters.count(); dc++)
+            for(int dc = 0; dc < delimiters.size(); dc++)
             {
                 if (list.at(c) == delimiters.at(dc))
                 {
@@ -2910,9 +2910,9 @@ Q_DECL_EXPORT QCFVariant cf_ListToArray(const QString &list, const QString &deli
             last_pos = index + 1;
         }
 
-        if ((list.count() - 1 > last_pos)||(includeEmptyFields))
+        if ((list.size() - 1 > last_pos)||(includeEmptyFields))
         {
-            ret.m_Array->append(list.mid(last_pos, list.count() - 1 - last_pos));
+            ret.m_Array->append(list.mid(last_pos, list.size() - 1 - last_pos));
         }
     }
 
@@ -3169,7 +3169,7 @@ Q_DECL_EXPORT int cf_QueryAddColumn(QCFVariant &query, const QString &column_nam
 
     query[L"RESULTSET"].m_Struct->insert(column_name_upper, new_field);
 
-    if (array_name.count() > 0)
+    if (array_name.size() > 0)
     {
         QStringList list = array_name.split(",");
 
@@ -3234,7 +3234,7 @@ Q_DECL_EXPORT QCFVariant cf_QueryNew(const QString &columnlist, const QString &c
     const QString &columnlistUpper = columnlist.toUpper();
 
     QStringList columns;
-    if (columnlistUpper.count() > 0)
+    if (columnlistUpper.size() > 0)
     {
         columns = columnlistUpper.split(",");
     }

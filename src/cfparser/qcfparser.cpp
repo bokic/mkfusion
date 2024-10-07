@@ -84,7 +84,7 @@ bool QCFParser::TrimCFCode(const QString &p_Text, int &p_Offset)
 
 bool QCFParser::isValidVarChar(const QString &p_Text, int index)
 {
-    if ((index < 0)||(index >= p_Text.count()))
+    if ((index < 0)||(index >= p_Text.size()))
     {
         return false;
     }
