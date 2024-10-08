@@ -29,10 +29,6 @@ set(PROJECT_SOURCES
     main.cpp qappmainwindow.cpp qprojectproperties.cpp
              qappmainwindow.h   qprojectproperties.h
 
-    # RDS
-    rds/qabstractrdsservice.cpp rds/qrdsserver.cpp rds/qdefaultservice.cpp rds/qcfdebugger.cpp rds/qdebuggerservice.cpp rds/qfileioservice.cpp rds/qdatabaseservice.cpp rds/qwddx.cpp rds/qwddxutils.cpp
-    rds/qabstractrdsservice.h   rds/qrdsserver.h   rds/qdefaultservice.h   rds/qcfdebugger.h   rds/qdebuggerservice.h   rds/qfileioservice.h   rds/qdatabaseservice.h   rds/qwddx.h   rds/qwddxutils.h
-
     # Project Loader abstraction and implementation.
     qproject.cpp qlocalproject.cpp qrdsproject.cpp qftpproject.cpp qsftpproject.cpp
     qproject.h   qlocalproject.h   qrdsproject.h   qftpproject.h   qsftpproject.h

@@ -7,8 +7,8 @@ QT       = core gui network xml widgets webview webenginewidgets core5compat
 CONFIG  += debug_and_release c++11
 DESTDIR  = ../../bin
 
-DEPENDPATH  += . codeeditwidget rds ../textparser
-INCLUDEPATH += . codeeditwidget rds ../textparser
+DEPENDPATH  += . codeeditwidget ../textparser
+INCLUDEPATH += . codeeditwidget ../textparser
 win32:DEPENDPATH  += ../../libs/libssh/include
 win32:INCLUDEPATH += ../../libs/libssh/include
 
@@ -22,10 +22,6 @@ win32: {
 SOURCES = main.cpp qappmainwindow.cpp qprojectproperties.cpp
 HEADERS =          qappmainwindow.h   qprojectproperties.h
 FORMS   =          qappmainwindow.ui  qprojectproperties.ui
-
-# RDS
-SOURCES += rds/qabstractrdsservice.cpp rds/qrdsserver.cpp rds/qdefaultservice.cpp rds/qcfdebugger.cpp rds/qdebuggerservice.cpp rds/qfileioservice.cpp rds/qdatabaseservice.cpp rds/qwddx.cpp rds/qwddxutils.cpp
-HEADERS += rds/qabstractrdsservice.h   rds/qrdsserver.h   rds/qdefaultservice.h   rds/qcfdebugger.h   rds/qdebuggerservice.h   rds/qfileioservice.h   rds/qdatabaseservice.h   rds/qwddx.h   rds/qwddxutils.h
 
 # Project Loader abstraction and implementation.
 SOURCES += qproject.cpp qlocalproject.cpp qrdsproject.cpp qftpproject.cpp qsftpproject.cpp

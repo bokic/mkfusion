@@ -1,6 +1,6 @@
 #include "qprojectproperties.h"
-#include "qrdsserver.h"
-#include "qfileioservice.h"
+//#include "qrdsserver.h"
+//#include "qfileioservice.h"
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QByteArray>
@@ -135,7 +135,7 @@ void QProjectProperties::on_sftp_Browse_button_clicked()
 
 void QProjectProperties::on_rds_Test_button_clicked()
 {
-    QRDSServer l_RDSServer;
+    /*QRDSServer l_RDSServer;
 
     ui.rds_Test_button->setEnabled(false); QApplication::processEvents();
 
@@ -154,7 +154,7 @@ void QProjectProperties::on_rds_Test_button_clicked()
     else
     {
         QMessageBox::warning(this, tr("Warning"), tr("RDS login was not successfull."));
-    }
+    }*/
 
     ui.rds_Test_button->setEnabled(true);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "qrdsserver.h"
+//#include "qrdsserver.h"
 #include "qprojectfile.h"
 #include "qproject.h"
 #include <QString>
@@ -30,6 +30,6 @@ protected:
     QString m_Username;
     QString m_Password;
 private:
-    QRDSServer m_Server;
+    //QRDSServer m_Server;
     char m_DirSeparator;
 };
