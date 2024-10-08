@@ -272,21 +272,21 @@ public:
 
 
     // Member Variables
-    QVector<QCFVariant> *m_Array;
-    QMap<QString, QCFVariant> *m_Struct;
-    QString *m_String;
-    QByteArray *m_ByteArray;
-    double m_Number;
-    bool m_Bool;
-    QDateTime *m_DateTime;
-    QCFVariantComponent *m_Component;
-    QCFVariantFunction *m_Function;
-    QCFVariantType m_Type;
-    quint32 m_ArrayDimension;
-    QCFVariant *m_HiddenScopeFirst;
-    QCFVariant *m_HiddenScopeLast1;
-    QCFVariant *m_HiddenScopeLast2;
-    mutable bool m_AddMissingMember;
+    QCFVariantType m_Type = Null;
+    QVector<QCFVariant> *m_Array = nullptr;
+    QMap<QString, QCFVariant> *m_Struct = nullptr;
+    QString *m_String = nullptr;
+    QByteArray *m_ByteArray = nullptr;
+    double m_Number = 0;
+    bool m_Bool = false;
+    QDateTime *m_DateTime = nullptr;
+    QCFVariantComponent *m_Component = nullptr;
+    QCFVariantFunction *m_Function = nullptr;
+    quint32 m_ArrayDimension = 1;
+    QCFVariant *m_HiddenScopeFirst = nullptr;
+    QCFVariant *m_HiddenScopeLast1 = nullptr;
+    QCFVariant *m_HiddenScopeLast2 = nullptr;
+    mutable bool m_AddMissingMember = false;
 };
 
 Q_DECL_EXPORT bool operator!=(int, const QCFVariant &);

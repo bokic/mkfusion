@@ -466,7 +466,6 @@ bool QCFWorkerThread::readRequest()
     }
 
     l_RecievedBuffer.clear();
-    l_RecieveBufSize = 0;
 
     return true;
 }
