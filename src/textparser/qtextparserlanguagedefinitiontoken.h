@@ -40,11 +40,11 @@ public:
     QRegExp startString;
     QRegExp endString;
     QRegExp tokenString;
-    bool searchEndStringLast;
-    bool immediateStartString;
-    bool onlyStartTag;
-    bool excludeTopLevelChild;
-    bool IgnoreIfOnlyOneChild;
-    bool MultiLine;
+    bool searchEndStringLast = false;
+    bool immediateStartString = false;
+    bool onlyStartTag = false;
+    bool excludeTopLevelChild = false;
+    bool IgnoreIfOnlyOneChild = false;
+    bool MultiLine = false;
     QVector<int> nestedTokens;
 };

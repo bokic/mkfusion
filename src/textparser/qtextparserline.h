@@ -45,7 +45,7 @@ public:
     inline QTextParserLine &operator=(const QTextParserLine &other) = default;
 
     QString text;
-    QTextParserLineType type;
+    QTextParserLineType type = QTextParserLineTypeLFEndLine;
 };
 
 typedef QList<QTextParserLine> QTextParserLines;
