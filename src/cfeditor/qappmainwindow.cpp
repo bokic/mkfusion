@@ -3,6 +3,7 @@
 
 #include "qprojectproperties.h"
 #include "qcodeeditwidget.h"
+#include "qlocalproject.h"
 
 #include <QInputDialog>
 #include <QMessageBox>
@@ -21,6 +22,10 @@ QAppMainWindow::QAppMainWindow(QWidget *parent)
     if (qApp->arguments().count() > 1)
     {
         LoadProject(qApp->arguments()[1]);
+    }
+    else
+    {
+        m_Project = new QLocalProject(QHash<QString, QString>());
     }
 }
 
