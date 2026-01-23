@@ -11,8 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/../bin)
 
-find_package(QT NAMES Qt6 COMPONENTS Core Network Sql Xml Concurrent Test REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Xml Concurrent Test REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS Core Network Sql Xml Core5Compat Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Xml Core5Compat Test REQUIRED)
 
 include_directories(
     .
@@ -61,4 +61,4 @@ add_executable(cfbenchmark
     ../../textparser/qtextparser.cpp
 )
 
-target_link_libraries(cfbenchmark PRIVATE Qt6::Core Qt6::Network Qt6::Sql Qt6::Xml Qt6::Test)
+target_link_libraries(cfbenchmark PRIVATE Qt6::Core Qt6::Network Qt6::Sql Qt6::Xml Qt6::Core5Compat Qt6::Test)

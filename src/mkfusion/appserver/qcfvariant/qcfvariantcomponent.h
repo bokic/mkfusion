@@ -58,6 +58,6 @@ public:
     QString m_WSDLFile;
 
     QString m_TemplateFilePath;
-    qint64 m_TemplateFileSize;
-    qint64 m_TemplateFileModified;
+    qint64 m_TemplateFileSize = 0;
+    qint64 m_TemplateFileModified = 0;
 };

@@ -132,7 +132,8 @@ void QCFWorkerThread::processPostData(QByteArray post)
     {
         if (m_Request.m_ContentType.startsWith("application/x-www-form-urlencoded"))
         {
-            for(const QByteArray &item : post.split('&'))
+            auto items = post.split('&');
+            for(auto &item : std::as_const(items))
             {
                 if (item.isEmpty())
                 {
