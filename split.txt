@@ -1,0 +1,46 @@
+1.
+cfrds
+
+2.
+textparser
+ * tests/textparser
+ * tests/parsertest1_new
+
+3.
+codeeditwidget
+* textparser
+* tests/editwidget
+
+4.
+cfeditor
+ * codeeditwidget
+  * textparser
+ * tests/rdstest
+ * tests/sftptest
+
+--------------------------------------------
+5.
+cfparser
+ * tests/parsertest1_old
+ * tests/parsertest2
+ * tests/cfbenchmark
+
+6.
+mkfusion
+ * appserver
+  * cfparser
+ * mkfusion_generator
+  * cfparser
+ * mkfusion_isapi
+ * mkfusion_worker       - Empty project
+ * mod_mkfusion          - Obsolete feature
+ * simplifiedlocalsocket - Obsolete feature
+  * tests/test_simplifiedlocalsocket
+ * uninstall             - Windows only
+ * tests/cf7debugger
+
+--------------------------------------------
+7.
+tests/cfbenchmark
+ * textparser
+ * cfparser
